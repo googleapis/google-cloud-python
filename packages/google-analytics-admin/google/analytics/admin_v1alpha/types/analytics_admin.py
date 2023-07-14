@@ -436,9 +436,9 @@ class ListAccountsRequest(proto.Message):
             token.
         show_deleted (bool):
             Whether to include soft-deleted (ie:
-            "trashed") Accounts in the results. Accounts can
-            be inspected to determine whether they are
-            deleted or not.
+            "trashed") Accounts in the
+            results. Accounts can be inspected to determine
+            whether they are deleted or not.
     """
 
     page_size: int = proto.Field(
@@ -613,9 +613,9 @@ class ListPropertiesRequest(proto.Message):
             page token.
         show_deleted (bool):
             Whether to include soft-deleted (ie:
-            "trashed") Properties in the results. Properties
-            can be inspected to determine whether they are
-            deleted or not.
+            "trashed") Properties in the
+            results. Properties can be inspected to
+            determine whether they are deleted or not.
     """
 
     filter: str = proto.Field(
@@ -1419,6 +1419,7 @@ class AcknowledgeUserDataCollectionRequest(proto.Message):
             of this method understands the terms of user
             data collection.
             This field must contain the exact value:
+
             "I acknowledge that I have the necessary privacy
             disclosures and rights from my end users for the
             collection and processing of their data,
@@ -1563,6 +1564,7 @@ class GetMeasurementProtocolSecretRequest(proto.Message):
         name (str):
             Required. The name of the measurement
             protocol secret to lookup. Format:
+
             properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
     """
 
@@ -1603,6 +1605,7 @@ class DeleteMeasurementProtocolSecretRequest(proto.Message):
         name (str):
             Required. The name of the
             MeasurementProtocolSecret to delete. Format:
+
             properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
     """
 
@@ -1643,6 +1646,7 @@ class ListMeasurementProtocolSecretsRequest(proto.Message):
         parent (str):
             Required. The resource name of the parent
             stream. Format:
+
             properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets
         page_size (int):
             The maximum number of resources to return.
@@ -2615,6 +2619,7 @@ class GetDataRetentionSettingsRequest(proto.Message):
         name (str):
             Required. The name of the settings to lookup.
             Format:
+
             properties/{property}/dataRetentionSettings
             Example: "properties/1000/dataRetentionSettings".
     """
@@ -2975,10 +2980,11 @@ class GetAccessBindingRequest(proto.Message):
         name (str):
             Required. The name of the access binding to
             retrieve. Formats:
+
             -
-            accounts/{account}/accessBindings/{accessBinding}
+              accounts/{account}/accessBindings/{accessBinding}
             -
-            properties/{property}/accessBindings/{accessBinding}
+              properties/{property}/accessBindings/{accessBinding}
     """
 
     name: str = proto.Field(
@@ -2996,16 +3002,18 @@ class BatchGetAccessBindingsRequest(proto.Message):
             the access bindings. The parent of all provided
             values for the 'names' field must match this
             field. Formats:
+
             - accounts/{account}
             - properties/{property}
         names (MutableSequence[str]):
             Required. The names of the access bindings to
             retrieve. A maximum of 1000 access bindings can
             be retrieved in a batch. Formats:
+
             -
-            accounts/{account}/accessBindings/{accessBinding}
+              accounts/{account}/accessBindings/{accessBinding}
             -
-            properties/{property}/accessBindings/{accessBinding}
+              properties/{property}/accessBindings/{accessBinding}
     """
 
     parent: str = proto.Field(
@@ -3039,6 +3047,7 @@ class ListAccessBindingsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Formats:
+
             - accounts/{account}
             - properties/{property}
         page_size (int):
@@ -3103,6 +3112,7 @@ class CreateAccessBindingRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Formats:
+
             - accounts/{account}
             - properties/{property}
         access_binding (google.analytics.admin_v1alpha.types.AccessBinding):
@@ -3129,6 +3139,7 @@ class BatchCreateAccessBindingsRequest(proto.Message):
             the access bindings. The parent field in the
             CreateAccessBindingRequest messages must either
             be empty or match this field. Formats:
+
             - accounts/{account}
             - properties/{property}
         requests (MutableSequence[google.analytics.admin_v1alpha.types.CreateAccessBindingRequest]):
@@ -3188,6 +3199,7 @@ class BatchUpdateAccessBindingsRequest(proto.Message):
             AccessBinding in UpdateAccessBindingRequest
             messages must match this field.
             Formats:
+
             - accounts/{account}
             - properties/{property}
         requests (MutableSequence[google.analytics.admin_v1alpha.types.UpdateAccessBindingRequest]):
@@ -3228,10 +3240,11 @@ class DeleteAccessBindingRequest(proto.Message):
     Attributes:
         name (str):
             Required. Formats:
+
             -
-            accounts/{account}/accessBindings/{accessBinding}
+              accounts/{account}/accessBindings/{accessBinding}
             -
-            properties/{property}/accessBindings/{accessBinding}
+              properties/{property}/accessBindings/{accessBinding}
     """
 
     name: str = proto.Field(
@@ -3250,6 +3263,7 @@ class BatchDeleteAccessBindingsRequest(proto.Message):
             values for the 'names' field in
             DeleteAccessBindingRequest messages must match
             this field. Formats:
+
             - accounts/{account}
             - properties/{property}
         requests (MutableSequence[google.analytics.admin_v1alpha.types.DeleteAccessBindingRequest]):
@@ -4053,6 +4067,7 @@ class DeleteEventCreateRuleRequest(proto.Message):
     Attributes:
         name (str):
             Required. Example format:
+
             properties/123/dataStreams/456/eventCreateRules/789
     """
 

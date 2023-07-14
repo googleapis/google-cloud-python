@@ -845,6 +845,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Marks target Account as soft-deleted (ie: "trashed")
         and returns it.
+
         This API does not have a method to restore soft-deleted
         accounts. However, they can be restored using the Trash
         Can UI.
@@ -1529,6 +1530,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.Property:
         r"""Marks target Property as soft-deleted (ie: "trashed")
         and returns it.
+
         This API does not have a method to restore soft-deleted
         properties. However, they can be restored using the
         Trash Can UI.
@@ -2674,6 +2676,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             name (str):
                 Required. The name of the measurement
                 protocol secret to lookup. Format:
+
                 properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
 
                 This corresponds to the ``name`` field
@@ -2783,6 +2786,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             parent (str):
                 Required. The resource name of the
                 parent stream. Format:
+
                 properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets
 
                 This corresponds to the ``parent`` field
@@ -3027,6 +3031,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 Required. The name of the
                 MeasurementProtocolSecret to delete.
                 Format:
+
                 properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
 
                 This corresponds to the ``name`` field
@@ -4970,6 +4975,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             name (str):
                 Required. The name of the settings to
                 lookup. Format:
+
                 properties/{property}/dataRetentionSettings
                 Example:
                 "properties/1000/dataRetentionSettings"

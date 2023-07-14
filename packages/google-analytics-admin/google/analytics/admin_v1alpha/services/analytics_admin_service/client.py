@@ -1137,6 +1137,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> None:
         r"""Marks target Account as soft-deleted (ie: "trashed")
         and returns it.
+
         This API does not have a method to restore soft-deleted
         accounts. However, they can be restored using the Trash
         Can UI.
@@ -1821,6 +1822,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.Property:
         r"""Marks target Property as soft-deleted (ie: "trashed")
         and returns it.
+
         This API does not have a method to restore soft-deleted
         properties. However, they can be restored using the
         Trash Can UI.
@@ -4046,6 +4048,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             name (str):
                 Required. The name of the measurement
                 protocol secret to lookup. Format:
+
                 properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
 
                 This corresponds to the ``name`` field
@@ -4155,6 +4158,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             parent (str):
                 Required. The resource name of the
                 parent stream. Format:
+
                 properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets
 
                 This corresponds to the ``parent`` field
@@ -4399,6 +4403,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 Required. The name of the
                 MeasurementProtocolSecret to delete.
                 Format:
+
                 properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
 
                 This corresponds to the ``name`` field
@@ -6642,10 +6647,12 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
     ) -> resources.DisplayVideo360AdvertiserLinkProposal:
         r"""Cancels a DisplayVideo360AdvertiserLinkProposal.
         Cancelling can mean either:
+
         - Declining a proposal initiated from Display & Video
-        360 - Withdrawing a proposal initiated from Google
-        Analytics After being cancelled, a proposal will
-        eventually be deleted automatically.
+          360
+        - Withdrawing a proposal initiated from Google Analytics
+          After being cancelled, a proposal will eventually be
+          deleted automatically.
 
         .. code-block:: python
 
@@ -7865,6 +7872,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             name (str):
                 Required. The name of the settings to
                 lookup. Format:
+
                 properties/{property}/dataRetentionSettings
                 Example:
                 "properties/1000/dataRetentionSettings"
@@ -10053,6 +10061,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 CreateAccessBinding RPC.
             parent (str):
                 Required. Formats:
+
                 - accounts/{account}
                 - properties/{property}
 
@@ -10166,10 +10175,11 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             name (str):
                 Required. The name of the access
                 binding to retrieve. Formats:
+
                 -
-                accounts/{account}/accessBindings/{accessBinding}
+                  accounts/{account}/accessBindings/{accessBinding}
                 -
-                properties/{property}/accessBindings/{accessBinding}
+                  properties/{property}/accessBindings/{accessBinding}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -10379,10 +10389,11 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 DeleteAccessBinding RPC.
             name (str):
                 Required. Formats:
+
                 -
-                accounts/{account}/accessBindings/{accessBinding}
+                  accounts/{account}/accessBindings/{accessBinding}
                 -
-                properties/{property}/accessBindings/{accessBinding}
+                  properties/{property}/accessBindings/{accessBinding}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -10478,6 +10489,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 ListAccessBindings RPC.
             parent (str):
                 Required. Formats:
+
                 - accounts/{account}
                 - properties/{property}
 
@@ -13937,6 +13949,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 DeleteEventCreateRule RPC.
             name (str):
                 Required. Example format:
+
                 properties/123/dataStreams/456/eventCreateRules/789
 
                 This corresponds to the ``name`` field

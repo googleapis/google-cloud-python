@@ -295,6 +295,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
 
         Marks target Account as soft-deleted (ie: "trashed")
         and returns it.
+
         This API does not have a method to restore soft-deleted
         accounts. However, they can be restored using the Trash
         Can UI.
@@ -503,6 +504,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
 
         Marks target Property as soft-deleted (ie: "trashed")
         and returns it.
+
         This API does not have a method to restore soft-deleted
         properties. However, they can be restored using the
         Trash Can UI.

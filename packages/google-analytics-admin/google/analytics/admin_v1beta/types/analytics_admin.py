@@ -331,9 +331,9 @@ class ListAccountsRequest(proto.Message):
             token.
         show_deleted (bool):
             Whether to include soft-deleted (ie:
-            "trashed") Accounts in the results. Accounts can
-            be inspected to determine whether they are
-            deleted or not.
+            "trashed") Accounts in the
+            results. Accounts can be inspected to determine
+            whether they are deleted or not.
     """
 
     page_size: int = proto.Field(
@@ -508,9 +508,9 @@ class ListPropertiesRequest(proto.Message):
             page token.
         show_deleted (bool):
             Whether to include soft-deleted (ie:
-            "trashed") Properties in the results. Properties
-            can be inspected to determine whether they are
-            deleted or not.
+            "trashed") Properties in the
+            results. Properties can be inspected to
+            determine whether they are deleted or not.
     """
 
     filter: str = proto.Field(
@@ -929,6 +929,7 @@ class AcknowledgeUserDataCollectionRequest(proto.Message):
             of this method understands the terms of user
             data collection.
             This field must contain the exact value:
+
             "I acknowledge that I have the necessary privacy
             disclosures and rights from my end users for the
             collection and processing of their data,
@@ -1073,6 +1074,7 @@ class GetMeasurementProtocolSecretRequest(proto.Message):
         name (str):
             Required. The name of the measurement
             protocol secret to lookup. Format:
+
             properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
     """
 
@@ -1113,6 +1115,7 @@ class DeleteMeasurementProtocolSecretRequest(proto.Message):
         name (str):
             Required. The name of the
             MeasurementProtocolSecret to delete. Format:
+
             properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
     """
 
@@ -1153,6 +1156,7 @@ class ListMeasurementProtocolSecretsRequest(proto.Message):
         parent (str):
             Required. The resource name of the parent
             stream. Format:
+
             properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets
         page_size (int):
             The maximum number of resources to return.
@@ -1613,6 +1617,7 @@ class GetDataRetentionSettingsRequest(proto.Message):
         name (str):
             Required. The name of the settings to lookup.
             Format:
+
             properties/{property}/dataRetentionSettings
             Example: "properties/1000/dataRetentionSettings".
     """

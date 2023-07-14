@@ -930,6 +930,7 @@ class GoogleAdsLink(proto.Message):
     Attributes:
         name (str):
             Output only. Format:
+
             properties/{propertyId}/googleAdsLinks/{googleAdsLinkId}
             Note: googleAdsLinkId is not the Google Ads
             customer ID.
@@ -1136,6 +1137,7 @@ class MeasurementProtocolSecret(proto.Message):
             Output only. Resource name of this secret.
             This secret may be a child of any type of
             stream. Format:
+
             properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
         display_name (str):
             Required. Human-readable display name for
@@ -1531,6 +1533,7 @@ class DisplayVideo360AdvertiserLink(proto.Message):
         name (str):
             Output only. The resource name for this
             DisplayVideo360AdvertiserLink resource. Format:
+
             properties/{propertyId}/displayVideo360AdvertiserLinks/{linkId}
             Note: linkId is not the Display & Video 360
             Advertiser ID
@@ -1602,6 +1605,7 @@ class DisplayVideo360AdvertiserLinkProposal(proto.Message):
             Output only. The resource name for this
             DisplayVideo360AdvertiserLinkProposal resource.
             Format:
+
             properties/{propertyId}/displayVideo360AdvertiserLinkProposals/{proposalId}
             Note: proposalId is not the Display & Video 360
             Advertiser ID
@@ -2373,6 +2377,7 @@ class AccessBinding(proto.Message):
             A list of roles for to grant to the parent
             resource.
             Valid values:
+
             predefinedRoles/viewer
             predefinedRoles/analyst
             predefinedRoles/editor

@@ -309,6 +309,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
 
         Marks target Account as soft-deleted (ie: "trashed")
         and returns it.
+
         This API does not have a method to restore soft-deleted
         accounts. However, they can be restored using the Trash
         Can UI.
@@ -522,6 +523,7 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
 
         Marks target Property as soft-deleted (ie: "trashed")
         and returns it.
+
         This API does not have a method to restore soft-deleted
         properties. However, they can be restored using the
         Trash Can UI.
@@ -1891,10 +1893,12 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
 
         Cancels a DisplayVideo360AdvertiserLinkProposal.
         Cancelling can mean either:
+
         - Declining a proposal initiated from Display & Video
-        360 - Withdrawing a proposal initiated from Google
-        Analytics After being cancelled, a proposal will
-        eventually be deleted automatically.
+          360
+        - Withdrawing a proposal initiated from Google Analytics
+          After being cancelled, a proposal will eventually be
+          deleted automatically.
 
         Returns:
             Callable[[~.CancelDisplayVideo360AdvertiserLinkProposalRequest],

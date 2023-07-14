@@ -673,6 +673,7 @@ class GoogleAdsLink(proto.Message):
     Attributes:
         name (str):
             Output only. Format:
+
             properties/{propertyId}/googleAdsLinks/{googleAdsLinkId}
             Note: googleAdsLinkId is not the Google Ads
             customer ID.
@@ -879,6 +880,7 @@ class MeasurementProtocolSecret(proto.Message):
             Output only. Resource name of this secret.
             This secret may be a child of any type of
             stream. Format:
+
             properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
         display_name (str):
             Required. Human-readable display name for

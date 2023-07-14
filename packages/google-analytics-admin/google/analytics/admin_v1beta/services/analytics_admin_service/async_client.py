@@ -482,6 +482,7 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> None:
         r"""Marks target Account as soft-deleted (ie: "trashed")
         and returns it.
+
         This API does not have a method to restore soft-deleted
         accounts. However, they can be restored using the Trash
         Can UI.
@@ -1163,6 +1164,7 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> resources.Property:
         r"""Marks target Property as soft-deleted (ie: "trashed")
         and returns it.
+
         This API does not have a method to restore soft-deleted
         properties. However, they can be restored using the
         Trash Can UI.
@@ -2306,6 +2308,7 @@ class AnalyticsAdminServiceAsyncClient:
             name (:class:`str`):
                 Required. The name of the measurement
                 protocol secret to lookup. Format:
+
                 properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
 
                 This corresponds to the ``name`` field
@@ -2413,6 +2416,7 @@ class AnalyticsAdminServiceAsyncClient:
             parent (:class:`str`):
                 Required. The resource name of the
                 parent stream. Format:
+
                 properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets
 
                 This corresponds to the ``parent`` field
@@ -2649,6 +2653,7 @@ class AnalyticsAdminServiceAsyncClient:
                 Required. The name of the
                 MeasurementProtocolSecret to delete.
                 Format:
+
                 properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
 
                 This corresponds to the ``name`` field
@@ -4576,6 +4581,7 @@ class AnalyticsAdminServiceAsyncClient:
             name (:class:`str`):
                 Required. The name of the settings to
                 lookup. Format:
+
                 properties/{property}/dataRetentionSettings
                 Example:
                 "properties/1000/dataRetentionSettings"
