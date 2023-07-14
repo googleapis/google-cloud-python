@@ -77,6 +77,7 @@ class Policy(proto.Message):
             Optional. Per-istio-service-identity
             admission rules. Istio service identity spec
             format:
+
             spiffe://<domain>/ns/<namespace>/sa/<serviceaccount>
             or <domain>/ns/<namespace>/sa/<serviceaccount>
             e.g. spiffe://example.com/ns/test-ns/sa/default
