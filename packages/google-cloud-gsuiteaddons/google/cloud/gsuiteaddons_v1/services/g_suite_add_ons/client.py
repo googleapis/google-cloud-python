@@ -100,14 +100,17 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
     editors. Google Workspace Add-ons can display UI cards, receive
     contextual information from the host application, and perform
     actions in the host application (See:
+
     https://developers.google.com/gsuite/add-ons/overview for more
     information).
     A Google Workspace Add-on deployment resource specifies metadata
     about the add-on, including a specification of the entry points
     in the host application that trigger add-on executions (see:
+
     https://developers.google.com/gsuite/add-ons/concepts/gsuite-manifests).
     Add-on deployments defined via the Google Workspace Add-ons API
     define their entrypoints using HTTPS URLs (See:
+
     https://developers.google.com/gsuite/add-ons/guides/alternate-runtimes),
     A Google Workspace Add-on deployment can be installed in
     developer mode, which allows an add-on developer to test the
@@ -119,6 +122,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
     A Google Workspace Add-on deployment can be published to Google
     Workspace Marketplace, which allows other Google Workspace users
     to discover and install the add-on.  See:
+
     https://developers.google.com/gsuite/add-ons/how-tos/publish-add-on-overview
     for details.
     """
@@ -1158,6 +1162,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
     ) -> None:
         r"""Installs a deployment in developer mode.
         See:
+
         https://developers.google.com/gsuite/add-ons/how-tos/testing-gsuite-addons.
 
         .. code-block:: python
@@ -1253,6 +1258,7 @@ class GSuiteAddOnsClient(metaclass=GSuiteAddOnsClientMeta):
     ) -> None:
         r"""Uninstalls a developer mode deployment.
         See:
+
         https://developers.google.com/gsuite/add-ons/how-tos/testing-gsuite-addons.
 
         .. code-block:: python
