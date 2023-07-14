@@ -264,6 +264,7 @@ class ErrorGroupStats(proto.Message):
             Approximate number of occurrences over time.
             Timed counts returned by ListGroups are
             guaranteed to be:
+
             - Inside the requested time interval
             - Non-overlapping, and
             - Ordered by ascending time.
