@@ -3290,6 +3290,7 @@ class ShipmentRoute(proto.Message):
     class EncodedPolyline(proto.Message):
         r"""The encoded representation of a polyline. More information on
         polyline encoding can be found here:
+
         https://developers.google.com/maps/documentation/utilities/polylinealgorithm
         https://developers.google.com/maps/documentation/javascript/reference/geometry#encoding.
 
