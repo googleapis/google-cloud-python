@@ -100,6 +100,7 @@ class Membership(proto.Message):
             Optional. How to identify workloads from this
             Membership. See the documentation on Workload
             Identity for more details:
+
             https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. When the Membership was created.
@@ -674,6 +675,7 @@ class Authority(proto.Message):
     r"""Authority encodes how Google will recognize identities from
     this Membership. See the workload identity documentation for
     more details:
+
     https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
 
     Attributes:

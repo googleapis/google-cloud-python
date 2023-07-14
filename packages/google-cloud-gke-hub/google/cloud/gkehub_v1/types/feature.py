@@ -61,6 +61,7 @@ class Feature(proto.Message):
             field may be unused.
             The keys indicate which Membership the
             configuration is for, in the form:
+
             `projects/{p}/locations/{l}/memberships/{m}`
             Where {p} is the project, {l} is a valid
             location and {m} is a valid Membership in this
@@ -84,6 +85,7 @@ class Feature(proto.Message):
             per-Membership status, this field may be unused.
             The keys indicate which Membership the state is
             for, in the form:
+
             `projects/{p}/locations/{l}/memberships/{m}`
             Where {p} is the project number, {l} is a valid
             location and {m} is a valid Membership in this
