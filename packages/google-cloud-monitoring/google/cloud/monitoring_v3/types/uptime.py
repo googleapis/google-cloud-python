@@ -55,6 +55,7 @@ class UptimeCheckRegion(proto.Enum):
         ASIA_PACIFIC (4):
             Allows checks to run from locations within
             the Asia Pacific area (ex:
+
             Singapore).
         USA_OREGON (5):
             Allows checks to run from locations within
