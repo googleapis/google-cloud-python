@@ -645,6 +645,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
             parent (str):
                 Required. The parent resource name in
                 the form:
+
                 projects/{project}/locations/{location}
 
                 This corresponds to the ``parent`` field

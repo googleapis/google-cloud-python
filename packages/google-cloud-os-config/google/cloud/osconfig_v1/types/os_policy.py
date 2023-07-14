@@ -184,6 +184,7 @@ class OSPolicy(proto.Message):
                 allow_insecure (bool):
                     Defaults to false. When false, files are
                     subject to validations based on the file type:
+
                     Remote: A checksum must be specified.
                     Cloud Storage: An object generation number must
                     be specified.
@@ -900,7 +901,9 @@ class OSPolicy(proto.Message):
                     execute permission. Default behavior is 755.
 
                     Below are some examples of permissions and their
-                    associated values: read, write, and execute: 7
+                    associated values:
+
+                    read, write, and execute: 7
                     read and execute: 5
                     read and write: 6
                     read only: 4

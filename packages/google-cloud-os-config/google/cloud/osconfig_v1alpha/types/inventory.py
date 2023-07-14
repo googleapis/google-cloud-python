@@ -524,6 +524,7 @@ class Inventory(proto.Message):
         r"""Information related to a Quick Fix Engineering package.
         Fields are taken from Windows QuickFixEngineering Interface and
         match the source names:
+
         https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering
 
         Attributes:
@@ -562,6 +563,7 @@ class Inventory(proto.Message):
         r"""Contains information about a Windows application that is
         retrieved from the Windows Registry. For more information about
         these fields, see:
+
         https://docs.microsoft.com/en-us/windows/win32/msi/uninstall-registry-key
 
         Attributes:

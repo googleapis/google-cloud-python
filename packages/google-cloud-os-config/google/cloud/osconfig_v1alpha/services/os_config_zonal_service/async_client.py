@@ -338,6 +338,7 @@ class OsConfigZonalServiceAsyncClient:
             parent (:class:`str`):
                 Required. The parent resource name in
                 the form:
+
                 projects/{project}/locations/{location}
 
                 This corresponds to the ``parent`` field

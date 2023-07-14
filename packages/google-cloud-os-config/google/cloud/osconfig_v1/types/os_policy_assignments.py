@@ -421,6 +421,7 @@ class CreateOSPolicyAssignmentRequest(proto.Message):
         parent (str):
             Required. The parent resource name in the
             form:
+
             projects/{project}/locations/{location}
         os_policy_assignment (google.cloud.osconfig_v1.types.OSPolicyAssignment):
             Required. The OS policy assignment to be
