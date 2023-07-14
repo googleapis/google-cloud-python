@@ -283,6 +283,7 @@ class AssetServiceAsyncClient:
                 exported. The asset feed must be created
                 within a project, organization, or
                 folder. Supported destinations are:
+
                 Cloud Pub/Sub topics.
 
         """
@@ -391,6 +392,7 @@ class AssetServiceAsyncClient:
                 exported. The asset feed must be created
                 within a project, organization, or
                 folder. Supported destinations are:
+
                 Cloud Pub/Sub topics.
 
         """
@@ -627,6 +629,7 @@ class AssetServiceAsyncClient:
                 exported. The asset feed must be created
                 within a project, organization, or
                 folder. Supported destinations are:
+
                 Cloud Pub/Sub topics.
 
         """

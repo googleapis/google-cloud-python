@@ -277,6 +277,7 @@ class Feed(proto.Message):
     An asset feed filter controls what updates are exported. The
     asset feed must be created within a project, organization, or
     folder. Supported destinations are:
+
     Cloud Pub/Sub topics.
 
     Attributes:

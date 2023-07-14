@@ -1711,6 +1711,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 exported. The asset feed must be created
                 within a project, organization, or
                 folder. Supported destinations are:
+
                 Pub/Sub topics.
 
             """
@@ -2160,6 +2161,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 exported. The asset feed must be created
                 within a project, organization, or
                 folder. Supported destinations are:
+
                 Pub/Sub topics.
 
             """
@@ -2872,6 +2874,7 @@ class AssetServiceRestTransport(AssetServiceTransport):
                 exported. The asset feed must be created
                 within a project, organization, or
                 folder. Supported destinations are:
+
                 Pub/Sub topics.
 
             """
