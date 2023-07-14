@@ -52,10 +52,11 @@ s.move(
     excludes=[
         # pandas-gbq was originally licensed BSD-3-Clause License
         "LICENSE",
-        # Mulit-processing note isn't relevant, as pandas_gbq is responsible for
+        # Multi-processing note isn't relevant, as pandas_gbq is responsible for
         # creating clients, not the end user.
         "docs/multiprocessing.rst",
-	"README.rst",
+        "noxfile.py",
+	    "README.rst",
     ],
 )
 
@@ -64,123 +65,37 @@ s.move(
 # ----------------------------------------------------------------------------
 
 s.replace(
-    ["noxfile.py"],
-    r"import pathlib\s+import shutil",
-    "import pathlib\nimport re\nimport shutil",
-)
-
-s.replace(
-    ["noxfile.py"], r"[\"']google[\"']", '"pandas_gbq"',
-)
-
-
-s.replace(
-    ["noxfile.py"], "--cov=google", "--cov=pandas_gbq",
-)
-
-# Workaround for https://github.com/googleapis/synthtool/issues/1317
-s.replace(
-    ["noxfile.py"], r'extras = "\[\]"', 'extras = ""',
-)
-
-s.replace(
-    ["noxfile.py"],
-    r"@nox.session\(python=DEFAULT_PYTHON_VERSION\)\s+def cover\(session\):",
-    r"""@nox.session(python=DEFAULT_PYTHON_VERSION)
-def prerelease(session):
-    session.install(
-        "--extra-index-url",
-        "https://pypi.fury.io/arrow-nightlies/",
-        "--prefer-binary",
-        "--pre",
-        "--upgrade",
-        "pyarrow",
-    )
-    session.install(
-        "--extra-index-url",
-        "https://pypi.anaconda.org/scipy-wheels-nightly/simple",
-        "--prefer-binary",
-        "--pre",
-        "--upgrade",
-        "pandas",
-    )
-    session.install(
-        "--prefer-binary",
-        "--pre",
-        "--upgrade",
-        "google-api-core",
-        "google-cloud-bigquery",
-        "google-cloud-bigquery-storage",
-        "google-cloud-core",
-        "google-resumable-media",
-        # Exclude version 1.49.0rc1 which has a known issue. See https://github.com/grpc/grpc/pull/30642
-        "grpcio!=1.49.0rc1",
-    )
-    session.install(
-        "freezegun",
-        "google-cloud-datacatalog",
-        "google-cloud-storage",
-        "google-cloud-testutils",
-        "IPython",
-        "mock",
-        "psutil",
-        "pytest",
-        "pytest-cov",
-    )
-
-    # Because we test minimum dependency versions on the minimum Python
-    # version, the first version we test with in the unit tests sessions has a
-    # constraints file containing all dependencies and extras.
-    with open(
-        CURRENT_DIRECTORY
-        / "testing"
-        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
-        encoding="utf-8",
-    ) as constraints_file:
-        constraints_text = constraints_file.read()
-
-    # Ignore leading whitespace and comment lines.
-    deps = [
-        match.group(1)
-        for match in re.finditer(
-            r"^\\s*(\\S+)(?===\\S+)", constraints_text, flags=re.MULTILINE
-        )
-    ]
-
-    # We use --no-deps to ensure that pre-release versions aren't overwritten
-    # by the version ranges in setup.py.
-    session.install(*deps)
-    session.install("--no-deps", "-e", ".[all]")
-
-    # Print out prerelease package versions.
-    session.run("python", "-m", "pip", "freeze")
-
-    # Run all tests, except a few samples tests which require extra dependencies.
-    session.run(
-        "py.test",
-        "--quiet",
-        f"--junitxml=prerelease_unit_{session.python}_sponge_log.xml",
-        os.path.join("tests", "unit"),
-    )
-    session.run(
-        "py.test",
-        "--quiet",
-        f"--junitxml=prerelease_system_{session.python}_sponge_log.xml",
-        os.path.join("tests", "system"),
-    )
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def cover(session):""",
-    re.MULTILINE,
-)
-
-s.replace(
     [".github/header-checker-lint.yml"], '"Google LLC"', '"pandas-gbq Authors"',
 )
 
 # Work around bug in templates https://github.com/googleapis/synthtool/pull/1335
 s.replace(".github/workflows/unittest.yml", "--fail-under=100", "--fail-under=96")
+
+# Add environment variables to build.sh to support conda virtualenv 
+# installations
+s.replace(
+    [".kokoro/build.sh"],
+    "export PYTHONUNBUFFERED=1",
+    r"""export PYTHONUNBUFFERED=1
+export CONDA_EXE=/root/conda/bin/conda
+export CONDA_PREFIX=/root/conda
+export CONDA_PROMPT_MODIFIER=(base) 
+export _CE_CONDA=
+export CONDA_SHLVL=1
+export CONDA_PYTHON_EXE=/root/conda/bin/python
+export CONDA_DEFAULT_ENV=base
+export PATH=/root/conda/bin:/root/conda/condabin:${PATH}
+""",
+)
+
+
+# Enable display of all environmental variables, not just KOKORO related vars
+s.replace(
+    [".kokoro/build.sh"],
+    r"env \| grep KOKORO",
+    "env",
+)
+
 
 # ----------------------------------------------------------------------------
 # Samples templates

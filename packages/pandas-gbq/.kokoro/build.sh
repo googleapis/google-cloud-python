@@ -23,9 +23,18 @@ cd "${PROJECT_ROOT}"
 
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
+export CONDA_EXE=/root/conda/bin/conda
+export CONDA_PREFIX=/root/conda
+export CONDA_PROMPT_MODIFIER=(base) 
+export _CE_CONDA=
+export CONDA_SHLVL=1
+export CONDA_PYTHON_EXE=/root/conda/bin/python
+export CONDA_DEFAULT_ENV=base
+export PATH=/root/conda/bin:/root/conda/condabin:${PATH}
+
 
 # Debug: show build environment
-env | grep KOKORO
+env
 
 # Setup service account credentials.
 export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json

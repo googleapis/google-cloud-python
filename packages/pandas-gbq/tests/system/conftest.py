@@ -16,17 +16,6 @@ prefixer = test_utils.prefixer.Prefixer("python-bigquery-pandas", "tests/system"
 REPO_DIR = pathlib.Path(__file__).parent.parent.parent
 
 
-# TODO: remove when fully migrated off of Circle CI
-@pytest.fixture(scope="session", autouse=True)
-def default_credentials():
-    """Setup application default credentials for use in code samples."""
-    # Written by the 'ci/config_auth.sh' script.
-    path = REPO_DIR / "ci" / "service_account.json"
-
-    if path.is_file() and "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(path)
-
-
 @pytest.fixture(scope="session", autouse=True)
 def cleanup_datasets(bigquery_client: bigquery.Client):
     for dataset in bigquery_client.list_datasets():
