@@ -49,6 +49,7 @@ class Source(proto.Message):
         description (str):
             The description of the source (max of 1024
             characters). Example:
+
             "Web Security Scanner is a web security scanner
             for common vulnerabilities in App Engine
             applications. It can automatically scan and

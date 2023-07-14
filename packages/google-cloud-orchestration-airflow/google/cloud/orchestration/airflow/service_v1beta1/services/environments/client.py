@@ -622,6 +622,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
             name (str):
                 The resource name of the environment
                 to get, in the form:
+
                 "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
 
                 This corresponds to the ``name`` field
@@ -725,6 +726,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
             parent (str):
                 List environments in the given
                 project and location, in the form:
+
                 "projects/{projectId}/locations/{locationId}"
 
                 This corresponds to the ``parent`` field
@@ -844,6 +846,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
             name (str):
                 The relative resource name of the
                 environment to update, in the form:
+
                 "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
 
                 This corresponds to the ``name`` field
@@ -1192,6 +1195,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
             name (str):
                 The environment to delete, in the
                 form:
+
                 "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
 
                 This corresponds to the ``name`` field

@@ -43,6 +43,7 @@ class Finding(proto.Message):
             Output only. The type of the Finding.
             Detailed and up-to-date information on findings
             can be found here:
+
             https://cloud.google.com/security-command-center/docs/how-to-remediate-web-security-scanner-findings
         severity (google.cloud.websecurityscanner_v1.types.Finding.Severity):
             Output only. The severity level of the
