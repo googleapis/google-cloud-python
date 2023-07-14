@@ -1147,6 +1147,7 @@ class FirestoreAdminAsyncClient:
 
         For more details on export behavior and output format,
         refer to:
+
         https://cloud.google.com/firestore/docs/manage-data/export-import
 
         .. code-block:: python
