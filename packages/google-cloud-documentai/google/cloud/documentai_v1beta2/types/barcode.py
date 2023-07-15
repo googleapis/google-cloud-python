@@ -19,11 +19,10 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.documentai.v1',
+    package="google.cloud.documentai.v1beta2",
     manifest={
-        'Barcode',
+        "Barcode",
     },
 )
 

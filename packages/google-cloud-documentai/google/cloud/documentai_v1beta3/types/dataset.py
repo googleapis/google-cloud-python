@@ -20,13 +20,15 @@ from typing import MutableMapping, MutableSequence
 import proto  # type: ignore
 
 from google.cloud.documentai_v1beta3.types import document_schema as gcd_document_schema
-from google.cloud.documentai_v1beta3.types import document_io
+from google.cloud.documentai_v1beta3.types import document, document_io
 
 __protobuf__ = proto.module(
     package="google.cloud.documentai.v1beta3",
     manifest={
         "Dataset",
+        "DocumentId",
         "DatasetSchema",
+        "BatchDatasetDocuments",
     },
 )
 
@@ -176,6 +178,86 @@ class Dataset(proto.Message):
     )
 
 
+class DocumentId(proto.Message):
+    r"""Document Identifier.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_managed_doc_id (google.cloud.documentai_v1beta3.types.DocumentId.GCSManagedDocumentId):
+            A document id within user-managed Cloud
+            Storage.
+
+            This field is a member of `oneof`_ ``type``.
+        unmanaged_doc_id (google.cloud.documentai_v1beta3.types.DocumentId.UnmanagedDocumentId):
+            A document id within unmanaged dataset.
+
+            This field is a member of `oneof`_ ``type``.
+        revision_ref (google.cloud.documentai_v1beta3.types.RevisionRef):
+            Points to a specific revision of the document
+            if set.
+    """
+
+    class GCSManagedDocumentId(proto.Message):
+        r"""Identifies a document uniquely within the scope of a dataset
+        in the user-managed Cloud Storage option.
+
+        Attributes:
+            gcs_uri (str):
+                Required. The Cloud Storage URI where the
+                actual document is stored.
+            cw_doc_id (str):
+                Id of the document (indexed) managed by
+                Content Warehouse.
+        """
+
+        gcs_uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        cw_doc_id: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class UnmanagedDocumentId(proto.Message):
+        r"""Identifies a document uniquely within the scope of a dataset
+        in unmanaged option.
+
+        Attributes:
+            doc_id (str):
+                Required. The id of the document.
+        """
+
+        doc_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    gcs_managed_doc_id: GCSManagedDocumentId = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="type",
+        message=GCSManagedDocumentId,
+    )
+    unmanaged_doc_id: UnmanagedDocumentId = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="type",
+        message=UnmanagedDocumentId,
+    )
+    revision_ref: document.RevisionRef = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=document.RevisionRef,
+    )
+
+
 class DatasetSchema(proto.Message):
     r"""Dataset Schema.
 
@@ -195,6 +277,58 @@ class DatasetSchema(proto.Message):
         proto.MESSAGE,
         number=3,
         message=gcd_document_schema.DocumentSchema,
+    )
+
+
+class BatchDatasetDocuments(proto.Message):
+    r"""Dataset documents that the batch operation will be applied
+    to.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        individual_document_ids (google.cloud.documentai_v1beta3.types.BatchDatasetDocuments.IndividualDocumentIds):
+            Document identifiers.
+
+            This field is a member of `oneof`_ ``criteria``.
+        filter (str):
+            A filter matching the documents. Follows the same format and
+            restriction as
+            [google.cloud.documentai.master.ListDocumentsRequest.filter].
+
+            This field is a member of `oneof`_ ``criteria``.
+    """
+
+    class IndividualDocumentIds(proto.Message):
+        r"""List of individual DocumentIds.
+
+        Attributes:
+            document_ids (MutableSequence[google.cloud.documentai_v1beta3.types.DocumentId]):
+                Required. List of Document IDs indicating
+                where the actual documents are stored.
+        """
+
+        document_ids: MutableSequence["DocumentId"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="DocumentId",
+        )
+
+    individual_document_ids: IndividualDocumentIds = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="criteria",
+        message=IndividualDocumentIds,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="criteria",
     )
 
 
