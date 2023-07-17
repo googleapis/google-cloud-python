@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.16.1...google-cloud-documentai-v2.17.0) (2023-07-17)
+
+
+### Features
+
+* add `OcrConfig` and `ProcessOptions` ([0510cbb](https://github.com/googleapis/google-cloud-python/commit/0510cbbe9270a17459bc461d1a18db77c08ac608))
+* **v1beta2:** added http configuration and document publishing ([0510cbb](https://github.com/googleapis/google-cloud-python/commit/0510cbbe9270a17459bc461d1a18db77c08ac608))
+* **v1beta3:** added ImportDocuments, GetDocument and BatchDeleteDocuments RPCs ([0510cbb](https://github.com/googleapis/google-cloud-python/commit/0510cbbe9270a17459bc461d1a18db77c08ac608))
+
+
+### Bug Fixes
+
+* **v1beta2:** removed id field from Document message  ([0510cbb](https://github.com/googleapis/google-cloud-python/commit/0510cbbe9270a17459bc461d1a18db77c08ac608))
+
 ## [2.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.16.0...google-cloud-documentai-v2.16.1) (2023-07-05)
 
 
