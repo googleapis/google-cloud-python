@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -400,6 +400,7 @@ def prerelease_deps(session):
         "python", "-c", "import google.protobuf; print(google.protobuf.__version__)"
     )
     session.run("python", "-c", "import grpc; print(grpc.__version__)")
+    session.run("python", "-c", "import google.auth; print(google.auth.__version__)")
 
     session.run("py.test", "tests/unit")
 
