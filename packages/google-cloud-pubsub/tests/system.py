@@ -84,7 +84,10 @@ def cleanup():
 
     # Perform all clean up.
     for to_call, args, kwargs in registry:
-        to_call(*args, **kwargs)
+        try:
+            to_call(*args, **kwargs)
+        except core_exceptions.NotFound:
+            pass
 
 
 def test_publish_messages(publisher, topic_path_base, cleanup):
