@@ -374,9 +374,24 @@
         "grpc": {
           "libraryClient": "DocumentServiceClient",
           "rpcs": {
+            "BatchDeleteDocuments": {
+              "methods": [
+                "batch_delete_documents"
+              ]
+            },
             "GetDatasetSchema": {
               "methods": [
                 "get_dataset_schema"
+              ]
+            },
+            "GetDocument": {
+              "methods": [
+                "get_document"
+              ]
+            },
+            "ImportDocuments": {
+              "methods": [
+                "import_documents"
               ]
             },
             "UpdateDataset": {
@@ -394,9 +409,24 @@
         "grpc-async": {
           "libraryClient": "DocumentServiceAsyncClient",
           "rpcs": {
+            "BatchDeleteDocuments": {
+              "methods": [
+                "batch_delete_documents"
+              ]
+            },
             "GetDatasetSchema": {
               "methods": [
                 "get_dataset_schema"
+              ]
+            },
+            "GetDocument": {
+              "methods": [
+                "get_document"
+              ]
+            },
+            "ImportDocuments": {
+              "methods": [
+                "import_documents"
               ]
             },
             "UpdateDataset": {
@@ -414,9 +444,24 @@
         "rest": {
           "libraryClient": "DocumentServiceClient",
           "rpcs": {
+            "BatchDeleteDocuments": {
+              "methods": [
+                "batch_delete_documents"
+              ]
+            },
             "GetDatasetSchema": {
               "methods": [
                 "get_dataset_schema"
+              ]
+            },
+            "GetDocument": {
+              "methods": [
+                "get_document"
+              ]
+            },
+            "ImportDocuments": {
+              "methods": [
+                "import_documents"
               ]
             },
             "UpdateDataset": {

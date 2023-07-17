@@ -14,8 +14,8 @@
 # limitations under the License.
 #
 from .barcode import Barcode
-from .dataset import Dataset, DatasetSchema
-from .document import Document
+from .dataset import BatchDatasetDocuments, Dataset, DatasetSchema, DocumentId
+from .document import Document, RevisionRef
 from .document_io import (
     BatchDocumentsInputConfig,
     DocumentOutputConfig,
@@ -82,7 +82,17 @@ from .document_processor_service import (
 )
 from .document_schema import DocumentSchema, EntityTypeMetadata, PropertyMetadata
 from .document_service import (
+    BatchDeleteDocumentsMetadata,
+    BatchDeleteDocumentsRequest,
+    BatchDeleteDocumentsResponse,
+    DatasetSplitType,
+    DocumentPageRange,
     GetDatasetSchemaRequest,
+    GetDocumentRequest,
+    GetDocumentResponse,
+    ImportDocumentsMetadata,
+    ImportDocumentsRequest,
+    ImportDocumentsResponse,
     UpdateDatasetOperationMetadata,
     UpdateDatasetRequest,
     UpdateDatasetSchemaRequest,
@@ -95,9 +105,12 @@ from .processor_type import ProcessorType
 
 __all__ = (
     "Barcode",
+    "BatchDatasetDocuments",
     "Dataset",
     "DatasetSchema",
+    "DocumentId",
     "Document",
+    "RevisionRef",
     "BatchDocumentsInputConfig",
     "DocumentOutputConfig",
     "GcsDocument",
@@ -161,10 +174,20 @@ __all__ = (
     "DocumentSchema",
     "EntityTypeMetadata",
     "PropertyMetadata",
+    "BatchDeleteDocumentsMetadata",
+    "BatchDeleteDocumentsRequest",
+    "BatchDeleteDocumentsResponse",
+    "DocumentPageRange",
     "GetDatasetSchemaRequest",
+    "GetDocumentRequest",
+    "GetDocumentResponse",
+    "ImportDocumentsMetadata",
+    "ImportDocumentsRequest",
+    "ImportDocumentsResponse",
     "UpdateDatasetOperationMetadata",
     "UpdateDatasetRequest",
     "UpdateDatasetSchemaRequest",
+    "DatasetSplitType",
     "Evaluation",
     "EvaluationReference",
     "BoundingPoly",

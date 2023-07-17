@@ -61,7 +61,8 @@ class ProcessorVersion(proto.Message):
             The KMS key version with which data is
             encrypted.
         google_managed (bool):
-            Denotes that this ``ProcessorVersion`` is managed by Google.
+            Output only. Denotes that this ``ProcessorVersion`` is
+            managed by Google.
         deprecation_info (google.cloud.documentai_v1beta3.types.ProcessorVersion.DeprecationInfo):
             If set, information about the eventual
             deprecation of this version.

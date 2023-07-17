@@ -33,6 +33,7 @@ from google.cloud.documentai_v1.types import processor_type
 __protobuf__ = proto.module(
     package="google.cloud.documentai.v1",
     manifest={
+        "ProcessOptions",
         "ProcessRequest",
         "HumanReviewStatus",
         "ProcessResponse",
@@ -86,6 +87,22 @@ __protobuf__ = proto.module(
 )
 
 
+class ProcessOptions(proto.Message):
+    r"""Options for Process API
+
+    Attributes:
+        ocr_config (google.cloud.documentai_v1.types.OcrConfig):
+            Only applicable to ``OCR_PROCESSOR``. Returns error if set
+            on other processor types.
+    """
+
+    ocr_config: document_io.OcrConfig = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=document_io.OcrConfig,
+    )
+
+
 class ProcessRequest(proto.Message):
     r"""Request message for the
     [ProcessDocument][google.cloud.documentai.v1.DocumentProcessorService.ProcessDocument]
@@ -105,6 +122,10 @@ class ProcessRequest(proto.Message):
             This field is a member of `oneof`_ ``source``.
         raw_document (google.cloud.documentai_v1.types.RawDocument):
             A raw document content (bytes).
+
+            This field is a member of `oneof`_ ``source``.
+        gcs_document (google.cloud.documentai_v1.types.GcsDocument):
+            A raw document on Google Cloud Storage.
 
             This field is a member of `oneof`_ ``source``.
         name (str):
@@ -128,6 +149,8 @@ class ProcessRequest(proto.Message):
             output. Only supports top-level document and pages field, so
             it must be in the form of ``{document_field_name}`` or
             ``pages.{page_field_name}``.
+        process_options (google.cloud.documentai_v1.types.ProcessOptions):
+            Inference-time options for the process API
     """
 
     inline_document: gcd_document.Document = proto.Field(
@@ -142,6 +165,12 @@ class ProcessRequest(proto.Message):
         oneof="source",
         message=document_io.RawDocument,
     )
+    gcs_document: document_io.GcsDocument = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="source",
+        message=document_io.GcsDocument,
+    )
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -154,6 +183,11 @@ class ProcessRequest(proto.Message):
         proto.MESSAGE,
         number=6,
         message=field_mask_pb2.FieldMask,
+    )
+    process_options: "ProcessOptions" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="ProcessOptions",
     )
 
 
@@ -270,6 +304,8 @@ class BatchProcessRequest(proto.Message):
         skip_human_review (bool):
             Whether human review should be skipped for this request.
             Default to ``false``.
+        process_options (google.cloud.documentai_v1.types.ProcessOptions):
+            Inference-time options for the process API
     """
 
     name: str = proto.Field(
@@ -289,6 +325,11 @@ class BatchProcessRequest(proto.Message):
     skip_human_review: bool = proto.Field(
         proto.BOOL,
         number=4,
+    )
+    process_options: "ProcessOptions" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="ProcessOptions",
     )
 
 
@@ -1020,7 +1061,15 @@ class TrainProcessorVersionRequest(proto.Message):
     [TrainProcessorVersion][google.cloud.documentai.v1.DocumentProcessorService.TrainProcessorVersion]
     method.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
+        custom_document_extraction_options (google.cloud.documentai_v1.types.TrainProcessorVersionRequest.CustomDocumentExtractionOptions):
+            Options to control Custom Document Extraction
+            (CDE) Processor.
+
+            This field is a member of `oneof`_ ``processor_flags``.
         parent (str):
             Required. The parent (project, location and processor) to
             create the new version for. Format:
@@ -1065,6 +1114,43 @@ class TrainProcessorVersionRequest(proto.Message):
             message=document_io.BatchDocumentsInputConfig,
         )
 
+    class CustomDocumentExtractionOptions(proto.Message):
+        r"""Options to control the training of the Custom Document
+        Extraction (CDE) Processor.
+
+        Attributes:
+            training_method (google.cloud.documentai_v1.types.TrainProcessorVersionRequest.CustomDocumentExtractionOptions.TrainingMethod):
+                Training method to use for CDE training.
+        """
+
+        class TrainingMethod(proto.Enum):
+            r"""Training Method for CDE. TRAINING_METHOD_UNSPECIFIED will fallback
+            to MODEL_BASED.
+
+            Values:
+                TRAINING_METHOD_UNSPECIFIED (0):
+                    No description available.
+                MODEL_BASED (1):
+                    No description available.
+                TEMPLATE_BASED (2):
+                    No description available.
+            """
+            TRAINING_METHOD_UNSPECIFIED = 0
+            MODEL_BASED = 1
+            TEMPLATE_BASED = 2
+
+        training_method: "TrainProcessorVersionRequest.CustomDocumentExtractionOptions.TrainingMethod" = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="TrainProcessorVersionRequest.CustomDocumentExtractionOptions.TrainingMethod",
+        )
+
+    custom_document_extraction_options: CustomDocumentExtractionOptions = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="processor_flags",
+        message=CustomDocumentExtractionOptions,
+    )
     parent: str = proto.Field(
         proto.STRING,
         number=1,
