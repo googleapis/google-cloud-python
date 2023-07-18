@@ -66,7 +66,7 @@ def _write_pb_for_create(document_path, document_data):
     )
 
 
-def _create_helper(retry=None, timeout=None):
+def _create_helper(retry=None, timeout=None, database=None):
     from google.cloud.firestore_v1 import _helpers
 
     # Create a minimal fake GAPIC with a dummy response.
@@ -75,7 +75,7 @@ def _create_helper(retry=None, timeout=None):
     firestore_api.commit.return_value = _make_commit_repsonse()
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client("dignity")
+    client = _make_client("dignity", database=database)
     client._firestore_api_internal = firestore_api
 
     # Actually make a document and call create().
@@ -99,19 +99,22 @@ def _create_helper(retry=None, timeout=None):
     )
 
 
-def test_documentreference_create():
-    _create_helper()
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_create(database):
+    _create_helper(database=database)
 
 
-def test_documentreference_create_w_retry_timeout():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_create_w_retry_timeout(database):
     from google.api_core.retry import Retry
 
     retry = Retry(predicate=object())
     timeout = 123.0
-    _create_helper(retry=retry, timeout=timeout)
+    _create_helper(retry=retry, timeout=timeout, database=database)
 
 
-def test_documentreference_create_empty():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_create_empty(database):
     # Create a minimal fake GAPIC with a dummy response.
     from google.cloud.firestore_v1.document import DocumentReference
     from google.cloud.firestore_v1.document import DocumentSnapshot
@@ -126,7 +129,7 @@ def test_documentreference_create_empty():
     )
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client("dignity")
+    client = _make_client("dignity", database=database)
     client._firestore_api_internal = firestore_api
     client.get_all = mock.MagicMock()
     client.get_all.exists.return_value = True
@@ -162,7 +165,7 @@ def _write_pb_for_set(document_path, document_data, merge):
     return write_pbs
 
 
-def _set_helper(merge=False, retry=None, timeout=None, **option_kwargs):
+def _set_helper(merge=False, retry=None, timeout=None, database=None, **option_kwargs):
     from google.cloud.firestore_v1 import _helpers
 
     # Create a minimal fake GAPIC with a dummy response.
@@ -170,7 +173,7 @@ def _set_helper(merge=False, retry=None, timeout=None, **option_kwargs):
     firestore_api.commit.return_value = _make_commit_repsonse()
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client("db-dee-bee")
+    client = _make_client("db-dee-bee", database=database)
     client._firestore_api_internal = firestore_api
 
     # Actually make a document and call create().
@@ -195,20 +198,23 @@ def _set_helper(merge=False, retry=None, timeout=None, **option_kwargs):
     )
 
 
-def test_documentreference_set():
-    _set_helper()
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_set(database):
+    _set_helper(database=database)
 
 
-def test_documentreference_set_w_retry_timeout():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_set_w_retry_timeout(database):
     from google.api_core.retry import Retry
 
     retry = Retry(predicate=object())
     timeout = 123.0
-    _set_helper(retry=retry, timeout=timeout)
+    _set_helper(retry=retry, timeout=timeout, database=database)
 
 
-def test_documentreference_set_merge():
-    _set_helper(merge=True)
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_set_merge(database):
+    _set_helper(merge=True, database=database)
 
 
 def _write_pb_for_update(document_path, update_values, field_paths):
@@ -226,7 +232,7 @@ def _write_pb_for_update(document_path, update_values, field_paths):
     )
 
 
-def _update_helper(retry=None, timeout=None, **option_kwargs):
+def _update_helper(retry=None, timeout=None, database=None, **option_kwargs):
     from collections import OrderedDict
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.transforms import DELETE_FIELD
@@ -236,7 +242,7 @@ def _update_helper(retry=None, timeout=None, **option_kwargs):
     firestore_api.commit.return_value = _make_commit_repsonse()
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client("potato-chip")
+    client = _make_client("potato-chip", database=database)
     client._firestore_api_internal = firestore_api
 
     # Actually make a document and call create().
@@ -277,37 +283,42 @@ def _update_helper(retry=None, timeout=None, **option_kwargs):
     )
 
 
-def test_documentreference_update_with_exists():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_update_with_exists(database):
     with pytest.raises(ValueError):
-        _update_helper(exists=True)
+        _update_helper(exists=True, database=database)
 
 
-def test_documentreference_update():
-    _update_helper()
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_update(database):
+    _update_helper(database=database)
 
 
-def test_documentreference_update_w_retry_timeout():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_update_w_retry_timeout(database):
     from google.api_core.retry import Retry
 
     retry = Retry(predicate=object())
     timeout = 123.0
-    _update_helper(retry=retry, timeout=timeout)
+    _update_helper(retry=retry, timeout=timeout, database=database)
 
 
-def test_documentreference_update_with_precondition():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_update_with_precondition(database):
     from google.protobuf import timestamp_pb2
 
     timestamp = timestamp_pb2.Timestamp(seconds=1058655101, nanos=100022244)
-    _update_helper(last_update_time=timestamp)
+    _update_helper(last_update_time=timestamp, database=database)
 
 
-def test_documentreference_empty_update():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_empty_update(database):
     # Create a minimal fake GAPIC with a dummy response.
     firestore_api = mock.Mock(spec=["commit"])
     firestore_api.commit.return_value = _make_commit_repsonse()
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client("potato-chip")
+    client = _make_client("potato-chip", database=database)
     client._firestore_api_internal = firestore_api
 
     # Actually make a document and call create().
@@ -318,7 +329,7 @@ def test_documentreference_empty_update():
         document.update(field_updates)
 
 
-def _delete_helper(retry=None, timeout=None, **option_kwargs):
+def _delete_helper(retry=None, timeout=None, database=None, **option_kwargs):
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.types import write
 
@@ -327,7 +338,7 @@ def _delete_helper(retry=None, timeout=None, **option_kwargs):
     firestore_api.commit.return_value = _make_commit_repsonse()
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client("donut-base")
+    client = _make_client("donut-base", database=database)
     client._firestore_api_internal = firestore_api
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
@@ -356,23 +367,26 @@ def _delete_helper(retry=None, timeout=None, **option_kwargs):
     )
 
 
-def test_documentreference_delete():
-    _delete_helper()
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_delete(database):
+    _delete_helper(database=database)
 
 
-def test_documentreference_delete_with_option():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_delete_with_option(database):
     from google.protobuf import timestamp_pb2
 
     timestamp_pb = timestamp_pb2.Timestamp(seconds=1058655101, nanos=100022244)
-    _delete_helper(last_update_time=timestamp_pb)
+    _delete_helper(last_update_time=timestamp_pb, database=database)
 
 
-def test_documentreference_delete_w_retry_timeout():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_delete_w_retry_timeout(database):
     from google.api_core.retry import Retry
 
     retry = Retry(predicate=object())
     timeout = 123.0
-    _delete_helper(retry=retry, timeout=timeout)
+    _delete_helper(retry=retry, timeout=timeout, database=database)
 
 
 def _get_helper(
@@ -384,6 +398,7 @@ def _get_helper(
     return_empty=False,
     retry=None,
     timeout=None,
+    database=None,
 ):
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.types import common
@@ -403,7 +418,7 @@ def _get_helper(
     response.found.create_time = create_time
     response.found.update_time = update_time
 
-    client = _make_client("donut-base")
+    client = _make_client("donut-base", database=database)
     client._firestore_api_internal = firestore_api
     document_reference = _make_document_reference("where", "we-are", client=client)
 
@@ -468,44 +483,52 @@ def _get_helper(
     )
 
 
-def test_documentreference_get_not_found():
-    _get_helper(not_found=True)
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_get_not_found(database):
+    _get_helper(not_found=True, database=database)
 
 
-def test_documentreference_get_default():
-    _get_helper()
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_get_default(database):
+    _get_helper(database=database)
 
 
-def test_documentreference_get_return_empty():
-    _get_helper(return_empty=True)
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_get_return_empty(database):
+    _get_helper(return_empty=True, database=database)
 
 
-def test_documentreference_get_w_retry_timeout():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_get_w_retry_timeout(database):
     from google.api_core.retry import Retry
 
     retry = Retry(predicate=object())
     timeout = 123.0
-    _get_helper(retry=retry, timeout=timeout)
+    _get_helper(retry=retry, timeout=timeout, database=database)
 
 
-def test_documentreference_get_w_string_field_path():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_get_w_string_field_path(database):
     with pytest.raises(ValueError):
-        _get_helper(field_paths="foo")
+        _get_helper(field_paths="foo", database=database)
 
 
-def test_documentreference_get_with_field_path():
-    _get_helper(field_paths=["foo"])
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_get_with_field_path(database):
+    _get_helper(field_paths=["foo"], database=database)
 
 
-def test_documentreference_get_with_multiple_field_paths():
-    _get_helper(field_paths=["foo", "bar.baz"])
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_get_with_multiple_field_paths(database):
+    _get_helper(field_paths=["foo", "bar.baz"], database=database)
 
 
-def test_documentreference_get_with_transaction():
-    _get_helper(use_transaction=True)
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_get_with_transaction(database):
+    _get_helper(use_transaction=True, database=database)
 
 
-def _collections_helper(page_size=None, retry=None, timeout=None):
+def _collections_helper(page_size=None, retry=None, timeout=None, database=None):
     from google.cloud.firestore_v1.collection import CollectionReference
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.services.firestore.client import FirestoreClient
@@ -519,7 +542,7 @@ def _collections_helper(page_size=None, retry=None, timeout=None):
     api_client = mock.create_autospec(FirestoreClient)
     api_client.list_collection_ids.return_value = Pager()
 
-    client = _make_client()
+    client = _make_client(database=database)
     client._firestore_api_internal = api_client
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
@@ -544,20 +567,23 @@ def _collections_helper(page_size=None, retry=None, timeout=None):
     )
 
 
-def test_documentreference_collections_wo_page_size():
-    _collections_helper()
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_collections_wo_page_size(database):
+    _collections_helper(database=database)
 
 
-def test_documentreference_collections_w_page_size():
-    _collections_helper(page_size=10)
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_collections_w_page_size(database):
+    _collections_helper(page_size=10, database=database)
 
 
-def test_documentreference_collections_w_retry_timeout():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_documentreference_collections_w_retry_timeout(database):
     from google.api_core.retry import Retry
 
     retry = Retry(predicate=object())
     timeout = 123.0
-    _collections_helper(retry=retry, timeout=timeout)
+    _collections_helper(retry=retry, timeout=timeout, database=database)
 
 
 @mock.patch("google.cloud.firestore_v1.document.Watch", autospec=True)
@@ -574,8 +600,8 @@ def _make_credentials():
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
-def _make_client(project=DEFAULT_TEST_PROJECT):
+def _make_client(project=DEFAULT_TEST_PROJECT, database=None):
     from google.cloud.firestore_v1.client import Client
 
     credentials = _make_credentials()
-    return Client(project=project, credentials=credentials)
+    return Client(project=project, credentials=credentials, database=database)

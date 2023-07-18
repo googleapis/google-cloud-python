@@ -37,15 +37,20 @@ def make_test_credentials() -> google.auth.credentials.Credentials:  # type: ign
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
-def make_client(project_name: typing.Optional[str] = None) -> Client:
+def make_client(
+    project_name: typing.Optional[str] = None, database: typing.Optional[str] = None
+) -> Client:
     return Client(
         project=project_name or DEFAULT_TEST_PROJECT,
+        database=database,
         credentials=make_test_credentials(),
     )
 
 
-def make_async_client(project=DEFAULT_TEST_PROJECT) -> AsyncClient:
-    return AsyncClient(project=project, credentials=make_test_credentials())
+def make_async_client(project=DEFAULT_TEST_PROJECT, database=None) -> AsyncClient:
+    return AsyncClient(
+        project=project, database=database, credentials=make_test_credentials()
+    )
 
 
 def make_query(*args, **kwargs):

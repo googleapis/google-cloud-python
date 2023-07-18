@@ -12,3 +12,4 @@ DOCUMENT_EXISTS = "Document already exists: "
 UNIQUE_RESOURCE_ID = unique_resource_id("-")
 EMULATOR_CREDS = EmulatorCreds()
 FIRESTORE_EMULATOR = os.environ.get(_FIRESTORE_EMULATOR_HOST) is not None
+FIRESTORE_OTHER_DB = os.environ.get("SYSTEM_TESTS_DATABASE", "system-tests-named-db")

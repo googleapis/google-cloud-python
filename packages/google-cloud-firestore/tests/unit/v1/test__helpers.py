@@ -699,7 +699,7 @@ def test_decode_dict_w_many_types():
 
 
 def _dummy_ref_string(collection_id):
-    from google.cloud.firestore_v1.client import DEFAULT_DATABASE
+    from google.cloud.firestore_v1.base_client import DEFAULT_DATABASE
 
     project = "bazzzz"
     return "projects/{}/databases/{}/documents/{}".format(

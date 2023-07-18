@@ -38,7 +38,7 @@ def _make_default_async_client():
 
 def test_asyncclient_constructor():
     from google.cloud.firestore_v1.async_client import _CLIENT_INFO
-    from google.cloud.firestore_v1.async_client import DEFAULT_DATABASE
+    from google.cloud.firestore_v1.base_client import DEFAULT_DATABASE
 
     credentials = _make_credentials()
     client = _make_async_client(project=PROJECT, credentials=credentials)

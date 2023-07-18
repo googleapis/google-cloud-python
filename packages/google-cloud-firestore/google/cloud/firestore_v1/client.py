@@ -29,7 +29,6 @@ from google.api_core import retry as retries
 
 from google.cloud.firestore_v1.base_client import (
     BaseClient,
-    DEFAULT_DATABASE,
     _CLIENT_INFO,
     _parse_batch_get,
     _path_helper,
@@ -86,7 +85,7 @@ class Client(BaseClient):
         self,
         project=None,
         credentials=None,
-        database=DEFAULT_DATABASE,
+        database=None,
         client_info=_CLIENT_INFO,
         client_options=None,
     ) -> None:

@@ -75,7 +75,8 @@ def test_transaction__clean_up():
     assert transaction._id is None
 
 
-def test_transaction__begin():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_transaction__begin(database):
     from google.cloud.firestore_v1.services.firestore import client as firestore_client
     from google.cloud.firestore_v1.types import firestore
 
@@ -88,7 +89,7 @@ def test_transaction__begin():
     firestore_api.begin_transaction.return_value = response
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client()
+    client = _make_client(database=database)
     client._firestore_api_internal = firestore_api
 
     # Actually make a transaction and ``begin()`` it.
@@ -106,10 +107,11 @@ def test_transaction__begin():
     )
 
 
-def test_transaction__begin_failure():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_transaction__begin_failure(database):
     from google.cloud.firestore_v1.base_transaction import _CANT_BEGIN
 
-    client = _make_client()
+    client = _make_client(database=database)
     transaction = _make_transaction(client)
     transaction._id = b"not-none"
 
@@ -120,7 +122,8 @@ def test_transaction__begin_failure():
     assert exc_info.value.args == (err_msg,)
 
 
-def test_transaction__rollback():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_transaction__rollback(database):
     from google.protobuf import empty_pb2
     from google.cloud.firestore_v1.services.firestore import client as firestore_client
 
@@ -131,7 +134,7 @@ def test_transaction__rollback():
     firestore_api.rollback.return_value = empty_pb2.Empty()
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client()
+    client = _make_client(database=database)
     client._firestore_api_internal = firestore_api
 
     # Actually make a transaction and roll it back.
@@ -149,10 +152,11 @@ def test_transaction__rollback():
     )
 
 
-def test_transaction__rollback_not_allowed():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_transaction__rollback_not_allowed(database):
     from google.cloud.firestore_v1.base_transaction import _CANT_ROLLBACK
 
-    client = _make_client()
+    client = _make_client(database=database)
     transaction = _make_transaction(client)
     assert transaction._id is None
 
@@ -162,7 +166,8 @@ def test_transaction__rollback_not_allowed():
     assert exc_info.value.args == (_CANT_ROLLBACK,)
 
 
-def test_transaction__rollback_failure():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_transaction__rollback_failure(database):
     from google.api_core import exceptions
     from google.cloud.firestore_v1.services.firestore import client as firestore_client
 
@@ -174,7 +179,7 @@ def test_transaction__rollback_failure():
     firestore_api.rollback.side_effect = exc
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client()
+    client = _make_client(database=database)
     client._firestore_api_internal = firestore_api
 
     # Actually make a transaction and roll it back.
@@ -196,7 +201,8 @@ def test_transaction__rollback_failure():
     )
 
 
-def test_transaction__commit():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_transaction__commit(database):
     from google.cloud.firestore_v1.services.firestore import client as firestore_client
     from google.cloud.firestore_v1.types import firestore
     from google.cloud.firestore_v1.types import write
@@ -209,7 +215,7 @@ def test_transaction__commit():
     firestore_api.commit.return_value = commit_response
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client("phone-joe")
+    client = _make_client("phone-joe", database=database)
     client._firestore_api_internal = firestore_api
 
     # Actually make a transaction with some mutations and call _commit().
@@ -248,7 +254,8 @@ def test_transaction__commit_not_allowed():
     assert exc_info.value.args == (_CANT_COMMIT,)
 
 
-def test_transaction__commit_failure():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_transaction__commit_failure(database):
     from google.api_core import exceptions
     from google.cloud.firestore_v1.services.firestore import client as firestore_client
 
@@ -260,7 +267,7 @@ def test_transaction__commit_failure():
     firestore_api.commit.side_effect = exc
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client()
+    client = _make_client(database=database)
     client._firestore_api_internal = firestore_api
 
     # Actually make a transaction with some mutations and call _commit().
@@ -374,8 +381,9 @@ def test_transaction_get_w_query_w_retry_timeout():
     _transaction_get_w_query_helper(retry=retry, timeout=timeout)
 
 
-def test_transaction_get_failure():
-    client = _make_client()
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_transaction_get_failure(database):
+    client = _make_client(database=database)
     transaction = _make_transaction(client)
     ref_or_query = object()
     with pytest.raises(ValueError):
@@ -395,12 +403,13 @@ def test__transactional_constructor():
     assert wrapped.retry_id is None
 
 
-def test__transactional__pre_commit_success():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test__transactional__pre_commit_success(database):
     to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
     wrapped = _make__transactional(to_wrap)
 
     txn_id = b"totes-began"
-    transaction = _make_transaction_pb(txn_id)
+    transaction = _make_transaction_pb(txn_id, database=database)
     result = wrapped._pre_commit(transaction, "pos", key="word")
     assert result is mock.sentinel.result
 
@@ -419,7 +428,8 @@ def test__transactional__pre_commit_success():
     firestore_api.commit.assert_not_called()
 
 
-def test__transactional__pre_commit_retry_id_already_set_success():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test__transactional__pre_commit_retry_id_already_set_success(database):
     from google.cloud.firestore_v1.types import common
 
     to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
@@ -428,7 +438,7 @@ def test__transactional__pre_commit_retry_id_already_set_success():
     wrapped.retry_id = txn_id1
 
     txn_id2 = b"ok-here-too"
-    transaction = _make_transaction_pb(txn_id2)
+    transaction = _make_transaction_pb(txn_id2, database=database)
     result = wrapped._pre_commit(transaction)
     assert result is mock.sentinel.result
 
@@ -453,13 +463,14 @@ def test__transactional__pre_commit_retry_id_already_set_success():
     firestore_api.commit.assert_not_called()
 
 
-def test__transactional__pre_commit_failure():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test__transactional__pre_commit_failure(database):
     exc = RuntimeError("Nope not today.")
     to_wrap = mock.Mock(side_effect=exc, spec=[])
     wrapped = _make__transactional(to_wrap)
 
     txn_id = b"gotta-fail"
-    transaction = _make_transaction_pb(txn_id)
+    transaction = _make_transaction_pb(txn_id, database=database)
     with pytest.raises(RuntimeError) as exc_info:
         wrapped._pre_commit(transaction, 10, 20)
     assert exc_info.value is exc
@@ -485,7 +496,8 @@ def test__transactional__pre_commit_failure():
     firestore_api.commit.assert_not_called()
 
 
-def test__transactional__pre_commit_failure_with_rollback_failure():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test__transactional__pre_commit_failure_with_rollback_failure(database):
     from google.api_core import exceptions
 
     exc1 = ValueError("I will not be only failure.")
@@ -493,7 +505,7 @@ def test__transactional__pre_commit_failure_with_rollback_failure():
     wrapped = _make__transactional(to_wrap)
 
     txn_id = b"both-will-fail"
-    transaction = _make_transaction_pb(txn_id)
+    transaction = _make_transaction_pb(txn_id, database=database)
     # Actually force the ``rollback`` to fail as well.
     exc2 = exceptions.InternalServerError("Rollback blues.")
     firestore_api = transaction._client._firestore_api
@@ -524,11 +536,12 @@ def test__transactional__pre_commit_failure_with_rollback_failure():
     firestore_api.commit.assert_not_called()
 
 
-def test__transactional__maybe_commit_success():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test__transactional__maybe_commit_success(database):
     wrapped = _make__transactional(mock.sentinel.callable_)
 
     txn_id = b"nyet"
-    transaction = _make_transaction_pb(txn_id)
+    transaction = _make_transaction_pb(txn_id, database=database)
     transaction._id = txn_id  # We won't call ``begin()``.
     succeeded = wrapped._maybe_commit(transaction)
     assert succeeded
@@ -550,13 +563,14 @@ def test__transactional__maybe_commit_success():
     )
 
 
-def test__transactional__maybe_commit_failure_read_only():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test__transactional__maybe_commit_failure_read_only(database):
     from google.api_core import exceptions
 
     wrapped = _make__transactional(mock.sentinel.callable_)
 
     txn_id = b"failed"
-    transaction = _make_transaction_pb(txn_id, read_only=True)
+    transaction = _make_transaction_pb(txn_id, read_only=True, database=database)
     transaction._id = txn_id  # We won't call ``begin()``.
     wrapped.current_id = txn_id  # We won't call ``_pre_commit()``.
     wrapped.retry_id = txn_id  # We won't call ``_pre_commit()``.
@@ -588,13 +602,14 @@ def test__transactional__maybe_commit_failure_read_only():
     )
 
 
-def test__transactional__maybe_commit_failure_can_retry():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test__transactional__maybe_commit_failure_can_retry(database):
     from google.api_core import exceptions
 
     wrapped = _make__transactional(mock.sentinel.callable_)
 
     txn_id = b"failed-but-retry"
-    transaction = _make_transaction_pb(txn_id)
+    transaction = _make_transaction_pb(txn_id, database=database)
     transaction._id = txn_id  # We won't call ``begin()``.
     wrapped.current_id = txn_id  # We won't call ``_pre_commit()``.
     wrapped.retry_id = txn_id  # We won't call ``_pre_commit()``.
@@ -624,13 +639,14 @@ def test__transactional__maybe_commit_failure_can_retry():
     )
 
 
-def test__transactional__maybe_commit_failure_cannot_retry():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test__transactional__maybe_commit_failure_cannot_retry(database):
     from google.api_core import exceptions
 
     wrapped = _make__transactional(mock.sentinel.callable_)
 
     txn_id = b"failed-but-not-retryable"
-    transaction = _make_transaction_pb(txn_id)
+    transaction = _make_transaction_pb(txn_id, database=database)
     transaction._id = txn_id  # We won't call ``begin()``.
     wrapped.current_id = txn_id  # We won't call ``_pre_commit()``.
     wrapped.retry_id = txn_id  # We won't call ``_pre_commit()``.
@@ -661,12 +677,13 @@ def test__transactional__maybe_commit_failure_cannot_retry():
     )
 
 
-def test__transactional___call__success_first_attempt():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test__transactional___call__success_first_attempt(database):
     to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
     wrapped = _make__transactional(to_wrap)
 
     txn_id = b"whole-enchilada"
-    transaction = _make_transaction_pb(txn_id)
+    transaction = _make_transaction_pb(txn_id, database=database)
     result = wrapped(transaction, "a", b="c")
     assert result is mock.sentinel.result
 
@@ -692,7 +709,8 @@ def test__transactional___call__success_first_attempt():
     )
 
 
-def test__transactional___call__success_second_attempt():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test__transactional___call__success_second_attempt(database):
     from google.api_core import exceptions
     from google.cloud.firestore_v1.types import common
     from google.cloud.firestore_v1.types import firestore
@@ -702,7 +720,7 @@ def test__transactional___call__success_second_attempt():
     wrapped = _make__transactional(to_wrap)
 
     txn_id = b"whole-enchilada"
-    transaction = _make_transaction_pb(txn_id)
+    transaction = _make_transaction_pb(txn_id, database=database)
 
     # Actually force the ``commit`` to fail on first / succeed on second.
     exc = exceptions.Aborted("Contention junction.")
@@ -747,7 +765,8 @@ def test__transactional___call__success_second_attempt():
     assert firestore_api.commit.mock_calls == [commit_call, commit_call]
 
 
-def test__transactional___call__failure():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test__transactional___call__failure(database):
     from google.api_core import exceptions
     from google.cloud.firestore_v1.base_transaction import _EXCEED_ATTEMPTS_TEMPLATE
 
@@ -755,7 +774,7 @@ def test__transactional___call__failure():
     wrapped = _make__transactional(to_wrap)
 
     txn_id = b"only-one-shot"
-    transaction = _make_transaction_pb(txn_id, max_attempts=1)
+    transaction = _make_transaction_pb(txn_id, max_attempts=1, database=database)
 
     # Actually force the ``commit`` to fail.
     exc = exceptions.Aborted("Contention just once.")
@@ -806,7 +825,8 @@ def test_transactional_factory():
 
 
 @mock.patch("google.cloud.firestore_v1.transaction._sleep")
-def test__commit_with_retry_success_first_attempt(_sleep):
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test__commit_with_retry_success_first_attempt(_sleep, database):
     from google.cloud.firestore_v1.services.firestore import client as firestore_client
     from google.cloud.firestore_v1.transaction import _commit_with_retry
 
@@ -816,7 +836,7 @@ def test__commit_with_retry_success_first_attempt(_sleep):
     )
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client("summer")
+    client = _make_client("summer", database=database)
     client._firestore_api_internal = firestore_api
 
     # Call function and check result.
@@ -837,7 +857,8 @@ def test__commit_with_retry_success_first_attempt(_sleep):
 
 
 @mock.patch("google.cloud.firestore_v1.transaction._sleep", side_effect=[2.0, 4.0])
-def test__commit_with_retry_success_third_attempt(_sleep):
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test__commit_with_retry_success_third_attempt(_sleep, database):
     from google.api_core import exceptions
     from google.cloud.firestore_v1.services.firestore import client as firestore_client
     from google.cloud.firestore_v1.transaction import _commit_with_retry
@@ -854,7 +875,7 @@ def test__commit_with_retry_success_third_attempt(_sleep):
     ]
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client("outside")
+    client = _make_client("outside", database=database)
     client._firestore_api_internal = firestore_api
 
     # Call function and check result.
@@ -880,7 +901,8 @@ def test__commit_with_retry_success_third_attempt(_sleep):
 
 
 @mock.patch("google.cloud.firestore_v1.transaction._sleep")
-def test__commit_with_retry_failure_first_attempt(_sleep):
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test__commit_with_retry_failure_first_attempt(_sleep, database):
     from google.api_core import exceptions
     from google.cloud.firestore_v1.services.firestore import client as firestore_client
     from google.cloud.firestore_v1.transaction import _commit_with_retry
@@ -894,7 +916,7 @@ def test__commit_with_retry_failure_first_attempt(_sleep):
     firestore_api.commit.side_effect = exc
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client("peanut-butter")
+    client = _make_client("peanut-butter", database=database)
     client._firestore_api_internal = firestore_api
 
     # Call function and check result.
@@ -917,7 +939,8 @@ def test__commit_with_retry_failure_first_attempt(_sleep):
 
 
 @mock.patch("google.cloud.firestore_v1.transaction._sleep", return_value=2.0)
-def test__commit_with_retry_failure_second_attempt(_sleep):
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test__commit_with_retry_failure_second_attempt(_sleep, database):
     from google.api_core import exceptions
     from google.cloud.firestore_v1.services.firestore import client as firestore_client
     from google.cloud.firestore_v1.transaction import _commit_with_retry
@@ -933,7 +956,7 @@ def test__commit_with_retry_failure_second_attempt(_sleep):
     firestore_api.commit.side_effect = [exc1, exc2]
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client("peanut-butter")
+    client = _make_client("peanut-butter", database=database)
     client._firestore_api_internal = firestore_api
 
     # Call function and check result.
@@ -1010,14 +1033,14 @@ def _make_credentials():
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
 
-def _make_client(project="feral-tom-cat"):
+def _make_client(project="feral-tom-cat", database=None):
     from google.cloud.firestore_v1.client import Client
 
     credentials = _make_credentials()
-    return Client(project=project, credentials=credentials)
+    return Client(project=project, credentials=credentials, database=database)
 
 
-def _make_transaction_pb(txn_id, **txn_kwargs):
+def _make_transaction_pb(txn_id, database=None, **txn_kwargs):
     from google.protobuf import empty_pb2
     from google.cloud.firestore_v1.services.firestore import client as firestore_client
     from google.cloud.firestore_v1.types import firestore
@@ -1038,7 +1061,7 @@ def _make_transaction_pb(txn_id, **txn_kwargs):
     firestore_api.commit.return_value = commit_response
 
     # Attach the fake GAPIC to a real client.
-    client = _make_client()
+    client = _make_client(database=database)
     client._firestore_api_internal = firestore_api
 
     return Transaction(client, **txn_kwargs)

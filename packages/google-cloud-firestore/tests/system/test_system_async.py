@@ -45,6 +45,7 @@ from tests.system.test__helpers import (
     UNIQUE_RESOURCE_ID,
     EMULATOR_CREDS,
     FIRESTORE_EMULATOR,
+    FIRESTORE_OTHER_DB,
 )
 
 
@@ -78,10 +79,17 @@ def _get_credentials_and_project():
     return credentials, project
 
 
+@pytest.fixture(scope="session")
+def database(request):
+    return request.param
+
+
 @pytest.fixture(scope="module")
-def client():
+def client(database):
     credentials, project = _get_credentials_and_project()
-    yield firestore.AsyncClient(project=project, credentials=credentials)
+    yield firestore.AsyncClient(
+        project=project, credentials=credentials, database=database
+    )
 
 
 @pytest_asyncio.fixture
@@ -102,22 +110,27 @@ def event_loop():
     loop.close()
 
 
-async def test_collections(client):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_collections(client, database):
     collections = [x async for x in client.collections(retry=RETRIES)]
     assert isinstance(collections, list)
 
 
-async def test_collections_w_import():
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB])
+async def test_collections_w_import(database):
     from google.cloud import firestore
 
     credentials, project = _get_credentials_and_project()
-    client = firestore.AsyncClient(project=project, credentials=credentials)
+    client = firestore.AsyncClient(
+        project=project, credentials=credentials, database=database
+    )
     collections = [x async for x in client.collections(retry=RETRIES)]
 
     assert isinstance(collections, list)
 
 
-async def test_create_document(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_create_document(client, cleanup, database):
     now = datetime.datetime.utcnow().replace(tzinfo=UTC)
     collection_id = "doc-create" + UNIQUE_RESOURCE_ID
     document_id = "doc" + UNIQUE_RESOURCE_ID
@@ -162,7 +175,8 @@ async def test_create_document(client, cleanup):
     assert stored_data == expected_data
 
 
-async def test_create_document_w_subcollection(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_create_document_w_subcollection(client, cleanup, database):
     collection_id = "doc-create-sub" + UNIQUE_RESOURCE_ID
     document_id = "doc" + UNIQUE_RESOURCE_ID
     document = client.document(collection_id, document_id)
@@ -187,14 +201,16 @@ def assert_timestamp_less(timestamp_pb1, timestamp_pb2):
     assert timestamp_pb1 < timestamp_pb2
 
 
-async def test_no_document(client):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_no_document(client, database):
     document_id = "no_document" + UNIQUE_RESOURCE_ID
     document = client.document("abcde", document_id)
     snapshot = await document.get()
     assert snapshot.to_dict() is None
 
 
-async def test_document_set(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_document_set(client, cleanup, database):
     document_id = "for-set" + UNIQUE_RESOURCE_ID
     document = client.document("i-did-it", document_id)
     # Add to clean-up before API request (in case ``set()`` fails).
@@ -223,7 +239,8 @@ async def test_document_set(client, cleanup):
     assert snapshot2.update_time == write_result2.update_time
 
 
-async def test_document_integer_field(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_document_integer_field(client, cleanup, database):
     document_id = "for-set" + UNIQUE_RESOURCE_ID
     document = client.document("i-did-it", document_id)
     # Add to clean-up before API request (in case ``set()`` fails).
@@ -239,7 +256,8 @@ async def test_document_integer_field(client, cleanup):
     assert snapshot.to_dict() == expected
 
 
-async def test_document_set_merge(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_document_set_merge(client, cleanup, database):
     document_id = "for-set" + UNIQUE_RESOURCE_ID
     document = client.document("i-did-it", document_id)
     # Add to clean-up before API request (in case ``set()`` fails).
@@ -271,7 +289,8 @@ async def test_document_set_merge(client, cleanup):
     assert snapshot2.update_time == write_result2.update_time
 
 
-async def test_document_set_w_int_field(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_document_set_w_int_field(client, cleanup, database):
     document_id = "set-int-key" + UNIQUE_RESOURCE_ID
     document = client.document("i-did-it", document_id)
     # Add to clean-up before API request (in case ``set()`` fails).
@@ -294,7 +313,8 @@ async def test_document_set_w_int_field(client, cleanup):
     assert snapshot1.to_dict() == data
 
 
-async def test_document_update_w_int_field(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_document_update_w_int_field(client, cleanup, database):
     # Attempt to reproduce #5489.
     document_id = "update-int-key" + UNIQUE_RESOURCE_ID
     document = client.document("i-did-it", document_id)
@@ -321,7 +341,8 @@ async def test_document_update_w_int_field(client, cleanup):
 
 
 @pytest.mark.skipif(FIRESTORE_EMULATOR, reason="Internal Issue b/137867104")
-async def test_update_document(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_update_document(client, cleanup, database):
     document_id = "for-update" + UNIQUE_RESOURCE_ID
     document = client.document("made", document_id)
     # Add to clean-up before API request (in case ``create()`` fails).
@@ -393,7 +414,8 @@ def check_snapshot(snapshot, document, data, write_result):
     assert snapshot.update_time == write_result.update_time
 
 
-async def test_document_get(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_document_get(client, cleanup, database):
     now = datetime.datetime.utcnow().replace(tzinfo=UTC)
     document_id = "for-get" + UNIQUE_RESOURCE_ID
     document = client.document("created", document_id)
@@ -418,7 +440,8 @@ async def test_document_get(client, cleanup):
     check_snapshot(snapshot, document, data, write_result)
 
 
-async def test_document_delete(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_document_delete(client, cleanup, database):
     document_id = "deleted" + UNIQUE_RESOURCE_ID
     document = client.document("here-to-be", document_id)
     # Add to clean-up before API request (in case ``create()`` fails).
@@ -454,7 +477,8 @@ async def test_document_delete(client, cleanup):
     assert_timestamp_less(delete_time3, delete_time4)
 
 
-async def test_collection_add(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_collection_add(client, cleanup, database):
     # TODO(microgen): list_documents is returning a generator, not a list.
     # Consider if this is desired. Also, Document isn't hashable.
     collection_id = "coll-add" + UNIQUE_RESOURCE_ID
@@ -592,7 +616,8 @@ async def async_query(query_docs):
     return query
 
 
-async def test_query_stream_legacy_where(query_docs):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_query_stream_legacy_where(query_docs, database):
     """Assert the legacy code still works and returns value, and shows UserWarning"""
     collection, stored, allowed_vals = query_docs
     with pytest.warns(
@@ -607,7 +632,8 @@ async def test_query_stream_legacy_where(query_docs):
             assert value["a"] == 1
 
 
-async def test_query_stream_w_simple_field_eq_op(query_docs):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_query_stream_w_simple_field_eq_op(query_docs, database):
     collection, stored, allowed_vals = query_docs
     query = collection.where(filter=FieldFilter("a", "==", 1))
     values = {snapshot.id: snapshot.to_dict() async for snapshot in query.stream()}
@@ -617,7 +643,8 @@ async def test_query_stream_w_simple_field_eq_op(query_docs):
         assert value["a"] == 1
 
 
-async def test_query_stream_w_simple_field_array_contains_op(query_docs):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_query_stream_w_simple_field_array_contains_op(query_docs, database):
     collection, stored, allowed_vals = query_docs
     query = collection.where(filter=FieldFilter("c", "array_contains", 1))
     values = {snapshot.id: snapshot.to_dict() async for snapshot in query.stream()}
@@ -627,7 +654,8 @@ async def test_query_stream_w_simple_field_array_contains_op(query_docs):
         assert value["a"] == 1
 
 
-async def test_query_stream_w_simple_field_in_op(query_docs):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_query_stream_w_simple_field_in_op(query_docs, database):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     query = collection.where(filter=FieldFilter("a", "in", [1, num_vals + 100]))
@@ -638,7 +666,8 @@ async def test_query_stream_w_simple_field_in_op(query_docs):
         assert value["a"] == 1
 
 
-async def test_query_stream_w_simple_field_array_contains_any_op(query_docs):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_query_stream_w_simple_field_array_contains_any_op(query_docs, database):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     query = collection.where(
@@ -651,7 +680,8 @@ async def test_query_stream_w_simple_field_array_contains_any_op(query_docs):
         assert value["a"] == 1
 
 
-async def test_query_stream_w_order_by(query_docs):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_query_stream_w_order_by(query_docs, database):
     collection, stored, allowed_vals = query_docs
     query = collection.order_by("b", direction=firestore.Query.DESCENDING)
     values = [(snapshot.id, snapshot.to_dict()) async for snapshot in query.stream()]
@@ -664,7 +694,8 @@ async def test_query_stream_w_order_by(query_docs):
     assert sorted(b_vals, reverse=True) == b_vals
 
 
-async def test_query_stream_w_field_path(query_docs):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_query_stream_w_field_path(query_docs, database):
     collection, stored, allowed_vals = query_docs
     query = collection.where(filter=FieldFilter("stats.sum", ">", 4))
     values = {snapshot.id: snapshot.to_dict() async for snapshot in query.stream()}
@@ -685,7 +716,8 @@ async def test_query_stream_w_field_path(query_docs):
     assert expected_ab_pairs == ab_pairs2
 
 
-async def test_query_stream_w_start_end_cursor(query_docs):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_query_stream_w_start_end_cursor(query_docs, database):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     query = (
@@ -700,7 +732,8 @@ async def test_query_stream_w_start_end_cursor(query_docs):
         assert value["a"] == num_vals - 2
 
 
-async def test_query_stream_wo_results(query_docs):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_query_stream_wo_results(query_docs, database):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     query = collection.where(filter=FieldFilter("b", "==", num_vals + 100))
@@ -708,7 +741,8 @@ async def test_query_stream_wo_results(query_docs):
     assert len(values) == 0
 
 
-async def test_query_stream_w_projection(query_docs):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_query_stream_w_projection(query_docs, database):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     query = collection.where(filter=FieldFilter("b", "<=", 1)).select(
@@ -724,7 +758,8 @@ async def test_query_stream_w_projection(query_docs):
         assert expected == value
 
 
-async def test_query_stream_w_multiple_filters(query_docs):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_query_stream_w_multiple_filters(query_docs, database):
     collection, stored, allowed_vals = query_docs
     query = collection.where(filter=FieldFilter("stats.product", ">", 5)).where(
         "stats.product", "<", 10
@@ -743,7 +778,8 @@ async def test_query_stream_w_multiple_filters(query_docs):
         assert pair in matching_pairs
 
 
-async def test_query_stream_w_offset(query_docs):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_query_stream_w_offset(query_docs, database):
     collection, stored, allowed_vals = query_docs
     num_vals = len(allowed_vals)
     offset = 3
@@ -758,7 +794,8 @@ async def test_query_stream_w_offset(query_docs):
         assert value["b"] == 2
 
 
-async def test_query_with_order_dot_key(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_query_with_order_dot_key(client, cleanup, database):
     db = client
     collection_id = "collek" + UNIQUE_RESOURCE_ID
     collection = db.collection(collection_id)
@@ -797,7 +834,8 @@ async def test_query_with_order_dot_key(client, cleanup):
     assert found_data == [snap.to_dict() for snap in cursor_with_key_data]
 
 
-async def test_query_unary(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_query_unary(client, cleanup, database):
     collection_name = "unary" + UNIQUE_RESOURCE_ID
     collection = client.collection(collection_name)
     field_name = "foo"
@@ -830,7 +868,8 @@ async def test_query_unary(client, cleanup):
     assert math.isnan(data1[field_name])
 
 
-async def test_collection_group_queries(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_collection_group_queries(client, cleanup, database):
     collection_group = "b" + UNIQUE_RESOURCE_ID
 
     doc_paths = [
@@ -862,7 +901,8 @@ async def test_collection_group_queries(client, cleanup):
     assert found == expected
 
 
-async def test_collection_group_queries_startat_endat(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_collection_group_queries_startat_endat(client, cleanup, database):
     collection_group = "b" + UNIQUE_RESOURCE_ID
 
     doc_paths = [
@@ -904,7 +944,8 @@ async def test_collection_group_queries_startat_endat(client, cleanup):
     assert found == set(["cg-doc2"])
 
 
-async def test_collection_group_queries_filters(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_collection_group_queries_filters(client, cleanup, database):
     collection_group = "b" + UNIQUE_RESOURCE_ID
 
     doc_paths = [
@@ -972,7 +1013,8 @@ async def test_collection_group_queries_filters(client, cleanup):
 @pytest.mark.skipif(
     FIRESTORE_EMULATOR, reason="PartitionQuery not implemented in emulator"
 )
-async def test_partition_query_no_partitions(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_partition_query_no_partitions(client, cleanup, database):
     collection_group = "b" + UNIQUE_RESOURCE_ID
 
     # less than minimum partition size
@@ -1005,7 +1047,8 @@ async def test_partition_query_no_partitions(client, cleanup):
 @pytest.mark.skipif(
     FIRESTORE_EMULATOR, reason="PartitionQuery not implemented in emulator"
 )
-async def test_partition_query(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_partition_query(client, cleanup, database):
     collection_group = "b" + UNIQUE_RESOURCE_ID
     n_docs = 128 * 2 + 127  # Minimum partition size is 128
     parents = itertools.cycle(("", "abc/123/", "def/456/", "ghi/789/"))
@@ -1031,7 +1074,8 @@ async def test_partition_query(client, cleanup):
 
 
 @pytest.mark.skipif(FIRESTORE_EMULATOR, reason="Internal Issue b/137865992")
-async def test_get_all(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_get_all(client, cleanup, database):
     collection_name = "get-all" + UNIQUE_RESOURCE_ID
 
     document1 = client.document(collection_name, "a")
@@ -1085,7 +1129,8 @@ async def test_get_all(client, cleanup):
     check_snapshot(snapshot3, document3, restricted3, write_result3)
 
 
-async def test_live_bulk_writer(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_live_bulk_writer(client, cleanup, database):
     from google.cloud.firestore_v1.async_client import AsyncClient
     from google.cloud.firestore_v1.bulk_writer import BulkWriter
 
@@ -1108,7 +1153,8 @@ async def test_live_bulk_writer(client, cleanup):
     assert len(await col.get()) == 50
 
 
-async def test_batch(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_batch(client, cleanup, database):
     collection_name = "batch" + UNIQUE_RESOURCE_ID
 
     document1 = client.document(collection_name, "abc")
@@ -1275,35 +1321,40 @@ async def _do_recursive_delete(client, bulk_writer, empty_philosophers=False):
         ), f"Snapshot at Socrates{path} should have been deleted"
 
 
-async def test_async_recursive_delete_parallelized(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_async_recursive_delete_parallelized(client, cleanup, database):
     from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions, SendMode
 
     bw = client.bulk_writer(options=BulkWriterOptions(mode=SendMode.parallel))
     await _do_recursive_delete(client, bw)
 
 
-async def test_async_recursive_delete_serialized(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_async_recursive_delete_serialized(client, cleanup, database):
     from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions, SendMode
 
     bw = client.bulk_writer(options=BulkWriterOptions(mode=SendMode.serial))
     await _do_recursive_delete(client, bw)
 
 
-async def test_async_recursive_delete_parallelized_empty(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_async_recursive_delete_parallelized_empty(client, cleanup, database):
     from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions, SendMode
 
     bw = client.bulk_writer(options=BulkWriterOptions(mode=SendMode.parallel))
     await _do_recursive_delete(client, bw, empty_philosophers=True)
 
 
-async def test_async_recursive_delete_serialized_empty(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_async_recursive_delete_serialized_empty(client, cleanup, database):
     from google.cloud.firestore_v1.bulk_writer import BulkWriterOptions, SendMode
 
     bw = client.bulk_writer(options=BulkWriterOptions(mode=SendMode.serial))
     await _do_recursive_delete(client, bw, empty_philosophers=True)
 
 
-async def test_recursive_query(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_recursive_query(client, cleanup, database):
     col_id: str = f"philosophers-recursive-async-query{UNIQUE_RESOURCE_ID}"
     await _persist_documents(client, col_id, philosophers_data_set, cleanup)
 
@@ -1341,7 +1392,8 @@ async def test_recursive_query(client, cleanup):
         assert ids[index] == expected_ids[index], error_msg
 
 
-async def test_nested_recursive_query(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_nested_recursive_query(client, cleanup, database):
     col_id: str = f"philosophers-nested-recursive-async-query{UNIQUE_RESOURCE_ID}"
     await _persist_documents(client, col_id, philosophers_data_set, cleanup)
 
@@ -1364,7 +1416,8 @@ async def test_nested_recursive_query(client, cleanup):
         assert ids[index] == expected_ids[index], error_msg
 
 
-async def test_chunked_query(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_chunked_query(client, cleanup, database):
     col = client.collection(f"async-chunked-test{UNIQUE_RESOURCE_ID}")
     for index in range(10):
         doc_ref = col.document(f"document-{index + 1}")
@@ -1379,7 +1432,8 @@ async def test_chunked_query(client, cleanup):
     assert lengths[3] == 1
 
 
-async def test_chunked_query_smaller_limit(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_chunked_query_smaller_limit(client, cleanup, database):
     col = client.collection(f"chunked-test-smaller-limit{UNIQUE_RESOURCE_ID}")
     for index in range(10):
         doc_ref = col.document(f"document-{index + 1}")
@@ -1391,7 +1445,8 @@ async def test_chunked_query_smaller_limit(client, cleanup):
     assert lengths[0] == 5
 
 
-async def test_chunked_and_recursive(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_chunked_and_recursive(client, cleanup, database):
     col_id = f"chunked-async-recursive-test{UNIQUE_RESOURCE_ID}"
     documents = [
         {
@@ -1449,14 +1504,16 @@ async def _chain(*iterators):
             yield value
 
 
-async def test_count_async_query_get_default_alias(async_query):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_count_async_query_get_default_alias(async_query, database):
     count_query = async_query.count()
     result = await count_query.get()
     for r in result[0]:
         assert r.alias == "field_1"
 
 
-async def test_async_count_query_get_with_alias(async_query):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_async_count_query_get_with_alias(async_query, database):
 
     count_query = async_query.count(alias="total")
     result = await count_query.get()
@@ -1464,7 +1521,8 @@ async def test_async_count_query_get_with_alias(async_query):
         assert r.alias == "total"
 
 
-async def test_async_count_query_get_with_limit(async_query):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_async_count_query_get_with_limit(async_query, database):
 
     count_query = async_query.count(alias="total")
     result = await count_query.get()
@@ -1480,7 +1538,8 @@ async def test_async_count_query_get_with_limit(async_query):
         assert r.value == 2
 
 
-async def test_async_count_query_get_multiple_aggregations(async_query):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_async_count_query_get_multiple_aggregations(async_query, database):
 
     count_query = async_query.count(alias="total").count(alias="all")
 
@@ -1495,8 +1554,9 @@ async def test_async_count_query_get_multiple_aggregations(async_query):
     assert found_alias == set(expected_aliases)
 
 
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
 async def test_async_count_query_get_multiple_aggregations_duplicated_alias(
-    async_query,
+    async_query, database
 ):
 
     count_query = async_query.count(alias="total").count(alias="total")
@@ -1507,7 +1567,8 @@ async def test_async_count_query_get_multiple_aggregations_duplicated_alias(
     assert "Aggregation aliases contain duplicate alias" in exc_info.value.message
 
 
-async def test_async_count_query_get_empty_aggregation(async_query):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_async_count_query_get_empty_aggregation(async_query, database):
     from google.cloud.firestore_v1.async_aggregation import AsyncAggregationQuery
 
     aggregation_query = AsyncAggregationQuery(async_query)
@@ -1518,7 +1579,8 @@ async def test_async_count_query_get_empty_aggregation(async_query):
     assert "Aggregations can not be empty" in exc_info.value.message
 
 
-async def test_count_async_query_stream_default_alias(async_query):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_count_async_query_stream_default_alias(async_query, database):
 
     count_query = async_query.count()
 
@@ -1527,7 +1589,8 @@ async def test_count_async_query_stream_default_alias(async_query):
             assert aggregation_result.alias == "field_1"
 
 
-async def test_async_count_query_stream_with_alias(async_query):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_async_count_query_stream_with_alias(async_query, database):
 
     count_query = async_query.count(alias="total")
     async for result in count_query.stream():
@@ -1535,7 +1598,8 @@ async def test_async_count_query_stream_with_alias(async_query):
             assert aggregation_result.alias == "total"
 
 
-async def test_async_count_query_stream_with_limit(async_query):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_async_count_query_stream_with_limit(async_query, database):
     # count without limit
     count_query = async_query.count(alias="total")
     async for result in count_query.stream():
@@ -1549,7 +1613,8 @@ async def test_async_count_query_stream_with_limit(async_query):
             assert aggregation_result.value == 2
 
 
-async def test_async_count_query_stream_multiple_aggregations(async_query):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_async_count_query_stream_multiple_aggregations(async_query, database):
 
     count_query = async_query.count(alias="total").count(alias="all")
 
@@ -1559,8 +1624,9 @@ async def test_async_count_query_stream_multiple_aggregations(async_query):
             assert aggregation_result.alias in ["total", "all"]
 
 
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
 async def test_async_count_query_stream_multiple_aggregations_duplicated_alias(
-    async_query,
+    async_query, database
 ):
 
     count_query = async_query.count(alias="total").count(alias="total")
@@ -1572,7 +1638,8 @@ async def test_async_count_query_stream_multiple_aggregations_duplicated_alias(
     assert "Aggregation aliases contain duplicate alias" in exc_info.value.message
 
 
-async def test_async_count_query_stream_empty_aggregation(async_query):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_async_count_query_stream_empty_aggregation(async_query, database):
     from google.cloud.firestore_v1.async_aggregation import AsyncAggregationQuery
 
     aggregation_query = AsyncAggregationQuery(async_query)
@@ -1585,7 +1652,9 @@ async def test_async_count_query_stream_empty_aggregation(async_query):
 
 
 @firestore.async_transactional
-async def create_in_transaction_helper(transaction, client, collection_id, cleanup):
+async def create_in_transaction_helper(
+    transaction, client, collection_id, cleanup, database
+):
     collection = client.collection(collection_id)
     query = collection.where(filter=FieldFilter("a", "==", 1))
     count_query = query.count()
@@ -1601,7 +1670,8 @@ async def create_in_transaction_helper(transaction, client, collection_id, clean
             raise ValueError("Collection can't have more than 2 docs")
 
 
-async def test_count_query_in_transaction(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_count_query_in_transaction(client, cleanup, database):
     collection_id = "doc-create" + UNIQUE_RESOURCE_ID
     document_id_1 = "doc1" + UNIQUE_RESOURCE_ID
     document_id_2 = "doc2" + UNIQUE_RESOURCE_ID
@@ -1618,7 +1688,9 @@ async def test_count_query_in_transaction(client, cleanup):
     transaction = client.transaction()
 
     with pytest.raises(ValueError) as exc:
-        await create_in_transaction_helper(transaction, client, collection_id, cleanup)
+        await create_in_transaction_helper(
+            transaction, client, collection_id, cleanup, database
+        )
     assert str(exc.value) == "Collection can't have more than 2 docs"
 
     collection = client.collection(collection_id)
@@ -1630,7 +1702,8 @@ async def test_count_query_in_transaction(client, cleanup):
         assert r.value == 2  # there are still only 2 docs
 
 
-async def test_query_with_and_composite_filter(query_docs):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_query_with_and_composite_filter(query_docs, database):
     collection, stored, allowed_vals = query_docs
     and_filter = And(
         filters=[
@@ -1645,7 +1718,8 @@ async def test_query_with_and_composite_filter(query_docs):
         assert result.get("stats.product") < 10
 
 
-async def test_query_with_or_composite_filter(query_docs):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_query_with_or_composite_filter(query_docs, database):
     collection, stored, allowed_vals = query_docs
     or_filter = Or(
         filters=[
@@ -1668,7 +1742,8 @@ async def test_query_with_or_composite_filter(query_docs):
     assert lt_10 > 0
 
 
-async def test_query_with_complex_composite_filter(query_docs):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_query_with_complex_composite_filter(query_docs, database):
     collection, stored, allowed_vals = query_docs
     field_filter = FieldFilter("b", "==", 0)
     or_filter = Or(
@@ -1713,7 +1788,8 @@ async def test_query_with_complex_composite_filter(query_docs):
     assert b_not_3 is True
 
 
-async def test_or_query_in_transaction(client, cleanup):
+@pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
+async def test_or_query_in_transaction(client, cleanup, database):
     collection_id = "doc-create" + UNIQUE_RESOURCE_ID
     document_id_1 = "doc1" + UNIQUE_RESOURCE_ID
     document_id_2 = "doc2" + UNIQUE_RESOURCE_ID
@@ -1730,7 +1806,9 @@ async def test_or_query_in_transaction(client, cleanup):
     transaction = client.transaction()
 
     with pytest.raises(ValueError) as exc:
-        await create_in_transaction_helper(transaction, client, collection_id, cleanup)
+        await create_in_transaction_helper(
+            transaction, client, collection_id, cleanup, database
+        )
     assert str(exc.value) == "Collection can't have more than 2 docs"
 
     collection = client.collection(collection_id)

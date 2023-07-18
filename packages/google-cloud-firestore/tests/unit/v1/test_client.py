@@ -18,6 +18,7 @@ import types
 import mock
 import pytest
 
+from google.cloud.firestore_v1.base_client import DEFAULT_DATABASE
 
 PROJECT = "my-prahjekt"
 
@@ -36,12 +37,31 @@ def _make_credentials():
 
 def _make_default_client(*args, **kwargs):
     credentials = _make_credentials()
-    return _make_client(project=PROJECT, credentials=credentials)
+    database = kwargs.get("database", None)
+    return _make_client(project=PROJECT, credentials=credentials, database=database)
 
 
-def test_client_constructor_defaults():
+@pytest.mark.parametrize(
+    "database, expected",
+    [
+        (None, DEFAULT_DATABASE),
+        (DEFAULT_DATABASE, DEFAULT_DATABASE),
+        ("somedb", "somedb"),
+    ],
+)
+def test_client_constructor_defaults(database, expected):
     from google.cloud.firestore_v1.client import _CLIENT_INFO
-    from google.cloud.firestore_v1.client import DEFAULT_DATABASE
+
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, database=database)
+    assert client.project == PROJECT
+    assert client._credentials == credentials
+    assert client._database == expected
+    assert client._client_info is _CLIENT_INFO
+
+
+def test_client_constructor_without_db():
+    from google.cloud.firestore_v1.client import _CLIENT_INFO
 
     credentials = _make_credentials()
     client = _make_client(project=PROJECT, credentials=credentials)
@@ -51,11 +71,19 @@ def test_client_constructor_defaults():
     assert client._client_info is _CLIENT_INFO
 
 
-def test_client_constructor_explicit():
+@pytest.mark.parametrize(
+    "database, expected",
+    [
+        (None, DEFAULT_DATABASE),
+        (DEFAULT_DATABASE, DEFAULT_DATABASE),
+        ("somedb", "somedb"),
+    ],
+)
+def test_client_constructor_explicit(database, expected):
     from google.api_core.client_options import ClientOptions
 
     credentials = _make_credentials()
-    database = "now-db"
+
     client_info = mock.Mock()
     client_options = ClientOptions("endpoint")
     client = _make_client(
@@ -67,14 +95,15 @@ def test_client_constructor_explicit():
     )
     assert client.project == PROJECT
     assert client._credentials == credentials
-    assert client._database == database
+    assert client._database == expected
     assert client._client_info is client_info
     assert client._client_options is client_options
 
 
-def test_client__firestore_api_property():
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client__firestore_api_property(database):
     credentials = _make_credentials()
-    client = _make_client(project=PROJECT, credentials=credentials)
+    client = _make_client(project=PROJECT, credentials=credentials, database=database)
     helper = client._firestore_api_helper = mock.Mock()
 
     g_patch = mock.patch("google.cloud.firestore_v1.client.firestore_grpc_transport")
@@ -93,21 +122,24 @@ def test_client__firestore_api_property():
     )
 
 
-def test_client_constructor_w_client_options():
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_constructor_w_client_options(database):
     credentials = _make_credentials()
     client = _make_client(
         project=PROJECT,
         credentials=credentials,
         client_options={"api_endpoint": "foo-firestore.googleapis.com"},
+        database=database,
     )
     assert client._target == "foo-firestore.googleapis.com"
 
 
-def test_client_collection_factory():
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_collection_factory(database):
     from google.cloud.firestore_v1.collection import CollectionReference
 
     collection_id = "users"
-    client = _make_default_client()
+    client = _make_default_client(database=database)
     collection = client.collection(collection_id)
 
     assert collection._path == (collection_id,)
@@ -115,10 +147,11 @@ def test_client_collection_factory():
     assert isinstance(collection, CollectionReference)
 
 
-def test_client_collection_factory_nested():
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_collection_factory_nested(database):
     from google.cloud.firestore_v1.collection import CollectionReference
 
-    client = _make_default_client()
+    client = _make_default_client(database=database)
     parts = ("users", "alovelace", "beep")
     collection_path = "/".join(parts)
     collection1 = client.collection(collection_path)
@@ -134,18 +167,20 @@ def test_client_collection_factory_nested():
     assert isinstance(collection2, CollectionReference)
 
 
-def test_client__get_collection_reference():
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client__get_collection_reference(database):
     from google.cloud.firestore_v1.collection import CollectionReference
 
-    client = _make_default_client()
+    client = _make_default_client(database=database)
     collection = client._get_collection_reference("collectionId")
 
     assert collection._client is client
     assert isinstance(collection, CollectionReference)
 
 
-def test_client_collection_group():
-    client = _make_default_client()
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_collection_group(database):
+    client = _make_default_client(database=database)
     query = client.collection_group("collectionId").where("foo", "==", "bar")
 
     assert query._all_descendants
@@ -155,17 +190,19 @@ def test_client_collection_group():
     assert query._parent.id == "collectionId"
 
 
-def test_client_collection_group_no_slashes():
-    client = _make_default_client()
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_collection_group_no_slashes(database):
+    client = _make_default_client(database=database)
     with pytest.raises(ValueError):
         client.collection_group("foo/bar")
 
 
-def test_client_document_factory():
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_document_factory(database):
     from google.cloud.firestore_v1.document import DocumentReference
 
     parts = ("rooms", "roomA")
-    client = _make_default_client()
+    client = _make_default_client(database=database)
     doc_path = "/".join(parts)
     document1 = client.document(doc_path)
 
@@ -180,11 +217,12 @@ def test_client_document_factory():
     assert isinstance(document2, DocumentReference)
 
 
-def test_client_document_factory_w_absolute_path():
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_document_factory_w_absolute_path(database):
     from google.cloud.firestore_v1.document import DocumentReference
 
     parts = ("rooms", "roomA")
-    client = _make_default_client()
+    client = _make_default_client(database=database)
     doc_path = "/".join(parts)
     to_match = client.document(doc_path)
     document1 = client.document(to_match._document_path)
@@ -194,10 +232,11 @@ def test_client_document_factory_w_absolute_path():
     assert isinstance(document1, DocumentReference)
 
 
-def test_client_document_factory_w_nested_path():
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_document_factory_w_nested_path(database):
     from google.cloud.firestore_v1.document import DocumentReference
 
-    client = _make_default_client()
+    client = _make_default_client(database=database)
     parts = ("rooms", "roomA", "shoes", "dressy")
     doc_path = "/".join(parts)
     document1 = client.document(doc_path)
@@ -213,7 +252,7 @@ def test_client_document_factory_w_nested_path():
     assert isinstance(document2, DocumentReference)
 
 
-def _collections_helper(retry=None, timeout=None):
+def _collections_helper(retry=None, timeout=None, database=None):
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.collection import CollectionReference
 
@@ -226,7 +265,7 @@ def _collections_helper(retry=None, timeout=None):
     firestore_api = mock.Mock(spec=["list_collection_ids"])
     firestore_api.list_collection_ids.return_value = Pager()
 
-    client = _make_default_client()
+    client = _make_default_client(database=database)
     client._firestore_api_internal = firestore_api
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
@@ -246,16 +285,18 @@ def _collections_helper(retry=None, timeout=None):
     )
 
 
-def test_client_collections():
-    _collections_helper()
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_collections(database):
+    _collections_helper(database=database)
 
 
-def test_client_collections_w_retry_timeout():
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_collections_w_retry_timeout(database):
     from google.api_core.retry import Retry
 
     retry = Retry(predicate=object())
     timeout = 123.0
-    _collections_helper(retry=retry, timeout=timeout)
+    _collections_helper(retry=retry, timeout=timeout, database=database)
 
 
 def _invoke_get_all(client, references, document_pbs, **kwargs):
@@ -274,12 +315,14 @@ def _invoke_get_all(client, references, document_pbs, **kwargs):
     return list(snapshots)
 
 
-def _get_all_helper(num_snapshots=2, txn_id=None, retry=None, timeout=None):
+def _get_all_helper(
+    num_snapshots=2, txn_id=None, retry=None, timeout=None, database=None
+):
     from google.cloud.firestore_v1 import _helpers
     from google.cloud.firestore_v1.types import common
     from google.cloud.firestore_v1.async_document import DocumentSnapshot
 
-    client = _make_default_client()
+    client = _make_default_client(database=database)
 
     data1 = {"a": "cheese"}
     document1 = client.document("pineapple", "lamp1")
@@ -343,31 +386,36 @@ def _get_all_helper(num_snapshots=2, txn_id=None, retry=None, timeout=None):
     )
 
 
-def test_client_get_all():
-    _get_all_helper()
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_get_all(database):
+    _get_all_helper(database=database)
 
 
-def test_client_get_all_with_transaction():
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_get_all_with_transaction(database):
     txn_id = b"the-man-is-non-stop"
-    _get_all_helper(num_snapshots=1, txn_id=txn_id)
+    _get_all_helper(num_snapshots=1, txn_id=txn_id, database=database)
 
 
-def test_client_get_all_w_retry_timeout():
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_get_all_w_retry_timeout(database):
     from google.api_core.retry import Retry
 
     retry = Retry(predicate=object())
     timeout = 123.0
-    _get_all_helper(retry=retry, timeout=timeout)
+    _get_all_helper(retry=retry, timeout=timeout, database=database)
 
 
-def test_client_get_all_wrong_order():
-    _get_all_helper(num_snapshots=3)
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_get_all_wrong_order(database):
+    _get_all_helper(num_snapshots=3, database=database)
 
 
-def test_client_get_all_unknown_result():
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_get_all_unknown_result(database):
     from google.cloud.firestore_v1.base_client import _BAD_DOC_TEMPLATE
 
-    client = _make_default_client()
+    client = _make_default_client(database=database)
 
     expected_document = client.document("pineapple", "lamp1")
 
@@ -396,11 +444,12 @@ def test_client_get_all_unknown_result():
     )
 
 
-def test_client_recursive_delete():
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_recursive_delete(database):
     from google.cloud.firestore_v1.types import document
     from google.cloud.firestore_v1.types import firestore
 
-    client = _make_default_client()
+    client = _make_default_client(database=database)
     client._firestore_api_internal = mock.Mock(spec=["run_query"])
     collection_ref = client.collection("my_collection")
 
@@ -433,11 +482,12 @@ def test_client_recursive_delete():
     assert num_deleted == len(results)
 
 
-def test_client_recursive_delete_from_document():
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_recursive_delete_from_document(database):
     from google.cloud.firestore_v1.types import document
     from google.cloud.firestore_v1.types import firestore
 
-    client = _make_default_client()
+    client = _make_default_client(database=database)
     client._firestore_api_internal = mock.Mock(
         spec=["run_query", "list_collection_ids"]
     )
@@ -504,35 +554,39 @@ def test_client_recursive_delete_from_document():
     assert num_deleted == expected_len
 
 
-def test_client_recursive_delete_raises():
-    client = _make_default_client()
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_recursive_delete_raises(database):
+    client = _make_default_client(database=database)
     with pytest.raises(TypeError):
         client.recursive_delete(object())
 
 
-def test_client_batch():
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_batch(database):
     from google.cloud.firestore_v1.batch import WriteBatch
 
-    client = _make_default_client()
+    client = _make_default_client(database=database)
     batch = client.batch()
     assert isinstance(batch, WriteBatch)
     assert batch._client is client
     assert batch._write_pbs == []
 
 
-def test_client_bulk_writer():
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_bulk_writer(database):
     from google.cloud.firestore_v1.bulk_writer import BulkWriter
 
-    client = _make_default_client()
+    client = _make_default_client(database=database)
     bulk_writer = client.bulk_writer()
     assert isinstance(bulk_writer, BulkWriter)
     assert bulk_writer._client is client
 
 
-def test_client_transaction():
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_transaction(database):
     from google.cloud.firestore_v1.transaction import Transaction
 
-    client = _make_default_client()
+    client = _make_default_client(database=database)
     transaction = client.transaction(max_attempts=3, read_only=True)
     assert isinstance(transaction, Transaction)
     assert transaction._write_pbs == []

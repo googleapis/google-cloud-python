@@ -117,10 +117,11 @@ class BaseClient(ClientWithProject):
         self,
         project=None,
         credentials=None,
-        database=DEFAULT_DATABASE,
+        database=None,
         client_info=_CLIENT_INFO,
         client_options=None,
     ) -> None:
+        database = database or DEFAULT_DATABASE
         # NOTE: This API has no use for the _http argument, but sending it
         #       will have no impact since the _http() @property only lazily
         #       creates a working HTTP object.

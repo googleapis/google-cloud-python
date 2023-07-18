@@ -88,7 +88,7 @@ def _mock_firestore_api():
 
 def _make_client_document(firestore_api, testcase):
     from google.cloud.firestore_v1 import Client
-    from google.cloud.firestore_v1.client import DEFAULT_DATABASE
+    from google.cloud.firestore_v1.base_client import DEFAULT_DATABASE
     import google.auth.credentials
 
     _, project, _, database, _, doc_path = testcase.doc_ref_path.split("/", 5)

@@ -17,6 +17,8 @@ import types
 import mock
 import pytest
 
+from google.cloud.firestore_v1.base_client import DEFAULT_DATABASE
+
 from tests.unit.v1.test_base_query import _make_cursor_pb
 from tests.unit.v1.test_base_query import _make_query_response
 
@@ -36,14 +38,14 @@ def test_query_constructor():
     assert not query._all_descendants
 
 
-def _query_get_helper(retry=None, timeout=None):
+def _query_get_helper(retry=None, timeout=None, database=None):
     from google.cloud.firestore_v1 import _helpers
 
     # Create a minimal fake GAPIC.
     firestore_api = mock.Mock(spec=["run_query"])
 
     # Attach the fake GAPIC to a real client.
-    client = make_client()
+    client = make_client(database=database)
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
@@ -94,7 +96,8 @@ def test_query_get_w_retry_timeout():
     _query_get_helper(retry=retry, timeout=timeout)
 
 
-def test_query_get_limit_to_last():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_query_get_limit_to_last(database):
     from google.cloud import firestore
     from google.cloud.firestore_v1.base_query import _enum_from_direction
 
@@ -102,7 +105,7 @@ def test_query_get_limit_to_last():
     firestore_api = mock.Mock(spec=["run_query"])
 
     # Attach the fake GAPIC to a real client.
-    client = make_client()
+    client = make_client(database=database)
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
@@ -149,8 +152,9 @@ def test_query_get_limit_to_last():
     )
 
 
-def test_query_chunkify_w_empty():
-    client = make_client()
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_query_chunkify_w_empty(database):
+    client = make_client(database=database)
     firestore_api = mock.Mock(spec=["run_query"])
     firestore_api.run_query.return_value = iter([])
     client._firestore_api_internal = firestore_api
@@ -161,14 +165,17 @@ def test_query_chunkify_w_empty():
     assert chunks == [[]]
 
 
-def test_query_chunkify_w_chunksize_lt_limit():
+@pytest.mark.parametrize(
+    "database, expected", [(None, DEFAULT_DATABASE), ("somedb", "somedb")]
+)
+def test_query_chunkify_w_chunksize_lt_limit(database, expected):
     from google.cloud.firestore_v1.types.document import Document
     from google.cloud.firestore_v1.types.firestore import RunQueryResponse
 
-    client = make_client()
+    client = make_client(database=database)
     firestore_api = mock.Mock(spec=["run_query"])
     doc_ids = [
-        f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/asdf/{index}"
+        f"projects/{DEFAULT_TEST_PROJECT}/databases/{expected}/documents/asdf/{index}"
         for index in range(5)
     ]
     responses1 = [
@@ -206,14 +213,17 @@ def test_query_chunkify_w_chunksize_lt_limit():
     assert [snapshot.id for snapshot in chunks[2]] == expected_ids[4:]
 
 
-def test_query_chunkify_w_chunksize_gt_limit():
+@pytest.mark.parametrize(
+    "database, expected", [(None, DEFAULT_DATABASE), ("somedb", "somedb")]
+)
+def test_query_chunkify_w_chunksize_gt_limit(database, expected):
     from google.cloud.firestore_v1.types.document import Document
     from google.cloud.firestore_v1.types.firestore import RunQueryResponse
 
-    client = make_client()
+    client = make_client(database=database)
     firestore_api = mock.Mock(spec=["run_query"])
     doc_ids = [
-        f"projects/{DEFAULT_TEST_PROJECT}/databases/(default)/documents/asdf/{index}"
+        f"projects/{DEFAULT_TEST_PROJECT}/databases/{expected}/documents/asdf/{index}"
         for index in range(5)
     ]
     responses = [
@@ -234,14 +244,14 @@ def test_query_chunkify_w_chunksize_gt_limit():
     assert chunk_ids == expected_ids
 
 
-def _query_stream_helper(retry=None, timeout=None):
+def _query_stream_helper(retry=None, timeout=None, database=None):
     from google.cloud.firestore_v1 import _helpers
 
     # Create a minimal fake GAPIC.
     firestore_api = mock.Mock(spec=["run_query"])
 
     # Attach the fake GAPIC to a real client.
-    client = make_client()
+    client = make_client(database=database)
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
@@ -292,9 +302,10 @@ def test_query_stream_w_retry_timeout():
     _query_stream_helper(retry=retry, timeout=timeout)
 
 
-def test_query_stream_with_limit_to_last():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_query_stream_with_limit_to_last(database):
     # Attach the fake GAPIC to a real client.
-    client = make_client()
+    client = make_client(database=database)
     # Make a **real** collection reference as parent.
     parent = client.collection("dee")
     # Execute the query and check the response.
@@ -307,12 +318,13 @@ def test_query_stream_with_limit_to_last():
         list(stream_response)
 
 
-def test_query_stream_with_transaction():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_query_stream_with_transaction(database):
     # Create a minimal fake GAPIC.
     firestore_api = mock.Mock(spec=["run_query"])
 
     # Attach the fake GAPIC to a real client.
-    client = make_client()
+    client = make_client(database=database)
     client._firestore_api_internal = firestore_api
 
     # Create a real-ish transaction for this client.
@@ -351,7 +363,8 @@ def test_query_stream_with_transaction():
     )
 
 
-def test_query_stream_no_results():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_query_stream_no_results(database):
     # Create a minimal fake GAPIC with a dummy response.
     firestore_api = mock.Mock(spec=["run_query"])
     empty_response = _make_query_response()
@@ -359,7 +372,7 @@ def test_query_stream_no_results():
     firestore_api.run_query.return_value = run_query_response
 
     # Attach the fake GAPIC to a real client.
-    client = make_client()
+    client = make_client(database=database)
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
@@ -383,7 +396,8 @@ def test_query_stream_no_results():
     )
 
 
-def test_query_stream_second_response_in_empty_stream():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_query_stream_second_response_in_empty_stream(database):
     # Create a minimal fake GAPIC with a dummy response.
     firestore_api = mock.Mock(spec=["run_query"])
     empty_response1 = _make_query_response()
@@ -392,7 +406,7 @@ def test_query_stream_second_response_in_empty_stream():
     firestore_api.run_query.return_value = run_query_response
 
     # Attach the fake GAPIC to a real client.
-    client = make_client()
+    client = make_client(database=database)
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
@@ -415,12 +429,13 @@ def test_query_stream_second_response_in_empty_stream():
     )
 
 
-def test_query_stream_with_skipped_results():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_query_stream_with_skipped_results(database):
     # Create a minimal fake GAPIC.
     firestore_api = mock.Mock(spec=["run_query"])
 
     # Attach the fake GAPIC to a real client.
-    client = make_client()
+    client = make_client(database=database)
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
@@ -456,12 +471,13 @@ def test_query_stream_with_skipped_results():
     )
 
 
-def test_query_stream_empty_after_first_response():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_query_stream_empty_after_first_response(database):
     # Create a minimal fake GAPIC.
     firestore_api = mock.Mock(spec=["run_query"])
 
     # Attach the fake GAPIC to a real client.
-    client = make_client()
+    client = make_client(database=database)
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
@@ -497,12 +513,13 @@ def test_query_stream_empty_after_first_response():
     )
 
 
-def test_query_stream_w_collection_group():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_query_stream_w_collection_group(database):
     # Create a minimal fake GAPIC.
     firestore_api = mock.Mock(spec=["run_query"])
 
     # Attach the fake GAPIC to a real client.
-    client = make_client()
+    client = make_client(database=database)
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
@@ -546,10 +563,7 @@ _not_passed = object()
 
 
 def _query_stream_w_retriable_exc_helper(
-    retry=_not_passed,
-    timeout=None,
-    transaction=None,
-    expect_retry=True,
+    retry=_not_passed, timeout=None, transaction=None, expect_retry=True, database=None
 ):
     from google.api_core import exceptions
     from google.api_core import gapic_v1
@@ -569,7 +583,7 @@ def _query_stream_w_retriable_exc_helper(
     stub._predicate = lambda exc: True  # pragma: NO COVER
 
     # Attach the fake GAPIC to a real client.
-    client = make_client()
+    client = make_client(database=database)
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
@@ -693,14 +707,14 @@ def test_collection_group_constructor_all_descendents_is_false():
         _make_collection_group(mock.sentinel.parent, all_descendants=False)
 
 
-def _collection_group_get_partitions_helper(retry=None, timeout=None):
+def _collection_group_get_partitions_helper(retry=None, timeout=None, database=None):
     from google.cloud.firestore_v1 import _helpers
 
     # Create a minimal fake GAPIC.
     firestore_api = mock.Mock(spec=["partition_query"])
 
     # Attach the fake GAPIC to a real client.
-    client = make_client()
+    client = make_client(database=database)
     client._firestore_api_internal = firestore_api
 
     # Make a **real** collection reference as parent.
@@ -754,9 +768,10 @@ def test_collection_group_get_partitions_w_retry_timeout():
     _collection_group_get_partitions_helper(retry=retry, timeout=timeout)
 
 
-def test_collection_group_get_partitions_w_filter():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_collection_group_get_partitions_w_filter(database):
     # Make a **real** collection reference as parent.
-    client = make_client()
+    client = make_client(database=database)
     parent = client.collection("charles")
 
     # Make a query that fails to partition
@@ -765,9 +780,10 @@ def test_collection_group_get_partitions_w_filter():
         list(query.get_partitions(2))
 
 
-def test_collection_group_get_partitions_w_projection():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_collection_group_get_partitions_w_projection(database):
     # Make a **real** collection reference as parent.
-    client = make_client()
+    client = make_client(database=database)
     parent = client.collection("charles")
 
     # Make a query that fails to partition
@@ -776,9 +792,10 @@ def test_collection_group_get_partitions_w_projection():
         list(query.get_partitions(2))
 
 
-def test_collection_group_get_partitions_w_limit():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_collection_group_get_partitions_w_limit(database):
     # Make a **real** collection reference as parent.
-    client = make_client()
+    client = make_client(database=database)
     parent = client.collection("charles")
 
     # Make a query that fails to partition
@@ -787,9 +804,10 @@ def test_collection_group_get_partitions_w_limit():
         list(query.get_partitions(2))
 
 
-def test_collection_group_get_partitions_w_offset():
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_collection_group_get_partitions_w_offset(database):
     # Make a **real** collection reference as parent.
-    client = make_client()
+    client = make_client(database=database)
     parent = client.collection("charles")
 
     # Make a query that fails to partition
