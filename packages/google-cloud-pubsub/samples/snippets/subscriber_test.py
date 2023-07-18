@@ -550,6 +550,37 @@ def test_update_push_subscription(
     subscriber_client.delete_subscription(request={"subscription": subscription_path})
 
 
+def test_create_push_no_wrapper_subscription(
+    subscriber_client: pubsub_v1.SubscriberClient,
+    topic: str,
+    capsys: CaptureFixture[str],
+) -> None:
+
+    push_subscription_for_create_name = (
+        f"subscription-test-subscription-push-no-wrapper-for-create-{PY_VERSION}-{UUID}"
+    )
+
+    subscription_path = subscriber_client.subscription_path(
+        PROJECT_ID, push_subscription_for_create_name
+    )
+    try:
+        subscriber_client.delete_subscription(
+            request={"subscription": subscription_path}
+        )
+    except NotFound:
+        pass
+
+    subscriber.create_push_no_wrapper_subscription(
+        PROJECT_ID, TOPIC, push_subscription_for_create_name, ENDPOINT
+    )
+
+    out, _ = capsys.readouterr()
+    assert f"{push_subscription_for_create_name}" in out
+
+    # Clean up.
+    subscriber_client.delete_subscription(request={"subscription": subscription_path})
+
+
 @pytest.fixture(scope="module")
 def bigquery_table() -> Generator[str, None, None]:
     client = bigquery.Client()
