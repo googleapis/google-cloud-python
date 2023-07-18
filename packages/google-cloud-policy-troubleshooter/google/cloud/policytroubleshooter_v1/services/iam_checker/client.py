@@ -46,6 +46,8 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.rpc import status_pb2  # type: ignore
+
 from google.cloud.policytroubleshooter_v1.types import checker, explanations
 
 from .transports.base import DEFAULT_CLIENT_INFO, IamCheckerTransport
@@ -429,9 +431,9 @@ class IamCheckerClient(metaclass=IamCheckerClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> checker.TroubleshootIamPolicyResponse:
-        r"""Checks whether a member has a specific permission for
-        a specific resource, and explains why the member does or
-        does not have that permission.
+        r"""Checks whether a principal has a specific permission
+        for a specific resource, and explains why the principal
+        does or does not have that permission.
 
         .. code-block:: python
 
@@ -471,7 +473,7 @@ class IamCheckerClient(metaclass=IamCheckerClientMeta):
         Returns:
             google.cloud.policytroubleshooter_v1.types.TroubleshootIamPolicyResponse:
                 Response for
-                [TroubleshootIamPolicy][google.cloud.policytroubleshooter.v1.IamChecker.TroubleshootIamPolicy].
+                   [TroubleshootIamPolicy][google.cloud.policytroubleshooter.v1.IamChecker.TroubleshootIamPolicy].
 
         """
         # Create or coerce a protobuf request object.
