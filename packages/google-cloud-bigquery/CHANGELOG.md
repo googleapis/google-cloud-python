@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.11.4](https://github.com/googleapis/python-bigquery/compare/v3.11.3...v3.11.4) (2023-07-19)
+
+
+### Bug Fixes
+
+* Updates typing in function definitions ([#1613](https://github.com/googleapis/python-bigquery/issues/1613)) ([db755ce](https://github.com/googleapis/python-bigquery/commit/db755ce5d2ae21e458f33f02cf63d2e5fbc45cf5))
+
 ## [3.11.3](https://github.com/googleapis/python-bigquery/compare/v3.11.2...v3.11.3) (2023-06-27)
 
 
