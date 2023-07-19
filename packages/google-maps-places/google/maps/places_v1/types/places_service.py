@@ -80,6 +80,7 @@ class SearchTextRequest(proto.Message):
             preference for English if such details exist.
 
             Current list of supported languages:
+
             https://developers.google.com/maps/faq#languagesupport.
         region_code (str):
             The Unicode country/region code (CLDR) of the location where

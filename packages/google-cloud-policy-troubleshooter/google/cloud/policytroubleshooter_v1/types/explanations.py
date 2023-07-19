@@ -34,18 +34,18 @@ __protobuf__ = proto.module(
 
 
 class AccessState(proto.Enum):
-    r"""Whether a member has a permission for a resource.
+    r"""Whether a principal has a permission for a resource.
 
     Values:
         ACCESS_STATE_UNSPECIFIED (0):
-            Reserved for future use.
+            Default value. This value is unused.
         GRANTED (1):
-            The member has the permission.
+            The principal has the permission.
         NOT_GRANTED (2):
-            The member does not have the permission.
+            The principal does not have the permission.
         UNKNOWN_CONDITIONAL (3):
-            The member has the permission only if a condition expression
-            evaluates to ``true``.
+            The principal has the permission only if a condition
+            expression evaluates to ``true``.
         UNKNOWN_INFO_DENIED (4):
             The sender of the request does not have
             access to all of the policies that Policy
@@ -59,12 +59,13 @@ class AccessState(proto.Enum):
 
 
 class HeuristicRelevance(proto.Enum):
-    r"""The extent to which a single data point contributes to an
-    overall determination.
+    r"""The extent to which a single data point, such as the
+    existence of a binding or whether a binding includes a specific
+    principal, contributes to an overall determination.
 
     Values:
         HEURISTIC_RELEVANCE_UNSPECIFIED (0):
-            Reserved for future use.
+            Default value. This value is unused.
         NORMAL (1):
             The data point has a limited effect on the
             result. Changing the data point is unlikely to
@@ -80,18 +81,18 @@ class HeuristicRelevance(proto.Enum):
 
 
 class AccessTuple(proto.Message):
-    r"""Information about the member, resource, and permission to
+    r"""Information about the principal, resource, and permission to
     check.
 
     Attributes:
         principal (str):
-            Required. The member, or principal, whose access you want to
-            check, in the form of the email address that represents that
-            member. For example, ``alice@example.com`` or
+            Required. The principal whose access you want to check, in
+            the form of the email address that represents that
+            principal. For example, ``alice@example.com`` or
             ``my-service-account@my-project.iam.gserviceaccount.com``.
 
-            The member must be a Google Account or a service account.
-            Other types of members are not supported.
+            The principal must be a Google Account or a service account.
+            Other types of principals are not supported.
         full_resource_name (str):
             Required. The full resource name that identifies the
             resource. For example,
@@ -102,7 +103,8 @@ class AccessTuple(proto.Message):
             https://cloud.google.com/iam/help/troubleshooter/full-resource-names.
         permission (str):
             Required. The IAM permission to check for the
-            specified member and resource.
+            specified principal and resource.
+
             For a complete list of IAM permissions, see
             https://cloud.google.com/iam/help/permissions/reference.
             For a complete list of predefined IAM roles and
@@ -131,14 +133,14 @@ class ExplainedPolicy(proto.Message):
     Attributes:
         access (google.cloud.policytroubleshooter_v1.types.AccessState):
             Indicates whether *this policy* provides the specified
-            permission to the specified member for the specified
+            permission to the specified principal for the specified
             resource.
 
-            This field does *not* indicate whether the member actually
-            has the permission for the resource. There might be another
-            policy that overrides this policy. To determine whether the
-            member actually has the permission, use the ``access`` field
-            in the
+            This field does *not* indicate whether the principal
+            actually has the permission for the resource. There might be
+            another policy that overrides this policy. To determine
+            whether the principal actually has the permission, use the
+            ``access`` field in the
             [TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse].
         full_resource_name (str):
             The full resource name that identifies the resource. For
@@ -157,8 +159,8 @@ class ExplainedPolicy(proto.Message):
             access to the policy, this field is empty.
         binding_explanations (MutableSequence[google.cloud.policytroubleshooter_v1.types.BindingExplanation]):
             Details about how each binding in the policy
-            affects the member's ability, or inability, to
-            use the permission for the resource.
+            affects the principal's ability, or inability,
+            to use the permission for the resource.
             If the sender of the request does not have
             access to the policy, this field is omitted.
         relevance (google.cloud.policytroubleshooter_v1.types.HeuristicRelevance):
@@ -197,20 +199,20 @@ class ExplainedPolicy(proto.Message):
 
 
 class BindingExplanation(proto.Message):
-    r"""Details about how a binding in a policy affects a member's
+    r"""Details about how a binding in a policy affects a principal's
     ability to use a permission.
 
     Attributes:
         access (google.cloud.policytroubleshooter_v1.types.AccessState):
             Required. Indicates whether *this binding* provides the
-            specified permission to the specified member for the
+            specified permission to the specified principal for the
             specified resource.
 
-            This field does *not* indicate whether the member actually
-            has the permission for the resource. There might be another
-            binding that overrides this binding. To determine whether
-            the member actually has the permission, use the ``access``
-            field in the
+            This field does *not* indicate whether the principal
+            actually has the permission for the resource. There might be
+            another binding that overrides this binding. To determine
+            whether the principal actually has the permission, use the
+            ``access`` field in the
             [TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse].
         role (str):
             The role that this binding grants. For example,
@@ -227,38 +229,38 @@ class BindingExplanation(proto.Message):
             or nonexistence, in the role to the overall
             determination for the entire policy.
         memberships (MutableMapping[str, google.cloud.policytroubleshooter_v1.types.BindingExplanation.AnnotatedMembership]):
-            Indicates whether each member in the binding includes the
-            member specified in the request, either directly or
-            indirectly. Each key identifies a member in the binding, and
-            each value indicates whether the member in the binding
-            includes the member in the request.
+            Indicates whether each principal in the binding includes the
+            principal specified in the request, either directly or
+            indirectly. Each key identifies a principal in the binding,
+            and each value indicates whether the principal in the
+            binding includes the principal in the request.
 
             For example, suppose that a binding includes the following
-            members:
+            principals:
 
             -  ``user:alice@example.com``
             -  ``group:product-eng@example.com``
 
             You want to troubleshoot access for
-            ``user:bob@example.com``. This user is a member of the group
-            ``group:product-eng@example.com``.
+            ``user:bob@example.com``. This user is a principal of the
+            group ``group:product-eng@example.com``.
 
-            For the first member in the binding, the key is
+            For the first principal in the binding, the key is
             ``user:alice@example.com``, and the ``membership`` field in
             the value is set to ``MEMBERSHIP_NOT_INCLUDED``.
 
-            For the second member in the binding, the key is
+            For the second principal in the binding, the key is
             ``group:product-eng@example.com``, and the ``membership``
             field in the value is set to ``MEMBERSHIP_INCLUDED``.
         relevance (google.cloud.policytroubleshooter_v1.types.HeuristicRelevance):
             The relevance of this binding to the overall
             determination for the entire policy.
         condition (google.type.expr_pb2.Expr):
-            A condition expression that prevents access unless the
-            expression evaluates to ``true``.
+            A condition expression that prevents this binding from
+            granting access unless the expression evaluates to ``true``.
 
             To learn about IAM Conditions, see
-            http://cloud.google.com/iam/help/conditions/overview.
+            https://cloud.google.com/iam/help/conditions/overview.
     """
 
     class RolePermission(proto.Enum):
@@ -266,7 +268,7 @@ class BindingExplanation(proto.Message):
 
         Values:
             ROLE_PERMISSION_UNSPECIFIED (0):
-                Reserved for future use.
+                Default value. This value is unused.
             ROLE_PERMISSION_INCLUDED (1):
                 The permission is included in the role.
             ROLE_PERMISSION_NOT_INCLUDED (2):
@@ -281,27 +283,27 @@ class BindingExplanation(proto.Message):
         ROLE_PERMISSION_UNKNOWN_INFO_DENIED = 3
 
     class Membership(proto.Enum):
-        r"""Whether the binding includes the member.
+        r"""Whether the binding includes the principal.
 
         Values:
             MEMBERSHIP_UNSPECIFIED (0):
-                Reserved for future use.
+                Default value. This value is unused.
             MEMBERSHIP_INCLUDED (1):
-                The binding includes the member. The member can be included
-                directly or indirectly. For example:
+                The binding includes the principal. The principal can be
+                included directly or indirectly. For example:
 
-                -  A member is included directly if that member is listed in
-                   the binding.
-                -  A member is included indirectly if that member is in a
-                   Google group or G Suite domain that is listed in the
-                   binding.
+                -  A principal is included directly if that principal is
+                   listed in the binding.
+                -  A principal is included indirectly if that principal is
+                   in a Google group or Google Workspace domain that is
+                   listed in the binding.
             MEMBERSHIP_NOT_INCLUDED (2):
-                The binding does not include the member.
+                The binding does not include the principal.
             MEMBERSHIP_UNKNOWN_INFO_DENIED (3):
                 The sender of the request is not allowed to
                 access the binding.
             MEMBERSHIP_UNKNOWN_UNSUPPORTED (4):
-                The member is an unsupported type. Only
+                The principal is an unsupported type. Only
                 Google Accounts and service accounts are
                 supported.
         """
@@ -312,15 +314,15 @@ class BindingExplanation(proto.Message):
         MEMBERSHIP_UNKNOWN_UNSUPPORTED = 4
 
     class AnnotatedMembership(proto.Message):
-        r"""Details about whether the binding includes the member.
+        r"""Details about whether the binding includes the principal.
 
         Attributes:
             membership (google.cloud.policytroubleshooter_v1.types.BindingExplanation.Membership):
                 Indicates whether the binding includes the
-                member.
+                principal.
             relevance (google.cloud.policytroubleshooter_v1.types.HeuristicRelevance):
-                The relevance of the member's status to the
-                overall determination for the binding.
+                The relevance of the principal's status to
+                the overall determination for the binding.
         """
 
         membership: "BindingExplanation.Membership" = proto.Field(

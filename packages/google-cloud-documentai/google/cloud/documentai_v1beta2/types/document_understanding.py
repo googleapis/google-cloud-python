@@ -88,9 +88,8 @@ class ProcessDocumentRequest(proto.Message):
         input_config (google.cloud.documentai_v1beta2.types.InputConfig):
             Required. Information about the input file.
         output_config (google.cloud.documentai_v1beta2.types.OutputConfig):
-            Optional. The desired output location. This
-            field is only needed in
-            BatchProcessDocumentsRequest.
+            The desired output location. This field is
+            only needed in BatchProcessDocumentsRequest.
         document_type (str):
             Specifies a known document type for deeper
             structure detection. Valid values are currently
@@ -239,9 +238,7 @@ class TableExtractionParams(proto.Message):
             be provided to complex cases which our algorithm
             cannot locate the table(s) in.
         header_hints (MutableSequence[str]):
-            Optional. Table header hints. The extraction
-            will bias towards producing these terms as table
-            headers, which may improve accuracy.
+            Optional. Reserved for future use.
         model_version (str):
             Model version of the table extraction system.
             Default is "builtin/stable". Specify
@@ -301,24 +298,12 @@ class FormExtractionParams(proto.Message):
         enabled (bool):
             Whether to enable form extraction.
         key_value_pair_hints (MutableSequence[google.cloud.documentai_v1beta2.types.KeyValuePairHint]):
-            User can provide pairs of (key text, value type) to improve
-            the parsing result.
-
-            For example, if a document has a field called "Date" that
-            holds a date value and a field called "Amount" that may hold
-            either a currency value (e.g., "$500.00") or a simple number
-            value (e.g., "20"), you could use the following hints: [
-            {"key": "Date", value_types: [ "DATE"]}, {"key": "Amount",
-            "value_types": [ "PRICE", "NUMBER" ]} ]
-
-            If the value type is unknown, but you want to provide hints
-            for the keys, you can leave the value_types field blank.
-            e.g. {"key": "Date", "value_types": []}
+            Reserved for future use.
         model_version (str):
             Model version of the form extraction system. Default is
             "builtin/stable". Specify "builtin/latest" for the latest
             model. For custom form models, specify:
-            “custom/{model_name}". Model name format is
+            "custom/{model_name}". Model name format is
             "bucket_name/path/to/modeldir" corresponding to
             "gs://bucket_name/path/to/modeldir" where annotated examples
             are stored.
@@ -340,7 +325,7 @@ class FormExtractionParams(proto.Message):
 
 
 class KeyValuePairHint(proto.Message):
-    r"""User-provided hint for key value pair.
+    r"""Reserved for future use.
 
     Attributes:
         key (str):

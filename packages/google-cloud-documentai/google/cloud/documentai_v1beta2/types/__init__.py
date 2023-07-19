@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .barcode import Barcode
 from .document import Document
 from .document_understanding import (
     AutoMlParams,
@@ -35,6 +36,7 @@ from .document_understanding import (
 from .geometry import BoundingPoly, NormalizedVertex, Vertex
 
 __all__ = (
+    "Barcode",
     "Document",
     "AutoMlParams",
     "BatchProcessDocumentsRequest",

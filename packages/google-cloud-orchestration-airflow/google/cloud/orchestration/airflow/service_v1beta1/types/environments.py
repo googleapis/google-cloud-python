@@ -98,6 +98,7 @@ class GetEnvironmentRequest(proto.Message):
         name (str):
             The resource name of the environment to get,
             in the form:
+
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
     """
 
@@ -114,6 +115,7 @@ class ListEnvironmentsRequest(proto.Message):
         parent (str):
             List environments in the given project and
             location, in the form:
+
             "projects/{projectId}/locations/{locationId}".
         page_size (int):
             The maximum number of environments to return.
@@ -169,6 +171,7 @@ class DeleteEnvironmentRequest(proto.Message):
     Attributes:
         name (str):
             The environment to delete, in the form:
+
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
     """
 
@@ -185,6 +188,7 @@ class UpdateEnvironmentRequest(proto.Message):
         name (str):
             The relative resource name of the environment
             to update, in the form:
+
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
         environment (google.cloud.orchestration.airflow.service_v1beta1.types.Environment):
             A patch environment. Fields specified by the ``updateMask``
@@ -418,6 +422,7 @@ class RestartWebServerRequest(proto.Message):
         name (str):
             The resource name of the environment to
             restart the web server for, in the form:
+
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
     """
 
@@ -434,6 +439,7 @@ class ExecuteAirflowCommandRequest(proto.Message):
         environment (str):
             The resource name of the environment in the
             form:
+
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
         command (str):
             Airflow command.
@@ -507,6 +513,7 @@ class StopAirflowCommandRequest(proto.Message):
         environment (str):
             The resource name of the environment in the
             form:
+
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
         execution_id (str):
             The unique ID of the command execution.
@@ -572,6 +579,7 @@ class PollAirflowCommandRequest(proto.Message):
         environment (str):
             The resource name of the environment in the
             form:
+
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
         execution_id (str):
             The unique ID of the command execution.
@@ -684,10 +692,12 @@ class SaveSnapshotRequest(proto.Message):
         environment (str):
             The resource name of the source environment
             in the form:
+
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
         snapshot_location (str):
             Location in a Cloud Storage where the
             snapshot is going to be stored, e.g.:
+
             "gs://my-bucket/snapshots".
     """
 
@@ -726,6 +736,7 @@ class LoadSnapshotRequest(proto.Message):
         environment (str):
             The resource name of the target environment
             in the form:
+
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
         snapshot_path (str):
             A Cloud Storage path to a snapshot to load, e.g.:
@@ -781,6 +792,7 @@ class DatabaseFailoverRequest(proto.Message):
     Attributes:
         environment (str):
             Target environment:
+
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
     """
 
@@ -801,6 +813,7 @@ class FetchDatabasePropertiesRequest(proto.Message):
         environment (str):
             Required. The resource name of the
             environment, in the form:
+
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
     """
 
@@ -938,9 +951,10 @@ class EnvironmentConfig(proto.Message):
         master_authorized_networks_config (google.cloud.orchestration.airflow.service_v1beta1.types.MasterAuthorizedNetworksConfig):
             Optional. The configuration options for GKE
             cluster master authorized networks. By default
-            master authorized networks feature is: - in case
-            of private environment: enabled with no external
-            networks allowlisted.
+            master authorized networks feature is:
+
+            - in case of private environment: enabled with
+              no external networks allowlisted.
             - in case of public environment: disabled.
         recovery_config (google.cloud.orchestration.airflow.service_v1beta1.types.RecoveryConfig):
             Optional. The Recovery settings configuration of an
@@ -1485,6 +1499,7 @@ class NodeConfig(proto.Message):
             masquerading is used for all destination
             addresses, except between pods traffic.
             See:
+
             https://cloud.google.com/kubernetes-engine/docs/how-to/ip-masquerade-agent
     """
 
@@ -2126,6 +2141,7 @@ class Environment(proto.Message):
         name (str):
             The resource name of the environment, in the
             form:
+
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
             EnvironmentId must start with a lowercase letter
             followed by up to 63 lowercase letters, numbers,
@@ -2232,6 +2248,7 @@ class CheckUpgradeRequest(proto.Message):
         environment (str):
             The resource name of the environment to check
             upgrade for, in the form:
+
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
         image_version (str):
             The version of the software running in the environment. This

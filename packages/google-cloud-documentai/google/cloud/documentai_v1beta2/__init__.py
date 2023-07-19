@@ -22,6 +22,7 @@ from .services.document_understanding_service import (
     DocumentUnderstandingServiceAsyncClient,
     DocumentUnderstandingServiceClient,
 )
+from .types.barcode import Barcode
 from .types.document import Document
 from .types.document_understanding import (
     AutoMlParams,
@@ -46,6 +47,7 @@ from .types.geometry import BoundingPoly, NormalizedVertex, Vertex
 __all__ = (
     "DocumentUnderstandingServiceAsyncClient",
     "AutoMlParams",
+    "Barcode",
     "BatchProcessDocumentsRequest",
     "BatchProcessDocumentsResponse",
     "BoundingPoly",

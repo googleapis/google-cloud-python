@@ -43,6 +43,7 @@ class Finding(proto.Message):
             The type of the Finding.
             Detailed and up-to-date information on findings
             can be found here:
+
             https://cloud.google.com/security-scanner/docs/scan-result-details
         http_method (str):
             The http method of the request that triggered

@@ -129,6 +129,21 @@ class DocumentServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.import_documents: gapic_v1.method.wrap_method(
+                self.import_documents,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_document: gapic_v1.method.wrap_method(
+                self.get_document,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.batch_delete_documents: gapic_v1.method.wrap_method(
+                self.batch_delete_documents,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_dataset_schema: gapic_v1.method.wrap_method(
                 self.get_dataset_schema,
                 default_timeout=None,
@@ -160,6 +175,36 @@ class DocumentServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [document_service.UpdateDatasetRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def import_documents(
+        self,
+    ) -> Callable[
+        [document_service.ImportDocumentsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_document(
+        self,
+    ) -> Callable[
+        [document_service.GetDocumentRequest],
+        Union[
+            document_service.GetDocumentResponse,
+            Awaitable[document_service.GetDocumentResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_delete_documents(
+        self,
+    ) -> Callable[
+        [document_service.BatchDeleteDocumentsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

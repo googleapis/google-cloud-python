@@ -39,6 +39,7 @@ def partition(
 class documentaiCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'batch_delete_documents': ('dataset', 'dataset_documents', ),
         'batch_process_documents': ('name', 'input_configs', 'output_config', 'input_documents', 'document_output_config', 'skip_human_review', 'process_options', ),
         'create_processor': ('parent', 'processor', ),
         'delete_processor': ('name', ),
@@ -49,16 +50,18 @@ class documentaiCallTransformer(cst.CSTTransformer):
         'evaluate_processor_version': ('processor_version', 'evaluation_documents', ),
         'fetch_processor_types': ('parent', ),
         'get_dataset_schema': ('name', 'visible_fields_only', ),
+        'get_document': ('dataset', 'document_id', 'read_mask', 'page_range', ),
         'get_evaluation': ('name', ),
         'get_processor': ('name', ),
         'get_processor_type': ('name', ),
         'get_processor_version': ('name', ),
+        'import_documents': ('dataset', 'batch_documents_import_configs', ),
         'import_processor_version': ('parent', 'processor_version_source', ),
         'list_evaluations': ('parent', 'page_size', 'page_token', ),
         'list_processors': ('parent', 'page_size', 'page_token', ),
         'list_processor_types': ('parent', 'page_size', 'page_token', ),
         'list_processor_versions': ('parent', 'page_size', 'page_token', ),
-        'process_document': ('name', 'inline_document', 'raw_document', 'document', 'skip_human_review', 'field_mask', 'process_options', ),
+        'process_document': ('name', 'inline_document', 'raw_document', 'gcs_document', 'document', 'skip_human_review', 'field_mask', 'process_options', ),
         'review_document': ('human_review_config', 'inline_document', 'document', 'enable_schema_validation', 'priority', 'document_schema', ),
         'set_default_processor_version': ('processor', 'default_processor_version', ),
         'train_processor_version': ('parent', 'processor_version', 'custom_document_extraction_options', 'document_schema', 'input_data', 'base_processor_version', ),

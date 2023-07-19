@@ -142,7 +142,8 @@ class MigrationSource(proto.Message):
     Attributes:
         host_port (str):
             Output only. The host and port of the
-            on-premises instance in host:port format
+            on-premises instance in host:port
+            format
         reference_id (str):
             Output only. Place holder for the external
             source identifier(e.g DMS job name) that created
@@ -696,13 +697,13 @@ class Cluster(proto.Message):
             from labels. https://google.aip.dev/128
         reconciling (bool):
             Output only. Reconciling
-            (https://google.aip.dev/128#reconciliation). Set
-            to true if the current state of Cluster does not
-            match the user's intended state, and the service
-            is actively updating the resource to reconcile
-            them. This can happen due to user-triggered
-            updates or system actions like failover or
-            maintenance.
+            (https://google.aip.dev/128#reconciliation).
+            Set to true if the current state of Cluster does
+            not match the user's intended state, and the
+            service is actively updating the resource to
+            reconcile them. This can happen due to
+            user-triggered updates or system actions like
+            failover or maintenance.
         initial_user (google.cloud.alloydb_v1beta.types.UserPassword):
             Input only. Initial user to setup during cluster creation.
             Required. If used in ``RestoreCluster`` this is ignored.
@@ -1095,10 +1096,10 @@ class Instance(proto.Message):
             application.
         reconciling (bool):
             Output only. Reconciling
-            (https://google.aip.dev/128#reconciliation). Set
-            to true if the current state of Instance does
-            not match the user's intended state, and the
-            service is actively updating the resource to
+            (https://google.aip.dev/128#reconciliation).
+            Set to true if the current state of Instance
+            does not match the user's intended state, and
+            the service is actively updating the resource to
             reconcile them. This can happen due to
             user-triggered updates or system actions like
             failover or maintenance.
@@ -1189,10 +1190,11 @@ class Instance(proto.Message):
 
     class AvailabilityType(proto.Enum):
         r"""The Availability type of an instance. Potential values:
+
         - ZONAL: The instance serves data from only one zone. Outages in
-        that     zone affect instance availability.
+          that     zone affect instance availability.
         - REGIONAL: The instance can serve data from more than one zone
-        in a     region (it is highly available).
+          in a     region (it is highly available).
 
         Values:
             AVAILABILITY_TYPE_UNSPECIFIED (0):

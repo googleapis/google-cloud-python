@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.1.1...google-cloud-kms-inventory-v0.2.0) (2023-07-17)
+
+
+### Features
+
+* add resource_types to SearchAllResources, to allow filtering by resource type ([#11484](https://github.com/googleapis/google-cloud-python/issues/11484)) ([fc26bf0](https://github.com/googleapis/google-cloud-python/commit/fc26bf06248d0459b418befe11608d6e0da2cc85))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.1.0...google-cloud-kms-inventory-v0.1.1) (2023-07-05)
 
 

@@ -3440,7 +3440,8 @@ class AppliedLicense(proto.Message):
 
 class SchedulingNodeAffinity(proto.Message):
     r"""Node Affinity: the configuration of desired nodes onto which
-    this Instance could be scheduled. Based on
+    this Instance
+    could be scheduled. Based on
     https://cloud.google.com/compute/docs/reference/rest/v1/instances/setScheduling
 
     Attributes:
