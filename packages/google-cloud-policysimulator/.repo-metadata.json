@@ -1,8 +1,8 @@
 {
     "name": "policysimulator",
-    "name_pretty": "",
-    "api_description": "",
-    "product_documentation": "",
+    "name_pretty": "Policy Simulator API",
+    "api_description": "Policy Simulator is a collection of endpoints for creating, running, and viewing a `Replay`. A `Replay` is a type of simulation that lets you see how your members' access to resources might change if you changed your IAM policy.",
+    "product_documentation": "https://cloud.google.com/policysimulator/docs/overview",
     "client_documentation": "https://cloud.google.com/python/docs/reference/policysimulator/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
