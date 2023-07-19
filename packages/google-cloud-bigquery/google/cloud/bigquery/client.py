@@ -3070,7 +3070,7 @@ class Client(ClientWithProject):
         job_id_prefix: Optional[str] = None,
         location: Optional[str] = None,
         project: Optional[str] = None,
-        job_config: CopyJobConfig = None,
+        job_config: Optional[CopyJobConfig] = None,
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: TimeoutType = DEFAULT_TIMEOUT,
     ) -> job.CopyJob:
@@ -3176,7 +3176,7 @@ class Client(ClientWithProject):
         job_id_prefix: Optional[str] = None,
         location: Optional[str] = None,
         project: Optional[str] = None,
-        job_config: ExtractJobConfig = None,
+        job_config: Optional[ExtractJobConfig] = None,
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: TimeoutType = DEFAULT_TIMEOUT,
         source_type: str = "Table",
@@ -3271,7 +3271,7 @@ class Client(ClientWithProject):
     def query(
         self,
         query: str,
-        job_config: QueryJobConfig = None,
+        job_config: Optional[QueryJobConfig] = None,
         job_id: Optional[str] = None,
         job_id_prefix: Optional[str] = None,
         location: Optional[str] = None,
