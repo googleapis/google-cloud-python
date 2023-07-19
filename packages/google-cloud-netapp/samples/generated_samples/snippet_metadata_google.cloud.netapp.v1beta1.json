@@ -1,0 +1,5907 @@
+{
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.netapp.v1beta1",
+        "version": "v1beta1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-netapp",
+    "version": "0.1.0"
+  },
+  "snippets": [
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.create_active_directory",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.CreateActiveDirectory",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "CreateActiveDirectory"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.CreateActiveDirectoryRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "active_directory",
+            "type": "google.cloud.netapp_v1beta1.types.ActiveDirectory"
+          },
+          {
+            "name": "active_directory_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_active_directory"
+      },
+      "description": "Sample for CreateActiveDirectory",
+      "file": "netapp_v1beta1_generated_net_app_create_active_directory_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_CreateActiveDirectory_async",
+      "segments": [
+        {
+          "end": 64,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 64,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 61,
+          "start": 55,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 65,
+          "start": 62,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_create_active_directory_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.create_active_directory",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.CreateActiveDirectory",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "CreateActiveDirectory"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.CreateActiveDirectoryRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "active_directory",
+            "type": "google.cloud.netapp_v1beta1.types.ActiveDirectory"
+          },
+          {
+            "name": "active_directory_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_active_directory"
+      },
+      "description": "Sample for CreateActiveDirectory",
+      "file": "netapp_v1beta1_generated_net_app_create_active_directory_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_CreateActiveDirectory_sync",
+      "segments": [
+        {
+          "end": 64,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 64,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 61,
+          "start": 55,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 65,
+          "start": 62,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_create_active_directory_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.create_kms_config",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.CreateKmsConfig",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "CreateKmsConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.CreateKmsConfigRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "kms_config",
+            "type": "google.cloud.netapp_v1beta1.types.KmsConfig"
+          },
+          {
+            "name": "kms_config_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_kms_config"
+      },
+      "description": "Sample for CreateKmsConfig",
+      "file": "netapp_v1beta1_generated_net_app_create_kms_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_CreateKmsConfig_async",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_create_kms_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.create_kms_config",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.CreateKmsConfig",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "CreateKmsConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.CreateKmsConfigRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "kms_config",
+            "type": "google.cloud.netapp_v1beta1.types.KmsConfig"
+          },
+          {
+            "name": "kms_config_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_kms_config"
+      },
+      "description": "Sample for CreateKmsConfig",
+      "file": "netapp_v1beta1_generated_net_app_create_kms_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_CreateKmsConfig_sync",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_create_kms_config_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.create_replication",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.CreateReplication",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "CreateReplication"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.CreateReplicationRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "replication",
+            "type": "google.cloud.netapp_v1beta1.types.Replication"
+          },
+          {
+            "name": "replication_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_replication"
+      },
+      "description": "Sample for CreateReplication",
+      "file": "netapp_v1beta1_generated_net_app_create_replication_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_CreateReplication_async",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 58,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 59,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_create_replication_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.create_replication",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.CreateReplication",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "CreateReplication"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.CreateReplicationRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "replication",
+            "type": "google.cloud.netapp_v1beta1.types.Replication"
+          },
+          {
+            "name": "replication_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_replication"
+      },
+      "description": "Sample for CreateReplication",
+      "file": "netapp_v1beta1_generated_net_app_create_replication_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_CreateReplication_sync",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 58,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 59,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_create_replication_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.create_snapshot",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.CreateSnapshot",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "CreateSnapshot"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.CreateSnapshotRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "snapshot",
+            "type": "google.cloud.netapp_v1beta1.types.Snapshot"
+          },
+          {
+            "name": "snapshot_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_snapshot"
+      },
+      "description": "Sample for CreateSnapshot",
+      "file": "netapp_v1beta1_generated_net_app_create_snapshot_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_CreateSnapshot_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_create_snapshot_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.create_snapshot",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.CreateSnapshot",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "CreateSnapshot"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.CreateSnapshotRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "snapshot",
+            "type": "google.cloud.netapp_v1beta1.types.Snapshot"
+          },
+          {
+            "name": "snapshot_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_snapshot"
+      },
+      "description": "Sample for CreateSnapshot",
+      "file": "netapp_v1beta1_generated_net_app_create_snapshot_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_CreateSnapshot_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_create_snapshot_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.create_storage_pool",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.CreateStoragePool",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "CreateStoragePool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.CreateStoragePoolRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "storage_pool",
+            "type": "google.cloud.netapp_v1beta1.types.StoragePool"
+          },
+          {
+            "name": "storage_pool_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_storage_pool"
+      },
+      "description": "Sample for CreateStoragePool",
+      "file": "netapp_v1beta1_generated_net_app_create_storage_pool_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_CreateStoragePool_async",
+      "segments": [
+        {
+          "end": 62,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 62,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 59,
+          "start": 53,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 63,
+          "start": 60,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_create_storage_pool_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.create_storage_pool",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.CreateStoragePool",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "CreateStoragePool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.CreateStoragePoolRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "storage_pool",
+            "type": "google.cloud.netapp_v1beta1.types.StoragePool"
+          },
+          {
+            "name": "storage_pool_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_storage_pool"
+      },
+      "description": "Sample for CreateStoragePool",
+      "file": "netapp_v1beta1_generated_net_app_create_storage_pool_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_CreateStoragePool_sync",
+      "segments": [
+        {
+          "end": 62,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 62,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 59,
+          "start": 53,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 63,
+          "start": 60,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_create_storage_pool_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.create_volume",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.CreateVolume",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "CreateVolume"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.CreateVolumeRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "volume",
+            "type": "google.cloud.netapp_v1beta1.types.Volume"
+          },
+          {
+            "name": "volume_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_volume"
+      },
+      "description": "Sample for CreateVolume",
+      "file": "netapp_v1beta1_generated_net_app_create_volume_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_CreateVolume_async",
+      "segments": [
+        {
+          "end": 63,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 63,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 60,
+          "start": 54,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 64,
+          "start": 61,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_create_volume_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.create_volume",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.CreateVolume",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "CreateVolume"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.CreateVolumeRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "volume",
+            "type": "google.cloud.netapp_v1beta1.types.Volume"
+          },
+          {
+            "name": "volume_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_volume"
+      },
+      "description": "Sample for CreateVolume",
+      "file": "netapp_v1beta1_generated_net_app_create_volume_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_CreateVolume_sync",
+      "segments": [
+        {
+          "end": 63,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 63,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 60,
+          "start": 54,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 64,
+          "start": 61,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_create_volume_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.delete_active_directory",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.DeleteActiveDirectory",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "DeleteActiveDirectory"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.DeleteActiveDirectoryRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_active_directory"
+      },
+      "description": "Sample for DeleteActiveDirectory",
+      "file": "netapp_v1beta1_generated_net_app_delete_active_directory_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_DeleteActiveDirectory_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_delete_active_directory_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.delete_active_directory",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.DeleteActiveDirectory",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "DeleteActiveDirectory"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.DeleteActiveDirectoryRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_active_directory"
+      },
+      "description": "Sample for DeleteActiveDirectory",
+      "file": "netapp_v1beta1_generated_net_app_delete_active_directory_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_DeleteActiveDirectory_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_delete_active_directory_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.delete_kms_config",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.DeleteKmsConfig",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "DeleteKmsConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.DeleteKmsConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_kms_config"
+      },
+      "description": "Sample for DeleteKmsConfig",
+      "file": "netapp_v1beta1_generated_net_app_delete_kms_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_DeleteKmsConfig_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_delete_kms_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.delete_kms_config",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.DeleteKmsConfig",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "DeleteKmsConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.DeleteKmsConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_kms_config"
+      },
+      "description": "Sample for DeleteKmsConfig",
+      "file": "netapp_v1beta1_generated_net_app_delete_kms_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_DeleteKmsConfig_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_delete_kms_config_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.delete_replication",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.DeleteReplication",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "DeleteReplication"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.DeleteReplicationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_replication"
+      },
+      "description": "Sample for DeleteReplication",
+      "file": "netapp_v1beta1_generated_net_app_delete_replication_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_DeleteReplication_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_delete_replication_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.delete_replication",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.DeleteReplication",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "DeleteReplication"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.DeleteReplicationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_replication"
+      },
+      "description": "Sample for DeleteReplication",
+      "file": "netapp_v1beta1_generated_net_app_delete_replication_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_DeleteReplication_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_delete_replication_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.delete_snapshot",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.DeleteSnapshot",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "DeleteSnapshot"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.DeleteSnapshotRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_snapshot"
+      },
+      "description": "Sample for DeleteSnapshot",
+      "file": "netapp_v1beta1_generated_net_app_delete_snapshot_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_DeleteSnapshot_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_delete_snapshot_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.delete_snapshot",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.DeleteSnapshot",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "DeleteSnapshot"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.DeleteSnapshotRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_snapshot"
+      },
+      "description": "Sample for DeleteSnapshot",
+      "file": "netapp_v1beta1_generated_net_app_delete_snapshot_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_DeleteSnapshot_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_delete_snapshot_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.delete_storage_pool",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.DeleteStoragePool",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "DeleteStoragePool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.DeleteStoragePoolRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_storage_pool"
+      },
+      "description": "Sample for DeleteStoragePool",
+      "file": "netapp_v1beta1_generated_net_app_delete_storage_pool_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_DeleteStoragePool_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_delete_storage_pool_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.delete_storage_pool",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.DeleteStoragePool",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "DeleteStoragePool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.DeleteStoragePoolRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_storage_pool"
+      },
+      "description": "Sample for DeleteStoragePool",
+      "file": "netapp_v1beta1_generated_net_app_delete_storage_pool_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_DeleteStoragePool_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_delete_storage_pool_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.delete_volume",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.DeleteVolume",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "DeleteVolume"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.DeleteVolumeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_volume"
+      },
+      "description": "Sample for DeleteVolume",
+      "file": "netapp_v1beta1_generated_net_app_delete_volume_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_DeleteVolume_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_delete_volume_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.delete_volume",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.DeleteVolume",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "DeleteVolume"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.DeleteVolumeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_volume"
+      },
+      "description": "Sample for DeleteVolume",
+      "file": "netapp_v1beta1_generated_net_app_delete_volume_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_DeleteVolume_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_delete_volume_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.encrypt_volumes",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.EncryptVolumes",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "EncryptVolumes"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.EncryptVolumesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "encrypt_volumes"
+      },
+      "description": "Sample for EncryptVolumes",
+      "file": "netapp_v1beta1_generated_net_app_encrypt_volumes_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_EncryptVolumes_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_encrypt_volumes_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.encrypt_volumes",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.EncryptVolumes",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "EncryptVolumes"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.EncryptVolumesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "encrypt_volumes"
+      },
+      "description": "Sample for EncryptVolumes",
+      "file": "netapp_v1beta1_generated_net_app_encrypt_volumes_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_EncryptVolumes_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_encrypt_volumes_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.get_active_directory",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.GetActiveDirectory",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "GetActiveDirectory"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.GetActiveDirectoryRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.types.ActiveDirectory",
+        "shortName": "get_active_directory"
+      },
+      "description": "Sample for GetActiveDirectory",
+      "file": "netapp_v1beta1_generated_net_app_get_active_directory_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_GetActiveDirectory_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_get_active_directory_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.get_active_directory",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.GetActiveDirectory",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "GetActiveDirectory"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.GetActiveDirectoryRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.types.ActiveDirectory",
+        "shortName": "get_active_directory"
+      },
+      "description": "Sample for GetActiveDirectory",
+      "file": "netapp_v1beta1_generated_net_app_get_active_directory_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_GetActiveDirectory_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_get_active_directory_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.get_kms_config",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.GetKmsConfig",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "GetKmsConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.GetKmsConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.types.KmsConfig",
+        "shortName": "get_kms_config"
+      },
+      "description": "Sample for GetKmsConfig",
+      "file": "netapp_v1beta1_generated_net_app_get_kms_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_GetKmsConfig_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_get_kms_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.get_kms_config",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.GetKmsConfig",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "GetKmsConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.GetKmsConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.types.KmsConfig",
+        "shortName": "get_kms_config"
+      },
+      "description": "Sample for GetKmsConfig",
+      "file": "netapp_v1beta1_generated_net_app_get_kms_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_GetKmsConfig_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_get_kms_config_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.get_replication",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.GetReplication",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "GetReplication"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.GetReplicationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.types.Replication",
+        "shortName": "get_replication"
+      },
+      "description": "Sample for GetReplication",
+      "file": "netapp_v1beta1_generated_net_app_get_replication_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_GetReplication_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_get_replication_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.get_replication",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.GetReplication",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "GetReplication"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.GetReplicationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.types.Replication",
+        "shortName": "get_replication"
+      },
+      "description": "Sample for GetReplication",
+      "file": "netapp_v1beta1_generated_net_app_get_replication_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_GetReplication_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_get_replication_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.get_snapshot",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.GetSnapshot",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "GetSnapshot"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.GetSnapshotRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.types.Snapshot",
+        "shortName": "get_snapshot"
+      },
+      "description": "Sample for GetSnapshot",
+      "file": "netapp_v1beta1_generated_net_app_get_snapshot_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_GetSnapshot_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_get_snapshot_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.get_snapshot",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.GetSnapshot",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "GetSnapshot"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.GetSnapshotRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.types.Snapshot",
+        "shortName": "get_snapshot"
+      },
+      "description": "Sample for GetSnapshot",
+      "file": "netapp_v1beta1_generated_net_app_get_snapshot_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_GetSnapshot_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_get_snapshot_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.get_storage_pool",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.GetStoragePool",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "GetStoragePool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.GetStoragePoolRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.types.StoragePool",
+        "shortName": "get_storage_pool"
+      },
+      "description": "Sample for GetStoragePool",
+      "file": "netapp_v1beta1_generated_net_app_get_storage_pool_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_GetStoragePool_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_get_storage_pool_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.get_storage_pool",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.GetStoragePool",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "GetStoragePool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.GetStoragePoolRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.types.StoragePool",
+        "shortName": "get_storage_pool"
+      },
+      "description": "Sample for GetStoragePool",
+      "file": "netapp_v1beta1_generated_net_app_get_storage_pool_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_GetStoragePool_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_get_storage_pool_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.get_volume",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.GetVolume",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "GetVolume"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.GetVolumeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.types.Volume",
+        "shortName": "get_volume"
+      },
+      "description": "Sample for GetVolume",
+      "file": "netapp_v1beta1_generated_net_app_get_volume_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_GetVolume_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_get_volume_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.get_volume",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.GetVolume",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "GetVolume"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.GetVolumeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.types.Volume",
+        "shortName": "get_volume"
+      },
+      "description": "Sample for GetVolume",
+      "file": "netapp_v1beta1_generated_net_app_get_volume_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_GetVolume_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_get_volume_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.list_active_directories",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.ListActiveDirectories",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "ListActiveDirectories"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.ListActiveDirectoriesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.services.net_app.pagers.ListActiveDirectoriesAsyncPager",
+        "shortName": "list_active_directories"
+      },
+      "description": "Sample for ListActiveDirectories",
+      "file": "netapp_v1beta1_generated_net_app_list_active_directories_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_ListActiveDirectories_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_list_active_directories_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.list_active_directories",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.ListActiveDirectories",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "ListActiveDirectories"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.ListActiveDirectoriesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.services.net_app.pagers.ListActiveDirectoriesPager",
+        "shortName": "list_active_directories"
+      },
+      "description": "Sample for ListActiveDirectories",
+      "file": "netapp_v1beta1_generated_net_app_list_active_directories_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_ListActiveDirectories_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_list_active_directories_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.list_kms_configs",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.ListKmsConfigs",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "ListKmsConfigs"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.ListKmsConfigsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.services.net_app.pagers.ListKmsConfigsAsyncPager",
+        "shortName": "list_kms_configs"
+      },
+      "description": "Sample for ListKmsConfigs",
+      "file": "netapp_v1beta1_generated_net_app_list_kms_configs_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_ListKmsConfigs_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_list_kms_configs_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.list_kms_configs",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.ListKmsConfigs",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "ListKmsConfigs"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.ListKmsConfigsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.services.net_app.pagers.ListKmsConfigsPager",
+        "shortName": "list_kms_configs"
+      },
+      "description": "Sample for ListKmsConfigs",
+      "file": "netapp_v1beta1_generated_net_app_list_kms_configs_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_ListKmsConfigs_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_list_kms_configs_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.list_replications",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.ListReplications",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "ListReplications"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.ListReplicationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.services.net_app.pagers.ListReplicationsAsyncPager",
+        "shortName": "list_replications"
+      },
+      "description": "Sample for ListReplications",
+      "file": "netapp_v1beta1_generated_net_app_list_replications_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_ListReplications_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_list_replications_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.list_replications",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.ListReplications",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "ListReplications"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.ListReplicationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.services.net_app.pagers.ListReplicationsPager",
+        "shortName": "list_replications"
+      },
+      "description": "Sample for ListReplications",
+      "file": "netapp_v1beta1_generated_net_app_list_replications_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_ListReplications_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_list_replications_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.list_snapshots",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.ListSnapshots",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "ListSnapshots"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.ListSnapshotsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.services.net_app.pagers.ListSnapshotsAsyncPager",
+        "shortName": "list_snapshots"
+      },
+      "description": "Sample for ListSnapshots",
+      "file": "netapp_v1beta1_generated_net_app_list_snapshots_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_ListSnapshots_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_list_snapshots_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.list_snapshots",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.ListSnapshots",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "ListSnapshots"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.ListSnapshotsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.services.net_app.pagers.ListSnapshotsPager",
+        "shortName": "list_snapshots"
+      },
+      "description": "Sample for ListSnapshots",
+      "file": "netapp_v1beta1_generated_net_app_list_snapshots_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_ListSnapshots_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_list_snapshots_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.list_storage_pools",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.ListStoragePools",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "ListStoragePools"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.ListStoragePoolsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.services.net_app.pagers.ListStoragePoolsAsyncPager",
+        "shortName": "list_storage_pools"
+      },
+      "description": "Sample for ListStoragePools",
+      "file": "netapp_v1beta1_generated_net_app_list_storage_pools_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_ListStoragePools_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_list_storage_pools_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.list_storage_pools",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.ListStoragePools",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "ListStoragePools"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.ListStoragePoolsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.services.net_app.pagers.ListStoragePoolsPager",
+        "shortName": "list_storage_pools"
+      },
+      "description": "Sample for ListStoragePools",
+      "file": "netapp_v1beta1_generated_net_app_list_storage_pools_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_ListStoragePools_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_list_storage_pools_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.list_volumes",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.ListVolumes",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "ListVolumes"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.ListVolumesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.services.net_app.pagers.ListVolumesAsyncPager",
+        "shortName": "list_volumes"
+      },
+      "description": "Sample for ListVolumes",
+      "file": "netapp_v1beta1_generated_net_app_list_volumes_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_ListVolumes_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_list_volumes_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.list_volumes",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.ListVolumes",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "ListVolumes"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.ListVolumesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.services.net_app.pagers.ListVolumesPager",
+        "shortName": "list_volumes"
+      },
+      "description": "Sample for ListVolumes",
+      "file": "netapp_v1beta1_generated_net_app_list_volumes_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_ListVolumes_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_list_volumes_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.resume_replication",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.ResumeReplication",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "ResumeReplication"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.ResumeReplicationRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "resume_replication"
+      },
+      "description": "Sample for ResumeReplication",
+      "file": "netapp_v1beta1_generated_net_app_resume_replication_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_ResumeReplication_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_resume_replication_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.resume_replication",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.ResumeReplication",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "ResumeReplication"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.ResumeReplicationRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "resume_replication"
+      },
+      "description": "Sample for ResumeReplication",
+      "file": "netapp_v1beta1_generated_net_app_resume_replication_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_ResumeReplication_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_resume_replication_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.reverse_replication_direction",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.ReverseReplicationDirection",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "ReverseReplicationDirection"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.ReverseReplicationDirectionRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "reverse_replication_direction"
+      },
+      "description": "Sample for ReverseReplicationDirection",
+      "file": "netapp_v1beta1_generated_net_app_reverse_replication_direction_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_ReverseReplicationDirection_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_reverse_replication_direction_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.reverse_replication_direction",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.ReverseReplicationDirection",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "ReverseReplicationDirection"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.ReverseReplicationDirectionRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "reverse_replication_direction"
+      },
+      "description": "Sample for ReverseReplicationDirection",
+      "file": "netapp_v1beta1_generated_net_app_reverse_replication_direction_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_ReverseReplicationDirection_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_reverse_replication_direction_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.revert_volume",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.RevertVolume",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "RevertVolume"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.RevertVolumeRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "revert_volume"
+      },
+      "description": "Sample for RevertVolume",
+      "file": "netapp_v1beta1_generated_net_app_revert_volume_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_RevertVolume_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_revert_volume_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.revert_volume",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.RevertVolume",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "RevertVolume"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.RevertVolumeRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "revert_volume"
+      },
+      "description": "Sample for RevertVolume",
+      "file": "netapp_v1beta1_generated_net_app_revert_volume_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_RevertVolume_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_revert_volume_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.stop_replication",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.StopReplication",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "StopReplication"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.StopReplicationRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "stop_replication"
+      },
+      "description": "Sample for StopReplication",
+      "file": "netapp_v1beta1_generated_net_app_stop_replication_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_StopReplication_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_stop_replication_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.stop_replication",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.StopReplication",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "StopReplication"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.StopReplicationRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "stop_replication"
+      },
+      "description": "Sample for StopReplication",
+      "file": "netapp_v1beta1_generated_net_app_stop_replication_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_StopReplication_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_stop_replication_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.update_active_directory",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.UpdateActiveDirectory",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "UpdateActiveDirectory"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.UpdateActiveDirectoryRequest"
+          },
+          {
+            "name": "active_directory",
+            "type": "google.cloud.netapp_v1beta1.types.ActiveDirectory"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_active_directory"
+      },
+      "description": "Sample for UpdateActiveDirectory",
+      "file": "netapp_v1beta1_generated_net_app_update_active_directory_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_UpdateActiveDirectory_async",
+      "segments": [
+        {
+          "end": 62,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 62,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 59,
+          "start": 53,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 63,
+          "start": 60,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_update_active_directory_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.update_active_directory",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.UpdateActiveDirectory",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "UpdateActiveDirectory"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.UpdateActiveDirectoryRequest"
+          },
+          {
+            "name": "active_directory",
+            "type": "google.cloud.netapp_v1beta1.types.ActiveDirectory"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_active_directory"
+      },
+      "description": "Sample for UpdateActiveDirectory",
+      "file": "netapp_v1beta1_generated_net_app_update_active_directory_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_UpdateActiveDirectory_sync",
+      "segments": [
+        {
+          "end": 62,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 62,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 59,
+          "start": 53,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 63,
+          "start": 60,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_update_active_directory_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.update_kms_config",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.UpdateKmsConfig",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "UpdateKmsConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.UpdateKmsConfigRequest"
+          },
+          {
+            "name": "kms_config",
+            "type": "google.cloud.netapp_v1beta1.types.KmsConfig"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_kms_config"
+      },
+      "description": "Sample for UpdateKmsConfig",
+      "file": "netapp_v1beta1_generated_net_app_update_kms_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_UpdateKmsConfig_async",
+      "segments": [
+        {
+          "end": 58,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 58,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 55,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 59,
+          "start": 56,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_update_kms_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.update_kms_config",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.UpdateKmsConfig",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "UpdateKmsConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.UpdateKmsConfigRequest"
+          },
+          {
+            "name": "kms_config",
+            "type": "google.cloud.netapp_v1beta1.types.KmsConfig"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_kms_config"
+      },
+      "description": "Sample for UpdateKmsConfig",
+      "file": "netapp_v1beta1_generated_net_app_update_kms_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_UpdateKmsConfig_sync",
+      "segments": [
+        {
+          "end": 58,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 58,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 55,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 59,
+          "start": 56,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_update_kms_config_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.update_replication",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.UpdateReplication",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "UpdateReplication"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.UpdateReplicationRequest"
+          },
+          {
+            "name": "replication",
+            "type": "google.cloud.netapp_v1beta1.types.Replication"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_replication"
+      },
+      "description": "Sample for UpdateReplication",
+      "file": "netapp_v1beta1_generated_net_app_update_replication_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_UpdateReplication_async",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_update_replication_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.update_replication",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.UpdateReplication",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "UpdateReplication"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.UpdateReplicationRequest"
+          },
+          {
+            "name": "replication",
+            "type": "google.cloud.netapp_v1beta1.types.Replication"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_replication"
+      },
+      "description": "Sample for UpdateReplication",
+      "file": "netapp_v1beta1_generated_net_app_update_replication_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_UpdateReplication_sync",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_update_replication_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.update_snapshot",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.UpdateSnapshot",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "UpdateSnapshot"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.UpdateSnapshotRequest"
+          },
+          {
+            "name": "snapshot",
+            "type": "google.cloud.netapp_v1beta1.types.Snapshot"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_snapshot"
+      },
+      "description": "Sample for UpdateSnapshot",
+      "file": "netapp_v1beta1_generated_net_app_update_snapshot_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_UpdateSnapshot_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_update_snapshot_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.update_snapshot",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.UpdateSnapshot",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "UpdateSnapshot"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.UpdateSnapshotRequest"
+          },
+          {
+            "name": "snapshot",
+            "type": "google.cloud.netapp_v1beta1.types.Snapshot"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_snapshot"
+      },
+      "description": "Sample for UpdateSnapshot",
+      "file": "netapp_v1beta1_generated_net_app_update_snapshot_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_UpdateSnapshot_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_update_snapshot_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.update_storage_pool",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.UpdateStoragePool",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "UpdateStoragePool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.UpdateStoragePoolRequest"
+          },
+          {
+            "name": "storage_pool",
+            "type": "google.cloud.netapp_v1beta1.types.StoragePool"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_storage_pool"
+      },
+      "description": "Sample for UpdateStoragePool",
+      "file": "netapp_v1beta1_generated_net_app_update_storage_pool_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_UpdateStoragePool_async",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_update_storage_pool_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.update_storage_pool",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.UpdateStoragePool",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "UpdateStoragePool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.UpdateStoragePoolRequest"
+          },
+          {
+            "name": "storage_pool",
+            "type": "google.cloud.netapp_v1beta1.types.StoragePool"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_storage_pool"
+      },
+      "description": "Sample for UpdateStoragePool",
+      "file": "netapp_v1beta1_generated_net_app_update_storage_pool_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_UpdateStoragePool_sync",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_update_storage_pool_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.update_volume",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.UpdateVolume",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "UpdateVolume"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.UpdateVolumeRequest"
+          },
+          {
+            "name": "volume",
+            "type": "google.cloud.netapp_v1beta1.types.Volume"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_volume"
+      },
+      "description": "Sample for UpdateVolume",
+      "file": "netapp_v1beta1_generated_net_app_update_volume_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_UpdateVolume_async",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 58,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 59,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_update_volume_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.update_volume",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.UpdateVolume",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "UpdateVolume"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.UpdateVolumeRequest"
+          },
+          {
+            "name": "volume",
+            "type": "google.cloud.netapp_v1beta1.types.Volume"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_volume"
+      },
+      "description": "Sample for UpdateVolume",
+      "file": "netapp_v1beta1_generated_net_app_update_volume_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_UpdateVolume_sync",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 58,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 59,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_update_volume_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient",
+          "shortName": "NetAppAsyncClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppAsyncClient.verify_kms_config",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.VerifyKmsConfig",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "VerifyKmsConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.VerifyKmsConfigRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.types.VerifyKmsConfigResponse",
+        "shortName": "verify_kms_config"
+      },
+      "description": "Sample for VerifyKmsConfig",
+      "file": "netapp_v1beta1_generated_net_app_verify_kms_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_VerifyKmsConfig_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_verify_kms_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.netapp_v1beta1.NetAppClient",
+          "shortName": "NetAppClient"
+        },
+        "fullName": "google.cloud.netapp_v1beta1.NetAppClient.verify_kms_config",
+        "method": {
+          "fullName": "google.cloud.netapp.v1beta1.NetApp.VerifyKmsConfig",
+          "service": {
+            "fullName": "google.cloud.netapp.v1beta1.NetApp",
+            "shortName": "NetApp"
+          },
+          "shortName": "VerifyKmsConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.netapp_v1beta1.types.VerifyKmsConfigRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.netapp_v1beta1.types.VerifyKmsConfigResponse",
+        "shortName": "verify_kms_config"
+      },
+      "description": "Sample for VerifyKmsConfig",
+      "file": "netapp_v1beta1_generated_net_app_verify_kms_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "netapp_v1beta1_generated_NetApp_VerifyKmsConfig_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "netapp_v1beta1_generated_net_app_verify_kms_config_sync.py"
+    }
+  ]
+}
