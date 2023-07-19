@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.19.0](https://github.com/googleapis/python-cloudbuild/compare/v3.18.0...v3.19.0) (2023-07-17)
+
+
+### Features
+
+* Add routing information in Cloud Build GRPC clients ([#419](https://github.com/googleapis/python-cloudbuild/issues/419)) ([d94aabd](https://github.com/googleapis/python-cloudbuild/commit/d94aabdd34c796beea880354eb8a7781242c3370))
+
 ## [3.18.0](https://github.com/googleapis/python-cloudbuild/compare/v3.17.1...v3.18.0) (2023-07-10)
 
 
