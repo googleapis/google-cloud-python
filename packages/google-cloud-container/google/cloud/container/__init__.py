@@ -26,6 +26,8 @@ from google.cloud.container_v1.services.cluster_manager.client import (
 )
 from google.cloud.container_v1.types.cluster_service import (
     AcceleratorConfig,
+    AdditionalNodeNetworkConfig,
+    AdditionalPodNetworkConfig,
     AdditionalPodRangesConfig,
     AddonsConfig,
     AdvancedDatapathObservabilityConfig,
@@ -191,6 +193,8 @@ __all__ = (
     "ClusterManagerClient",
     "ClusterManagerAsyncClient",
     "AcceleratorConfig",
+    "AdditionalNodeNetworkConfig",
+    "AdditionalPodNetworkConfig",
     "AdditionalPodRangesConfig",
     "AddonsConfig",
     "AdvancedDatapathObservabilityConfig",
