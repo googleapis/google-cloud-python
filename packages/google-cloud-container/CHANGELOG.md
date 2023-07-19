@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.27.0](https://github.com/googleapis/python-container/compare/v2.26.0...v2.27.0) (2023-07-19)
+
+
+### Features
+
+* Add a Pod IP Utilization API ([b5dfb67](https://github.com/googleapis/python-container/commit/b5dfb6725c1a9097254959908af739cd3f7a20ea))
+* Add advanced_datapath_observability_config to monitoring_config ([b5dfb67](https://github.com/googleapis/python-container/commit/b5dfb6725c1a9097254959908af739cd3f7a20ea))
+* Add Multi-networking API ([5c5cc4f](https://github.com/googleapis/python-container/commit/5c5cc4fbe54affde3744da3203c6bd2aeb733d61))
+* Add policy_name to PlacementPolicy message within a node pool ([5c5cc4f](https://github.com/googleapis/python-container/commit/5c5cc4fbe54affde3744da3203c6bd2aeb733d61))
+
 ## [2.26.0](https://github.com/googleapis/python-container/compare/v2.25.0...v2.26.0) (2023-07-04)
 
 
