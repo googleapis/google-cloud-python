@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.policytroubleshooter_v1.types import explanations
@@ -37,7 +38,7 @@ class TroubleshootIamPolicyRequest(proto.Message):
     Attributes:
         access_tuple (google.cloud.policytroubleshooter_v1.types.AccessTuple):
             The information to use for checking whether a
-            member has a permission for a resource.
+            principal has a permission for a resource.
     """
 
     access_tuple: explanations.AccessTuple = proto.Field(
@@ -53,15 +54,15 @@ class TroubleshootIamPolicyResponse(proto.Message):
 
     Attributes:
         access (google.cloud.policytroubleshooter_v1.types.AccessState):
-            Indicates whether the member has the
+            Indicates whether the principal has the
             specified permission for the specified resource,
             based on evaluating all of the applicable IAM
             policies.
         explained_policies (MutableSequence[google.cloud.policytroubleshooter_v1.types.ExplainedPolicy]):
             List of IAM policies that were evaluated to
-            check the member's permissions, with annotations
-            to indicate how each policy contributed to the
-            final result.
+            check the principal's permissions, with
+            annotations to indicate how each policy
+            contributed to the final result.
 
             The list of policies can include the policy for
             the resource itself. It can also include
@@ -70,6 +71,9 @@ class TroubleshootIamPolicyResponse(proto.Message):
             organization, the folder, and the project.
             To learn more about the resource hierarchy, see
             https://cloud.google.com/iam/help/resource-hierarchy.
+        errors (MutableSequence[google.rpc.status_pb2.Status]):
+            The general errors contained in the
+            troubleshooting response.
     """
 
     access: explanations.AccessState = proto.Field(
@@ -83,6 +87,11 @@ class TroubleshootIamPolicyResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message=explanations.ExplainedPolicy,
+    )
+    errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=status_pb2.Status,
     )
 
 
