@@ -46,6 +46,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -246,6 +247,26 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         """Parses a namespace path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/namespaces/(?P<namespace>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def network_path(
+        project: str,
+        network: str,
+    ) -> str:
+        """Returns a fully-qualified network string."""
+        return "projects/{project}/locations/global/networks/{network}".format(
+            project=project,
+            network=network,
+        )
+
+    @staticmethod
+    def parse_network_path(path: str) -> Dict[str, str]:
+        """Parses a network path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/global/networks/(?P<network>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -531,7 +552,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_namespace.Namespace:
-        r"""Creates a namespace, and returns the new Namespace.
+        r"""Creates a namespace, and returns the new namespace.
 
         .. code-block:: python
 
@@ -699,7 +720,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             parent (str):
                 Required. The resource name of the
                 project and location whose namespaces
-                we'd like to list.
+                you'd like to list.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1095,7 +1116,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_service.Service:
-        r"""Creates a service, and returns the new Service.
+        r"""Creates a service, and returns the new service.
 
         .. code-block:: python
 
@@ -1259,7 +1280,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 [RegistrationService.ListServices][google.cloud.servicedirectory.v1.RegistrationService.ListServices].
             parent (str):
                 Required. The resource name of the
-                namespace whose services we'd like to
+                namespace whose services you'd like to
                 list.
 
                 This corresponds to the ``parent`` field
@@ -1373,8 +1394,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 The request object. The request message for
                 [RegistrationService.GetService][google.cloud.servicedirectory.v1.RegistrationService.GetService].
                 This should not be used for looking up a service.
-                Insead, use the ``resolve`` method as it will contain
-                all endpoints and associated metadata.
+                Instead, use the ``resolve`` method as it contains all
+                endpoints and associated annotations.
             name (str):
                 Required. The name of the service to
                 get.
@@ -1659,7 +1680,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_endpoint.Endpoint:
-        r"""Creates a endpoint, and returns the new Endpoint.
+        r"""Creates an endpoint, and returns the new endpoint.
 
         .. code-block:: python
 
@@ -1824,7 +1845,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 [RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1.RegistrationService.ListEndpoints].
             parent (str):
                 Required. The resource name of the
-                service whose endpoints we'd like to
+                service whose endpoints you'd like to
                 list.
 
                 This corresponds to the ``parent`` field
@@ -1905,7 +1926,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> endpoint.Endpoint:
-        r"""Gets a endpoint.
+        r"""Gets an endpoint.
 
         .. code-block:: python
 
@@ -2013,7 +2034,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcs_endpoint.Endpoint:
-        r"""Updates a endpoint.
+        r"""Updates an endpoint.
 
         .. code-block:: python
 
@@ -2126,7 +2147,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
-        r"""Deletes a endpoint.
+        r"""Deletes an endpoint.
 
         .. code-block:: python
 
@@ -2585,6 +2606,114 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             and may cause errors in other clients!
         """
         self.transport.close()
+
+    def get_location(
+        self,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> locations_pb2.Location:
+        r"""Gets information about a location.
+
+        Args:
+            request (:class:`~.location_pb2.GetLocationRequest`):
+                The request object. Request message for
+                `GetLocation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.location_pb2.Location:
+                Location object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = locations_pb2.GetLocationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.get_location,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_locations(
+        self,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> locations_pb2.ListLocationsResponse:
+        r"""Lists information about the supported locations for this service.
+
+        Args:
+            request (:class:`~.location_pb2.ListLocationsRequest`):
+                The request object. Request message for
+                `ListLocations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.location_pb2.ListLocationsResponse:
+                Response message for ``ListLocations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = locations_pb2.ListLocationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.list_locations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

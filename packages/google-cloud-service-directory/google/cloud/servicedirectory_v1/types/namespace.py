@@ -39,9 +39,12 @@ class Namespace(proto.Message):
             ``projects/*/locations/*/namespaces/*``.
         labels (MutableMapping[str, str]):
             Optional. Resource labels associated with
-            this Namespace. No more than 64 user labels can
-            be associated with a given resource.  Label keys
+            this namespace. No more than 64 user labels can
+            be associated with a given resource. Label keys
             and values can be no longer than 63 characters.
+        uid (str):
+            Output only. The globally unique identifier
+            of the namespace in the UUID4 format.
     """
 
     name: str = proto.Field(
@@ -52,6 +55,10 @@ class Namespace(proto.Message):
         proto.STRING,
         proto.STRING,
         number=2,
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
