@@ -1,0 +1,71 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import pandas
+
+import bigframes.ml.cluster
+import bigframes.ml.compose
+import bigframes.ml.linear_model
+import bigframes.ml.pipeline
+import bigframes.ml.preprocessing
+
+
+def test_columntransformer_standalone_fit_transform(
+    penguins_df_default_index, new_penguins_df
+):
+    transformer = bigframes.ml.compose.ColumnTransformer(
+        [
+            (
+                "onehot",
+                bigframes.ml.preprocessing.OneHotEncoder(),
+                "species",
+            ),
+            (
+                "scale",
+                bigframes.ml.preprocessing.StandardScaler(),
+                ["culmen_length_mm", "flipper_length_mm"],
+            ),
+        ]
+    )
+
+    transformer.fit(
+        penguins_df_default_index[["species", "culmen_length_mm", "flipper_length_mm"]]
+    )
+    result = transformer.transform(new_penguins_df).to_pandas()
+
+    # TODO: bug? feature columns seem to be in nondeterministic random order
+    # workaround: sort columns by name. Can't repro it in pantheon, so could
+    # be a bigframes issue...
+    result = result.reindex(sorted(result.columns), axis=1)
+
+    expected = pandas.DataFrame(
+        {
+            "onehotencoded_species": [
+                [{"index": 1, "value": 1.0}],
+                [{"index": 1, "value": 1.0}],
+                [{"index": 2, "value": 1.0}],
+            ],
+            "scaled_culmen_length_mm": [-0.8099, -0.9931, -1.103],
+            "scaled_flipper_length_mm": [-0.3495, -1.416, -0.9185],
+        },
+        index=pandas.Index([1633, 1672, 1690], dtype="Int64", name="tag_number"),
+    )
+    expected.scaled_culmen_length_mm = expected.scaled_culmen_length_mm.astype(
+        "Float64"
+    )
+    expected.scaled_flipper_length_mm = expected.scaled_flipper_length_mm.astype(
+        "Float64"
+    )
+
+    pandas.testing.assert_frame_equal(result, expected, rtol=1e-3)

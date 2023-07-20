@@ -1,0 +1,75 @@
+[
+    {
+      "mode": "NULLABLE",
+      "name": "bool_col",
+      "type": "BOOLEAN"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "bytes_col",
+      "type": "BYTES"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "date_col",
+      "type": "DATE"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "datetime_col",
+      "type": "DATETIME"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "geography_col",
+      "type": "GEOGRAPHY"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "int64_col",
+      "type": "INTEGER",
+      "description": "Assumed to be have unique values."
+    },
+    {
+      "mode": "REQUIRED",
+      "name": "int64_too",
+      "type": "INTEGER"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "numeric_col",
+      "type": "NUMERIC"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "float64_col",
+      "type": "FLOAT"
+    },
+    {
+      "mode": "REQUIRED",
+      "name": "rowindex",
+      "type": "INTEGER",
+      "description": "Assumed to be sequential integers."
+    },
+    {
+      "mode": "REQUIRED",
+      "name": "rowindex_2",
+      "type": "INTEGER",
+      "description": "Assumed to be a copy of the rowindex column."
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "string_col",
+      "type": "STRING"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "time_col",
+      "type": "TIME"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "timestamp_col",
+      "type": "TIMESTAMP"
+    }
+  ]

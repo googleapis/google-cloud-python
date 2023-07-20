@@ -1,0 +1,13 @@
+gcp-docuploader
+gcp-releasetool>=1.10.5 # required for compatibility with cryptography>=39.x
+importlib-metadata
+typing-extensions
+twine
+wheel
+setuptools
+nox>=2022.11.21 # required to remove dependency on py
+charset-normalizer<3
+click<8.1.0
+sphinx==4.5.0 # docs PDF see noxfile for HTML docs build
+alabaster # docs PDF
+recommonmark # docs PDF
