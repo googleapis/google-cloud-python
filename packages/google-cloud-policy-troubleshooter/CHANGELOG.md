@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policy-troubleshooter-v1.8.2...google-cloud-policy-troubleshooter-v1.9.0) (2023-07-20)
+
+
+### Features
+
+* include errors in troubleshoot response  ([3ed0896](https://github.com/googleapis/google-cloud-python/commit/3ed08963c4a61701cb6cf76d2a9fa384796ae7ca))
+
+
+### Documentation
+
+* update documentation for ToubleshootIamPolicy RPC method ([3ed0896](https://github.com/googleapis/google-cloud-python/commit/3ed08963c4a61701cb6cf76d2a9fa384796ae7ca))
+
 ## [1.8.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policy-troubleshooter-v1.8.1...google-cloud-policy-troubleshooter-v1.8.2) (2023-07-05)
 
 
