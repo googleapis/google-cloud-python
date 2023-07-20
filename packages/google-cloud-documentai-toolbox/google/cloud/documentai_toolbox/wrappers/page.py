@@ -16,12 +16,13 @@
 """Wrappers for Document AI Page type."""
 
 import dataclasses
-from typing import List, Optional, Union
+from typing import List, Optional, Union, cast
+
+import pandas as pd
 
 from google.cloud import documentai
 from google.cloud.documentai_toolbox.constants import ElementWithLayout
-
-import pandas as pd
+from google.cloud.documentai_toolbox.utilities import docai_utilities
 
 ChildrenElements = Union[
     List["Paragraph"],
@@ -71,13 +72,12 @@ class Table:
         if not self.body_rows:
             return pd.DataFrame(columns=self.header_rows)
 
-        dataframe = pd.DataFrame(self.body_rows)
         if self.header_rows:
-            dataframe.columns = self.header_rows
+            columns = pd.MultiIndex.from_arrays(self.header_rows)
         else:
-            dataframe.columns = [None] * len(self.body_rows[0])
+            columns = [None] * len(self.body_rows[0])
 
-        return dataframe
+        return pd.DataFrame(self.body_rows, columns=columns)
 
     def to_csv(self) -> str:
         r"""Returns a csv str.
@@ -153,8 +153,8 @@ class Token:
                     Required. The Page object.
     """
 
-    documentai_object: documentai.Document.Page.Token = dataclasses.field(default=None)
-    _page: "Page" = dataclasses.field(default=None)
+    documentai_object: documentai.Document.Page.Token = dataclasses.field(repr=False)
+    _page: "Page" = dataclasses.field(repr=False)
 
     _text: Optional[str] = dataclasses.field(init=False, default=None)
     _hocr_bounding_box: Optional[str] = dataclasses.field(init=False, default=None)
@@ -197,9 +197,10 @@ class Line:
     _text: Optional[str] = dataclasses.field(init=False, default=None)
     _hocr_bounding_box: Optional[str] = dataclasses.field(init=False, default=None)
 
-    def __post_init__(self):
-        self.tokens = _get_children_of_element(
-            self.documentai_object, self._page.tokens
+    def __post_init__(self) -> None:
+        self.tokens = cast(
+            List[Token],
+            _get_children_of_element(self.documentai_object, self._page.tokens),
         )
 
     @property
@@ -240,8 +241,11 @@ class Paragraph:
     _text: Optional[str] = dataclasses.field(init=False, default=None)
     _hocr_bounding_box: Optional[str] = dataclasses.field(init=False, default=None)
 
-    def __post_init__(self):
-        self.lines = _get_children_of_element(self.documentai_object, self._page.lines)
+    def __post_init__(self) -> None:
+        self.lines = cast(
+            List[Line],
+            _get_children_of_element(self.documentai_object, self._page.lines),
+        )
 
     @property
     def text(self):
@@ -279,9 +283,10 @@ class Block:
     _text: Optional[str] = dataclasses.field(init=False, default=None)
     _hocr_bounding_box: Optional[str] = dataclasses.field(init=False, default=None)
 
-    def __post_init__(self):
-        self.paragraphs = _get_children_of_element(
-            self.documentai_object, self._page.paragraphs
+    def __post_init__(self) -> None:
+        self.paragraphs = cast(
+            List[Paragraph],
+            _get_children_of_element(self.documentai_object, self._page.paragraphs),
         )
 
     @property
@@ -318,17 +323,10 @@ def _table_rows_from_documentai_table_rows(
         List[List[str]]:
             A list of table rows.
     """
-    body_rows: List[List[str]] = []
-    for row in table_rows:
-        row_text = []
-
-        for cell in row.cells:
-            row_text.append(
-                _text_from_layout(layout=cell.layout, text=text).replace("\n", "")
-            )
-
-        body_rows.append(row_text)
-    return body_rows
+    return [
+        [_text_from_layout(cell.layout, text).replace("\n", "") for cell in row.cells]
+        for row in table_rows
+    ]
 
 
 def _get_hocr_bounding_box(
@@ -347,12 +345,10 @@ def _get_hocr_bounding_box(
         str:
             hOCR bounding box sring.
     """
-    vertices = [
-        (int(v.x * page_dimension.width + 0.5), int(v.y * page_dimension.height + 0.5))
-        for v in element_with_layout.layout.bounding_poly.normalized_vertices
-    ]
-    (min_x, min_y), (max_x, max_y) = vertices[0], vertices[2]
-
+    min_x, min_y, max_x, max_y = docai_utilities.get_bounding_box(
+        bounding_poly=element_with_layout.layout.bounding_poly,
+        page_dimension=page_dimension,
+    )
     return f"bbox {min_x} {min_y} {max_x} {max_y}"
 
 
@@ -371,15 +367,15 @@ def _text_from_layout(layout: documentai.Document.Page.Layout, text: str) -> str
             Text from a single element.
     """
 
-    result_text = ""
-
-    for text_segment in layout.text_anchor.text_segments:
-        result_text += text[int(text_segment.start_index) : int(text_segment.end_index)]
-
-    return result_text
+    return "".join(
+        text[int(segment.start_index) : int(segment.end_index)]
+        for segment in layout.text_anchor.text_segments
+    )
 
 
-def _get_children_of_element(element: ElementWithLayout, children: ChildrenElements):
+def _get_children_of_element(
+    element: ElementWithLayout, children: ChildrenElements
+) -> List[Union[Block, Paragraph, Line, Token]]:
     r"""Returns a list of children inside element.
 
     Args:
@@ -389,7 +385,7 @@ def _get_children_of_element(element: ElementWithLayout, children: ChildrenEleme
             Required. List of wrapped children.
 
     Returns:
-        List[ChildrenElements]:
+        List[Union[Block, Paragraph, Line, Token]]:
             A list of wrapped children that are inside a element.
     """
     start_index = element.layout.text_anchor.text_segments[0].start_index
@@ -464,7 +460,7 @@ class Page:
     tables: List[Table] = dataclasses.field(init=False, repr=False)
     _hocr_bounding_box: Optional[str] = dataclasses.field(init=False, default=None)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """
         Order of Init
         Token

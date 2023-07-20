@@ -14,9 +14,10 @@
 # limitations under the License.
 #
 
+from google.cloud.vision import Paragraph
+
 from google.cloud import documentai
 from google.cloud.documentai_toolbox.converters import vision_helpers
-from google.cloud.vision import Paragraph
 
 
 def test_get_text_anchor_substring():

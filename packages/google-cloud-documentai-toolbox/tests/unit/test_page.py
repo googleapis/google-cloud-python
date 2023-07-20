@@ -16,9 +16,10 @@
 #
 
 
-from google.cloud.documentai_toolbox import page
-from google.cloud import documentai
 import pytest
+
+from google.cloud import documentai
+from google.cloud.documentai_toolbox import page
 
 
 @pytest.fixture

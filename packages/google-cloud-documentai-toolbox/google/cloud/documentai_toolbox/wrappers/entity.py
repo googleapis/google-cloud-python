@@ -16,13 +16,13 @@
 """Wrappers for Document AI Entity type."""
 
 import dataclasses
-
 from io import BytesIO
 from typing import Optional
 
-from google.cloud import documentai
-from google.cloud.documentai_toolbox import constants
 from PIL import Image
+
+from google.cloud import documentai
+from google.cloud.documentai_toolbox.utilities import docai_utilities
 
 
 @dataclasses.dataclass
@@ -30,7 +30,7 @@ class Entity:
     """Represents a wrapped `documentai.Document.Entity`.
 
     Attributes:
-        documentai_entity (google.cloud.documentai.Document.Entity):
+        documentai_object (google.cloud.documentai.Document.Entity):
             Required. The original `google.cloud.documentai.Document.Entity` object.
         page_offset (InitVar[int]):
             Optional. The start page of the shard containing the `documentai.Document.Entity`
@@ -51,12 +51,9 @@ class Entity:
             classification (for Splitter/Classifier processors).
         end_page (int):
             Required. Last page of the classification
-            (for Splitter/Classifier processors). Default is `0` for other processors.
-        normalized_vertices (List[documentai.NormalizedVertex]):
-            Optional. Vertices for bounding box of `Entity`.
     """
 
-    documentai_entity: documentai.Document.Entity = dataclasses.field(repr=False)
+    documentai_object: documentai.Document.Entity = dataclasses.field(repr=False)
     page_offset: dataclasses.InitVar[Optional[int]] = 0
 
     type_: str = dataclasses.field(init=False)
@@ -67,16 +64,18 @@ class Entity:
     # Only Populated for Splitter/Classifier Output
     end_page: int = dataclasses.field(init=False)
 
-    def __post_init__(self, page_offset: int) -> None:
-        self.type_ = self.documentai_entity.type_
-        self.mention_text = self.documentai_entity.mention_text
-        if (
-            self.documentai_entity.normalized_value
-            and self.documentai_entity.normalized_value.text
-        ):
-            self.normalized_text = self.documentai_entity.normalized_value.text
+    _image: Optional[Image.Image] = dataclasses.field(init=False, default=None)
 
-        page_refs = self.documentai_entity.page_anchor.page_refs
+    def __post_init__(self, page_offset: int) -> None:
+        self.type_ = self.documentai_object.type_
+        self.mention_text = self.documentai_object.mention_text
+        if (
+            self.documentai_object.normalized_value
+            and self.documentai_object.normalized_value.text
+        ):
+            self.normalized_text = self.documentai_object.normalized_value.text
+
+        page_refs = self.documentai_object.page_anchor.page_refs
         if page_refs:
             self.start_page = int(page_refs[0].page) + page_offset
             self.end_page = int(page_refs[-1].page) + page_offset
@@ -93,19 +92,12 @@ class Entity:
             PIL.Image.Image:
                 Image from `Document.Entity`. Returns `None` if there is no image.
         """
-        if self.type_ not in constants.IMAGE_ENTITIES or self.mention_text:
-            return None
-
-        page_ref = self.documentai_entity.page_anchor.page_refs[0]
-
         if not documentai_page.image:
             raise ValueError("Document does not contain images.")
 
+        top, left, bottom, right = docai_utilities.get_bounding_box(
+            bounding_poly=self.documentai_object.page_anchor.page_refs[0].bounding_poly,
+            page_dimension=documentai_page.dimension,
+        )
         doc_image = Image.open(BytesIO(documentai_page.image.content))
-        w, h = doc_image.size
-        vertices = [
-            (int(v.x * w + 0.5), int(v.y * h + 0.5))
-            for v in page_ref.bounding_poly.normalized_vertices
-        ]
-        (top, left), (bottom, right) = vertices[0], vertices[2]
         return doc_image.crop((top, left, bottom, right))

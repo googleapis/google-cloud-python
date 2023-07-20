@@ -23,14 +23,13 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import pytest
 import glob
 
-from google.cloud.documentai_toolbox import document
-from google.cloud.documentai_toolbox import gcs_utilities
+from google.cloud.vision import AnnotateFileResponse
+import pytest
 
 from google.cloud import documentai
-from google.cloud.vision import AnnotateFileResponse
+from google.cloud.documentai_toolbox import document, gcs_utilities
 
 
 def get_bytes(file_name):
@@ -418,7 +417,7 @@ def test_search_page_with_multiple_pages(get_bytes_multiple_files_mock):
     actual_pages = doc.search_pages(target_string="Invoice")
 
     get_bytes_multiple_files_mock.assert_called_once()
-    assert len(actual_pages) == 5
+    assert len(actual_pages) == 48
 
 
 def test_search_page_with_no_results(get_bytes_single_file_mock):

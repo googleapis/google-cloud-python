@@ -1,15 +1,15 @@
 from google.cloud import documentai
-from google.cloud.documentai_v1.types import geometry
-from google.cloud.documentai_toolbox.converters.config import bbox_conversion, blocks
+from google.cloud.documentai_toolbox.converters.config import bbox_conversion
+from google.cloud.documentai_toolbox.converters.config.block import Block
 
 
 def test_midpoint_in_bpoly():
-    vertex_a = geometry.NormalizedVertex(x=2, y=2)
-    box_a = geometry.BoundingPoly(normalized_vertices=[vertex_a])
+    vertex_a = documentai.NormalizedVertex(x=2, y=2)
+    box_a = documentai.BoundingPoly(normalized_vertices=[vertex_a])
 
-    vertex_b = geometry.NormalizedVertex(x=1, y=1)
-    vertex_b_max = geometry.NormalizedVertex(x=4, y=4)
-    box_b = geometry.BoundingPoly(normalized_vertices=[vertex_b, vertex_b_max])
+    vertex_b = documentai.NormalizedVertex(x=1, y=1)
+    vertex_b_max = documentai.NormalizedVertex(x=4, y=4)
+    box_b = documentai.BoundingPoly(normalized_vertices=[vertex_b, vertex_b_max])
 
     actual = bbox_conversion._midpoint_in_bpoly(box_a=box_a, box_b=box_b)
     assert actual
@@ -37,13 +37,13 @@ def test_merge_text_anchors():
 
 
 def test_get_text_anchor_in_bbox():
-    vertex_a = geometry.NormalizedVertex(x=2, y=2)
-    vertex_a_max = geometry.NormalizedVertex(x=5, y=5)
-    box_a = geometry.BoundingPoly(normalized_vertices=[vertex_a, vertex_a_max])
+    vertex_a = documentai.NormalizedVertex(x=2, y=2)
+    vertex_a_max = documentai.NormalizedVertex(x=5, y=5)
+    box_a = documentai.BoundingPoly(normalized_vertices=[vertex_a, vertex_a_max])
 
-    vertex_b = geometry.NormalizedVertex(x=1, y=1)
-    vertex_b_max = geometry.NormalizedVertex(x=8, y=8)
-    box_b = geometry.BoundingPoly(normalized_vertices=[vertex_b, vertex_b_max])
+    vertex_b = documentai.NormalizedVertex(x=1, y=1)
+    vertex_b_max = documentai.NormalizedVertex(x=8, y=8)
+    box_b = documentai.BoundingPoly(normalized_vertices=[vertex_b, vertex_b_max])
 
     text_segment_1 = documentai.Document.TextAnchor.TextSegment(
         start_index="0", end_index="100"
@@ -66,7 +66,7 @@ def test_get_text_anchor_in_bbox():
     token2 = documentai.Document.Page.Token(layout=layout2)
 
     page = documentai.Document.Page(tokens=[token1, token2])
-    actual = bbox_conversion._get_text_anchor_in_bbox(bbox=box_a, page=page)
+    actual = bbox_conversion.get_text_anchor_in_bbox(bbox=box_a, page=page)
 
     text_segment_3 = documentai.Document.TextAnchor.TextSegment(
         start_index="0", end_index="200"
@@ -76,37 +76,37 @@ def test_get_text_anchor_in_bbox():
 
 
 def test_get_norm_x_max():
-    vertex_a_min = geometry.NormalizedVertex(x=2, y=2)
-    vertex_a_max = geometry.NormalizedVertex(x=4, y=4)
+    vertex_a_min = documentai.NormalizedVertex(x=2, y=2)
+    vertex_a_max = documentai.NormalizedVertex(x=4, y=4)
 
-    bbox = geometry.BoundingPoly(normalized_vertices=[vertex_a_min, vertex_a_max])
+    bbox = documentai.BoundingPoly(normalized_vertices=[vertex_a_min, vertex_a_max])
     actual = bbox_conversion._get_norm_x_max(bbox=bbox)
     assert actual == 4
 
 
 def test_get_norm_x_min():
-    vertex_a_min = geometry.NormalizedVertex(x=2, y=2)
-    vertex_a_max = geometry.NormalizedVertex(x=4, y=4)
+    vertex_a_min = documentai.NormalizedVertex(x=2, y=2)
+    vertex_a_max = documentai.NormalizedVertex(x=4, y=4)
 
-    bbox = geometry.BoundingPoly(normalized_vertices=[vertex_a_min, vertex_a_max])
+    bbox = documentai.BoundingPoly(normalized_vertices=[vertex_a_min, vertex_a_max])
     actual = bbox_conversion._get_norm_x_min(bbox=bbox)
     assert actual == 2
 
 
 def test_get_norm_y_max():
-    vertex_a_min = geometry.NormalizedVertex(x=2, y=2)
-    vertex_a_max = geometry.NormalizedVertex(x=4, y=4)
+    vertex_a_min = documentai.NormalizedVertex(x=2, y=2)
+    vertex_a_max = documentai.NormalizedVertex(x=4, y=4)
 
-    bbox = geometry.BoundingPoly(normalized_vertices=[vertex_a_min, vertex_a_max])
+    bbox = documentai.BoundingPoly(normalized_vertices=[vertex_a_min, vertex_a_max])
     actual = bbox_conversion._get_norm_y_min(bbox=bbox)
     assert actual == 2
 
 
 def test_get_norm_y_min():
-    vertex_a_min = geometry.NormalizedVertex(x=2, y=2)
-    vertex_a_max = geometry.NormalizedVertex(x=4, y=4)
+    vertex_a_min = documentai.NormalizedVertex(x=2, y=2)
+    vertex_a_max = documentai.NormalizedVertex(x=4, y=4)
 
-    bbox = geometry.BoundingPoly(normalized_vertices=[vertex_a_min, vertex_a_max])
+    bbox = documentai.BoundingPoly(normalized_vertices=[vertex_a_min, vertex_a_max])
     actual = bbox_conversion._get_norm_y_max(bbox=bbox)
     assert actual == 4
 
@@ -171,43 +171,45 @@ def test_get_multiplier_cm():
 
 
 def test_convert_bbox_to_docproto_bbox_empty_coordinate():
-    docproto = documentai.Document()
-    page = documentai.Document.Page()
-    dimensions = documentai.Document.Page.Dimension()
-    dimensions.width = 2550
-    dimensions.height = 3300
-    page.dimension = dimensions
-    docproto.pages = [page]
-    with open("tests/unit/resources/converters/test_type_1.json", "r") as (f):
+    docproto = documentai.Document(
+        pages=[
+            documentai.Document.Page(
+                dimension=documentai.Document.Page.Dimension(width=2550, height=3300)
+            )
+        ]
+    )
+    with open("tests/unit/resources/converters/test_type_1.json", "r") as f:
         invoice = f.read()
-    with open("tests/unit/resources/converters/test_config_type_1.json", "r") as (f):
+    with open("tests/unit/resources/converters/test_config_type_1.json", "r") as f:
         config = f.read()
-    b = blocks._load_blocks_from_schema(
+    b = Block.load_blocks_from_schema(
         input_data=invoice, input_config=config, base_docproto=docproto
     )
     b[0].bounding_box = []
 
-    actual = bbox_conversion._convert_bbox_to_docproto_bbox(block=(b[0]))
+    actual = bbox_conversion.convert_bbox_to_docproto_bbox(block=b[0])
 
-    assert actual == []
+    assert actual == documentai.BoundingPoly()
 
 
 def test_convert_bbox_to_docproto_bbox_type_1():
-    docproto = documentai.Document()
-    page = documentai.Document.Page()
-    dimensions = documentai.Document.Page.Dimension()
-    dimensions.width = 2550
-    dimensions.height = 3300
-    page.dimension = dimensions
-    docproto.pages = [page]
-    with open("tests/unit/resources/converters/test_type_1.json", "r") as (f):
+    docproto = documentai.Document(
+        pages=[
+            documentai.Document.Page(
+                dimension=documentai.Document.Page.Dimension(width=2550, height=3300)
+            )
+        ]
+    )
+    with open("tests/unit/resources/converters/test_type_1.json", "r") as f:
         invoice = f.read()
-    with open("tests/unit/resources/converters/test_config_type_1.json", "r") as (f):
+    with open("tests/unit/resources/converters/test_config_type_1.json", "r") as f:
         config = f.read()
-    b = blocks._load_blocks_from_schema(
+
+    b = Block.load_blocks_from_schema(
         input_data=invoice, input_config=config, base_docproto=docproto
     )
-    actual = bbox_conversion._convert_bbox_to_docproto_bbox(block=(b[0]))
+
+    actual = bbox_conversion.convert_bbox_to_docproto_bbox(block=b[0])
 
     assert actual.normalized_vertices != []
     assert actual.vertices == []
@@ -216,21 +218,22 @@ def test_convert_bbox_to_docproto_bbox_type_1():
 
 
 def test_convert_bbox_to_docproto_bbox_type_2():
-    docproto = documentai.Document()
-    page = documentai.Document.Page()
-    dimensions = documentai.Document.Page.Dimension()
-    dimensions.width = 2550
-    dimensions.height = 3300
-    page.dimension = dimensions
-    docproto.pages = [page]
-    with open("tests/unit/resources/converters/test_type_2.json", "r") as (f):
+    docproto = documentai.Document(
+        pages=[
+            documentai.Document.Page(
+                dimension=documentai.Document.Page.Dimension(width=2550, height=3300)
+            )
+        ]
+    )
+    with open("tests/unit/resources/converters/test_type_2.json", "r") as f:
         invoice = f.read()
-    with open("tests/unit/resources/converters/test_config_type_2.json", "r") as (f):
+    with open("tests/unit/resources/converters/test_config_type_2.json", "r") as f:
         config = f.read()
-    b = blocks._load_blocks_from_schema(
+    b = Block.load_blocks_from_schema(
         input_data=invoice, input_config=config, base_docproto=docproto
     )
-    actual = bbox_conversion._convert_bbox_to_docproto_bbox(block=(b[0]))
+
+    actual = bbox_conversion.convert_bbox_to_docproto_bbox(block=b[0])
 
     assert actual.normalized_vertices != []
     assert actual.vertices == []
@@ -239,24 +242,22 @@ def test_convert_bbox_to_docproto_bbox_type_2():
 
 
 def test_convert_bbox_to_docproto_bbox_type_3():
-    docproto = documentai.Document()
-    page = documentai.Document.Page()
-    dimensions = documentai.Document.Page.Dimension()
-    dimensions.width = 2550
-    dimensions.height = 3300
-    page.dimension = dimensions
-    docproto.pages = [page]
-    with open("tests/unit/resources/converters/test_type_3.json", "r") as (f):
+    docproto = documentai.Document(
+        pages=[
+            documentai.Document.Page(
+                dimension=documentai.Document.Page.Dimension(width=2550, height=3300)
+            )
+        ]
+    )
+    with open("tests/unit/resources/converters/test_type_3.json", "r") as f:
         invoice = f.read()
-    with open("tests/unit/resources/converters/test_config_type_3.json", "r") as (f):
+    with open("tests/unit/resources/converters/test_config_type_3.json", "r") as f:
         config = f.read()
-    b = blocks._load_blocks_from_schema(
+    b = Block.load_blocks_from_schema(
         input_data=invoice, input_config=config, base_docproto=docproto
     )
 
-    print(b[0].bounding_type)
-
-    actual = bbox_conversion._convert_bbox_to_docproto_bbox(block=(b[0]))
+    actual = bbox_conversion.convert_bbox_to_docproto_bbox(block=b[0])
 
     assert actual.normalized_vertices != []
     assert actual.vertices == []

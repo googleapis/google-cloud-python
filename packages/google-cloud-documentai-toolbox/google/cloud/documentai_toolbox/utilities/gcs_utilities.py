@@ -13,20 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"""Document AI utilities."""
+"""Google Cloud Storage utilities."""
 import os
 import re
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from google.api_core import client_info
-from google.cloud import documentai
-from google.cloud import storage
-from google.cloud import documentai_toolbox
 
+from google.cloud import documentai, documentai_toolbox, storage
 from google.cloud.documentai_toolbox import constants
 
 
-def _get_client_info(module: str = None) -> client_info.ClientInfo:
+def _get_client_info(module: Optional[str] = None) -> client_info.ClientInfo:
     r"""Returns a custom user agent header.
 
     Returns:
@@ -44,7 +42,7 @@ def _get_client_info(module: str = None) -> client_info.ClientInfo:
     )
 
 
-def _get_storage_client(module: str = None) -> storage.Client:
+def _get_storage_client(module: Optional[str] = None) -> storage.Client:
     r"""Returns a Storage client with custom user agent header.
 
     Returns:
@@ -52,6 +50,52 @@ def _get_storage_client(module: str = None) -> storage.Client:
 
     """
     return storage.Client(client_info=_get_client_info(module))
+
+
+def get_blobs(
+    gcs_uri: Optional[str] = None,
+    gcs_bucket_name: Optional[str] = None,
+    gcs_prefix: Optional[str] = "/",
+    module: Optional[str] = "get-bytes",
+) -> List[storage.blob.Blob]:
+    r"""Returns a list of blobs from Cloud Storage.
+
+    Args:
+        gcs_uri (Optional[str]):
+            Optional: The fully-qualified Google Cloud Storage URI.
+            You must provide either `gcs_uri` or both `gcs_bucket_name` and `gcs_prefix`.
+
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/`
+        gcs_bucket_name (Optional[str]):
+            Optional. The name of the gcs bucket.
+            You must provide either `gcs_uri` or both `gcs_bucket_name` and `gcs_prefix`.
+
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_bucket_name=`bucket`.
+        gcs_prefix (Optional[str]):
+            Optional. The prefix of the files in the target_folder.
+            You must provide either `gcs_uri` or both `gcs_bucket_name` and `gcs_prefix`.
+
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/` where gcs_prefix=`{optional_folder}/{target_folder}`.
+        module (Optional[str]):
+            Optional. The module for a custom user agent header.
+    Returns:
+        List[storage.blob.Blob]:
+            A list of the blobs in the Cloud Storage path.
+
+    """
+    if bool(gcs_uri) == (bool(gcs_bucket_name) and bool(gcs_prefix)):
+        raise ValueError(
+            "You must provide either `gcs_uri` or both `gcs_bucket_name` and `gcs_prefix`."
+        )
+
+    if gcs_uri:
+        gcs_bucket_name, gcs_prefix = split_gcs_uri(gcs_uri)
+
+    if re.match(constants.FILE_CHECK_REGEX, gcs_prefix):
+        raise ValueError("gcs_prefix cannot contain file types")
+
+    storage_client = _get_storage_client(module=module)
+    return storage_client.list_blobs(gcs_bucket_name, prefix=gcs_prefix)
 
 
 def get_bytes(gcs_bucket_name: str, gcs_prefix: str) -> List[bytes]:
@@ -69,21 +113,40 @@ def get_bytes(gcs_bucket_name: str, gcs_prefix: str) -> List[bytes]:
     Returns:
         List[bytes]:
             A list of bytes.
-
     """
-    result = []
+    return [
+        blob.download_as_bytes()
+        for blob in get_blobs(gcs_bucket_name=gcs_bucket_name, gcs_prefix=gcs_prefix)
+        if blob.name.endswith(constants.JSON_EXTENSION)
+        or blob.content_type == constants.JSON_MIMETYPE
+    ]
 
-    storage_client = _get_storage_client(module="get-bytes")
-    blob_list = storage_client.list_blobs(gcs_bucket_name, prefix=gcs_prefix)
 
-    for blob in blob_list:
-        if (
-            blob.name.endswith(constants.JSON_EXTENSION)
-            or blob.content_type == constants.JSON_MIMETYPE
-        ):
-            result.append(blob.download_as_bytes())
+def get_blob(
+    gcs_uri: str,
+    module: Optional[str] = "get-bytes",
+) -> storage.blob.Blob:
+    r"""Returns a blob from Cloud Storage.
 
-    return result
+    Args:
+        gcs_uri (str):
+            Required: The fully-qualified Google Cloud Storage URI.
+
+            Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/{target_file}.{ext}`
+        module (Optional[str]):
+            Optional. The module for a custom user agent header.
+    Returns:
+        List[storage.blob.Blob]:
+            A list of the blobs in the Cloud Storage path.
+    """
+    gcs_bucket_name, gcs_file_name = split_gcs_uri(gcs_uri)
+
+    if not re.match(constants.FILE_CHECK_REGEX, gcs_file_name):
+        raise ValueError("gcs_uri must link to a single file.")
+
+    storage_client = _get_storage_client(module=module)
+    bucket = storage_client.bucket(bucket_name=gcs_bucket_name)
+    return bucket.get_blob(gcs_file_name)
 
 
 def split_gcs_uri(gcs_uri: str) -> Tuple[str, str]:
@@ -105,8 +168,9 @@ def split_gcs_uri(gcs_uri: str) -> Tuple[str, str]:
         raise ValueError(
             "gcs_uri must follow format 'gs://{bucket_name}/{gcs_prefix}'."
         )
+
     bucket, prefix = matches.groups()
-    return str(bucket), str(prefix)
+    return bucket, prefix
 
 
 def create_gcs_uri(gcs_bucket_name: str, gcs_prefix: str) -> str:
@@ -161,11 +225,7 @@ def list_gcs_document_tree(
 
     for blob in blob_list:
         directory, file_name = os.path.split(blob.name)
-
-        if directory in path_list:
-            path_list[directory].append(file_name)
-        else:
-            path_list[directory] = [file_name]
+        path_list.setdefault(directory, []).append(file_name)
 
     return path_list
 
@@ -188,7 +248,6 @@ def print_gcs_document_tree(
             Optional. The amount of files to display. Default is `4`.
     Returns:
         None.
-
     """
     FILENAME_TREE_MIDDLE = "├──"
     FILENAME_TREE_LAST = "└──"
@@ -198,7 +257,7 @@ def print_gcs_document_tree(
     )
 
     for directory, files in path_list.items():
-        print(f"{directory}")
+        print(directory)
         dir_size = len(files)
         for idx, file_name in enumerate(files):
             if idx == dir_size - 1:
@@ -211,9 +270,7 @@ def print_gcs_document_tree(
 
 
 def create_batches(
-    gcs_bucket_name: str,
-    gcs_prefix: str,
-    batch_size: int = constants.BATCH_MAX_FILES,
+    gcs_bucket_name: str, gcs_prefix: str, batch_size: int = constants.BATCH_MAX_FILES
 ) -> List[documentai.BatchDocumentsInputConfig]:
     """Create batches of documents in Cloud Storage to process with `batch_process_documents()`.
 
@@ -240,6 +297,7 @@ def create_batches(
 
     storage_client = _get_storage_client(module="create-batches")
     blob_list = storage_client.list_blobs(gcs_bucket_name, prefix=gcs_prefix)
+
     batches: List[documentai.BatchDocumentsInputConfig] = []
     batch: List[documentai.GcsDocument] = []
 
@@ -258,6 +316,13 @@ def create_batches(
             )
             continue
 
+        batch.append(
+            documentai.GcsDocument(
+                gcs_uri=create_gcs_uri(gcs_bucket_name, blob.name),
+                mime_type=blob.content_type,
+            )
+        )
+
         if len(batch) == batch_size:
             batches.append(
                 documentai.BatchDocumentsInputConfig(
@@ -265,13 +330,6 @@ def create_batches(
                 )
             )
             batch = []
-
-        batch.append(
-            documentai.GcsDocument(
-                gcs_uri=create_gcs_uri(gcs_bucket_name, blob.name),
-                mime_type=blob.content_type,
-            )
-        )
 
     if batch:
         # Append the last batch, which could be less than `batch_size`
@@ -282,3 +340,43 @@ def create_batches(
         )
 
     return batches
+
+
+def upload_file(
+    gcs_output_directory: str,
+    file_name: str,
+    file_content: str,
+    content_type: str = constants.JSON_MIMETYPE,
+    module: Optional[str] = "upload-file",
+) -> None:
+    r"""Uploads the converted docproto to gcs.
+
+    Args:
+        gcs_output_directory (str):
+            Required: The Google Cloud Storage directory to output the file.
+
+            Format: `gs://{bucket}/{optional_folder}`
+        file_name (str):
+            Required. The name of the file with extension.
+        file_content (str):
+            Required. The docproto file in string format.
+        content_type (str):
+            Optional. The Media Type (MIME Type) of the file to upload.
+            Default: `application/json`
+
+    Returns:
+        None.
+
+    """
+    gcs_bucket_name, gcs_prefix = split_gcs_uri(gcs_output_directory)
+
+    if re.match(constants.FILE_CHECK_REGEX, gcs_prefix):
+        raise ValueError("gcs_prefix cannot contain file types")
+
+    storage_client = _get_storage_client(module=module)
+
+    bucket = storage_client.bucket(gcs_bucket_name)
+    blob = bucket.blob(os.path.join(gcs_prefix, file_name))
+    blob.upload_from_string(data=file_content, content_type=content_type)
+
+    print(f"Uploaded: {blob.name}", end="\r")

@@ -541,3 +541,38 @@ def test_create_batches_with_large_file(mock_storage, capfd):
     out, err = capfd.readouterr()
     assert "File size must be less than" in out
     assert not actual
+
+
+@mock.patch("google.cloud.documentai_toolbox.utilities.gcs_utilities.storage")
+def test_upload_file(mock_storage):
+    client = mock_storage.Client.return_value
+
+    gcs_utilities.upload_file(
+        gcs_output_directory="gs://bucket/prefix",
+        file_name="file.json",
+        file_content="file",
+    )
+    client.bucket.return_value.blob.return_value.upload_from_string.assert_called_with(
+        data="file", content_type="application/json"
+    )
+
+
+def test_upload_file_with_format_error():
+    with pytest.raises(
+        ValueError,
+        match="gcs_uri must follow format 'gs://{bucket_name}/{gcs_prefix}'.",
+    ):
+        gcs_utilities.upload_file(
+            gcs_output_directory="output/path",
+            file_name="document_1.json",
+            file_content="Document",
+        )
+
+
+def test_upload_file_with_file_error():
+    with pytest.raises(ValueError, match="gcs_prefix cannot contain file types"):
+        gcs_utilities.upload_file(
+            gcs_output_directory="gs://output/path.json",
+            file_name="document_1.json",
+            file_content="Document",
+        )

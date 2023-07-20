@@ -18,24 +18,22 @@
 import dataclasses
 from typing import List
 
-import immutabledict
-
 from google.cloud.documentai import Document
 from google.cloud.vision import (
-    EntityAnnotation,
-    TextAnnotation,
-    Symbol,
-    Word,
-    Paragraph,
-    Block,
-    Page,
     AnnotateImageResponse,
+    Block,
+    EntityAnnotation,
     ImageAnnotationContext,
+    Page,
+    Paragraph,
+    Symbol,
+    TextAnnotation,
+    Word,
 )
+import immutabledict
+
 from google.cloud import vision
-
 from google.cloud.documentai_toolbox.constants import ElementWithLayout
-
 
 _BREAK_TYPE_MAP = immutabledict.immutabledict(
     {

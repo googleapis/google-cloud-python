@@ -14,15 +14,23 @@
 # limitations under the License.
 #
 
-from typing import Callable
-from intervaltree import intervaltree
+from typing import Callable, List, Optional
 
 from google.cloud import documentai
-from google.cloud.documentai_v1.types import geometry
+from google.cloud.documentai_toolbox.converters.config.block import Block
+
+from intervaltree import intervaltree
+
+
+PIXEL_CONVERSION_RATES = {
+    "pxl": 1,
+    "inch": 96,
+    "cm": 37.795,
+}
 
 
 def _midpoint_in_bpoly(
-    box_a: geometry.BoundingPoly, box_b: geometry.BoundingPoly
+    box_a: documentai.BoundingPoly, box_b: documentai.BoundingPoly
 ) -> bool:
     """Returns whether the midpoint in box_a is inside box_b."""
 
@@ -43,7 +51,6 @@ def _merge_text_anchors(
     text_anchor_2: documentai.Document.TextAnchor,
 ) -> documentai.Document.TextAnchor:
     """Merges two TextAnchor objects into one ascending sorted TextAnchor."""
-    merged_text_anchor = documentai.Document.TextAnchor()
     intervals = []
     for text_segment in text_anchor_1.text_segments:
         intervals.append(
@@ -54,21 +61,20 @@ def _merge_text_anchors(
             intervaltree.Interval(text_segment.start_index, text_segment.end_index)
         )
 
-    interval_tree = intervaltree.IntervalTree(intervals)
-    interval_tree.merge_overlaps(strict=False)
-    ts = []
-    for iv in sorted(interval_tree):
-        ts.append(
-            documentai.Document.TextAnchor.TextSegment(
-                start_index=iv.begin, end_index=iv.end
-            )
+    merged_tree = intervaltree.IntervalTree(intervals)
+    merged_tree.merge_overlaps(strict=False)
+
+    merged_text_segments = [
+        documentai.Document.TextAnchor.TextSegment(
+            start_index=iv.begin, end_index=iv.end
         )
+        for iv in sorted(merged_tree)
+    ]
 
-    merged_text_anchor.text_segments = ts
-    return merged_text_anchor
+    return documentai.Document.TextAnchor(text_segments=merged_text_segments)
 
 
-def _get_text_anchor_in_bbox(
+def get_text_anchor_in_bbox(
     bbox: documentai.BoundingPoly,
     page: documentai.Document.Page,
     token_in_bounding_box_function: Callable[
@@ -84,19 +90,19 @@ def _get_text_anchor_in_bbox(
     return text_anchor
 
 
-def _get_norm_x_max(bbox: geometry.BoundingPoly) -> float:
+def _get_norm_x_max(bbox: documentai.BoundingPoly) -> float:
     return max([vertex.x for vertex in bbox.normalized_vertices])
 
 
-def _get_norm_x_min(bbox: geometry.BoundingPoly) -> float:
+def _get_norm_x_min(bbox: documentai.BoundingPoly) -> float:
     return min([vertex.x for vertex in bbox.normalized_vertices])
 
 
-def _get_norm_y_max(bbox: geometry.BoundingPoly) -> float:
+def _get_norm_y_max(bbox: documentai.BoundingPoly) -> float:
     return max([vertex.y for vertex in bbox.normalized_vertices])
 
 
-def _get_norm_y_min(bbox: geometry.BoundingPoly) -> float:
+def _get_norm_y_min(bbox: documentai.BoundingPoly) -> float:
     return min([vertex.y for vertex in bbox.normalized_vertices])
 
 
@@ -109,7 +115,11 @@ def _convert_to_pixels(x: float, conversion_rate: float) -> float:
 
 
 def _convert_bbox_units(
-    coordinate, input_bbox_units, width=None, height=None, multiplier=1
+    coordinate: float,
+    input_bbox_units: str,
+    width: Optional[float] = None,
+    height: Optional[float] = None,
+    multiplier: float = 1.0,
 ) -> float:
     r"""Returns a converted coordinate.
 
@@ -130,27 +140,14 @@ def _convert_bbox_units(
             A converted coordinate.
 
     """
-    final_coordinate = coordinate
-    if input_bbox_units != "normalized":
-        if input_bbox_units == "pxl":
-            if width is None:
-                final_coordinate = _normalize_coordinates(coordinate, height)
-            else:
-                final_coordinate = _normalize_coordinates(coordinate, width)
-        if input_bbox_units == "inch":
-            x = _convert_to_pixels(coordinate, 96)
-            if width is None:
-                final_coordinate = _normalize_coordinates(x, height)
-            else:
-                final_coordinate = _normalize_coordinates(x, width)
-        if input_bbox_units == "cm":
-            x = _convert_to_pixels(coordinate, 37.795)
-            if width is None:
-                final_coordinate = _normalize_coordinates(x, height)
-            else:
-                final_coordinate = _normalize_coordinates(x, width)
 
-    return final_coordinate * multiplier
+    if input_bbox_units == "normalized":
+        return coordinate * multiplier
+
+    x = _convert_to_pixels(coordinate, PIXEL_CONVERSION_RATES.get(input_bbox_units, 1))
+    y = width or height
+
+    return _normalize_coordinates(x, y) * multiplier
 
 
 def _get_multiplier(
@@ -170,37 +167,29 @@ def _get_multiplier(
             multiplier to use when converting bounding boxes.
 
     """
-    if input_bbox_units == "inch":
-        converted = _convert_to_pixels(external_coordinate, 96)
-        return docproto_coordinate / converted
-    elif input_bbox_units == "cm":
-        converted = _convert_to_pixels(external_coordinate, 37.795)
-        return docproto_coordinate / converted
-    else:
-        return docproto_coordinate / external_coordinate
+    converted_coordinate = _convert_to_pixels(
+        external_coordinate, PIXEL_CONVERSION_RATES.get(input_bbox_units, 1)
+    )
+    return docproto_coordinate / converted_coordinate
 
 
-def _convert_bbox_to_docproto_bbox(block) -> geometry.BoundingPoly:
+def convert_bbox_to_docproto_bbox(block: Block) -> documentai.BoundingPoly:
     r"""Returns a converted bounding box from Block.
 
     Args:
         block (Block):
             Required.
     Returns:
-        geometry.BoundingPoly:
-            A geometry.BoundingPoly from bounding box.
+        documentai.BoundingPoly:
+            A documentai.BoundingPoly from bounding box.
 
     """
-    merged_bbox = geometry.BoundingPoly()
-    x_multiplier = 1
-    y_multiplier = 1
-    coordinates = []
-    nv = []
+    if block.bounding_box == []:
+        return documentai.BoundingPoly()
 
-    # _convert_bbox_units should check if external_bbox is list or not
-    coordinates_object = block.bounding_box
-    if coordinates_object == []:
-        return coordinates_object
+    x_multiplier = 1.0
+    y_multiplier = 1.0
+    normalized_vertices: List[documentai.NormalizedVertex] = []
 
     if block.page_width and block.page_height:
         x_multiplier = _get_multiplier(
@@ -216,9 +205,8 @@ def _convert_bbox_to_docproto_bbox(block) -> geometry.BoundingPoly:
 
     if block.bounding_type == "1":
         # Type 1 : bounding box has 4 (x,y) coordinates
-
-        if type(block.bounding_box) == list:
-            for coordinate in coordinates_object:
+        if isinstance(block.bounding_box, list):
+            for coordinate in block.bounding_box:
                 x = _convert_bbox_units(
                     coordinate[f"{block.bounding_x}"],
                     input_bbox_units=block.bounding_unit,
@@ -232,44 +220,36 @@ def _convert_bbox_to_docproto_bbox(block) -> geometry.BoundingPoly:
                     multiplier=y_multiplier,
                 )
 
-                coordinates.append({"x": x, "y": y})
-
-            coordinates_object = coordinates
+                normalized_vertices.append(documentai.NormalizedVertex(x=x, y=y))
 
     elif block.bounding_type == "2":
         # Type 2 : bounding box has 1 (x,y) coordinates for the top left corner
         #          and (width, height)
-        original_x = coordinates_object[f"{block.bounding_x}"]
-        original_y = coordinates_object[f"{block.bounding_y}"]
-
-        x = _convert_bbox_units(
-            original_x,
+        x_min = _convert_bbox_units(
+            block.bounding_box[f"{block.bounding_x}"],
             input_bbox_units=block.bounding_unit,
             width=block.page_width,
             multiplier=x_multiplier,
         )
-        y = _convert_bbox_units(
-            original_y,
+        y_min = _convert_bbox_units(
+            block.bounding_box[f"{block.bounding_y}"],
             input_bbox_units=block.bounding_unit,
             width=block.page_height,
             multiplier=y_multiplier,
         )
-
-        # x_min_y_min
-        coordinates.append({"x": x, "y": y})
-        # x_max_y_min
-        coordinates.append({"x": (x + block.bounding_width), "y": y})
-        # x_max_y_max
-        coordinates.append(
-            {"x": (x + block.bounding_width), "y": (y + block.bounding_height)}
+        x_max = x_min + block.bounding_width
+        y_max = y_min + block.bounding_height
+        normalized_vertices.extend(
+            [
+                documentai.NormalizedVertex(x=x_min, y=y_min),
+                documentai.NormalizedVertex(x=x_max, y=y_min),
+                documentai.NormalizedVertex(x=x_max, y=y_max),
+                documentai.NormalizedVertex(x=x_min, y=y_max),
+            ]
         )
-        # x_min_y_max
-        coordinates.append({"x": x, "y": (y + block.bounding_height)})
 
-        coordinates_object = coordinates
     elif block.bounding_type == "3":
-        # Type 2 : bounding box has 1 (x,y) coordinates for the top left corner
-        #          and (width, height)
+        #   Type 3 : bounding_box: [x1, y1, x2, y2, x3, y3, x4, y4]
         for idx in range(0, len(block.bounding_box), 2):
             x = _convert_bbox_units(
                 block.bounding_box[idx],
@@ -283,14 +263,6 @@ def _convert_bbox_to_docproto_bbox(block) -> geometry.BoundingPoly:
                 width=block.docproto_height,
                 multiplier=y_multiplier,
             )
+            normalized_vertices.append(documentai.NormalizedVertex(x=x, y=y))
 
-            coordinates.append({"x": x, "y": y})
-
-        coordinates_object = coordinates
-
-    for coordinates in coordinates_object:
-        nv.append(documentai.NormalizedVertex(x=coordinates["x"], y=coordinates["y"]))
-
-    merged_bbox.normalized_vertices = nv
-
-    return merged_bbox
+    return documentai.BoundingPoly(normalized_vertices=normalized_vertices)

@@ -18,18 +18,8 @@ from google.cloud.documentai_toolbox import version as package_version
 
 __version__ = package_version.__version__
 
-from .wrappers import (
-    document,
-    page,
-    entity,
-)
+from .converters import converter
+from .utilities import docai_utilities, gcs_utilities
+from .wrappers import document, entity, page
 
-from .converters import (
-    converter,
-)
-
-from .utilities import (
-    gcs_utilities,
-)
-
-__all__ = (document, page, entity, converter, gcs_utilities)
+__all__ = (document, page, entity, converter, docai_utilities, gcs_utilities)

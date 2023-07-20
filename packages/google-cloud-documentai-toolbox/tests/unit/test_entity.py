@@ -17,9 +17,7 @@
 import pytest
 
 from google.cloud import documentai
-
-from google.cloud.documentai_toolbox import document
-from google.cloud.documentai_toolbox import entity
+from google.cloud.documentai_toolbox import document, entity
 
 
 @pytest.fixture
