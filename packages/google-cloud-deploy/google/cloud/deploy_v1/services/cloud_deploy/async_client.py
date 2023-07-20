@@ -427,8 +427,7 @@ class CloudDeployAsyncClient:
 
         Returns:
             google.cloud.deploy_v1.types.DeliveryPipeline:
-                A DeliveryPipeline resource in the Google Cloud Deploy
-                API.
+                A DeliveryPipeline resource in the Cloud Deploy API.
 
                    A DeliveryPipeline defines a pipeline through which a
                    Skaffold configuration can progress.
@@ -565,8 +564,7 @@ class CloudDeployAsyncClient:
 
                 The result type for the operation will be
                 :class:`google.cloud.deploy_v1.types.DeliveryPipeline` A
-                DeliveryPipeline resource in the Google Cloud Deploy
-                API.
+                DeliveryPipeline resource in the Cloud Deploy API.
 
                    A DeliveryPipeline defines a pipeline through which a
                    Skaffold configuration can progress.
@@ -701,8 +699,7 @@ class CloudDeployAsyncClient:
 
                 The result type for the operation will be
                 :class:`google.cloud.deploy_v1.types.DeliveryPipeline` A
-                DeliveryPipeline resource in the Google Cloud Deploy
-                API.
+                DeliveryPipeline resource in the Cloud Deploy API.
 
                    A DeliveryPipeline defines a pipeline through which a
                    Skaffold configuration can progress.
@@ -1066,7 +1063,7 @@ class CloudDeployAsyncClient:
 
         Returns:
             google.cloud.deploy_v1.types.Target:
-                A Target resource in the Google Cloud Deploy API.
+                A Target resource in the Cloud Deploy API.
 
                    A Target defines a location to which a Skaffold
                    configuration can be deployed.
@@ -1200,7 +1197,7 @@ class CloudDeployAsyncClient:
 
                 The result type for the operation will be
                 :class:`google.cloud.deploy_v1.types.Target` A Target
-                resource in the Google Cloud Deploy API.
+                resource in the Cloud Deploy API.
 
                    A Target defines a location to which a Skaffold
                    configuration can be deployed.
@@ -1332,7 +1329,7 @@ class CloudDeployAsyncClient:
 
                 The result type for the operation will be
                 :class:`google.cloud.deploy_v1.types.Target` A Target
-                resource in the Google Cloud Deploy API.
+                resource in the Cloud Deploy API.
 
                    A Target defines a location to which a Skaffold
                    configuration can be deployed.
@@ -1693,7 +1690,7 @@ class CloudDeployAsyncClient:
 
         Returns:
             google.cloud.deploy_v1.types.Release:
-                A Release resource in the Google Cloud Deploy API.
+                A Release resource in the Cloud Deploy API.
 
                    A Release defines a specific Skaffold configuration
                    instance that can be deployed.
@@ -1828,7 +1825,7 @@ class CloudDeployAsyncClient:
 
                 The result type for the operation will be
                 :class:`google.cloud.deploy_v1.types.Release` A Release
-                resource in the Google Cloud Deploy API.
+                resource in the Cloud Deploy API.
 
                    A Release defines a specific Skaffold configuration
                    instance that can be deployed.
@@ -2482,7 +2479,7 @@ class CloudDeployAsyncClient:
 
         Returns:
             google.cloud.deploy_v1.types.Rollout:
-                A Rollout resource in the Google Cloud Deploy API.
+                A Rollout resource in the Cloud Deploy API.
 
                    A Rollout contains information around a specific
                    deployment to a Target.
@@ -2622,7 +2619,7 @@ class CloudDeployAsyncClient:
 
                 The result type for the operation will be
                 :class:`google.cloud.deploy_v1.types.Rollout` A Rollout
-                resource in the Google Cloud Deploy API.
+                resource in the Cloud Deploy API.
 
                    A Rollout contains information around a specific
                    deployment to a Target.
@@ -3109,7 +3106,7 @@ class CloudDeployAsyncClient:
 
         Returns:
             google.cloud.deploy_v1.types.JobRun:
-                A JobRun resource in the Google Cloud Deploy API.
+                A JobRun resource in the Cloud Deploy API.
 
                    A JobRun contains information of a single Rollout job
                    evaluation.
