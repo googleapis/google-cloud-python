@@ -40,10 +40,11 @@ setuptools.setup(
     author='Google Cloud Platform',
     author_email='googleapis-publisher@google.com',
     long_description=README,
-    namespace_packages=['google'],
     scripts=[],
     url='https://github.com/googleapis/google-resumable-media-python',
-    packages=setuptools.find_packages(exclude=('tests*',)),
+    packages=setuptools.find_namespace_packages(
+        exclude=("tests*", "docs*")
+    ),
     license='Apache 2.0',
     platforms='Posix; MacOS X; Windows',
     include_package_data=True,

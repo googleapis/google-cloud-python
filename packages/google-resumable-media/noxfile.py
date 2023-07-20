@@ -198,7 +198,7 @@ def mypy(session):
         "types-requests",
         "types-mock",
     )
-    session.run("mypy", "google/", "tests/", "tests_async/")
+    session.run("mypy", "-p", "google", "-p", "tests", "-p", "tests_async")
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
