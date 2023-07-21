@@ -602,6 +602,16 @@ class CryptoKeyVersion(proto.Message):
             AES_256_GCM (19):
                 AES-GCM (Galois Counter Mode) using 256-bit
                 keys.
+            AES_128_CBC (42):
+                AES-CBC (Cipher Block Chaining Mode) using
+                128-bit keys.
+            AES_256_CBC (43):
+                AES-CBC (Cipher Block Chaining Mode) using
+                256-bit keys.
+            AES_128_CTR (44):
+                AES-CTR (Counter Mode) using 128-bit keys.
+            AES_256_CTR (45):
+                AES-CTR (Counter Mode) using 256-bit keys.
             RSA_SIGN_PSS_2048_SHA256 (2):
                 RSASSA-PSS 2048 bit key with a SHA256 digest.
             RSA_SIGN_PSS_3072_SHA256 (3):
@@ -672,6 +682,10 @@ class CryptoKeyVersion(proto.Message):
         GOOGLE_SYMMETRIC_ENCRYPTION = 1
         AES_128_GCM = 41
         AES_256_GCM = 19
+        AES_128_CBC = 42
+        AES_256_CBC = 43
+        AES_128_CTR = 44
+        AES_256_CTR = 45
         RSA_SIGN_PSS_2048_SHA256 = 2
         RSA_SIGN_PSS_3072_SHA256 = 3
         RSA_SIGN_PSS_4096_SHA256 = 4
