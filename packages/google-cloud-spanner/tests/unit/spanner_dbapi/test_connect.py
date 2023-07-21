@@ -86,7 +86,7 @@ class Test_connect(unittest.TestCase):
             project=PROJECT,
             credentials=credentials,
             client_info=mock.ANY,
-            route_to_leader_enabled=False,
+            route_to_leader_enabled=True,
         )
         client_info = mock_client.call_args_list[0][1]["client_info"]
         self.assertEqual(client_info.user_agent, USER_AGENT)
@@ -120,7 +120,7 @@ class Test_connect(unittest.TestCase):
             credentials_path,
             project=PROJECT,
             client_info=mock.ANY,
-            route_to_leader_enabled=False,
+            route_to_leader_enabled=True,
         )
         client_info = factory.call_args_list[0][1]["client_info"]
         self.assertEqual(client_info.user_agent, USER_AGENT)

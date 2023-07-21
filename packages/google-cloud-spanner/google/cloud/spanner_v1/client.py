@@ -116,10 +116,9 @@ class Client(ClientWithProject):
 
     :type route_to_leader_enabled: boolean
     :param route_to_leader_enabled:
-        (Optional) Default False. Set route_to_leader_enabled as True to
-                   Enable leader aware routing. Enabling leader aware routing
-                   would route all requests in RW/PDML transactions to the
-                   leader region.
+        (Optional) Default True. Set route_to_leader_enabled as False to
+        disable leader aware routing. Disabling leader aware routing would
+        route all requests in RW/PDML transactions to the closest region.
 
     :raises: :class:`ValueError <exceptions.ValueError>` if both ``read_only``
              and ``admin`` are :data:`True`
@@ -139,7 +138,7 @@ class Client(ClientWithProject):
         client_info=_CLIENT_INFO,
         client_options=None,
         query_options=None,
-        route_to_leader_enabled=False,
+        route_to_leader_enabled=True,
     ):
         self._emulator_host = _get_spanner_emulator_host()
 
