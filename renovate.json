@@ -4,8 +4,5 @@
     "group:all",
     ":disableDependencyDashboard",
     "schedule:weekly"
-  ],
-  "ignorePaths": [
-    ".kokoro/requirements.txt"
   ]
 }
