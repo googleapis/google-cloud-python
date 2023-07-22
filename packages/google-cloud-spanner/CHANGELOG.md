@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.38.0](https://github.com/googleapis/python-spanner/compare/v3.37.0...v3.38.0) (2023-07-21)
+
+
+### Features
+
+* Set LAR as False ([#980](https://github.com/googleapis/python-spanner/issues/980)) ([75e8a59](https://github.com/googleapis/python-spanner/commit/75e8a59ff5d7f15088b9c4ba5961345746e35bcc))
+
 ## [3.37.0](https://github.com/googleapis/python-spanner/compare/v3.36.0...v3.37.0) (2023-07-21)
 
 
