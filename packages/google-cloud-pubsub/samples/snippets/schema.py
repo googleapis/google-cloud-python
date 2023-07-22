@@ -727,7 +727,7 @@ def subscribe_with_proto_schema(
         # Deserialize the message data accordingly.
         if encoding == "BINARY":
             state.ParseFromString(message.data)
-            print("Received a binary-encoded message:\n{state}")
+            print(f"Received a binary-encoded message:\n{state}")
         elif encoding == "JSON":
             Parse(message.data, state)
             print(f"Received a JSON-encoded message:\n{state}")
