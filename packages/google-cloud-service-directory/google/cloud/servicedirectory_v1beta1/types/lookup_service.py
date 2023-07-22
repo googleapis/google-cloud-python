@@ -76,7 +76,10 @@ class ResolveServiceRequest(proto.Message):
             ``name>projects/my-project/locations/us-east1/namespaces/my-namespace/services/my-service/endpoints/endpoint-c``
             returns endpoints that have name that is alphabetically
             later than the string, so "endpoint-e" is returned but
-            "endpoint-a" is not
+            "endpoint-a" is not \*
+            ``name=projects/my-project/locations/us-central1/namespaces/my-namespace/services/my-service/endpoints/ep-1``
+            returns the endpoint that has an endpoint_id equal to
+            ``ep-1``
 
             -  ``metadata.owner!=sd AND metadata.foo=bar`` returns
                endpoints that have ``owner`` in annotation key but value

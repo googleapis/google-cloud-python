@@ -70,11 +70,6 @@ class Endpoint(proto.Message):
                by dots (.), not longer than 253 characters in total,
                followed by a slash (/). Metadata that fails to meet
                these requirements are rejected
-            -  The ``(*.)google.com/`` and ``(*.)googleapis.com/``
-               prefixes are reserved for system metadata managed by
-               Service Directory. If the user tries to write to these
-               keyspaces, those entries are silently ignored by the
-               system
 
             Note: This field is equivalent to the ``annotations`` field
             in the v1 API. They have the same syntax and read/write to
@@ -94,6 +89,9 @@ class Endpoint(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the endpoint
             was last updated.
+        uid (str):
+            Output only. A globally unique identifier (in
+            UUID4 format) for this endpoint.
     """
 
     name: str = proto.Field(
@@ -126,6 +124,10 @@ class Endpoint(proto.Message):
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 

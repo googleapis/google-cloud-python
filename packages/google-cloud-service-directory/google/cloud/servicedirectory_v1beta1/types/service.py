@@ -59,11 +59,6 @@ class Service(proto.Message):
                by dots (.), not longer than 253 characters in total,
                followed by a slash (/). Metadata that fails to meet
                these requirements are rejected
-            -  The ``(*.)google.com/`` and ``(*.)googleapis.com/``
-               prefixes are reserved for system metadata managed by
-               Service Directory. If the user tries to write to these
-               keyspaces, those entries are silently ignored by the
-               system
 
             Note: This field is equivalent to the ``annotations`` field
             in the v1 API. They have the same syntax and read/write to
@@ -79,10 +74,14 @@ class Service(proto.Message):
             was created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the service
-            was last updated. Note: endpoints being
-            created/deleted/updated within the service are
-            not considered service updates for the purpose
-            of this timestamp.
+            was last updated. Note:
+
+            endpoints being created/deleted/updated within
+            the service are not considered service updates
+            for the purpose of this timestamp.
+        uid (str):
+            Output only. A globally unique identifier (in
+            UUID4 format) for this service.
     """
 
     name: str = proto.Field(
@@ -108,6 +107,10 @@ class Service(proto.Message):
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 
