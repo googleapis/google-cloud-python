@@ -1028,6 +1028,7 @@ class MysqlColumn(proto.Message):
         data_type (str):
             The MySQL data type. Full data types list can
             be found here:
+
             https://dev.mysql.com/doc/refman/8.0/en/data-types.html
         length (int):
             Column length.
@@ -1042,6 +1043,10 @@ class MysqlColumn(proto.Message):
         ordinal_position (int):
             The ordinal position of the column in the
             table.
+        precision (int):
+            Column precision.
+        scale (int):
+            Column scale.
     """
 
     column: str = proto.Field(
@@ -1071,6 +1076,14 @@ class MysqlColumn(proto.Message):
     ordinal_position: int = proto.Field(
         proto.INT32,
         number=7,
+    )
+    precision: int = proto.Field(
+        proto.INT32,
+        number=8,
+    )
+    scale: int = proto.Field(
+        proto.INT32,
+        number=9,
     )
 
 
