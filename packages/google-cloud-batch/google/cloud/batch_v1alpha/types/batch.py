@@ -164,8 +164,8 @@ class ListJobsRequest(proto.Message):
         filter (str):
             List filter.
         order_by (str):
-            Sort results. Supported are "name", "name desc",
-            "create_time", "create_time desc", and "".
+            Optional. Sort results. Supported are "name", "name desc",
+            "create_time", and "create_time desc".
         page_size (int):
             Page size.
         page_token (str):
@@ -238,8 +238,7 @@ class ListTasksRequest(proto.Message):
             Filter string should be of the format
             State=TaskStatus.State e.g. State=RUNNING
         order_by (str):
-            Sort results. Supported are "name", "name desc",
-            "create_time", "create_time desc", and "".
+            Not implemented.
         page_size (int):
             Page size.
         page_token (str):
