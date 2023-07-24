@@ -39,6 +39,8 @@ __protobuf__ = proto.module(
         "NodeConfig",
         "AdvancedMachineFeatures",
         "NodeNetworkConfig",
+        "AdditionalNodeNetworkConfig",
+        "AdditionalPodNetworkConfig",
         "ShieldedInstanceConfig",
         "SandboxConfig",
         "EphemeralStorageConfig",
@@ -47,6 +49,7 @@ __protobuf__ = proto.module(
         "GcfsConfig",
         "ReservationAffinity",
         "SoleTenantConfig",
+        "HostMaintenancePolicy",
         "NodeTaint",
         "NodeTaints",
         "NodeLabels",
@@ -687,6 +690,10 @@ class NodeConfig(proto.Message):
         sole_tenant_config (google.cloud.container_v1beta1.types.SoleTenantConfig):
             Parameters for node pools to be backed by
             shared sole tenant node groups.
+        host_maintenance_policy (google.cloud.container_v1beta1.types.HostMaintenancePolicy):
+            HostMaintenancePolicy contains the desired
+            maintenance policy for the Google Compute Engine
+            hosts.
     """
 
     machine_type: str = proto.Field(
@@ -852,6 +859,11 @@ class NodeConfig(proto.Message):
         number=42,
         message="SoleTenantConfig",
     )
+    host_maintenance_policy: "HostMaintenancePolicy" = proto.Field(
+        proto.MESSAGE,
+        number=44,
+        message="HostMaintenancePolicy",
+    )
 
 
 class AdvancedMachineFeatures(proto.Message):
@@ -953,6 +965,15 @@ class NodeNetworkConfig(proto.Message):
             off to next power of 2) Example: max_pods_per_node of 30
             will result in 32 IPs (/27) when overprovisioning is
             disabled.
+        additional_node_network_configs (MutableSequence[google.cloud.container_v1beta1.types.AdditionalNodeNetworkConfig]):
+            We specify the additional node networks for
+            this node pool using this list. Each node
+            network corresponds to an additional interface
+        additional_pod_network_configs (MutableSequence[google.cloud.container_v1beta1.types.AdditionalPodNetworkConfig]):
+            We specify the additional pod networks for
+            this node pool using this list. Each pod network
+            corresponds to an additional alias IP range for
+            the node
         pod_ipv4_range_utilization (float):
             Output only. [Output only] The utilization of the IPv4 range
             for the pod. The ratio is Usage/[Total number of IPs in the
@@ -1032,9 +1053,83 @@ class NodeNetworkConfig(proto.Message):
         number=13,
         message="PodCIDROverprovisionConfig",
     )
+    additional_node_network_configs: MutableSequence[
+        "AdditionalNodeNetworkConfig"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=14,
+        message="AdditionalNodeNetworkConfig",
+    )
+    additional_pod_network_configs: MutableSequence[
+        "AdditionalPodNetworkConfig"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=15,
+        message="AdditionalPodNetworkConfig",
+    )
     pod_ipv4_range_utilization: float = proto.Field(
         proto.DOUBLE,
         number=16,
+    )
+
+
+class AdditionalNodeNetworkConfig(proto.Message):
+    r"""AdditionalNodeNetworkConfig is the configuration for
+    additional node networks within the NodeNetworkConfig message
+
+    Attributes:
+        network (str):
+            Name of the VPC where the additional
+            interface belongs
+        subnetwork (str):
+            Name of the subnetwork where the additional
+            interface belongs
+    """
+
+    network: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    subnetwork: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class AdditionalPodNetworkConfig(proto.Message):
+    r"""AdditionalPodNetworkConfig is the configuration for
+    additional pod networks within the NodeNetworkConfig message
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        subnetwork (str):
+            Name of the subnetwork where the additional
+            pod network belongs
+        secondary_pod_range (str):
+            The name of the secondary range on the subnet
+            which provides IP address for this pod range
+        max_pods_per_node (google.cloud.container_v1beta1.types.MaxPodsConstraint):
+            The maximum number of pods per node which use
+            this pod network
+
+            This field is a member of `oneof`_ ``_max_pods_per_node``.
+    """
+
+    subnetwork: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    secondary_pod_range: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    max_pods_per_node: "MaxPodsConstraint" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        optional=True,
+        message="MaxPodsConstraint",
     )
 
 
@@ -1300,6 +1395,56 @@ class SoleTenantConfig(proto.Message):
         proto.MESSAGE,
         number=1,
         message=NodeAffinity,
+    )
+
+
+class HostMaintenancePolicy(proto.Message):
+    r"""HostMaintenancePolicy contains the maintenance policy for the
+    hosts on which the GKE VMs run on.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        maintenance_interval (google.cloud.container_v1beta1.types.HostMaintenancePolicy.MaintenanceInterval):
+            Specifies the frequency of planned
+            maintenance events.
+
+            This field is a member of `oneof`_ ``_maintenance_interval``.
+    """
+
+    class MaintenanceInterval(proto.Enum):
+        r"""Allows selecting how infrastructure upgrades should be
+        applied to the cluster or node pool.
+
+        Values:
+            MAINTENANCE_INTERVAL_UNSPECIFIED (0):
+                The maintenance interval is not explicitly
+                specified.
+            AS_NEEDED (1):
+                Nodes are eligible to receive infrastructure
+                and hypervisor updates as they become available.
+                This may result in more maintenance operations
+                (live migrations or terminations) for the node
+                than the PERIODIC option.
+            PERIODIC (2):
+                Nodes receive infrastructure and hypervisor updates on a
+                periodic basis, minimizing the number of maintenance
+                operations (live migrations or terminations) on an
+                individual VM. This may mean underlying VMs will take longer
+                to receive an update than if it was configured for
+                AS_NEEDED. Security updates will still be applied as soon as
+                they are available.
+        """
+        MAINTENANCE_INTERVAL_UNSPECIFIED = 0
+        AS_NEEDED = 1
+        PERIODIC = 2
+
+    maintenance_interval: MaintenanceInterval = proto.Field(
+        proto.ENUM,
+        number=1,
+        optional=True,
+        enum=MaintenanceInterval,
     )
 
 
@@ -3474,6 +3619,10 @@ class NodeConfigDefaults(proto.Message):
             known as Riptide) options.
         logging_config (google.cloud.container_v1beta1.types.NodePoolLoggingConfig):
             Logging configuration for node pools.
+        host_maintenance_policy (google.cloud.container_v1beta1.types.HostMaintenancePolicy):
+            HostMaintenancePolicy contains the desired
+            maintenance policy for the Google Compute Engine
+            hosts.
     """
 
     gcfs_config: "GcfsConfig" = proto.Field(
@@ -3485,6 +3634,11 @@ class NodeConfigDefaults(proto.Message):
         proto.MESSAGE,
         number=3,
         message="NodePoolLoggingConfig",
+    )
+    host_maintenance_policy: "HostMaintenancePolicy" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="HostMaintenancePolicy",
     )
 
 
@@ -3751,6 +3905,10 @@ class ClusterUpdate(proto.Message):
             the autopilot cluster.
         desired_k8s_beta_apis (google.cloud.container_v1beta1.types.K8sBetaAPIConfig):
             Beta APIs enabled for cluster.
+        desired_host_maintenance_policy (google.cloud.container_v1beta1.types.HostMaintenancePolicy):
+            HostMaintenancePolicy contains the desired
+            maintenance policy for the Google Compute Engine
+            hosts.
     """
 
     desired_node_version: str = proto.Field(
@@ -4027,6 +4185,11 @@ class ClusterUpdate(proto.Message):
         proto.MESSAGE,
         number=131,
         message="K8sBetaAPIConfig",
+    )
+    desired_host_maintenance_policy: "HostMaintenancePolicy" = proto.Field(
+        proto.MESSAGE,
+        number=132,
+        message="HostMaintenancePolicy",
     )
 
 
@@ -6314,6 +6477,12 @@ class NodePool(proto.Message):
             tpu_topology (str):
                 TPU placement topology for pod slice node pool.
                 https://cloud.google.com/tpu/docs/types-topologies#tpu_topologies
+            policy_name (str):
+                If set, refers to the name of a custom
+                resource policy supplied by the user. The
+                resource policy must be in the same project and
+                region as the node pool. If not found,
+                InvalidArgument error is returned.
         """
 
         class Type(proto.Enum):
@@ -6339,6 +6508,10 @@ class NodePool(proto.Message):
         tpu_topology: str = proto.Field(
             proto.STRING,
             number=2,
+        )
+        policy_name: str = proto.Field(
+            proto.STRING,
+            number=3,
         )
 
     name: str = proto.Field(
@@ -8008,6 +8181,9 @@ class NetworkConfig(proto.Message):
         gateway_api_config (google.cloud.container_v1beta1.types.GatewayAPIConfig):
             GatewayAPIConfig contains the desired config
             of Gateway API on this cluster.
+        enable_multi_networking (bool):
+            Whether multi-networking is enabled for this
+            cluster.
         network_performance_config (google.cloud.container_v1beta1.types.NetworkConfig.ClusterNetworkPerformanceConfig):
             Network bandwidth tier configuration.
         enable_fqdn_network_policy (bool):
@@ -8095,6 +8271,10 @@ class NetworkConfig(proto.Message):
         proto.MESSAGE,
         number=16,
         message="GatewayAPIConfig",
+    )
+    enable_multi_networking: bool = proto.Field(
+        proto.BOOL,
+        number=17,
     )
     network_performance_config: ClusterNetworkPerformanceConfig = proto.Field(
         proto.MESSAGE,

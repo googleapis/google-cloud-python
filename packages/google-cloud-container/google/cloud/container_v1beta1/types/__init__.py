@@ -15,6 +15,8 @@
 #
 from .cluster_service import (
     AcceleratorConfig,
+    AdditionalNodeNetworkConfig,
+    AdditionalPodNetworkConfig,
     AdditionalPodRangesConfig,
     AddonsConfig,
     AdvancedDatapathObservabilityConfig,
@@ -72,6 +74,7 @@ from .cluster_service import (
     GPUDriverInstallationConfig,
     GPUSharingConfig,
     HorizontalPodAutoscaling,
+    HostMaintenancePolicy,
     HttpLoadBalancing,
     IdentityServiceConfig,
     ILBSubsettingConfig,
@@ -192,6 +195,8 @@ from .cluster_service import (
 
 __all__ = (
     "AcceleratorConfig",
+    "AdditionalNodeNetworkConfig",
+    "AdditionalPodNetworkConfig",
     "AdditionalPodRangesConfig",
     "AddonsConfig",
     "AdvancedDatapathObservabilityConfig",
@@ -248,6 +253,7 @@ __all__ = (
     "GPUDriverInstallationConfig",
     "GPUSharingConfig",
     "HorizontalPodAutoscaling",
+    "HostMaintenancePolicy",
     "HttpLoadBalancing",
     "IdentityServiceConfig",
     "ILBSubsettingConfig",

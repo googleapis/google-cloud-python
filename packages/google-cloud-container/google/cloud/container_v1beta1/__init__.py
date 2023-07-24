@@ -21,6 +21,8 @@ __version__ = package_version.__version__
 from .services.cluster_manager import ClusterManagerAsyncClient, ClusterManagerClient
 from .types.cluster_service import (
     AcceleratorConfig,
+    AdditionalNodeNetworkConfig,
+    AdditionalPodNetworkConfig,
     AdditionalPodRangesConfig,
     AddonsConfig,
     AdvancedDatapathObservabilityConfig,
@@ -78,6 +80,7 @@ from .types.cluster_service import (
     GPUDriverInstallationConfig,
     GPUSharingConfig,
     HorizontalPodAutoscaling,
+    HostMaintenancePolicy,
     HttpLoadBalancing,
     IdentityServiceConfig,
     ILBSubsettingConfig,
@@ -199,6 +202,8 @@ from .types.cluster_service import (
 __all__ = (
     "ClusterManagerAsyncClient",
     "AcceleratorConfig",
+    "AdditionalNodeNetworkConfig",
+    "AdditionalPodNetworkConfig",
     "AdditionalPodRangesConfig",
     "AddonsConfig",
     "AdvancedDatapathObservabilityConfig",
@@ -257,6 +262,7 @@ __all__ = (
     "GetServerConfigRequest",
     "GkeBackupAgentConfig",
     "HorizontalPodAutoscaling",
+    "HostMaintenancePolicy",
     "HttpLoadBalancing",
     "ILBSubsettingConfig",
     "IPAllocationPolicy",
