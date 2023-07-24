@@ -106,8 +106,8 @@ class ListNamespacesRequest(proto.Message):
             General ``filter`` string syntax:
             ``<field> <operator> <value> (<logical connector>)``
 
-            -  ``<field>`` can be ``name`` or ``labels.<key>`` for map
-               field
+            -  ``<field>`` can be ``name``, ``labels.<key>`` for map
+               field, or ``attributes.<field>`` for attributes field
             -  ``<operator>`` can be ``<``, ``>``, ``<=``, ``>=``,
                ``!=``, ``=``, ``:``. Of which ``:`` means ``HAS``, and
                is roughly the same as ``=``
@@ -132,6 +132,8 @@ class ListNamespacesRequest(proto.Message):
                namespace doesn't have a field called "doesnotexist".
                Since the filter does not match any namespaces, it
                returns no results
+            -  ``attributes.managed_registration=true`` returns
+               namespaces that are managed by a GCP product or service
 
             For more information about filtering, see `API
             Filtering <https://aip.dev/160>`__.
@@ -339,6 +341,8 @@ class ListServicesRequest(proto.Message):
                service doesn't have a field called "doesnotexist". Since
                the filter does not match any services, it returns no
                results
+            -  ``attributes.managed_registration=true`` returns services
+               that are managed by a GCP product or service
 
             For more information about filtering, see `API
             Filtering <https://aip.dev/160>`__.
@@ -409,7 +413,7 @@ class ListServicesResponse(proto.Message):
 class GetServiceRequest(proto.Message):
     r"""The request message for
     [RegistrationService.GetService][google.cloud.servicedirectory.v1beta1.RegistrationService.GetService].
-    This should not be used for looking up a service. Insead, use the
+    This should not be used for looking up a service. Instead, use the
     ``resolve`` method as it contains all endpoints and associated
     metadata.
 
@@ -518,8 +522,9 @@ class ListEndpointsRequest(proto.Message):
             General ``filter`` string syntax:
             ``<field> <operator> <value> (<logical connector>)``
 
-            -  ``<field>`` can be ``name``, ``address``, ``port``, or
-               ``metadata.<key>`` for map field
+            -  ``<field>`` can be ``name``, ``address``, ``port``,
+               ``metadata.<key>`` for map field, or
+               ``attributes.<field>`` for attributes field
             -  ``<operator>`` can be ``<``, ``>``, ``<=``, ``>=``,
                ``!=``, ``=``, ``:``. Of which ``:`` means ``HAS``, and
                is roughly the same as ``=``
@@ -551,6 +556,9 @@ class ListEndpointsRequest(proto.Message):
                endpoint doesn't have a field called "doesnotexist".
                Since the filter does not match any endpoints, it returns
                no results
+            -  ``attributes.kubernetes_resource_type=KUBERNETES_RESOURCE_TYPE_CLUSTER_ IP``
+               returns endpoints with the corresponding
+               kubernetes_resource_type
 
             For more information about filtering, see `API
             Filtering <https://aip.dev/160>`__.

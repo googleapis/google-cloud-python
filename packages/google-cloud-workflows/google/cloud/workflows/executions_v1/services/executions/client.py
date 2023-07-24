@@ -749,6 +749,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
             name (str):
                 Required. Name of the execution to be
                 retrieved. Format:
+
                 projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
 
                 This corresponds to the ``name`` field
@@ -853,6 +854,7 @@ class ExecutionsClient(metaclass=ExecutionsClientMeta):
             name (str):
                 Required. Name of the execution to be
                 cancelled. Format:
+
                 projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
 
                 This corresponds to the ``name`` field

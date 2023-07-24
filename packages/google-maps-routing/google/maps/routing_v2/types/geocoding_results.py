@@ -87,6 +87,7 @@ class GeocodedWaypoint(proto.Message):
         type_ (MutableSequence[str]):
             The type(s) of the result, in the form of
             zero or more type tags. Supported types:
+
             https://developers.google.com/maps/documentation/geocoding/requests-geocoding#Types
         partial_match (bool):
             Indicates that the geocoder did not return an

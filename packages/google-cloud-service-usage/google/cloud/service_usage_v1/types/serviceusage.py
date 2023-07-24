@@ -260,6 +260,7 @@ class BatchEnableServicesRequest(proto.Message):
             The identifiers of the services to enable on
             the project.
             A valid identifier would be:
+
             serviceusage.googleapis.com
 
             Enabling services requires that each service is

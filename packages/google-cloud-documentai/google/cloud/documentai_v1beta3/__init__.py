@@ -24,8 +24,8 @@ from .services.document_processor_service import (
 )
 from .services.document_service import DocumentServiceAsyncClient, DocumentServiceClient
 from .types.barcode import Barcode
-from .types.dataset import Dataset, DatasetSchema
-from .types.document import Document
+from .types.dataset import BatchDatasetDocuments, Dataset, DatasetSchema, DocumentId
+from .types.document import Document, RevisionRef
 from .types.document_io import (
     BatchDocumentsInputConfig,
     DocumentOutputConfig,
@@ -92,7 +92,17 @@ from .types.document_processor_service import (
 )
 from .types.document_schema import DocumentSchema, EntityTypeMetadata, PropertyMetadata
 from .types.document_service import (
+    BatchDeleteDocumentsMetadata,
+    BatchDeleteDocumentsRequest,
+    BatchDeleteDocumentsResponse,
+    DatasetSplitType,
+    DocumentPageRange,
     GetDatasetSchemaRequest,
+    GetDocumentRequest,
+    GetDocumentResponse,
+    ImportDocumentsMetadata,
+    ImportDocumentsRequest,
+    ImportDocumentsResponse,
     UpdateDatasetOperationMetadata,
     UpdateDatasetRequest,
     UpdateDatasetSchemaRequest,
@@ -107,6 +117,10 @@ __all__ = (
     "DocumentProcessorServiceAsyncClient",
     "DocumentServiceAsyncClient",
     "Barcode",
+    "BatchDatasetDocuments",
+    "BatchDeleteDocumentsMetadata",
+    "BatchDeleteDocumentsRequest",
+    "BatchDeleteDocumentsResponse",
     "BatchDocumentsInputConfig",
     "BatchProcessMetadata",
     "BatchProcessRequest",
@@ -116,6 +130,7 @@ __all__ = (
     "CreateProcessorRequest",
     "Dataset",
     "DatasetSchema",
+    "DatasetSplitType",
     "DeleteProcessorMetadata",
     "DeleteProcessorRequest",
     "DeleteProcessorVersionMetadata",
@@ -127,7 +142,9 @@ __all__ = (
     "DisableProcessorRequest",
     "DisableProcessorResponse",
     "Document",
+    "DocumentId",
     "DocumentOutputConfig",
+    "DocumentPageRange",
     "DocumentProcessorServiceClient",
     "DocumentSchema",
     "DocumentServiceClient",
@@ -146,11 +163,16 @@ __all__ = (
     "GcsDocuments",
     "GcsPrefix",
     "GetDatasetSchemaRequest",
+    "GetDocumentRequest",
+    "GetDocumentResponse",
     "GetEvaluationRequest",
     "GetProcessorRequest",
     "GetProcessorTypeRequest",
     "GetProcessorVersionRequest",
     "HumanReviewStatus",
+    "ImportDocumentsMetadata",
+    "ImportDocumentsRequest",
+    "ImportDocumentsResponse",
     "ImportProcessorVersionMetadata",
     "ImportProcessorVersionRequest",
     "ImportProcessorVersionResponse",
@@ -175,6 +197,7 @@ __all__ = (
     "ReviewDocumentOperationMetadata",
     "ReviewDocumentRequest",
     "ReviewDocumentResponse",
+    "RevisionRef",
     "SetDefaultProcessorVersionMetadata",
     "SetDefaultProcessorVersionRequest",
     "SetDefaultProcessorVersionResponse",

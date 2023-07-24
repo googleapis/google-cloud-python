@@ -139,7 +139,7 @@ class SkaffoldSupportState(proto.Enum):
 
 
 class DeliveryPipeline(proto.Message):
-    r"""A ``DeliveryPipeline`` resource in the Google Cloud Deploy API.
+    r"""A ``DeliveryPipeline`` resource in the Cloud Deploy API.
 
     A ``DeliveryPipeline`` defines a pipeline through which a Skaffold
     configuration can progress.
@@ -159,12 +159,12 @@ class DeliveryPipeline(proto.Message):
             characters.
         annotations (MutableMapping[str, str]):
             User annotations. These attributes can only
-            be set and used by the user, and not by Google
-            Cloud Deploy.
+            be set and used by the user, and not by Cloud
+            Deploy.
         labels (MutableMapping[str, str]):
             Labels are attributes that can be set and used by both the
-            user and by Google Cloud Deploy. Labels must meet the
-            following constraints:
+            user and by Cloud Deploy. Labels must meet the following
+            constraints:
 
             -  Keys and values can contain only lowercase letters,
                numeric characters, underscores, and dashes.
@@ -1097,7 +1097,7 @@ class DeleteDeliveryPipelineRequest(proto.Message):
 
 
 class Target(proto.Message):
-    r"""A ``Target`` resource in the Google Cloud Deploy API.
+    r"""A ``Target`` resource in the Cloud Deploy API.
 
     A ``Target`` defines a location to which a Skaffold configuration
     can be deployed.
@@ -1123,13 +1123,13 @@ class Target(proto.Message):
         annotations (MutableMapping[str, str]):
             Optional. User annotations. These attributes
             can only be set and used by the user, and not by
-            Google Cloud Deploy. See
+            Cloud Deploy. See
             https://google.aip.dev/128#annotations for more
             details such as format and size limitations.
         labels (MutableMapping[str, str]):
             Optional. Labels are attributes that can be set and used by
-            both the user and by Google Cloud Deploy. Labels must meet
-            the following constraints:
+            both the user and by Cloud Deploy. Labels must meet the
+            following constraints:
 
             -  Keys and values can contain only lowercase letters,
                numeric characters, underscores, and dashes.
@@ -1795,7 +1795,7 @@ class DeleteTargetRequest(proto.Message):
 
 
 class Release(proto.Message):
-    r"""A ``Release`` resource in the Google Cloud Deploy API.
+    r"""A ``Release`` resource in the Cloud Deploy API.
 
     A ``Release`` defines a specific Skaffold configuration instance
     that can be deployed.
@@ -1813,14 +1813,14 @@ class Release(proto.Message):
             characters.
         annotations (MutableMapping[str, str]):
             User annotations. These attributes can only
-            be set and used by the user, and not by Google
-            Cloud Deploy. See
+            be set and used by the user, and not by Cloud
+            Deploy. See
             https://google.aip.dev/128#annotations for more
             details such as format and size limitations.
         labels (MutableMapping[str, str]):
             Labels are attributes that can be set and used by both the
-            user and by Google Cloud Deploy. Labels must meet the
-            following constraints:
+            user and by Cloud Deploy. Labels must meet the following
+            constraints:
 
             -  Keys and values can contain only lowercase letters,
                numeric characters, underscores, and dashes.
@@ -1868,8 +1868,8 @@ class Release(proto.Message):
         skaffold_version (str):
             The Skaffold version to use when operating on
             this release, such as "1.20.0". Not all versions
-            are valid; Google Cloud Deploy supports a
-            specific set of versions.
+            are valid; Cloud Deploy supports a specific set
+            of versions.
 
             If unset, the most recent supported Skaffold
             version will be used.
@@ -1958,15 +1958,15 @@ class Release(proto.Message):
                     No reason for failure is specified.
                 CLOUD_BUILD_UNAVAILABLE (1):
                     Cloud Build is not available, either because it is not
-                    enabled or because Google Cloud Deploy has insufficient
+                    enabled or because Cloud Deploy has insufficient
                     permissions. See `required
                     permission </deploy/docs/cloud-deploy-service-account#required_permissions>`__.
                 EXECUTION_FAILED (2):
                     The render operation did not complete
                     successfully; check Cloud Build logs.
                 CLOUD_BUILD_REQUEST_FAILED (3):
-                    Cloud Build failed to fulfill Google Cloud Deploy's request.
-                    See failure_message for additional details.
+                    Cloud Build failed to fulfill Cloud Deploy's request. See
+                    failure_message for additional details.
             """
             FAILURE_CAUSE_UNSPECIFIED = 0
             CLOUD_BUILD_UNAVAILABLE = 1
@@ -2497,7 +2497,7 @@ class CreateReleaseRequest(proto.Message):
 
 
 class Rollout(proto.Message):
-    r"""A ``Rollout`` resource in the Google Cloud Deploy API.
+    r"""A ``Rollout`` resource in the Cloud Deploy API.
 
     A ``Rollout`` contains information around a specific deployment to a
     ``Target``.
@@ -2515,14 +2515,14 @@ class Rollout(proto.Message):
             is 255 characters.
         annotations (MutableMapping[str, str]):
             User annotations. These attributes can only
-            be set and used by the user, and not by Google
-            Cloud Deploy. See
+            be set and used by the user, and not by Cloud
+            Deploy. See
             https://google.aip.dev/128#annotations for more
             details such as format and size limitations.
         labels (MutableMapping[str, str]):
             Labels are attributes that can be set and used by both the
-            user and by Google Cloud Deploy. Labels must meet the
-            following constraints:
+            user and by Cloud Deploy. Labels must meet the following
+            constraints:
 
             -  Keys and values can contain only lowercase letters,
                numeric characters, underscores, and dashes.
@@ -2668,8 +2668,8 @@ class Rollout(proto.Message):
             VERIFICATION_CONFIG_NOT_FOUND (6):
                 No skaffold verify configuration was found.
             CLOUD_BUILD_REQUEST_FAILED (7):
-                Cloud Build failed to fulfill Google Cloud Deploy's request.
-                See failure_message for additional details.
+                Cloud Build failed to fulfill Cloud Deploy's request. See
+                failure_message for additional details.
         """
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
@@ -3489,7 +3489,7 @@ class AbandonReleaseResponse(proto.Message):
 
 
 class JobRun(proto.Message):
-    r"""A ``JobRun`` resource in the Google Cloud Deploy API.
+    r"""A ``JobRun`` resource in the Cloud Deploy API.
 
     A ``JobRun`` contains information of a single ``Rollout`` job
     evaluation.
@@ -3670,7 +3670,7 @@ class DeployJobRun(proto.Message):
                 No reason for failure is specified.
             CLOUD_BUILD_UNAVAILABLE (1):
                 Cloud Build is not available, either because it is not
-                enabled or because Google Cloud Deploy has insufficient
+                enabled or because Cloud Deploy has insufficient
                 permissions. See `Required
                 permission </deploy/docs/cloud-deploy-service-account#required_permissions>`__.
             EXECUTION_FAILED (2):
@@ -3684,8 +3684,8 @@ class DeployJobRun(proto.Message):
                 environment required for a canary deployment.
                 Check the Cloud Build logs for more information.
             CLOUD_BUILD_REQUEST_FAILED (5):
-                Cloud Build failed to fulfill Google Cloud Deploy's request.
-                See failure_message for additional details.
+                Cloud Build failed to fulfill Cloud Deploy's request. See
+                failure_message for additional details.
         """
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
@@ -3751,7 +3751,7 @@ class VerifyJobRun(proto.Message):
                 No reason for failure is specified.
             CLOUD_BUILD_UNAVAILABLE (1):
                 Cloud Build is not available, either because it is not
-                enabled or because Google Cloud Deploy has insufficient
+                enabled or because Cloud Deploy has insufficient
                 permissions. See `required
                 permission </deploy/docs/cloud-deploy-service-account#required_permissions>`__.
             EXECUTION_FAILED (2):
@@ -3763,8 +3763,8 @@ class VerifyJobRun(proto.Message):
             VERIFICATION_CONFIG_NOT_FOUND (4):
                 No Skaffold verify configuration was found.
             CLOUD_BUILD_REQUEST_FAILED (5):
-                Cloud Build failed to fulfill Google Cloud Deploy's request.
-                See failure_message for additional details.
+                Cloud Build failed to fulfill Cloud Deploy's request. See
+                failure_message for additional details.
         """
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1

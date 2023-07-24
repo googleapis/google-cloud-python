@@ -127,6 +127,10 @@ class ProcessRequest(proto.Message):
             A raw document content (bytes).
 
             This field is a member of `oneof`_ ``source``.
+        gcs_document (google.cloud.documentai_v1beta3.types.GcsDocument):
+            A raw document on Google Cloud Storage.
+
+            This field is a member of `oneof`_ ``source``.
         name (str):
             Required. The resource name of the
             [Processor][google.cloud.documentai.v1beta3.Processor] or
@@ -169,6 +173,12 @@ class ProcessRequest(proto.Message):
         number=5,
         oneof="source",
         message=document_io.RawDocument,
+    )
+    gcs_document: document_io.GcsDocument = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="source",
+        message=document_io.GcsDocument,
     )
     name: str = proto.Field(
         proto.STRING,

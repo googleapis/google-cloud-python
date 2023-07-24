@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.2.1...google-cloud-alloydb-v0.3.0) (2023-07-17)
+
+
+### Features
+
+* add metadata exchange support for AlloyDB connectors ([6b47f7a](https://github.com/googleapis/google-cloud-python/commit/6b47f7af5edb5db7a9e909e3c7ebd0d34296facb))
+* adds metadata field describing an AlloyDB backup's quantity based retention ([6b47f7a](https://github.com/googleapis/google-cloud-python/commit/6b47f7af5edb5db7a9e909e3c7ebd0d34296facb))
+
 ## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.2.0...google-cloud-alloydb-v0.2.1) (2023-07-05)
 
 

@@ -41,12 +41,13 @@ class Service(proto.Message):
             ``projects/*/locations/*/namespaces/*/services/*``.
         annotations (MutableMapping[str, str]):
             Optional. Annotations for the service. This data can be
-            consumed by service clients. Restrictions:
+            consumed by service clients.
+
+            Restrictions:
 
             -  The entire annotations dictionary may contain up to 2000
                characters, spread accoss all key-value pairs.
-               Annotations that goes beyond any these limits will be
-               rejected.
+               Annotations that go beyond this limit are rejected
             -  Valid annotation keys have two segments: an optional
                prefix and name, separated by a slash (/). The name
                segment is required and must be 63 characters or less,
@@ -56,19 +57,20 @@ class Service(proto.Message):
                specified, the prefix must be a DNS subdomain: a series
                of DNS labels separated by dots (.), not longer than 253
                characters in total, followed by a slash (/). Annotations
-               that fails to meet these requirements will be rejected.
-            -  The '(*.)google.com/' and '(*.)googleapis.com/' prefixes
-               are reserved for system annotations managed by Service
-               Directory. If the user tries to write to these keyspaces,
-               those entries will be silently ignored by the system.
-               Note: This field is equivalent to the 'metadata' field in
-               the v1beta1 API. They have the same syntax and read/write
-               to the same location in Service Directory.
+               that fails to meet these requirements are rejected
+
+            Note: This field is equivalent to the ``metadata`` field in
+            the v1beta1 API. They have the same syntax and read/write to
+            the same location in Service Directory.
         endpoints (MutableSequence[google.cloud.servicedirectory_v1.types.Endpoint]):
-            Output only. Endpoints associated with this
-            service. Returned on LookupService.Resolve.
+            Output only. Endpoints associated with this service.
+            Returned on
+            [LookupService.ResolveService][google.cloud.servicedirectory.v1.LookupService.ResolveService].
             Control plane clients should use
-            RegistrationService.ListEndpoints.
+            [RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1.RegistrationService.ListEndpoints].
+        uid (str):
+            Output only. The globally unique identifier
+            of the service in the UUID4 format.
     """
 
     name: str = proto.Field(
@@ -84,6 +86,10 @@ class Service(proto.Message):
         proto.MESSAGE,
         number=3,
         message=endpoint.Endpoint,
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 

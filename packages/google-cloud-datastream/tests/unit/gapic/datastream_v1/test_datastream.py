@@ -10420,6 +10420,8 @@ def test_create_stream_rest(request_type):
                                             "primary_key": True,
                                             "nullable": True,
                                             "ordinal_position": 1725,
+                                            "precision": 972,
+                                            "scale": 520,
                                         }
                                     ],
                                 }
@@ -10768,6 +10770,8 @@ def test_create_stream_rest_bad_request(
                                             "primary_key": True,
                                             "nullable": True,
                                             "ordinal_position": 1725,
+                                            "precision": 972,
+                                            "scale": 520,
                                         }
                                     ],
                                 }
@@ -11001,6 +11005,8 @@ def test_update_stream_rest(request_type):
                                             "primary_key": True,
                                             "nullable": True,
                                             "ordinal_position": 1725,
+                                            "precision": 972,
+                                            "scale": 520,
                                         }
                                     ],
                                 }
@@ -11327,6 +11333,8 @@ def test_update_stream_rest_bad_request(
                                             "primary_key": True,
                                             "nullable": True,
                                             "ordinal_position": 1725,
+                                            "precision": 972,
+                                            "scale": 520,
                                         }
                                     ],
                                 }
