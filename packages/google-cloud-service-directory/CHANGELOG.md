@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-directory-v1.8.2...google-cloud-service-directory-v1.9.0) (2023-07-24)
+
+
+### Features
+
+* added network and uid fields in Endpoint message ([4e7d204](https://github.com/googleapis/google-cloud-python/commit/4e7d204ac8f004749be9f61335ff7d66bcc41787))
+* added uid field to Namespace message ([4e7d204](https://github.com/googleapis/google-cloud-python/commit/4e7d204ac8f004749be9f61335ff7d66bcc41787))
+* added uid field to Service message ([4e7d204](https://github.com/googleapis/google-cloud-python/commit/4e7d204ac8f004749be9f61335ff7d66bcc41787))
+* enable Location methods ([4e7d204](https://github.com/googleapis/google-cloud-python/commit/4e7d204ac8f004749be9f61335ff7d66bcc41787))
+
+
+### Documentation
+
+* updated docs for ListServicesRequest and ListEndpointsRequest message ([4e7d204](https://github.com/googleapis/google-cloud-python/commit/4e7d204ac8f004749be9f61335ff7d66bcc41787))
+* updated docs for ResolveServiceRequest message ([4e7d204](https://github.com/googleapis/google-cloud-python/commit/4e7d204ac8f004749be9f61335ff7d66bcc41787))
+
 ## [1.8.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-directory-v1.8.1...google-cloud-service-directory-v1.8.2) (2023-07-05)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastream-v1.6.1...google-cloud-datastream-v1.7.0) (2023-07-24)
+
+
+### Features
+
+* Add precision and scale to MysqlColumn ([#11507](https://github.com/googleapis/google-cloud-python/issues/11507)) ([add1b35](https://github.com/googleapis/google-cloud-python/commit/add1b35b20865333affaf3b5c7b61622a9b98943))
+
 ## [1.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastream-v1.6.0...google-cloud-datastream-v1.6.1) (2023-07-05)
 
 
