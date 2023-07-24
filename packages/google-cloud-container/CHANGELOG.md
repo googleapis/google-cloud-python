@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.28.0](https://github.com/googleapis/python-container/compare/v2.27.0...v2.28.0) (2023-07-24)
+
+
+### Features
+
+* **v1beta1:** Add enable_multi_networking to NetworkConfig ([02c497e](https://github.com/googleapis/python-container/commit/02c497ec42f3d51a28e31b3cca940e5a147960bd))
+* **v1beta1:** Add policy_name to PlacementPolicy message within a node pool ([02c497e](https://github.com/googleapis/python-container/commit/02c497ec42f3d51a28e31b3cca940e5a147960bd))
+* **v1beta1:** Add support for AdditionalPodNetworkConfig and AdditionalNodeNetworkConfig ([02c497e](https://github.com/googleapis/python-container/commit/02c497ec42f3d51a28e31b3cca940e5a147960bd))
+* **v1beta1:** Add support for HostMaintenancePolicy ([02c497e](https://github.com/googleapis/python-container/commit/02c497ec42f3d51a28e31b3cca940e5a147960bd))
+
 ## [2.27.0](https://github.com/googleapis/python-container/compare/v2.26.0...v2.27.0) (2023-07-19)
 
 
