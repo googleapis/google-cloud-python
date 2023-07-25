@@ -193,6 +193,170 @@
         }
       }
     },
+    "DataTaxonomyService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "DataTaxonomyServiceClient",
+          "rpcs": {
+            "CreateDataAttribute": {
+              "methods": [
+                "create_data_attribute"
+              ]
+            },
+            "CreateDataAttributeBinding": {
+              "methods": [
+                "create_data_attribute_binding"
+              ]
+            },
+            "CreateDataTaxonomy": {
+              "methods": [
+                "create_data_taxonomy"
+              ]
+            },
+            "DeleteDataAttribute": {
+              "methods": [
+                "delete_data_attribute"
+              ]
+            },
+            "DeleteDataAttributeBinding": {
+              "methods": [
+                "delete_data_attribute_binding"
+              ]
+            },
+            "DeleteDataTaxonomy": {
+              "methods": [
+                "delete_data_taxonomy"
+              ]
+            },
+            "GetDataAttribute": {
+              "methods": [
+                "get_data_attribute"
+              ]
+            },
+            "GetDataAttributeBinding": {
+              "methods": [
+                "get_data_attribute_binding"
+              ]
+            },
+            "GetDataTaxonomy": {
+              "methods": [
+                "get_data_taxonomy"
+              ]
+            },
+            "ListDataAttributeBindings": {
+              "methods": [
+                "list_data_attribute_bindings"
+              ]
+            },
+            "ListDataAttributes": {
+              "methods": [
+                "list_data_attributes"
+              ]
+            },
+            "ListDataTaxonomies": {
+              "methods": [
+                "list_data_taxonomies"
+              ]
+            },
+            "UpdateDataAttribute": {
+              "methods": [
+                "update_data_attribute"
+              ]
+            },
+            "UpdateDataAttributeBinding": {
+              "methods": [
+                "update_data_attribute_binding"
+              ]
+            },
+            "UpdateDataTaxonomy": {
+              "methods": [
+                "update_data_taxonomy"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "DataTaxonomyServiceAsyncClient",
+          "rpcs": {
+            "CreateDataAttribute": {
+              "methods": [
+                "create_data_attribute"
+              ]
+            },
+            "CreateDataAttributeBinding": {
+              "methods": [
+                "create_data_attribute_binding"
+              ]
+            },
+            "CreateDataTaxonomy": {
+              "methods": [
+                "create_data_taxonomy"
+              ]
+            },
+            "DeleteDataAttribute": {
+              "methods": [
+                "delete_data_attribute"
+              ]
+            },
+            "DeleteDataAttributeBinding": {
+              "methods": [
+                "delete_data_attribute_binding"
+              ]
+            },
+            "DeleteDataTaxonomy": {
+              "methods": [
+                "delete_data_taxonomy"
+              ]
+            },
+            "GetDataAttribute": {
+              "methods": [
+                "get_data_attribute"
+              ]
+            },
+            "GetDataAttributeBinding": {
+              "methods": [
+                "get_data_attribute_binding"
+              ]
+            },
+            "GetDataTaxonomy": {
+              "methods": [
+                "get_data_taxonomy"
+              ]
+            },
+            "ListDataAttributeBindings": {
+              "methods": [
+                "list_data_attribute_bindings"
+              ]
+            },
+            "ListDataAttributes": {
+              "methods": [
+                "list_data_attributes"
+              ]
+            },
+            "ListDataTaxonomies": {
+              "methods": [
+                "list_data_taxonomies"
+              ]
+            },
+            "UpdateDataAttribute": {
+              "methods": [
+                "update_data_attribute"
+              ]
+            },
+            "UpdateDataAttributeBinding": {
+              "methods": [
+                "update_data_attribute_binding"
+              ]
+            },
+            "UpdateDataTaxonomy": {
+              "methods": [
+                "update_data_taxonomy"
+              ]
+            }
+          }
+        }
+      }
+    },
     "DataplexService": {
       "clients": {
         "grpc": {

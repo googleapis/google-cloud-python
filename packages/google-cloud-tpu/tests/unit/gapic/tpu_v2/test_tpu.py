@@ -1111,6 +1111,8 @@ def test_get_node(request_type, transport: str = "grpc"):
             tags=["tags_value"],
             id=205,
             api_version=cloud_tpu.Node.ApiVersion.V1_ALPHA1,
+            queued_resource="queued_resource_value",
+            multislice_node=True,
         )
         response = client.get_node(request)
 
@@ -1132,6 +1134,8 @@ def test_get_node(request_type, transport: str = "grpc"):
     assert response.tags == ["tags_value"]
     assert response.id == 205
     assert response.api_version == cloud_tpu.Node.ApiVersion.V1_ALPHA1
+    assert response.queued_resource == "queued_resource_value"
+    assert response.multislice_node is True
 
 
 def test_get_node_empty_call():
@@ -1179,6 +1183,8 @@ async def test_get_node_async(
                 tags=["tags_value"],
                 id=205,
                 api_version=cloud_tpu.Node.ApiVersion.V1_ALPHA1,
+                queued_resource="queued_resource_value",
+                multislice_node=True,
             )
         )
         response = await client.get_node(request)
@@ -1201,6 +1207,8 @@ async def test_get_node_async(
     assert response.tags == ["tags_value"]
     assert response.id == 205
     assert response.api_version == cloud_tpu.Node.ApiVersion.V1_ALPHA1
+    assert response.queued_resource == "queued_resource_value"
+    assert response.multislice_node is True
 
 
 @pytest.mark.asyncio
@@ -4413,6 +4421,8 @@ def test_get_node_rest(request_type):
             tags=["tags_value"],
             id=205,
             api_version=cloud_tpu.Node.ApiVersion.V1_ALPHA1,
+            queued_resource="queued_resource_value",
+            multislice_node=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -4438,6 +4448,8 @@ def test_get_node_rest(request_type):
     assert response.tags == ["tags_value"]
     assert response.id == 205
     assert response.api_version == cloud_tpu.Node.ApiVersion.V1_ALPHA1
+    assert response.queued_resource == "queued_resource_value"
+    assert response.multislice_node is True
 
 
 def test_get_node_rest_required_fields(request_type=cloud_tpu.GetNodeRequest):
@@ -4719,6 +4731,8 @@ def test_create_node_rest(request_type):
         ],
         "shielded_instance_config": {"enable_secure_boot": True},
         "accelerator_config": {"type_": 2, "topology": "topology_value"},
+        "queued_resource": "queued_resource_value",
+        "multislice_node": True,
     }
     request = request_type(**request_init)
 
@@ -4942,6 +4956,8 @@ def test_create_node_rest_bad_request(
         ],
         "shielded_instance_config": {"enable_secure_boot": True},
         "accelerator_config": {"type_": 2, "topology": "topology_value"},
+        "queued_resource": "queued_resource_value",
+        "multislice_node": True,
     }
     request = request_type(**request_init)
 
@@ -5744,6 +5760,8 @@ def test_update_node_rest(request_type):
         ],
         "shielded_instance_config": {"enable_secure_boot": True},
         "accelerator_config": {"type_": 2, "topology": "topology_value"},
+        "queued_resource": "queued_resource_value",
+        "multislice_node": True,
     }
     request = request_type(**request_init)
 
@@ -5964,6 +5982,8 @@ def test_update_node_rest_bad_request(
         ],
         "shielded_instance_config": {"enable_secure_boot": True},
         "accelerator_config": {"type_": 2, "topology": "topology_value"},
+        "queued_resource": "queued_resource_value",
+        "multislice_node": True,
     }
     request = request_type(**request_init)
 

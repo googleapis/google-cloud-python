@@ -30,6 +30,29 @@ from .data_quality import (
     DataQualityRuleResult,
     DataQualitySpec,
 )
+from .data_taxonomy import (
+    CreateDataAttributeBindingRequest,
+    CreateDataAttributeRequest,
+    CreateDataTaxonomyRequest,
+    DataAttribute,
+    DataAttributeBinding,
+    DataTaxonomy,
+    DeleteDataAttributeBindingRequest,
+    DeleteDataAttributeRequest,
+    DeleteDataTaxonomyRequest,
+    GetDataAttributeBindingRequest,
+    GetDataAttributeRequest,
+    GetDataTaxonomyRequest,
+    ListDataAttributeBindingsRequest,
+    ListDataAttributeBindingsResponse,
+    ListDataAttributesRequest,
+    ListDataAttributesResponse,
+    ListDataTaxonomiesRequest,
+    ListDataTaxonomiesResponse,
+    UpdateDataAttributeBindingRequest,
+    UpdateDataAttributeRequest,
+    UpdateDataTaxonomyRequest,
+)
 from .datascans import (
     CreateDataScanRequest,
     DataScan,
@@ -46,7 +69,13 @@ from .datascans import (
     RunDataScanResponse,
     UpdateDataScanRequest,
 )
-from .logs import DataScanEvent, DiscoveryEvent, JobEvent, SessionEvent
+from .logs import (
+    DataQualityScanRuleResult,
+    DataScanEvent,
+    DiscoveryEvent,
+    JobEvent,
+    SessionEvent,
+)
 from .metadata_ import (
     CreateEntityRequest,
     CreatePartitionRequest,
@@ -68,6 +97,7 @@ from .metadata_ import (
 )
 from .processing import DataSource, ScannedData, Trigger
 from .resources import Action, Asset, AssetStatus, Lake, State, Zone
+from .security import DataAccessSpec, ResourceAccessSpec
 from .service import (
     CancelJobRequest,
     CreateAssetRequest,
@@ -132,6 +162,27 @@ __all__ = (
     "DataQualityRule",
     "DataQualityRuleResult",
     "DataQualitySpec",
+    "CreateDataAttributeBindingRequest",
+    "CreateDataAttributeRequest",
+    "CreateDataTaxonomyRequest",
+    "DataAttribute",
+    "DataAttributeBinding",
+    "DataTaxonomy",
+    "DeleteDataAttributeBindingRequest",
+    "DeleteDataAttributeRequest",
+    "DeleteDataTaxonomyRequest",
+    "GetDataAttributeBindingRequest",
+    "GetDataAttributeRequest",
+    "GetDataTaxonomyRequest",
+    "ListDataAttributeBindingsRequest",
+    "ListDataAttributeBindingsResponse",
+    "ListDataAttributesRequest",
+    "ListDataAttributesResponse",
+    "ListDataTaxonomiesRequest",
+    "ListDataTaxonomiesResponse",
+    "UpdateDataAttributeBindingRequest",
+    "UpdateDataAttributeRequest",
+    "UpdateDataTaxonomyRequest",
     "CreateDataScanRequest",
     "DataScan",
     "DataScanJob",
@@ -146,6 +197,7 @@ __all__ = (
     "RunDataScanResponse",
     "UpdateDataScanRequest",
     "DataScanType",
+    "DataQualityScanRuleResult",
     "DataScanEvent",
     "DiscoveryEvent",
     "JobEvent",
@@ -176,6 +228,8 @@ __all__ = (
     "Lake",
     "Zone",
     "State",
+    "DataAccessSpec",
+    "ResourceAccessSpec",
     "CancelJobRequest",
     "CreateAssetRequest",
     "CreateEnvironmentRequest",
