@@ -314,7 +314,7 @@ class Node(proto.Message):
             The user-supplied description of the TPU.
             Maximum of 512 characters.
         accelerator_type (str):
-            Required. The type of hardware accelerators
+            Optional. The type of hardware accelerators
             associated with this node.
         state (google.cloud.tpu_v2.types.Node.State):
             Output only. The current state for the TPU
@@ -382,6 +382,12 @@ class Node(proto.Message):
             Shielded Instance options.
         accelerator_config (google.cloud.tpu_v2.types.AcceleratorConfig):
             The AccleratorConfig for the TPU Node.
+        queued_resource (str):
+            Output only. The qualified name of the
+            QueuedResource that requested this Node.
+        multislice_node (bool):
+            Output only. Whether the Node belongs to a
+            Multislice group.
     """
 
     class State(proto.Enum):
@@ -587,6 +593,14 @@ class Node(proto.Message):
         proto.MESSAGE,
         number=46,
         message="AcceleratorConfig",
+    )
+    queued_resource: str = proto.Field(
+        proto.STRING,
+        number=47,
+    )
+    multislice_node: bool = proto.Field(
+        proto.BOOL,
+        number=48,
     )
 
 
@@ -810,7 +824,7 @@ class AcceleratorType(proto.Message):
         name (str):
             The resource name.
         type_ (str):
-            the accelerator type.
+            The accelerator type.
         accelerator_configs (MutableSequence[google.cloud.tpu_v2.types.AcceleratorConfig]):
             The accelerator config.
     """
