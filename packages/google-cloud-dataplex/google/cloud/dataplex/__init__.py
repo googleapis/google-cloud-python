@@ -30,6 +30,12 @@ from google.cloud.dataplex_v1.services.data_scan_service.async_client import (
 from google.cloud.dataplex_v1.services.data_scan_service.client import (
     DataScanServiceClient,
 )
+from google.cloud.dataplex_v1.services.data_taxonomy_service.async_client import (
+    DataTaxonomyServiceAsyncClient,
+)
+from google.cloud.dataplex_v1.services.data_taxonomy_service.client import (
+    DataTaxonomyServiceClient,
+)
 from google.cloud.dataplex_v1.services.dataplex_service.async_client import (
     DataplexServiceAsyncClient,
 )
@@ -62,6 +68,29 @@ from google.cloud.dataplex_v1.types.data_quality import (
     DataQualityRuleResult,
     DataQualitySpec,
 )
+from google.cloud.dataplex_v1.types.data_taxonomy import (
+    CreateDataAttributeBindingRequest,
+    CreateDataAttributeRequest,
+    CreateDataTaxonomyRequest,
+    DataAttribute,
+    DataAttributeBinding,
+    DataTaxonomy,
+    DeleteDataAttributeBindingRequest,
+    DeleteDataAttributeRequest,
+    DeleteDataTaxonomyRequest,
+    GetDataAttributeBindingRequest,
+    GetDataAttributeRequest,
+    GetDataTaxonomyRequest,
+    ListDataAttributeBindingsRequest,
+    ListDataAttributeBindingsResponse,
+    ListDataAttributesRequest,
+    ListDataAttributesResponse,
+    ListDataTaxonomiesRequest,
+    ListDataTaxonomiesResponse,
+    UpdateDataAttributeBindingRequest,
+    UpdateDataAttributeRequest,
+    UpdateDataTaxonomyRequest,
+)
 from google.cloud.dataplex_v1.types.datascans import (
     CreateDataScanRequest,
     DataScan,
@@ -79,6 +108,7 @@ from google.cloud.dataplex_v1.types.datascans import (
     UpdateDataScanRequest,
 )
 from google.cloud.dataplex_v1.types.logs import (
+    DataQualityScanRuleResult,
     DataScanEvent,
     DiscoveryEvent,
     JobEvent,
@@ -112,6 +142,7 @@ from google.cloud.dataplex_v1.types.resources import (
     State,
     Zone,
 )
+from google.cloud.dataplex_v1.types.security import DataAccessSpec, ResourceAccessSpec
 from google.cloud.dataplex_v1.types.service import (
     CancelJobRequest,
     CreateAssetRequest,
@@ -166,6 +197,8 @@ __all__ = (
     "DataplexServiceAsyncClient",
     "DataScanServiceClient",
     "DataScanServiceAsyncClient",
+    "DataTaxonomyServiceClient",
+    "DataTaxonomyServiceAsyncClient",
     "MetadataServiceClient",
     "MetadataServiceAsyncClient",
     "Content",
@@ -184,6 +217,27 @@ __all__ = (
     "DataQualityRule",
     "DataQualityRuleResult",
     "DataQualitySpec",
+    "CreateDataAttributeBindingRequest",
+    "CreateDataAttributeRequest",
+    "CreateDataTaxonomyRequest",
+    "DataAttribute",
+    "DataAttributeBinding",
+    "DataTaxonomy",
+    "DeleteDataAttributeBindingRequest",
+    "DeleteDataAttributeRequest",
+    "DeleteDataTaxonomyRequest",
+    "GetDataAttributeBindingRequest",
+    "GetDataAttributeRequest",
+    "GetDataTaxonomyRequest",
+    "ListDataAttributeBindingsRequest",
+    "ListDataAttributeBindingsResponse",
+    "ListDataAttributesRequest",
+    "ListDataAttributesResponse",
+    "ListDataTaxonomiesRequest",
+    "ListDataTaxonomiesResponse",
+    "UpdateDataAttributeBindingRequest",
+    "UpdateDataAttributeRequest",
+    "UpdateDataTaxonomyRequest",
     "CreateDataScanRequest",
     "DataScan",
     "DataScanJob",
@@ -198,6 +252,7 @@ __all__ = (
     "RunDataScanResponse",
     "UpdateDataScanRequest",
     "DataScanType",
+    "DataQualityScanRuleResult",
     "DataScanEvent",
     "DiscoveryEvent",
     "JobEvent",
@@ -228,6 +283,8 @@ __all__ = (
     "Lake",
     "Zone",
     "State",
+    "DataAccessSpec",
+    "ResourceAccessSpec",
     "CancelJobRequest",
     "CreateAssetRequest",
     "CreateEnvironmentRequest",
