@@ -373,8 +373,8 @@ def test_datetime_w_tzinfo(dispose_of, ds_client):
     assert retrieved.bar == datetime.datetime(2010, 5, 11, 22, 42, tzinfo=mytz)
 
 
-def test_parallel_threads(dispose_of, namespace):
-    client = ndb.Client(namespace=namespace)
+def test_parallel_threads(dispose_of, database_id, namespace):
+    client = ndb.Client(database=database_id, namespace=namespace)
 
     class SomeKind(ndb.Model):
         foo = ndb.IntegerProperty()

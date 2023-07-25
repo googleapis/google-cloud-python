@@ -24,11 +24,17 @@ uniquely designate a (possible) entity in Google Cloud Datastore:
 * a Google Cloud Platform project (a string)
 * a list of one or more ``(kind, id)`` pairs where ``kind`` is a string
   and ``id`` is either a string or an integer
+* an optional database (a string)
 * an optional namespace (a string)
 
 The application ID must always be part of the key, but since most
 applications can only access their own entities, it defaults to the
 current application ID and you rarely need to worry about it.
+
+The database is an optional database ID. If unspecified, it defaults
+to that of the client.
+For usage in Cloud NDB, the default database should always be referred
+to as an empty string; please do not use "(default)".
 
 The namespace designates a top-level partition of the key space for a
 particular application. If you've never heard of namespaces, you can
@@ -95,7 +101,6 @@ from google.cloud.ndb import _options
 from google.cloud.ndb import tasklets
 from google.cloud.ndb import utils
 
-
 __all__ = ["Key", "UNDEFINED"]
 _APP_ID_ENVIRONMENT = "APPLICATION_ID"
 _APP_ID_DEFAULT = "_"
@@ -103,6 +108,7 @@ _WRONG_TYPE = "Cannot construct Key reference on non-Key class; received {!r}"
 _REFERENCE_APP_MISMATCH = (
     "Key reference constructed uses a different app {!r} than the one specified {!r}"
 )
+_REFERENCE_DATABASE_MISMATCH = "Key reference constructed uses a different database {!r} than the one specified {!r}"
 _REFERENCE_NAMESPACE_MISMATCH = (
     "Key reference constructed uses a different namespace {!r} than "
     "the one specified {!r}"
@@ -120,9 +126,9 @@ _BAD_STRING_ID = (
 UNDEFINED = object()
 """Sentinel value.
 
-Used to indicate a namespace hasn't been explicitly set in key construction.
+Used to indicate a database or namespace hasn't been explicitly set in key construction.
 Used to distinguish between not passing a value and passing `None`, which
-indicates the default namespace.
+indicates the default database/namespace.
 """
 
 
@@ -140,9 +146,10 @@ class Key(object):
         from google.cloud.ndb import context as context_module
         client = mock.Mock(
             project="testing",
+            database=None,
             namespace=None,
             stub=mock.Mock(spec=()),
-            spec=("project", "namespace", "stub"),
+            spec=("project", "database", "namespace", "stub"),
         )
         context = context_module.Context(client).use()
         context.__enter__()
@@ -269,6 +276,9 @@ class Key(object):
         parent (Optional[Key]): The parent of the key being
             constructed. If provided, the key path will be **relative** to the
             parent key's path.
+        database (Optional[str]): The database to use.
+            Defaults to that of the client if a parent was specified, and
+            to the default database if it was not.
 
     Raises:
         TypeError: If none of ``reference``, ``serialized``, ``urlsafe``,
@@ -317,9 +327,10 @@ class Key(object):
         """String representation used by :class:`str() <str>` and :func:`repr`.
 
         We produce a short string that conveys all relevant information,
-        suppressing project and namespace when they are equal to the default.
-        In many cases, this string should be able to be used to invoke the
-        constructor.
+        suppressing project, database, and namespace when they are equal to their
+        respective defaults.
+
+        In many cases, this string should be able to be used to invoke the constructor.
 
         For example:
 
@@ -330,14 +341,16 @@ class Key(object):
             "Key('hi', 100)"
             >>>
             >>> key = ndb.Key(
-            ...     "bye", "hundred", project="specific", namespace="space"
+            ...     "bye", "hundred", project="specific", database="db", namespace="space",
             ... )
             >>> str(key)
-            "Key('bye', 'hundred', project='specific', namespace='space')"
+            "Key('bye', 'hundred', project='specific', database='db', namespace='space')"
         """
         args = ["{!r}".format(item) for item in self.flat()]
         if self.project() != _project_from_app(None):
             args.append("project={!r}".format(self.app()))
+        if self.database():
+            args.append("database={!r}".format(self.database()))
         if self.namespace() is not None:
             args.append("namespace={!r}".format(self.namespace()))
 
@@ -352,7 +365,7 @@ class Key(object):
 
         .. note::
 
-            This ignores ``app`` and ``namespace``. Since :func:`hash` isn't
+            This ignores ``app``, ``database``, and ``namespace``. Since :func:`hash` isn't
             expected to return a unique value (it just reduces the chance of
             collision), this doesn't try to increase entropy by including other
             values. The primary concern is that hashes of equal keys are
@@ -365,7 +378,7 @@ class Key(object):
 
     def _tuple(self):
         """Helper to return an orderable tuple."""
-        return (self.app(), self.namespace(), self.pairs())
+        return (self.app(), self.namespace(), self.database() or "", self.pairs())
 
     def __eq__(self, other):
         """Equality comparison operation."""
@@ -409,16 +422,19 @@ class Key(object):
 
         Returns:
             Tuple[Dict[str, Any]]: A tuple containing a single dictionary of
-            state to pickle. The dictionary has three keys ``pairs``, ``app``
-            and ``namespace``.
+            state to pickle. The dictionary has four keys: ``pairs``, ``app``,
+            ``database``, and ``namespace``.
         """
-        return (
+        to_pickle = (
             {
                 "pairs": self.pairs(),
                 "app": self.app(),
                 "namespace": self.namespace(),
             },
         )
+        if self.database():
+            to_pickle[0]["database"] = self.database()
+        return to_pickle
 
     def __setstate__(self, state):
         """Private API used for unpickling.
@@ -427,7 +443,7 @@ class Key(object):
             state (Tuple[Dict[str, Any]]): A tuple containing a single
                 dictionary of pickled state. This should match the signature
                 returned from :func:`__getstate__`, in particular, it should
-                have three keys ``pairs``, ``app`` and ``namespace``.
+                have four keys: ``pairs``, ``app``, ``database``, and ``namespace``.
 
         Raises:
             TypeError: If the ``state`` does not have length 1.
@@ -447,8 +463,16 @@ class Key(object):
         flat = _get_path(None, kwargs["pairs"])
         _clean_flat_path(flat)
         project = _project_from_app(kwargs["app"])
+
+        database = None
+        if "database" in kwargs:
+            database = kwargs["database"]
+
         self._key = _key_module.Key(
-            *flat, project=project, namespace=kwargs["namespace"]
+            *flat,
+            project=project,
+            namespace=kwargs["namespace"],
+            database=database,
         )
         self._reference = None
 
@@ -462,14 +486,15 @@ class Key(object):
 
         Returns:
             Tuple[Dict[str, Any]]: A tuple containing a single dictionary of
-            state to pickle. The dictionary has three keys ``pairs``, ``app``
-            and ``namespace``.
+            state to pickle. The dictionary has four keys: ``pairs``, ``app``,
+            ``database`` and ``namespace``.
         """
         return (
             {
                 "pairs": self.pairs(),
                 "app": self.app(),
                 "namespace": self.namespace(),
+                "database": self.database() if self.database() is not None else None,
             },
         )
 
@@ -564,6 +589,17 @@ class Key(object):
         return self._key.project
 
     app = project
+
+    def database(self):
+        """The database ID for the key.
+
+        .. doctest:: key-database
+
+           >>> key = ndb.Key("A", "B", database="mydb")
+           >>> key.database()
+           'mydb'
+        """
+        return self._key.database
 
     def id(self):
         """The string or integer ID in the last ``(kind, id)`` pair, if any.
@@ -678,7 +714,7 @@ class Key(object):
 
         .. doctest:: key-reference
 
-            >>> key = ndb.Key("Trampoline", 88, project="xy", namespace="zt")
+            >>> key = ndb.Key("Trampoline", 88, project="xy", database="wv", namespace="zt")
             >>> key.reference()
             app: "xy"
             name_space: "zt"
@@ -688,14 +724,23 @@ class Key(object):
                 id: 88
               }
             }
+            database_id: "wv"
             <BLANKLINE>
         """
         if self._reference is None:
-            self._reference = _app_engine_key_pb2.Reference(
-                app=self._key.project,
-                path=_to_legacy_path(self._key.path),
-                name_space=self._key.namespace,
-            )
+            if self._key.database:
+                self._reference = _app_engine_key_pb2.Reference(
+                    app=self._key.project,
+                    path=_to_legacy_path(self._key.path),
+                    database_id=self._key.database,
+                    name_space=self._key.namespace,
+                )
+            else:
+                self._reference = _app_engine_key_pb2.Reference(
+                    app=self._key.project,
+                    path=_to_legacy_path(self._key.path),
+                    name_space=self._key.namespace,
+                )
         return self._reference
 
     def serialized(self):
@@ -703,9 +748,9 @@ class Key(object):
 
         .. doctest:: key-serialized
 
-            >>> key = ndb.Key("Kind", 1337, project="example")
+            >>> key = ndb.Key("Kind", 1337, project="example", database="example-db")
             >>> key.serialized()
-            b'j\\x07exampler\\x0b\\x0b\\x12\\x04Kind\\x18\\xb9\\n\\x0c'
+            b'j\\x07exampler\\x0b\\x0b\\x12\\x04Kind\\x18\\xb9\\n\\x0c\\xba\\x01\\nexample-db'
         """
         reference = self.reference()
         return reference.SerializeToString()
@@ -730,6 +775,9 @@ class Key(object):
         location prefix ("partition"), compatible with the Google Datastore
         admin console.
 
+        This only supports the default database. For a named database,
+        please use urlsafe() instead.
+
         Arguments:
             location_prefix (str): A location prefix ("partition") to be
                 prepended to the key's `project` when serializing the key. A
@@ -742,9 +790,11 @@ class Key(object):
             >>> key.to_legacy_urlsafe("s~")
             b'aglzfmV4YW1wbGVyCwsSBEtpbmQYuQoM'
         """
+        if self._key.database:
+            raise ValueError("to_legacy_urlsafe only supports the default database")
         return google.cloud.datastore.Key(
             *self.flat(),
-            **{"namespace": self._key.namespace, "project": self._key.project}
+            **{"namespace": self._key.namespace, "project": self._key.project},
         ).to_legacy_urlsafe(location_prefix=location_prefix)
 
     @_options.ReadOptions.options
@@ -1085,7 +1135,7 @@ def _project_from_app(app, allow_empty=False):
     return parts[-1]
 
 
-def _from_reference(reference, app, namespace):
+def _from_reference(reference, app, namespace, database):
     """Convert Reference protobuf to :class:`~google.cloud.datastore.key.Key`.
 
     This is intended to work with the "legacy" representation of a
@@ -1102,6 +1152,7 @@ def _from_reference(reference, app, namespace):
         app (Optional[str]): The application ID / project ID for the
             constructed key.
         namespace (Optional[str]): The namespace for the constructed key.
+        database (Optional[str]): The database for the constructed key.
 
     Returns:
         google.cloud.datastore.key.Key: The key corresponding to
@@ -1110,6 +1161,8 @@ def _from_reference(reference, app, namespace):
     Raises:
         RuntimeError: If ``app`` is not :data:`None`, but not the same as
             ``reference.app``.
+        RuntimeError: If ``database`` is not :data:`None`, but not the same as
+            ``reference.database_id``.
         RuntimeError: If ``namespace`` is not :data:`None`, but not the same as
             ``reference.name_space``.
     """
@@ -1118,6 +1171,13 @@ def _from_reference(reference, app, namespace):
         if _project_from_app(app) != project:
             raise RuntimeError(_REFERENCE_APP_MISMATCH.format(reference.app, app))
 
+    parsed_database = _key_module._get_empty(reference.database_id, "")
+    if database is not None:
+        if database != parsed_database:
+            raise RuntimeError(
+                _REFERENCE_DATABASE_MISMATCH.format(reference.database_id, database)
+            )
+
     parsed_namespace = _key_module._get_empty(reference.name_space, "")
     if namespace is not None:
         if namespace != parsed_namespace:
@@ -1125,14 +1185,16 @@ def _from_reference(reference, app, namespace):
                 _REFERENCE_NAMESPACE_MISMATCH.format(reference.name_space, namespace)
             )
 
-    _key_module._check_database_id(reference.database_id)
     flat_path = _key_module._get_flat_path(reference.path)
     return google.cloud.datastore.Key(
-        *flat_path, project=project, namespace=parsed_namespace
+        *flat_path,
+        project=project,
+        database=parsed_database,
+        namespace=parsed_namespace,
     )
 
 
-def _from_serialized(serialized, app, namespace):
+def _from_serialized(serialized, app, namespace, database):
     """Convert serialized protobuf to :class:`~google.cloud.datastore.key.Key`.
 
     This is intended to work with the "legacy" representation of a
@@ -1145,6 +1207,7 @@ def _from_serialized(serialized, app, namespace):
         app (Optional[str]): The application ID / project ID for the
             constructed key.
         namespace (Optional[str]): The namespace for the constructed key.
+        database (Optional[str]): The database for the constructed key.
 
     Returns:
         Tuple[google.cloud.datastore.key.Key, .Reference]: The key
@@ -1152,10 +1215,10 @@ def _from_serialized(serialized, app, namespace):
     """
     reference = _app_engine_key_pb2.Reference()
     reference.ParseFromString(serialized)
-    return _from_reference(reference, app, namespace), reference
+    return _from_reference(reference, app, namespace, database), reference
 
 
-def _from_urlsafe(urlsafe, app, namespace):
+def _from_urlsafe(urlsafe, app, namespace, database):
     """Convert urlsafe string to :class:`~google.cloud.datastore.key.Key`.
 
     .. note::
@@ -1176,6 +1239,7 @@ def _from_urlsafe(urlsafe, app, namespace):
         app (Optional[str]): The application ID / project ID for the
             constructed key.
         namespace (Optional[str]): The namespace for the constructed key.
+        database (Optional[str]): The database for the constructed key.
 
     Returns:
         Tuple[google.cloud.datastore.key.Key, .Reference]: The key
@@ -1186,7 +1250,7 @@ def _from_urlsafe(urlsafe, app, namespace):
     padding = b"=" * (-len(urlsafe) % 4)
     urlsafe += padding
     raw_bytes = base64.urlsafe_b64decode(urlsafe)
-    return _from_serialized(raw_bytes, app, namespace)
+    return _from_serialized(raw_bytes, app, namespace, database)
 
 
 def _constructor_handle_positional(path_args, kwargs):
@@ -1252,6 +1316,7 @@ def _parse_from_ref(
     urlsafe=None,
     app=None,
     namespace=None,
+    database: str = None,
     **kwargs
 ):
     """Construct a key from a Reference.
@@ -1273,6 +1338,7 @@ def _parse_from_ref(
         app (Optional[str]): The Google Cloud Platform project (previously
             on Google App Engine, this was called the Application ID).
         namespace (Optional[str]): The namespace for the key.
+        database (Optional[str]): The database for the Key.
         kwargs (Dict[str, Any]): Any extra keyword arguments not covered by
             the explicitly provided ones. These are passed through to indicate
             to the user that the wrong combination of arguments was used, e.g.
@@ -1299,21 +1365,27 @@ def _parse_from_ref(
         )
 
     if reference:
-        ds_key = _from_reference(reference, app, namespace)
+        ds_key = _from_reference(reference, app, namespace, database)
     elif serialized:
-        ds_key, reference = _from_serialized(serialized, app, namespace)
+        ds_key, reference = _from_serialized(serialized, app, namespace, database)
     else:
         # NOTE: We know here that ``urlsafe`` is truth-y;
         #       ``_exactly_one_specified()`` guarantees this.
-        ds_key, reference = _from_urlsafe(urlsafe, app, namespace)
+        ds_key, reference = _from_urlsafe(urlsafe, app, namespace, database)
 
     return ds_key, reference
 
 
 def _parse_from_args(
-    pairs=None, flat=None, project=None, app=None, namespace=UNDEFINED, parent=None
+    pairs=None,
+    flat=None,
+    project=None,
+    app=None,
+    namespace=UNDEFINED,
+    parent=None,
+    database=UNDEFINED,
 ):
-    """Construct a key the path (and possibly a parent key).
+    """Construct a key from the path (and possibly a parent key).
 
     Args:
         pairs (Optional[Iterable[Tuple[str, Union[str, int]]]]): An iterable
@@ -1329,6 +1401,9 @@ def _parse_from_args(
         parent (Optional[~.ndb.key.Key]): The parent of the key being
             constructed. If provided, the key path will be **relative** to the
             parent key's path.
+        database (Optional[str]): The database for the key.
+            Defaults to that of the client if a parent was specified, and
+            to the default database if it was not.
 
     Returns:
         ~.datastore.Key: The constructed key.
@@ -1350,9 +1425,12 @@ def _parse_from_args(
     parent_ds_key = None
     if parent is None:
         project = _project_from_app(app)
+
         if namespace is UNDEFINED:
-            context = context_module.get_context()
-            namespace = context.get_namespace()
+            namespace = context_module.get_context().get_namespace()
+
+        if database is UNDEFINED:
+            database = context_module.get_context().client.database
 
     else:
         project = _project_from_app(app, allow_empty=True)
@@ -1364,14 +1442,24 @@ def _parse_from_args(
         if namespace is UNDEFINED:
             namespace = None
 
+        if database is UNDEFINED:
+            database = None
+
         # Offload verification of parent to ``google.cloud.datastore.Key()``.
         parent_ds_key = parent._key
+
+    if database == "":
+        database = None
 
     if namespace == "":
         namespace = None
 
     return google.cloud.datastore.Key(
-        *flat, parent=parent_ds_key, project=project, namespace=namespace
+        *flat,
+        parent=parent_ds_key,
+        project=project,
+        database=database,
+        namespace=namespace,
     )
 
 

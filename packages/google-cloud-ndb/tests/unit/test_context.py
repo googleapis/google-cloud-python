@@ -61,7 +61,8 @@ class TestContext:
         client = mock.Mock(
             namespace=None,
             project="testing",
-            spec=("namespace", "project"),
+            database="testdb",
+            spec=("namespace", "project", "database"),
             stub=mock.Mock(spec=()),
         )
         return context_module.Context(client, **kwargs)

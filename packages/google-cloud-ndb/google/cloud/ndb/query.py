@@ -140,6 +140,7 @@ import functools
 import logging
 import six
 
+from google.cloud.ndb import context as context_module
 from google.cloud.ndb import exceptions
 from google.cloud.ndb import _options
 from google.cloud.ndb import tasklets
@@ -1228,6 +1229,7 @@ class QueryOptions(_options.ReadOptions):
         "group_by",
         "namespace",
         "project",
+        "database",
         # Fetch options
         "keys_only",
         "limit",
@@ -1265,6 +1267,9 @@ class QueryOptions(_options.ReadOptions):
         if context:
             if not self.project:
                 self.project = context.client.project
+
+            # We always use the client's database, for consistency with python-datastore
+            self.database = context.client.database
 
             if self.namespace is None:
                 if self.ancestor is None:
@@ -1375,6 +1380,9 @@ class Query(object):
             offset = self._option("offset", offset)
             keys_only = self._option("keys_only", keys_only)
 
+        # Except in the case of ancestor queries, we always use the client's database
+        database = context_module.get_context().client.database or None
+
         if ancestor is not None:
             if isinstance(ancestor, ParameterizedThing):
                 if isinstance(ancestor, ParameterizedFunction):
@@ -1394,6 +1402,9 @@ class Query(object):
                         raise TypeError("ancestor/project id mismatch")
                 else:
                     project = ancestor.app()
+
+                database = ancestor.database()
+
                 if namespace is not None:
                     # if namespace is the empty string, that means default
                     # namespace, but after a put, if the ancestor is using
@@ -1405,6 +1416,7 @@ class Query(object):
                         raise TypeError("ancestor/namespace mismatch")
                 else:
                     namespace = ancestor.namespace()
+
         if filters is not None:
             if not isinstance(filters, Node):
                 raise TypeError(
@@ -1431,6 +1443,7 @@ class Query(object):
         self.filters = filters
         self.order_by = order_by
         self.project = project
+        self.database = database
         self.namespace = namespace
         self.limit = limit
         self.offset = offset

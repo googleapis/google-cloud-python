@@ -127,9 +127,10 @@ class Test_make_call:
         future.set_result("bar")
 
         request = object()
-        call = _api.make_call("foo", request, retries=0, timeout=20)
+        metadata = object()
+        call = _api.make_call("foo", request, retries=0, timeout=20, metadata=metadata)
         assert call.result() == "bar"
-        api.foo.future.assert_called_once_with(request, timeout=20)
+        api.foo.future.assert_called_once_with(request, timeout=20, metadata=metadata)
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -560,22 +561,31 @@ class Test_LookupBatch:
 def test__datastore_lookup(datastore_pb2, context):
     client = mock.Mock(
         project="theproject",
+        database="testdb",
         stub=mock.Mock(spec=("lookup",)),
-        spec=("project", "stub"),
+        spec=("project", "database", "stub"),
     )
     with context.new(client=client).use() as context:
         client.stub.lookup = lookup = mock.Mock(spec=("future",))
         future = tasklets.Future()
         future.set_result("response")
         lookup.future.return_value = future
+        datastore_pb2.LookupRequest.return_value.project_id = "theproject"
+        datastore_pb2.LookupRequest.return_value.database_id = "testdb"
         assert _api._datastore_lookup(["foo", "bar"], None).result() == "response"
 
         datastore_pb2.LookupRequest.assert_called_once_with(
-            project_id="theproject", keys=["foo", "bar"], read_options=None
+            project_id="theproject",
+            database_id="testdb",
+            keys=["foo", "bar"],
+            read_options=None,
         )
         client.stub.lookup.future.assert_called_once_with(
             datastore_pb2.LookupRequest.return_value,
             timeout=_api._DEFAULT_TIMEOUT,
+            metadata=(
+                ("x-goog-request-params", "project_id=theproject&database_id=testdb"),
+            ),
         )
 
 
@@ -1236,6 +1246,7 @@ class Test_datastore_commit:
 
         datastore_pb2.CommitRequest.assert_called_once_with(
             project_id="testing",
+            database_id=None,
             mode=datastore_pb2.CommitRequest.Mode.NON_TRANSACTIONAL,
             mutations=mutations,
             transaction=None,
@@ -1258,6 +1269,7 @@ class Test_datastore_commit:
 
         datastore_pb2.CommitRequest.assert_called_once_with(
             project_id="testing",
+            database_id=None,
             mode=datastore_pb2.CommitRequest.Mode.TRANSACTIONAL,
             mutations=mutations,
             transaction=b"tx123",
@@ -1349,7 +1361,7 @@ def test__datastore_allocate_ids(stub, datastore_pb2):
     assert _api._datastore_allocate_ids(keys).result() == "response"
 
     datastore_pb2.AllocateIdsRequest.assert_called_once_with(
-        project_id="testing", keys=keys
+        project_id="testing", database_id=None, keys=keys
     )
 
     request = datastore_pb2.AllocateIdsRequest.return_value
@@ -1389,7 +1401,9 @@ class Test_datastore_begin_transaction:
 
         transaction_options = datastore_pb2.TransactionOptions.return_value
         datastore_pb2.BeginTransactionRequest.assert_called_once_with(
-            project_id="testing", transaction_options=transaction_options
+            project_id="testing",
+            database_id=None,
+            transaction_options=transaction_options,
         )
 
         request = datastore_pb2.BeginTransactionRequest.return_value
@@ -1412,7 +1426,9 @@ class Test_datastore_begin_transaction:
 
         transaction_options = datastore_pb2.TransactionOptions.return_value
         datastore_pb2.BeginTransactionRequest.assert_called_once_with(
-            project_id="testing", transaction_options=transaction_options
+            project_id="testing",
+            database_id=None,
+            transaction_options=transaction_options,
         )
 
         request = datastore_pb2.BeginTransactionRequest.return_value
@@ -1443,7 +1459,7 @@ def test__datastore_rollback(stub, datastore_pb2):
     assert _api._datastore_rollback(b"tx123").result() == "response"
 
     datastore_pb2.RollbackRequest.assert_called_once_with(
-        project_id="testing", transaction=b"tx123"
+        project_id="testing", database_id=None, transaction=b"tx123"
     )
 
     request = datastore_pb2.RollbackRequest.return_value
@@ -1460,3 +1476,28 @@ def test__complete():
     assert not _api._complete(mock.Mock(path=[MockElement()]))
     assert _api._complete(mock.Mock(path=[MockElement(id=1)]))
     assert _api._complete(mock.Mock(path=[MockElement(name="himom")]))
+
+
+@pytest.mark.parametrize(
+    "project_id,database_id,expected",
+    [
+        ("a", "b", "project_id=a&database_id=b"),
+        ("a", "", "project_id=a"),
+        ("", "b", "database_id=b"),
+    ],
+)
+def test__add_routing_info(project_id, database_id, expected):
+    expected_new_metadata = ("x-goog-request-params", expected)
+    request = datastore_pb2.LookupRequest(
+        project_id=project_id, database_id=database_id
+    )
+    assert _api._add_routing_info((), request) == (expected_new_metadata,)
+    assert _api._add_routing_info(("already=there",), request) == (
+        "already=there",
+        expected_new_metadata,
+    )
+
+
+def test__add_routing_info_no_request_info():
+    request = datastore_pb2.LookupRequest()
+    assert _api._add_routing_info((), request) == ()

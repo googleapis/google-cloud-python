@@ -27,7 +27,6 @@ LOCAL_DEPS = ("google-api-core", "google-cloud-core")
 NOX_DIR = os.path.abspath(os.path.dirname(__file__))
 DEFAULT_INTERPRETER = "3.8"
 ALL_INTERPRETERS = ("3.7", "3.8", "3.9", "3.10", "3.11")
-MAJOR_INTERPRETERS = "3.8"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 BLACK_VERSION = "black==22.3.0"
@@ -160,7 +159,8 @@ def doctest(session):
     session.run(*run_args)
 
 
-@nox.session(py=MAJOR_INTERPRETERS)
+# Run the system tests
+@nox.session(py=DEFAULT_INTERPRETER)
 def system(session):
     """Run the system test suite."""
     constraints_path = str(

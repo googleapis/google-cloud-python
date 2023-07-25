@@ -45,9 +45,10 @@ class TestClient:
             with patch_credentials("testing"):
                 client = client_module.Client()
         assert client.SCOPE == ("https://www.googleapis.com/auth/datastore",)
-        assert client.namespace is None
         assert client.host == _http.DATASTORE_API_HOST
         assert client.project == "testing"
+        assert client.database is None
+        assert client.namespace is None
         assert client.secure is True
 
     @staticmethod
@@ -60,9 +61,10 @@ class TestClient:
             with patch_credentials("testing"):
                 client = client_module.Client()
         assert client.SCOPE == ("https://www.googleapis.com/auth/datastore",)
-        assert client.namespace is None
         assert client.host == "foo"
         assert client.project == "testing"
+        assert client.database is None
+        assert client.namespace is None
         assert client.secure is False
 
     @staticmethod
@@ -77,14 +79,16 @@ class TestClient:
         with patch_credentials("testing") as creds:
             client = client_module.Client(
                 project="test-project",
+                database="test-database",
                 namespace="test-namespace",
                 credentials=creds,
                 client_options=ClientOptions(
                     api_endpoint="alternate-endpoint.example.com"
                 ),
             )
-        assert client.namespace == "test-namespace"
         assert client.project == "test-project"
+        assert client.database == "test-database"
+        assert client.namespace == "test-namespace"
         assert client.host == "alternate-endpoint.example.com"
         assert client.secure is True
 
@@ -93,12 +97,14 @@ class TestClient:
         with patch_credentials("testing") as creds:
             client = client_module.Client(
                 project="test-project",
+                database="test-database",
                 namespace="test-namespace",
                 credentials=creds,
                 client_options={"api_endpoint": "alternate-endpoint.example.com"},
             )
-        assert client.namespace == "test-namespace"
         assert client.project == "test-project"
+        assert client.database == "test-database"
+        assert client.namespace == "test-namespace"
         assert client.host == "alternate-endpoint.example.com"
         assert client.secure is True
 
@@ -107,12 +113,14 @@ class TestClient:
         with patch_credentials("testing") as creds:
             client = client_module.Client(
                 project="test-project",
+                database="test-database",
                 namespace="test-namespace",
                 credentials=creds,
                 client_options={"scopes": ["my_scope"]},
             )
-        assert client.namespace == "test-namespace"
         assert client.project == "test-project"
+        assert client.database == "test-database"
+        assert client.namespace == "test-namespace"
         assert client.host == _http.DATASTORE_API_HOST
         assert client.secure is True
 

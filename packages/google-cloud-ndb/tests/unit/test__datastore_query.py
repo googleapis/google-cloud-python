@@ -2020,14 +2020,17 @@ class Test__datastore_run_query:
         read_options = datastore_pb2.ReadOptions()
         request = datastore_pb2.RunQueryRequest(
             project_id="testing",
+            database_id=None,
             partition_id=entity_pb2.PartitionId(project_id="testing", namespace_id=""),
             query=query_pb,
             read_options=read_options,
         )
+        metadata = ("x-goog-request-params", "project_id=testing")
+        _datastore_api._add_routing_info.return_value = metadata
         _datastore_api.get_read_options.return_value = read_options
         assert _datastore_query._datastore_run_query(query).result() == "foo"
         _datastore_api.make_call.assert_called_once_with(
-            "run_query", request, timeout=None
+            "run_query", request, timeout=None, metadata=metadata
         )
         _datastore_api.get_read_options.assert_called_once_with(query)
 

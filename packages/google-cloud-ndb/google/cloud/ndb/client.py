@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""A client for NDB which manages credentials, project, namespace."""
+"""A client for NDB which manages credentials, project, namespace, and database."""
 
 import contextlib
 import grpc
@@ -92,17 +92,25 @@ class Client(google_client.ClientWithProject):
         client_options (Optional[:class:`~google.api_core.client_options.ClientOptions` or :class:`dict`])
             Client options used to set user options on the client.
             API Endpoint should be set through client_options.
+        database (Optional[str]): Database to access. Defaults to the (default) database.
     """
 
     SCOPE = ("https://www.googleapis.com/auth/datastore",)
     """The scopes required for authenticating as a Cloud Datastore consumer."""
 
     def __init__(
-        self, project=None, namespace=None, credentials=None, client_options=None
+        self,
+        project=None,
+        namespace=None,
+        credentials=None,
+        client_options=None,
+        database=None,
     ):
         self.namespace = namespace
+        self.host = os.environ.get(environment_vars.GCD_HOST, DATASTORE_API_HOST)
         self.client_info = _CLIENT_INFO
         self._client_options = client_options
+        self.database = database
 
         # Use insecure connection when using Datastore Emulator, otherwise
         # use secure connection

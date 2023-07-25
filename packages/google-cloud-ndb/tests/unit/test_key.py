@@ -59,6 +59,17 @@ class TestKey:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_different_database(context):
+        context.client.database = "DiffDatabase"
+        key = key_module.Key("Kind", 42)
+
+        assert key._key == google.cloud.datastore.Key(
+            "Kind", 42, project="testing", database="DiffDatabase"
+        )
+        assert key._reference is None
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_different_namespace(context):
         context.client.namespace = "DiffNamespace"
         key = key_module.Key("Kind", 42)
@@ -125,6 +136,7 @@ class TestKey:
             "Child",
             "Feather",
             project="sample-app",
+            database="base",
             namespace="space",
         )
         assert key._reference is reference
@@ -141,6 +153,23 @@ class TestKey:
         assert key._reference == make_reference(
             path=({"type": "Zorp", "id": 88},),
             app="s~sample-app-no-location",
+            database=None,
+            namespace=None,
+        )
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_serialized_with_database():
+        serialized = b"j\x18s~sample-app-no-locationr\n\x0b\x12\x04Zorp\x18X\x0c\xba\x01\tsample-db"
+        key = key_module.Key(serialized=serialized)
+
+        assert key._key == google.cloud.datastore.Key(
+            "Zorp", 88, project="sample-app-no-location", database="sample-db"
+        )
+        assert key._reference == make_reference(
+            path=({"type": "Zorp", "id": 88},),
+            app="s~sample-app-no-location",
+            database="sample-db",
             namespace=None,
         )
 
@@ -152,6 +181,7 @@ class TestKey:
         assert key._reference == make_reference(
             path=({"type": "Kind", "name": "Thing"},),
             app="s~fire",
+            database=None,
             namespace=None,
         )
 
@@ -201,6 +231,24 @@ class TestKey:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_default_database_as_empty_string():
+        key = key_module.Key("Kind", 1337, database="")
+
+        assert key._key == google.cloud.datastore.Key("Kind", 1337, project="testing")
+        assert key.database() is None
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_database():
+        key = key_module.Key("Kind", 1337, database="foo")
+
+        assert key._key == google.cloud.datastore.Key(
+            "Kind", 1337, project="testing", database="foo"
+        )
+        assert key.database() == "foo"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor_with_namespace():
         key = key_module.Key("Kind", 1337, namespace="foo")
 
@@ -234,6 +282,28 @@ class TestKey:
 
         assert key._key == google.cloud.datastore.Key(
             "Kind", "Thing", "Zip", 10, project="fire"
+        )
+        assert key._reference is None
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_parent_and_database():
+        parent = key_module.Key("Kind", "Thing", project="fire", database="foo")
+        key = key_module.Key("Zip", 10, parent=parent, database="foo")
+
+        assert key._key == google.cloud.datastore.Key(
+            "Kind", "Thing", "Zip", 10, project="fire", database="foo"
+        )
+        assert key._reference is None
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_constructor_with_parent_and_database_undefined():
+        parent = key_module.Key("Kind", "Thing", project="fire", database="foo")
+        key = key_module.Key("Zip", 10, parent=parent)
+
+        assert key._key == google.cloud.datastore.Key(
+            "Kind", "Thing", "Zip", 10, project="fire", database="foo"
         )
         assert key._reference is None
 
@@ -308,9 +378,13 @@ class TestKey:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test___repr__non_defaults():
-        key = key_module.Key("X", 11, app="foo", namespace="bar")
-        assert repr(key) == "Key('X', 11, project='foo', namespace='bar')"
-        assert str(key) == "Key('X', 11, project='foo', namespace='bar')"
+        key = key_module.Key("X", 11, app="foo", namespace="bar", database="baz")
+        assert (
+            repr(key) == "Key('X', 11, project='foo', database='baz', namespace='bar')"
+        )
+        assert (
+            str(key) == "Key('X', 11, project='foo', database='baz', namespace='bar')"
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -323,10 +397,11 @@ class TestKey:
 
     @staticmethod
     def test__tuple():
-        key = key_module.Key("X", 11, app="foo", namespace="n")
-        assert key._tuple() == ("foo", "n", (("X", 11),))
+        key = key_module.Key("X", 11, app="foo", database="d", namespace="n")
+        assert key._tuple() == ("foo", "n", "d", (("X", 11),))
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test___eq__():
         key1 = key_module.Key("X", 11, app="foo", namespace="n")
         key2 = key_module.Key("Y", 12, app="foo", namespace="n")
@@ -340,6 +415,7 @@ class TestKey:
         assert not key1 == key5
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test___ne__():
         key1 = key_module.Key("X", 11, app="foo", namespace="n")
         key2 = key_module.Key("Y", 12, app="foo", namespace="n")
@@ -355,64 +431,101 @@ class TestKey:
         assert not key1 != key6
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test___lt__():
         key1 = key_module.Key("X", 11, app="foo", namespace="n")
         key2 = key_module.Key("Y", 12, app="foo", namespace="n")
         key3 = key_module.Key("X", 11, app="goo", namespace="n")
         key4 = key_module.Key("X", 11, app="foo", namespace="o")
         key5 = mock.sentinel.key
+        key6 = key_module.Key("X", 11, app="foo", database="db", namespace="n")
+        key7 = key_module.Key("X", 11, app="foo", database="db2", namespace="n")
         assert not key1 < key1
         assert key1 < key2
         assert key1 < key3
         assert key1 < key4
         with pytest.raises(TypeError):
             key1 < key5
+        assert key1 < key6
+        assert key6 < key7
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test___le__():
         key1 = key_module.Key("X", 11, app="foo", namespace="n")
         key2 = key_module.Key("Y", 12, app="foo", namespace="n")
         key3 = key_module.Key("X", 11, app="goo", namespace="n")
         key4 = key_module.Key("X", 11, app="foo", namespace="o")
         key5 = mock.sentinel.key
+        key6 = key_module.Key("X", 11, app="foo", database="db", namespace="n")
+        key7 = key_module.Key("X", 11, app="foo", database="db2", namespace="n")
         assert key1 <= key1
         assert key1 <= key2
         assert key1 <= key3
         assert key1 <= key4
         with pytest.raises(TypeError):
             key1 <= key5
+        assert key1 <= key6
+        assert key6 <= key7
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test___gt__():
         key1 = key_module.Key("X", 11, app="foo", namespace="n")
         key2 = key_module.Key("M", 10, app="foo", namespace="n")
         key3 = key_module.Key("X", 11, app="boo", namespace="n")
         key4 = key_module.Key("X", 11, app="foo", namespace="a")
         key5 = mock.sentinel.key
+        key6 = key_module.Key("X", 11, app="foo", database="db", namespace="n")
+        key7 = key_module.Key("X", 11, app="foo", database="db2", namespace="n")
         assert not key1 > key1
         assert key1 > key2
         assert key1 > key3
         assert key1 > key4
         with pytest.raises(TypeError):
             key1 > key5
+        assert key6 > key1
+        assert key7 > key6
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test___ge__():
         key1 = key_module.Key("X", 11, app="foo", namespace="n")
         key2 = key_module.Key("M", 10, app="foo", namespace="n")
         key3 = key_module.Key("X", 11, app="boo", namespace="n")
         key4 = key_module.Key("X", 11, app="foo", namespace="a")
         key5 = mock.sentinel.key
+        key6 = key_module.Key("X", 11, app="foo", database="db", namespace="n")
+        key7 = key_module.Key("X", 11, app="foo", database="db2", namespace="n")
         assert key1 >= key1
         assert key1 >= key2
         assert key1 >= key3
         assert key1 >= key4
         with pytest.raises(TypeError):
             key1 >= key5
+        assert key6 >= key1
+        assert key7 >= key6
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_pickling():
         key = key_module.Key("a", "b", app="c", namespace="d")
+        pickled = pickle.dumps(key)
+        unpickled = pickle.loads(pickled)
+        assert key == unpickled
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_pickling_with_default_database():
+        key = key_module.Key("a", "b", app="c", namespace="d", database="")
+        pickled = pickle.dumps(key)
+        unpickled = pickle.loads(pickled)
+        assert key == unpickled
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_pickling_with_database():
+        key = key_module.Key("a", "b", app="c", namespace="d", database="e")
         pickled = pickle.dumps(key)
         unpickled = pickle.loads(pickled)
         assert key == unpickled
@@ -531,9 +644,14 @@ class TestKey:
     @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test_reference():
-        key = key_module.Key("This", "key", app="fire")
+        key = key_module.Key(
+            "This", "key", app="fire", database="db", namespace="namespace"
+        )
         assert key.reference() == make_reference(
-            path=({"type": "This", "name": "key"},), app="fire", namespace=None
+            path=({"type": "This", "name": "key"},),
+            app="fire",
+            database="db",
+            namespace="namespace",
         )
 
     @staticmethod
@@ -604,6 +722,15 @@ class TestKey:
         urlsafe = key.to_legacy_urlsafe(location_prefix="s~")
         key2 = key_module.Key(urlsafe=urlsafe)
         assert key == key2
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_to_legacy_urlsafe_named_database_unsupported():
+        key = key_module.Key("d", 123, database="anydb")
+        with pytest.raises(
+            ValueError, match="to_legacy_urlsafe only supports the default database"
+        ):
+            key.to_legacy_urlsafe(location_prefix="s~")
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -874,65 +1001,84 @@ class Test__project_from_app:
 class Test__from_reference:
     def test_basic(self):
         reference = make_reference()
-        ds_key = key_module._from_reference(reference, None, None)
+        ds_key = key_module._from_reference(reference, None, None, None)
         assert ds_key == google.cloud.datastore.Key(
             "Parent",
             59,
             "Child",
             "Feather",
             project="sample-app",
+            database="base",
             namespace="space",
         )
 
     def test_matching_app(self):
         reference = make_reference()
-        ds_key = key_module._from_reference(reference, "s~sample-app", None)
+        ds_key = key_module._from_reference(reference, "s~sample-app", None, None)
         assert ds_key == google.cloud.datastore.Key(
             "Parent",
             59,
             "Child",
             "Feather",
             project="sample-app",
+            database="base",
             namespace="space",
         )
 
     def test_differing_app(self):
         reference = make_reference()
         with pytest.raises(RuntimeError):
-            key_module._from_reference(reference, "pickles", None)
+            key_module._from_reference(reference, "pickles", None, None)
 
     def test_matching_namespace(self):
         reference = make_reference()
-        ds_key = key_module._from_reference(reference, None, "space")
+        ds_key = key_module._from_reference(reference, None, "space", None)
         assert ds_key == google.cloud.datastore.Key(
             "Parent",
             59,
             "Child",
             "Feather",
             project="sample-app",
+            database="base",
             namespace="space",
         )
 
     def test_differing_namespace(self):
         reference = make_reference()
         with pytest.raises(RuntimeError):
-            key_module._from_reference(reference, None, "pickles")
+            key_module._from_reference(reference, None, "pickles", None)
 
-
-class Test__from_serialized:
-    @staticmethod
-    def test_basic():
-        serialized = (
-            b"j\x0cs~sample-appr\x1e\x0b\x12\x06Parent\x18;\x0c\x0b\x12\x05"
-            b'Child"\x07Feather\x0c\xa2\x01\x05space'
-        )
-        ds_key, reference = key_module._from_serialized(serialized, None, None)
+    def test_matching_database(self):
+        reference = make_reference()
+        ds_key = key_module._from_reference(reference, None, None, "base")
         assert ds_key == google.cloud.datastore.Key(
             "Parent",
             59,
             "Child",
             "Feather",
             project="sample-app",
+            database="base",
+            namespace="space",
+        )
+
+    def test_differing_database(self):
+        reference = make_reference()
+        with pytest.raises(RuntimeError):
+            key_module._from_reference(reference, None, None, "turtles")
+
+
+class Test__from_serialized:
+    @staticmethod
+    def test_basic():
+        serialized = b'j\x0cs~sample-appr\x1e\x0b\x12\x06Parent\x18;\x0c\x0b\x12\x05Child"\x07Feather\x0c\xa2\x01\x05space\xba\x01\x04base'
+        ds_key, reference = key_module._from_serialized(serialized, None, None, None)
+        assert ds_key == google.cloud.datastore.Key(
+            "Parent",
+            59,
+            "Child",
+            "Feather",
+            project="sample-app",
+            database="base",
             namespace="space",
         )
         assert reference == make_reference()
@@ -940,13 +1086,14 @@ class Test__from_serialized:
     @staticmethod
     def test_no_app_prefix():
         serialized = b"j\x18s~sample-app-no-locationr\n\x0b\x12\x04Zorp\x18X\x0c"
-        ds_key, reference = key_module._from_serialized(serialized, None, None)
+        ds_key, reference = key_module._from_serialized(serialized, None, None, None)
         assert ds_key == google.cloud.datastore.Key(
             "Zorp", 88, project="sample-app-no-location"
         )
         assert reference == make_reference(
             path=({"type": "Zorp", "id": 88},),
             app="s~sample-app-no-location",
+            database=None,
             namespace=None,
         )
 
@@ -960,26 +1107,28 @@ class Test__from_urlsafe:
         )
         urlsafe_bytes = urlsafe.encode("ascii")
         for value in (urlsafe, urlsafe_bytes):
-            ds_key, reference = key_module._from_urlsafe(value, None, None)
+            ds_key, reference = key_module._from_urlsafe(value, None, None, None)
             assert ds_key == google.cloud.datastore.Key(
                 "Parent",
                 59,
                 "Child",
                 "Feather",
                 project="sample-app",
+                database=None,
                 namespace="space",
             )
-            assert reference == make_reference()
+            assert reference == make_reference(database=None)
 
     @staticmethod
     def test_needs_padding():
         urlsafe = b"agZzfmZpcmVyDwsSBEtpbmQiBVRoaW5nDA"
 
-        ds_key, reference = key_module._from_urlsafe(urlsafe, None, None)
+        ds_key, reference = key_module._from_urlsafe(urlsafe, None, None, None)
         assert ds_key == google.cloud.datastore.Key("Kind", "Thing", project="fire")
         assert reference == make_reference(
             path=({"type": "Kind", "name": "Thing"},),
             app="s~fire",
+            database=None,
             namespace=None,
         )
 
@@ -1009,7 +1158,7 @@ class Test__constructor_handle_positional:
     @staticmethod
     def test_dict_positional_with_other_kwargs():
         args = ({"flat": ("OtherKind", "Cheese"), "app": "ehp"},)
-        kwargs = {"namespace": "over-here"}
+        kwargs = {"namespace": "over-here", "database": "over-there"}
         with pytest.raises(TypeError):
             key_module._constructor_handle_positional(args, kwargs)
 
@@ -1017,11 +1166,13 @@ class Test__constructor_handle_positional:
 def make_reference(
     path=({"type": "Parent", "id": 59}, {"type": "Child", "name": "Feather"}),
     app="s~sample-app",
+    database="base",
     namespace="space",
 ):
     elements = [_app_engine_key_pb2.Path.Element(**element) for element in path]
     return _app_engine_key_pb2.Reference(
         app=app,
         path=_app_engine_key_pb2.Path(element=elements),
+        database_id=database,
         name_space=namespace,
     )

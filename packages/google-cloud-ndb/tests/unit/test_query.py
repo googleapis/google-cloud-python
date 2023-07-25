@@ -38,6 +38,7 @@ def test___all__():
 
 class TestQueryOptions:
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor():
         options = query_module.QueryOptions(kind="test", project="app")
         assert options.kind == "test"
@@ -49,6 +50,18 @@ class TestQueryOptions:
         options = query_module.QueryOptions(config=config, kind="test", project="app")
         assert options.kind == "test"
         assert options.project == "app"
+        assert options.database is None
+        assert options.namespace == "config_test"
+
+    @staticmethod
+    def test_constructor_with_config_specified_db():
+        config = query_module.QueryOptions(
+            kind="other", namespace="config_test", database="config_test"
+        )
+        options = query_module.QueryOptions(config=config, kind="test", project="app")
+        assert options.kind == "test"
+        assert options.project == "app"
+        assert options.database == "config_test"
         assert options.namespace == "config_test"
 
     @staticmethod
@@ -76,10 +89,18 @@ class TestQueryOptions:
     @staticmethod
     def test_copy():
         options = query_module.QueryOptions(kind="test", project="app")
-        options = options.copy(project="app2", namespace="foo")
+        options = options.copy(project="app2", database="bar", namespace="foo")
         assert options.kind == "test"
         assert options.project == "app2"
+        assert options.database == "bar"
         assert options.namespace == "foo"
+
+    @staticmethod
+    def test_explicitly_set_default_database(in_context):
+        with in_context.new().use() as context:
+            context.client.database = "newdb"
+            options = query_module.QueryOptions(context=context)
+            assert options.database == "newdb"
 
     @staticmethod
     def test_explicitly_set_default_namespace(in_context):
@@ -598,7 +619,7 @@ class TestFilterNode:
 
     @staticmethod
     def test_constructor_with_key():
-        key = key_module.Key("a", "b", app="c", namespace="d")
+        key = key_module.Key("a", "b", app="c", namespace="d", database="db")
         filter_node = query_module.FilterNode("name", "=", key)
         assert filter_node._name == "name"
         assert filter_node._opsymbol == "="
@@ -1202,6 +1223,7 @@ def test_OR():
 
 class TestQuery:
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_constructor():
         query = query_module.Query(kind="Foo")
         assert query.kind == "Foo"
@@ -2146,7 +2168,9 @@ class TestQuery:
 
         _datastore_query.iterate.assert_called_once_with(
             query_module.QueryOptions(
-                filters=query.filters, project="testing", limit=5
+                filters=query.filters,
+                project="testing",
+                limit=5,
             ),
             raw=True,
         )
@@ -2183,7 +2207,9 @@ class TestQuery:
 
         _datastore_query.iterate.assert_called_once_with(
             query_module.QueryOptions(
-                project="testing", limit=5, start_cursor="cursor000"
+                project="testing",
+                limit=5,
+                start_cursor="cursor000",
             ),
             raw=True,
         )
@@ -2210,7 +2236,9 @@ class TestQuery:
 
         _datastore_query.iterate.assert_called_once_with(
             query_module.QueryOptions(
-                project="testing", limit=5, start_cursor="cursor000"
+                project="testing",
+                limit=5,
+                start_cursor="cursor000",
             ),
             raw=True,
         )
@@ -2241,7 +2269,9 @@ class TestQuery:
 
         _datastore_query.iterate.assert_called_once_with(
             query_module.QueryOptions(
-                filters=query.filters, project="testing", limit=5
+                filters=query.filters,
+                project="testing",
+                limit=5,
             ),
             raw=True,
         )
@@ -2275,7 +2305,8 @@ class TestQuery:
         assert more
 
         _datastore_query.iterate.assert_called_once_with(
-            query_module.QueryOptions(project="testing", limit=5), raw=True
+            query_module.QueryOptions(project="testing", limit=5),
+            raw=True,
         )
 
 

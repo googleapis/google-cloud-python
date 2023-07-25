@@ -98,8 +98,7 @@ class GQL(object):
 
         Args:
             query_string (str): properly formatted GQL query string.
-            namespace (str): the namespace to use for this query.
-
+            namespace (str): The namespace to use for this query. Defaults to the client's value.
         Raises:
             exceptions.BadQueryError: if the query is not parsable.
         """
@@ -853,7 +852,10 @@ def _key_function(values):
         context = context_module.get_context()
         client = context.client
         return key.Key(
-            *values, namespace=context.get_namespace(), project=client.project
+            *values,
+            project=client.project,
+            database=client.database,
+            namespace=context.get_namespace(),
         )
     _raise_cast_error(
         "Key requires even number of operands or single string, {}".format(values)

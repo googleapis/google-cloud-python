@@ -349,7 +349,7 @@ def test_do_not_disclose_cache_contents(begin_transaction, client_context):
 
 @pytest.mark.skipif(not USE_REDIS_CACHE, reason="Redis is not configured")
 @pytest.mark.usefixtures("client_context")
-def test_parallel_threads_lookup_w_redis_cache(namespace, dispose_of):
+def test_parallel_threads_lookup_w_redis_cache(database_id, namespace, dispose_of):
     """Regression test for #496
 
     https://github.com/googleapis/python-ndb/issues/496
@@ -362,7 +362,7 @@ def test_parallel_threads_lookup_w_redis_cache(namespace, dispose_of):
             return super(MonkeyPipeline, self).mset(mapping)
 
     with mock.patch("redis.client.Pipeline", MonkeyPipeline):
-        client = ndb.Client()
+        client = ndb.Client(database=database_id)
         global_cache = ndb.RedisCache.from_environment()
         activity = {"calls": 0}
 

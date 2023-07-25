@@ -2616,6 +2616,16 @@ class TestKeyProperty:
         assert value.kind() == "Kynd"
         assert value.id() == 123
 
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_equality():
+        class KeyPropTestModel(model.Model):
+            k = model.KeyProperty()
+
+        kptm1 = KeyPropTestModel(k=key_module.Key("k", 1))
+        kptm2 = KeyPropTestModel(k=key_module.Key("k", 1, database=""))
+        assert kptm1 == kptm2
+
 
 class TestBlobKeyProperty:
     @staticmethod
@@ -4680,6 +4690,7 @@ class TestModel:
             model.Model._check_properties(properties)
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_query():
         class XModel(model.Model):
             x = model.IntegerProperty()
@@ -4689,6 +4700,7 @@ class TestModel:
         assert query.filters == (XModel.x == 42)
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_query_distinct():
         class XModel(model.Model):
             x = model.IntegerProperty()
@@ -4721,6 +4733,7 @@ class TestModel:
             XModel.query(distinct=True, group_by=("x",))
 
     @staticmethod
+    @pytest.mark.usefixtures("in_context")
     def test_query_projection_of_unindexed_attribute():
         class XModel(model.Model):
             x = model.IntegerProperty(indexed=False)
@@ -6114,7 +6127,7 @@ class Test__from_pb:
     def test_with_key():
         m = model.Model()
         pb = _legacy_entity_pb.EntityProto()
-        key = key_module.Key("a", "b", app="c", namespace="")
+        key = key_module.Key("a", "b", app="c", database="", namespace="")
         ent = m._from_pb(pb, key=key)
         assert ent.key == key
 
@@ -6266,6 +6279,60 @@ def test_serialization():
     assert entity.other.key is None or entity.other.key.id() is None
     entity = pickle.loads(pickle.dumps(entity))
     assert entity.other.foo == 1
+
+
+class Test_Keyword_Name:
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_property_named_project():
+        class HasProjectProp(model.Model):
+            project = model.StringProperty()
+
+        has_project_prop = HasProjectProp(
+            project="the-property", _project="the-ds-project"
+        )
+        assert has_project_prop.project == "the-property"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_property_named_app():
+        class HasAppProp(model.Model):
+            app = model.StringProperty()
+
+        has_app_prop = HasAppProp(app="the-property", _app="the-gae-app")
+        assert has_app_prop.app == "the-property"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_property_named_database():
+        class HasDbProp(model.Model):
+            database = model.StringProperty()
+
+        has_db_prop = HasDbProp(database="the-property", _database="the-ds-database")
+        assert has_db_prop.database == "the-property"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_property_named_namespace():
+        class HasNamespaceProp(model.Model):
+            namespace = model.StringProperty()
+
+        has_namespace_prop = HasNamespaceProp(
+            namespace="the-property", _namespace="the-ds-namespace"
+        )
+        assert has_namespace_prop.namespace == "the-property"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_property_named_key():
+        k = key_module.Key("HasKeyProp", "k")
+
+        class HasKeyProp(model.Model):
+            key = model.StringProperty()
+
+        has_key_prop = HasKeyProp(key="the-property", _key=k)
+        assert has_key_prop.key == "the-property"
+        assert has_key_prop._key == k
 
 
 def ManyFieldsFactory():

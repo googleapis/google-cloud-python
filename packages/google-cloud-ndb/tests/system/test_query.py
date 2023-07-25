@@ -342,7 +342,7 @@ def test_namespace(dispose_of, other_namespace):
     assert results[0].key.namespace() == other_namespace
 
 
-def test_namespace_set_on_client_with_id(dispose_of, other_namespace):
+def test_namespace_set_on_client_with_id(dispose_of, database_id, other_namespace):
     """Regression test for #337
 
     https://github.com/googleapis/python-ndb/issues/337
@@ -352,7 +352,7 @@ def test_namespace_set_on_client_with_id(dispose_of, other_namespace):
         foo = ndb.IntegerProperty()
         bar = ndb.StringProperty()
 
-    client = ndb.Client(namespace=other_namespace)
+    client = ndb.Client(namespace=other_namespace, database=database_id)
     with client.context(cache_policy=False):
         id = test_utils.system.unique_resource_id()
         entity1 = SomeKind(id=id, foo=1, bar="a")
@@ -784,6 +784,7 @@ def test_multiquery_with_order_key_property(ds_entity, client_context):
     https://github.com/googleapis/python-ndb/issues/629
     """
     project = client_context.client.project
+    database = client_context.client.database
     namespace = client_context.get_namespace()
 
     for i in range(5):
@@ -793,7 +794,11 @@ def test_multiquery_with_order_key_property(ds_entity, client_context):
             entity_id,
             foo=i,
             bar=ds_key_module.Key(
-                "test_key", i + 1, project=project, namespace=namespace
+                "test_key",
+                i + 1,
+                project=project,
+                database=database,
+                namespace=namespace,
             ),
         )
 
@@ -1923,6 +1928,7 @@ def test_GeoPt(ds_entity):
 @pytest.mark.usefixtures("client_context")
 def test_Key(ds_entity, client_context):
     project = client_context.client.project
+    database = client_context.client.database
     namespace = client_context.get_namespace()
     for i in range(5):
         entity_id = test_utils.system.unique_resource_id()
@@ -1930,7 +1936,11 @@ def test_Key(ds_entity, client_context):
             KIND,
             entity_id,
             foo=ds_key_module.Key(
-                "test_key", i + 1, project=project, namespace=namespace
+                "test_key",
+                i + 1,
+                project=project,
+                database=database,
+                namespace=namespace,
             ),
         )
 

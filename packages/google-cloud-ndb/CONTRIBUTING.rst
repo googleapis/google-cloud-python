@@ -146,6 +146,7 @@ Running System Tests
 
 - To run system tests for a given package, you can execute::
 
+   $ export SYSTEM_TESTS_DATABASE=system-tests-named-db
    $ nox -e system
 
   .. note::
@@ -188,6 +189,7 @@ Running System Tests
 
    # Create the indexes
    $ gcloud datastore indexes create tests/system/index.yaml
+   $ gcloud alpha datastore indexes create --database=$SYSTEM_TESTS_DATABASE tests/system/index.yaml
 
 
 *************

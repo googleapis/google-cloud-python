@@ -17,6 +17,8 @@ System tests for metadata.
 """
 import pytest
 
+from importlib import reload
+
 from google.cloud import ndb
 
 from test_utils import retry
@@ -26,8 +28,13 @@ _retry_assertion_errors = retry.RetryErrors(AssertionError)
 
 
 @pytest.mark.usefixtures("client_context")
-def test_kind_metadata(dispose_of):
-    from google.cloud.ndb.metadata import Kind
+def test_kind_metadata(dispose_of, database_id):
+    # ndb.Model._kind_map gets reset in-between parameterized test runs, which results in failed kind lookups for the
+    # Kind metadata when we query later. Importing the metadata module has the effect of priming the kind map,
+    # so force a reload here to retrigger it.
+    from google.cloud.ndb import metadata
+
+    reload(metadata)
 
     class AnyKind(ndb.Model):
         foo = ndb.IntegerProperty()
@@ -35,17 +42,21 @@ def test_kind_metadata(dispose_of):
     class MyKind(ndb.Model):
         bar = ndb.StringProperty()
 
-    entity1 = AnyKind(foo=1, id="x", namespace="_test_namespace_")
+    entity1 = AnyKind(foo=1, id="x", database=database_id, namespace="_test_namespace_")
     entity1.put()
     dispose_of(entity1.key._key)
 
-    entity2 = MyKind(bar="x", id="x", namespace="_test_namespace_")
+    entity2 = MyKind(
+        bar="x", id="x", database=database_id, namespace="_test_namespace_"
+    )
     entity2.put()
     dispose_of(entity2.key._key)
 
     @_retry_assertion_errors
     def query_metadata():
-        query = ndb.Query(kind=Kind.KIND_NAME, namespace="_test_namespace_")
+        query = ndb.Query(
+            kind=ndb.metadata.Kind.KIND_NAME, namespace="_test_namespace_"
+        )  # database is implicit
         results = query.fetch()
         kinds = [result.kind_name for result in results]
         assert all(kind in kinds for kind in ["AnyKind", "MyKind"])

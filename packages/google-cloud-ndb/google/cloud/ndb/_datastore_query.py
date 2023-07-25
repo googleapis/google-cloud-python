@@ -1010,17 +1010,22 @@ def _datastore_run_query(query):
     """
     query_pb = _query_to_protobuf(query)
     partition_id = entity_pb2.PartitionId(
-        project_id=query.project, namespace_id=query.namespace
+        project_id=query.project,
+        database_id=query.database,
+        namespace_id=query.namespace,
     )
     read_options = _datastore_api.get_read_options(query)
     request = datastore_pb2.RunQueryRequest(
         project_id=query.project,
+        database_id=query.database,
         partition_id=partition_id,
         query=query_pb,
         read_options=read_options,
     )
+    metadata = _datastore_api._add_routing_info((), request)
+
     response = yield _datastore_api.make_call(
-        "run_query", request, timeout=query.timeout
+        "run_query", request, timeout=query.timeout, metadata=metadata
     )
     utils.logging_debug(log, response)
     raise tasklets.Return(response)

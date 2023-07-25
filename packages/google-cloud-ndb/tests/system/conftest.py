@@ -11,7 +11,7 @@ from google.cloud import ndb
 
 from google.cloud.ndb import global_cache as global_cache_module
 
-from . import KIND, OTHER_KIND
+from . import KIND, OTHER_KIND, _helpers
 
 log = logging.getLogger(__name__)
 
@@ -19,7 +19,13 @@ log = logging.getLogger(__name__)
 @pytest.fixture(scope="session", autouse=True)
 def preclean():
     """Clean out default namespace in test database."""
-    ds_client = _make_ds_client(None)
+    _preclean(None, None)
+    if _helpers.TEST_DATABASE:
+        _preclean(_helpers.TEST_DATABASE, None)
+
+
+def _preclean(database, namespace):
+    ds_client = _make_ds_client(database, namespace)
     for kind in (KIND, OTHER_KIND):
         query = ds_client.query(kind=kind)
         query.keys_only()
@@ -28,12 +34,17 @@ def preclean():
             ds_client.delete_multi(keys)
 
 
-def _make_ds_client(namespace):
+def _make_ds_client(database, namespace):
     emulator = bool(os.environ.get("DATASTORE_EMULATOR_HOST"))
     if emulator:
-        client = datastore.Client(namespace=namespace, _http=requests.Session)
+        client = datastore.Client(
+            database=database, namespace=namespace, _http=requests.Session
+        )
     else:
-        client = datastore.Client(namespace=namespace)
+        client = datastore.Client(database=database, namespace=namespace)
+
+    assert client.database == database
+    assert client.namespace == namespace
 
     return client
 
@@ -57,8 +68,11 @@ def to_delete():
 
 
 @pytest.fixture
-def ds_client(namespace):
-    return _make_ds_client(namespace)
+def ds_client(database_id, namespace):
+    client = _make_ds_client(database_id, namespace)
+    assert client.database == database_id
+    assert client.namespace == namespace
+    return client
 
 
 @pytest.fixture
@@ -75,7 +89,7 @@ def with_ds_client(ds_client, to_delete, deleted_keys, other_namespace):
     not_deleted = [
         entity
         for entity in all_entities(ds_client, other_namespace)
-        if entity.key not in deleted_keys
+        if fix_key_db(entity.key, ds_client) not in deleted_keys
     ]
     if not_deleted:
         log.warning("CLEAN UP: Entities not deleted from test: {}".format(not_deleted))
@@ -113,12 +127,38 @@ def ds_entity_with_meanings(with_ds_client, dispose_of):
     yield make_entity
 
 
+# Workaround: datastore batches reject if key.database is None and client.database == ""
+# or vice-versa. This should be fixed, but for now just fix the keys
+# See https://github.com/googleapis/python-datastore/issues/460
+def fix_key_db(key, database):
+    if key.database:
+        return key
+    else:
+        fixed_key = key.__class__(
+            *key.flat_path,
+            project=key.project,
+            database=database,
+            namespace=key.namespace
+        )
+        # If the current parent has already been set, we re-use
+        # the same instance
+        fixed_key._parent = key._parent
+        return fixed_key
+
+
 @pytest.fixture
 def dispose_of(with_ds_client, to_delete):
     def delete_entity(*ds_keys):
-        to_delete.extend(ds_keys)
+        to_delete.extend(
+            map(lambda key: fix_key_db(key, with_ds_client.database), ds_keys)
+        )
 
     return delete_entity
+
+
+@pytest.fixture(params=["", _helpers.TEST_DATABASE])
+def database_id(request):
+    return request.param
 
 
 @pytest.fixture
@@ -132,8 +172,9 @@ def other_namespace():
 
 
 @pytest.fixture
-def client_context(namespace):
-    client = ndb.Client()
+def client_context(database_id, namespace):
+    client = ndb.Client(database=database_id)
+    assert client.database == database_id
     context_manager = client.context(
         cache_policy=False,
         legacy_data=False,
