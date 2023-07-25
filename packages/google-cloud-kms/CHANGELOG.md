@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.19.0](https://github.com/googleapis/python-kms/compare/v2.18.0...v2.19.0) (2023-07-21)
+
+
+### Features
+
+* Add interoperable symmetric encryption system ([#403](https://github.com/googleapis/python-kms/issues/403)) ([39ad43d](https://github.com/googleapis/python-kms/commit/39ad43dcfbc09265087ea8b7b55117b3d2b1b99c))
+
 ## [2.18.0](https://github.com/googleapis/python-kms/compare/v2.17.0...v2.18.0) (2023-07-04)
 
 
