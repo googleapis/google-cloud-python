@@ -849,6 +849,7 @@ class TaskGroup(proto.Message):
             Output only. TaskGroup name.
             The system generates this field based on parent
             Job name. For example:
+
             "projects/123456/locations/us-west1/jobs/job01/taskGroups/group01".
         task_spec (google.cloud.batch_v1.types.TaskSpec):
             Required. Tasks in the group share the same
