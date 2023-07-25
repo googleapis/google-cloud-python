@@ -42,7 +42,7 @@
     "packages/google-cloud-deploy": "1.11.1",
     "packages/google-cloud-discoveryengine": "0.9.1",
     "packages/google-cloud-dms": "1.7.1",
-    "packages/google-cloud-documentai": "2.17.0",
+    "packages/google-cloud-documentai": "2.18.0",
     "packages/google-cloud-domains": "1.5.2",
     "packages/google-cloud-edgecontainer": "0.5.2",
     "packages/google-cloud-enterpriseknowledgegraph": "0.3.3",

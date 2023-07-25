@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.17.0...google-cloud-documentai-v2.18.0) (2023-07-25)
+
+
+### Features
+
+* exposed Import PV external_processor_version_source to v1beta3 public ([#11517](https://github.com/googleapis/google-cloud-python/issues/11517)) ([7915645](https://github.com/googleapis/google-cloud-python/commit/79156458ab4cf1dcddf818be096290d065e8e684))
+
 ## [2.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.16.1...google-cloud-documentai-v2.17.0) (2023-07-17)
 
 
