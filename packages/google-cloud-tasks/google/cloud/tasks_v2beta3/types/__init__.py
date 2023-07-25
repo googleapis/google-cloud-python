@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 from .cloudtasks import (
+    BufferTaskRequest,
+    BufferTaskResponse,
     CreateQueueRequest,
     CreateTaskRequest,
     DeleteQueueRequest,
@@ -37,13 +39,19 @@ from .target import (
     AppEngineRouting,
     HttpMethod,
     HttpRequest,
+    HttpTarget,
     OAuthToken,
     OidcToken,
+    PathOverride,
     PullMessage,
+    QueryOverride,
+    UriOverride,
 )
 from .task import Attempt, Task
 
 __all__ = (
+    "BufferTaskRequest",
+    "BufferTaskResponse",
     "CreateQueueRequest",
     "CreateTaskRequest",
     "DeleteQueueRequest",
@@ -68,9 +76,13 @@ __all__ = (
     "AppEngineHttpRequest",
     "AppEngineRouting",
     "HttpRequest",
+    "HttpTarget",
     "OAuthToken",
     "OidcToken",
+    "PathOverride",
     "PullMessage",
+    "QueryOverride",
+    "UriOverride",
     "HttpMethod",
     "Attempt",
     "Task",

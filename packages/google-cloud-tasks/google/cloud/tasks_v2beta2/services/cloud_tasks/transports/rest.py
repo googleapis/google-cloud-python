@@ -26,6 +26,7 @@ from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 from google.protobuf import json_format
 import grpc  # type: ignore
 from requests import __version__ as requests_version
@@ -74,6 +75,14 @@ class CloudTasksRestInterceptor:
             def pre_acknowledge_task(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
+
+            def pre_buffer_task(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_buffer_task(self, response):
+                logging.log(f"Received response: {response}")
+                return response
 
             def pre_cancel_lease(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -219,6 +228,10 @@ class CloudTasksRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_upload_queue_yaml(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
         transport = CloudTasksRestTransport(interceptor=MyCustomCloudTasksInterceptor())
         client = CloudTasksClient(transport=transport)
 
@@ -236,6 +249,27 @@ class CloudTasksRestInterceptor:
         before they are sent to the CloudTasks server.
         """
         return request, metadata
+
+    def pre_buffer_task(
+        self, request: cloudtasks.BufferTaskRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[cloudtasks.BufferTaskRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for buffer_task
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudTasks server.
+        """
+        return request, metadata
+
+    def post_buffer_task(
+        self, response: cloudtasks.BufferTaskResponse
+    ) -> cloudtasks.BufferTaskResponse:
+        """Post-rpc interceptor for buffer_task
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudTasks server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_cancel_lease(
         self,
@@ -604,6 +638,52 @@ class CloudTasksRestInterceptor:
         """
         return response
 
+    def pre_get_location(
+        self,
+        request: locations_pb2.GetLocationRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_location
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudTasks server.
+        """
+        return request, metadata
+
+    def post_get_location(
+        self, response: locations_pb2.Location
+    ) -> locations_pb2.Location:
+        """Post-rpc interceptor for get_location
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudTasks server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_locations(
+        self,
+        request: locations_pb2.ListLocationsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_locations
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudTasks server.
+        """
+        return request, metadata
+
+    def post_list_locations(
+        self, response: locations_pb2.ListLocationsResponse
+    ) -> locations_pb2.ListLocationsResponse:
+        """Post-rpc interceptor for list_locations
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudTasks server but before
+        it is returned to user code.
+        """
+        return response
+
 
 @dataclasses.dataclass
 class CloudTasksRestStub:
@@ -787,6 +867,104 @@ class CloudTasksRestTransport(CloudTasksTransport):
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
+
+    class _BufferTask(CloudTasksRestStub):
+        def __hash__(self):
+            return hash("BufferTask")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: cloudtasks.BufferTaskRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> cloudtasks.BufferTaskResponse:
+            r"""Call the buffer task method over HTTP.
+
+            Args:
+                request (~.cloudtasks.BufferTaskRequest):
+                    The request object. LINT.IfChange Request message for
+                [BufferTask][google.cloud.tasks.v2beta2.CloudTasks.BufferTask].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloudtasks.BufferTaskResponse:
+                    Response message for
+                [BufferTask][google.cloud.tasks.v2beta2.CloudTasks.BufferTask].
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2beta2/{queue=projects/*/locations/*/queues/*}/tasks/{task_id}:buffer",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_buffer_task(request, metadata)
+            pb_request = cloudtasks.BufferTaskRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloudtasks.BufferTaskResponse()
+            pb_resp = cloudtasks.BufferTaskResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_buffer_task(resp)
+            return resp
 
     class _CancelLease(CloudTasksRestStub):
         def __hash__(self):
@@ -2725,6 +2903,22 @@ class CloudTasksRestTransport(CloudTasksTransport):
             resp = self._interceptor.post_update_queue(resp)
             return resp
 
+    class _UploadQueueYaml(CloudTasksRestStub):
+        def __hash__(self):
+            return hash("UploadQueueYaml")
+
+        def __call__(
+            self,
+            request: cloudtasks.UploadQueueYamlRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            raise NotImplementedError(
+                "Method UploadQueueYaml is not available over REST transport"
+            )
+
     @property
     def acknowledge_task(
         self,
@@ -2732,6 +2926,14 @@ class CloudTasksRestTransport(CloudTasksTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AcknowledgeTask(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def buffer_task(
+        self,
+    ) -> Callable[[cloudtasks.BufferTaskRequest], cloudtasks.BufferTaskResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._BufferTask(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def cancel_lease(self) -> Callable[[cloudtasks.CancelLeaseRequest], task.Task]:
@@ -2867,6 +3069,148 @@ class CloudTasksRestTransport(CloudTasksTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateQueue(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def upload_queue_yaml(
+        self,
+    ) -> Callable[[cloudtasks.UploadQueueYamlRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UploadQueueYaml(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_location(self):
+        return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _GetLocation(CloudTasksRestStub):
+        def __call__(
+            self,
+            request: locations_pb2.GetLocationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> locations_pb2.Location:
+
+            r"""Call the get location method over HTTP.
+
+            Args:
+                request (locations_pb2.GetLocationRequest):
+                    The request object for GetLocation method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                locations_pb2.Location: Response from GetLocation method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2beta2/{name=projects/*/locations/*}",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_get_location(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = locations_pb2.Location()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_get_location(resp)
+            return resp
+
+    @property
+    def list_locations(self):
+        return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
+
+    class _ListLocations(CloudTasksRestStub):
+        def __call__(
+            self,
+            request: locations_pb2.ListLocationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> locations_pb2.ListLocationsResponse:
+
+            r"""Call the list locations method over HTTP.
+
+            Args:
+                request (locations_pb2.ListLocationsRequest):
+                    The request object for ListLocations method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                locations_pb2.ListLocationsResponse: Response from ListLocations method.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2beta2/{name=projects/*}/locations",
+                },
+            ]
+
+            request, metadata = self._interceptor.pre_list_locations(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(http_options, **request_kwargs)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request["query_params"]))
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            resp = locations_pb2.ListLocationsResponse()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_list_locations(resp)
+            return resp
 
     @property
     def kind(self) -> str:

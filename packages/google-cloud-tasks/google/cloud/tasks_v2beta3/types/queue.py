@@ -77,6 +77,8 @@ class Queue(proto.Message):
             affected by this proto.
 
             This field is a member of `oneof`_ ``queue_type``.
+        http_target (google.cloud.tasks_v2beta3.types.HttpTarget):
+            Modifies HTTP target for HTTP tasks.
         rate_limits (google.cloud.tasks_v2beta3.types.RateLimits):
             Rate limits for task dispatches.
 
@@ -125,7 +127,7 @@ class Queue(proto.Message):
         state (google.cloud.tasks_v2beta3.types.Queue.State):
             Output only. The state of the queue.
 
-            ``state`` can only be changed by calling
+            ``state`` can only be changed by called
             [PauseQueue][google.cloud.tasks.v2beta3.CloudTasks.PauseQueue],
             [ResumeQueue][google.cloud.tasks.v2beta3.CloudTasks.ResumeQueue],
             or uploading
@@ -257,6 +259,11 @@ class Queue(proto.Message):
         number=3,
         oneof="queue_type",
         message=target.AppEngineHttpQueue,
+    )
+    http_target: target.HttpTarget = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=target.HttpTarget,
     )
     rate_limits: "RateLimits" = proto.Field(
         proto.MESSAGE,

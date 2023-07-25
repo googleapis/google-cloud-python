@@ -39,6 +39,7 @@ def partition(
 class tasksCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'buffer_task': ('queue', 'task_id', 'body', ),
         'create_queue': ('parent', 'queue', ),
         'create_task': ('parent', 'task', 'response_view', ),
         'delete_queue': ('name', ),

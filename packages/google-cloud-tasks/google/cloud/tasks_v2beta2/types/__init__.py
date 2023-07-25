@@ -15,6 +15,8 @@
 #
 from .cloudtasks import (
     AcknowledgeTaskRequest,
+    BufferTaskRequest,
+    BufferTaskResponse,
     CancelLeaseRequest,
     CreateQueueRequest,
     CreateTaskRequest,
@@ -34,6 +36,7 @@ from .cloudtasks import (
     ResumeQueueRequest,
     RunTaskRequest,
     UpdateQueueRequest,
+    UploadQueueYamlRequest,
 )
 from .queue import Queue, QueueStats, RateLimits, RetryConfig
 from .target import (
@@ -41,13 +44,22 @@ from .target import (
     AppEngineHttpTarget,
     AppEngineRouting,
     HttpMethod,
+    HttpRequest,
+    HttpTarget,
+    OAuthToken,
+    OidcToken,
+    PathOverride,
     PullMessage,
     PullTarget,
+    QueryOverride,
+    UriOverride,
 )
 from .task import AttemptStatus, Task, TaskStatus
 
 __all__ = (
     "AcknowledgeTaskRequest",
+    "BufferTaskRequest",
+    "BufferTaskResponse",
     "CancelLeaseRequest",
     "CreateQueueRequest",
     "CreateTaskRequest",
@@ -67,6 +79,7 @@ __all__ = (
     "ResumeQueueRequest",
     "RunTaskRequest",
     "UpdateQueueRequest",
+    "UploadQueueYamlRequest",
     "Queue",
     "QueueStats",
     "RateLimits",
@@ -74,8 +87,15 @@ __all__ = (
     "AppEngineHttpRequest",
     "AppEngineHttpTarget",
     "AppEngineRouting",
+    "HttpRequest",
+    "HttpTarget",
+    "OAuthToken",
+    "OidcToken",
+    "PathOverride",
     "PullMessage",
     "PullTarget",
+    "QueryOverride",
+    "UriOverride",
     "HttpMethod",
     "AttemptStatus",
     "Task",

@@ -46,6 +46,8 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.api import httpbody_pb2  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
@@ -537,7 +539,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         Returns:
             google.cloud.tasks_v2beta3.services.cloud_tasks.pagers.ListQueuesPager:
                 Response message for
-                [ListQueues][google.cloud.tasks.v2beta3.CloudTasks.ListQueues].
+                   [ListQueues][google.cloud.tasks.v2beta3.CloudTasks.ListQueues].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1952,7 +1954,7 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         Returns:
             google.cloud.tasks_v2beta3.services.cloud_tasks.pagers.ListTasksPager:
                 Response message for listing tasks using
-                [ListTasks][google.cloud.tasks.v2beta3.CloudTasks.ListTasks].
+                   [ListTasks][google.cloud.tasks.v2beta3.CloudTasks.ListTasks].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -2189,11 +2191,11 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
                 recently then the call will fail with
                 [ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS]. If the
                 task's queue was created using Cloud Tasks, then another
-                task with the same name can't be created for ~1hour
+                task with the same name can't be created for ~1 hour
                 after the original task was deleted or executed. If the
                 task's queue was created using queue.yaml or queue.xml,
                 then another task with the same name can't be created
-                for ~9days after the original task was deleted or
+                for ~9 days after the original task was deleted or
                 executed.
 
                 Because there is an extra lookup cost to identify
@@ -2485,6 +2487,149 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
         # Done; return the response.
         return response
 
+    def buffer_task(
+        self,
+        request: Optional[Union[cloudtasks.BufferTaskRequest, dict]] = None,
+        *,
+        queue: Optional[str] = None,
+        task_id: Optional[str] = None,
+        body: Optional[httpbody_pb2.HttpBody] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> cloudtasks.BufferTaskResponse:
+        r"""Creates and buffers a new task without the need to explicitly
+        define a Task message. The queue must have [HTTP
+        target][google.cloud.tasks.v2beta3.HttpTarget]. To create the
+        task with a custom ID, use the following format and set TASK_ID
+        to your desired ID:
+        projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID:buffer
+        To create the task with an automatically generated ID, use the
+        following format:
+        projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks:buffer.
+        Note: This feature is in its experimental stage. You must
+        request access to the API through the `Cloud Tasks BufferTask
+        Experiment Signup form <https://forms.gle/X8Zr5hiXH5tTGFqh8>`__.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import tasks_v2beta3
+
+            def sample_buffer_task():
+                # Create a client
+                client = tasks_v2beta3.CloudTasksClient()
+
+                # Initialize request argument(s)
+                request = tasks_v2beta3.BufferTaskRequest(
+                    queue="queue_value",
+                )
+
+                # Make the request
+                response = client.buffer_task(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.tasks_v2beta3.types.BufferTaskRequest, dict]):
+                The request object. Request message for
+                [BufferTask][google.cloud.tasks.v2beta3.CloudTasks.BufferTask].
+            queue (str):
+                Required. The parent queue name. For example:
+                projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID\`
+
+                The queue must already exist.
+
+                This corresponds to the ``queue`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            task_id (str):
+                Optional. Task ID for the task being
+                created. If not provided, a random task
+                ID is assigned to the task.
+
+                This corresponds to the ``task_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            body (google.api.httpbody_pb2.HttpBody):
+                Optional. Body of the HTTP request.
+
+                The body can take any generic value. The value is
+                written to the [HttpRequest][payload] of the [Task].
+
+                This corresponds to the ``body`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.tasks_v2beta3.types.BufferTaskResponse:
+                Response message for
+                   [BufferTask][google.cloud.tasks.v2beta3.CloudTasks.BufferTask].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([queue, task_id, body])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloudtasks.BufferTaskRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloudtasks.BufferTaskRequest):
+            request = cloudtasks.BufferTaskRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if queue is not None:
+                request.queue = queue
+            if task_id is not None:
+                request.task_id = task_id
+            if body is not None:
+                request.body = body
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.buffer_task]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("queue", request.queue),
+                    ("task_id", request.task_id),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def __enter__(self) -> "CloudTasksClient":
         return self
 
@@ -2497,6 +2642,114 @@ class CloudTasksClient(metaclass=CloudTasksClientMeta):
             and may cause errors in other clients!
         """
         self.transport.close()
+
+    def get_location(
+        self,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> locations_pb2.Location:
+        r"""Gets information about a location.
+
+        Args:
+            request (:class:`~.location_pb2.GetLocationRequest`):
+                The request object. Request message for
+                `GetLocation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.location_pb2.Location:
+                Location object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = locations_pb2.GetLocationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.get_location,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_locations(
+        self,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> locations_pb2.ListLocationsResponse:
+        r"""Lists information about the supported locations for this service.
+
+        Args:
+            request (:class:`~.location_pb2.ListLocationsRequest`):
+                The request object. Request message for
+                `ListLocations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.location_pb2.ListLocationsResponse:
+                Response message for ``ListLocations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = locations_pb2.ListLocationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.list_locations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

@@ -22,6 +22,7 @@ from google.api_core import gapic_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
@@ -139,9 +140,9 @@ class CloudTasksTransport(abc.ABC):
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=10.0,
+                    deadline=20.0,
                 ),
-                default_timeout=10.0,
+                default_timeout=20.0,
                 client_info=client_info,
             ),
             self.get_queue: gapic_v1.method.wrap_method(
@@ -154,19 +155,19 @@ class CloudTasksTransport(abc.ABC):
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=10.0,
+                    deadline=20.0,
                 ),
-                default_timeout=10.0,
+                default_timeout=20.0,
                 client_info=client_info,
             ),
             self.create_queue: gapic_v1.method.wrap_method(
                 self.create_queue,
-                default_timeout=10.0,
+                default_timeout=20.0,
                 client_info=client_info,
             ),
             self.update_queue: gapic_v1.method.wrap_method(
                 self.update_queue,
-                default_timeout=10.0,
+                default_timeout=20.0,
                 client_info=client_info,
             ),
             self.delete_queue: gapic_v1.method.wrap_method(
@@ -179,24 +180,24 @@ class CloudTasksTransport(abc.ABC):
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=10.0,
+                    deadline=20.0,
                 ),
-                default_timeout=10.0,
+                default_timeout=20.0,
                 client_info=client_info,
             ),
             self.purge_queue: gapic_v1.method.wrap_method(
                 self.purge_queue,
-                default_timeout=10.0,
+                default_timeout=20.0,
                 client_info=client_info,
             ),
             self.pause_queue: gapic_v1.method.wrap_method(
                 self.pause_queue,
-                default_timeout=10.0,
+                default_timeout=20.0,
                 client_info=client_info,
             ),
             self.resume_queue: gapic_v1.method.wrap_method(
                 self.resume_queue,
-                default_timeout=10.0,
+                default_timeout=20.0,
                 client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
@@ -209,14 +210,14 @@ class CloudTasksTransport(abc.ABC):
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=10.0,
+                    deadline=20.0,
                 ),
-                default_timeout=10.0,
+                default_timeout=20.0,
                 client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
                 self.set_iam_policy,
-                default_timeout=10.0,
+                default_timeout=20.0,
                 client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
@@ -229,9 +230,9 @@ class CloudTasksTransport(abc.ABC):
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=10.0,
+                    deadline=20.0,
                 ),
-                default_timeout=10.0,
+                default_timeout=20.0,
                 client_info=client_info,
             ),
             self.list_tasks: gapic_v1.method.wrap_method(
@@ -244,9 +245,9 @@ class CloudTasksTransport(abc.ABC):
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=10.0,
+                    deadline=20.0,
                 ),
-                default_timeout=10.0,
+                default_timeout=20.0,
                 client_info=client_info,
             ),
             self.get_task: gapic_v1.method.wrap_method(
@@ -259,14 +260,14 @@ class CloudTasksTransport(abc.ABC):
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=10.0,
+                    deadline=20.0,
                 ),
-                default_timeout=10.0,
+                default_timeout=20.0,
                 client_info=client_info,
             ),
             self.create_task: gapic_v1.method.wrap_method(
                 self.create_task,
-                default_timeout=10.0,
+                default_timeout=20.0,
                 client_info=client_info,
             ),
             self.delete_task: gapic_v1.method.wrap_method(
@@ -279,14 +280,14 @@ class CloudTasksTransport(abc.ABC):
                         core_exceptions.DeadlineExceeded,
                         core_exceptions.ServiceUnavailable,
                     ),
-                    deadline=10.0,
+                    deadline=20.0,
                 ),
-                default_timeout=10.0,
+                default_timeout=20.0,
                 client_info=client_info,
             ),
             self.run_task: gapic_v1.method.wrap_method(
                 self.run_task,
-                default_timeout=10.0,
+                default_timeout=20.0,
                 client_info=client_info,
             ),
         }
@@ -434,6 +435,27 @@ class CloudTasksTransport(abc.ABC):
     def run_task(
         self,
     ) -> Callable[[cloudtasks.RunTaskRequest], Union[task.Task, Awaitable[task.Task]]]:
+        raise NotImplementedError()
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[
+        [locations_pb2.GetLocationRequest],
+        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest],
+        Union[
+            locations_pb2.ListLocationsResponse,
+            Awaitable[locations_pb2.ListLocationsResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property

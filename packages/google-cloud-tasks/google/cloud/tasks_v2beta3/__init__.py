@@ -20,6 +20,8 @@ __version__ = package_version.__version__
 
 from .services.cloud_tasks import CloudTasksAsyncClient, CloudTasksClient
 from .types.cloudtasks import (
+    BufferTaskRequest,
+    BufferTaskResponse,
     CreateQueueRequest,
     CreateTaskRequest,
     DeleteQueueRequest,
@@ -49,9 +51,13 @@ from .types.target import (
     AppEngineRouting,
     HttpMethod,
     HttpRequest,
+    HttpTarget,
     OAuthToken,
     OidcToken,
+    PathOverride,
     PullMessage,
+    QueryOverride,
+    UriOverride,
 )
 from .types.task import Attempt, Task
 
@@ -61,6 +67,8 @@ __all__ = (
     "AppEngineHttpRequest",
     "AppEngineRouting",
     "Attempt",
+    "BufferTaskRequest",
+    "BufferTaskResponse",
     "CloudTasksClient",
     "CreateQueueRequest",
     "CreateTaskRequest",
@@ -70,15 +78,18 @@ __all__ = (
     "GetTaskRequest",
     "HttpMethod",
     "HttpRequest",
+    "HttpTarget",
     "ListQueuesRequest",
     "ListQueuesResponse",
     "ListTasksRequest",
     "ListTasksResponse",
     "OAuthToken",
     "OidcToken",
+    "PathOverride",
     "PauseQueueRequest",
     "PullMessage",
     "PurgeQueueRequest",
+    "QueryOverride",
     "Queue",
     "QueueStats",
     "RateLimits",
@@ -88,4 +99,5 @@ __all__ = (
     "StackdriverLoggingConfig",
     "Task",
     "UpdateQueueRequest",
+    "UriOverride",
 )

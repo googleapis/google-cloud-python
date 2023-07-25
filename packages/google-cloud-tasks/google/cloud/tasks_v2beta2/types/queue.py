@@ -85,6 +85,11 @@ class Queue(proto.Message):
             [PullTarget][google.cloud.tasks.v2beta2.PullTarget].
 
             This field is a member of `oneof`_ ``target_type``.
+        http_target (google.cloud.tasks_v2beta2.types.HttpTarget):
+            An http_target is used to override the target values for
+            HTTP tasks.
+
+            This field is a member of `oneof`_ ``target_type``.
         rate_limits (google.cloud.tasks_v2beta2.types.RateLimits):
             Rate limits for task dispatches.
 
@@ -120,7 +125,7 @@ class Queue(proto.Message):
         state (google.cloud.tasks_v2beta2.types.Queue.State):
             Output only. The state of the queue.
 
-            ``state`` can only be changed by calling
+            ``state`` can only be changed by called
             [PauseQueue][google.cloud.tasks.v2beta2.CloudTasks.PauseQueue],
             [ResumeQueue][google.cloud.tasks.v2beta2.CloudTasks.ResumeQueue],
             or uploading
@@ -238,6 +243,12 @@ class Queue(proto.Message):
         number=4,
         oneof="target_type",
         message=target.PullTarget,
+    )
+    http_target: target.HttpTarget = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        oneof="target_type",
+        message=target.HttpTarget,
     )
     rate_limits: "RateLimits" = proto.Field(
         proto.MESSAGE,

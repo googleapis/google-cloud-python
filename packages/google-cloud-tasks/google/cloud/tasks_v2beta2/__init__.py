@@ -21,6 +21,8 @@ __version__ = package_version.__version__
 from .services.cloud_tasks import CloudTasksAsyncClient, CloudTasksClient
 from .types.cloudtasks import (
     AcknowledgeTaskRequest,
+    BufferTaskRequest,
+    BufferTaskResponse,
     CancelLeaseRequest,
     CreateQueueRequest,
     CreateTaskRequest,
@@ -40,6 +42,7 @@ from .types.cloudtasks import (
     ResumeQueueRequest,
     RunTaskRequest,
     UpdateQueueRequest,
+    UploadQueueYamlRequest,
 )
 from .types.queue import Queue, QueueStats, RateLimits, RetryConfig
 from .types.target import (
@@ -47,8 +50,15 @@ from .types.target import (
     AppEngineHttpTarget,
     AppEngineRouting,
     HttpMethod,
+    HttpRequest,
+    HttpTarget,
+    OAuthToken,
+    OidcToken,
+    PathOverride,
     PullMessage,
     PullTarget,
+    QueryOverride,
+    UriOverride,
 )
 from .types.task import AttemptStatus, Task, TaskStatus
 
@@ -59,6 +69,8 @@ __all__ = (
     "AppEngineHttpTarget",
     "AppEngineRouting",
     "AttemptStatus",
+    "BufferTaskRequest",
+    "BufferTaskResponse",
     "CancelLeaseRequest",
     "CloudTasksClient",
     "CreateQueueRequest",
@@ -68,16 +80,22 @@ __all__ = (
     "GetQueueRequest",
     "GetTaskRequest",
     "HttpMethod",
+    "HttpRequest",
+    "HttpTarget",
     "LeaseTasksRequest",
     "LeaseTasksResponse",
     "ListQueuesRequest",
     "ListQueuesResponse",
     "ListTasksRequest",
     "ListTasksResponse",
+    "OAuthToken",
+    "OidcToken",
+    "PathOverride",
     "PauseQueueRequest",
     "PullMessage",
     "PullTarget",
     "PurgeQueueRequest",
+    "QueryOverride",
     "Queue",
     "QueueStats",
     "RateLimits",
@@ -88,4 +106,6 @@ __all__ = (
     "Task",
     "TaskStatus",
     "UpdateQueueRequest",
+    "UploadQueueYamlRequest",
+    "UriOverride",
 )

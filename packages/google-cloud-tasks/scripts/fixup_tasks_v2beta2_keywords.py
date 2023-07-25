@@ -40,6 +40,7 @@ class tasksCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'acknowledge_task': ('name', 'schedule_time', ),
+        'buffer_task': ('queue', 'task_id', 'body', ),
         'cancel_lease': ('name', 'schedule_time', 'response_view', ),
         'create_queue': ('parent', 'queue', ),
         'create_task': ('parent', 'task', 'response_view', ),
@@ -59,6 +60,7 @@ class tasksCallTransformer(cst.CSTTransformer):
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_queue': ('queue', 'update_mask', ),
+        'upload_queue_yaml': ('app_id', 'http_body', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

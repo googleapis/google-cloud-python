@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.api import httpbody_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -37,6 +38,7 @@ __protobuf__ = proto.module(
         "PurgeQueueRequest",
         "PauseQueueRequest",
         "ResumeQueueRequest",
+        "UploadQueueYamlRequest",
         "ListTasksRequest",
         "ListTasksResponse",
         "GetTaskRequest",
@@ -48,6 +50,8 @@ __protobuf__ = proto.module(
         "RenewLeaseRequest",
         "CancelLeaseRequest",
         "RunTaskRequest",
+        "BufferTaskRequest",
+        "BufferTaskResponse",
     },
 )
 
@@ -311,6 +315,39 @@ class ResumeQueueRequest(proto.Message):
     )
 
 
+class UploadQueueYamlRequest(proto.Message):
+    r"""Request message for
+    [UploadQueueYaml][google.cloud.tasks.v2beta2.CloudTasks.UploadQueueYaml].
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        app_id (str):
+            Required. The App ID is supplied as an HTTP
+            parameter. Unlike internal usage of App ID, it
+            does not include a region prefix. Rather, the
+            App ID represents the Project ID against which
+            to make the request.
+        http_body (google.api.httpbody_pb2.HttpBody):
+            The http body contains the queue.yaml file
+            which used to update queue lists
+
+            This field is a member of `oneof`_ ``_http_body``.
+    """
+
+    app_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    http_body: httpbody_pb2.HttpBody = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        optional=True,
+        message=httpbody_pb2.HttpBody,
+    )
+
+
 class ListTasksRequest(proto.Message):
     r"""Request message for listing tasks using
     [ListTasks][google.cloud.tasks.v2beta2.CloudTasks.ListTasks].
@@ -482,10 +519,10 @@ class CreateTaskRequest(proto.Message):
             will fail with
             [ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS]. If the
             task's queue was created using Cloud Tasks, then another
-            task with the same name can't be created for ~1hour after
+            task with the same name can't be created for ~1 hour after
             the original task was deleted or completed. If the task's
             queue was created using queue.yaml or queue.xml, then
-            another task with the same name can't be created for ~9days
+            another task with the same name can't be created for ~9 days
             after the original task was deleted or completed.
 
             Because there is an extra lookup cost to identify duplicate
@@ -866,6 +903,58 @@ class RunTaskRequest(proto.Message):
         proto.ENUM,
         number=2,
         enum=gct_task.Task.View,
+    )
+
+
+class BufferTaskRequest(proto.Message):
+    r"""LINT.IfChange Request message for
+    [BufferTask][google.cloud.tasks.v2beta2.CloudTasks.BufferTask].
+
+    Attributes:
+        queue (str):
+            Required. The parent queue name. For example:
+            projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID\`
+
+            The queue must already exist.
+        task_id (str):
+            Optional. Task ID for the task being created.
+            If not provided, a random task ID is assigned to
+            the task.
+        body (google.api.httpbody_pb2.HttpBody):
+            Optional. Body of the HTTP request.
+
+            The body can take any generic value. The value is written to
+            the [HttpRequest][payload] of the [Task].
+    """
+
+    queue: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    task_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    body: httpbody_pb2.HttpBody = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=httpbody_pb2.HttpBody,
+    )
+
+
+class BufferTaskResponse(proto.Message):
+    r"""Response message for
+    [BufferTask][google.cloud.tasks.v2beta2.CloudTasks.BufferTask].
+
+    Attributes:
+        task (google.cloud.tasks_v2beta2.types.Task):
+            The created task.
+    """
+
+    task: gct_task.Task = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gct_task.Task,
     )
 
 

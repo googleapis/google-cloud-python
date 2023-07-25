@@ -103,9 +103,9 @@ class Task(proto.Message):
             [RetryConfig][google.cloud.tasks.v2.RetryConfig].
 
             Note that when the request is cancelled, Cloud Tasks will
-            stop listing for the response, but whether the worker stops
-            processing depends on the worker. For example, if the worker
-            is stuck, it may not react to cancelled requests.
+            stop listening for the response, but whether the worker
+            stops processing depends on the worker. For example, if the
+            worker is stuck, it may not react to cancelled requests.
 
             The default and maximum values depend on the type of
             request:

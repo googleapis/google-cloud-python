@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "CloudTasksClient",
           "rpcs": {
+            "BufferTask": {
+              "methods": [
+                "buffer_task"
+              ]
+            },
             "CreateQueue": {
               "methods": [
                 "create_queue"
@@ -95,6 +100,11 @@
         "grpc-async": {
           "libraryClient": "CloudTasksAsyncClient",
           "rpcs": {
+            "BufferTask": {
+              "methods": [
+                "buffer_task"
+              ]
+            },
             "CreateQueue": {
               "methods": [
                 "create_queue"
@@ -180,6 +190,11 @@
         "rest": {
           "libraryClient": "CloudTasksClient",
           "rpcs": {
+            "BufferTask": {
+              "methods": [
+                "buffer_task"
+              ]
+            },
             "CreateQueue": {
               "methods": [
                 "create_queue"

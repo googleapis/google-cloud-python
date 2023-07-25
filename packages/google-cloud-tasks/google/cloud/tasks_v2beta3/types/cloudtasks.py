@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.api import httpbody_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -41,6 +42,8 @@ __protobuf__ = proto.module(
         "CreateTaskRequest",
         "DeleteTaskRequest",
         "RunTaskRequest",
+        "BufferTaskRequest",
+        "BufferTaskResponse",
     },
 )
 
@@ -475,10 +478,10 @@ class CreateTaskRequest(proto.Message):
             will fail with
             [ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS]. If the
             task's queue was created using Cloud Tasks, then another
-            task with the same name can't be created for ~1hour after
+            task with the same name can't be created for ~1 hour after
             the original task was deleted or executed. If the task's
             queue was created using queue.yaml or queue.xml, then
-            another task with the same name can't be created for ~9days
+            another task with the same name can't be created for ~9 days
             after the original task was deleted or executed.
 
             Because there is an extra lookup cost to identify duplicate
@@ -576,6 +579,58 @@ class RunTaskRequest(proto.Message):
         proto.ENUM,
         number=2,
         enum=gct_task.Task.View,
+    )
+
+
+class BufferTaskRequest(proto.Message):
+    r"""Request message for
+    [BufferTask][google.cloud.tasks.v2beta3.CloudTasks.BufferTask].
+
+    Attributes:
+        queue (str):
+            Required. The parent queue name. For example:
+            projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID\`
+
+            The queue must already exist.
+        task_id (str):
+            Optional. Task ID for the task being created.
+            If not provided, a random task ID is assigned to
+            the task.
+        body (google.api.httpbody_pb2.HttpBody):
+            Optional. Body of the HTTP request.
+
+            The body can take any generic value. The value is written to
+            the [HttpRequest][payload] of the [Task].
+    """
+
+    queue: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    task_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    body: httpbody_pb2.HttpBody = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=httpbody_pb2.HttpBody,
+    )
+
+
+class BufferTaskResponse(proto.Message):
+    r"""Response message for
+    [BufferTask][google.cloud.tasks.v2beta3.CloudTasks.BufferTask].
+
+    Attributes:
+        task (google.cloud.tasks_v2beta3.types.Task):
+            The created task.
+    """
+
+    task: gct_task.Task = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gct_task.Task,
     )
 
 

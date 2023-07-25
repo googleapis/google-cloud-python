@@ -28,6 +28,13 @@ __protobuf__ = proto.module(
         "AppEngineHttpTarget",
         "AppEngineHttpRequest",
         "AppEngineRouting",
+        "HttpRequest",
+        "PathOverride",
+        "QueryOverride",
+        "UriOverride",
+        "HttpTarget",
+        "OAuthToken",
+        "OidcToken",
     },
 )
 
@@ -48,6 +55,10 @@ class HttpMethod(proto.Enum):
             HTTP PUT
         DELETE (5):
             HTTP DELETE
+        PATCH (6):
+            HTTP PATCH
+        OPTIONS (7):
+            HTTP OPTIONS
     """
     HTTP_METHOD_UNSPECIFIED = 0
     POST = 1
@@ -55,6 +66,8 @@ class HttpMethod(proto.Enum):
     HEAD = 3
     PUT = 4
     DELETE = 5
+    PATCH = 6
+    OPTIONS = 7
 
 
 class PullTarget(proto.Message):
@@ -499,6 +512,507 @@ class AppEngineRouting(proto.Message):
     host: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+
+
+class HttpRequest(proto.Message):
+    r"""HTTP request.
+    The task will be pushed to the worker as an HTTP request. An
+    HTTP request embodies a url, an http method, headers, body and
+    authorization for the http task.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        url (str):
+            Required. The full url path that the request will be sent
+            to.
+
+            This string must begin with either "http://" or "https://".
+            Some examples are: ``http://acme.com`` and
+            ``https://acme.com/sales:8080``. Cloud Tasks will encode
+            some characters for safety and compatibility. The maximum
+            allowed URL length is 2083 characters after encoding.
+
+            The ``Location`` header response from a redirect response
+            [``300`` - ``399``] may be followed. The redirect is not
+            counted as a separate attempt.
+        http_method (google.cloud.tasks_v2beta2.types.HttpMethod):
+            The HTTP method to use for the request. The
+            default is POST.
+        headers (MutableMapping[str, str]):
+            HTTP request headers.
+
+            This map contains the header field names and values. Headers
+            can be set when running the [task is
+            created][google.cloud.tasks.v2beta2.CloudTasks.CreateTask]
+            or [task is
+            created][google.cloud.tasks.v2beta2.CloudTasks.BufferTask].
+
+            These headers represent a subset of the headers that will
+            accompany the task's HTTP request. Some HTTP request headers
+            will be ignored or replaced.
+
+            A partial list of headers that will be ignored or replaced
+            is:
+
+            -  Any header that is prefixed with "X-CloudTasks-" will be
+               treated as service header. Service headers define
+               properties of the task and are predefined in CloudTask.
+            -  Host: This will be computed by Cloud Tasks and derived
+               from
+               [HttpRequest.url][google.cloud.tasks.v2beta2.HttpRequest.url].
+            -  Content-Length: This will be computed by Cloud Tasks.
+            -  User-Agent: This will be set to ``"Google-Cloud-Tasks"``.
+            -  ``X-Google-*``: Google use only.
+            -  ``X-AppEngine-*``: Google use only.
+
+            ``Content-Type`` won't be set by Cloud Tasks. You can
+            explicitly set ``Content-Type`` to a media type when the
+            [task is
+            created][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].
+            For example, ``Content-Type`` can be set to
+            ``"application/octet-stream"`` or ``"application/json"``.
+
+            Headers which can have multiple values (according to
+            RFC2616) can be specified using comma-separated values.
+
+            The size of the headers must be less than 80KB.
+        body (bytes):
+            HTTP request body.
+
+            A request body is allowed only if the [HTTP
+            method][google.cloud.tasks.v2beta2.HttpRequest.http_method]
+            is POST, PUT, or PATCH. It is an error to set body on a task
+            with an incompatible
+            [HttpMethod][google.cloud.tasks.v2beta2.HttpMethod].
+        oauth_token (google.cloud.tasks_v2beta2.types.OAuthToken):
+            If specified, an `OAuth
+            token <https://developers.google.com/identity/protocols/OAuth2>`__
+            will be generated and attached as an ``Authorization``
+            header in the HTTP request.
+
+            This type of authorization should generally only be used
+            when calling Google APIs hosted on \*.googleapis.com.
+
+            This field is a member of `oneof`_ ``authorization_header``.
+        oidc_token (google.cloud.tasks_v2beta2.types.OidcToken):
+            If specified, an
+            `OIDC <https://developers.google.com/identity/protocols/OpenIDConnect>`__
+            token will be generated and attached as an ``Authorization``
+            header in the HTTP request.
+
+            This type of authorization can be used for many scenarios,
+            including calling Cloud Run, or endpoints where you intend
+            to validate the token yourself.
+
+            This field is a member of `oneof`_ ``authorization_header``.
+    """
+
+    url: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    http_method: "HttpMethod" = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="HttpMethod",
+    )
+    headers: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
+    body: bytes = proto.Field(
+        proto.BYTES,
+        number=4,
+    )
+    oauth_token: "OAuthToken" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="authorization_header",
+        message="OAuthToken",
+    )
+    oidc_token: "OidcToken" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="authorization_header",
+        message="OidcToken",
+    )
+
+
+class PathOverride(proto.Message):
+    r"""PathOverride.
+    Path message defines path override for HTTP targets.
+
+    Attributes:
+        path (str):
+            The URI path (e.g., /users/1234). Default is
+            an empty string.
+    """
+
+    path: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class QueryOverride(proto.Message):
+    r"""QueryOverride.
+    Query message defines query override for HTTP targets.
+
+    Attributes:
+        query_params (str):
+            The query parameters (e.g.,
+            qparam1=123&qparam2=456). Default is an empty
+            string.
+    """
+
+    query_params: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UriOverride(proto.Message):
+    r"""Uri Override.
+    When specified, all the HTTP tasks inside the queue will be
+    partially or fully overridden depending on the configured
+    values.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        scheme (google.cloud.tasks_v2beta2.types.UriOverride.Scheme):
+            Scheme override.
+            When specified, the task URI scheme is replaced
+            by the provided value (HTTP or HTTPS).
+
+            This field is a member of `oneof`_ ``_scheme``.
+        host (str):
+            Host override.
+
+            When specified, replaces the host part of the task URL. For
+            example, if the task URL is "https://www.google.com," and
+            host value is set to "example.net", the overridden URI will
+            be changed to "https://example.net." Host value cannot be an
+            empty string (INVALID_ARGUMENT).
+
+            This field is a member of `oneof`_ ``_host``.
+        port (int):
+            Port override.
+            When specified, replaces the port part of the
+            task URI. For instance, for a URI
+            http://www.google.com/foo and port=123, the
+            overridden URI becomes
+            http://www.google.com:123/foo. Note that the
+            port value must be a positive integer. Setting
+            the port to 0 (Zero) clears the URI port.
+
+            This field is a member of `oneof`_ ``_port``.
+        path_override (google.cloud.tasks_v2beta2.types.PathOverride):
+            URI path.
+            When specified, replaces the existing path of
+            the task URL. Setting the path value to an empty
+            string clears the URI path segment.
+        query_override (google.cloud.tasks_v2beta2.types.QueryOverride):
+            URI Query.
+            When specified, replaces the query part of the
+            task URI. Setting the query value to an empty
+            string clears the URI query segment.
+        uri_override_enforce_mode (google.cloud.tasks_v2beta2.types.UriOverride.UriOverrideEnforceMode):
+            URI Override Enforce Mode
+            When specified, determines the Target
+            UriOverride mode. If not specified, it defaults
+            to ALWAYS.
+    """
+
+    class Scheme(proto.Enum):
+        r"""The Scheme for an HTTP request. By default, it is HTTPS.
+
+        Values:
+            SCHEME_UNSPECIFIED (0):
+                Scheme unspecified. Defaults to HTTPS.
+            HTTP (1):
+                Convert the scheme to HTTP, e.g.,
+                https://www.google.ca will change to
+                http://www.google.ca.
+            HTTPS (2):
+                Convert the scheme to HTTPS, e.g.,
+                http://www.google.ca will change to
+                https://www.google.ca.
+        """
+        SCHEME_UNSPECIFIED = 0
+        HTTP = 1
+        HTTPS = 2
+
+    class UriOverrideEnforceMode(proto.Enum):
+        r"""UriOverrideEnforceMode mode is to define enforcing mode for
+        the override modes.
+
+        Values:
+            URI_OVERRIDE_ENFORCE_MODE_UNSPECIFIED (0):
+                OverrideMode Unspecified. Defaults to ALWAYS.
+            IF_NOT_EXISTS (1):
+                In the IF_NOT_EXISTS mode, queue-level configuration is only
+                applied where task-level configuration does not exist.
+            ALWAYS (2):
+                In the ALWAYS mode, queue-level configuration
+                overrides all task-level configuration
+        """
+        URI_OVERRIDE_ENFORCE_MODE_UNSPECIFIED = 0
+        IF_NOT_EXISTS = 1
+        ALWAYS = 2
+
+    scheme: Scheme = proto.Field(
+        proto.ENUM,
+        number=1,
+        optional=True,
+        enum=Scheme,
+    )
+    host: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+    port: int = proto.Field(
+        proto.INT64,
+        number=3,
+        optional=True,
+    )
+    path_override: "PathOverride" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="PathOverride",
+    )
+    query_override: "QueryOverride" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="QueryOverride",
+    )
+    uri_override_enforce_mode: UriOverrideEnforceMode = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=UriOverrideEnforceMode,
+    )
+
+
+class HttpTarget(proto.Message):
+    r"""HTTP target.
+
+    When specified as a [Queue][target_type], all the tasks with
+    [HttpRequest] will be overridden according to the target.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        uri_override (google.cloud.tasks_v2beta2.types.UriOverride):
+            Uri override.
+            When specified, overrides the execution Uri for
+            all the tasks in the queue.
+        http_method (google.cloud.tasks_v2beta2.types.HttpMethod):
+            The HTTP method to use for the request.
+
+            When specified, it overrides
+            [HttpRequest][google.cloud.tasks.v2beta2.HttpTarget.http_method]
+            for the task. Note that if the value is set to
+            [HttpMethod][GET] the [HttpRequest][body] of the task will
+            be ignored at execution time.
+        header_overrides (MutableSequence[google.cloud.tasks_v2beta2.types.HttpTarget.HeaderOverride]):
+            HTTP target headers.
+
+            This map contains the header field names and values. Headers
+            will be set when running the [task is
+            created][google.cloud.tasks.v2beta2.CloudTasks.CreateTask]
+            and/or [task is
+            created][google.cloud.tasks.v2beta2.CloudTasks.BufferTask].
+
+            These headers represent a subset of the headers that will
+            accompany the task's HTTP request. Some HTTP request headers
+            will be ignored or replaced.
+
+            A partial list of headers that will be ignored or replaced
+            is:
+
+            -  Any header that is prefixed with "X-CloudTasks-" will be
+               treated as service header. Service headers define
+               properties of the task and are predefined in CloudTask.
+            -  Host: This will be computed by Cloud Tasks and derived
+               from
+               [HttpRequest.url][google.cloud.tasks.v2beta2.HttpRequest.url].
+            -  Content-Length: This will be computed by Cloud Tasks.
+            -  User-Agent: This will be set to ``"Google-CloudTasks"``.
+            -  ``X-Google-*``: Google use only.
+            -  ``X-AppEngine-*``: Google use only.
+
+            ``Content-Type`` won't be set by Cloud Tasks. You can
+            explicitly set ``Content-Type`` to a media type when the
+            [task is
+            created][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].
+            For example, ``Content-Type`` can be set to
+            ``"application/octet-stream"`` or ``"application/json"``.
+
+            Headers which can have multiple values (according to
+            RFC2616) can be specified using comma-separated values.
+
+            The size of the headers must be less than 80KB. Queue-level
+            headers to override headers of all the tasks in the queue.
+        oauth_token (google.cloud.tasks_v2beta2.types.OAuthToken):
+            If specified, an `OAuth
+            token <https://developers.google.com/identity/protocols/OAuth2>`__
+            will be generated and attached as an ``Authorization``
+            header in the HTTP request.
+
+            This type of authorization should generally only be used
+            when calling Google APIs hosted on \*.googleapis.com.
+
+            This field is a member of `oneof`_ ``authorization_header``.
+        oidc_token (google.cloud.tasks_v2beta2.types.OidcToken):
+            If specified, an
+            `OIDC <https://developers.google.com/identity/protocols/OpenIDConnect>`__
+            token will be generated and attached as an ``Authorization``
+            header in the HTTP request.
+
+            This type of authorization can be used for many scenarios,
+            including calling Cloud Run, or endpoints where you intend
+            to validate the token yourself.
+
+            This field is a member of `oneof`_ ``authorization_header``.
+    """
+
+    class Header(proto.Message):
+        r"""Defines a header message. A header can have a key and a
+        value.
+
+        Attributes:
+            key (str):
+                The key of the header.
+            value (str):
+                The value of the header.
+        """
+
+        key: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        value: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    class HeaderOverride(proto.Message):
+        r"""Wraps the Header object.
+
+        Attributes:
+            header (google.cloud.tasks_v2beta2.types.HttpTarget.Header):
+                header embodying a key and a value.
+        """
+
+        header: "HttpTarget.Header" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="HttpTarget.Header",
+        )
+
+    uri_override: "UriOverride" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="UriOverride",
+    )
+    http_method: "HttpMethod" = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="HttpMethod",
+    )
+    header_overrides: MutableSequence[HeaderOverride] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=HeaderOverride,
+    )
+    oauth_token: "OAuthToken" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="authorization_header",
+        message="OAuthToken",
+    )
+    oidc_token: "OidcToken" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="authorization_header",
+        message="OidcToken",
+    )
+
+
+class OAuthToken(proto.Message):
+    r"""Contains information needed for generating an `OAuth
+    token <https://developers.google.com/identity/protocols/OAuth2>`__.
+    This type of authorization should generally only be used when
+    calling Google APIs hosted on \*.googleapis.com.
+
+    Attributes:
+        service_account_email (str):
+            `Service account
+            email <https://cloud.google.com/iam/docs/service-accounts>`__
+            to be used for generating OAuth token. The service account
+            must be within the same project as the queue. The caller
+            must have iam.serviceAccounts.actAs permission for the
+            service account.
+        scope (str):
+            OAuth scope to be used for generating OAuth
+            access token. If not specified,
+            "https://www.googleapis.com/auth/cloud-platform"
+            will be used.
+    """
+
+    service_account_email: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    scope: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class OidcToken(proto.Message):
+    r"""Contains information needed for generating an `OpenID Connect
+    token <https://developers.google.com/identity/protocols/OpenIDConnect>`__.
+    This type of authorization can be used for many scenarios, including
+    calling Cloud Run, or endpoints where you intend to validate the
+    token yourself.
+
+    Attributes:
+        service_account_email (str):
+            `Service account
+            email <https://cloud.google.com/iam/docs/service-accounts>`__
+            to be used for generating OIDC token. The service account
+            must be within the same project as the queue. The caller
+            must have iam.serviceAccounts.actAs permission for the
+            service account.
+        audience (str):
+            Audience to be used when generating OIDC
+            token. If not specified, the URI specified in
+            target will be used.
+    """
+
+    service_account_email: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    audience: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

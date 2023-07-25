@@ -22,6 +22,7 @@ from google.api_core import gapic_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
@@ -199,6 +200,11 @@ class CloudTasksTransport(abc.ABC):
                 default_timeout=20.0,
                 client_info=client_info,
             ),
+            self.upload_queue_yaml: gapic_v1.method.wrap_method(
+                self.upload_queue_yaml,
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy,
                 default_retry=retries.Retry(
@@ -309,6 +315,11 @@ class CloudTasksTransport(abc.ABC):
                 default_timeout=20.0,
                 client_info=client_info,
             ),
+            self.buffer_task: gapic_v1.method.wrap_method(
+                self.buffer_task,
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -385,6 +396,15 @@ class CloudTasksTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloudtasks.ResumeQueueRequest], Union[queue.Queue, Awaitable[queue.Queue]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def upload_queue_yaml(
+        self,
+    ) -> Callable[
+        [cloudtasks.UploadQueueYamlRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 
@@ -488,6 +508,36 @@ class CloudTasksTransport(abc.ABC):
     def run_task(
         self,
     ) -> Callable[[cloudtasks.RunTaskRequest], Union[task.Task, Awaitable[task.Task]]]:
+        raise NotImplementedError()
+
+    @property
+    def buffer_task(
+        self,
+    ) -> Callable[
+        [cloudtasks.BufferTaskRequest],
+        Union[cloudtasks.BufferTaskResponse, Awaitable[cloudtasks.BufferTaskResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[
+        [locations_pb2.GetLocationRequest],
+        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest],
+        Union[
+            locations_pb2.ListLocationsResponse,
+            Awaitable[locations_pb2.ListLocationsResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property

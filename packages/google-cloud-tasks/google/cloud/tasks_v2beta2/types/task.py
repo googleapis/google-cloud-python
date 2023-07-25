@@ -90,6 +90,13 @@ class Task(proto.Message):
             [PullMessage][google.cloud.tasks.v2beta2.PullMessage] set.
 
             This field is a member of `oneof`_ ``payload_type``.
+        http_request (google.cloud.tasks_v2beta2.types.HttpRequest):
+            HTTP request that is sent to the task's target.
+
+            An HTTP task is a task that has
+            [HttpRequest][google.cloud.tasks.v2beta2.HttpRequest] set.
+
+            This field is a member of `oneof`_ ``payload_type``.
         schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the task is scheduled to be attempted.
 
@@ -166,6 +173,12 @@ class Task(proto.Message):
         number=4,
         oneof="payload_type",
         message=target.PullMessage,
+    )
+    http_request: target.HttpRequest = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="payload_type",
+        message=target.HttpRequest,
     )
     schedule_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,

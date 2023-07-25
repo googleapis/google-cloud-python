@@ -26,12 +26,14 @@ from collections.abc import Iterable
 import json
 import math
 
+from google.api import httpbody_pb2  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.location import locations_pb2
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -2745,6 +2747,93 @@ async def test_resume_queue_flattened_error_async():
             cloudtasks.ResumeQueueRequest(),
             name="name_value",
         )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.UploadQueueYamlRequest,
+        dict,
+    ],
+)
+def test_upload_queue_yaml(request_type, transport: str = "grpc"):
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.upload_queue_yaml), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.upload_queue_yaml(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudtasks.UploadQueueYamlRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_upload_queue_yaml_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.upload_queue_yaml), "__call__"
+    ) as call:
+        client.upload_queue_yaml()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudtasks.UploadQueueYamlRequest()
+
+
+@pytest.mark.asyncio
+async def test_upload_queue_yaml_async(
+    transport: str = "grpc_asyncio", request_type=cloudtasks.UploadQueueYamlRequest
+):
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.upload_queue_yaml), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.upload_queue_yaml(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudtasks.UploadQueueYamlRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_upload_queue_yaml_async_from_dict():
+    await test_upload_queue_yaml_async(request_type=dict)
 
 
 @pytest.mark.parametrize(
@@ -5833,6 +5922,254 @@ async def test_run_task_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        cloudtasks.BufferTaskRequest,
+        dict,
+    ],
+)
+def test_buffer_task(request_type, transport: str = "grpc"):
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.buffer_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloudtasks.BufferTaskResponse()
+        response = client.buffer_task(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudtasks.BufferTaskRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloudtasks.BufferTaskResponse)
+
+
+def test_buffer_task_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.buffer_task), "__call__") as call:
+        client.buffer_task()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudtasks.BufferTaskRequest()
+
+
+@pytest.mark.asyncio
+async def test_buffer_task_async(
+    transport: str = "grpc_asyncio", request_type=cloudtasks.BufferTaskRequest
+):
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.buffer_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloudtasks.BufferTaskResponse()
+        )
+        response = await client.buffer_task(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudtasks.BufferTaskRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloudtasks.BufferTaskResponse)
+
+
+@pytest.mark.asyncio
+async def test_buffer_task_async_from_dict():
+    await test_buffer_task_async(request_type=dict)
+
+
+def test_buffer_task_field_headers():
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudtasks.BufferTaskRequest()
+
+    request.queue = "queue_value"
+    request.task_id = "task_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.buffer_task), "__call__") as call:
+        call.return_value = cloudtasks.BufferTaskResponse()
+        client.buffer_task(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "queue=queue_value&task_id=task_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_buffer_task_field_headers_async():
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloudtasks.BufferTaskRequest()
+
+    request.queue = "queue_value"
+    request.task_id = "task_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.buffer_task), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloudtasks.BufferTaskResponse()
+        )
+        await client.buffer_task(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "queue=queue_value&task_id=task_id_value",
+    ) in kw["metadata"]
+
+
+def test_buffer_task_flattened():
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.buffer_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloudtasks.BufferTaskResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.buffer_task(
+            queue="queue_value",
+            task_id="task_id_value",
+            body=httpbody_pb2.HttpBody(content_type="content_type_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].queue
+        mock_val = "queue_value"
+        assert arg == mock_val
+        arg = args[0].task_id
+        mock_val = "task_id_value"
+        assert arg == mock_val
+        arg = args[0].body
+        mock_val = httpbody_pb2.HttpBody(content_type="content_type_value")
+        assert arg == mock_val
+
+
+def test_buffer_task_flattened_error():
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.buffer_task(
+            cloudtasks.BufferTaskRequest(),
+            queue="queue_value",
+            task_id="task_id_value",
+            body=httpbody_pb2.HttpBody(content_type="content_type_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_buffer_task_flattened_async():
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.buffer_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloudtasks.BufferTaskResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloudtasks.BufferTaskResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.buffer_task(
+            queue="queue_value",
+            task_id="task_id_value",
+            body=httpbody_pb2.HttpBody(content_type="content_type_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].queue
+        mock_val = "queue_value"
+        assert arg == mock_val
+        arg = args[0].task_id
+        mock_val = "task_id_value"
+        assert arg == mock_val
+        arg = args[0].body
+        mock_val = httpbody_pb2.HttpBody(content_type="content_type_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_buffer_task_flattened_error_async():
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.buffer_task(
+            cloudtasks.BufferTaskRequest(),
+            queue="queue_value",
+            task_id="task_id_value",
+            body=httpbody_pb2.HttpBody(content_type="content_type_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         cloudtasks.ListQueuesRequest,
         dict,
     ],
@@ -6460,6 +6797,28 @@ def test_create_queue_rest(request_type):
             }
         },
         "pull_target": {},
+        "http_target": {
+            "uri_override": {
+                "scheme": 1,
+                "host": "host_value",
+                "port": 453,
+                "path_override": {"path": "path_value"},
+                "query_override": {"query_params": "query_params_value"},
+                "uri_override_enforce_mode": 1,
+            },
+            "http_method": 1,
+            "header_overrides": [
+                {"header": {"key": "key_value", "value": "value_value"}}
+            ],
+            "oauth_token": {
+                "service_account_email": "service_account_email_value",
+                "scope": "scope_value",
+            },
+            "oidc_token": {
+                "service_account_email": "service_account_email_value",
+                "audience": "audience_value",
+            },
+        },
         "rate_limits": {
             "max_tasks_dispatched_per_second": 0.32680000000000003,
             "max_burst_size": 1519,
@@ -6678,6 +7037,28 @@ def test_create_queue_rest_bad_request(
             }
         },
         "pull_target": {},
+        "http_target": {
+            "uri_override": {
+                "scheme": 1,
+                "host": "host_value",
+                "port": 453,
+                "path_override": {"path": "path_value"},
+                "query_override": {"query_params": "query_params_value"},
+                "uri_override_enforce_mode": 1,
+            },
+            "http_method": 1,
+            "header_overrides": [
+                {"header": {"key": "key_value", "value": "value_value"}}
+            ],
+            "oauth_token": {
+                "service_account_email": "service_account_email_value",
+                "scope": "scope_value",
+            },
+            "oidc_token": {
+                "service_account_email": "service_account_email_value",
+                "audience": "audience_value",
+            },
+        },
         "rate_limits": {
             "max_tasks_dispatched_per_second": 0.32680000000000003,
             "max_burst_size": 1519,
@@ -6809,6 +7190,28 @@ def test_update_queue_rest(request_type):
             }
         },
         "pull_target": {},
+        "http_target": {
+            "uri_override": {
+                "scheme": 1,
+                "host": "host_value",
+                "port": 453,
+                "path_override": {"path": "path_value"},
+                "query_override": {"query_params": "query_params_value"},
+                "uri_override_enforce_mode": 1,
+            },
+            "http_method": 1,
+            "header_overrides": [
+                {"header": {"key": "key_value", "value": "value_value"}}
+            ],
+            "oauth_token": {
+                "service_account_email": "service_account_email_value",
+                "scope": "scope_value",
+            },
+            "oidc_token": {
+                "service_account_email": "service_account_email_value",
+                "audience": "audience_value",
+            },
+        },
         "rate_limits": {
             "max_tasks_dispatched_per_second": 0.32680000000000003,
             "max_burst_size": 1519,
@@ -7018,6 +7421,28 @@ def test_update_queue_rest_bad_request(
             }
         },
         "pull_target": {},
+        "http_target": {
+            "uri_override": {
+                "scheme": 1,
+                "host": "host_value",
+                "port": 453,
+                "path_override": {"path": "path_value"},
+                "query_override": {"query_params": "query_params_value"},
+                "uri_override_enforce_mode": 1,
+            },
+            "http_method": 1,
+            "header_overrides": [
+                {"header": {"key": "key_value", "value": "value_value"}}
+            ],
+            "oauth_token": {
+                "service_account_email": "service_account_email_value",
+                "scope": "scope_value",
+            },
+            "oidc_token": {
+                "service_account_email": "service_account_email_value",
+                "audience": "audience_value",
+            },
+        },
         "rate_limits": {
             "max_tasks_dispatched_per_second": 0.32680000000000003,
             "max_burst_size": 1519,
@@ -8165,6 +8590,16 @@ def test_resume_queue_rest_error():
     client = CloudTasksClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
+
+
+def test_upload_queue_yaml_rest_no_http_options():
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = cloudtasks.UploadQueueYamlRequest()
+    with pytest.raises(RuntimeError):
+        client.upload_queue_yaml(request)
 
 
 @pytest.mark.parametrize(
@@ -11512,6 +11947,294 @@ def test_run_task_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloudtasks.BufferTaskRequest,
+        dict,
+    ],
+)
+def test_buffer_task_rest(request_type):
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "queue": "projects/sample1/locations/sample2/queues/sample3",
+        "task_id": "sample4",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudtasks.BufferTaskResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudtasks.BufferTaskResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.buffer_task(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloudtasks.BufferTaskResponse)
+
+
+def test_buffer_task_rest_required_fields(request_type=cloudtasks.BufferTaskRequest):
+    transport_class = transports.CloudTasksRestTransport
+
+    request_init = {}
+    request_init["queue"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).buffer_task._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["queue"] = "queue_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).buffer_task._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "queue" in jsonified_request
+    assert jsonified_request["queue"] == "queue_value"
+
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloudtasks.BufferTaskResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloudtasks.BufferTaskResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.buffer_task(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_buffer_task_rest_unset_required_fields():
+    transport = transports.CloudTasksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.buffer_task._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("queue",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_buffer_task_rest_interceptors(null_interceptor):
+    transport = transports.CloudTasksRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.CloudTasksRestInterceptor(),
+    )
+    client = CloudTasksClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.CloudTasksRestInterceptor, "post_buffer_task"
+    ) as post, mock.patch.object(
+        transports.CloudTasksRestInterceptor, "pre_buffer_task"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloudtasks.BufferTaskRequest.pb(cloudtasks.BufferTaskRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloudtasks.BufferTaskResponse.to_json(
+            cloudtasks.BufferTaskResponse()
+        )
+
+        request = cloudtasks.BufferTaskRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloudtasks.BufferTaskResponse()
+
+        client.buffer_task(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_buffer_task_rest_bad_request(
+    transport: str = "rest", request_type=cloudtasks.BufferTaskRequest
+):
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "queue": "projects/sample1/locations/sample2/queues/sample3",
+        "task_id": "sample4",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.buffer_task(request)
+
+
+def test_buffer_task_rest_flattened():
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloudtasks.BufferTaskResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "queue": "projects/sample1/locations/sample2/queues/sample3",
+            "task_id": "sample4",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            queue="queue_value",
+            task_id="task_id_value",
+            body=httpbody_pb2.HttpBody(content_type="content_type_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloudtasks.BufferTaskResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.buffer_task(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2beta2/{queue=projects/*/locations/*/queues/*}/tasks/{task_id}:buffer"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_buffer_task_rest_flattened_error(transport: str = "rest"):
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.buffer_task(
+            cloudtasks.BufferTaskRequest(),
+            queue="queue_value",
+            task_id="task_id_value",
+            body=httpbody_pb2.HttpBody(content_type="content_type_value"),
+        )
+
+
+def test_buffer_task_rest_error():
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+def test_upload_queue_yaml_rest_error():
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.upload_queue_yaml({})
+    assert "Method UploadQueueYaml is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CloudTasksGrpcTransport(
@@ -11659,6 +12382,7 @@ def test_cloud_tasks_base_transport():
         "purge_queue",
         "pause_queue",
         "resume_queue",
+        "upload_queue_yaml",
         "get_iam_policy",
         "set_iam_policy",
         "test_iam_permissions",
@@ -11671,6 +12395,9 @@ def test_cloud_tasks_base_transport():
         "renew_lease",
         "cancel_lease",
         "run_task",
+        "buffer_task",
+        "get_location",
+        "list_locations",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -11950,6 +12677,9 @@ def test_cloud_tasks_client_transport_session_collision(transport_name):
     session1 = client1.transport.resume_queue._session
     session2 = client2.transport.resume_queue._session
     assert session1 != session2
+    session1 = client1.transport.upload_queue_yaml._session
+    session2 = client2.transport.upload_queue_yaml._session
+    assert session1 != session2
     session1 = client1.transport.get_iam_policy._session
     session2 = client2.transport.get_iam_policy._session
     assert session1 != session2
@@ -11985,6 +12715,9 @@ def test_cloud_tasks_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.run_task._session
     session2 = client2.transport.run_task._session
+    assert session1 != session2
+    session1 = client1.transport.buffer_task._session
+    session2 = client2.transport.buffer_task._session
     assert session1 != session2
 
 
@@ -12301,6 +13034,406 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_get_location_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
+):
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
+):
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_list_locations(transport: str = "grpc"):
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.ListLocationsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+        response = client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+@pytest.mark.asyncio
+async def test_list_locations_async(transport: str = "grpc"):
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.ListLocationsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        response = await client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_list_locations_field_headers():
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.ListLocationsRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_locations_field_headers_async():
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.ListLocationsRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_list_locations_from_dict():
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        response = client.list_locations(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_from_dict_async():
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        response = await client.list_locations(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+def test_get_location(transport: str = "grpc"):
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.GetLocationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+        response = client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+@pytest.mark.asyncio
+async def test_get_location_async(transport: str = "grpc_asyncio"):
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.GetLocationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        response = await client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_get_location_field_headers():
+    client = CloudTasksClient(credentials=ga_credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.GetLocationRequest()
+    request.name = "locations/abc"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        call.return_value = locations_pb2.Location()
+
+        client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations/abc",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_location_field_headers_async():
+    client = CloudTasksAsyncClient(credentials=ga_credentials.AnonymousCredentials())
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.GetLocationRequest()
+    request.name = "locations/abc"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations/abc",
+    ) in kw["metadata"]
+
+
+def test_get_location_from_dict():
+    client = CloudTasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        response = client.get_location(
+            request={
+                "name": "locations/abc",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_location_from_dict_async():
+    client = CloudTasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        response = await client.get_location(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
 
 
 def test_transport_close():
