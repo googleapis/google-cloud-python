@@ -1698,8 +1698,6 @@ class ImportProcessorVersionRequest(proto.Message):
     [ImportProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.ImportProcessorVersion]
     method. Requirements:
 
-    -  The source processor version and destination processor must be in
-       the same location.
     -  The Document AI `Service
        Agent <https://cloud.google.com/iam/docs/service-agents>`__ of
        the destination project must have `Document AI Editor
@@ -1709,9 +1707,14 @@ class ImportProcessorVersionRequest(proto.Message):
     The destination project is specified as part of the
     [parent][google.cloud.documentai.v1beta3.ImportProcessorVersionRequest.parent]
     field. The source project is specified as part of the
-    [source][google.cloud.documentai.v1beta3.ImportProcessorVersionRequest.processor_version_source]
+    [source][ImportProcessorVersionRequest.processor_version_source or
+    ImportProcessorVersionRequest.external_processor_version_source]
     field.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -1723,16 +1726,50 @@ class ImportProcessorVersionRequest(proto.Message):
             region.
 
             This field is a member of `oneof`_ ``source``.
+        external_processor_version_source (google.cloud.documentai_v1beta3.types.ImportProcessorVersionRequest.ExternalProcessorVersionSource):
+            The source processor version to import from,
+            and can be from different environment and region
+            than the destination processor.
+
+            This field is a member of `oneof`_ ``source``.
         parent (str):
             Required. The destination processor name to create the
             processor version in. Format:
             ``projects/{project}/locations/{location}/processors/{processor}``
     """
 
+    class ExternalProcessorVersionSource(proto.Message):
+        r"""The external source processor version.
+
+        Attributes:
+            processor_version (str):
+                Required. The processor version name. Format:
+                ``projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}``
+            service_endpoint (str):
+                Optional. The Document AI service endpoint.
+                For example,
+                'https://us-documentai.googleapis.com'
+        """
+
+        processor_version: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        service_endpoint: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
     processor_version_source: str = proto.Field(
         proto.STRING,
         number=2,
         oneof="source",
+    )
+    external_processor_version_source: ExternalProcessorVersionSource = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="source",
+        message=ExternalProcessorVersionSource,
     )
     parent: str = proto.Field(
         proto.STRING,
