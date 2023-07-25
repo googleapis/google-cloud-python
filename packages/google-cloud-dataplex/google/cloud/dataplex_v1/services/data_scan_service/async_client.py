@@ -87,6 +87,8 @@ class DataScanServiceAsyncClient:
     )
     entity_path = staticmethod(DataScanServiceClient.entity_path)
     parse_entity_path = staticmethod(DataScanServiceClient.parse_entity_path)
+    table_path = staticmethod(DataScanServiceClient.table_path)
+    parse_table_path = staticmethod(DataScanServiceClient.parse_table_path)
     common_billing_account_path = staticmethod(
         DataScanServiceClient.common_billing_account_path
     )
@@ -271,6 +273,7 @@ class DataScanServiceAsyncClient:
 
                 # Initialize request argument(s)
                 data_scan = dataplex_v1.DataScan()
+                data_scan.data_quality_spec.rules.dimension = "dimension_value"
                 data_scan.data.entity = "entity_value"
 
                 request = dataplex_v1.CreateDataScanRequest(
@@ -427,6 +430,7 @@ class DataScanServiceAsyncClient:
 
                 # Initialize request argument(s)
                 data_scan = dataplex_v1.DataScan()
+                data_scan.data_quality_spec.rules.dimension = "dimension_value"
                 data_scan.data.entity = "entity_value"
 
                 request = dataplex_v1.UpdateDataScanRequest(

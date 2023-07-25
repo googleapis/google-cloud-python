@@ -40,6 +40,7 @@ def sample_update_data_scan():
 
     # Initialize request argument(s)
     data_scan = dataplex_v1.DataScan()
+    data_scan.data_quality_spec.rules.dimension = "dimension_value"
     data_scan.data.entity = "entity_value"
 
     request = dataplex_v1.UpdateDataScanRequest(
