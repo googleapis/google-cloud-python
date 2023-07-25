@@ -2255,6 +2255,7 @@ def test_insert_rest(request_type):
     request_init["service_attachment_resource"] = {
         "connected_endpoints": [
             {
+                "consumer_network": "consumer_network_value",
                 "endpoint": "endpoint_value",
                 "psc_connection_id": 1793,
                 "status": "status_value",
@@ -2524,6 +2525,7 @@ def test_insert_rest_bad_request(
     request_init["service_attachment_resource"] = {
         "connected_endpoints": [
             {
+                "consumer_network": "consumer_network_value",
                 "endpoint": "endpoint_value",
                 "psc_connection_id": 1793,
                 "status": "status_value",
@@ -2592,7 +2594,7 @@ def test_insert_rest_flattened():
             service_attachment_resource=compute.ServiceAttachment(
                 connected_endpoints=[
                     compute.ServiceAttachmentConnectedEndpoint(
-                        endpoint="endpoint_value"
+                        consumer_network="consumer_network_value"
                     )
                 ]
             ),
@@ -2636,7 +2638,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             service_attachment_resource=compute.ServiceAttachment(
                 connected_endpoints=[
                     compute.ServiceAttachmentConnectedEndpoint(
-                        endpoint="endpoint_value"
+                        consumer_network="consumer_network_value"
                     )
                 ]
             ),
@@ -2667,6 +2669,7 @@ def test_insert_unary_rest(request_type):
     request_init["service_attachment_resource"] = {
         "connected_endpoints": [
             {
+                "consumer_network": "consumer_network_value",
                 "endpoint": "endpoint_value",
                 "psc_connection_id": 1793,
                 "status": "status_value",
@@ -2914,6 +2917,7 @@ def test_insert_unary_rest_bad_request(
     request_init["service_attachment_resource"] = {
         "connected_endpoints": [
             {
+                "consumer_network": "consumer_network_value",
                 "endpoint": "endpoint_value",
                 "psc_connection_id": 1793,
                 "status": "status_value",
@@ -2982,7 +2986,7 @@ def test_insert_unary_rest_flattened():
             service_attachment_resource=compute.ServiceAttachment(
                 connected_endpoints=[
                     compute.ServiceAttachmentConnectedEndpoint(
-                        endpoint="endpoint_value"
+                        consumer_network="consumer_network_value"
                     )
                 ]
             ),
@@ -3026,7 +3030,7 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             service_attachment_resource=compute.ServiceAttachment(
                 connected_endpoints=[
                     compute.ServiceAttachmentConnectedEndpoint(
-                        endpoint="endpoint_value"
+                        consumer_network="consumer_network_value"
                     )
                 ]
             ),
@@ -3420,6 +3424,7 @@ def test_patch_rest(request_type):
     request_init["service_attachment_resource"] = {
         "connected_endpoints": [
             {
+                "consumer_network": "consumer_network_value",
                 "endpoint": "endpoint_value",
                 "psc_connection_id": 1793,
                 "status": "status_value",
@@ -3696,6 +3701,7 @@ def test_patch_rest_bad_request(
     request_init["service_attachment_resource"] = {
         "connected_endpoints": [
             {
+                "consumer_network": "consumer_network_value",
                 "endpoint": "endpoint_value",
                 "psc_connection_id": 1793,
                 "status": "status_value",
@@ -3769,7 +3775,7 @@ def test_patch_rest_flattened():
             service_attachment_resource=compute.ServiceAttachment(
                 connected_endpoints=[
                     compute.ServiceAttachmentConnectedEndpoint(
-                        endpoint="endpoint_value"
+                        consumer_network="consumer_network_value"
                     )
                 ]
             ),
@@ -3814,7 +3820,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
             service_attachment_resource=compute.ServiceAttachment(
                 connected_endpoints=[
                     compute.ServiceAttachmentConnectedEndpoint(
-                        endpoint="endpoint_value"
+                        consumer_network="consumer_network_value"
                     )
                 ]
             ),
@@ -3849,6 +3855,7 @@ def test_patch_unary_rest(request_type):
     request_init["service_attachment_resource"] = {
         "connected_endpoints": [
             {
+                "consumer_network": "consumer_network_value",
                 "endpoint": "endpoint_value",
                 "psc_connection_id": 1793,
                 "status": "status_value",
@@ -4105,6 +4112,7 @@ def test_patch_unary_rest_bad_request(
     request_init["service_attachment_resource"] = {
         "connected_endpoints": [
             {
+                "consumer_network": "consumer_network_value",
                 "endpoint": "endpoint_value",
                 "psc_connection_id": 1793,
                 "status": "status_value",
@@ -4178,7 +4186,7 @@ def test_patch_unary_rest_flattened():
             service_attachment_resource=compute.ServiceAttachment(
                 connected_endpoints=[
                     compute.ServiceAttachmentConnectedEndpoint(
-                        endpoint="endpoint_value"
+                        consumer_network="consumer_network_value"
                     )
                 ]
             ),
@@ -4223,7 +4231,7 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
             service_attachment_resource=compute.ServiceAttachment(
                 connected_endpoints=[
                     compute.ServiceAttachmentConnectedEndpoint(
-                        endpoint="endpoint_value"
+                        consumer_network="consumer_network_value"
                     )
                 ]
             ),

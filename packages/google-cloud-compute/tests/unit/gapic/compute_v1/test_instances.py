@@ -3375,6 +3375,7 @@ def test_bulk_insert_rest(request_type):
             "scheduling": {
                 "automatic_restart": True,
                 "instance_termination_action": "instance_termination_action_value",
+                "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
                 "location_hint": "location_hint_value",
                 "min_node_cpus": 1379,
                 "node_affinities": [
@@ -3778,6 +3779,7 @@ def test_bulk_insert_rest_bad_request(
             "scheduling": {
                 "automatic_restart": True,
                 "instance_termination_action": "instance_termination_action_value",
+                "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
                 "location_hint": "location_hint_value",
                 "min_node_cpus": 1379,
                 "node_affinities": [
@@ -4049,6 +4051,7 @@ def test_bulk_insert_unary_rest(request_type):
             "scheduling": {
                 "automatic_restart": True,
                 "instance_termination_action": "instance_termination_action_value",
+                "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
                 "location_hint": "location_hint_value",
                 "min_node_cpus": 1379,
                 "node_affinities": [
@@ -4430,6 +4433,7 @@ def test_bulk_insert_unary_rest_bad_request(
             "scheduling": {
                 "automatic_restart": True,
                 "instance_termination_action": "instance_termination_action_value",
+                "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
                 "location_hint": "location_hint_value",
                 "min_node_cpus": 1379,
                 "node_affinities": [
@@ -8912,6 +8916,7 @@ def test_insert_rest(request_type):
         "scheduling": {
             "automatic_restart": True,
             "instance_termination_action": "instance_termination_action_value",
+            "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
             "location_hint": "location_hint_value",
             "min_node_cpus": 1379,
             "node_affinities": [
@@ -9330,6 +9335,7 @@ def test_insert_rest_bad_request(
         "scheduling": {
             "automatic_restart": True,
             "instance_termination_action": "instance_termination_action_value",
+            "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
             "location_hint": "location_hint_value",
             "min_node_cpus": 1379,
             "node_affinities": [
@@ -9612,6 +9618,7 @@ def test_insert_unary_rest(request_type):
         "scheduling": {
             "automatic_restart": True,
             "instance_termination_action": "instance_termination_action_value",
+            "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
             "location_hint": "location_hint_value",
             "min_node_cpus": 1379,
             "node_affinities": [
@@ -10008,6 +10015,7 @@ def test_insert_unary_rest_bad_request(
         "scheduling": {
             "automatic_restart": True,
             "instance_termination_action": "instance_termination_action_value",
+            "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
             "location_hint": "location_hint_value",
             "min_node_cpus": 1379,
             "node_affinities": [
@@ -19000,6 +19008,7 @@ def test_set_scheduling_rest(request_type):
     request_init["scheduling_resource"] = {
         "automatic_restart": True,
         "instance_termination_action": "instance_termination_action_value",
+        "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
         "location_hint": "location_hint_value",
         "min_node_cpus": 1379,
         "node_affinities": [
@@ -19252,6 +19261,7 @@ def test_set_scheduling_rest_bad_request(
     request_init["scheduling_resource"] = {
         "automatic_restart": True,
         "instance_termination_action": "instance_termination_action_value",
+        "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
         "location_hint": "location_hint_value",
         "min_node_cpus": 1379,
         "node_affinities": [
@@ -19369,6 +19379,7 @@ def test_set_scheduling_unary_rest(request_type):
     request_init["scheduling_resource"] = {
         "automatic_restart": True,
         "instance_termination_action": "instance_termination_action_value",
+        "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
         "location_hint": "location_hint_value",
         "min_node_cpus": 1379,
         "node_affinities": [
@@ -19599,6 +19610,7 @@ def test_set_scheduling_unary_rest_bad_request(
     request_init["scheduling_resource"] = {
         "automatic_restart": True,
         "instance_termination_action": "instance_termination_action_value",
+        "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
         "location_hint": "location_hint_value",
         "min_node_cpus": 1379,
         "node_affinities": [
@@ -25533,6 +25545,7 @@ def test_update_rest(request_type):
         "scheduling": {
             "automatic_restart": True,
             "instance_termination_action": "instance_termination_action_value",
+            "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
             "location_hint": "location_hint_value",
             "min_node_cpus": 1379,
             "node_affinities": [
@@ -25956,6 +25969,7 @@ def test_update_rest_bad_request(
         "scheduling": {
             "automatic_restart": True,
             "instance_termination_action": "instance_termination_action_value",
+            "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
             "location_hint": "location_hint_value",
             "min_node_cpus": 1379,
             "node_affinities": [
@@ -26244,6 +26258,7 @@ def test_update_unary_rest(request_type):
         "scheduling": {
             "automatic_restart": True,
             "instance_termination_action": "instance_termination_action_value",
+            "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
             "location_hint": "location_hint_value",
             "min_node_cpus": 1379,
             "node_affinities": [
@@ -26645,6 +26660,7 @@ def test_update_unary_rest_bad_request(
         "scheduling": {
             "automatic_restart": True,
             "instance_termination_action": "instance_termination_action_value",
+            "local_ssd_recovery_timeout": {"nanos": 543, "seconds": 751},
             "location_hint": "location_hint_value",
             "min_node_cpus": 1379,
             "node_affinities": [

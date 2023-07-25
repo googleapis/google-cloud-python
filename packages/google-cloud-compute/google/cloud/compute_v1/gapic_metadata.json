@@ -3317,6 +3317,11 @@
                 "list"
               ]
             },
+            "Patch": {
+              "methods": [
+                "patch"
+              ]
+            },
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"

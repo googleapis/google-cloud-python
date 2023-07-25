@@ -918,6 +918,7 @@ __protobuf__ = proto.module(
         "PatchRegionSslPolicyRequest",
         "PatchRegionTargetHttpsProxyRequest",
         "PatchRegionUrlMapRequest",
+        "PatchResourcePolicyRequest",
         "PatchRouterRequest",
         "PatchRuleFirewallPolicyRequest",
         "PatchRuleNetworkFirewallPolicyRequest",
@@ -12334,8 +12335,8 @@ class BackendBucket(proto.Message):
 
             This field is a member of `oneof`_ ``_creation_timestamp``.
         custom_response_headers (MutableSequence[str]):
-            Headers that the HTTP/S load balancer should
-            add to proxied responses.
+            Headers that the Application Load Balancer
+            should add to proxied responses.
         description (str):
             An optional textual description of the
             resource; provided by the client when the
@@ -23807,6 +23808,13 @@ class DistributionPolicy(proto.Message):
                 maximize utilization of unused zonal
                 reservations. Recommended for batch workloads
                 that do not require high availability.
+            ANY_SINGLE_ZONE (61100880):
+                The group creates all VM instances within a
+                single zone. The zone is selected based on the
+                present resource constraints and to maximize
+                utilization of unused zonal reservations.
+                Recommended for batch workloads with heavy
+                interprocess communication.
             BALANCED (468409608):
                 The group prioritizes acquisition of
                 resources, scheduling VMs in zones where
@@ -23826,6 +23834,7 @@ class DistributionPolicy(proto.Message):
         """
         UNDEFINED_TARGET_SHAPE = 0
         ANY = 64972
+        ANY_SINGLE_ZONE = 61100880
         BALANCED = 468409608
         EVEN = 2140442
 
@@ -40553,14 +40562,11 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
             This field is a member of `oneof`_ ``_replacement_method``.
         type_ (str):
             The type of update process. You can specify
-            either PROACTIVE so that the instance group
-            manager proactively executes actions in order to
-            bring instances to their target versions or
-            OPPORTUNISTIC so that no action is proactively
-            executed but the update will be performed as
-            part of other actions (for example, resizes or
-            recreateInstances calls). Check the Type enum
-            for the list of possible values.
+            either PROACTIVE so that the MIG automatically
+            updates VMs to the latest configurations or
+            OPPORTUNISTIC so that you can select the VMs
+            that you want to update. Check the Type enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_type``.
     """
@@ -40656,13 +40662,10 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
 
     class Type(proto.Enum):
         r"""The type of update process. You can specify either PROACTIVE
-        so that the instance group manager proactively executes actions
-        in order to bring instances to their target versions or
-        OPPORTUNISTIC so that no action is proactively executed but the
-        update will be performed as part of other actions (for example,
-        resizes or recreateInstances calls). Additional supported values
-        which may be not listed in the enum directly due to technical
-        reasons:
+        so that the MIG automatically updates VMs to the latest
+        configurations or OPPORTUNISTIC so that you can select the VMs
+        that you want to update. Additional supported values which may
+        be not listed in the enum directly due to technical reasons:
 
         PROACTIVE
 
@@ -40671,11 +40674,9 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
                 A value indicating that the enum field is not
                 set.
             OPPORTUNISTIC (429530089):
-                No action is being proactively performed in
-                order to bring this IGM to its target version
-                distribution (regardless of whether this
-                distribution is expressed using instanceTemplate
-                or versions field).
+                MIG will apply new configurations to existing
+                VMs only when you selectively target specific or
+                all VMs to be updated.
         """
         UNDEFINED_TYPE = 0
         OPPORTUNISTIC = 429530089
@@ -69508,6 +69509,76 @@ class PatchRegionUrlMapRequest(proto.Message):
     )
 
 
+class PatchResourcePolicyRequest(proto.Message):
+    r"""A request message for ResourcePolicies.Patch. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        resource_policy (str):
+            Id of the resource policy to patch.
+        resource_policy_resource (google.cloud.compute_v1.types.ResourcePolicy):
+            The body resource for this request
+        update_mask (str):
+            update_mask indicates fields to be updated as part of this
+            request.
+
+            This field is a member of `oneof`_ ``_update_mask``.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    resource_policy: str = proto.Field(
+        proto.STRING,
+        number=159240835,
+    )
+    resource_policy_resource: "ResourcePolicy" = proto.Field(
+        proto.MESSAGE,
+        number=76826186,
+        message="ResourcePolicy",
+    )
+    update_mask: str = proto.Field(
+        proto.STRING,
+        number=500079778,
+        optional=True,
+    )
+
+
 class PatchRouterRequest(proto.Message):
     r"""A request message for Routers.Patch. See the method
     description for details.
@@ -72629,6 +72700,12 @@ class QuotaExceededInfo(proto.Message):
     Attributes:
         dimensions (MutableMapping[str, str]):
             The map holding related quota dimensions.
+        future_limit (float):
+            Future quota limit being rolled out. The
+            limit's unit depends on the quota type or
+            metric.
+
+            This field is a member of `oneof`_ ``_future_limit``.
         limit (float):
             Current effective quota limit. The limit's
             unit depends on the quota type or metric.
@@ -72642,12 +72719,41 @@ class QuotaExceededInfo(proto.Message):
             The Compute Engine quota metric name.
 
             This field is a member of `oneof`_ ``_metric_name``.
+        rollout_status (str):
+            Rollout status of the future quota limit.
+            Check the RolloutStatus enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_rollout_status``.
     """
+
+    class RolloutStatus(proto.Enum):
+        r"""Rollout status of the future quota limit.
+
+        Values:
+            UNDEFINED_ROLLOUT_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            IN_PROGRESS (469193735):
+                IN_PROGRESS - A rollout is in process which will change the
+                limit value to future limit.
+            ROLLOUT_STATUS_UNSPECIFIED (26864568):
+                ROLLOUT_STATUS_UNSPECIFIED - Rollout status is not
+                specified. The default value.
+        """
+        UNDEFINED_ROLLOUT_STATUS = 0
+        IN_PROGRESS = 469193735
+        ROLLOUT_STATUS_UNSPECIFIED = 26864568
 
     dimensions: MutableMapping[str, str] = proto.MapField(
         proto.STRING,
         proto.STRING,
         number=414334925,
+    )
+    future_limit: float = proto.Field(
+        proto.DOUBLE,
+        number=456564287,
+        optional=True,
     )
     limit: float = proto.Field(
         proto.DOUBLE,
@@ -72662,6 +72768,11 @@ class QuotaExceededInfo(proto.Message):
     metric_name: str = proto.Field(
         proto.STRING,
         number=409881530,
+        optional=True,
+    )
+    rollout_status: str = proto.Field(
+        proto.STRING,
+        number=476426816,
         optional=True,
     )
 
@@ -80388,6 +80499,14 @@ class Scheduling(proto.Message):
             enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_instance_termination_action``.
+        local_ssd_recovery_timeout (google.cloud.compute_v1.types.Duration):
+            Specifies the maximum amount of time a Local
+            Ssd Vm should wait while recovery of the Local
+            Ssd state is attempted. Its value should be in
+            between 0 and 168 hours with hour granularity
+            and the default value being 1 hour.
+
+            This field is a member of `oneof`_ ``_local_ssd_recovery_timeout``.
         location_hint (str):
             An opaque location hint used to place the
             instance close to other resources. This field is
@@ -80506,6 +80625,12 @@ class Scheduling(proto.Message):
         proto.STRING,
         number=107380667,
         optional=True,
+    )
+    local_ssd_recovery_timeout: "Duration" = proto.Field(
+        proto.MESSAGE,
+        number=268015590,
+        optional=True,
+        message="Duration",
     )
     location_hint: str = proto.Field(
         proto.STRING,
@@ -82757,6 +82882,10 @@ class ServiceAttachmentConnectedEndpoint(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        consumer_network (str):
+            The url of the consumer network.
+
+            This field is a member of `oneof`_ ``_consumer_network``.
         endpoint (str):
             The url of a connected endpoint.
 
@@ -82810,6 +82939,11 @@ class ServiceAttachmentConnectedEndpoint(proto.Message):
         REJECTED = 174130302
         STATUS_UNSPECIFIED = 42133066
 
+    consumer_network: str = proto.Field(
+        proto.STRING,
+        number=254357221,
+        optional=True,
+    )
     endpoint: str = proto.Field(
         proto.STRING,
         number=130489749,

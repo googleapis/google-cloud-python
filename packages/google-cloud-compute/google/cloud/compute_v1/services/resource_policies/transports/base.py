@@ -157,6 +157,11 @@ class ResourcePoliciesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.patch: gapic_v1.method.wrap_method(
+                self.patch,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
                 self.set_iam_policy,
                 default_timeout=None,
@@ -232,6 +237,15 @@ class ResourcePoliciesTransport(abc.ABC):
     ) -> Callable[
         [compute.ListResourcePoliciesRequest],
         Union[compute.ResourcePolicyList, Awaitable[compute.ResourcePolicyList]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def patch(
+        self,
+    ) -> Callable[
+        [compute.PatchResourcePolicyRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 
