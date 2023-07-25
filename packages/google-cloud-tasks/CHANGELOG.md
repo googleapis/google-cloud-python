@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.14.0](https://github.com/googleapis/python-tasks/compare/v2.13.2...v2.14.0) (2023-07-25)
+
+
+### Features
+
+* **v2:** Add YAML config for GetLocation and ListLocation ([92c3ef2](https://github.com/googleapis/python-tasks/commit/92c3ef264deb779216c8808df3eec11a9206a8ed))
+* **v2beta2:** Add UploadQueueYaml, BufferTask RPC method for CloudTasks service ([92c3ef2](https://github.com/googleapis/python-tasks/commit/92c3ef264deb779216c8808df3eec11a9206a8ed))
+* **v2beta2:** Set deadline for GetLocation, ListLocations and UploadQueueYaml RPCs ([92c3ef2](https://github.com/googleapis/python-tasks/commit/92c3ef264deb779216c8808df3eec11a9206a8ed))
+* **v2beta3:** Add BufferTask RPC method for CloudTasks service ([92c3ef2](https://github.com/googleapis/python-tasks/commit/92c3ef264deb779216c8808df3eec11a9206a8ed))
+* **v2beta3:** Add YAML config for GetLocation and ListLocations ([92c3ef2](https://github.com/googleapis/python-tasks/commit/92c3ef264deb779216c8808df3eec11a9206a8ed))
+* **v2:** Increase timeout of RPC methods to 20s ([92c3ef2](https://github.com/googleapis/python-tasks/commit/92c3ef264deb779216c8808df3eec11a9206a8ed))
+
 ## [2.13.2](https://github.com/googleapis/python-tasks/compare/v2.13.1...v2.13.2) (2023-07-04)
 
 
