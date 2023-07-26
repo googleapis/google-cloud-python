@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.11.0...google-cloud-deploy-v1.11.1) (2023-07-20)
+
+
+### Documentation
+
+* small documentation updates ([#11499](https://github.com/googleapis/google-cloud-python/issues/11499)) ([cca7184](https://github.com/googleapis/google-cloud-python/commit/cca7184e477388f1c9ca9a9a4661b4dadd2f4fef))
+
 ## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.10.1...google-cloud-deploy-v1.11.0) (2023-07-11)
 
 

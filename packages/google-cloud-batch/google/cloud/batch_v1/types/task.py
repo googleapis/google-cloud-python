@@ -571,6 +571,7 @@ class Task(proto.Message):
             Task name.
             The name is generated from the parent TaskGroup
             name and 'id' field. For example:
+
             "projects/123456/locations/us-west1/jobs/job01/taskGroups/group01/tasks/task01".
         status (google.cloud.batch_v1.types.TaskStatus):
             Task Status.

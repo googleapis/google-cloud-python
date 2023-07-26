@@ -627,6 +627,14 @@ class Job(proto.Message):
         message (str):
             Output only. Additional information about the
             current state.
+        labels (MutableMapping[str, str]):
+            Output only. User-defined labels for the
+            task.
+        trigger (google.cloud.dataplex_v1.types.Job.Trigger):
+            Output only. Job execution trigger.
+        execution_spec (google.cloud.dataplex_v1.types.Task.ExecutionSpec):
+            Output only. Spec related to how a task is
+            executed.
     """
 
     class Service(proto.Enum):
@@ -668,6 +676,23 @@ class Job(proto.Message):
         FAILED = 5
         ABORTED = 6
 
+    class Trigger(proto.Enum):
+        r"""Job execution trigger.
+
+        Values:
+            TRIGGER_UNSPECIFIED (0):
+                The trigger is unspecified.
+            TASK_CONFIG (1):
+                The job was triggered by Dataplex based on
+                trigger spec from task definition.
+            RUN_REQUEST (2):
+                The job was triggered by the explicit call of
+                Task API.
+        """
+        TRIGGER_UNSPECIFIED = 0
+        TASK_CONFIG = 1
+        RUN_REQUEST = 2
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -707,6 +732,21 @@ class Job(proto.Message):
     message: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=10,
+    )
+    trigger: Trigger = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=Trigger,
+    )
+    execution_spec: "Task.ExecutionSpec" = proto.Field(
+        proto.MESSAGE,
+        number=100,
+        message="Task.ExecutionSpec",
     )
 
 

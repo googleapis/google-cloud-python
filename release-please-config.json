@@ -925,6 +925,19 @@
       ],
       "release-type": "python"
     },
+    "packages/google-cloud-netapp": {
+      "component": "google-cloud-netapp",
+      "extra-files": [
+        "google/cloud/netapp/gapic_version.py",
+        "google/cloud/netapp_v1beta1/gapic_version.py",
+        {
+          "jsonpath": "$.clientLibrary.version",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.netapp.v1beta1.json",
+          "type": "json"
+        }
+      ],
+      "release-type": "python"
+    },
     "packages/google-cloud-network-connectivity": {
       "component": "google-cloud-network-connectivity",
       "extra-files": [
@@ -1573,12 +1586,12 @@
       ],
       "release-type": "python"
     },
-    "packages/google-cloud-netapp": {
+    "packages/google-cloud-commerce-consumer-procurement": {
       "extra-files": [
-        "google/cloud/netapp_v1beta1/gapic_version.py",
+        "google/cloud/commerce/consumer/procurement_v1/gapic_version.py",
         {
           "type": "json",
-          "path": "samples/generated_samples/snippet_metadata_google.cloud.netapp.v1beta1.json",
+          "path": "samples/generated_samples/snippet_metadata_google.cloud.commerce.consumer.procurement.v1.json",
           "jsonpath": "$.clientLibrary.version"
         }
       ]
