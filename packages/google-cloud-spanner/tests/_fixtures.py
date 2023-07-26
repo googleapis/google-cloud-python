@@ -68,6 +68,19 @@ CREATE TABLE users_history (
      email STRING(MAX),
      deleted BOOL NOT NULL )
      PRIMARY KEY(id, commit_ts DESC);
+
+CREATE TABLE Customers (
+    CustomerId INT64 NOT NULL,
+    CustomerName STRING(62) NOT NULL,
+    ) PRIMARY KEY (CustomerId);
+
+    CREATE TABLE ShoppingCarts (
+    CartId INT64 NOT NULL,
+    CustomerId INT64 NOT NULL,
+    CustomerName STRING(62) NOT NULL,
+    CONSTRAINT FKShoppingCartsCustomerId FOREIGN KEY (CustomerId)
+    REFERENCES Customers (CustomerId) ON DELETE CASCADE
+    ) PRIMARY KEY (CartId);
 """
 
 EMULATOR_DDL = """\
@@ -157,6 +170,19 @@ CREATE TABLE string_plus_array_of_string (
     name VARCHAR(16),
     PRIMARY KEY (id));
 CREATE INDEX name ON contacts(first_name, last_name);
+CREATE TABLE Customers (
+    CustomerId BIGINT,
+    CustomerName VARCHAR(62) NOT NULL,
+    PRIMARY KEY (CustomerId));
+
+    CREATE TABLE ShoppingCarts (
+    CartId BIGINT,
+    CustomerId BIGINT NOT NULL,
+    CustomerName VARCHAR(62) NOT NULL,
+    CONSTRAINT "FKShoppingCartsCustomerId" FOREIGN KEY (CustomerId)
+    REFERENCES Customers (CustomerId) ON DELETE CASCADE,
+    PRIMARY KEY (CartId)
+    );
 """
 
 DDL_STATEMENTS = [stmt.strip() for stmt in DDL.split(";") if stmt.strip()]

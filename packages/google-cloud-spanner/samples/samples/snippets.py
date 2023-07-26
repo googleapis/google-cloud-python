@@ -2449,6 +2449,105 @@ def enable_fine_grained_access(
     # [END spanner_enable_fine_grained_access]
 
 
+# [START spanner_create_table_with_foreign_key_delete_cascade]
+def create_table_with_foreign_key_delete_cascade(instance_id, database_id):
+    """Creates a table with foreign key delete cascade action"""
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    operation = database.update_ddl(
+        [
+            """CREATE TABLE Customers (
+               CustomerId INT64 NOT NULL,
+               CustomerName STRING(62) NOT NULL,
+               ) PRIMARY KEY (CustomerId)
+            """,
+            """
+               CREATE TABLE ShoppingCarts (
+               CartId INT64 NOT NULL,
+               CustomerId INT64 NOT NULL,
+               CustomerName STRING(62) NOT NULL,
+               CONSTRAINT FKShoppingCartsCustomerId FOREIGN KEY (CustomerId)
+               REFERENCES Customers (CustomerId) ON DELETE CASCADE
+               ) PRIMARY KEY (CartId)
+            """
+        ]
+    )
+
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+
+    print(
+        """Created Customers and ShoppingCarts table with FKShoppingCartsCustomerId
+           foreign key constraint on database {} on instance {}""".format(
+           database_id, instance_id
+        )
+    )
+
+
+# [END spanner_create_table_with_foreign_key_delete_cascade]
+
+
+# [START spanner_alter_table_with_foreign_key_delete_cascade]
+def alter_table_with_foreign_key_delete_cascade(instance_id, database_id):
+    """Alters a table with foreign key delete cascade action"""
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    operation = database.update_ddl(
+        [
+            """ALTER TABLE ShoppingCarts
+               ADD CONSTRAINT FKShoppingCartsCustomerName
+               FOREIGN KEY (CustomerName)
+               REFERENCES Customers(CustomerName)
+               ON DELETE CASCADE"""
+        ]
+    )
+
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+
+    print(
+        """Altered ShoppingCarts table with FKShoppingCartsCustomerName
+           foreign key constraint on database {} on instance {}""".format(
+           database_id, instance_id
+        )
+    )
+
+
+# [END spanner_alter_table_with_foreign_key_delete_cascade]
+
+
+# [START spanner_drop_foreign_key_constraint_delete_cascade]
+def drop_foreign_key_constraint_delete_cascade(instance_id, database_id):
+    """Alter table to drop foreign key delete cascade action"""
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    operation = database.update_ddl(
+        [
+            """ALTER TABLE ShoppingCarts
+               DROP CONSTRAINT FKShoppingCartsCustomerName"""
+        ]
+    )
+
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+
+    print(
+        """Altered ShoppingCarts table to drop FKShoppingCartsCustomerName
+           foreign key constraint on database {} on instance {}""".format(
+           database_id, instance_id
+        )
+    )
+
+
+# [END spanner_drop_foreign_key_constraint_delete_cascade]
+
+
 if __name__ == "__main__":  # noqa: C901
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter

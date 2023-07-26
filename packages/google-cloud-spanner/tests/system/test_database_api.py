@@ -21,13 +21,16 @@ from google.api_core import exceptions
 from google.iam.v1 import policy_pb2
 from google.cloud import spanner_v1
 from google.cloud.spanner_v1.pool import FixedSizePool, PingingPool
+from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 from google.type import expr_pb2
 from . import _helpers
 from . import _sample_data
-from google.cloud.spanner_admin_database_v1 import DatabaseDialect
 
 
 DBAPI_OPERATION_TIMEOUT = 240  # seconds
+FKADC_CUSTOMERS_COLUMNS = ("CustomerId", "CustomerName")
+FKADC_SHOPPING_CARTS_COLUMNS = ("CartId", "CustomerId", "CustomerName")
+ALL_KEYSET = spanner_v1.KeySet(all_=True)
 
 
 @pytest.fixture(scope="module")
@@ -570,6 +573,135 @@ def test_db_run_in_transaction_twice_4181(shared_database):
         rows = list(after.read(sd.COUNTERS_TABLE, sd.COUNTERS_COLUMNS, sd.ALL))
 
     assert len(rows) == 2
+
+
+def test_insertion_in_referencing_table_fkadc(not_emulator, shared_database):
+    with shared_database.batch() as batch:
+        batch.insert(
+            table="Customers",
+            columns=FKADC_CUSTOMERS_COLUMNS,
+            values=[
+                (1, "Marc"),
+                (2, "Catalina"),
+            ],
+        )
+
+    with shared_database.batch() as batch:
+        batch.insert(
+            table="ShoppingCarts",
+            columns=FKADC_SHOPPING_CARTS_COLUMNS,
+            values=[
+                (1, 1, "Marc"),
+            ],
+        )
+
+    with shared_database.snapshot() as snapshot:
+        rows = list(
+            snapshot.read(
+                "ShoppingCarts", ("CartId", "CustomerId", "CustomerName"), ALL_KEYSET
+            )
+        )
+
+    assert len(rows) == 1
+
+
+def test_insertion_in_referencing_table_error_fkadc(not_emulator, shared_database):
+    with pytest.raises(exceptions.FailedPrecondition):
+        with shared_database.batch() as batch:
+            batch.insert(
+                table="ShoppingCarts",
+                columns=FKADC_SHOPPING_CARTS_COLUMNS,
+                values=[
+                    (4, 4, "Naina"),
+                ],
+            )
+
+
+def test_insertion_then_deletion_in_referenced_table_fkadc(
+    not_emulator, shared_database
+):
+    with shared_database.batch() as batch:
+        batch.insert(
+            table="Customers",
+            columns=FKADC_CUSTOMERS_COLUMNS,
+            values=[
+                (3, "Sara"),
+            ],
+        )
+
+    with shared_database.batch() as batch:
+        batch.insert(
+            table="ShoppingCarts",
+            columns=FKADC_SHOPPING_CARTS_COLUMNS,
+            values=[
+                (3, 3, "Sara"),
+            ],
+        )
+
+    with shared_database.snapshot() as snapshot:
+        rows = list(snapshot.read("ShoppingCarts", ["CartId"], ALL_KEYSET))
+
+    assert [3] in rows
+
+    with shared_database.batch() as batch:
+        batch.delete(table="Customers", keyset=spanner_v1.KeySet(keys=[[3]]))
+
+    with shared_database.snapshot() as snapshot:
+        rows = list(snapshot.read("ShoppingCarts", ["CartId"], ALL_KEYSET))
+
+    assert [3] not in rows
+
+
+def test_insert_then_delete_referenced_key_error_fkadc(not_emulator, shared_database):
+    with pytest.raises(exceptions.FailedPrecondition):
+        with shared_database.batch() as batch:
+            batch.insert(
+                table="Customers",
+                columns=FKADC_CUSTOMERS_COLUMNS,
+                values=[
+                    (3, "Sara"),
+                ],
+            )
+            batch.delete(table="Customers", keyset=spanner_v1.KeySet(keys=[[3]]))
+
+
+def test_insert_referencing_key_then_delete_referenced_key_error_fkadc(
+    not_emulator, shared_database
+):
+    with shared_database.batch() as batch:
+        batch.insert(
+            table="Customers",
+            columns=FKADC_CUSTOMERS_COLUMNS,
+            values=[
+                (4, "Huda"),
+            ],
+        )
+
+    with pytest.raises(exceptions.FailedPrecondition):
+        with shared_database.batch() as batch:
+            batch.insert(
+                table="ShoppingCarts",
+                columns=FKADC_SHOPPING_CARTS_COLUMNS,
+                values=[
+                    (4, 4, "Huda"),
+                ],
+            )
+            batch.delete(table="Customers", keyset=spanner_v1.KeySet(keys=[[4]]))
+
+
+def test_information_schema_referential_constraints_fkadc(
+    not_emulator, shared_database
+):
+    with shared_database.snapshot() as snapshot:
+        rows = list(
+            snapshot.execute_sql(
+                "SELECT DELETE_RULE "
+                "FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS "
+                "WHERE CONSTRAINT_NAME = 'FKShoppingCartsCustomerId'"
+            )
+        )
+
+        assert any("CASCADE" in stmt for stmt in rows)
 
 
 def test_update_database_success(
