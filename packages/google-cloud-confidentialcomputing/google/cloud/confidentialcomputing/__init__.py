@@ -26,8 +26,13 @@ from google.cloud.confidentialcomputing_v1.services.confidential_computing.clien
 )
 from google.cloud.confidentialcomputing_v1.types.service import (
     Challenge,
+    ConfidentialSpaceInfo,
+    ContainerImageSignature,
     CreateChallengeRequest,
     GcpCredentials,
+    SignedEntity,
+    SigningAlgorithm,
+    TokenOptions,
     TpmAttestation,
     VerifyAttestationRequest,
     VerifyAttestationResponse,
@@ -37,9 +42,14 @@ __all__ = (
     "ConfidentialComputingClient",
     "ConfidentialComputingAsyncClient",
     "Challenge",
+    "ConfidentialSpaceInfo",
+    "ContainerImageSignature",
     "CreateChallengeRequest",
     "GcpCredentials",
+    "SignedEntity",
+    "TokenOptions",
     "TpmAttestation",
     "VerifyAttestationRequest",
     "VerifyAttestationResponse",
+    "SigningAlgorithm",
 )
