@@ -637,7 +637,11 @@ class QueuedResource(proto.Message):
 
             This field is a member of `oneof`_ ``tier``.
         guaranteed (google.cloud.tpu_v2alpha1.types.QueuedResource.Guaranteed):
-            The Guaranteed tier
+            The Guaranteed tier.
+
+            This field is a member of `oneof`_ ``tier``.
+        spot (google.cloud.tpu_v2alpha1.types.QueuedResource.Spot):
+            Optional. The Spot tier.
 
             This field is a member of `oneof`_ ``tier``.
         queueing_policy (google.cloud.tpu_v2alpha1.types.QueuedResource.QueueingPolicy):
@@ -700,6 +704,9 @@ class QueuedResource(proto.Message):
 
     class BestEffort(proto.Message):
         r"""BestEffort tier definition."""
+
+    class Spot(proto.Message):
+        r"""Spot tier definition."""
 
     class Guaranteed(proto.Message):
         r"""Guaranteed tier definition.
@@ -819,6 +826,12 @@ class QueuedResource(proto.Message):
         number=4,
         oneof="tier",
         message=Guaranteed,
+    )
+    spot: Spot = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="tier",
+        message=Spot,
     )
     queueing_policy: QueueingPolicy = proto.Field(
         proto.MESSAGE,
