@@ -48,6 +48,10 @@ class FeatureFlags(proto.Message):
             Notify the server that the client enables
             batch write flow control by requesting
             RateLimitInfo from MutateRowsResponse.
+        last_scanned_row_responses (bool):
+            Notify the server that the client supports the
+            last_scanned_row field in ReadRowsResponse for long-running
+            sparse scans.
     """
 
     reverse_scans: bool = proto.Field(
@@ -57,6 +61,10 @@ class FeatureFlags(proto.Message):
     mutate_rows_rate_limit: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    last_scanned_row_responses: bool = proto.Field(
+        proto.BOOL,
+        number=4,
     )
 
 
