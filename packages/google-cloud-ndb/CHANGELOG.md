@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [2.2.0](https://github.com/googleapis/python-ndb/compare/v2.1.1...v2.2.0) (2023-07-26)
+
+
+### Features
+
+* Named db support ([#882](https://github.com/googleapis/python-ndb/issues/882)) ([f5713b0](https://github.com/googleapis/python-ndb/commit/f5713b0e36e54ef69e9fa7e99975f32870832f65))
+
+
+### Documentation
+
+* **query:** Fix Py2-style print statements ([#878](https://github.com/googleapis/python-ndb/issues/878)) ([a3a181a](https://github.com/googleapis/python-ndb/commit/a3a181a427cc292882691d963b30bc78c05c6592))
+
 ## [2.1.1](https://github.com/googleapis/python-ndb/compare/v2.1.0...v2.1.1) (2023-02-28)
 
 
