@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.9.0-alpha...v0.9.1-alpha) (2023-07-27)
+
+
+### Bug Fixes
+
+* Internal refactoring to improve efficiency and readability. No external-facing changes. ([82ac823](https://github.com/googleapis/python-documentai-toolbox/commit/82ac823a7d207f1e9bd144e836e0f28c47f8ce47))
+
 ## [0.9.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.8.0-alpha...v0.9.0-alpha) (2023-07-07)
 
 
