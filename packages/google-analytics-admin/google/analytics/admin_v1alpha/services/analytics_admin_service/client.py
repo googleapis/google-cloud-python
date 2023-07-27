@@ -4515,8 +4515,9 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The list of fields to be updated.
-                Omitted fields will not be updated.
+                Required. The list of fields to be
+                updated. Omitted fields will not be
+                updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -9821,8 +9822,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 attribution_settings = admin_v1alpha.AttributionSettings()
                 attribution_settings.acquisition_conversion_event_lookback_window = "ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS"
                 attribution_settings.other_conversion_event_lookback_window = "OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_90_DAYS"
-                attribution_settings.reporting_attribution_model = "ADS_PREFERRED_LAST_CLICK"
-                attribution_settings.ads_web_conversion_data_export_scope = "ADS_PREFERRED"
+                attribution_settings.reporting_attribution_model = "GOOGLE_PAID_CHANNELS_LAST_CLICK"
+                attribution_settings.ads_web_conversion_data_export_scope = "GOOGLE_PAID_CHANNELS"
 
                 request = admin_v1alpha.UpdateAttributionSettingsRequest(
                     attribution_settings=attribution_settings,

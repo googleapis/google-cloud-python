@@ -2240,69 +2240,69 @@ class AttributionSettings(proto.Message):
         Values:
             REPORTING_ATTRIBUTION_MODEL_UNSPECIFIED (0):
                 Reporting attribution model unspecified.
-            CROSS_CHANNEL_DATA_DRIVEN (1):
-                Data-driven attribution distributes credit
-                for the conversion based on data for each
-                conversion event. Each Data-driven model is
-                specific to each advertiser and each conversion
-                event.
-            CROSS_CHANNEL_LAST_CLICK (2):
-                Ignores direct traffic and attributes 100% of
-                the conversion value to the last channel that
-                the customer clicked through (or engaged view
-                through for YouTube) before converting.
-            CROSS_CHANNEL_FIRST_CLICK (3):
+            PAID_AND_ORGANIC_CHANNELS_DATA_DRIVEN (1):
+                Data-driven attribution distributes credit for the
+                conversion based on data for each conversion event. Each
+                Data-driven model is specific to each advertiser and each
+                conversion event. Previously CROSS_CHANNEL_DATA_DRIVEN
+            PAID_AND_ORGANIC_CHANNELS_LAST_CLICK (2):
+                Ignores direct traffic and attributes 100% of the conversion
+                value to the last channel that the customer clicked through
+                (or engaged view through for YouTube) before converting.
+                Previously CROSS_CHANNEL_LAST_CLICK
+            PAID_AND_ORGANIC_CHANNELS_FIRST_CLICK (3):
                 Starting in June 2023, new properties can no longer use this
                 model. See `Analytics
-                Help <https://support.google.com/analytics/answer/9164320?hl=en#040623>`__
+                Help <https://support.google.com/analytics/answer/9164320#040623>`__
                 for more details. Starting in September 2023, we will sunset
                 this model for all properties.
 
                 Gives all credit for the conversion to the first channel
                 that a customer clicked (or engaged view through for
-                YouTube) before converting.
-            CROSS_CHANNEL_LINEAR (4):
+                YouTube) before converting. Previously
+                CROSS_CHANNEL_FIRST_CLICK
+            PAID_AND_ORGANIC_CHANNELS_LINEAR (4):
                 Starting in June 2023, new properties can no longer use this
                 model. See `Analytics
-                Help <https://support.google.com/analytics/answer/9164320?hl=en#040623>`__
+                Help <https://support.google.com/analytics/answer/9164320#040623>`__
                 for more details. Starting in September 2023, we will sunset
                 this model for all properties.
 
                 Distributes the credit for the conversion equally across all
                 the channels a customer clicked (or engaged view through for
-                YouTube) before converting.
-            CROSS_CHANNEL_POSITION_BASED (5):
+                YouTube) before converting. Previously CROSS_CHANNEL_LINEAR
+            PAID_AND_ORGANIC_CHANNELS_POSITION_BASED (5):
                 Starting in June 2023, new properties can no longer use this
                 model. See `Analytics
-                Help <https://support.google.com/analytics/answer/9164320?hl=en#040623>`__
+                Help <https://support.google.com/analytics/answer/9164320#040623>`__
                 for more details. Starting in September 2023, we will sunset
                 this model for all properties.
 
                 Attributes 40% credit to the first and last interaction, and
                 the remaining 20% credit is distributed evenly to the middle
-                interactions.
-            CROSS_CHANNEL_TIME_DECAY (6):
+                interactions. Previously CROSS_CHANNEL_POSITION_BASED
+            PAID_AND_ORGANIC_CHANNELS_TIME_DECAY (6):
                 Starting in June 2023, new properties can no longer use this
                 model. See `Analytics
-                Help <https://support.google.com/analytics/answer/9164320?hl=en#040623>`__
+                Help <https://support.google.com/analytics/answer/9164320#040623>`__
                 for more details. Starting in September 2023, we will sunset
                 this model for all properties.
 
                 Gives more credit to the touchpoints that happened closer in
-                time to the conversion.
-            ADS_PREFERRED_LAST_CLICK (7):
-                Attributes 100% of the conversion value to
-                the last Google Ads channel that the customer
-                clicked through before converting.
+                time to the conversion. Previously CROSS_CHANNEL_TIME_DECAY
+            GOOGLE_PAID_CHANNELS_LAST_CLICK (7):
+                Attributes 100% of the conversion value to the last Google
+                Paid channel that the customer clicked through before
+                converting. Previously ADS_PREFERRED_LAST_CLICK
         """
         REPORTING_ATTRIBUTION_MODEL_UNSPECIFIED = 0
-        CROSS_CHANNEL_DATA_DRIVEN = 1
-        CROSS_CHANNEL_LAST_CLICK = 2
-        CROSS_CHANNEL_FIRST_CLICK = 3
-        CROSS_CHANNEL_LINEAR = 4
-        CROSS_CHANNEL_POSITION_BASED = 5
-        CROSS_CHANNEL_TIME_DECAY = 6
-        ADS_PREFERRED_LAST_CLICK = 7
+        PAID_AND_ORGANIC_CHANNELS_DATA_DRIVEN = 1
+        PAID_AND_ORGANIC_CHANNELS_LAST_CLICK = 2
+        PAID_AND_ORGANIC_CHANNELS_FIRST_CLICK = 3
+        PAID_AND_ORGANIC_CHANNELS_LINEAR = 4
+        PAID_AND_ORGANIC_CHANNELS_POSITION_BASED = 5
+        PAID_AND_ORGANIC_CHANNELS_TIME_DECAY = 6
+        GOOGLE_PAID_CHANNELS_LAST_CLICK = 7
 
     class AdsWebConversionDataExportScope(proto.Enum):
         r"""The Conversion Export Scope for data exported to linked Ads
@@ -2315,17 +2315,21 @@ class AttributionSettings(proto.Message):
                 No data export scope selected yet.
                 Export scope can never be changed back to this
                 value.
-            CROSS_CHANNEL (2):
-                The Ads Web Conversion Data export scope is
-                Cross Channel.
-            ADS_PREFERRED (3):
-                The Ads Web Conversion Data export scope is
-                Ads Preferred.
+            PAID_AND_ORGANIC_CHANNELS (2):
+                Paid and organic channels are eligible to receive conversion
+                credit, but only credit assigned to Google Ads channels will
+                appear in your Ads accounts. To learn more, see `Paid and
+                Organic
+                channels <https://support.google.com/analytics/answer/10632359>`__.
+            GOOGLE_PAID_CHANNELS (3):
+                Only Google Ads paid channels are eligible to receive
+                conversion credit. To learn more, see `Google Paid
+                channels <https://support.google.com/analytics/answer/10632359>`__.
         """
         ADS_WEB_CONVERSION_DATA_EXPORT_SCOPE_UNSPECIFIED = 0
         NOT_SELECTED_YET = 1
-        CROSS_CHANNEL = 2
-        ADS_PREFERRED = 3
+        PAID_AND_ORGANIC_CHANNELS = 2
+        GOOGLE_PAID_CHANNELS = 3
 
     name: str = proto.Field(
         proto.STRING,

@@ -14917,7 +14917,9 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def __hash__(self):
             return hash("UpdateMeasurementProtocolSecret")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):

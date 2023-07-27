@@ -1623,8 +1623,8 @@ class UpdateMeasurementProtocolSecretRequest(proto.Message):
             Required. The measurement protocol secret to
             update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The list of fields to be updated. Omitted
-            fields will not be updated.
+            Required. The list of fields to be updated.
+            Omitted fields will not be updated.
     """
 
     measurement_protocol_secret: resources.MeasurementProtocolSecret = proto.Field(

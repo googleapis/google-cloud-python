@@ -42,8 +42,8 @@ def sample_update_attribution_settings():
     attribution_settings = admin_v1alpha.AttributionSettings()
     attribution_settings.acquisition_conversion_event_lookback_window = "ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS"
     attribution_settings.other_conversion_event_lookback_window = "OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_90_DAYS"
-    attribution_settings.reporting_attribution_model = "ADS_PREFERRED_LAST_CLICK"
-    attribution_settings.ads_web_conversion_data_export_scope = "ADS_PREFERRED"
+    attribution_settings.reporting_attribution_model = "GOOGLE_PAID_CHANNELS_LAST_CLICK"
+    attribution_settings.ads_web_conversion_data_export_scope = "GOOGLE_PAID_CHANNELS"
 
     request = admin_v1alpha.UpdateAttributionSettingsRequest(
         attribution_settings=attribution_settings,
