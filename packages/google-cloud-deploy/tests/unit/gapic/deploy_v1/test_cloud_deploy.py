@@ -8641,7 +8641,15 @@ def test_create_delivery_pipeline_rest(request_type):
                     "target_id": "target_id_value",
                     "profiles": ["profiles_value1", "profiles_value2"],
                     "strategy": {
-                        "standard": {"verify": True},
+                        "standard": {
+                            "verify": True,
+                            "predeploy": {
+                                "actions": ["actions_value1", "actions_value2"]
+                            },
+                            "postdeploy": {
+                                "actions": ["actions_value1", "actions_value2"]
+                            },
+                        },
                         "canary": {
                             "runtime_config": {
                                 "kubernetes": {
@@ -8665,6 +8673,8 @@ def test_create_delivery_pipeline_rest(request_type):
                             "canary_deployment": {
                                 "percentages": [1170, 1171],
                                 "verify": True,
+                                "predeploy": {},
+                                "postdeploy": {},
                             },
                             "custom_canary_deployment": {
                                 "phase_configs": [
@@ -8676,6 +8686,8 @@ def test_create_delivery_pipeline_rest(request_type):
                                             "profiles_value2",
                                         ],
                                         "verify": True,
+                                        "predeploy": {},
+                                        "postdeploy": {},
                                     }
                                 ]
                             },
@@ -8926,7 +8938,15 @@ def test_create_delivery_pipeline_rest_bad_request(
                     "target_id": "target_id_value",
                     "profiles": ["profiles_value1", "profiles_value2"],
                     "strategy": {
-                        "standard": {"verify": True},
+                        "standard": {
+                            "verify": True,
+                            "predeploy": {
+                                "actions": ["actions_value1", "actions_value2"]
+                            },
+                            "postdeploy": {
+                                "actions": ["actions_value1", "actions_value2"]
+                            },
+                        },
                         "canary": {
                             "runtime_config": {
                                 "kubernetes": {
@@ -8950,6 +8970,8 @@ def test_create_delivery_pipeline_rest_bad_request(
                             "canary_deployment": {
                                 "percentages": [1170, 1171],
                                 "verify": True,
+                                "predeploy": {},
+                                "postdeploy": {},
                             },
                             "custom_canary_deployment": {
                                 "phase_configs": [
@@ -8961,6 +8983,8 @@ def test_create_delivery_pipeline_rest_bad_request(
                                             "profiles_value2",
                                         ],
                                         "verify": True,
+                                        "predeploy": {},
+                                        "postdeploy": {},
                                     }
                                 ]
                             },
@@ -9097,7 +9121,15 @@ def test_update_delivery_pipeline_rest(request_type):
                     "target_id": "target_id_value",
                     "profiles": ["profiles_value1", "profiles_value2"],
                     "strategy": {
-                        "standard": {"verify": True},
+                        "standard": {
+                            "verify": True,
+                            "predeploy": {
+                                "actions": ["actions_value1", "actions_value2"]
+                            },
+                            "postdeploy": {
+                                "actions": ["actions_value1", "actions_value2"]
+                            },
+                        },
                         "canary": {
                             "runtime_config": {
                                 "kubernetes": {
@@ -9121,6 +9153,8 @@ def test_update_delivery_pipeline_rest(request_type):
                             "canary_deployment": {
                                 "percentages": [1170, 1171],
                                 "verify": True,
+                                "predeploy": {},
+                                "postdeploy": {},
                             },
                             "custom_canary_deployment": {
                                 "phase_configs": [
@@ -9132,6 +9166,8 @@ def test_update_delivery_pipeline_rest(request_type):
                                             "profiles_value2",
                                         ],
                                         "verify": True,
+                                        "predeploy": {},
+                                        "postdeploy": {},
                                     }
                                 ]
                             },
@@ -9367,7 +9403,15 @@ def test_update_delivery_pipeline_rest_bad_request(
                     "target_id": "target_id_value",
                     "profiles": ["profiles_value1", "profiles_value2"],
                     "strategy": {
-                        "standard": {"verify": True},
+                        "standard": {
+                            "verify": True,
+                            "predeploy": {
+                                "actions": ["actions_value1", "actions_value2"]
+                            },
+                            "postdeploy": {
+                                "actions": ["actions_value1", "actions_value2"]
+                            },
+                        },
                         "canary": {
                             "runtime_config": {
                                 "kubernetes": {
@@ -9391,6 +9435,8 @@ def test_update_delivery_pipeline_rest_bad_request(
                             "canary_deployment": {
                                 "percentages": [1170, 1171],
                                 "verify": True,
+                                "predeploy": {},
+                                "postdeploy": {},
                             },
                             "custom_canary_deployment": {
                                 "phase_configs": [
@@ -9402,6 +9448,8 @@ def test_update_delivery_pipeline_rest_bad_request(
                                             "profiles_value2",
                                         ],
                                         "verify": True,
+                                        "predeploy": {},
+                                        "postdeploy": {},
                                     }
                                 ]
                             },
@@ -12106,7 +12154,15 @@ def test_create_release_rest(request_type):
                         "target_id": "target_id_value",
                         "profiles": ["profiles_value1", "profiles_value2"],
                         "strategy": {
-                            "standard": {"verify": True},
+                            "standard": {
+                                "verify": True,
+                                "predeploy": {
+                                    "actions": ["actions_value1", "actions_value2"]
+                                },
+                                "postdeploy": {
+                                    "actions": ["actions_value1", "actions_value2"]
+                                },
+                            },
                             "canary": {
                                 "runtime_config": {
                                     "kubernetes": {
@@ -12130,6 +12186,8 @@ def test_create_release_rest(request_type):
                                 "canary_deployment": {
                                     "percentages": [1170, 1171],
                                     "verify": True,
+                                    "predeploy": {},
+                                    "postdeploy": {},
                                 },
                                 "custom_canary_deployment": {
                                     "phase_configs": [
@@ -12141,6 +12199,8 @@ def test_create_release_rest(request_type):
                                                 "profiles_value2",
                                             ],
                                             "verify": True,
+                                            "predeploy": {},
+                                            "postdeploy": {},
                                         }
                                     ]
                                 },
@@ -12464,7 +12524,15 @@ def test_create_release_rest_bad_request(
                         "target_id": "target_id_value",
                         "profiles": ["profiles_value1", "profiles_value2"],
                         "strategy": {
-                            "standard": {"verify": True},
+                            "standard": {
+                                "verify": True,
+                                "predeploy": {
+                                    "actions": ["actions_value1", "actions_value2"]
+                                },
+                                "postdeploy": {
+                                    "actions": ["actions_value1", "actions_value2"]
+                                },
+                            },
                             "canary": {
                                 "runtime_config": {
                                     "kubernetes": {
@@ -12488,6 +12556,8 @@ def test_create_release_rest_bad_request(
                                 "canary_deployment": {
                                     "percentages": [1170, 1171],
                                     "verify": True,
+                                    "predeploy": {},
+                                    "postdeploy": {},
                                 },
                                 "custom_canary_deployment": {
                                     "phase_configs": [
@@ -12499,6 +12569,8 @@ def test_create_release_rest_bad_request(
                                                 "profiles_value2",
                                             ],
                                             "verify": True,
+                                            "predeploy": {},
+                                            "postdeploy": {},
                                         }
                                     ]
                                 },
@@ -14469,10 +14541,18 @@ def test_create_rollout_rest(request_type):
                         "job_run": "job_run_value",
                         "deploy_job": {},
                         "verify_job": {},
+                        "predeploy_job": {
+                            "actions": ["actions_value1", "actions_value2"]
+                        },
+                        "postdeploy_job": {
+                            "actions": ["actions_value1", "actions_value2"]
+                        },
                         "create_child_rollout_job": {},
                         "advance_child_rollout_job": {},
                     },
                     "verify_job": {},
+                    "predeploy_job": {},
+                    "postdeploy_job": {},
                 },
                 "child_rollout_jobs": {
                     "create_rollout_jobs": {},
@@ -14734,10 +14814,18 @@ def test_create_rollout_rest_bad_request(
                         "job_run": "job_run_value",
                         "deploy_job": {},
                         "verify_job": {},
+                        "predeploy_job": {
+                            "actions": ["actions_value1", "actions_value2"]
+                        },
+                        "postdeploy_job": {
+                            "actions": ["actions_value1", "actions_value2"]
+                        },
                         "create_child_rollout_job": {},
                         "advance_child_rollout_job": {},
                     },
                     "verify_job": {},
+                    "predeploy_job": {},
+                    "postdeploy_job": {},
                 },
                 "child_rollout_jobs": {
                     "create_rollout_jobs": {},
