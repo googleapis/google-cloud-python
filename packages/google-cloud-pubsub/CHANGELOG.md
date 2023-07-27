@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.18.1](https://github.com/googleapis/python-pubsub/compare/v2.18.0...v2.18.1) (2023-07-26)
+
+
+### Documentation
+
+* Clarified where ordering_key will be written if write_metadata is set ([#965](https://github.com/googleapis/python-pubsub/issues/965)) ([3d95034](https://github.com/googleapis/python-pubsub/commit/3d95034f94426cdcf5b87323b9e463a7e8ce4f91))
+
 ## [2.18.0](https://github.com/googleapis/python-pubsub/compare/v2.17.1...v2.18.0) (2023-07-12)
 
 
