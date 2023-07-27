@@ -894,12 +894,10 @@ class TranslationServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             source_language_code (:class:`str`):
-                Required. The BCP-47 language code of
-                the input document if known, for
-                example, "en-US" or "sr-Latn". Supported
-                language codes are listed in Language
-                Support
-                (https://cloud.google.com/translate/docs/languages).
+                Required. The BCP-47 language code of the input document
+                if known, for example, "en-US" or "sr-Latn". Supported
+                language codes are listed in `Language
+                Support <https://cloud.google.com/translate/docs/languages>`__.
 
                 This corresponds to the ``source_language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this

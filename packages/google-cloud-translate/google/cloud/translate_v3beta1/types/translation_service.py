@@ -651,10 +651,10 @@ class OutputConfig(proto.Message):
             directly written to the output file. If glossary is
             requested, a separate glossary_translations_file has format
             of
-            gs://translation_test/a_b_c\_'trg'_glossary_translations.[extension]
+            ``gs://translation_test/a_b_c\_'trg'_glossary_translations.[extension]``
 
             The format of errors file (for target language code 'trg')
-            is: gs://translation_test/a_b_c\_'trg'_errors.[extension]
+            is: ``gs://translation_test/a_b_c\_'trg'_errors.[extension]``
 
             If the input file extension is tsv, errors_file contains the
             following: Column 1: ID of the request provided in the
@@ -667,7 +667,7 @@ class OutputConfig(proto.Message):
             If the input file extension is txt or html,
             glossary_error_file will be generated that contains error
             details. glossary_error_file has format of
-            gs://translation_test/a_b_c\_'trg'_glossary_errors.[extension]
+            ``gs://translation_test/a_b_c\_'trg'_glossary_errors.[extension]``
 
             This field is a member of `oneof`_ ``destination``.
     """
@@ -757,10 +757,10 @@ class DocumentOutputConfig(proto.Message):
 
             For a DocumentInputConfig.gcs_uri provided document, the
             output file will have a name according to its URI. For
-            example: an input file with URI: "gs://a/b/c.[extension]"
+            example: an input file with URI: ``gs://a/b/c.[extension]``
             stored in a gcs_destination bucket with name "my_bucket"
             will have an output URI:
-            "gs://my_bucket/a_b_c\_[trg]_translations.[ext]", where
+            ``gs://my_bucket/a_b_c\_[trg]_translations.[ext]``, where
 
             -  [trg] corresponds to the translated file's language code,
             -  [ext] corresponds to the translated file's extension
@@ -768,7 +768,7 @@ class DocumentOutputConfig(proto.Message):
 
             If the document was directly provided through the request,
             then the output document will have the format:
-            "gs://my_bucket/translated_document_[trg]_translations.[ext],
+            ``gs://my_bucket/translated_document_[trg]_translations.[ext]``,
             where
 
             -  [trg] corresponds to the translated file's language code,
@@ -780,7 +780,7 @@ class DocumentOutputConfig(proto.Message):
             but have ``glossary_translations`` instead of
             ``translations``. For the previous example, its glossary URI
             would be:
-            "gs://my_bucket/a_b_c\_[trg]_glossary_translations.[ext]".
+            ``gs://my_bucket/a_b_c\_[trg]_glossary_translations.[ext]``.
 
             Thus the max number of output files will be 2 (Translated
             document, Glossary translated document).
@@ -1710,11 +1710,10 @@ class BatchTranslateDocumentRequest(proto.Message):
             region (have the same location-id) can be used, otherwise an
             INVALID_ARGUMENT (400) error is returned.
         source_language_code (str):
-            Required. The BCP-47 language code of the
-            input document if known, for example, "en-US" or
-            "sr-Latn". Supported language codes are listed
-            in Language Support
-            (https://cloud.google.com/translate/docs/languages).
+            Required. The BCP-47 language code of the input document if
+            known, for example, "en-US" or "sr-Latn". Supported language
+            codes are listed in `Language
+            Support <https://cloud.google.com/translate/docs/languages>`__.
         target_language_codes (MutableSequence[str]):
             Required. The BCP-47 language code to use for
             translation of the input document. Specify up to
@@ -1885,21 +1884,21 @@ class BatchDocumentOutputConfig(proto.Message):
             Since index.csv will be keeping updated during the process,
             please make sure there is no custom retention policy applied
             on the output bucket that may avoid file updating.
-            (https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy)
+            (https://cloud.google.com/storage/docs/bucket-lock#retention-policy)
 
             The naming format of translation output files follows (for
             target language code [trg]): ``translation_output``:
-            gs://translation_output/a_b_c\_[trg]\ *translation.[extension]
+            ``gs://translation_output/a_b_c\_[trg]_translation.[extension]``
             ``glossary_translation_output``:
-            gs://translation_test/a_b_c*\ [trg]_glossary_translation.[extension]
+            ``gs://translation_test/a_b_c\_[trg]_glossary_translation.[extension]``.
             The output document will maintain the same file format as
             the input document.
 
             The naming format of error output files follows (for target
             language code [trg]): ``error_output``:
-            gs://translation_test/a_b_c\_[trg]\ *errors.txt
+            ``gs://translation_test/a_b_c\_[trg]_errors.txt``
             ``glossary_error_output``:
-            gs://translation_test/a_b_c*\ [trg]_glossary_translation.txt
+            ``gs://translation_test/a_b_c\_[trg]_glossary_translation.txt``
             The error output is a txt file containing error details.
 
             This field is a member of `oneof`_ ``destination``.
