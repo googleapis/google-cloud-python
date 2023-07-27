@@ -42,63 +42,82 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
 from google.longrunning import operations_pb2
-from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.services.document_service import pagers
-from google.cloud.discoveryengine_v1beta.types import (
-    document_service,
-    import_config,
-    purge_config,
+from google.cloud.discoveryengine_v1beta.services.conversational_search_service import (
+    pagers,
 )
-from google.cloud.discoveryengine_v1beta.types import document
-from google.cloud.discoveryengine_v1beta.types import document as gcd_document
+from google.cloud.discoveryengine_v1beta.types import (
+    conversational_search_service,
+    search_service,
+)
+from google.cloud.discoveryengine_v1beta.types import conversation as gcd_conversation
+from google.cloud.discoveryengine_v1beta.types import conversation
 
-from .client import DocumentServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, DocumentServiceTransport
-from .transports.grpc_asyncio import DocumentServiceGrpcAsyncIOTransport
+from .client import ConversationalSearchServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, ConversationalSearchServiceTransport
+from .transports.grpc_asyncio import ConversationalSearchServiceGrpcAsyncIOTransport
 
 
-class DocumentServiceAsyncClient:
-    """Service for ingesting
-    [Document][google.cloud.discoveryengine.v1beta.Document] information
-    of the customer's website.
-    """
+class ConversationalSearchServiceAsyncClient:
+    """Service for conversational search."""
 
-    _client: DocumentServiceClient
+    _client: ConversationalSearchServiceClient
 
-    DEFAULT_ENDPOINT = DocumentServiceClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = DocumentServiceClient.DEFAULT_MTLS_ENDPOINT
+    DEFAULT_ENDPOINT = ConversationalSearchServiceClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = ConversationalSearchServiceClient.DEFAULT_MTLS_ENDPOINT
 
-    branch_path = staticmethod(DocumentServiceClient.branch_path)
-    parse_branch_path = staticmethod(DocumentServiceClient.parse_branch_path)
-    document_path = staticmethod(DocumentServiceClient.document_path)
-    parse_document_path = staticmethod(DocumentServiceClient.parse_document_path)
+    conversation_path = staticmethod(
+        ConversationalSearchServiceClient.conversation_path
+    )
+    parse_conversation_path = staticmethod(
+        ConversationalSearchServiceClient.parse_conversation_path
+    )
+    data_store_path = staticmethod(ConversationalSearchServiceClient.data_store_path)
+    parse_data_store_path = staticmethod(
+        ConversationalSearchServiceClient.parse_data_store_path
+    )
+    document_path = staticmethod(ConversationalSearchServiceClient.document_path)
+    parse_document_path = staticmethod(
+        ConversationalSearchServiceClient.parse_document_path
+    )
+    serving_config_path = staticmethod(
+        ConversationalSearchServiceClient.serving_config_path
+    )
+    parse_serving_config_path = staticmethod(
+        ConversationalSearchServiceClient.parse_serving_config_path
+    )
     common_billing_account_path = staticmethod(
-        DocumentServiceClient.common_billing_account_path
+        ConversationalSearchServiceClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
-        DocumentServiceClient.parse_common_billing_account_path
+        ConversationalSearchServiceClient.parse_common_billing_account_path
     )
-    common_folder_path = staticmethod(DocumentServiceClient.common_folder_path)
+    common_folder_path = staticmethod(
+        ConversationalSearchServiceClient.common_folder_path
+    )
     parse_common_folder_path = staticmethod(
-        DocumentServiceClient.parse_common_folder_path
+        ConversationalSearchServiceClient.parse_common_folder_path
     )
     common_organization_path = staticmethod(
-        DocumentServiceClient.common_organization_path
+        ConversationalSearchServiceClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
-        DocumentServiceClient.parse_common_organization_path
+        ConversationalSearchServiceClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(DocumentServiceClient.common_project_path)
+    common_project_path = staticmethod(
+        ConversationalSearchServiceClient.common_project_path
+    )
     parse_common_project_path = staticmethod(
-        DocumentServiceClient.parse_common_project_path
+        ConversationalSearchServiceClient.parse_common_project_path
     )
-    common_location_path = staticmethod(DocumentServiceClient.common_location_path)
+    common_location_path = staticmethod(
+        ConversationalSearchServiceClient.common_location_path
+    )
     parse_common_location_path = staticmethod(
-        DocumentServiceClient.parse_common_location_path
+        ConversationalSearchServiceClient.parse_common_location_path
     )
 
     @classmethod
@@ -112,9 +131,9 @@ class DocumentServiceAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            DocumentServiceAsyncClient: The constructed client.
+            ConversationalSearchServiceAsyncClient: The constructed client.
         """
-        return DocumentServiceClient.from_service_account_info.__func__(DocumentServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        return ConversationalSearchServiceClient.from_service_account_info.__func__(ConversationalSearchServiceAsyncClient, info, *args, **kwargs)  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -128,9 +147,9 @@ class DocumentServiceAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            DocumentServiceAsyncClient: The constructed client.
+            ConversationalSearchServiceAsyncClient: The constructed client.
         """
-        return DocumentServiceClient.from_service_account_file.__func__(DocumentServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return ConversationalSearchServiceClient.from_service_account_file.__func__(ConversationalSearchServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
 
@@ -168,30 +187,31 @@ class DocumentServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return DocumentServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return ConversationalSearchServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
-    def transport(self) -> DocumentServiceTransport:
+    def transport(self) -> ConversationalSearchServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            DocumentServiceTransport: The transport used by the client instance.
+            ConversationalSearchServiceTransport: The transport used by the client instance.
         """
         return self._client.transport
 
     get_transport_class = functools.partial(
-        type(DocumentServiceClient).get_transport_class, type(DocumentServiceClient)
+        type(ConversationalSearchServiceClient).get_transport_class,
+        type(ConversationalSearchServiceClient),
     )
 
     def __init__(
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, DocumentServiceTransport] = "grpc_asyncio",
+        transport: Union[str, ConversationalSearchServiceTransport] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the document service client.
+        """Instantiates the conversational search service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -199,7 +219,7 @@ class DocumentServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DocumentServiceTransport]): The
+            transport (Union[str, ~.ConversationalSearchServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (ClientOptions): Custom options for the client. It
@@ -223,23 +243,26 @@ class DocumentServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client = DocumentServiceClient(
+        self._client = ConversationalSearchServiceClient(
             credentials=credentials,
             transport=transport,
             client_options=client_options,
             client_info=client_info,
         )
 
-    async def get_document(
+    async def converse_conversation(
         self,
-        request: Optional[Union[document_service.GetDocumentRequest, dict]] = None,
+        request: Optional[
+            Union[conversational_search_service.ConverseConversationRequest, dict]
+        ] = None,
         *,
         name: Optional[str] = None,
+        query: Optional[conversation.TextInput] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> document.Document:
-        r"""Gets a [Document][google.cloud.discoveryengine.v1beta.Document].
+    ) -> conversational_search_service.ConverseConversationResponse:
+        r"""Converses a conversation.
 
         .. code-block:: python
 
@@ -252,42 +275,42 @@ class DocumentServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import discoveryengine_v1beta
 
-            async def sample_get_document():
+            async def sample_converse_conversation():
                 # Create a client
-                client = discoveryengine_v1beta.DocumentServiceAsyncClient()
+                client = discoveryengine_v1beta.ConversationalSearchServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = discoveryengine_v1beta.GetDocumentRequest(
+                request = discoveryengine_v1beta.ConverseConversationRequest(
                     name="name_value",
                 )
 
                 # Make the request
-                response = await client.get_document(request=request)
+                response = await client.converse_conversation(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.GetDocumentRequest, dict]]):
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.ConverseConversationRequest, dict]]):
                 The request object. Request message for
-                [DocumentService.GetDocument][google.cloud.discoveryengine.v1beta.DocumentService.GetDocument]
+                [ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1beta.ConversationalSearchService.ConverseConversation]
                 method.
             name (:class:`str`):
-                Required. Full resource name of
-                [Document][google.cloud.discoveryengine.v1beta.Document],
-                such as
-                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
-
-                If the caller does not have permission to access the
-                [Document][google.cloud.discoveryengine.v1beta.Document],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
-
-                If the requested
-                [Document][google.cloud.discoveryengine.v1beta.Document]
-                does not exist, a ``NOT_FOUND`` error is returned.
+                Required. The resource name of the Conversation to get.
+                Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``.
+                Use
+                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/-``
+                to activate auto session mode, which automatically
+                creates a new conversation inside a ConverseConversation
+                session.
 
                 This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            query (:class:`google.cloud.discoveryengine_v1beta.types.TextInput`):
+                Required. Current user input.
+                This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -297,33 +320,35 @@ class DocumentServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.discoveryengine_v1beta.types.Document:
-                Document captures all raw metadata
-                information of items to be recommended
-                or searched.
+            google.cloud.discoveryengine_v1beta.types.ConverseConversationResponse:
+                Response message for
+                   [ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1beta.ConversationalSearchService.ConverseConversation]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
+        has_flattened_params = any([name, query])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = document_service.GetDocumentRequest(request)
+        request = conversational_search_service.ConverseConversationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
         if name is not None:
             request.name = name
+        if query is not None:
+            request.query = query
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.get_document,
+            self._client._transport.converse_conversation,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
@@ -345,17 +370,23 @@ class DocumentServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_documents(
+    async def create_conversation(
         self,
-        request: Optional[Union[document_service.ListDocumentsRequest, dict]] = None,
+        request: Optional[
+            Union[conversational_search_service.CreateConversationRequest, dict]
+        ] = None,
         *,
         parent: Optional[str] = None,
+        conversation: Optional[gcd_conversation.Conversation] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListDocumentsAsyncPager:
-        r"""Gets a list of
-        [Document][google.cloud.discoveryengine.v1beta.Document]s.
+    ) -> gcd_conversation.Conversation:
+        r"""Creates a Conversation.
+
+        If the
+        [Conversation][google.cloud.discoveryengine.v1beta.Conversation]
+        to create already exists, an ALREADY_EXISTS error is returned.
 
         .. code-block:: python
 
@@ -368,38 +399,465 @@ class DocumentServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import discoveryengine_v1beta
 
-            async def sample_list_documents():
+            async def sample_create_conversation():
                 # Create a client
-                client = discoveryengine_v1beta.DocumentServiceAsyncClient()
+                client = discoveryengine_v1beta.ConversationalSearchServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = discoveryengine_v1beta.ListDocumentsRequest(
+                request = discoveryengine_v1beta.CreateConversationRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                page_result = client.list_documents(request=request)
+                response = await client.create_conversation(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.CreateConversationRequest, dict]]):
+                The request object. Request for CreateConversation
+                method.
+            parent (:class:`str`):
+                Required. Full resource name of parent data store.
+                Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            conversation (:class:`google.cloud.discoveryengine_v1beta.types.Conversation`):
+                Required. The conversation to create.
+                This corresponds to the ``conversation`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1beta.types.Conversation:
+                External conversation proto
+                definition.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, conversation])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = conversational_search_service.CreateConversationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if conversation is not None:
+            request.conversation = conversation
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_conversation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_conversation(
+        self,
+        request: Optional[
+            Union[conversational_search_service.DeleteConversationRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a Conversation.
+
+        If the
+        [Conversation][google.cloud.discoveryengine.v1beta.Conversation]
+        to delete does not exist, a NOT_FOUND error is returned.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1beta
+
+            async def sample_delete_conversation():
+                # Create a client
+                client = discoveryengine_v1beta.ConversationalSearchServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1beta.DeleteConversationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_conversation(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.DeleteConversationRequest, dict]]):
+                The request object. Request for DeleteConversation
+                method.
+            name (:class:`str`):
+                Required. The resource name of the Conversation to
+                delete. Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = conversational_search_service.DeleteConversationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_conversation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def update_conversation(
+        self,
+        request: Optional[
+            Union[conversational_search_service.UpdateConversationRequest, dict]
+        ] = None,
+        *,
+        conversation: Optional[gcd_conversation.Conversation] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcd_conversation.Conversation:
+        r"""Updates a Conversation.
+
+        [Conversation][google.cloud.discoveryengine.v1beta.Conversation]
+        action type cannot be changed. If the
+        [Conversation][google.cloud.discoveryengine.v1beta.Conversation]
+        to update does not exist, a NOT_FOUND error is returned.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1beta
+
+            async def sample_update_conversation():
+                # Create a client
+                client = discoveryengine_v1beta.ConversationalSearchServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1beta.UpdateConversationRequest(
+                )
+
+                # Make the request
+                response = await client.update_conversation(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.UpdateConversationRequest, dict]]):
+                The request object. Request for UpdateConversation
+                method.
+            conversation (:class:`google.cloud.discoveryengine_v1beta.types.Conversation`):
+                Required. The Conversation to update.
+                This corresponds to the ``conversation`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Indicates which fields in the provided
+                [Conversation][google.cloud.discoveryengine.v1beta.Conversation]
+                to update. The following are NOT supported:
+
+                -  [conversation.name][]
+
+                If not set or empty, all supported fields are updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1beta.types.Conversation:
+                External conversation proto
+                definition.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([conversation, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = conversational_search_service.UpdateConversationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if conversation is not None:
+            request.conversation = conversation
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_conversation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("conversation.name", request.conversation.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_conversation(
+        self,
+        request: Optional[
+            Union[conversational_search_service.GetConversationRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> conversation.Conversation:
+        r"""Gets a Conversation.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1beta
+
+            async def sample_get_conversation():
+                # Create a client
+                client = discoveryengine_v1beta.ConversationalSearchServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1beta.GetConversationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_conversation(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.GetConversationRequest, dict]]):
+                The request object. Request for GetConversation method.
+            name (:class:`str`):
+                Required. The resource name of the Conversation to get.
+                Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1beta.types.Conversation:
+                External conversation proto
+                definition.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = conversational_search_service.GetConversationRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_conversation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_conversations(
+        self,
+        request: Optional[
+            Union[conversational_search_service.ListConversationsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListConversationsAsyncPager:
+        r"""Lists all Conversations by their parent
+        [DataStore][google.cloud.discoveryengine.v1beta.DataStore].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1beta
+
+            async def sample_list_conversations():
+                # Create a client
+                client = discoveryengine_v1beta.ConversationalSearchServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1beta.ListConversationsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_conversations(request=request)
 
                 # Handle the response
                 async for response in page_result:
                     print(response)
 
         Args:
-            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.ListDocumentsRequest, dict]]):
-                The request object. Request message for
-                [DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments]
-                method.
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.ListConversationsRequest, dict]]):
+                The request object. Request for ListConversations method.
             parent (:class:`str`):
-                Required. The parent branch resource name, such as
-                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
-                Use ``default_branch`` as the branch ID, to list
-                documents under the default branch.
-
-                If the caller does not have permission to list
-                [Document][google.cloud.discoveryengine.v1beta.Document]s
-                under this branch, regardless of whether or not this
-                branch exists, a ``PERMISSION_DENIED`` error is
-                returned.
+                Required. The data store resource name. Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -411,13 +869,12 @@ class DocumentServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.discoveryengine_v1beta.services.document_service.pagers.ListDocumentsAsyncPager:
-                Response message for
-                   [DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments]
-                   method.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+            google.cloud.discoveryengine_v1beta.services.conversational_search_service.pagers.ListConversationsAsyncPager:
+                Response for ListConversations
+                method.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -430,7 +887,7 @@ class DocumentServiceAsyncClient:
                 "the individual field arguments should be set."
             )
 
-        request = document_service.ListDocumentsRequest(request)
+        request = conversational_search_service.ListConversationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -440,7 +897,7 @@ class DocumentServiceAsyncClient:
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.list_documents,
+            self._client._transport.list_conversations,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
@@ -461,574 +918,11 @@ class DocumentServiceAsyncClient:
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
-        response = pagers.ListDocumentsAsyncPager(
+        response = pagers.ListConversationsAsyncPager(
             method=rpc,
             request=request,
             response=response,
             metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def create_document(
-        self,
-        request: Optional[Union[document_service.CreateDocumentRequest, dict]] = None,
-        *,
-        parent: Optional[str] = None,
-        document: Optional[gcd_document.Document] = None,
-        document_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> gcd_document.Document:
-        r"""Creates a
-        [Document][google.cloud.discoveryengine.v1beta.Document].
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import discoveryengine_v1beta
-
-            async def sample_create_document():
-                # Create a client
-                client = discoveryengine_v1beta.DocumentServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = discoveryengine_v1beta.CreateDocumentRequest(
-                    parent="parent_value",
-                    document_id="document_id_value",
-                )
-
-                # Make the request
-                response = await client.create_document(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.CreateDocumentRequest, dict]]):
-                The request object. Request message for
-                [DocumentService.CreateDocument][google.cloud.discoveryengine.v1beta.DocumentService.CreateDocument]
-                method.
-            parent (:class:`str`):
-                Required. The parent resource name, such as
-                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            document (:class:`google.cloud.discoveryengine_v1beta.types.Document`):
-                Required. The
-                [Document][google.cloud.discoveryengine.v1beta.Document]
-                to create.
-
-                This corresponds to the ``document`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            document_id (:class:`str`):
-                Required. The ID to use for the
-                [Document][google.cloud.discoveryengine.v1beta.Document],
-                which will become the final component of the
-                [Document.name][google.cloud.discoveryengine.v1beta.Document.name].
-
-                If the caller does not have permission to create the
-                [Document][google.cloud.discoveryengine.v1beta.Document],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
-
-                This field must be unique among all
-                [Document][google.cloud.discoveryengine.v1beta.Document]s
-                with the same
-                [parent][google.cloud.discoveryengine.v1beta.CreateDocumentRequest.parent].
-                Otherwise, an ``ALREADY_EXISTS`` error is returned.
-
-                This field must conform to
-                `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__
-                standard with a length limit of 63 characters.
-                Otherwise, an ``INVALID_ARGUMENT`` error is returned.
-
-                This corresponds to the ``document_id`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.discoveryengine_v1beta.types.Document:
-                Document captures all raw metadata
-                information of items to be recommended
-                or searched.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, document, document_id])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = document_service.CreateDocumentRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if parent is not None:
-            request.parent = parent
-        if document is not None:
-            request.document = document
-        if document_id is not None:
-            request.document_id = document_id
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.create_document,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def update_document(
-        self,
-        request: Optional[Union[document_service.UpdateDocumentRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> document.Document:
-        r"""Updates a
-        [Document][google.cloud.discoveryengine.v1beta.Document].
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import discoveryengine_v1beta
-
-            async def sample_update_document():
-                # Create a client
-                client = discoveryengine_v1beta.DocumentServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = discoveryengine_v1beta.UpdateDocumentRequest(
-                )
-
-                # Make the request
-                response = await client.update_document(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.UpdateDocumentRequest, dict]]):
-                The request object. Request message for
-                [DocumentService.UpdateDocument][google.cloud.discoveryengine.v1beta.DocumentService.UpdateDocument]
-                method.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.discoveryengine_v1beta.types.Document:
-                Document captures all raw metadata
-                information of items to be recommended
-                or searched.
-
-        """
-        # Create or coerce a protobuf request object.
-        request = document_service.UpdateDocumentRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.update_document,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("document.name", request.document.name),)
-            ),
-        )
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def delete_document(
-        self,
-        request: Optional[Union[document_service.DeleteDocumentRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
-        r"""Deletes a
-        [Document][google.cloud.discoveryengine.v1beta.Document].
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import discoveryengine_v1beta
-
-            async def sample_delete_document():
-                # Create a client
-                client = discoveryengine_v1beta.DocumentServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = discoveryengine_v1beta.DeleteDocumentRequest(
-                    name="name_value",
-                )
-
-                # Make the request
-                await client.delete_document(request=request)
-
-        Args:
-            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.DeleteDocumentRequest, dict]]):
-                The request object. Request message for
-                [DocumentService.DeleteDocument][google.cloud.discoveryengine.v1beta.DocumentService.DeleteDocument]
-                method.
-            name (:class:`str`):
-                Required. Full resource name of
-                [Document][google.cloud.discoveryengine.v1beta.Document],
-                such as
-                ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
-
-                If the caller does not have permission to delete the
-                [Document][google.cloud.discoveryengine.v1beta.Document],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
-
-                If the
-                [Document][google.cloud.discoveryengine.v1beta.Document]
-                to delete does not exist, a ``NOT_FOUND`` error is
-                returned.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        # Create or coerce a protobuf request object.
-        # Quick check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        request = document_service.DeleteDocumentRequest(request)
-
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
-        if name is not None:
-            request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.delete_document,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-    async def import_documents(
-        self,
-        request: Optional[Union[import_config.ImportDocumentsRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Bulk import of multiple
-        [Document][google.cloud.discoveryengine.v1beta.Document]s.
-        Request processing may be synchronous. Non-existing items will
-        be created.
-
-        Note: It is possible for a subset of the
-        [Document][google.cloud.discoveryengine.v1beta.Document]s to be
-        successfully updated.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import discoveryengine_v1beta
-
-            async def sample_import_documents():
-                # Create a client
-                client = discoveryengine_v1beta.DocumentServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = discoveryengine_v1beta.ImportDocumentsRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                operation = client.import_documents(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.ImportDocumentsRequest, dict]]):
-                The request object. Request message for Import methods.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1beta.types.ImportDocumentsResponse` Response of the
-                   [ImportDocumentsRequest][google.cloud.discoveryengine.v1beta.ImportDocumentsRequest].
-                   If the long running operation is done, then this
-                   message is returned by the
-                   google.longrunning.Operations.response field if the
-                   operation was successful.
-
-        """
-        # Create or coerce a protobuf request object.
-        request = import_config.ImportDocumentsRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.import_documents,
-            default_retry=retries.Retry(
-                initial=1.0,
-                maximum=30.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                ),
-                deadline=300.0,
-            ),
-            default_timeout=300.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            import_config.ImportDocumentsResponse,
-            metadata_type=import_config.ImportDocumentsMetadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    async def purge_documents(
-        self,
-        request: Optional[Union[purge_config.PurgeDocumentsRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation_async.AsyncOperation:
-        r"""Permanently deletes all selected
-        [Document][google.cloud.discoveryengine.v1beta.Document]s in a
-        branch.
-
-        This process is asynchronous. Depending on the number of
-        [Document][google.cloud.discoveryengine.v1beta.Document]s to be
-        deleted, this operation can take hours to complete. Before the
-        delete operation completes, some
-        [Document][google.cloud.discoveryengine.v1beta.Document]s might
-        still be returned by
-        [DocumentService.GetDocument][google.cloud.discoveryengine.v1beta.DocumentService.GetDocument]
-        or
-        [DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments].
-
-        To get a list of the
-        [Document][google.cloud.discoveryengine.v1beta.Document]s to be
-        deleted, set
-        [PurgeDocumentsRequest.force][google.cloud.discoveryengine.v1beta.PurgeDocumentsRequest.force]
-        to false.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import discoveryengine_v1beta
-
-            async def sample_purge_documents():
-                # Create a client
-                client = discoveryengine_v1beta.DocumentServiceAsyncClient()
-
-                # Initialize request argument(s)
-                request = discoveryengine_v1beta.PurgeDocumentsRequest(
-                    parent="parent_value",
-                    filter="filter_value",
-                )
-
-                # Make the request
-                operation = client.purge_documents(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = (await operation).result()
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.PurgeDocumentsRequest, dict]]):
-                The request object. Request message for
-                [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1beta.DocumentService.PurgeDocuments]
-                method.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1beta.types.PurgeDocumentsResponse` Response message for
-                   [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1beta.DocumentService.PurgeDocuments]
-                   method. If the long running operation is successfully
-                   done, then this message is returned by the
-                   google.longrunning.Operations.response field.
-
-        """
-        # Create or coerce a protobuf request object.
-        request = purge_config.PurgeDocumentsRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.purge_documents,
-            default_timeout=None,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Wrap the response in an operation future.
-        response = operation_async.from_gapic(
-            response,
-            self._client._transport.operations_client,
-            purge_config.PurgeDocumentsResponse,
-            metadata_type=purge_config.PurgeDocumentsMetadata,
         )
 
         # Done; return the response.
@@ -1142,7 +1036,7 @@ class DocumentServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def __aenter__(self) -> "DocumentServiceAsyncClient":
+    async def __aenter__(self) -> "ConversationalSearchServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
@@ -1154,4 +1048,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("DocumentServiceAsyncClient",)
+__all__ = ("ConversationalSearchServiceAsyncClient",)

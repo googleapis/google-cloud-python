@@ -24,6 +24,12 @@ from google.cloud.discoveryengine_v1beta.services.completion_service.async_clien
 from google.cloud.discoveryengine_v1beta.services.completion_service.client import (
     CompletionServiceClient,
 )
+from google.cloud.discoveryengine_v1beta.services.conversational_search_service.async_client import (
+    ConversationalSearchServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.conversational_search_service.client import (
+    ConversationalSearchServiceClient,
+)
 from google.cloud.discoveryengine_v1beta.services.document_service.async_client import (
     DocumentServiceAsyncClient,
 )
@@ -62,6 +68,23 @@ from google.cloud.discoveryengine_v1beta.types.common import (
 from google.cloud.discoveryengine_v1beta.types.completion_service import (
     CompleteQueryRequest,
     CompleteQueryResponse,
+)
+from google.cloud.discoveryengine_v1beta.types.conversation import (
+    Conversation,
+    ConversationContext,
+    ConversationMessage,
+    Reply,
+    TextInput,
+)
+from google.cloud.discoveryengine_v1beta.types.conversational_search_service import (
+    ConverseConversationRequest,
+    ConverseConversationResponse,
+    CreateConversationRequest,
+    DeleteConversationRequest,
+    GetConversationRequest,
+    ListConversationsRequest,
+    ListConversationsResponse,
+    UpdateConversationRequest,
 )
 from google.cloud.discoveryengine_v1beta.types.document import Document
 from google.cloud.discoveryengine_v1beta.types.document_service import (
@@ -126,6 +149,8 @@ from google.cloud.discoveryengine_v1beta.types.user_event_service import (
 __all__ = (
     "CompletionServiceClient",
     "CompletionServiceAsyncClient",
+    "ConversationalSearchServiceClient",
+    "ConversationalSearchServiceAsyncClient",
     "DocumentServiceClient",
     "DocumentServiceAsyncClient",
     "RecommendationServiceClient",
@@ -141,6 +166,19 @@ __all__ = (
     "UserInfo",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
+    "Conversation",
+    "ConversationContext",
+    "ConversationMessage",
+    "Reply",
+    "TextInput",
+    "ConverseConversationRequest",
+    "ConverseConversationResponse",
+    "CreateConversationRequest",
+    "DeleteConversationRequest",
+    "GetConversationRequest",
+    "ListConversationsRequest",
+    "ListConversationsResponse",
+    "UpdateConversationRequest",
     "Document",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
