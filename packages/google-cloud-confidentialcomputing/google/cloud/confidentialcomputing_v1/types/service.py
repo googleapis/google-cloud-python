@@ -23,14 +23,40 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.confidentialcomputing.v1",
     manifest={
+        "SigningAlgorithm",
         "Challenge",
         "CreateChallengeRequest",
         "VerifyAttestationRequest",
         "VerifyAttestationResponse",
         "GcpCredentials",
+        "TokenOptions",
         "TpmAttestation",
+        "ConfidentialSpaceInfo",
+        "SignedEntity",
+        "ContainerImageSignature",
     },
 )
+
+
+class SigningAlgorithm(proto.Enum):
+    r"""SigningAlgorithm enumerates all the supported signing
+    algorithms.
+
+    Values:
+        SIGNING_ALGORITHM_UNSPECIFIED (0):
+            Unspecified signing algorithm.
+        RSASSA_PSS_SHA256 (1):
+            RSASSA-PSS with a SHA256 digest.
+        RSASSA_PKCS1V15_SHA256 (2):
+            RSASSA-PKCS1 v1.5 with a SHA256 digest.
+        ECDSA_P256_SHA256 (3):
+            ECDSA on the P-256 Curve with a SHA256
+            digest.
+    """
+    SIGNING_ALGORITHM_UNSPECIFIED = 0
+    RSASSA_PSS_SHA256 = 1
+    RSASSA_PKCS1V15_SHA256 = 2
+    ECDSA_P256_SHA256 = 3
 
 
 class Challenge(proto.Message):
@@ -124,6 +150,13 @@ class VerifyAttestationRequest(proto.Message):
             Required. The TPM-specific data provided by
             the attesting platform, used to populate any of
             the claims regarding platform state.
+        confidential_space_info (google.cloud.confidentialcomputing_v1.types.ConfidentialSpaceInfo):
+            Optional. Optional information related to the
+            Confidential Space TEE.
+        token_options (google.cloud.confidentialcomputing_v1.types.TokenOptions):
+            Optional. A collection of optional,
+            workload-specified claims that modify the token
+            output.
     """
 
     challenge: str = proto.Field(
@@ -139,6 +172,16 @@ class VerifyAttestationRequest(proto.Message):
         proto.MESSAGE,
         number=3,
         message="TpmAttestation",
+    )
+    confidential_space_info: "ConfidentialSpaceInfo" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="ConfidentialSpaceInfo",
+    )
+    token_options: "TokenOptions" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="TokenOptions",
     )
 
 
@@ -168,6 +211,32 @@ class GcpCredentials(proto.Message):
     """
 
     service_account_id_tokens: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class TokenOptions(proto.Message):
+    r"""Options to modify claims in the token to generate
+    custom-purpose tokens.
+
+    Attributes:
+        audience (str):
+            Optional. Optional string to issue the token
+            with a custom audience claim. Required if one or
+            more nonces are specified.
+        nonce (MutableSequence[str]):
+            Optional. Optional parameter to place one or more nonces in
+            the eat_nonce claim in the output token. The minimum size
+            for JSON-encoded EATs is 10 bytes and the maximum size is 74
+            bytes.
+    """
+
+    audience: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    nonce: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
@@ -257,6 +326,90 @@ class TpmAttestation(proto.Message):
     cert_chain: MutableSequence[bytes] = proto.RepeatedField(
         proto.BYTES,
         number=5,
+    )
+
+
+class ConfidentialSpaceInfo(proto.Message):
+    r"""ConfidentialSpaceInfo contains information related to the
+    Confidential Space TEE.
+
+    Attributes:
+        signed_entities (MutableSequence[google.cloud.confidentialcomputing_v1.types.SignedEntity]):
+            Optional. A list of signed entities
+            containing container image signatures that can
+            be used for server-side signature verification.
+    """
+
+    signed_entities: MutableSequence["SignedEntity"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="SignedEntity",
+    )
+
+
+class SignedEntity(proto.Message):
+    r"""SignedEntity represents an OCI image object containing
+    everything necessary to verify container image signatures.
+
+    Attributes:
+        container_image_signatures (MutableSequence[google.cloud.confidentialcomputing_v1.types.ContainerImageSignature]):
+            Optional. A list of container image
+            signatures attached to an OCI image object.
+    """
+
+    container_image_signatures: MutableSequence[
+        "ContainerImageSignature"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ContainerImageSignature",
+    )
+
+
+class ContainerImageSignature(proto.Message):
+    r"""ContainerImageSignature holds necessary metadata to verify a
+    container image signature.
+
+    Attributes:
+        payload (bytes):
+            Required. The binary signature payload following the
+            SimpleSigning format
+            https://github.com/sigstore/cosign/blob/main/specs/SIGNATURE_SPEC.md#simple-signing.
+            This payload includes the container image digest.
+        signature (bytes):
+            Required. A signature over the payload. The container image
+            digest is incorporated into the signature as follows:
+
+            1. Generate a SimpleSigning format payload that includes the
+               container image digest.
+            2. Generate a signature over SHA256 digest of the payload.
+               The signature generation process can be represented as
+               follows:
+               ``Sign(sha256(SimpleSigningPayload(sha256(Image Manifest))))``
+        public_key (bytes):
+            Required. An associated public key used to
+            verify the signature.
+        sig_alg (google.cloud.confidentialcomputing_v1.types.SigningAlgorithm):
+            Required. The algorithm used to produce the
+            container image signature.
+    """
+
+    payload: bytes = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    signature: bytes = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    public_key: bytes = proto.Field(
+        proto.BYTES,
+        number=3,
+    )
+    sig_alg: "SigningAlgorithm" = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="SigningAlgorithm",
     )
 
 
