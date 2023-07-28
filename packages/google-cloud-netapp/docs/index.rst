@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of .
+This package includes clients for multiple versions of NetApp API.
 By default, you will get version ``netapp_v1``.
 
 
