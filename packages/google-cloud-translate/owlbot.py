@@ -36,15 +36,6 @@ for library in s.get_staging_dirs(default_version):
         shutil.rmtree("samples/generated_samples", ignore_errors=True)
         clean_up_generated_samples = False
 
-    if library.name.startswith("v3"):
-        # TODO(danoscarmike): remove once upstream protos have been fixed
-        # Escape underscores in gs:\\ URLs
-        s.replace(
-            library / "google/cloud/translate_v3*/types/translation_service.py",
-            "a_b_c_",
-            "a_b_c\_"
-        )
-
     s.replace(library / ".coveragerc",
         """google/cloud/translate/__init__.py""",
         """google/__init__.py
