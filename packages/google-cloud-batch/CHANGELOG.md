@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.13.0...google-cloud-batch-v0.14.0) (2023-07-25)
+
+
+### Features
+
+* **v1alpha:** Enable gpu driver version field ([2528a8e](https://github.com/googleapis/google-cloud-python/commit/2528a8eb35af8319f2b22d2aad7fea4697d75f87))
+
+
+### Documentation
+
+* **v1alpha:** Improve url examples in comments ([2528a8e](https://github.com/googleapis/google-cloud-python/commit/2528a8eb35af8319f2b22d2aad7fea4697d75f87))
+* **v1alpha:** Mark `order_by` field in `ListTasksRequest` as not implemented. ([2528a8e](https://github.com/googleapis/google-cloud-python/commit/2528a8eb35af8319f2b22d2aad7fea4697d75f87))
+
 ## [0.13.0](https://github.com/googleapis/python-batch/compare/v0.12.0...v0.13.0) (2023-07-04)
 
 

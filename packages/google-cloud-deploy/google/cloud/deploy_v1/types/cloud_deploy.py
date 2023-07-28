@@ -32,6 +32,8 @@ __protobuf__ = proto.module(
         "Stage",
         "DeployParameters",
         "Strategy",
+        "Predeploy",
+        "Postdeploy",
         "Standard",
         "Canary",
         "CanaryDeployment",
@@ -83,6 +85,8 @@ __protobuf__ = proto.module(
         "Job",
         "DeployJob",
         "VerifyJob",
+        "PredeployJob",
+        "PostdeployJob",
         "CreateChildRolloutJob",
         "AdvanceChildRolloutJob",
         "ListRolloutsRequest",
@@ -105,6 +109,8 @@ __protobuf__ = proto.module(
         "JobRun",
         "DeployJobRun",
         "VerifyJobRun",
+        "PredeployJobRun",
+        "PostdeployJobRun",
         "CreateChildRolloutJobRun",
         "AdvanceChildRolloutJobRun",
         "ListJobRunsRequest",
@@ -139,7 +145,7 @@ class SkaffoldSupportState(proto.Enum):
 
 
 class DeliveryPipeline(proto.Message):
-    r"""A ``DeliveryPipeline`` resource in the Google Cloud Deploy API.
+    r"""A ``DeliveryPipeline`` resource in the Cloud Deploy API.
 
     A ``DeliveryPipeline`` defines a pipeline through which a Skaffold
     configuration can progress.
@@ -159,12 +165,12 @@ class DeliveryPipeline(proto.Message):
             characters.
         annotations (MutableMapping[str, str]):
             User annotations. These attributes can only
-            be set and used by the user, and not by Google
-            Cloud Deploy.
+            be set and used by the user, and not by Cloud
+            Deploy.
         labels (MutableMapping[str, str]):
             Labels are attributes that can be set and used by both the
-            user and by Google Cloud Deploy. Labels must meet the
-            following constraints:
+            user and by Cloud Deploy. Labels must meet the following
+            constraints:
 
             -  Keys and values can contain only lowercase letters,
                numeric characters, underscores, and dashes.
@@ -379,17 +385,69 @@ class Strategy(proto.Message):
     )
 
 
+class Predeploy(proto.Message):
+    r"""Predeploy contains the predeploy job configuration
+    information.
+
+    Attributes:
+        actions (MutableSequence[str]):
+            Optional. A sequence of skaffold custom
+            actions to invoke during execution of the
+            predeploy job.
+    """
+
+    actions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+
+
+class Postdeploy(proto.Message):
+    r"""Postdeploy contains the postdeploy job configuration
+    information.
+
+    Attributes:
+        actions (MutableSequence[str]):
+            Optional. A sequence of skaffold custom
+            actions to invoke during execution of the
+            postdeploy job.
+    """
+
+    actions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+
+
 class Standard(proto.Message):
     r"""Standard represents the standard deployment strategy.
 
     Attributes:
         verify (bool):
             Whether to verify a deployment.
+        predeploy (google.cloud.deploy_v1.types.Predeploy):
+            Optional. Configuration for the predeploy
+            job. If this is not configured, predeploy job
+            will not be present.
+        postdeploy (google.cloud.deploy_v1.types.Postdeploy):
+            Optional. Configuration for the postdeploy
+            job. If this is not configured, postdeploy job
+            will not be present.
     """
 
     verify: bool = proto.Field(
         proto.BOOL,
         number=1,
+    )
+    predeploy: "Predeploy" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Predeploy",
+    )
+    postdeploy: "Postdeploy" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Postdeploy",
     )
 
 
@@ -455,6 +513,14 @@ class CanaryDeployment(proto.Message):
         verify (bool):
             Whether to run verify tests after each
             percentage deployment.
+        predeploy (google.cloud.deploy_v1.types.Predeploy):
+            Optional. Configuration for the predeploy job
+            of the first phase. If this is not configured,
+            predeploy job will not be present.
+        postdeploy (google.cloud.deploy_v1.types.Postdeploy):
+            Optional. Configuration for the postdeploy
+            job of the last phase. If this is not
+            configured, postdeploy job will not be present.
     """
 
     percentages: MutableSequence[int] = proto.RepeatedField(
@@ -464,6 +530,16 @@ class CanaryDeployment(proto.Message):
     verify: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+    predeploy: "Predeploy" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Predeploy",
+    )
+    postdeploy: "Postdeploy" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="Postdeploy",
     )
 
 
@@ -499,6 +575,16 @@ class CustomCanaryDeployment(proto.Message):
             verify (bool):
                 Whether to run verify tests after the
                 deployment.
+            predeploy (google.cloud.deploy_v1.types.Predeploy):
+                Optional. Configuration for the predeploy job
+                of this phase. If this is not configured,
+                predeploy job will not be present for this
+                phase.
+            postdeploy (google.cloud.deploy_v1.types.Postdeploy):
+                Optional. Configuration for the postdeploy
+                job of this phase. If this is not configured,
+                postdeploy job will not be present for this
+                phase.
         """
 
         phase_id: str = proto.Field(
@@ -516,6 +602,16 @@ class CustomCanaryDeployment(proto.Message):
         verify: bool = proto.Field(
             proto.BOOL,
             number=4,
+        )
+        predeploy: "Predeploy" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message="Predeploy",
+        )
+        postdeploy: "Postdeploy" = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message="Postdeploy",
         )
 
     phase_configs: MutableSequence[PhaseConfig] = proto.RepeatedField(
@@ -1097,7 +1193,7 @@ class DeleteDeliveryPipelineRequest(proto.Message):
 
 
 class Target(proto.Message):
-    r"""A ``Target`` resource in the Google Cloud Deploy API.
+    r"""A ``Target`` resource in the Cloud Deploy API.
 
     A ``Target`` defines a location to which a Skaffold configuration
     can be deployed.
@@ -1123,13 +1219,13 @@ class Target(proto.Message):
         annotations (MutableMapping[str, str]):
             Optional. User annotations. These attributes
             can only be set and used by the user, and not by
-            Google Cloud Deploy. See
+            Cloud Deploy. See
             https://google.aip.dev/128#annotations for more
             details such as format and size limitations.
         labels (MutableMapping[str, str]):
             Optional. Labels are attributes that can be set and used by
-            both the user and by Google Cloud Deploy. Labels must meet
-            the following constraints:
+            both the user and by Cloud Deploy. Labels must meet the
+            following constraints:
 
             -  Keys and values can contain only lowercase letters,
                numeric characters, underscores, and dashes.
@@ -1328,11 +1424,17 @@ class ExecutionConfig(proto.Message):
                 Use for deploying and deployment hooks.
             VERIFY (3):
                 Use for deployment verification.
+            PREDEPLOY (4):
+                Use for predeploy job execution.
+            POSTDEPLOY (5):
+                Use for postdeploy job execution.
         """
         EXECUTION_ENVIRONMENT_USAGE_UNSPECIFIED = 0
         RENDER = 1
         DEPLOY = 2
         VERIFY = 3
+        PREDEPLOY = 4
+        POSTDEPLOY = 5
 
     usages: MutableSequence[ExecutionEnvironmentUsage] = proto.RepeatedField(
         proto.ENUM,
@@ -1795,7 +1897,7 @@ class DeleteTargetRequest(proto.Message):
 
 
 class Release(proto.Message):
-    r"""A ``Release`` resource in the Google Cloud Deploy API.
+    r"""A ``Release`` resource in the Cloud Deploy API.
 
     A ``Release`` defines a specific Skaffold configuration instance
     that can be deployed.
@@ -1813,14 +1915,14 @@ class Release(proto.Message):
             characters.
         annotations (MutableMapping[str, str]):
             User annotations. These attributes can only
-            be set and used by the user, and not by Google
-            Cloud Deploy. See
+            be set and used by the user, and not by Cloud
+            Deploy. See
             https://google.aip.dev/128#annotations for more
             details such as format and size limitations.
         labels (MutableMapping[str, str]):
             Labels are attributes that can be set and used by both the
-            user and by Google Cloud Deploy. Labels must meet the
-            following constraints:
+            user and by Cloud Deploy. Labels must meet the following
+            constraints:
 
             -  Keys and values can contain only lowercase letters,
                numeric characters, underscores, and dashes.
@@ -1868,8 +1970,8 @@ class Release(proto.Message):
         skaffold_version (str):
             The Skaffold version to use when operating on
             this release, such as "1.20.0". Not all versions
-            are valid; Google Cloud Deploy supports a
-            specific set of versions.
+            are valid; Cloud Deploy supports a specific set
+            of versions.
 
             If unset, the most recent supported Skaffold
             version will be used.
@@ -1958,20 +2060,26 @@ class Release(proto.Message):
                     No reason for failure is specified.
                 CLOUD_BUILD_UNAVAILABLE (1):
                     Cloud Build is not available, either because it is not
-                    enabled or because Google Cloud Deploy has insufficient
+                    enabled or because Cloud Deploy has insufficient
                     permissions. See `required
-                    permission </deploy/docs/cloud-deploy-service-account#required_permissions>`__.
+                    permission <https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>`__.
                 EXECUTION_FAILED (2):
                     The render operation did not complete
                     successfully; check Cloud Build logs.
                 CLOUD_BUILD_REQUEST_FAILED (3):
-                    Cloud Build failed to fulfill Google Cloud Deploy's request.
-                    See failure_message for additional details.
+                    Cloud Build failed to fulfill Cloud Deploy's request. See
+                    failure_message for additional details.
+                CUSTOM_ACTION_NOT_FOUND (5):
+                    The render operation did not complete successfully because
+                    the custom action required for predeploy or postdeploy was
+                    not found in the skaffold configuration. See failure_message
+                    for additional details.
             """
             FAILURE_CAUSE_UNSPECIFIED = 0
             CLOUD_BUILD_UNAVAILABLE = 1
             EXECUTION_FAILED = 2
             CLOUD_BUILD_REQUEST_FAILED = 3
+            CUSTOM_ACTION_NOT_FOUND = 5
 
         rendering_build: str = proto.Field(
             proto.STRING,
@@ -2497,7 +2605,7 @@ class CreateReleaseRequest(proto.Message):
 
 
 class Rollout(proto.Message):
-    r"""A ``Rollout`` resource in the Google Cloud Deploy API.
+    r"""A ``Rollout`` resource in the Cloud Deploy API.
 
     A ``Rollout`` contains information around a specific deployment to a
     ``Target``.
@@ -2515,14 +2623,14 @@ class Rollout(proto.Message):
             is 255 characters.
         annotations (MutableMapping[str, str]):
             User annotations. These attributes can only
-            be set and used by the user, and not by Google
-            Cloud Deploy. See
+            be set and used by the user, and not by Cloud
+            Deploy. See
             https://google.aip.dev/128#annotations for more
             details such as format and size limitations.
         labels (MutableMapping[str, str]):
             Labels are attributes that can be set and used by both the
-            user and by Google Cloud Deploy. Labels must meet the
-            following constraints:
+            user and by Cloud Deploy. Labels must meet the following
+            constraints:
 
             -  Keys and values can contain only lowercase letters,
                numeric characters, underscores, and dashes.
@@ -2654,7 +2762,7 @@ class Rollout(proto.Message):
                 Cloud Build is not available, either because it is not
                 enabled or because Cloud Deploy has insufficient
                 permissions. See `required
-                permission </deploy/docs/cloud-deploy-service-account#required_permissions>`__.
+                permission <https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>`__.
             EXECUTION_FAILED (2):
                 The deploy operation did not complete
                 successfully; check Cloud Build logs.
@@ -2668,8 +2776,8 @@ class Rollout(proto.Message):
             VERIFICATION_CONFIG_NOT_FOUND (6):
                 No skaffold verify configuration was found.
             CLOUD_BUILD_REQUEST_FAILED (7):
-                Cloud Build failed to fulfill Google Cloud Deploy's request.
-                See failure_message for additional details.
+                Cloud Build failed to fulfill Cloud Deploy's request. See
+                failure_message for additional details.
         """
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
@@ -2932,6 +3040,14 @@ class DeploymentJobs(proto.Message):
         verify_job (google.cloud.deploy_v1.types.Job):
             Output only. The verify Job. Runs after a
             deploy if the deploy succeeds.
+        predeploy_job (google.cloud.deploy_v1.types.Job):
+            Output only. The predeploy Job. This is the
+            predeploy job in the phase. This is the first
+            job of the phase.
+        postdeploy_job (google.cloud.deploy_v1.types.Job):
+            Output only. The postdeploy Job. This is the
+            postdeploy job in the phase. This is the last
+            job of the phase.
     """
 
     deploy_job: "Job" = proto.Field(
@@ -2942,6 +3058,16 @@ class DeploymentJobs(proto.Message):
     verify_job: "Job" = proto.Field(
         proto.MESSAGE,
         number=2,
+        message="Job",
+    )
+    predeploy_job: "Job" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Job",
+    )
+    postdeploy_job: "Job" = proto.Field(
+        proto.MESSAGE,
+        number=4,
         message="Job",
     )
 
@@ -2995,6 +3121,14 @@ class Job(proto.Message):
             This field is a member of `oneof`_ ``job_type``.
         verify_job (google.cloud.deploy_v1.types.VerifyJob):
             Output only. A verify Job.
+
+            This field is a member of `oneof`_ ``job_type``.
+        predeploy_job (google.cloud.deploy_v1.types.PredeployJob):
+            Output only. A predeploy Job.
+
+            This field is a member of `oneof`_ ``job_type``.
+        postdeploy_job (google.cloud.deploy_v1.types.PostdeployJob):
+            Output only. A postdeploy Job.
 
             This field is a member of `oneof`_ ``job_type``.
         create_child_rollout_job (google.cloud.deploy_v1.types.CreateChildRolloutJob):
@@ -3070,6 +3204,18 @@ class Job(proto.Message):
         oneof="job_type",
         message="VerifyJob",
     )
+    predeploy_job: "PredeployJob" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="job_type",
+        message="PredeployJob",
+    )
+    postdeploy_job: "PostdeployJob" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="job_type",
+        message="PostdeployJob",
+    )
     create_child_rollout_job: "CreateChildRolloutJob" = proto.Field(
         proto.MESSAGE,
         number=6,
@@ -3090,6 +3236,36 @@ class DeployJob(proto.Message):
 
 class VerifyJob(proto.Message):
     r"""A verify Job."""
+
+
+class PredeployJob(proto.Message):
+    r"""A predeploy Job.
+
+    Attributes:
+        actions (MutableSequence[str]):
+            Output only. The custom actions that the
+            predeploy Job executes.
+    """
+
+    actions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+
+
+class PostdeployJob(proto.Message):
+    r"""A postdeploy Job.
+
+    Attributes:
+        actions (MutableSequence[str]):
+            Output only. The custom actions that the
+            postdeploy Job executes.
+    """
+
+    actions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateChildRolloutJob(proto.Message):
@@ -3489,7 +3665,7 @@ class AbandonReleaseResponse(proto.Message):
 
 
 class JobRun(proto.Message):
-    r"""A ``JobRun`` resource in the Google Cloud Deploy API.
+    r"""A ``JobRun`` resource in the Cloud Deploy API.
 
     A ``JobRun`` contains information of a single ``Rollout`` job
     evaluation.
@@ -3529,6 +3705,15 @@ class JobRun(proto.Message):
             This field is a member of `oneof`_ ``job_run``.
         verify_job_run (google.cloud.deploy_v1.types.VerifyJobRun):
             Output only. Information specific to a verify ``JobRun``.
+
+            This field is a member of `oneof`_ ``job_run``.
+        predeploy_job_run (google.cloud.deploy_v1.types.PredeployJobRun):
+            Output only. Information specific to a predeploy ``JobRun``.
+
+            This field is a member of `oneof`_ ``job_run``.
+        postdeploy_job_run (google.cloud.deploy_v1.types.PostdeployJobRun):
+            Output only. Information specific to a postdeploy
+            ``JobRun``.
 
             This field is a member of `oneof`_ ``job_run``.
         create_child_rollout_job_run (google.cloud.deploy_v1.types.CreateChildRolloutJobRun):
@@ -3621,6 +3806,18 @@ class JobRun(proto.Message):
         oneof="job_run",
         message="VerifyJobRun",
     )
+    predeploy_job_run: "PredeployJobRun" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        oneof="job_run",
+        message="PredeployJobRun",
+    )
+    postdeploy_job_run: "PostdeployJobRun" = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        oneof="job_run",
+        message="PostdeployJobRun",
+    )
     create_child_rollout_job_run: "CreateChildRolloutJobRun" = proto.Field(
         proto.MESSAGE,
         number=12,
@@ -3670,9 +3867,9 @@ class DeployJobRun(proto.Message):
                 No reason for failure is specified.
             CLOUD_BUILD_UNAVAILABLE (1):
                 Cloud Build is not available, either because it is not
-                enabled or because Google Cloud Deploy has insufficient
+                enabled or because Cloud Deploy has insufficient
                 permissions. See `Required
-                permission </deploy/docs/cloud-deploy-service-account#required_permissions>`__.
+                permission <https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>`__.
             EXECUTION_FAILED (2):
                 The deploy operation did not complete
                 successfully; check Cloud Build logs.
@@ -3684,8 +3881,8 @@ class DeployJobRun(proto.Message):
                 environment required for a canary deployment.
                 Check the Cloud Build logs for more information.
             CLOUD_BUILD_REQUEST_FAILED (5):
-                Cloud Build failed to fulfill Google Cloud Deploy's request.
-                See failure_message for additional details.
+                Cloud Build failed to fulfill Cloud Deploy's request. See
+                failure_message for additional details.
         """
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
@@ -3751,9 +3948,9 @@ class VerifyJobRun(proto.Message):
                 No reason for failure is specified.
             CLOUD_BUILD_UNAVAILABLE (1):
                 Cloud Build is not available, either because it is not
-                enabled or because Google Cloud Deploy has insufficient
+                enabled or because Cloud Deploy has insufficient
                 permissions. See `required
-                permission </deploy/docs/cloud-deploy-service-account#required_permissions>`__.
+                permission <https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>`__.
             EXECUTION_FAILED (2):
                 The verify operation did not complete
                 successfully; check Cloud Build logs.
@@ -3763,8 +3960,8 @@ class VerifyJobRun(proto.Message):
             VERIFICATION_CONFIG_NOT_FOUND (4):
                 No Skaffold verify configuration was found.
             CLOUD_BUILD_REQUEST_FAILED (5):
-                Cloud Build failed to fulfill Google Cloud Deploy's request.
-                See failure_message for additional details.
+                Cloud Build failed to fulfill Cloud Deploy's request. See
+                failure_message for additional details.
         """
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
@@ -3793,6 +3990,129 @@ class VerifyJobRun(proto.Message):
     failure_message: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+
+
+class PredeployJobRun(proto.Message):
+    r"""PredeployJobRun contains information specific to a predeploy
+    ``JobRun``.
+
+    Attributes:
+        build (str):
+            Output only. The resource name of the Cloud Build ``Build``
+            object that is used to execute the custom actions associated
+            with the predeploy Job. Format is
+            projects/{project}/locations/{location}/builds/{build}.
+        failure_cause (google.cloud.deploy_v1.types.PredeployJobRun.FailureCause):
+            Output only. The reason the predeploy failed.
+            This will always be unspecified while the
+            predeploy is in progress or if it succeeded.
+        failure_message (str):
+            Output only. Additional information about the
+            predeploy failure, if available.
+    """
+
+    class FailureCause(proto.Enum):
+        r"""Well-known predeploy failures.
+
+        Values:
+            FAILURE_CAUSE_UNSPECIFIED (0):
+                No reason for failure is specified.
+            CLOUD_BUILD_UNAVAILABLE (1):
+                Cloud Build is not available, either because it is not
+                enabled or because Cloud Deploy has insufficient
+                permissions. See `required
+                permission <https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>`__.
+            EXECUTION_FAILED (2):
+                The predeploy operation did not complete
+                successfully; check Cloud Build logs.
+            DEADLINE_EXCEEDED (3):
+                The predeploy build did not complete within
+                the alloted time.
+            CLOUD_BUILD_REQUEST_FAILED (4):
+                Cloud Build failed to fulfill Cloud Deploy's request. See
+                failure_message for additional details.
+        """
+        FAILURE_CAUSE_UNSPECIFIED = 0
+        CLOUD_BUILD_UNAVAILABLE = 1
+        EXECUTION_FAILED = 2
+        DEADLINE_EXCEEDED = 3
+        CLOUD_BUILD_REQUEST_FAILED = 4
+
+    build: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    failure_cause: FailureCause = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=FailureCause,
+    )
+    failure_message: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class PostdeployJobRun(proto.Message):
+    r"""PostdeployJobRun contains information specific to a postdeploy
+    ``JobRun``.
+
+    Attributes:
+        build (str):
+            Output only. The resource name of the Cloud Build ``Build``
+            object that is used to execute the custom actions associated
+            with the postdeploy Job. Format is
+            projects/{project}/locations/{location}/builds/{build}.
+        failure_cause (google.cloud.deploy_v1.types.PostdeployJobRun.FailureCause):
+            Output only. The reason the postdeploy
+            failed. This will always be unspecified while
+            the postdeploy is in progress or if it
+            succeeded.
+        failure_message (str):
+            Output only. Additional information about the
+            postdeploy failure, if available.
+    """
+
+    class FailureCause(proto.Enum):
+        r"""Well-known postdeploy failures.
+
+        Values:
+            FAILURE_CAUSE_UNSPECIFIED (0):
+                No reason for failure is specified.
+            CLOUD_BUILD_UNAVAILABLE (1):
+                Cloud Build is not available, either because it is not
+                enabled or because Cloud Deploy has insufficient
+                permissions. See `required
+                permission <https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>`__.
+            EXECUTION_FAILED (2):
+                The postdeploy operation did not complete
+                successfully; check Cloud Build logs.
+            DEADLINE_EXCEEDED (3):
+                The postdeploy build did not complete within
+                the alloted time.
+            CLOUD_BUILD_REQUEST_FAILED (4):
+                Cloud Build failed to fulfill Cloud Deploy's request. See
+                failure_message for additional details.
+        """
+        FAILURE_CAUSE_UNSPECIFIED = 0
+        CLOUD_BUILD_UNAVAILABLE = 1
+        EXECUTION_FAILED = 2
+        DEADLINE_EXCEEDED = 3
+        CLOUD_BUILD_REQUEST_FAILED = 4
+
+    build: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    failure_cause: FailureCause = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=FailureCause,
+    )
+    failure_message: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

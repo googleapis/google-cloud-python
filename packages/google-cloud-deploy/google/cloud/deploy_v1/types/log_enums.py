@@ -40,6 +40,10 @@ class Type(proto.Enum):
             Resource state changed.
         TYPE_PROCESS_ABORTED (4):
             A process aborted.
+        TYPE_RESTRICTION_VIOLATED (5):
+            Restriction check failed.
+        TYPE_RESOURCE_DELETED (6):
+            Resource deleted.
         TYPE_RENDER_STATUES_CHANGE (2):
             Deprecated: This field is never used. Use release_render log
             type instead.
@@ -48,6 +52,8 @@ class Type(proto.Enum):
     TYPE_PUBSUB_NOTIFICATION_FAILURE = 1
     TYPE_RESOURCE_STATE_CHANGE = 3
     TYPE_PROCESS_ABORTED = 4
+    TYPE_RESTRICTION_VIOLATED = 5
+    TYPE_RESOURCE_DELETED = 6
     TYPE_RENDER_STATUES_CHANGE = 2
 
 

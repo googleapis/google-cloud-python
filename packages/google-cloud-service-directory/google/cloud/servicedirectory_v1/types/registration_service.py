@@ -92,7 +92,8 @@ class ListNamespacesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The resource name of the project
-            and location whose namespaces we'd like to list.
+            and location whose namespaces you'd like to
+            list.
         page_size (int):
             Optional. The maximum number of items to
             return.
@@ -100,38 +101,52 @@ class ListNamespacesRequest(proto.Message):
             Optional. The next_page_token value returned from a previous
             List request, if any.
         filter (str):
-            Optional. The filter to list result by.
+            Optional. The filter to list results by.
 
-            General filter string syntax: () can be "name", or "labels."
-            for map field. can be "<, >, <=, >=, !=, =, :". Of which ":"
-            means HAS, and is roughly the same as "=". must be the same
-            data type as field. can be "AND, OR, NOT".
+            General ``filter`` string syntax:
+            ``<field> <operator> <value> (<logical connector>)``
+
+            -  ``<field>`` can be ``name`` or ``labels.<key>`` for map
+               field
+            -  ``<operator>`` can be ``<``, ``>``, ``<=``, ``>=``,
+               ``!=``, ``=``, ``:``. Of which ``:`` means ``HAS``, and
+               is roughly the same as ``=``
+            -  ``<value>`` must be the same data type as field
+            -  ``<logical connector>`` can be ``AND``, ``OR``, ``NOT``
 
             Examples of valid filters:
 
-            -  "labels.owner" returns Namespaces that have a label with
-               the key "owner" this is the same as "labels:owner".
-            -  "labels.protocol=gRPC" returns Namespaces that have
-               key/value "protocol=gRPC".
-            -  "name>projects/my-project/locations/us-east/namespaces/namespace-c"
-               returns Namespaces that have name that is alphabetically
-               later than the string, so "namespace-e" will be returned
-               but "namespace-a" will not be.
-            -  "labels.owner!=sd AND labels.foo=bar" returns Namespaces
-               that have "owner" in label key but value is not "sd" AND
-               have key/value foo=bar.
-            -  "doesnotexist.foo=bar" returns an empty list. Note that
-               Namespace doesn't have a field called "doesnotexist".
-               Since the filter does not match any Namespaces, it
-               returns no results.
-        order_by (str):
-            Optional. The order to list result by.
+            -  ``labels.owner`` returns namespaces that have a label
+               with the key ``owner``, this is the same as
+               ``labels:owner``
+            -  ``labels.owner=sd`` returns namespaces that have
+               key/value ``owner=sd``
+            -  ``name>projects/my-project/locations/us-east1/namespaces/namespace-c``
+               returns namespaces that have name that is alphabetically
+               later than the string, so "namespace-e" is returned but
+               "namespace-a" is not
+            -  ``labels.owner!=sd AND labels.foo=bar`` returns
+               namespaces that have ``owner`` in label key but value is
+               not ``sd`` AND have key/value ``foo=bar``
+            -  ``doesnotexist.foo=bar`` returns an empty list. Note that
+               namespace doesn't have a field called "doesnotexist".
+               Since the filter does not match any namespaces, it
+               returns no results
 
-            General order by string syntax: (<asc|desc>) (,) allows
-            values {"name"} <asc/desc> ascending or descending order by
-            . If this is left blank, "asc" is used. Note that an empty
-            order_by string result in default order, which is order by
-            name in ascending order.
+            For more information about filtering, see `API
+            Filtering <https://aip.dev/160>`__.
+        order_by (str):
+            Optional. The order to list results by.
+
+            General ``order_by`` string syntax:
+            ``<field> (<asc|desc>) (,)``
+
+            -  ``<field>`` allows value: ``name``
+            -  ``<asc|desc>`` ascending or descending order by
+               ``<field>``. If this is left blank, ``asc`` is used
+
+            Note that an empty ``order_by`` string results in default
+            order, which is order by ``name`` in ascending order.
     """
 
     parent: str = proto.Field(
@@ -282,7 +297,7 @@ class ListServicesRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The resource name of the namespace
-            whose services we'd like to list.
+            whose services you'd like to list.
         page_size (int):
             Optional. The maximum number of items to
             return.
@@ -290,32 +305,55 @@ class ListServicesRequest(proto.Message):
             Optional. The next_page_token value returned from a previous
             List request, if any.
         filter (str):
-            Optional. The filter to list result by.
+            Optional. The filter to list results by.
 
-            General filter string syntax: () can be "name", or
-            "metadata." for map field. can be "<, >, <=, >=, !=, =, :".
-            Of which ":" means HAS, and is roughly the same as "=". must
-            be the same data type as field. can be "AND, OR, NOT".
+            General ``filter`` string syntax:
+            ``<field> <operator> <value> (<logical connector>)``
+
+            -  ``<field>`` can be ``name`` or ``annotations.<key>`` for
+               map field
+            -  ``<operator>`` can be ``<``, ``>``, ``<=``, ``>=``,
+               ``!=``, ``=``, ``:``. Of which ``:`` means ``HAS``, and
+               is roughly the same as ``=``
+            -  ``<value>`` must be the same data type as field
+            -  ``<logical connector>`` can be ``AND``, ``OR``, ``NOT``
 
             Examples of valid filters:
 
-            -  "metadata.owner" returns Services that have a label with
-               the key "owner" this is the same as "metadata:owner".
-            -  "metadata.protocol=gRPC" returns Services that have
-               key/value "protocol=gRPC".
-            -  "name>projects/my-project/locations/us-east/namespaces/my-namespace/services/service-c"
-               returns Services that have name that is alphabetically
-               later than the string, so "service-e" will be returned
-               but "service-a" will not be.
-            -  "metadata.owner!=sd AND metadata.foo=bar" returns
-               Services that have "owner" in label key but value is not
-               "sd" AND have key/value foo=bar.
-            -  "doesnotexist.foo=bar" returns an empty list. Note that
-               Service doesn't have a field called "doesnotexist". Since
-               the filter does not match any Services, it returns no
-               results.
+            -  ``annotations.owner`` returns services that have a
+               annotation with the key ``owner``, this is the same as
+               ``annotations:owner``
+            -  ``annotations.protocol=gRPC`` returns services that have
+               key/value ``protocol=gRPC``
+            -
+
+            ``name>projects/my-project/locations/us-east1/namespaces/my-namespace/services/service-c``
+            returns services that have name that is alphabetically later
+            than the string, so "service-e" is returned but "service-a"
+            is not
+
+            -  ``annotations.owner!=sd AND annotations.foo=bar`` returns
+               services that have ``owner`` in annotation key but value
+               is not ``sd`` AND have key/value ``foo=bar``
+            -  ``doesnotexist.foo=bar`` returns an empty list. Note that
+               service doesn't have a field called "doesnotexist". Since
+               the filter does not match any services, it returns no
+               results
+
+            For more information about filtering, see `API
+            Filtering <https://aip.dev/160>`__.
         order_by (str):
-            Optional. The order to list result by.
+            Optional. The order to list results by.
+
+            General ``order_by`` string syntax:
+            ``<field> (<asc|desc>) (,)``
+
+            -  ``<field>`` allows value: ``name``
+            -  ``<asc|desc>`` ascending or descending order by
+               ``<field>``. If this is left blank, ``asc`` is used
+
+            Note that an empty ``order_by`` string results in default
+            order, which is order by ``name`` in ascending order.
     """
 
     parent: str = proto.Field(
@@ -371,9 +409,9 @@ class ListServicesResponse(proto.Message):
 class GetServiceRequest(proto.Message):
     r"""The request message for
     [RegistrationService.GetService][google.cloud.servicedirectory.v1.RegistrationService.GetService].
-    This should not be used for looking up a service. Insead, use the
-    ``resolve`` method as it will contain all endpoints and associated
-    metadata.
+    This should not be used for looking up a service. Instead, use the
+    ``resolve`` method as it contains all endpoints and associated
+    annotations.
 
     Attributes:
         name (str):
@@ -467,7 +505,7 @@ class ListEndpointsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The resource name of the service
-            whose endpoints we'd like to list.
+            whose endpoints you'd like to list.
         page_size (int):
             Optional. The maximum number of items to
             return.
@@ -475,37 +513,60 @@ class ListEndpointsRequest(proto.Message):
             Optional. The next_page_token value returned from a previous
             List request, if any.
         filter (str):
-            Optional. The filter to list result by.
+            Optional. The filter to list results by.
 
-            General filter string syntax: () can be "name", "address",
-            "port" or "metadata." for map field. can be "<, >, <=, >=,
-            !=, =, :". Of which ":" means HAS, and is roughly the same
-            as "=". must be the same data type as field. can be "AND,
-            OR, NOT".
+            General ``filter`` string syntax:
+            ``<field> <operator> <value> (<logical connector>)``
+
+            -  ``<field>`` can be ``name``, ``address``, ``port``, or
+               ``annotations.<key>`` for map field
+            -  ``<operator>`` can be ``<``, ``>``, ``<=``, ``>=``,
+               ``!=``, ``=``, ``:``. Of which ``:`` means ``HAS``, and
+               is roughly the same as ``=``
+            -  ``<value>`` must be the same data type as field
+            -  ``<logical connector>`` can be ``AND``, ``OR``, ``NOT``
 
             Examples of valid filters:
 
-            -  "metadata.owner" returns Endpoints that have a label with
-               the key "owner" this is the same as "metadata:owner".
-            -  "metadata.protocol=gRPC" returns Endpoints that have
-               key/value "protocol=gRPC".
-            -  "address=192.108.1.105" returns Endpoints that have this
-               address.
-            -  "port>8080" returns Endpoints that have port number
-               larger than 8080.
-            -  "name>projects/my-project/locations/us-east/namespaces/my-namespace/services/my-service/endpoints/endpoint-c"
-               returns Endpoints that have name that is alphabetically
-               later than the string, so "endpoint-e" will be returned
-               but "endpoint-a" will not be.
-            -  "metadata.owner!=sd AND metadata.foo=bar" returns
-               Endpoints that have "owner" in label key but value is not
-               "sd" AND have key/value foo=bar.
-            -  "doesnotexist.foo=bar" returns an empty list. Note that
-               Endpoint doesn't have a field called "doesnotexist".
-               Since the filter does not match any Endpoints, it returns
-               no results.
+            -  ``annotations.owner`` returns endpoints that have a
+               annotation with the key ``owner``, this is the same as
+               ``annotations:owner``
+            -  ``annotations.protocol=gRPC`` returns endpoints that have
+               key/value ``protocol=gRPC``
+            -  ``address=192.108.1.105`` returns endpoints that have
+               this address
+            -  ``port>8080`` returns endpoints that have port number
+               larger than 8080
+            -
+
+            ``name>projects/my-project/locations/us-east1/namespaces/my-namespace/services/my-service/endpoints/endpoint-c``
+            returns endpoints that have name that is alphabetically
+            later than the string, so "endpoint-e" is returned but
+            "endpoint-a" is not
+
+            -  ``annotations.owner!=sd AND annotations.foo=bar`` returns
+               endpoints that have ``owner`` in annotation key but value
+               is not ``sd`` AND have key/value ``foo=bar``
+            -  ``doesnotexist.foo=bar`` returns an empty list. Note that
+               endpoint doesn't have a field called "doesnotexist".
+               Since the filter does not match any endpoints, it returns
+               no results
+
+            For more information about filtering, see `API
+            Filtering <https://aip.dev/160>`__.
         order_by (str):
-            Optional. The order to list result by.
+            Optional. The order to list results by.
+
+            General ``order_by`` string syntax:
+            ``<field> (<asc|desc>) (,)``
+
+            -  ``<field>`` allows values: ``name``, ``address``,
+               ``port``
+            -  ``<asc|desc>`` ascending or descending order by
+               ``<field>``. If this is left blank, ``asc`` is used
+
+            Note that an empty ``order_by`` string results in default
+            order, which is order by ``name`` in ascending order.
     """
 
     parent: str = proto.Field(

@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.5.1...google-cloud-dataplex-v1.6.0) (2023-07-25)
+
+
+### Features
+
+* added DataQualityRule.name, description ([3392532](https://github.com/googleapis/google-cloud-python/commit/33925322472341319ff75e3039b109f7f34422ce))
+* added DataQualitySpec.sampling_percent, row_filter ([3392532](https://github.com/googleapis/google-cloud-python/commit/33925322472341319ff75e3039b109f7f34422ce))
+* added DataScanEvent.data_profile_configs, data_quality_configs, post_scan_actions_result ([3392532](https://github.com/googleapis/google-cloud-python/commit/33925322472341319ff75e3039b109f7f34422ce))
+* added Job.labels, trigger, execution_spec ([3392532](https://github.com/googleapis/google-cloud-python/commit/33925322472341319ff75e3039b109f7f34422ce))
+* added JobEvent.execution_trigger ([3392532](https://github.com/googleapis/google-cloud-python/commit/33925322472341319ff75e3039b109f7f34422ce))
+* added ListDataScanJobsRequest.filter to filter ListDataScanJob results ([3392532](https://github.com/googleapis/google-cloud-python/commit/33925322472341319ff75e3039b109f7f34422ce))
+* added RunTaskRequest.labels, args ([3392532](https://github.com/googleapis/google-cloud-python/commit/33925322472341319ff75e3039b109f7f34422ce))
+* added TopNValue.ratio ([3392532](https://github.com/googleapis/google-cloud-python/commit/33925322472341319ff75e3039b109f7f34422ce))
+* DataProfileSpec message with DataProfileScan related settings ([3392532](https://github.com/googleapis/google-cloud-python/commit/33925322472341319ff75e3039b109f7f34422ce))
+* new service DataTaxonomyService and related messages ([3392532](https://github.com/googleapis/google-cloud-python/commit/33925322472341319ff75e3039b109f7f34422ce))
+
 ## [1.5.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.5.0...google-cloud-dataplex-v1.5.1) (2023-07-05)
 
 

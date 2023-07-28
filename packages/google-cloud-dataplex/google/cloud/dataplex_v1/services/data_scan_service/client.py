@@ -269,6 +269,28 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def table_path(
+        project: str,
+        dataset: str,
+        table: str,
+    ) -> str:
+        """Returns a fully-qualified table string."""
+        return "projects/{project}/datasets/{dataset}/tables/{table}".format(
+            project=project,
+            dataset=dataset,
+            table=table,
+        )
+
+    @staticmethod
+    def parse_table_path(path: str) -> Dict[str, str]:
+        """Parses a table path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/datasets/(?P<dataset>.+?)/tables/(?P<table>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:
@@ -542,6 +564,7 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
 
                 # Initialize request argument(s)
                 data_scan = dataplex_v1.DataScan()
+                data_scan.data_quality_spec.rules.dimension = "dimension_value"
                 data_scan.data.entity = "entity_value"
 
                 request = dataplex_v1.CreateDataScanRequest(
@@ -698,6 +721,7 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
 
                 # Initialize request argument(s)
                 data_scan = dataplex_v1.DataScan()
+                data_scan.data_quality_spec.rules.dimension = "dimension_value"
                 data_scan.data.entity = "entity_value"
 
                 request = dataplex_v1.UpdateDataScanRequest(

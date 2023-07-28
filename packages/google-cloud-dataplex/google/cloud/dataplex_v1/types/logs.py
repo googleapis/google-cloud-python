@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
         "JobEvent",
         "SessionEvent",
         "DataScanEvent",
+        "DataQualityScanRuleResult",
     },
 )
 
@@ -292,6 +293,8 @@ class JobEvent(proto.Message):
             The service used to execute the job.
         service_job (str):
             The reference to the job within the service.
+        execution_trigger (google.cloud.dataplex_v1.types.JobEvent.ExecutionTrigger):
+            Job execution trigger.
     """
 
     class Type(proto.Enum):
@@ -343,6 +346,23 @@ class JobEvent(proto.Message):
         SERVICE_UNSPECIFIED = 0
         DATAPROC = 1
 
+    class ExecutionTrigger(proto.Enum):
+        r"""Job Execution trigger.
+
+        Values:
+            EXECUTION_TRIGGER_UNSPECIFIED (0):
+                The job execution trigger is unspecified.
+            TASK_CONFIG (1):
+                The job was triggered by Dataplex based on
+                trigger spec from task definition.
+            RUN_REQUEST (2):
+                The job was triggered by the explicit call of
+                Task API.
+        """
+        EXECUTION_TRIGGER_UNSPECIFIED = 0
+        TASK_CONFIG = 1
+        RUN_REQUEST = 2
+
     message: str = proto.Field(
         proto.STRING,
         number=1,
@@ -383,6 +403,11 @@ class JobEvent(proto.Message):
     service_job: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+    execution_trigger: ExecutionTrigger = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=ExecutionTrigger,
     )
 
 
@@ -543,6 +568,7 @@ class SessionEvent(proto.Message):
 class DataScanEvent(proto.Message):
     r"""These messages contain information about the execution of a
     datascan. The monitored resource is 'DataScan'
+    Next ID: 13
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -557,6 +583,8 @@ class DataScanEvent(proto.Message):
         job_id (str):
             The identifier of the specific data scan job
             this log entry is for.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the data scan job was created.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the data scan job started to
             run.
@@ -587,6 +615,18 @@ class DataScanEvent(proto.Message):
             data scan.
 
             This field is a member of `oneof`_ ``result``.
+        data_profile_configs (google.cloud.dataplex_v1.types.DataScanEvent.DataProfileAppliedConfigs):
+            Applied configs for data profile type data
+            scan.
+
+            This field is a member of `oneof`_ ``appliedConfigs``.
+        data_quality_configs (google.cloud.dataplex_v1.types.DataScanEvent.DataQualityAppliedConfigs):
+            Applied configs for data quality type data
+            scan.
+
+            This field is a member of `oneof`_ ``appliedConfigs``.
+        post_scan_actions_result (google.cloud.dataplex_v1.types.DataScanEvent.PostScanActionsResult):
+            The result of post scan actions.
     """
 
     class ScanType(proto.Enum):
@@ -611,19 +651,22 @@ class DataScanEvent(proto.Message):
             STATE_UNSPECIFIED (0):
                 Unspecified job state.
             STARTED (1):
-                Data scan started.
+                Data scan job started.
             SUCCEEDED (2):
-                Data scan successfully completed.
+                Data scan job successfully completed.
             FAILED (3):
-                Data scan was unsuccessful.
+                Data scan job was unsuccessful.
             CANCELLED (4):
-                Data scan was cancelled.
+                Data scan job was cancelled.
+            CREATED (5):
+                Data scan job was createed.
         """
         STATE_UNSPECIFIED = 0
         STARTED = 1
         SUCCEEDED = 2
         FAILED = 3
         CANCELLED = 4
+        CREATED = 5
 
     class Trigger(proto.Enum):
         r"""The trigger type for the data scan.
@@ -699,6 +742,118 @@ class DataScanEvent(proto.Message):
             number=3,
         )
 
+    class DataProfileAppliedConfigs(proto.Message):
+        r"""Applied configs for data profile type data scan job.
+
+        Attributes:
+            sampling_percent (float):
+                The percentage of the records selected from the dataset for
+                DataScan.
+
+                -  Value ranges between 0.0 and 100.0.
+                -  Value 0.0 or 100.0 imply that sampling was not applied.
+            row_filter_applied (bool):
+                Boolean indicating whether a row filter was
+                applied in the DataScan job.
+            column_filter_applied (bool):
+                Boolean indicating whether a column filter
+                was applied in the DataScan job.
+        """
+
+        sampling_percent: float = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+        row_filter_applied: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        column_filter_applied: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+
+    class DataQualityAppliedConfigs(proto.Message):
+        r"""Applied configs for data quality type data scan job.
+
+        Attributes:
+            sampling_percent (float):
+                The percentage of the records selected from the dataset for
+                DataScan.
+
+                -  Value ranges between 0.0 and 100.0.
+                -  Value 0.0 or 100.0 imply that sampling was not applied.
+            row_filter_applied (bool):
+                Boolean indicating whether a row filter was
+                applied in the DataScan job.
+        """
+
+        sampling_percent: float = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+        row_filter_applied: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+
+    class PostScanActionsResult(proto.Message):
+        r"""Post scan actions result for data scan job.
+
+        Attributes:
+            bigquery_export_result (google.cloud.dataplex_v1.types.DataScanEvent.PostScanActionsResult.BigQueryExportResult):
+                The result of BigQuery export post scan
+                action.
+        """
+
+        class BigQueryExportResult(proto.Message):
+            r"""The result of BigQuery export post scan action.
+
+            Attributes:
+                state (google.cloud.dataplex_v1.types.DataScanEvent.PostScanActionsResult.BigQueryExportResult.State):
+                    Execution state for the BigQuery exporting.
+                message (str):
+                    Additional information about the BigQuery
+                    exporting.
+            """
+
+            class State(proto.Enum):
+                r"""Execution state for the exporting.
+
+                Values:
+                    STATE_UNSPECIFIED (0):
+                        The exporting state is unspecified.
+                    SUCCEEDED (1):
+                        The exporting completed successfully.
+                    FAILED (2):
+                        The exporting is no longer running due to an
+                        error.
+                    SKIPPED (3):
+                        The exporting is skipped due to no valid scan
+                        result to export (usually caused by scan
+                        failed).
+                """
+                STATE_UNSPECIFIED = 0
+                SUCCEEDED = 1
+                FAILED = 2
+                SKIPPED = 3
+
+            state: "DataScanEvent.PostScanActionsResult.BigQueryExportResult.State" = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="DataScanEvent.PostScanActionsResult.BigQueryExportResult.State",
+            )
+            message: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+
+        bigquery_export_result: "DataScanEvent.PostScanActionsResult.BigQueryExportResult" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="DataScanEvent.PostScanActionsResult.BigQueryExportResult",
+        )
+
     data_source: str = proto.Field(
         proto.STRING,
         number=1,
@@ -706,6 +861,11 @@ class DataScanEvent(proto.Message):
     job_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=timestamp_pb2.Timestamp,
     )
     start_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -756,6 +916,187 @@ class DataScanEvent(proto.Message):
         number=102,
         oneof="result",
         message=DataQualityResult,
+    )
+    data_profile_configs: DataProfileAppliedConfigs = proto.Field(
+        proto.MESSAGE,
+        number=201,
+        oneof="appliedConfigs",
+        message=DataProfileAppliedConfigs,
+    )
+    data_quality_configs: DataQualityAppliedConfigs = proto.Field(
+        proto.MESSAGE,
+        number=202,
+        oneof="appliedConfigs",
+        message=DataQualityAppliedConfigs,
+    )
+    post_scan_actions_result: PostScanActionsResult = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=PostScanActionsResult,
+    )
+
+
+class DataQualityScanRuleResult(proto.Message):
+    r"""Information about the result of a data quality rule for data
+    quality scan. The monitored resource is 'DataScan'.
+
+    Attributes:
+        job_id (str):
+            Identifier of the specific data scan job this
+            log entry is for.
+        data_source (str):
+            The data source of the data scan (e.g.
+            BigQuery table name).
+        column (str):
+            The column which this rule is evaluated
+            against.
+        rule_name (str):
+            The name of the data quality rule.
+        rule_type (google.cloud.dataplex_v1.types.DataQualityScanRuleResult.RuleType):
+            The type of the data quality rule.
+        evalution_type (google.cloud.dataplex_v1.types.DataQualityScanRuleResult.EvaluationType):
+            The evaluation type of the data quality rule.
+        rule_dimension (str):
+            The dimension of the data quality rule.
+        threshold_percent (float):
+            The passing threshold ([0.0, 100.0]) of the data quality
+            rule.
+        result (google.cloud.dataplex_v1.types.DataQualityScanRuleResult.Result):
+            The result of the data quality rule.
+        evaluated_row_count (int):
+            The number of rows evaluated against the data quality rule.
+            This field is only valid for rules of PER_ROW evaluation
+            type.
+        passed_row_count (int):
+            The number of rows which passed a rule evaluation. This
+            field is only valid for rules of PER_ROW evaluation type.
+        null_row_count (int):
+            The number of rows with null values in the
+            specified column.
+    """
+
+    class RuleType(proto.Enum):
+        r"""The type of the data quality rule.
+
+        Values:
+            RULE_TYPE_UNSPECIFIED (0):
+                An unspecified rule type.
+            NON_NULL_EXPECTATION (1):
+                Please see
+                https://cloud.google.com/dataplex/docs/reference/rest/v1/DataQualityRule#nonnullexpectation.
+            RANGE_EXPECTATION (2):
+                Please see
+                https://cloud.google.com/dataplex/docs/reference/rest/v1/DataQualityRule#rangeexpectation.
+            REGEX_EXPECTATION (3):
+                Please see
+                https://cloud.google.com/dataplex/docs/reference/rest/v1/DataQualityRule#regexexpectation.
+            ROW_CONDITION_EXPECTATION (4):
+                Please see
+                https://cloud.google.com/dataplex/docs/reference/rest/v1/DataQualityRule#rowconditionexpectation.
+            SET_EXPECTATION (5):
+                Please see
+                https://cloud.google.com/dataplex/docs/reference/rest/v1/DataQualityRule#setexpectation.
+            STATISTIC_RANGE_EXPECTATION (6):
+                Please see
+                https://cloud.google.com/dataplex/docs/reference/rest/v1/DataQualityRule#statisticrangeexpectation.
+            TABLE_CONDITION_EXPECTATION (7):
+                Please see
+                https://cloud.google.com/dataplex/docs/reference/rest/v1/DataQualityRule#tableconditionexpectation.
+            UNIQUENESS_EXPECTATION (8):
+                Please see
+                https://cloud.google.com/dataplex/docs/reference/rest/v1/DataQualityRule#uniquenessexpectation.
+        """
+        RULE_TYPE_UNSPECIFIED = 0
+        NON_NULL_EXPECTATION = 1
+        RANGE_EXPECTATION = 2
+        REGEX_EXPECTATION = 3
+        ROW_CONDITION_EXPECTATION = 4
+        SET_EXPECTATION = 5
+        STATISTIC_RANGE_EXPECTATION = 6
+        TABLE_CONDITION_EXPECTATION = 7
+        UNIQUENESS_EXPECTATION = 8
+
+    class EvaluationType(proto.Enum):
+        r"""The evaluation type of the data quality rule.
+
+        Values:
+            EVALUATION_TYPE_UNSPECIFIED (0):
+                An unspecified evaluation type.
+            PER_ROW (1):
+                The rule evaluation is done at per row level.
+            AGGREGATE (2):
+                The rule evaluation is done for an aggregate
+                of rows.
+        """
+        EVALUATION_TYPE_UNSPECIFIED = 0
+        PER_ROW = 1
+        AGGREGATE = 2
+
+    class Result(proto.Enum):
+        r"""Whether the data quality rule passed or failed.
+
+        Values:
+            RESULT_UNSPECIFIED (0):
+                An unspecified result.
+            PASSED (1):
+                The data quality rule passed.
+            FAILED (2):
+                The data quality rule failed.
+        """
+        RESULT_UNSPECIFIED = 0
+        PASSED = 1
+        FAILED = 2
+
+    job_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    data_source: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    column: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    rule_name: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    rule_type: RuleType = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=RuleType,
+    )
+    evalution_type: EvaluationType = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=EvaluationType,
+    )
+    rule_dimension: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    threshold_percent: float = proto.Field(
+        proto.DOUBLE,
+        number=8,
+    )
+    result: Result = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=Result,
+    )
+    evaluated_row_count: int = proto.Field(
+        proto.INT64,
+        number=10,
+    )
+    passed_row_count: int = proto.Field(
+        proto.INT64,
+        number=11,
+    )
+    null_row_count: int = proto.Field(
+        proto.INT64,
+        number=12,
     )
 
 

@@ -8232,6 +8232,7 @@ def test_get_job(request_type, transport: str = "grpc"):
             service=tasks.Job.Service.DATAPROC,
             service_job="service_job_value",
             message="message_value",
+            trigger=tasks.Job.Trigger.TASK_CONFIG,
         )
         response = client.get_job(request)
 
@@ -8249,6 +8250,7 @@ def test_get_job(request_type, transport: str = "grpc"):
     assert response.service == tasks.Job.Service.DATAPROC
     assert response.service_job == "service_job_value"
     assert response.message == "message_value"
+    assert response.trigger == tasks.Job.Trigger.TASK_CONFIG
 
 
 def test_get_job_empty_call():
@@ -8292,6 +8294,7 @@ async def test_get_job_async(
                 service=tasks.Job.Service.DATAPROC,
                 service_job="service_job_value",
                 message="message_value",
+                trigger=tasks.Job.Trigger.TASK_CONFIG,
             )
         )
         response = await client.get_job(request)
@@ -8310,6 +8313,7 @@ async def test_get_job_async(
     assert response.service == tasks.Job.Service.DATAPROC
     assert response.service_job == "service_job_value"
     assert response.message == "message_value"
+    assert response.trigger == tasks.Job.Trigger.TASK_CONFIG
 
 
 @pytest.mark.asyncio

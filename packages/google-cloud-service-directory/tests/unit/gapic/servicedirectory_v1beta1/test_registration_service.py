@@ -32,6 +32,7 @@ from google.api_core import exceptions as core_exceptions
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.location import locations_pb2
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -782,6 +783,7 @@ def test_create_namespace(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = gcs_namespace.Namespace(
             name="name_value",
+            uid="uid_value",
         )
         response = client.create_namespace(request)
 
@@ -793,6 +795,7 @@ def test_create_namespace(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_namespace.Namespace)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 def test_create_namespace_empty_call():
@@ -831,6 +834,7 @@ async def test_create_namespace_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gcs_namespace.Namespace(
                 name="name_value",
+                uid="uid_value",
             )
         )
         response = await client.create_namespace(request)
@@ -843,6 +847,7 @@ async def test_create_namespace_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_namespace.Namespace)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 @pytest.mark.asyncio
@@ -1458,6 +1463,7 @@ def test_get_namespace(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = namespace.Namespace(
             name="name_value",
+            uid="uid_value",
         )
         response = client.get_namespace(request)
 
@@ -1469,6 +1475,7 @@ def test_get_namespace(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, namespace.Namespace)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 def test_get_namespace_empty_call():
@@ -1507,6 +1514,7 @@ async def test_get_namespace_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             namespace.Namespace(
                 name="name_value",
+                uid="uid_value",
             )
         )
         response = await client.get_namespace(request)
@@ -1519,6 +1527,7 @@ async def test_get_namespace_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, namespace.Namespace)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 @pytest.mark.asyncio
@@ -1687,6 +1696,7 @@ def test_update_namespace(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = gcs_namespace.Namespace(
             name="name_value",
+            uid="uid_value",
         )
         response = client.update_namespace(request)
 
@@ -1698,6 +1708,7 @@ def test_update_namespace(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_namespace.Namespace)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 def test_update_namespace_empty_call():
@@ -1736,6 +1747,7 @@ async def test_update_namespace_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gcs_namespace.Namespace(
                 name="name_value",
+                uid="uid_value",
             )
         )
         response = await client.update_namespace(request)
@@ -1748,6 +1760,7 @@ async def test_update_namespace_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_namespace.Namespace)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 @pytest.mark.asyncio
@@ -2151,6 +2164,7 @@ def test_create_service(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = gcs_service.Service(
             name="name_value",
+            uid="uid_value",
         )
         response = client.create_service(request)
 
@@ -2162,6 +2176,7 @@ def test_create_service(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_service.Service)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 def test_create_service_empty_call():
@@ -2200,6 +2215,7 @@ async def test_create_service_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gcs_service.Service(
                 name="name_value",
+                uid="uid_value",
             )
         )
         response = await client.create_service(request)
@@ -2212,6 +2228,7 @@ async def test_create_service_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_service.Service)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 @pytest.mark.asyncio
@@ -2823,6 +2840,7 @@ def test_get_service(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = service.Service(
             name="name_value",
+            uid="uid_value",
         )
         response = client.get_service(request)
 
@@ -2834,6 +2852,7 @@ def test_get_service(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Service)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 def test_get_service_empty_call():
@@ -2871,6 +2890,7 @@ async def test_get_service_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.Service(
                 name="name_value",
+                uid="uid_value",
             )
         )
         response = await client.get_service(request)
@@ -2883,6 +2903,7 @@ async def test_get_service_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Service)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 @pytest.mark.asyncio
@@ -3051,6 +3072,7 @@ def test_update_service(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = gcs_service.Service(
             name="name_value",
+            uid="uid_value",
         )
         response = client.update_service(request)
 
@@ -3062,6 +3084,7 @@ def test_update_service(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_service.Service)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 def test_update_service_empty_call():
@@ -3100,6 +3123,7 @@ async def test_update_service_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gcs_service.Service(
                 name="name_value",
+                uid="uid_value",
             )
         )
         response = await client.update_service(request)
@@ -3112,6 +3136,7 @@ async def test_update_service_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_service.Service)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 @pytest.mark.asyncio
@@ -3514,6 +3539,7 @@ def test_create_endpoint(request_type, transport: str = "grpc"):
             address="address_value",
             port=453,
             network="network_value",
+            uid="uid_value",
         )
         response = client.create_endpoint(request)
 
@@ -3528,6 +3554,7 @@ def test_create_endpoint(request_type, transport: str = "grpc"):
     assert response.address == "address_value"
     assert response.port == 453
     assert response.network == "network_value"
+    assert response.uid == "uid_value"
 
 
 def test_create_endpoint_empty_call():
@@ -3569,6 +3596,7 @@ async def test_create_endpoint_async(
                 address="address_value",
                 port=453,
                 network="network_value",
+                uid="uid_value",
             )
         )
         response = await client.create_endpoint(request)
@@ -3584,6 +3612,7 @@ async def test_create_endpoint_async(
     assert response.address == "address_value"
     assert response.port == 453
     assert response.network == "network_value"
+    assert response.uid == "uid_value"
 
 
 @pytest.mark.asyncio
@@ -4202,6 +4231,7 @@ def test_get_endpoint(request_type, transport: str = "grpc"):
             address="address_value",
             port=453,
             network="network_value",
+            uid="uid_value",
         )
         response = client.get_endpoint(request)
 
@@ -4216,6 +4246,7 @@ def test_get_endpoint(request_type, transport: str = "grpc"):
     assert response.address == "address_value"
     assert response.port == 453
     assert response.network == "network_value"
+    assert response.uid == "uid_value"
 
 
 def test_get_endpoint_empty_call():
@@ -4257,6 +4288,7 @@ async def test_get_endpoint_async(
                 address="address_value",
                 port=453,
                 network="network_value",
+                uid="uid_value",
             )
         )
         response = await client.get_endpoint(request)
@@ -4272,6 +4304,7 @@ async def test_get_endpoint_async(
     assert response.address == "address_value"
     assert response.port == 453
     assert response.network == "network_value"
+    assert response.uid == "uid_value"
 
 
 @pytest.mark.asyncio
@@ -4443,6 +4476,7 @@ def test_update_endpoint(request_type, transport: str = "grpc"):
             address="address_value",
             port=453,
             network="network_value",
+            uid="uid_value",
         )
         response = client.update_endpoint(request)
 
@@ -4457,6 +4491,7 @@ def test_update_endpoint(request_type, transport: str = "grpc"):
     assert response.address == "address_value"
     assert response.port == 453
     assert response.network == "network_value"
+    assert response.uid == "uid_value"
 
 
 def test_update_endpoint_empty_call():
@@ -4498,6 +4533,7 @@ async def test_update_endpoint_async(
                 address="address_value",
                 port=453,
                 network="network_value",
+                uid="uid_value",
             )
         )
         response = await client.update_endpoint(request)
@@ -4513,6 +4549,7 @@ async def test_update_endpoint_async(
     assert response.address == "address_value"
     assert response.port == 453
     assert response.network == "network_value"
+    assert response.uid == "uid_value"
 
 
 @pytest.mark.asyncio
@@ -5433,6 +5470,7 @@ def test_create_namespace_rest(request_type):
         "labels": {},
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "uid": "uid_value",
     }
     request = request_type(**request_init)
 
@@ -5441,6 +5479,7 @@ def test_create_namespace_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = gcs_namespace.Namespace(
             name="name_value",
+            uid="uid_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -5456,6 +5495,7 @@ def test_create_namespace_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_namespace.Namespace)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 def test_create_namespace_rest_required_fields(
@@ -5641,6 +5681,7 @@ def test_create_namespace_rest_bad_request(
         "labels": {},
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "uid": "uid_value",
     }
     request = request_type(**request_init)
 
@@ -6090,6 +6131,7 @@ def test_get_namespace_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = namespace.Namespace(
             name="name_value",
+            uid="uid_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -6105,6 +6147,7 @@ def test_get_namespace_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, namespace.Namespace)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 def test_get_namespace_rest_required_fields(
@@ -6358,6 +6401,7 @@ def test_update_namespace_rest(request_type):
         "labels": {},
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "uid": "uid_value",
     }
     request = request_type(**request_init)
 
@@ -6366,6 +6410,7 @@ def test_update_namespace_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = gcs_namespace.Namespace(
             name="name_value",
+            uid="uid_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -6381,6 +6426,7 @@ def test_update_namespace_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_namespace.Namespace)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 def test_update_namespace_rest_required_fields(
@@ -6549,6 +6595,7 @@ def test_update_namespace_rest_bad_request(
         "labels": {},
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "uid": "uid_value",
     }
     request = request_type(**request_init)
 
@@ -6914,10 +6961,12 @@ def test_create_service_rest(request_type):
                 "network": "network_value",
                 "create_time": {"seconds": 751, "nanos": 543},
                 "update_time": {},
+                "uid": "uid_value",
             }
         ],
         "create_time": {},
         "update_time": {},
+        "uid": "uid_value",
     }
     request = request_type(**request_init)
 
@@ -6926,6 +6975,7 @@ def test_create_service_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = gcs_service.Service(
             name="name_value",
+            uid="uid_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -6941,6 +6991,7 @@ def test_create_service_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_service.Service)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 def test_create_service_rest_required_fields(
@@ -7131,10 +7182,12 @@ def test_create_service_rest_bad_request(
                 "network": "network_value",
                 "create_time": {"seconds": 751, "nanos": 543},
                 "update_time": {},
+                "uid": "uid_value",
             }
         ],
         "create_time": {},
         "update_time": {},
+        "uid": "uid_value",
     }
     request = request_type(**request_init)
 
@@ -7590,6 +7643,7 @@ def test_get_service_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = service.Service(
             name="name_value",
+            uid="uid_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -7605,6 +7659,7 @@ def test_get_service_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.Service)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 def test_get_service_rest_required_fields(
@@ -7869,10 +7924,12 @@ def test_update_service_rest(request_type):
                 "network": "network_value",
                 "create_time": {"seconds": 751, "nanos": 543},
                 "update_time": {},
+                "uid": "uid_value",
             }
         ],
         "create_time": {},
         "update_time": {},
+        "uid": "uid_value",
     }
     request = request_type(**request_init)
 
@@ -7881,6 +7938,7 @@ def test_update_service_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = gcs_service.Service(
             name="name_value",
+            uid="uid_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -7896,6 +7954,7 @@ def test_update_service_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_service.Service)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
 
 
 def test_update_service_rest_required_fields(
@@ -8071,10 +8130,12 @@ def test_update_service_rest_bad_request(
                 "network": "network_value",
                 "create_time": {"seconds": 751, "nanos": 543},
                 "update_time": {},
+                "uid": "uid_value",
             }
         ],
         "create_time": {},
         "update_time": {},
+        "uid": "uid_value",
     }
     request = request_type(**request_init)
 
@@ -8442,6 +8503,7 @@ def test_create_endpoint_rest(request_type):
         "network": "network_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "uid": "uid_value",
     }
     request = request_type(**request_init)
 
@@ -8453,6 +8515,7 @@ def test_create_endpoint_rest(request_type):
             address="address_value",
             port=453,
             network="network_value",
+            uid="uid_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -8471,6 +8534,7 @@ def test_create_endpoint_rest(request_type):
     assert response.address == "address_value"
     assert response.port == 453
     assert response.network == "network_value"
+    assert response.uid == "uid_value"
 
 
 def test_create_endpoint_rest_required_fields(
@@ -8661,6 +8725,7 @@ def test_create_endpoint_rest_bad_request(
         "network": "network_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "uid": "uid_value",
     }
     request = request_type(**request_init)
 
@@ -9125,6 +9190,7 @@ def test_get_endpoint_rest(request_type):
             address="address_value",
             port=453,
             network="network_value",
+            uid="uid_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -9143,6 +9209,7 @@ def test_get_endpoint_rest(request_type):
     assert response.address == "address_value"
     assert response.port == 453
     assert response.network == "network_value"
+    assert response.uid == "uid_value"
 
 
 def test_get_endpoint_rest_required_fields(
@@ -9403,6 +9470,7 @@ def test_update_endpoint_rest(request_type):
         "network": "network_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "uid": "uid_value",
     }
     request = request_type(**request_init)
 
@@ -9414,6 +9482,7 @@ def test_update_endpoint_rest(request_type):
             address="address_value",
             port=453,
             network="network_value",
+            uid="uid_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -9432,6 +9501,7 @@ def test_update_endpoint_rest(request_type):
     assert response.address == "address_value"
     assert response.port == 453
     assert response.network == "network_value"
+    assert response.uid == "uid_value"
 
 
 def test_update_endpoint_rest_required_fields(
@@ -9605,6 +9675,7 @@ def test_update_endpoint_rest_bad_request(
         "network": "network_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "uid": "uid_value",
     }
     request = request_type(**request_init)
 
@@ -10757,6 +10828,8 @@ def test_registration_service_base_transport():
         "get_iam_policy",
         "set_iam_policy",
         "test_iam_permissions",
+        "get_location",
+        "list_locations",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -11451,6 +11524,410 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
+
+def test_get_location_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.GetLocationRequest
+):
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict(
+        {"name": "projects/sample1/locations/sample2"}, request
+    )
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_location(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.GetLocationRequest,
+        dict,
+    ],
+)
+def test_get_location_rest(request_type):
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.Location()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.get_location(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_list_locations_rest_bad_request(
+    transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
+):
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    request = request_type()
+    request = json_format.ParseDict({"name": "projects/sample1"}, request)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_locations(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        locations_pb2.ListLocationsRequest,
+        dict,
+    ],
+)
+def test_list_locations_rest(request_type):
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request_init = {"name": "projects/sample1"}
+    request = request_type(**request_init)
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = locations_pb2.ListLocationsResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        response = client.list_locations(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_list_locations(transport: str = "grpc"):
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.ListLocationsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+        response = client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+@pytest.mark.asyncio
+async def test_list_locations_async(transport: str = "grpc"):
+    client = RegistrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.ListLocationsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        response = await client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.ListLocationsResponse)
+
+
+def test_list_locations_field_headers():
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.ListLocationsRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_locations_field_headers_async():
+    client = RegistrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.ListLocationsRequest()
+    request.name = "locations"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        await client.list_locations(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations",
+    ) in kw["metadata"]
+
+
+def test_list_locations_from_dict():
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.ListLocationsResponse()
+
+        response = client.list_locations(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_list_locations_from_dict_async():
+    client = RegistrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.ListLocationsResponse()
+        )
+        response = await client.list_locations(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
+
+
+def test_get_location(transport: str = "grpc"):
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.GetLocationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+        response = client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+@pytest.mark.asyncio
+async def test_get_location_async(transport: str = "grpc_asyncio"):
+    client = RegistrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = locations_pb2.GetLocationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        response = await client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, locations_pb2.Location)
+
+
+def test_get_location_field_headers():
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.GetLocationRequest()
+    request.name = "locations/abc"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        call.return_value = locations_pb2.Location()
+
+        client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations/abc",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_location_field_headers_async():
+    client = RegistrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials()
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = locations_pb2.GetLocationRequest()
+    request.name = "locations/abc"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_location), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        await client.get_location(request)
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=locations/abc",
+    ) in kw["metadata"]
+
+
+def test_get_location_from_dict():
+    client = RegistrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = locations_pb2.Location()
+
+        response = client.get_location(
+            request={
+                "name": "locations/abc",
+            }
+        )
+        call.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_get_location_from_dict_async():
+    client = RegistrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            locations_pb2.Location()
+        )
+        response = await client.get_location(
+            request={
+                "name": "locations",
+            }
+        )
+        call.assert_called()
 
 
 def test_transport_close():

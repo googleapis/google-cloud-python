@@ -23,6 +23,10 @@ from .services.data_scan_service import (
     DataScanServiceAsyncClient,
     DataScanServiceClient,
 )
+from .services.data_taxonomy_service import (
+    DataTaxonomyServiceAsyncClient,
+    DataTaxonomyServiceClient,
+)
 from .services.dataplex_service import DataplexServiceAsyncClient, DataplexServiceClient
 from .services.metadata_service import MetadataServiceAsyncClient, MetadataServiceClient
 from .types.analyze import Content, Environment, Session
@@ -42,6 +46,29 @@ from .types.data_quality import (
     DataQualityRuleResult,
     DataQualitySpec,
 )
+from .types.data_taxonomy import (
+    CreateDataAttributeBindingRequest,
+    CreateDataAttributeRequest,
+    CreateDataTaxonomyRequest,
+    DataAttribute,
+    DataAttributeBinding,
+    DataTaxonomy,
+    DeleteDataAttributeBindingRequest,
+    DeleteDataAttributeRequest,
+    DeleteDataTaxonomyRequest,
+    GetDataAttributeBindingRequest,
+    GetDataAttributeRequest,
+    GetDataTaxonomyRequest,
+    ListDataAttributeBindingsRequest,
+    ListDataAttributeBindingsResponse,
+    ListDataAttributesRequest,
+    ListDataAttributesResponse,
+    ListDataTaxonomiesRequest,
+    ListDataTaxonomiesResponse,
+    UpdateDataAttributeBindingRequest,
+    UpdateDataAttributeRequest,
+    UpdateDataTaxonomyRequest,
+)
 from .types.datascans import (
     CreateDataScanRequest,
     DataScan,
@@ -58,7 +85,13 @@ from .types.datascans import (
     RunDataScanResponse,
     UpdateDataScanRequest,
 )
-from .types.logs import DataScanEvent, DiscoveryEvent, JobEvent, SessionEvent
+from .types.logs import (
+    DataQualityScanRuleResult,
+    DataScanEvent,
+    DiscoveryEvent,
+    JobEvent,
+    SessionEvent,
+)
 from .types.metadata_ import (
     CreateEntityRequest,
     CreatePartitionRequest,
@@ -80,6 +113,7 @@ from .types.metadata_ import (
 )
 from .types.processing import DataSource, ScannedData, Trigger
 from .types.resources import Action, Asset, AssetStatus, Lake, State, Zone
+from .types.security import DataAccessSpec, ResourceAccessSpec
 from .types.service import (
     CancelJobRequest,
     CreateAssetRequest,
@@ -130,6 +164,7 @@ from .types.tasks import Job, Task
 __all__ = (
     "ContentServiceAsyncClient",
     "DataScanServiceAsyncClient",
+    "DataTaxonomyServiceAsyncClient",
     "DataplexServiceAsyncClient",
     "MetadataServiceAsyncClient",
     "Action",
@@ -140,19 +175,26 @@ __all__ = (
     "ContentServiceClient",
     "CreateAssetRequest",
     "CreateContentRequest",
+    "CreateDataAttributeBindingRequest",
+    "CreateDataAttributeRequest",
     "CreateDataScanRequest",
+    "CreateDataTaxonomyRequest",
     "CreateEntityRequest",
     "CreateEnvironmentRequest",
     "CreateLakeRequest",
     "CreatePartitionRequest",
     "CreateTaskRequest",
     "CreateZoneRequest",
+    "DataAccessSpec",
+    "DataAttribute",
+    "DataAttributeBinding",
     "DataProfileResult",
     "DataProfileSpec",
     "DataQualityDimensionResult",
     "DataQualityResult",
     "DataQualityRule",
     "DataQualityRuleResult",
+    "DataQualityScanRuleResult",
     "DataQualitySpec",
     "DataScan",
     "DataScanEvent",
@@ -160,10 +202,15 @@ __all__ = (
     "DataScanServiceClient",
     "DataScanType",
     "DataSource",
+    "DataTaxonomy",
+    "DataTaxonomyServiceClient",
     "DataplexServiceClient",
     "DeleteAssetRequest",
     "DeleteContentRequest",
+    "DeleteDataAttributeBindingRequest",
+    "DeleteDataAttributeRequest",
     "DeleteDataScanRequest",
+    "DeleteDataTaxonomyRequest",
     "DeleteEntityRequest",
     "DeleteEnvironmentRequest",
     "DeleteLakeRequest",
@@ -175,8 +222,11 @@ __all__ = (
     "Environment",
     "GetAssetRequest",
     "GetContentRequest",
+    "GetDataAttributeBindingRequest",
+    "GetDataAttributeRequest",
     "GetDataScanJobRequest",
     "GetDataScanRequest",
+    "GetDataTaxonomyRequest",
     "GetEntityRequest",
     "GetEnvironmentRequest",
     "GetJobRequest",
@@ -193,10 +243,16 @@ __all__ = (
     "ListAssetsResponse",
     "ListContentRequest",
     "ListContentResponse",
+    "ListDataAttributeBindingsRequest",
+    "ListDataAttributeBindingsResponse",
+    "ListDataAttributesRequest",
+    "ListDataAttributesResponse",
     "ListDataScanJobsRequest",
     "ListDataScanJobsResponse",
     "ListDataScansRequest",
     "ListDataScansResponse",
+    "ListDataTaxonomiesRequest",
+    "ListDataTaxonomiesResponse",
     "ListEntitiesRequest",
     "ListEntitiesResponse",
     "ListEnvironmentsRequest",
@@ -218,6 +274,7 @@ __all__ = (
     "MetadataServiceClient",
     "OperationMetadata",
     "Partition",
+    "ResourceAccessSpec",
     "RunDataScanRequest",
     "RunDataScanResponse",
     "RunTaskRequest",
@@ -234,7 +291,10 @@ __all__ = (
     "Trigger",
     "UpdateAssetRequest",
     "UpdateContentRequest",
+    "UpdateDataAttributeBindingRequest",
+    "UpdateDataAttributeRequest",
     "UpdateDataScanRequest",
+    "UpdateDataTaxonomyRequest",
     "UpdateEntityRequest",
     "UpdateEnvironmentRequest",
     "UpdateLakeRequest",

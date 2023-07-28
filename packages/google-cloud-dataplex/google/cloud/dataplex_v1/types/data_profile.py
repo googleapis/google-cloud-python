@@ -31,7 +31,117 @@ __protobuf__ = proto.module(
 
 
 class DataProfileSpec(proto.Message):
-    r"""DataProfileScan related setting."""
+    r"""DataProfileScan related setting.
+
+    Attributes:
+        sampling_percent (float):
+            Optional. The percentage of the records to be selected from
+            the dataset for DataScan.
+
+            -  Value can range between 0.0 and 100.0 with up to 3
+               significant decimal digits.
+            -  Sampling is not applied if ``sampling_percent`` is not
+               specified, 0 or
+
+            100.
+        row_filter (str):
+            Optional. A filter applied to all rows in a
+            single DataScan job. The filter needs to be a
+            valid SQL expression for a WHERE clause in
+            BigQuery standard SQL syntax.
+            Example: col1 >= 0 AND col2 < 10
+        post_scan_actions (google.cloud.dataplex_v1.types.DataProfileSpec.PostScanActions):
+            Optional. Actions to take upon job
+            completion..
+        include_fields (google.cloud.dataplex_v1.types.DataProfileSpec.SelectedFields):
+            Optional. The fields to include in data profile.
+
+            If not specified, all fields at the time of profile scan job
+            execution are included, except for ones listed in
+            ``exclude_fields``.
+        exclude_fields (google.cloud.dataplex_v1.types.DataProfileSpec.SelectedFields):
+            Optional. The fields to exclude from data profile.
+
+            If specified, the fields will be excluded from data profile,
+            regardless of ``include_fields`` value.
+    """
+
+    class PostScanActions(proto.Message):
+        r"""The configuration of post scan actions of DataProfileScan
+        job.
+
+        Attributes:
+            bigquery_export (google.cloud.dataplex_v1.types.DataProfileSpec.PostScanActions.BigQueryExport):
+                Optional. If set, results will be exported to
+                the provided BigQuery table.
+        """
+
+        class BigQueryExport(proto.Message):
+            r"""The configuration of BigQuery export post scan action.
+
+            Attributes:
+                results_table (str):
+                    Optional. The BigQuery table to export
+                    DataProfileScan results to. Format:
+
+                    projects/{project}/datasets/{dataset}/tables/{table}
+            """
+
+            results_table: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
+        bigquery_export: "DataProfileSpec.PostScanActions.BigQueryExport" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="DataProfileSpec.PostScanActions.BigQueryExport",
+        )
+
+    class SelectedFields(proto.Message):
+        r"""The specification for fields to include or exclude in data
+        profile scan.
+
+        Attributes:
+            field_names (MutableSequence[str]):
+                Optional. Expected input is a list of fully
+                qualified names of fields as in the schema.
+
+                Only top-level field names for nested fields are
+                supported. For instance, if 'x' is of nested
+                field type, listing 'x' is supported but 'x.y.z'
+                is not supported. Here 'y' and 'y.z' are nested
+                fields of 'x'.
+        """
+
+        field_names: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
+    sampling_percent: float = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    row_filter: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    post_scan_actions: PostScanActions = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=PostScanActions,
+    )
+    include_fields: SelectedFields = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=SelectedFields,
+    )
+    exclude_fields: SelectedFields = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=SelectedFields,
+    )
 
 
 class DataProfileResult(proto.Message):
@@ -45,6 +155,8 @@ class DataProfileResult(proto.Message):
             The profile information per field.
         scanned_data (google.cloud.dataplex_v1.types.ScannedData):
             The data scanned for this result.
+        post_scan_actions_result (google.cloud.dataplex_v1.types.DataProfileResult.PostScanActionsResult):
+            Output only. The result of post scan actions.
     """
 
     class Profile(proto.Message):
@@ -101,12 +213,12 @@ class DataProfileResult(proto.Message):
                         non-groupable field type RECORD and fields with
                         REPEATABLE mode.
                     top_n_values (MutableSequence[google.cloud.dataplex_v1.types.DataProfileResult.Profile.Field.ProfileInfo.TopNValue]):
-                        The list of top N non-null values and number
-                        of times they occur in the scanned data. N is 10
-                        or equal to the number of distinct values in the
-                        field, whichever is smaller. Not available for
-                        complex non-groupable field type RECORD and
-                        fields with REPEATABLE mode.
+                        The list of top N non-null values, frequency
+                        and ratio with which they occur in the scanned
+                        data. N is 10 or equal to the number of distinct
+                        values in the field, whichever is smaller. Not
+                        available for complex non-groupable field type
+                        RECORD and fields with REPEATABLE mode.
                     string_profile (google.cloud.dataplex_v1.types.DataProfileResult.Profile.Field.ProfileInfo.StringFieldInfo):
                         String type field information.
 
@@ -176,9 +288,9 @@ class DataProfileResult(proto.Message):
                             from the lowest 75%. It is known as the upper or
                             75th empirical quartile, as 75% of the data lies
                             below this point. Here, the quartiles is
-                            provided as an ordered list of quartile values
-                            for the scanned data, occurring in order Q1,
-                            median, Q3.
+                            provided as an ordered list of approximate
+                            quartile values for the scanned data, occurring
+                            in order Q1, median, Q3.
                         max_ (int):
                             Maximum of non-null values in the scanned
                             data. NaN, if the field has a NaN.
@@ -270,6 +382,10 @@ class DataProfileResult(proto.Message):
                         count (int):
                             Count of the corresponding value in the
                             scanned data.
+                        ratio (float):
+                            Ratio of the corresponding value in the field
+                            against the total number of rows in the scanned
+                            data.
                     """
 
                     value: str = proto.Field(
@@ -279,6 +395,10 @@ class DataProfileResult(proto.Message):
                     count: int = proto.Field(
                         proto.INT64,
                         number=2,
+                    )
+                    ratio: float = proto.Field(
+                        proto.DOUBLE,
+                        number=3,
                     )
 
                 null_ratio: float = proto.Field(
@@ -341,6 +461,64 @@ class DataProfileResult(proto.Message):
             message="DataProfileResult.Profile.Field",
         )
 
+    class PostScanActionsResult(proto.Message):
+        r"""The result of post scan actions of DataProfileScan job.
+
+        Attributes:
+            bigquery_export_result (google.cloud.dataplex_v1.types.DataProfileResult.PostScanActionsResult.BigQueryExportResult):
+                Output only. The result of BigQuery export
+                post scan action.
+        """
+
+        class BigQueryExportResult(proto.Message):
+            r"""The result of BigQuery export post scan action.
+
+            Attributes:
+                state (google.cloud.dataplex_v1.types.DataProfileResult.PostScanActionsResult.BigQueryExportResult.State):
+                    Output only. Execution state for the BigQuery
+                    exporting.
+                message (str):
+                    Output only. Additional information about the
+                    BigQuery exporting.
+            """
+
+            class State(proto.Enum):
+                r"""Execution state for the exporting.
+
+                Values:
+                    STATE_UNSPECIFIED (0):
+                        The exporting state is unspecified.
+                    SUCCEEDED (1):
+                        The exporting completed successfully.
+                    FAILED (2):
+                        The exporting is no longer running due to an
+                        error.
+                    SKIPPED (3):
+                        The exporting is skipped due to no valid scan
+                        result to export (usually caused by scan
+                        failed).
+                """
+                STATE_UNSPECIFIED = 0
+                SUCCEEDED = 1
+                FAILED = 2
+                SKIPPED = 3
+
+            state: "DataProfileResult.PostScanActionsResult.BigQueryExportResult.State" = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="DataProfileResult.PostScanActionsResult.BigQueryExportResult.State",
+            )
+            message: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+
+        bigquery_export_result: "DataProfileResult.PostScanActionsResult.BigQueryExportResult" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="DataProfileResult.PostScanActionsResult.BigQueryExportResult",
+        )
+
     row_count: int = proto.Field(
         proto.INT64,
         number=3,
@@ -354,6 +532,11 @@ class DataProfileResult(proto.Message):
         proto.MESSAGE,
         number=5,
         message=processing.ScannedData,
+    )
+    post_scan_actions_result: PostScanActionsResult = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=PostScanActionsResult,
     )
 
 

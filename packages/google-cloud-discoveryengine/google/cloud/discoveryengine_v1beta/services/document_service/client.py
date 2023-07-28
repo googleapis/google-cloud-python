@@ -651,9 +651,10 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 documents under the default branch.
 
                 If the caller does not have permission to list
-                [Documents][]s under this branch, regardless of whether
-                or not this branch exists, a ``PERMISSION_DENIED`` error
-                is returned.
+                [Document][google.cloud.discoveryengine.v1beta.Document]s
+                under this branch, regardless of whether or not this
+                branch exists, a ``PERMISSION_DENIED`` error is
+                returned.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tpu-v1.11.2...google-cloud-tpu-v1.12.0) (2023-07-25)
+
+
+### Features
+
+* add multislice_node flag ([4ccdde0](https://github.com/googleapis/google-cloud-python/commit/4ccdde051bc1741c4ac93aeb7825b58f18aa1d90))
+* enable QueuedResources in us-east5 ([4ccdde0](https://github.com/googleapis/google-cloud-python/commit/4ccdde051bc1741c4ac93aeb7825b58f18aa1d90))
+
 ## [1.11.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tpu-v1.11.1...google-cloud-tpu-v1.11.2) (2023-07-06)
 
 

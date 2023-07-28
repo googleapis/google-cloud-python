@@ -49,6 +49,9 @@ class Namespace(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the namespace
             was last updated.
+        uid (str):
+            Output only. A globally unique identifier (in
+            UUID4 format) for this namespace.
     """
 
     name: str = proto.Field(
@@ -69,6 +72,10 @@ class Namespace(proto.Message):
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 

@@ -15,6 +15,23 @@
 #
 from .common import CustomAttribute, Interval, UserInfo
 from .completion_service import CompleteQueryRequest, CompleteQueryResponse
+from .conversation import (
+    Conversation,
+    ConversationContext,
+    ConversationMessage,
+    Reply,
+    TextInput,
+)
+from .conversational_search_service import (
+    ConverseConversationRequest,
+    ConverseConversationResponse,
+    CreateConversationRequest,
+    DeleteConversationRequest,
+    GetConversationRequest,
+    ListConversationsRequest,
+    ListConversationsResponse,
+    UpdateConversationRequest,
+)
 from .document import Document
 from .document_service import (
     CreateDocumentRequest,
@@ -72,6 +89,19 @@ __all__ = (
     "UserInfo",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
+    "Conversation",
+    "ConversationContext",
+    "ConversationMessage",
+    "Reply",
+    "TextInput",
+    "ConverseConversationRequest",
+    "ConverseConversationResponse",
+    "CreateConversationRequest",
+    "DeleteConversationRequest",
+    "GetConversationRequest",
+    "ListConversationsRequest",
+    "ListConversationsResponse",
+    "UpdateConversationRequest",
     "Document",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",

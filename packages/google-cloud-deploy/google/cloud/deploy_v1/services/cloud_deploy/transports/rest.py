@@ -2299,8 +2299,7 @@ class CloudDeployRestTransport(CloudDeployTransport):
 
             Returns:
                 ~.cloud_deploy.DeliveryPipeline:
-                    A ``DeliveryPipeline`` resource in the Google Cloud
-                Deploy API.
+                    A ``DeliveryPipeline`` resource in the Cloud Deploy API.
 
                 A ``DeliveryPipeline`` defines a pipeline through which
                 a Skaffold configuration can progress.
@@ -2393,7 +2392,7 @@ class CloudDeployRestTransport(CloudDeployTransport):
 
             Returns:
                 ~.cloud_deploy.JobRun:
-                    A ``JobRun`` resource in the Google Cloud Deploy API.
+                    A ``JobRun`` resource in the Cloud Deploy API.
 
                 A ``JobRun`` contains information of a single
                 ``Rollout`` job evaluation.
@@ -2483,7 +2482,7 @@ class CloudDeployRestTransport(CloudDeployTransport):
 
             Returns:
                 ~.cloud_deploy.Release:
-                    A ``Release`` resource in the Google Cloud Deploy API.
+                    A ``Release`` resource in the Cloud Deploy API.
 
                 A ``Release`` defines a specific Skaffold configuration
                 instance that can be deployed.
@@ -2574,7 +2573,7 @@ class CloudDeployRestTransport(CloudDeployTransport):
 
             Returns:
                 ~.cloud_deploy.Rollout:
-                    A ``Rollout`` resource in the Google Cloud Deploy API.
+                    A ``Rollout`` resource in the Cloud Deploy API.
 
                 A ``Rollout`` contains information around a specific
                 deployment to a ``Target``.
@@ -2664,7 +2663,7 @@ class CloudDeployRestTransport(CloudDeployTransport):
 
             Returns:
                 ~.cloud_deploy.Target:
-                    A ``Target`` resource in the Google Cloud Deploy API.
+                    A ``Target`` resource in the Cloud Deploy API.
 
                 A ``Target`` defines a location to which a Skaffold
                 configuration can be deployed.

@@ -2417,8 +2417,6 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 [ImportProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.ImportProcessorVersion]
                 method. Requirements:
 
-                -  The source processor version and destination
-                   processor must be in the same location.
                 -  The Document AI `Service
                    Agent <https://cloud.google.com/iam/docs/service-agents>`__
                    of the destination project must have `Document AI
@@ -2429,7 +2427,9 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 The destination project is specified as part of the
                 [parent][google.cloud.documentai.v1beta3.ImportProcessorVersionRequest.parent]
                 field. The source project is specified as part of the
-                [source][google.cloud.documentai.v1beta3.ImportProcessorVersionRequest.processor_version_source]
+                [source][ImportProcessorVersionRequest.processor_version_source
+                or
+                ImportProcessorVersionRequest.external_processor_version_source]
                 field.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.

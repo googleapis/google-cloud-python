@@ -952,6 +952,7 @@ class StorageFormat(proto.Message):
             Required. The mime type descriptor for the
             data. Must match the pattern {type}/{subtype}.
             Supported values:
+
             - application/x-parquet
             - application/x-avro
             - application/x-orc
