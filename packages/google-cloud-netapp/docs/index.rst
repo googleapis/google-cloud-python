@@ -2,6 +2,17 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of NetApp API.
+By default, you will get version ``netapp_v1``.
+
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    netapp_v1/services
+    netapp_v1/types
 
 API Reference
 -------------
