@@ -82,8 +82,8 @@ class UserEvent(proto.Message):
             which results in degraded model quality.
 
             The field must be a UTF-8 encoded string with a length limit
-            of 128 characters. Otherwise, an INVALID_ARGUMENT error is
-            returned.
+            of 128 characters. Otherwise, an ``INVALID_ARGUMENT`` error
+            is returned.
 
             The field should not contain PII or user-data. We recommend
             to use Google Analytics `Client
@@ -136,24 +136,23 @@ class UserEvent(proto.Message):
 
             The value must be one of:
 
-            -  [PredictResponse.attribution_token][] for events that are
-               the result of
+            -  [RecommendResponse.attribution_token][google.cloud.discoveryengine.v1beta.RecommendResponse.attribution_token]
+               for events that are the result of
                [RecommendationService.Recommend][google.cloud.discoveryengine.v1beta.RecommendationService.Recommend].
             -  [SearchResponse.attribution_token][google.cloud.discoveryengine.v1beta.SearchResponse.attribution_token]
                for events that are the result of
                [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search].
-            -  [CompleteQueryResponse.attribution_token][] for events
-               that are the result of
-               [CompletionService.CompleteQuery][google.cloud.discoveryengine.v1beta.CompletionService.CompleteQuery].
 
             This token enables us to accurately attribute page view or
             conversion completion back to the event and the particular
             predict response containing this clicked/purchased product.
             If user clicks on product K in the recommendation results,
-            pass [PredictResponse.attribution_token][] as a URL
-            parameter to product K's page. When recording events on
-            product K's page, log the
-            [PredictResponse.attribution_token][] to this field.
+            pass
+            [RecommendResponse.attribution_token][google.cloud.discoveryengine.v1beta.RecommendResponse.attribution_token]
+            as a URL parameter to product K's page. When recording
+            events on product K's page, log the
+            [RecommendResponse.attribution_token][google.cloud.discoveryengine.v1beta.RecommendResponse.attribution_token]
+            to this field.
         filter (str):
             The filter syntax consists of an expression language for
             constructing a predicate from one or more fields of the
@@ -172,10 +171,12 @@ class UserEvent(proto.Message):
             to https://google.aip.dev/160#filtering.
 
             The value must be a UTF-8 encoded string with a length limit
-            of 1,000 characters. Otherwise, an INVALID_ARGUMENT error is
-            returned.
+            of 1,000 characters. Otherwise, an ``INVALID_ARGUMENT``
+            error is returned.
         documents (MutableSequence[google.cloud.discoveryengine_v1beta.types.DocumentInfo]):
-            List of Documents associated with this user event.
+            List of
+            [Document][google.cloud.discoveryengine.v1beta.Document]s
+            associated with this user event.
 
             This field is optional except for the following event types:
 
@@ -197,11 +198,13 @@ class UserEvent(proto.Message):
             Panel metadata associated with this user
             event.
         search_info (google.cloud.discoveryengine_v1beta.types.SearchInfo):
-            Search API details related to the event.
+            [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search]
+            details related to the event.
 
             This field should be set for ``search`` event.
         completion_info (google.cloud.discoveryengine_v1beta.types.CompletionInfo):
-            CompleteQuery API details related to the event.
+            [CompletionService.CompleteQuery][google.cloud.discoveryengine.v1beta.CompletionService.CompleteQuery]
+            details related to the event.
 
             This field should be set for ``search`` event when
             autocomplete function is enabled and the user clicks a
@@ -347,7 +350,7 @@ class PageInfo(proto.Message):
             This should be kept the same for all user events triggered
             from the same pageview. For example, an item detail page
             view could trigger multiple events as the user is browsing
-            the page. The ``pageViewId`` property should be kept the
+            the page. The ``pageview_id`` property should be kept the
             same for all these events so that they can be grouped
             together properly.
 
@@ -363,12 +366,12 @@ class PageInfo(proto.Message):
 
             Category pages include special pages such as sales or
             promotions. For instance, a special sale page may have the
-            category hierarchy: "pageCategory" : "Sales > 2017 Black
-            Friday Deals".
+            category hierarchy:
+            ``"pageCategory" : "Sales > 2017 Black Friday Deals"``.
 
             Required for ``view-category-page`` events. Other event
             types should not set this field. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            ``INVALID_ARGUMENT`` error is returned.
         uri (str):
             Complete URL (window.location.href) of the
             user's current page.
@@ -417,16 +420,16 @@ class SearchInfo(proto.Message):
             for definition.
 
             The value must be a UTF-8 encoded string with a length limit
-            of 5,000 characters. Otherwise, an INVALID_ARGUMENT error is
-            returned.
+            of 5,000 characters. Otherwise, an ``INVALID_ARGUMENT``
+            error is returned.
 
             At least one of
             [search_query][google.cloud.discoveryengine.v1beta.SearchInfo.search_query]
             or
             [PageInfo.page_category][google.cloud.discoveryengine.v1beta.PageInfo.page_category]
             is required for ``search`` events. Other event types should
-            not set this field. Otherwise, an INVALID_ARGUMENT error is
-            returned.
+            not set this field. Otherwise, an ``INVALID_ARGUMENT`` error
+            is returned.
         order_by (str):
             The order in which products are returned, if applicable.
 
@@ -435,12 +438,12 @@ class SearchInfo(proto.Message):
             for definition and syntax.
 
             The value must be a UTF-8 encoded string with a length limit
-            of 1,000 characters. Otherwise, an INVALID_ARGUMENT error is
-            returned.
+            of 1,000 characters. Otherwise, an ``INVALID_ARGUMENT``
+            error is returned.
 
             This can only be set for ``search`` events. Other event
             types should not set this field. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            ``INVALID_ARGUMENT`` error is returned.
         offset (int):
             An integer that specifies the current offset for pagination
             (the 0-indexed starting location, amongst the products
@@ -450,11 +453,12 @@ class SearchInfo(proto.Message):
             [SearchRequest.offset][google.cloud.discoveryengine.v1beta.SearchRequest.offset]
             for definition.
 
-            If this field is negative, an INVALID_ARGUMENT is returned.
+            If this field is negative, an ``INVALID_ARGUMENT`` is
+            returned.
 
             This can only be set for ``search`` events. Other event
             types should not set this field. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            ``INVALID_ARGUMENT`` error is returned.
 
             This field is a member of `oneof`_ ``_offset``.
     """
@@ -481,10 +485,10 @@ class CompletionInfo(proto.Message):
     Attributes:
         selected_suggestion (str):
             End user selected
-            [CompleteQueryResponse.CompletionResult.suggestion][].
+            [CompleteQueryResponse.QuerySuggestion.suggestion][google.cloud.discoveryengine.v1beta.CompleteQueryResponse.QuerySuggestion.suggestion].
         selected_position (int):
             End user selected
-            [CompleteQueryResponse.CompletionResult.suggestion][]
+            [CompleteQueryResponse.QuerySuggestion.suggestion][google.cloud.discoveryengine.v1beta.CompleteQueryResponse.QuerySuggestion.suggestion]
             position, starting from 0.
     """
 
@@ -606,11 +610,13 @@ class DocumentInfo(proto.Message):
 
     Attributes:
         id (str):
-            Required. The Document resource ID.
+            The [Document][google.cloud.discoveryengine.v1beta.Document]
+            resource ID.
 
             This field is a member of `oneof`_ ``document_descriptor``.
         name (str):
-            Required. The Document resource full name, of the form:
+            The [Document][google.cloud.discoveryengine.v1beta.Document]
+            resource full name, of the form:
             ``projects/{project_id}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}/branches/{branch_id}/documents/{document_id}``
 
             This field is a member of `oneof`_ ``document_descriptor``.
@@ -710,11 +716,12 @@ class MediaInfo(proto.Message):
             The media progress time in seconds, if applicable. For
             example, if the end user has finished 90 seconds of a
             playback video, then
-            [MediaInfo.media_progress_duration.seconds][Duration.seconds]
+            [MediaInfo.media_progress_duration.seconds][google.protobuf.Duration.seconds]
             should be set to 90.
         media_progress_percentage (float):
             Media progress should be computed using only the
-            media_progress_duration relative to the media total length.
+            [media_progress_duration][google.cloud.discoveryengine.v1beta.MediaInfo.media_progress_duration]
+            relative to the media total length.
 
             This value must be between ``[0, 1.0]`` inclusive.
 

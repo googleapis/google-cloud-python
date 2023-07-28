@@ -43,15 +43,15 @@ class Document(proto.Message):
         struct_data (google.protobuf.struct_pb2.Struct):
             The structured JSON data for the document. It should conform
             to the registered
-            [Schema.schema][google.cloud.discoveryengine.v1beta.Schema.schema]
-            or an ``INVALID_ARGUMENT`` error is thrown.
+            [Schema][google.cloud.discoveryengine.v1beta.Schema] or an
+            ``INVALID_ARGUMENT`` error is thrown.
 
             This field is a member of `oneof`_ ``data``.
         json_data (str):
             The JSON string representation of the document. It should
             conform to the registered
-            [Schema.schema][google.cloud.discoveryengine.v1beta.Schema.schema]
-            or an ``INVALID_ARGUMENT`` error is thrown.
+            [Schema][google.cloud.discoveryengine.v1beta.Schema] or an
+            ``INVALID_ARGUMENT`` error is thrown.
 
             This field is a member of `oneof`_ ``data``.
         name (str):

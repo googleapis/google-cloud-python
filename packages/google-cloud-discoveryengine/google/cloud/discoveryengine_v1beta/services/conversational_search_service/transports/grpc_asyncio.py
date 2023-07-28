@@ -16,29 +16,28 @@
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api import httpbody_pb2  # type: ignore
-from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
+from google.api_core import gapic_v1, grpc_helpers_async
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
+from google.longrunning import operations_pb2
+from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.types import (
-    import_config,
-    user_event,
-    user_event_service,
-)
+from google.cloud.discoveryengine_v1beta.types import conversation as gcd_conversation
+from google.cloud.discoveryengine_v1beta.types import conversational_search_service
+from google.cloud.discoveryengine_v1beta.types import conversation
 
-from .base import DEFAULT_CLIENT_INFO, UserEventServiceTransport
-from .grpc import UserEventServiceGrpcTransport
+from .base import DEFAULT_CLIENT_INFO, ConversationalSearchServiceTransport
+from .grpc import ConversationalSearchServiceGrpcTransport
 
 
-class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
-    """gRPC AsyncIO backend transport for UserEventService.
+class ConversationalSearchServiceGrpcAsyncIOTransport(
+    ConversationalSearchServiceTransport
+):
+    """gRPC AsyncIO backend transport for ConversationalSearchService.
 
-    Service for ingesting end user actions on a website to
-    Discovery Engine API.
+    Service for conversational search.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -163,7 +162,6 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
-        self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -240,34 +238,19 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         return self._grpc_channel
 
     @property
-    def operations_client(self) -> operations_v1.OperationsAsyncClient:
-        """Create the client designed to process long-running operations.
-
-        This property caches on the instance; repeated calls return the same
-        client.
-        """
-        # Quick check: Only create a new client if we do not already have one.
-        if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self.grpc_channel
-            )
-
-        # Return the client from cache.
-        return self._operations_client
-
-    @property
-    def write_user_event(
+    def converse_conversation(
         self,
     ) -> Callable[
-        [user_event_service.WriteUserEventRequest], Awaitable[user_event.UserEvent]
+        [conversational_search_service.ConverseConversationRequest],
+        Awaitable[conversational_search_service.ConverseConversationResponse],
     ]:
-        r"""Return a callable for the write user event method over gRPC.
+        r"""Return a callable for the converse conversation method over gRPC.
 
-        Writes a single user event.
+        Converses a conversation.
 
         Returns:
-            Callable[[~.WriteUserEventRequest],
-                    Awaitable[~.UserEvent]]:
+            Callable[[~.ConverseConversationRequest],
+                    Awaitable[~.ConverseConversationResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -275,32 +258,32 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "write_user_event" not in self._stubs:
-            self._stubs["write_user_event"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.UserEventService/WriteUserEvent",
-                request_serializer=user_event_service.WriteUserEventRequest.serialize,
-                response_deserializer=user_event.UserEvent.deserialize,
+        if "converse_conversation" not in self._stubs:
+            self._stubs["converse_conversation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.ConversationalSearchService/ConverseConversation",
+                request_serializer=conversational_search_service.ConverseConversationRequest.serialize,
+                response_deserializer=conversational_search_service.ConverseConversationResponse.deserialize,
             )
-        return self._stubs["write_user_event"]
+        return self._stubs["converse_conversation"]
 
     @property
-    def collect_user_event(
+    def create_conversation(
         self,
     ) -> Callable[
-        [user_event_service.CollectUserEventRequest], Awaitable[httpbody_pb2.HttpBody]
+        [conversational_search_service.CreateConversationRequest],
+        Awaitable[gcd_conversation.Conversation],
     ]:
-        r"""Return a callable for the collect user event method over gRPC.
+        r"""Return a callable for the create conversation method over gRPC.
 
-        Writes a single user event from the browser. This
-        uses a GET request to due to browser restriction of
-        POST-ing to a third-party domain.
-        This method is used only by the Discovery Engine API
-        JavaScript pixel and Google Tag Manager. Users should
-        not call this method directly.
+        Creates a Conversation.
+
+        If the
+        [Conversation][google.cloud.discoveryengine.v1beta.Conversation]
+        to create already exists, an ALREADY_EXISTS error is returned.
 
         Returns:
-            Callable[[~.CollectUserEventRequest],
-                    Awaitable[~.HttpBody]]:
+            Callable[[~.CreateConversationRequest],
+                    Awaitable[~.Conversation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -308,33 +291,32 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "collect_user_event" not in self._stubs:
-            self._stubs["collect_user_event"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.UserEventService/CollectUserEvent",
-                request_serializer=user_event_service.CollectUserEventRequest.serialize,
-                response_deserializer=httpbody_pb2.HttpBody.FromString,
+        if "create_conversation" not in self._stubs:
+            self._stubs["create_conversation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.ConversationalSearchService/CreateConversation",
+                request_serializer=conversational_search_service.CreateConversationRequest.serialize,
+                response_deserializer=gcd_conversation.Conversation.deserialize,
             )
-        return self._stubs["collect_user_event"]
+        return self._stubs["create_conversation"]
 
     @property
-    def import_user_events(
+    def delete_conversation(
         self,
     ) -> Callable[
-        [import_config.ImportUserEventsRequest], Awaitable[operations_pb2.Operation]
+        [conversational_search_service.DeleteConversationRequest],
+        Awaitable[empty_pb2.Empty],
     ]:
-        r"""Return a callable for the import user events method over gRPC.
+        r"""Return a callable for the delete conversation method over gRPC.
 
-        Bulk import of User events. Request processing might
-        be synchronous. Events that already exist are skipped.
-        Use this method for backfilling historical user events.
-        Operation.response is of type ImportResponse. Note that
-        it is possible for a subset of the items to be
-        successfully inserted. Operation.metadata is of type
-        ImportMetadata.
+        Deletes a Conversation.
+
+        If the
+        [Conversation][google.cloud.discoveryengine.v1beta.Conversation]
+        to delete does not exist, a NOT_FOUND error is returned.
 
         Returns:
-            Callable[[~.ImportUserEventsRequest],
-                    Awaitable[~.Operation]]:
+            Callable[[~.DeleteConversationRequest],
+                    Awaitable[~.Empty]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -342,13 +324,106 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "import_user_events" not in self._stubs:
-            self._stubs["import_user_events"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.UserEventService/ImportUserEvents",
-                request_serializer=import_config.ImportUserEventsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+        if "delete_conversation" not in self._stubs:
+            self._stubs["delete_conversation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.ConversationalSearchService/DeleteConversation",
+                request_serializer=conversational_search_service.DeleteConversationRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs["import_user_events"]
+        return self._stubs["delete_conversation"]
+
+    @property
+    def update_conversation(
+        self,
+    ) -> Callable[
+        [conversational_search_service.UpdateConversationRequest],
+        Awaitable[gcd_conversation.Conversation],
+    ]:
+        r"""Return a callable for the update conversation method over gRPC.
+
+        Updates a Conversation.
+
+        [Conversation][google.cloud.discoveryengine.v1beta.Conversation]
+        action type cannot be changed. If the
+        [Conversation][google.cloud.discoveryengine.v1beta.Conversation]
+        to update does not exist, a NOT_FOUND error is returned.
+
+        Returns:
+            Callable[[~.UpdateConversationRequest],
+                    Awaitable[~.Conversation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_conversation" not in self._stubs:
+            self._stubs["update_conversation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.ConversationalSearchService/UpdateConversation",
+                request_serializer=conversational_search_service.UpdateConversationRequest.serialize,
+                response_deserializer=gcd_conversation.Conversation.deserialize,
+            )
+        return self._stubs["update_conversation"]
+
+    @property
+    def get_conversation(
+        self,
+    ) -> Callable[
+        [conversational_search_service.GetConversationRequest],
+        Awaitable[conversation.Conversation],
+    ]:
+        r"""Return a callable for the get conversation method over gRPC.
+
+        Gets a Conversation.
+
+        Returns:
+            Callable[[~.GetConversationRequest],
+                    Awaitable[~.Conversation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_conversation" not in self._stubs:
+            self._stubs["get_conversation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.ConversationalSearchService/GetConversation",
+                request_serializer=conversational_search_service.GetConversationRequest.serialize,
+                response_deserializer=conversation.Conversation.deserialize,
+            )
+        return self._stubs["get_conversation"]
+
+    @property
+    def list_conversations(
+        self,
+    ) -> Callable[
+        [conversational_search_service.ListConversationsRequest],
+        Awaitable[conversational_search_service.ListConversationsResponse],
+    ]:
+        r"""Return a callable for the list conversations method over gRPC.
+
+        Lists all Conversations by their parent
+        [DataStore][google.cloud.discoveryengine.v1beta.DataStore].
+
+        Returns:
+            Callable[[~.ListConversationsRequest],
+                    Awaitable[~.ListConversationsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_conversations" not in self._stubs:
+            self._stubs["list_conversations"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.ConversationalSearchService/ListConversations",
+                request_serializer=conversational_search_service.ListConversationsRequest.serialize,
+                response_deserializer=conversational_search_service.ListConversationsResponse.deserialize,
+            )
+        return self._stubs["list_conversations"]
 
     def close(self):
         return self.grpc_channel.close()
@@ -390,4 +465,4 @@ class UserEventServiceGrpcAsyncIOTransport(UserEventServiceTransport):
         return self._stubs["list_operations"]
 
 
-__all__ = ("UserEventServiceGrpcAsyncIOTransport",)
+__all__ = ("ConversationalSearchServiceGrpcAsyncIOTransport",)
