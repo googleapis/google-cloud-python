@@ -13,14 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.netapp import gapic_version as package_version
+from google.cloud.netapp_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
 
-from google.cloud.netapp_v1.services.net_app.async_client import NetAppAsyncClient
-from google.cloud.netapp_v1.services.net_app.client import NetAppClient
-from google.cloud.netapp_v1.types.active_directory import (
+from .services.net_app import NetAppAsyncClient, NetAppClient
+from .types.active_directory import (
     ActiveDirectory,
     CreateActiveDirectoryRequest,
     DeleteActiveDirectoryRequest,
@@ -29,9 +28,9 @@ from google.cloud.netapp_v1.types.active_directory import (
     ListActiveDirectoriesResponse,
     UpdateActiveDirectoryRequest,
 )
-from google.cloud.netapp_v1.types.cloud_netapp_service import OperationMetadata
-from google.cloud.netapp_v1.types.common import EncryptionType, ServiceLevel
-from google.cloud.netapp_v1.types.kms import (
+from .types.cloud_netapp_service import OperationMetadata
+from .types.common import EncryptionType, ServiceLevel
+from .types.kms import (
     CreateKmsConfigRequest,
     DeleteKmsConfigRequest,
     EncryptVolumesRequest,
@@ -43,7 +42,7 @@ from google.cloud.netapp_v1.types.kms import (
     VerifyKmsConfigRequest,
     VerifyKmsConfigResponse,
 )
-from google.cloud.netapp_v1.types.replication import (
+from .types.replication import (
     CreateReplicationRequest,
     DeleteReplicationRequest,
     DestinationVolumeParameters,
@@ -57,7 +56,7 @@ from google.cloud.netapp_v1.types.replication import (
     TransferStats,
     UpdateReplicationRequest,
 )
-from google.cloud.netapp_v1.types.snapshot import (
+from .types.snapshot import (
     CreateSnapshotRequest,
     DeleteSnapshotRequest,
     GetSnapshotRequest,
@@ -66,7 +65,7 @@ from google.cloud.netapp_v1.types.snapshot import (
     Snapshot,
     UpdateSnapshotRequest,
 )
-from google.cloud.netapp_v1.types.storage_pool import (
+from .types.storage_pool import (
     CreateStoragePoolRequest,
     DeleteStoragePoolRequest,
     GetStoragePoolRequest,
@@ -75,7 +74,7 @@ from google.cloud.netapp_v1.types.storage_pool import (
     StoragePool,
     UpdateStoragePoolRequest,
 )
-from google.cloud.netapp_v1.types.volume import (
+from .types.volume import (
     AccessType,
     CreateVolumeRequest,
     DailySchedule,
@@ -100,73 +99,73 @@ from google.cloud.netapp_v1.types.volume import (
 )
 
 __all__ = (
-    "NetAppClient",
     "NetAppAsyncClient",
+    "AccessType",
     "ActiveDirectory",
     "CreateActiveDirectoryRequest",
-    "DeleteActiveDirectoryRequest",
-    "GetActiveDirectoryRequest",
-    "ListActiveDirectoriesRequest",
-    "ListActiveDirectoriesResponse",
-    "UpdateActiveDirectoryRequest",
-    "OperationMetadata",
-    "EncryptionType",
-    "ServiceLevel",
     "CreateKmsConfigRequest",
-    "DeleteKmsConfigRequest",
-    "EncryptVolumesRequest",
-    "GetKmsConfigRequest",
-    "KmsConfig",
-    "ListKmsConfigsRequest",
-    "ListKmsConfigsResponse",
-    "UpdateKmsConfigRequest",
-    "VerifyKmsConfigRequest",
-    "VerifyKmsConfigResponse",
     "CreateReplicationRequest",
-    "DeleteReplicationRequest",
-    "DestinationVolumeParameters",
-    "GetReplicationRequest",
-    "ListReplicationsRequest",
-    "ListReplicationsResponse",
-    "Replication",
-    "ResumeReplicationRequest",
-    "ReverseReplicationDirectionRequest",
-    "StopReplicationRequest",
-    "TransferStats",
-    "UpdateReplicationRequest",
     "CreateSnapshotRequest",
-    "DeleteSnapshotRequest",
-    "GetSnapshotRequest",
-    "ListSnapshotsRequest",
-    "ListSnapshotsResponse",
-    "Snapshot",
-    "UpdateSnapshotRequest",
     "CreateStoragePoolRequest",
-    "DeleteStoragePoolRequest",
-    "GetStoragePoolRequest",
-    "ListStoragePoolsRequest",
-    "ListStoragePoolsResponse",
-    "StoragePool",
-    "UpdateStoragePoolRequest",
     "CreateVolumeRequest",
     "DailySchedule",
+    "DeleteActiveDirectoryRequest",
+    "DeleteKmsConfigRequest",
+    "DeleteReplicationRequest",
+    "DeleteSnapshotRequest",
+    "DeleteStoragePoolRequest",
     "DeleteVolumeRequest",
+    "DestinationVolumeParameters",
+    "EncryptVolumesRequest",
+    "EncryptionType",
     "ExportPolicy",
+    "GetActiveDirectoryRequest",
+    "GetKmsConfigRequest",
+    "GetReplicationRequest",
+    "GetSnapshotRequest",
+    "GetStoragePoolRequest",
     "GetVolumeRequest",
     "HourlySchedule",
+    "KmsConfig",
+    "ListActiveDirectoriesRequest",
+    "ListActiveDirectoriesResponse",
+    "ListKmsConfigsRequest",
+    "ListKmsConfigsResponse",
+    "ListReplicationsRequest",
+    "ListReplicationsResponse",
+    "ListSnapshotsRequest",
+    "ListSnapshotsResponse",
+    "ListStoragePoolsRequest",
+    "ListStoragePoolsResponse",
     "ListVolumesRequest",
     "ListVolumesResponse",
     "MonthlySchedule",
     "MountOption",
+    "NetAppClient",
+    "OperationMetadata",
+    "Protocols",
+    "Replication",
     "RestoreParameters",
+    "ResumeReplicationRequest",
+    "ReverseReplicationDirectionRequest",
     "RevertVolumeRequest",
+    "SMBSettings",
+    "SecurityStyle",
+    "ServiceLevel",
     "SimpleExportPolicyRule",
+    "Snapshot",
     "SnapshotPolicy",
+    "StopReplicationRequest",
+    "StoragePool",
+    "TransferStats",
+    "UpdateActiveDirectoryRequest",
+    "UpdateKmsConfigRequest",
+    "UpdateReplicationRequest",
+    "UpdateSnapshotRequest",
+    "UpdateStoragePoolRequest",
     "UpdateVolumeRequest",
+    "VerifyKmsConfigRequest",
+    "VerifyKmsConfigResponse",
     "Volume",
     "WeeklySchedule",
-    "AccessType",
-    "Protocols",
-    "SecurityStyle",
-    "SMBSettings",
 )
