@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.11.3](https://github.com/googleapis/python-translate/compare/v3.11.2...v3.11.3) (2023-07-28)
+
+
+### Documentation
+
+* Minor formatting ([#505](https://github.com/googleapis/python-translate/issues/505)) ([7caca44](https://github.com/googleapis/python-translate/commit/7caca44ba0063347715b63dce357c0f4b0eaa37b))
+* Minor formatting ([#507](https://github.com/googleapis/python-translate/issues/507)) ([c689b04](https://github.com/googleapis/python-translate/commit/c689b04c5a3f069a3ab2343153ccfbff08d56ec6))
+
 ## [3.11.2](https://github.com/googleapis/python-translate/compare/v3.11.1...v3.11.2) (2023-07-04)
 
 
