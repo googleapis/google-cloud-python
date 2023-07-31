@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.19.0](https://github.com/googleapis/python-analytics-admin/compare/v0.18.1...v0.19.0) (2023-07-27)
+
+
+### Bug Fixes
+
+* **v1alpha:** Rename enum from `ADS_PREFERRED_LAST_CLICK` to `GOOGLE_PAID_CHANNELS_LAST_CLICK` ([9a644b5](https://github.com/googleapis/python-analytics-admin/commit/9a644b5ca12959e086301313853c7777405ab7f3))
+* **v1alpha:** Rename enum from `ADS_PREFERRED` to `GOOGLE_PAID_CHANNELS` ([9a644b5](https://github.com/googleapis/python-analytics-admin/commit/9a644b5ca12959e086301313853c7777405ab7f3))
+* **v1alpha:** Rename enum from `CROSS_CHANNEL_DATA_DRIVEN` to `PAID_AND_ORGANIC_CHANNELS_DATA_DRIVEN` ([9a644b5](https://github.com/googleapis/python-analytics-admin/commit/9a644b5ca12959e086301313853c7777405ab7f3))
+* **v1alpha:** Rename enum from `CROSS_CHANNEL_FIRST_CLICK` to `PAID_AND_ORGANIC_CHANNELS_FIRST_CLICK` ([9a644b5](https://github.com/googleapis/python-analytics-admin/commit/9a644b5ca12959e086301313853c7777405ab7f3))
+* **v1alpha:** Rename enum from `CROSS_CHANNEL_LAST_CLICK` to `PAID_AND_ORGANIC_CHANNELS_LAST_CLICK` ([9a644b5](https://github.com/googleapis/python-analytics-admin/commit/9a644b5ca12959e086301313853c7777405ab7f3))
+* **v1alpha:** Rename enum from `CROSS_CHANNEL_LINEAR` to `PAID_AND_ORGANIC_CHANNELS_LINEAR` ([9a644b5](https://github.com/googleapis/python-analytics-admin/commit/9a644b5ca12959e086301313853c7777405ab7f3))
+* **v1alpha:** Rename enum from `CROSS_CHANNEL_POSITION_BASED` to `PAID_AND_ORGANIC_CHANNELS_POSITION_BASED` ([9a644b5](https://github.com/googleapis/python-analytics-admin/commit/9a644b5ca12959e086301313853c7777405ab7f3))
+* **v1alpha:** Rename enum from `CROSS_CHANNEL_TIME_DECAY` to `PAID_AND_ORGANIC_CHANNELS_TIME_DECAY` ([9a644b5](https://github.com/googleapis/python-analytics-admin/commit/9a644b5ca12959e086301313853c7777405ab7f3))
+* **v1alpha:** Rename enum from `CROSS_CHANNEL` to `PAID_AND_ORGANIC_CHANNELS` ([9a644b5](https://github.com/googleapis/python-analytics-admin/commit/9a644b5ca12959e086301313853c7777405ab7f3))
+
 ## [0.18.1](https://github.com/googleapis/python-analytics-admin/compare/v0.18.0...v0.18.1) (2023-07-04)
 
 
