@@ -18,9 +18,9 @@ from google.cloud.netapp import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.netapp_v1beta1.services.net_app.async_client import NetAppAsyncClient
-from google.cloud.netapp_v1beta1.services.net_app.client import NetAppClient
-from google.cloud.netapp_v1beta1.types.active_directory import (
+from google.cloud.netapp_v1.services.net_app.async_client import NetAppAsyncClient
+from google.cloud.netapp_v1.services.net_app.client import NetAppClient
+from google.cloud.netapp_v1.types.active_directory import (
     ActiveDirectory,
     CreateActiveDirectoryRequest,
     DeleteActiveDirectoryRequest,
@@ -29,9 +29,9 @@ from google.cloud.netapp_v1beta1.types.active_directory import (
     ListActiveDirectoriesResponse,
     UpdateActiveDirectoryRequest,
 )
-from google.cloud.netapp_v1beta1.types.cloud_netapp_service import OperationMetadata
-from google.cloud.netapp_v1beta1.types.common import EncryptionType, ServiceLevel
-from google.cloud.netapp_v1beta1.types.kms import (
+from google.cloud.netapp_v1.types.cloud_netapp_service import OperationMetadata
+from google.cloud.netapp_v1.types.common import EncryptionType, ServiceLevel
+from google.cloud.netapp_v1.types.kms import (
     CreateKmsConfigRequest,
     DeleteKmsConfigRequest,
     EncryptVolumesRequest,
@@ -43,7 +43,7 @@ from google.cloud.netapp_v1beta1.types.kms import (
     VerifyKmsConfigRequest,
     VerifyKmsConfigResponse,
 )
-from google.cloud.netapp_v1beta1.types.replication import (
+from google.cloud.netapp_v1.types.replication import (
     CreateReplicationRequest,
     DeleteReplicationRequest,
     DestinationVolumeParameters,
@@ -57,7 +57,7 @@ from google.cloud.netapp_v1beta1.types.replication import (
     TransferStats,
     UpdateReplicationRequest,
 )
-from google.cloud.netapp_v1beta1.types.snapshot import (
+from google.cloud.netapp_v1.types.snapshot import (
     CreateSnapshotRequest,
     DeleteSnapshotRequest,
     GetSnapshotRequest,
@@ -66,7 +66,7 @@ from google.cloud.netapp_v1beta1.types.snapshot import (
     Snapshot,
     UpdateSnapshotRequest,
 )
-from google.cloud.netapp_v1beta1.types.storage_pool import (
+from google.cloud.netapp_v1.types.storage_pool import (
     CreateStoragePoolRequest,
     DeleteStoragePoolRequest,
     GetStoragePoolRequest,
@@ -75,7 +75,7 @@ from google.cloud.netapp_v1beta1.types.storage_pool import (
     StoragePool,
     UpdateStoragePoolRequest,
 )
-from google.cloud.netapp_v1beta1.types.volume import (
+from google.cloud.netapp_v1.types.volume import (
     AccessType,
     CreateVolumeRequest,
     DailySchedule,

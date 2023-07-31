@@ -38,14 +38,78 @@ class DataQualitySpec(proto.Message):
 
     Attributes:
         rules (MutableSequence[google.cloud.dataplex_v1.types.DataQualityRule]):
-            The list of rules to evaluate against a data
-            source. At least one rule is required.
+            Required. The list of rules to evaluate
+            against a data source. At least one rule is
+            required.
+        sampling_percent (float):
+            Optional. The percentage of the records to be selected from
+            the dataset for DataScan.
+
+            -  Value can range between 0.0 and 100.0 with up to 3
+               significant decimal digits.
+            -  Sampling is not applied if ``sampling_percent`` is not
+               specified, 0 or
+
+            100.
+        row_filter (str):
+            Optional. A filter applied to all rows in a
+            single DataScan job. The filter needs to be a
+            valid SQL expression for a WHERE clause in
+            BigQuery standard SQL syntax.
+            Example: col1 >= 0 AND col2 < 10
+        post_scan_actions (google.cloud.dataplex_v1.types.DataQualitySpec.PostScanActions):
+            Optional. Actions to take upon job
+            completion.
     """
+
+    class PostScanActions(proto.Message):
+        r"""The configuration of post scan actions of DataQualityScan.
+
+        Attributes:
+            bigquery_export (google.cloud.dataplex_v1.types.DataQualitySpec.PostScanActions.BigQueryExport):
+                Optional. If set, results will be exported to
+                the provided BigQuery table.
+        """
+
+        class BigQueryExport(proto.Message):
+            r"""The configuration of BigQuery export post scan action.
+
+            Attributes:
+                results_table (str):
+                    Optional. The BigQuery table to export
+                    DataQualityScan results to. Format:
+
+                    projects/{project}/datasets/{dataset}/tables/{table}
+            """
+
+            results_table: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
+        bigquery_export: "DataQualitySpec.PostScanActions.BigQueryExport" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="DataQualitySpec.PostScanActions.BigQueryExport",
+        )
 
     rules: MutableSequence["DataQualityRule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DataQualityRule",
+    )
+    sampling_percent: float = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
+    row_filter: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    post_scan_actions: PostScanActions = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=PostScanActions,
     )
 
 
@@ -64,7 +128,67 @@ class DataQualityResult(proto.Message):
             The count of rows processed.
         scanned_data (google.cloud.dataplex_v1.types.ScannedData):
             The data scanned for this result.
+        post_scan_actions_result (google.cloud.dataplex_v1.types.DataQualityResult.PostScanActionsResult):
+            Output only. The result of post scan actions.
     """
+
+    class PostScanActionsResult(proto.Message):
+        r"""The result of post scan actions of DataQualityScan job.
+
+        Attributes:
+            bigquery_export_result (google.cloud.dataplex_v1.types.DataQualityResult.PostScanActionsResult.BigQueryExportResult):
+                Output only. The result of BigQuery export
+                post scan action.
+        """
+
+        class BigQueryExportResult(proto.Message):
+            r"""The result of BigQuery export post scan action.
+
+            Attributes:
+                state (google.cloud.dataplex_v1.types.DataQualityResult.PostScanActionsResult.BigQueryExportResult.State):
+                    Output only. Execution state for the BigQuery
+                    exporting.
+                message (str):
+                    Output only. Additional information about the
+                    BigQuery exporting.
+            """
+
+            class State(proto.Enum):
+                r"""Execution state for the exporting.
+
+                Values:
+                    STATE_UNSPECIFIED (0):
+                        The exporting state is unspecified.
+                    SUCCEEDED (1):
+                        The exporting completed successfully.
+                    FAILED (2):
+                        The exporting is no longer running due to an
+                        error.
+                    SKIPPED (3):
+                        The exporting is skipped due to no valid scan
+                        result to export (usually caused by scan
+                        failed).
+                """
+                STATE_UNSPECIFIED = 0
+                SUCCEEDED = 1
+                FAILED = 2
+                SKIPPED = 3
+
+            state: "DataQualityResult.PostScanActionsResult.BigQueryExportResult.State" = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="DataQualityResult.PostScanActionsResult.BigQueryExportResult.State",
+            )
+            message: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+
+        bigquery_export_result: "DataQualityResult.PostScanActionsResult.BigQueryExportResult" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="DataQualityResult.PostScanActionsResult.BigQueryExportResult",
+        )
 
     passed: bool = proto.Field(
         proto.BOOL,
@@ -89,6 +213,11 @@ class DataQualityResult(proto.Message):
         number=7,
         message=processing.ScannedData,
     )
+    post_scan_actions_result: PostScanActionsResult = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=PostScanActionsResult,
+    )
 
 
 class DataQualityRuleResult(proto.Message):
@@ -102,8 +231,9 @@ class DataQualityRuleResult(proto.Message):
         passed (bool):
             Whether the rule passed or failed.
         evaluated_count (int):
-            The number of rows a rule was evaluated against. This field
-            is only valid for ColumnMap type rules.
+            The number of rows a rule was evaluated against.
+
+            This field is only valid for row-level type rules.
 
             Evaluated count can be configured to either
 
@@ -113,17 +243,20 @@ class DataQualityRuleResult(proto.Message):
                setting ``ignore_nulls = true``.
         passed_count (int):
             The number of rows which passed a rule
-            evaluation. This field is only valid for
-            ColumnMap type rules.
+            evaluation.
+            This field is only valid for row-level type
+            rules.
         null_count (int):
             The number of rows with null values in the
             specified column.
         pass_ratio (float):
-            The ratio of **passed_count / evaluated_count**. This field
-            is only valid for ColumnMap type rules.
+            The ratio of **passed_count / evaluated_count**.
+
+            This field is only valid for row-level type rules.
         failing_rows_query (str):
             The query to find rows that did not pass this
-            rule. Only applies to ColumnMap and RowCondition
+            rule.
+            This field is only valid for row-level type
             rules.
     """
 
@@ -185,44 +318,44 @@ class DataQualityRule(proto.Message):
 
     Attributes:
         range_expectation (google.cloud.dataplex_v1.types.DataQualityRule.RangeExpectation):
-            ColumnMap rule which evaluates whether each
+            Row-level rule which evaluates whether each
             column value lies between a specified range.
 
             This field is a member of `oneof`_ ``rule_type``.
         non_null_expectation (google.cloud.dataplex_v1.types.DataQualityRule.NonNullExpectation):
-            ColumnMap rule which evaluates whether each
+            Row-level rule which evaluates whether each
             column value is null.
 
             This field is a member of `oneof`_ ``rule_type``.
         set_expectation (google.cloud.dataplex_v1.types.DataQualityRule.SetExpectation):
-            ColumnMap rule which evaluates whether each
+            Row-level rule which evaluates whether each
             column value is contained by a specified set.
 
             This field is a member of `oneof`_ ``rule_type``.
         regex_expectation (google.cloud.dataplex_v1.types.DataQualityRule.RegexExpectation):
-            ColumnMap rule which evaluates whether each
+            Row-level rule which evaluates whether each
             column value matches a specified regex.
 
             This field is a member of `oneof`_ ``rule_type``.
         uniqueness_expectation (google.cloud.dataplex_v1.types.DataQualityRule.UniquenessExpectation):
-            ColumnAggregate rule which evaluates whether
-            the column has duplicates.
+            Row-level rule which evaluates whether each
+            column value is unique.
 
             This field is a member of `oneof`_ ``rule_type``.
         statistic_range_expectation (google.cloud.dataplex_v1.types.DataQualityRule.StatisticRangeExpectation):
-            ColumnAggregate rule which evaluates whether
-            the column aggregate statistic lies between a
+            Aggregate rule which evaluates whether the
+            column aggregate statistic lies between a
             specified range.
 
             This field is a member of `oneof`_ ``rule_type``.
         row_condition_expectation (google.cloud.dataplex_v1.types.DataQualityRule.RowConditionExpectation):
-            Table rule which evaluates whether each row
-            passes the specified condition.
+            Row-level rule which evaluates whether each
+            row in a table passes the specified condition.
 
             This field is a member of `oneof`_ ``rule_type``.
         table_condition_expectation (google.cloud.dataplex_v1.types.DataQualityRule.TableConditionExpectation):
-            Table rule which evaluates whether the
-            provided expression is true.
+            Aggregate rule which evaluates whether the
+            provided expression is true for a table.
 
             This field is a member of `oneof`_ ``rule_type``.
         column (str):
@@ -233,7 +366,7 @@ class DataQualityRule(proto.Message):
             a rule, unless ``ignore_null`` is ``true``. In that case,
             such ``null`` rows are trivially considered passing.
 
-            Only applicable to ColumnMap rules.
+            This field is only valid for row-level type rules.
         dimension (str):
             Required. The dimension a rule belongs to. Results are also
             aggregated at the dimension level. Supported dimensions are
@@ -244,6 +377,20 @@ class DataQualityRule(proto.Message):
             required to pass this rule, with a range of [0.0, 1.0].
 
             0 indicates default value (i.e. 1.0).
+
+            This field is only valid for row-level type rules.
+        name (str):
+            Optional. A mutable name for the rule.
+
+            -  The name must contain only letters (a-z, A-Z), numbers
+               (0-9), or hyphens (-).
+            -  The maximum length is 63 characters.
+            -  Must start with a letter.
+            -  Must end with a number or a letter.
+        description (str):
+            Optional. Description of the rule.
+
+            -  The maximum length is 1,024 characters.
     """
 
     class RangeExpectation(proto.Message):
@@ -299,7 +446,8 @@ class DataQualityRule(proto.Message):
 
         Attributes:
             values (MutableSequence[str]):
-                Expected values for the column value.
+                Optional. Expected values for the column
+                value.
         """
 
         values: MutableSequence[str] = proto.RepeatedField(
@@ -313,8 +461,8 @@ class DataQualityRule(proto.Message):
 
         Attributes:
             regex (str):
-                A regular expression the column value is
-                expected to match.
+                Optional. A regular expression the column
+                value is expected to match.
         """
 
         regex: str = proto.Field(
@@ -331,28 +479,28 @@ class DataQualityRule(proto.Message):
 
         Attributes:
             statistic (google.cloud.dataplex_v1.types.DataQualityRule.StatisticRangeExpectation.ColumnStatistic):
-                The aggregate metric to evaluate.
+                Optional. The aggregate metric to evaluate.
             min_value (str):
-                The minimum column statistic value allowed for a row to pass
-                this validation.
+                Optional. The minimum column statistic value allowed for a
+                row to pass this validation.
 
                 At least one of ``min_value`` and ``max_value`` need to be
                 provided.
             max_value (str):
-                The maximum column statistic value allowed for a row to pass
-                this validation.
+                Optional. The maximum column statistic value allowed for a
+                row to pass this validation.
 
                 At least one of ``min_value`` and ``max_value`` need to be
                 provided.
             strict_min_enabled (bool):
-                Whether column statistic needs to be strictly greater than
-                ('>') the minimum, or if equality is allowed.
+                Optional. Whether column statistic needs to be strictly
+                greater than ('>') the minimum, or if equality is allowed.
 
                 Only relevant if a ``min_value`` has been defined. Default =
                 false.
             strict_max_enabled (bool):
-                Whether column statistic needs to be strictly lesser than
-                ('<') the maximum, or if equality is allowed.
+                Optional. Whether column statistic needs to be strictly
+                lesser than ('<') the maximum, or if equality is allowed.
 
                 Only relevant if a ``max_value`` has been defined. Default =
                 false.
@@ -410,7 +558,7 @@ class DataQualityRule(proto.Message):
 
         Attributes:
             sql_expression (str):
-                The SQL expression.
+                Optional. The SQL expression.
         """
 
         sql_expression: str = proto.Field(
@@ -427,7 +575,7 @@ class DataQualityRule(proto.Message):
 
         Attributes:
             sql_expression (str):
-                The SQL expression.
+                Optional. The SQL expression.
         """
 
         sql_expression: str = proto.Field(
@@ -498,6 +646,14 @@ class DataQualityRule(proto.Message):
     threshold: float = proto.Field(
         proto.DOUBLE,
         number=503,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=504,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=505,
     )
 
 

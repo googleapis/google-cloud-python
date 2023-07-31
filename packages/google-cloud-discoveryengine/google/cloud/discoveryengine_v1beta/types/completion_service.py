@@ -62,8 +62,7 @@ class CompleteQueryRequest(proto.Message):
 
             -  ``document`` is the default model for regular dataStores.
             -  ``search-history`` is the default model for
-               [IndustryVertical.SITE_SEARCH][google.cloud.discoveryengine.v1beta.IndustryVertical.SITE_SEARCH]
-               dataStores.
+               [IndustryVertical.SITE_SEARCH][] dataStores.
         user_pseudo_id (str):
             A unique identifier for tracking visitors. For example, this
             could be implemented with an HTTP cookie, which should be
@@ -82,6 +81,13 @@ class CompleteQueryRequest(proto.Message):
             The field must be a UTF-8 encoded string with a length limit
             of 128 characters. Otherwise, an ``INVALID_ARGUMENT`` error
             is returned.
+        include_tail_suggestions (bool):
+            Indicates if tail suggestions should be
+            returned if there are no suggestions that match
+            the full query. Even if set to true, if there
+            are suggestions that match the full query, those
+            are returned and no tail suggestions are
+            returned.
     """
 
     data_store: str = proto.Field(
@@ -100,6 +106,10 @@ class CompleteQueryRequest(proto.Message):
         proto.STRING,
         number=4,
     )
+    include_tail_suggestions: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class CompleteQueryResponse(proto.Message):
@@ -112,6 +122,12 @@ class CompleteQueryResponse(proto.Message):
             Results of the matched query suggestions. The
             result list is ordered and the first result is a
             top suggestion.
+        tail_match_triggered (bool):
+            True if the returned suggestions are all tail suggestions.
+
+            For tail matching to be triggered, include_tail_suggestions
+            in the request must be true and there must be no suggestions
+            that match the full query.
     """
 
     class QuerySuggestion(proto.Message):
@@ -131,6 +147,10 @@ class CompleteQueryResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message=QuerySuggestion,
+    )
+    tail_match_triggered: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 

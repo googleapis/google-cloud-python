@@ -98,10 +98,16 @@ class NotificationType(proto.Enum):
             Security and privacy advisory notifications
         NOTIFICATION_TYPE_SENSITIVE_ACTIONS (2):
             Sensitive action notifications
+        NOTIFICATION_TYPE_SECURITY_MSA (3):
+            General security MSA
+        NOTIFICATION_TYPE_THREAT_HORIZONS (4):
+            Threat horizons MSA
     """
     NOTIFICATION_TYPE_UNSPECIFIED = 0
     NOTIFICATION_TYPE_SECURITY_PRIVACY_ADVISORY = 1
     NOTIFICATION_TYPE_SENSITIVE_ACTIONS = 2
+    NOTIFICATION_TYPE_SECURITY_MSA = 3
+    NOTIFICATION_TYPE_THREAT_HORIZONS = 4
 
 
 class Notification(proto.Message):

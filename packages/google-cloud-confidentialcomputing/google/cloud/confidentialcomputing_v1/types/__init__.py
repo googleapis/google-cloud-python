@@ -15,8 +15,13 @@
 #
 from .service import (
     Challenge,
+    ConfidentialSpaceInfo,
+    ContainerImageSignature,
     CreateChallengeRequest,
     GcpCredentials,
+    SignedEntity,
+    SigningAlgorithm,
+    TokenOptions,
     TpmAttestation,
     VerifyAttestationRequest,
     VerifyAttestationResponse,
@@ -24,9 +29,14 @@ from .service import (
 
 __all__ = (
     "Challenge",
+    "ConfidentialSpaceInfo",
+    "ContainerImageSignature",
     "CreateChallengeRequest",
     "GcpCredentials",
+    "SignedEntity",
+    "TokenOptions",
     "TpmAttestation",
     "VerifyAttestationRequest",
     "VerifyAttestationResponse",
+    "SigningAlgorithm",
 )
