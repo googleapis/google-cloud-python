@@ -23,7 +23,7 @@ from _pytest.capture import CaptureFixture
 import backoff
 from flaky import flaky
 from google.api_core.exceptions import NotFound
-from google.cloud import bigquery, pubsub_v1
+from google.cloud import bigquery, pubsub_v1, storage
 import pytest
 
 import subscriber
@@ -35,6 +35,7 @@ UNDERSCORE_PY_VERSION = PY_VERSION.replace(".", "_")
 PROJECT_ID = os.environ["GOOGLE_CLOUD_PROJECT"]
 TOPIC = f"subscription-test-topic-{PY_VERSION}-{UUID}"
 DEAD_LETTER_TOPIC = f"subscription-test-dead-letter-topic-{PY_VERSION}-{UUID}"
+UNUSED_TOPIC = f"subscription-unused-topic-{PY_VERSION}-{UUID}"
 EOD_TOPIC = f"subscription-test-eod-topic-{PY_VERSION}-{UUID}"
 SUBSCRIPTION_ADMIN = f"subscription-test-subscription-admin-{PY_VERSION}-{UUID}"
 ENDPOINT = f"https://{PROJECT_ID}.appspot.com/push"
@@ -45,6 +46,7 @@ UPDATED_MAX_DELIVERY_ATTEMPTS = 20
 FILTER = 'attributes.author="unknown"'
 BIGQUERY_DATASET_ID = f"python_samples_dataset_{UNDERSCORE_PY_VERSION}_{UUID}"
 BIGQUERY_TABLE_ID = f"python_samples_table_{UNDERSCORE_PY_VERSION}_{UUID}"
+CLOUDSTORAGE_BUCKET = f"python_samples_bucket_{UNDERSCORE_PY_VERSION}_{UUID}"
 
 C = TypeVar("C", bound=Callable[..., Any])
 
@@ -92,6 +94,23 @@ def subscription_admin(
 @pytest.fixture(scope="module")
 def topic(publisher_client: pubsub_v1.PublisherClient) -> Generator[str, None, None]:
     topic_path = publisher_client.topic_path(PROJECT_ID, TOPIC)
+
+    try:
+        topic = publisher_client.get_topic(request={"topic": topic_path})
+    except:  # noqa
+        topic = publisher_client.create_topic(request={"name": topic_path})
+
+    yield topic.name
+
+    publisher_client.delete_topic(request={"topic": topic.name})
+
+
+# This topic is only for creating subscriptions, no messages should be published on this topic.
+@pytest.fixture(scope="module")
+def unused_topic(
+    publisher_client: pubsub_v1.PublisherClient,
+) -> Generator[str, None, None]:
+    topic_path = publisher_client.topic_path(PROJECT_ID, UNUSED_TOPIC)
 
     try:
         topic = publisher_client.get_topic(request={"topic": topic_path})
@@ -191,7 +210,6 @@ def test_create_subscription(
     topic: str,
     capsys: CaptureFixture[str],
 ) -> None:
-
     subscription_for_create_name = (
         f"subscription-test-subscription-for-create-{PY_VERSION}-{UUID}"
     )
@@ -221,7 +239,6 @@ def test_create_subscription_with_dead_letter_policy(
     dead_letter_topic: str,
     capsys: CaptureFixture[str],
 ) -> None:
-
     subscription_dlq_name = (
         f"subscription-test-subscription-dlq-for-create-{PY_VERSION}-{UUID}"
     )
@@ -257,7 +274,6 @@ def test_receive_with_delivery_attempts(
     dead_letter_topic: str,
     capsys: CaptureFixture[str],
 ) -> None:
-
     from google.cloud.pubsub_v1.types import DeadLetterPolicy
 
     subscription_dlq_for_receive_name = (
@@ -304,7 +320,6 @@ def test_update_dead_letter_policy(
     dead_letter_topic: str,
     capsys: CaptureFixture[str],
 ) -> None:
-
     from google.cloud.pubsub_v1.types import DeadLetterPolicy
 
     subscription_dlq_for_update_name = (
@@ -354,7 +369,6 @@ def test_remove_dead_letter_policy(
     dead_letter_topic: str,
     capsys: CaptureFixture[str],
 ) -> None:
-
     from google.cloud.pubsub_v1.types import DeadLetterPolicy
 
     subscription_dlq_for_remove_name = (
@@ -425,7 +439,6 @@ def test_create_subscription_with_filtering(
     topic: str,
     capsys: CaptureFixture[str],
 ) -> None:
-
     subscription_with_filtering_name = (
         f"subscription-test-subscription-with-filtering-{PY_VERSION}-{UUID}"
     )
@@ -458,7 +471,6 @@ def test_create_subscription_with_exactly_once_delivery(
     exactly_once_delivery_topic: str,
     capsys: CaptureFixture[str],
 ) -> None:
-
     subscription_eod_for_create_name = (
         f"subscription-test-subscription-eod-for-create-{PY_VERSION}-{UUID}"
     )
@@ -492,7 +504,6 @@ def test_create_push_subscription(
     topic: str,
     capsys: CaptureFixture[str],
 ) -> None:
-
     push_subscription_for_create_name = (
         f"subscription-test-subscription-push-for-create-{PY_VERSION}-{UUID}"
     )
@@ -523,7 +534,6 @@ def test_update_push_subscription(
     topic: str,
     capsys: CaptureFixture[str],
 ) -> None:
-
     push_subscription_for_update_name = (
         f"subscription-test-subscription-push-for-create-{PY_VERSION}-{UUID}"
     )
@@ -555,7 +565,6 @@ def test_create_push_no_wrapper_subscription(
     topic: str,
     capsys: CaptureFixture[str],
 ) -> None:
-
     push_subscription_for_create_name = (
         f"subscription-test-subscription-push-no-wrapper-for-create-{PY_VERSION}-{UUID}"
     )
@@ -636,11 +645,60 @@ def test_create_bigquery_subscription(
     subscriber_client.delete_subscription(request={"subscription": subscription_path})
 
 
+@pytest.fixture(scope="module")
+def cloudstorage_bucket() -> Generator[str, None, None]:
+    storage_client = storage.Client()
+
+    bucket_name = CLOUDSTORAGE_BUCKET
+
+    bucket = storage_client.create_bucket(bucket_name)
+    print(f"Bucket {bucket.name} created.")
+
+    yield bucket.name
+
+    bucket.delete()
+
+
+def test_create_cloudstorage_subscription(
+    subscriber_client: pubsub_v1.SubscriberClient,
+    unused_topic: str,
+    cloudstorage_bucket: str,
+    capsys: CaptureFixture[str],
+) -> None:
+    cloudstorage_subscription_for_create_name = (
+        f"subscription-test-subscription-cloudstorage-for-create-{PY_VERSION}-{UUID}"
+    )
+
+    subscription_path = subscriber_client.subscription_path(
+        PROJECT_ID, cloudstorage_subscription_for_create_name
+    )
+    try:
+        subscriber_client.delete_subscription(
+            request={"subscription": subscription_path}
+        )
+    except NotFound:
+        pass
+
+    subscriber.create_cloudstorage_subscription(
+        PROJECT_ID,
+        # We have to use a topic with no messages published,
+        # so that the bucket will be empty and can be deleted.
+        UNUSED_TOPIC,
+        cloudstorage_subscription_for_create_name,
+        cloudstorage_bucket,
+    )
+
+    out, _ = capsys.readouterr()
+    assert f"{cloudstorage_subscription_for_create_name}" in out
+
+    # Clean up.
+    subscriber_client.delete_subscription(request={"subscription": subscription_path})
+
+
 def test_delete_subscription(
     subscriber_client: pubsub_v1.SubscriberClient,
     topic: str,
 ) -> None:
-
     subscription_for_delete_name = (
         f"subscription-test-subscription-for-delete-{PY_VERSION}-{UUID}"
     )
@@ -672,7 +730,6 @@ def test_receive(
     publisher_client: pubsub_v1.PublisherClient,
     capsys: CaptureFixture[str],
 ) -> None:
-
     subscription_async_for_receive_name = (
         f"subscription-test-subscription-async-for-receive-{PY_VERSION}-{UUID}"
     )
@@ -707,7 +764,6 @@ def test_receive_with_custom_attributes(
     topic: str,
     capsys: CaptureFixture[str],
 ) -> None:
-
     subscription_async_receive_with_custom_name = (
         f"subscription-test-subscription-async-receive-with-custom-{PY_VERSION}-{UUID}"
     )
@@ -745,7 +801,6 @@ def test_receive_with_flow_control(
     topic: str,
     capsys: CaptureFixture[str],
 ) -> None:
-
     subscription_async_receive_with_flow_control_name = f"subscription-test-subscription-async-receive-with-flow-control-{PY_VERSION}-{UUID}"
 
     subscription_path = subscriber_client.subscription_path(
@@ -780,7 +835,6 @@ def test_receive_with_blocking_shutdown(
     topic: str,
     capsys: CaptureFixture[str],
 ) -> None:
-
     subscription_async_receive_with_blocking_name = f"subscription-test-subscription-async-receive-with-blocking-shutdown-{PY_VERSION}-{UUID}"
 
     subscription_path = subscriber_client.subscription_path(
@@ -851,7 +905,6 @@ def test_receive_messages_with_exactly_once_delivery_enabled(
     exactly_once_delivery_topic: str,
     capsys: CaptureFixture[str],
 ) -> None:
-
     subscription_eod_for_receive_name = (
         f"subscription-test-subscription-eod-for-receive-{PY_VERSION}-{UUID}"
     )
@@ -894,7 +947,6 @@ def test_listen_for_errors(
     topic: str,
     capsys: CaptureFixture[str],
 ) -> None:
-
     subscription_async_listen = (
         f"subscription-test-subscription-async-listen-{PY_VERSION}-{UUID}"
     )
@@ -928,7 +980,6 @@ def test_receive_synchronously(
     topic: str,
     capsys: CaptureFixture[str],
 ) -> None:
-
     subscription_sync_for_receive_name = (
         f"subscription-test-subscription-sync-for-receive-{PY_VERSION}-{UUID}"
     )
@@ -964,7 +1015,6 @@ def test_receive_synchronously_with_lease(
     topic: str,
     capsys: CaptureFixture[str],
 ) -> None:
-
     subscription_sync_for_receive_with_lease_name = f"subscription-test-subscription-sync-for-receive-with-lease-{PY_VERSION}-{UUID}"
 
     subscription_path = subscriber_client.subscription_path(
