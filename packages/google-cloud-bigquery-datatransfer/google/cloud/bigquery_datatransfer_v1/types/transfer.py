@@ -19,6 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -31,6 +32,7 @@ __protobuf__ = proto.module(
         "ScheduleOptions",
         "UserInfo",
         "TransferConfig",
+        "EncryptionConfiguration",
         "TransferRun",
         "TransferMessage",
     },
@@ -262,6 +264,15 @@ class TransferConfig(proto.Message):
             populated.
 
             This field is a member of `oneof`_ ``_owner_info``.
+        encryption_configuration (google.cloud.bigquery_datatransfer_v1.types.EncryptionConfiguration):
+            The encryption configuration part. Currently,
+            it is only used for the optional KMS key name.
+            The BigQuery service account of your project
+            must be granted permissions to use the key. Read
+            methods will return the key name applied in
+            effect. Write methods will apply the key if it
+            is present, or otherwise try to apply project
+            default keys if it is absent.
     """
 
     name: str = proto.Field(
@@ -340,6 +351,27 @@ class TransferConfig(proto.Message):
         number=27,
         optional=True,
         message="UserInfo",
+    )
+    encryption_configuration: "EncryptionConfiguration" = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        message="EncryptionConfiguration",
+    )
+
+
+class EncryptionConfiguration(proto.Message):
+    r"""Represents the encryption configuration for a transfer.
+
+    Attributes:
+        kms_key_name (google.protobuf.wrappers_pb2.StringValue):
+            The name of the KMS key used for encrypting
+            BigQuery data.
+    """
+
+    kms_key_name: wrappers_pb2.StringValue = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=wrappers_pb2.StringValue,
     )
 
 

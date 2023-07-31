@@ -52,6 +52,7 @@ from google.cloud.bigquery_datatransfer_v1.types.datatransfer import (
 )
 from google.cloud.bigquery_datatransfer_v1.types.transfer import (
     EmailPreferences,
+    EncryptionConfiguration,
     ScheduleOptions,
     TransferConfig,
     TransferMessage,
@@ -89,6 +90,7 @@ __all__ = (
     "StartManualTransferRunsResponse",
     "UpdateTransferConfigRequest",
     "EmailPreferences",
+    "EncryptionConfiguration",
     "ScheduleOptions",
     "TransferConfig",
     "TransferMessage",

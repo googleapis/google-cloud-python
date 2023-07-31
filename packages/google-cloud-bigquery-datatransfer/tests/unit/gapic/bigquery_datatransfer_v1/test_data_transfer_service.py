@@ -39,6 +39,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
@@ -5923,6 +5924,7 @@ def test_create_transfer_config_rest(request_type):
         "notification_pubsub_topic": "notification_pubsub_topic_value",
         "email_preferences": {"enable_failure_email": True},
         "owner_info": {"email": "email_value"},
+        "encryption_configuration": {"kms_key_name": {"value": "value_value"}},
     }
     request = request_type(**request_init)
 
@@ -6165,6 +6167,7 @@ def test_create_transfer_config_rest_bad_request(
         "notification_pubsub_topic": "notification_pubsub_topic_value",
         "email_preferences": {"enable_failure_email": True},
         "owner_info": {"email": "email_value"},
+        "encryption_configuration": {"kms_key_name": {"value": "value_value"}},
     }
     request = request_type(**request_init)
 
@@ -6285,6 +6288,7 @@ def test_update_transfer_config_rest(request_type):
         "notification_pubsub_topic": "notification_pubsub_topic_value",
         "email_preferences": {"enable_failure_email": True},
         "owner_info": {"email": "email_value"},
+        "encryption_configuration": {"kms_key_name": {"value": "value_value"}},
     }
     request = request_type(**request_init)
 
@@ -6528,6 +6532,7 @@ def test_update_transfer_config_rest_bad_request(
         "notification_pubsub_topic": "notification_pubsub_topic_value",
         "email_preferences": {"enable_failure_email": True},
         "owner_info": {"email": "email_value"},
+        "encryption_configuration": {"kms_key_name": {"value": "value_value"}},
     }
     request = request_type(**request_init)
 

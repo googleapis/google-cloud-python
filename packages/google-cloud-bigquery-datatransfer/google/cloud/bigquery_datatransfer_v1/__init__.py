@@ -50,6 +50,7 @@ from .types.datatransfer import (
 )
 from .types.transfer import (
     EmailPreferences,
+    EncryptionConfiguration,
     ScheduleOptions,
     TransferConfig,
     TransferMessage,
@@ -70,6 +71,7 @@ __all__ = (
     "DeleteTransferConfigRequest",
     "DeleteTransferRunRequest",
     "EmailPreferences",
+    "EncryptionConfiguration",
     "EnrollDataSourcesRequest",
     "GetDataSourceRequest",
     "GetTransferConfigRequest",

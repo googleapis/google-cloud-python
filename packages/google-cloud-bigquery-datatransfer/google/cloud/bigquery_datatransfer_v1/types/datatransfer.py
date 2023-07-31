@@ -122,6 +122,8 @@ class DataSourceParameter(proto.Message):
                 Deprecated. This field has no effect.
             PLUS_PAGE (6):
                 Page ID for a Google+ Page.
+            LIST (7):
+                List of strings parameter.
         """
         TYPE_UNSPECIFIED = 0
         STRING = 1
@@ -130,6 +132,7 @@ class DataSourceParameter(proto.Message):
         BOOLEAN = 4
         RECORD = 5
         PLUS_PAGE = 6
+        LIST = 7
 
     param_id: str = proto.Field(
         proto.STRING,
@@ -1064,13 +1067,17 @@ class StartManualTransferRunsRequest(proto.Message):
             ``projects/{project_id}/transferConfigs/{config_id}`` or
             ``projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}``.
         requested_time_range (google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.TimeRange):
-            Time range for the transfer runs that should
-            be started.
+            A time_range start and end timestamp for historical data
+            files or reports that are scheduled to be transferred by the
+            scheduled transfer run. requested_time_range must be a past
+            time and cannot include future time values.
 
             This field is a member of `oneof`_ ``time``.
         requested_run_time (google.protobuf.timestamp_pb2.Timestamp):
-            Specific run_time for a transfer run to be started. The
-            requested_run_time must not be in the future.
+            A run_time timestamp for historical data files or reports
+            that are scheduled to be transferred by the scheduled
+            transfer run. requested_run_time must be a past time and
+            cannot include future time values.
 
             This field is a member of `oneof`_ ``time``.
     """
