@@ -611,6 +611,7 @@ class AdvisoryNotificationsServiceClient(
             name (str):
                 Required. A name of the notification
                 to retrieve. Format:
+
                 organizations/{organization}/locations/{location}/notifications/{notification}.
 
                 This corresponds to the ``name`` field
