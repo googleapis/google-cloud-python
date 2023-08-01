@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.12.0](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.11.2...v3.12.0) (2023-08-01)
+
+
+### Features
+
+* Add EncryptionConfiguration to TransferConfig ([f57343c](https://github.com/googleapis/python-bigquery-datatransfer/commit/f57343c31acd8ab44b4cc427e3c148ba93bb5368))
+* Add List type to Data source parameter. ([f57343c](https://github.com/googleapis/python-bigquery-datatransfer/commit/f57343c31acd8ab44b4cc427e3c148ba93bb5368))
+
 ## [3.11.2](https://github.com/googleapis/python-bigquery-datatransfer/compare/v3.11.1...v3.11.2) (2023-07-04)
 
 
