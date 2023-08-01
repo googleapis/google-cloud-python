@@ -86,12 +86,12 @@ class DetectIntentRequest(proto.Message):
             Required. The input specification. It can be
             set to:
 
-            1.  an audio config
-                which instructs the speech recognizer how to
-            process the speech audio,
-            2.  a conversational query in the form of text,
+            1. an audio config which instructs the speech
+            recognizer how to process the speech audio,
+
+            2. a conversational query in the form of text,
             or
-            3.  an event that specifies which intent to
+            3. an event that specifies which intent to
             trigger.
         output_audio_config (google.cloud.dialogflow_v2beta1.types.OutputAudioConfig):
             Instructs the speech synthesizer how to
@@ -334,12 +334,12 @@ class QueryParameters(proto.Message):
 class QueryInput(proto.Message):
     r"""Represents the query input. It can contain either:
 
-    1.  An audio config which
-        instructs the speech recognizer how to process the speech
-    audio.
-    2.  A conversational query in the form of text.
+    1. An audio config which instructs the speech recognizer how to
+    process the speech audio.
 
-    3.  An event that specifies which intent to trigger.
+    2. A conversational query in the form of text.
+
+    3. An event that specifies which intent to trigger.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -433,29 +433,21 @@ class QueryResult(proto.Message):
             The action name from the matched intent.
         parameters (google.protobuf.struct_pb2.Struct):
             The collection of extracted parameters.
-            Depending on your protocol or client library
-            language, this is a map, associative array,
-            symbol table, dictionary, or JSON object
-            composed of a collection of (MapKey, MapValue)
+
+            Depending on your protocol or client library language, this
+            is a map, associative array, symbol table, dictionary, or
+            JSON object composed of a collection of (MapKey, MapValue)
             pairs:
 
-            -   MapKey type: string
-            -   MapKey value: parameter name
-            -   MapValue type:
-
-                -   If parameter's entity type is a
-              composite entity: map
-                -   Else: depending on parameter value type,
-              could be one of string,         number,
-              boolean, null, list or map
-            -   MapValue value:
-
-                -   If parameter's entity type is a
-              composite entity:
-
-                    map from composite entity property names
-            to property values
-                -   Else: parameter value
+            -  MapKey type: string
+            -  MapKey value: parameter name
+            -  MapValue type: If parameter's entity type is a composite
+               entity then use map, otherwise, depending on the
+               parameter value type, it could be one of string, number,
+               boolean, null, list or map.
+            -  MapValue value: If parameter's entity type is a composite
+               entity then use map from composite entity property names
+               to property values, otherwise, use parameter value.
         all_required_params_present (bool):
             This field is set to:
 
@@ -768,12 +760,12 @@ class StreamingDetectIntentRequest(proto.Message):
             Required. The input specification. It can be
             set to:
 
-            1.  an audio config which instructs the speech
-            recognizer how to process     the speech audio,
+            1. an audio config which instructs the speech
+            recognizer how to process the speech audio,
 
-            2.  a conversational query in the form of text,
+            2. a conversational query in the form of text,
             or
-            3.  an event that specifies which intent to
+            3. an event that specifies which intent to
             trigger.
         single_utterance (bool):
             DEPRECATED. Please use
@@ -1309,31 +1301,22 @@ class EventInput(proto.Message):
         name (str):
             Required. The unique identifier of the event.
         parameters (google.protobuf.struct_pb2.Struct):
-            The collection of parameters associated with
-            the event.
-            Depending on your protocol or client library
-            language, this is a map, associative array,
-            symbol table, dictionary, or JSON object
-            composed of a collection of (MapKey, MapValue)
+            The collection of parameters associated with the event.
+
+            Depending on your protocol or client library language, this
+            is a map, associative array, symbol table, dictionary, or
+            JSON object composed of a collection of (MapKey, MapValue)
             pairs:
 
-            -   MapKey type: string
-            -   MapKey value: parameter name
-            -   MapValue type:
-
-                -   If parameter's entity type is a
-              composite entity: map
-                -   Else: depending on parameter value type,
-              could be one of string,         number,
-              boolean, null, list or map
-            -   MapValue value:
-
-                -   If parameter's entity type is a
-              composite entity:
-
-                    map from composite entity property names
-            to property values
-                -   Else: parameter value
+            -  MapKey type: string
+            -  MapKey value: parameter name
+            -  MapValue type: If parameter's entity type is a composite
+               entity then use map, otherwise, depending on the
+               parameter value type, it could be one of string, number,
+               boolean, null, list or map.
+            -  MapValue value: If parameter's entity type is a composite
+               entity then use map from composite entity property names
+               to property values, otherwise, use parameter value.
         language_code (str):
             Required. The language of this query. See `Language
             Support <https://cloud.google.com/dialogflow/docs/reference/language>`__

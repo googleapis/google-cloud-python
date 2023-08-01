@@ -599,18 +599,13 @@ class SuggestionInput(proto.Message):
 
             -  MapKey type: string
             -  MapKey value: parameter name
-            -  MapValue type:
-
-               -  If parameter's entity type is a composite entity: map
-               -  Else: depending on parameter value type, could be one
-                  of string, number, boolean, null, list or map
-
-            -  MapValue value:
-
-               -  If parameter's entity type is a composite entity: map
-                  from composite entity property names to property
-                  values
-               -  Else: parameter value
+            -  MapValue type: If parameter's entity type is a composite
+               entity then use map, otherwise, depending on the
+               parameter value type, it could be one of string, number,
+               boolean, null, list or map.
+            -  MapValue value: If parameter's entity type is a composite
+               entity then use map from composite entity property names
+               to property values, otherwise, use parameter value.
         intent_input (google.cloud.dialogflow_v2beta1.types.IntentInput):
             The intent to be triggered on V3 agent.
     """
@@ -810,26 +805,23 @@ class AnalyzeContentRequest(proto.Message):
             Note: this field should only be used if you are connecting
             to a Dialogflow CX agent.
         message_send_time (google.protobuf.timestamp_pb2.Timestamp):
-            Optional. The send time of the message from
-            end user or human agent's perspective. It is
-            used for identifying the same message under one
-            participant.
+            Optional. The send time of the message from end user or
+            human agent's perspective. It is used for identifying the
+            same message under one participant.
 
             Given two messages under the same participant:
 
-             - If send time are different regardless of
-              whether the content of the  messages are
-              exactly the same, the conversation will regard
-              them as  two distinct messages sent by the
-              participant.
-             - If send time is the same regardless of
-              whether the content of the  messages are
-              exactly the same, the conversation will regard
-              them as  same message, and ignore the message
-              received later.
-            If the value is not provided, a new request will
-            always be regarded as a new message without any
-            de-duplication.
+            -  If send time are different regardless of whether the
+               content of the messages are exactly the same, the
+               conversation will regard them as two distinct messages
+               sent by the participant.
+            -  If send time is the same regardless of whether the
+               content of the messages are exactly the same, the
+               conversation will regard them as same message, and ignore
+               the message received later.
+
+            If the value is not provided, a new request will always be
+            regarded as a new message without any de-duplication.
         request_id (str):
             A unique identifier for this request. Restricted to 36 ASCII
             characters. A random UUID is recommended. This request is

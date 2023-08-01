@@ -389,12 +389,15 @@ class BargeInConfig(proto.Message):
 
     The flow goes like below:
 
-    --> Time
+    ::
 
-    without speech detection \| utterance only \| utterance or no-speech
-    event \| \| +-------------+ \| +------------+ \| +---------------+
-    ----------+ no barge-in +-|-+ barge-in +-|-+ normal period
-    +----------- +-------------+ \| +------------+ \| +---------------+
+       --> Time
+
+       without speech detection  | utterance only | utterance or no-speech event
+                                 |                |
+                 +-------------+ | +------------+ | +---------------+
+       ----------+ no barge-in +-|-+  barge-in  +-|-+ normal period +-----------
+                 +-------------+ | +------------+ | +---------------+
 
     No-speech event is a response with END_OF_UTTERANCE without any
     transcript following up.
@@ -456,11 +459,11 @@ class InputAudioConfig(proto.Message):
             documentation <https://cloud.google.com/speech-to-text/docs/basics#phrase-hints>`__
             for more details.
 
-            This field is deprecated. Please use `speech_contexts <>`__
-            instead. If you specify both `phrase_hints <>`__ and
-            `speech_contexts <>`__, Dialogflow will treat the
-            `phrase_hints <>`__ as a single additional
-            `SpeechContext <>`__.
+            This field is deprecated. Please use
+            ```speech_contexts`` <>`__ instead. If you specify both
+            ```phrase_hints`` <>`__ and ```speech_contexts`` <>`__,
+            Dialogflow will treat the ```phrase_hints`` <>`__ as a
+            single additional ```SpeechContext`` <>`__.
         speech_contexts (MutableSequence[google.cloud.dialogflow_v2beta1.types.SpeechContext]):
             Context information to assist speech recognition.
 

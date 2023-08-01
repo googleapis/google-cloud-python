@@ -201,7 +201,7 @@ class CreateConversationRequest(proto.Message):
             the response to return a auto-generated one to you.
 
             The conversation ID must be compliant with the regression
-            fomula "[a-zA-Z][a-zA-Z0-9_-]*" with the characters length
+            fomula ``[a-zA-Z][a-zA-Z0-9_-]*`` with the characters length
             in range of [3,64]. If the field is provided, the caller is
             resposible for
 

@@ -33,12 +33,9 @@ class GcsSources(proto.Message):
 
     Attributes:
         uris (MutableSequence[str]):
-            Required. Google Cloud Storage URIs for the
-            inputs. A URI is of the form:
-
-              gs://bucket/object-prefix-or-name
-            Whether a prefix or name is used depends on the
-            use case.
+            Required. Google Cloud Storage URIs for the inputs. A URI is
+            of the form: ``gs://bucket/object-prefix-or-name`` Whether a
+            prefix or name is used depends on the use case.
     """
 
     uris: MutableSequence[str] = proto.RepeatedField(
@@ -52,13 +49,10 @@ class GcsDestination(proto.Message):
 
     Attributes:
         uri (str):
-            The Google Cloud Storage URIs for the output.
-            A URI is of the form:
-
-              gs://bucket/object-prefix-or-name
-            Whether a prefix or name is used depends on the
-            use case. The requesting user must have
-            "write-permission" to the bucket.
+            The Google Cloud Storage URIs for the output. A URI is of
+            the form: ``gs://bucket/object-prefix-or-name`` Whether a
+            prefix or name is used depends on the use case. The
+            requesting user must have "write-permission" to the bucket.
     """
 
     uri: str = proto.Field(

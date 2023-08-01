@@ -397,11 +397,11 @@ class InputAudioConfig(proto.Message):
             documentation <https://cloud.google.com/speech-to-text/docs/basics#phrase-hints>`__
             for more details.
 
-            This field is deprecated. Please use `speech_contexts <>`__
-            instead. If you specify both `phrase_hints <>`__ and
-            `speech_contexts <>`__, Dialogflow will treat the
-            `phrase_hints <>`__ as a single additional
-            `SpeechContext <>`__.
+            This field is deprecated. Please use
+            ```speech_contexts`` <>`__ instead. If you specify both
+            ```phrase_hints`` <>`__ and ```speech_contexts`` <>`__,
+            Dialogflow will treat the ```phrase_hints`` <>`__ as a
+            single additional ```SpeechContext`` <>`__.
         speech_contexts (MutableSequence[google.cloud.dialogflow_v2.types.SpeechContext]):
             Context information to assist speech recognition.
 
