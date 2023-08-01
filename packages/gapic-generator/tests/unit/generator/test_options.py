@@ -133,7 +133,7 @@ def test_options_service_config(fs):
                         "UNKNOWN"
                     ]
                 },
-                "timeout":"5s"
+                "timeout": "5s"
             }
         ]
     }
