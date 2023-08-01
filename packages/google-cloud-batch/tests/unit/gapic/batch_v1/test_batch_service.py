@@ -2611,6 +2611,7 @@ def test_create_job_rest(request_type):
                                 "type_": "type__value",
                                 "count": 553,
                                 "install_gpu_drivers": True,
+                                "driver_version": "driver_version_value",
                             }
                         ],
                         "boot_disk": {
@@ -2961,6 +2962,7 @@ def test_create_job_rest_bad_request(
                                 "type_": "type__value",
                                 "count": 553,
                                 "install_gpu_drivers": True,
+                                "driver_version": "driver_version_value",
                             }
                         ],
                         "boot_disk": {
