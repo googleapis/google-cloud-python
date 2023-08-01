@@ -43,7 +43,7 @@ class batchCallTransformer(cst.CSTTransformer):
         'delete_job': ('name', 'reason', 'request_id', ),
         'get_job': ('name', ),
         'get_task': ('name', ),
-        'list_jobs': ('parent', 'filter', 'page_size', 'page_token', ),
+        'list_jobs': ('parent', 'filter', 'order_by', 'page_size', 'page_token', ),
         'list_tasks': ('parent', 'filter', 'page_size', 'page_token', ),
     }
 
