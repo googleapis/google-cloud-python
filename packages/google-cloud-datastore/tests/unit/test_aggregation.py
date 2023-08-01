@@ -420,7 +420,7 @@ def test__item_to_aggregation_result():
         result = _item_to_aggregation_result(None, map_composite_mock)
 
         assert len(result) == 1
-        assert type(result[0]) == AggregationResult
+        assert isinstance(result[0], AggregationResult)
 
         assert result[0].alias == "total"
         assert result[0].value == map_composite_mock.__getitem__().integer_value
