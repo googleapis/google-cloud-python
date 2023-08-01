@@ -23,7 +23,6 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 SYSTEM_TEST_ENV_VARS = ("GOOGLE_APPLICATION_CREDENTIALS",)
 BLACK_VERSION = "black==22.3.0"
-GOOGLE_AUTH = "google-auth >= 1.22.0, < 3.0dev"
 
 DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
@@ -40,7 +39,6 @@ def unit(session):
 
     # Install all test dependencies, then install this package in-place.
     session.install("mock", "pytest", "pytest-cov", "pytest-asyncio<=0.14.0")
-    session.install(GOOGLE_AUTH, "-c", constraints_path)
     session.install("-e", ".[requests,aiohttp]", "-c", constraints_path)
 
     # Run py.test against the unit tests.
@@ -120,14 +118,13 @@ def docfx(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def doctest(session):
     """Run the doctests."""
-    session.install("-e", ".[requests]")
+    session.install("-e", ".[requests,aiohttp]")
     session.install("sphinx==4.0.1", "alabaster", "recommonmark")
     session.install(
         "sphinx",
         "sphinx_rtd_theme",
         "sphinx-docstring-typing >= 0.0.3",
         "mock",
-        GOOGLE_AUTH,
     )
 
     # Run the doctests with Sphinx.
@@ -224,7 +221,6 @@ def system(session):
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install("mock", "pytest", "google-cloud-testutils")
-    session.install(GOOGLE_AUTH, "-c", constraints_path)
     session.install("-e", ".[requests,aiohttp]", "-c", constraints_path)
 
     # Run py.test against the async system tests.
