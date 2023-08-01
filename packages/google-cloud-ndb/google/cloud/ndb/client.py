@@ -120,7 +120,7 @@ class Client(google_client.ClientWithProject):
         # Use Datastore API host from client_options if provided, otherwise use default
         api_endpoint = DATASTORE_API_HOST
         if client_options is not None:
-            if type(client_options) == dict:
+            if isinstance(client_options, dict):
                 client_options = google.api_core.client_options.from_dict(
                     client_options
                 )
