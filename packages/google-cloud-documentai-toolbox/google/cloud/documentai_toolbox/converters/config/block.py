@@ -43,9 +43,9 @@ def _get_target_object(json_data: any, target_object: str) -> Optional[SimpleNam
         return None
 
     for part in target_object_parts:
-        if type(json_data_s) == dict:
+        if type(json_data_s) is dict:
             json_data_s = SimpleNamespace(**json_data_s)
-        elif type(json_data_s) == list and part.isnumeric():
+        elif type(json_data_s) is list and part.isnumeric():
             json_data_s = json_data_s[int(part)]
             continue
         json_data_s = getattr(json_data_s, part)
