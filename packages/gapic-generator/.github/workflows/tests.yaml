@@ -297,7 +297,7 @@ jobs:
           echo "and it will start over with a clean cache."
           echo "The old one will disappear after 7 days."
       - name: Integration Tests
-        run: bazel test //tests/integration/...
+        run: bazel test //tests/integration/... --test_output=errors
 
   goldens-lint:
     runs-on: ubuntu-latest
