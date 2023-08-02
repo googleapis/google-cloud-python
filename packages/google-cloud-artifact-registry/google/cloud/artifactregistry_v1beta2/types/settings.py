@@ -37,6 +37,7 @@ class ProjectSettings(proto.Message):
         name (str):
             The name of the project's settings.
             Always of the form:
+
             projects/{project-id}/projectSettings
 
             In update request: never set

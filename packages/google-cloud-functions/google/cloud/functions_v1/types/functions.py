@@ -283,8 +283,9 @@ class CloudFunction(proto.Message):
             Secret volumes configuration.
         source_token (str):
             Input only. An identifier for Firebase
-            function sources. Disclaimer: This field is only
-            supported for Firebase function deployments.
+            function sources. Disclaimer: This
+            field is only supported for Firebase function
+            deployments.
         docker_repository (str):
             User managed repository created in Artifact Registry
             optionally with a customer managed encryption key. If
