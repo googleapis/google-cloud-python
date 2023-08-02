@@ -553,40 +553,40 @@ class CryptoKeyVersion(proto.Message):
         [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose]
         [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
 
-        Algorithms beginning with "RSA_SIGN\_" are usable with
+        Algorithms beginning with ``RSA_SIGN_`` are usable with
         [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose]
         [ASYMMETRIC_SIGN][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ASYMMETRIC_SIGN].
 
-        The fields in the name after "RSA_SIGN\_" correspond to the following
-        parameters: padding algorithm, modulus bit length, and digest
-        algorithm.
+        The fields in the name after ``RSA_SIGN_`` correspond to the
+        following parameters: padding algorithm, modulus bit length, and
+        digest algorithm.
 
         For PSS, the salt length used is equal to the length of digest
         algorithm. For example,
         [RSA_SIGN_PSS_2048_SHA256][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm.RSA_SIGN_PSS_2048_SHA256]
         will use PSS with a salt length of 256 bits or 32 bytes.
 
-        Algorithms beginning with "RSA_DECRYPT\_" are usable with
+        Algorithms beginning with ``RSA_DECRYPT_`` are usable with
         [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose]
         [ASYMMETRIC_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ASYMMETRIC_DECRYPT].
 
-        The fields in the name after "RSA_DECRYPT\_" correspond to the
+        The fields in the name after ``RSA_DECRYPT_`` correspond to the
         following parameters: padding algorithm, modulus bit length, and
         digest algorithm.
 
-        Algorithms beginning with "EC_SIGN\_" are usable with
+        Algorithms beginning with ``EC_SIGN_`` are usable with
         [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose]
         [ASYMMETRIC_SIGN][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ASYMMETRIC_SIGN].
 
-        The fields in the name after "EC_SIGN\_" correspond to the following
-        parameters: elliptic curve, digest algorithm.
+        The fields in the name after ``EC_SIGN_`` correspond to the
+        following parameters: elliptic curve, digest algorithm.
 
-        Algorithms beginning with "HMAC\_" are usable with
+        Algorithms beginning with ``HMAC_`` are usable with
         [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose]
         [MAC][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.MAC].
 
-        The suffix following "HMAC\_" corresponds to the hash algorithm being
-        used (eg. SHA256).
+        The suffix following ``HMAC_`` corresponds to the hash algorithm
+        being used (eg. SHA256).
 
         For more information, see [Key purposes and algorithms]
         (https://cloud.google.com/kms/docs/algorithms).
