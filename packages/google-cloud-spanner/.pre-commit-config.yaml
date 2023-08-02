@@ -26,6 +26,6 @@ repos:
     hooks:
     - id: black
 -   repo: https://github.com/pycqa/flake8
-    rev: 3.9.2
+    rev: 6.1.0
     hooks:
     - id: flake8
