@@ -470,6 +470,7 @@ class FunctionServiceGrpcAsyncIOTransport(FunctionServiceTransport):
         limited period and should be used within 30 minutes of
         generation.
         For more information about the signed URL usage see:
+
         https://cloud.google.com/storage/docs/access-control/signed-urls
 
         Returns:
