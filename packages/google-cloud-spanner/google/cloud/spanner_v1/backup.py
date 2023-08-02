@@ -95,7 +95,7 @@ class Backup(object):
         self._max_expire_time = None
         self._referencing_backups = None
         self._database_dialect = None
-        if type(encryption_config) == dict:
+        if type(encryption_config) is dict:
             if source_backup:
                 self._encryption_config = CopyBackupEncryptionConfig(
                     **encryption_config

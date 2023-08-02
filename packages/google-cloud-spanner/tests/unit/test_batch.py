@@ -273,7 +273,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         self.assertEqual(committed, now)
         self.assertEqual(batch.committed, committed)
 
-        if type(request_options) == dict:
+        if type(request_options) is dict:
             expected_request_options = RequestOptions(request_options)
         else:
             expected_request_options = request_options

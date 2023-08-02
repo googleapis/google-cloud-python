@@ -383,7 +383,7 @@ class TestTransaction(OpenTelemetryBase):
             expected_request_options = RequestOptions(
                 transaction_tag=self.TRANSACTION_TAG
             )
-        elif type(request_options) == dict:
+        elif type(request_options) is dict:
             expected_request_options = RequestOptions(request_options)
             expected_request_options.transaction_tag = self.TRANSACTION_TAG
             expected_request_options.request_tag = None
@@ -534,7 +534,7 @@ class TestTransaction(OpenTelemetryBase):
 
         if request_options is None:
             request_options = RequestOptions()
-        elif type(request_options) == dict:
+        elif type(request_options) is dict:
             request_options = RequestOptions(request_options)
 
         row_count = transaction.execute_update(
@@ -717,7 +717,7 @@ class TestTransaction(OpenTelemetryBase):
 
         if request_options is None:
             request_options = RequestOptions()
-        elif type(request_options) == dict:
+        elif type(request_options) is dict:
             request_options = RequestOptions(request_options)
 
         status, row_counts = transaction.batch_update(

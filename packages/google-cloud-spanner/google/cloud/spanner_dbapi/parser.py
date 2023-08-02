@@ -52,7 +52,7 @@ class func(object):
         return self.__str__()
 
     def __eq__(self, other):
-        if type(self) != type(other):
+        if type(self) is not type(other):
             return False
         if self.name != other.name:
             return False
@@ -95,7 +95,7 @@ class a_args(object):
         return len(self.argv)
 
     def __eq__(self, other):
-        if type(self) != type(other):
+        if type(self) is not type(other):
             return False
 
         if len(self) != len(other):

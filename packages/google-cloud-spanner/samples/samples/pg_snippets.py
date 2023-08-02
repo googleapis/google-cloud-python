@@ -39,19 +39,19 @@ def create_instance(instance_id):
     spanner_client = spanner.Client()
 
     config_name = "{}/instanceConfigs/regional-us-central1".format(
-      spanner_client.project_name
+        spanner_client.project_name
     )
 
     instance = spanner_client.instance(
-      instance_id,
-      configuration_name=config_name,
-      display_name="This is a display name.",
-      node_count=1,
-      labels={
-        "cloud_spanner_samples": "true",
-        "sample_name": "snippets-create_instance-explicit",
-        "created": str(int(time.time())),
-      },
+        instance_id,
+        configuration_name=config_name,
+        display_name="This is a display name.",
+        node_count=1,
+        labels={
+            "cloud_spanner_samples": "true",
+            "sample_name": "snippets-create_instance-explicit",
+            "created": str(int(time.time())),
+        },
     )
 
     operation = instance.create()
@@ -72,8 +72,8 @@ def create_database(instance_id, database_id):
     instance = spanner_client.instance(instance_id)
 
     database = instance.database(
-      database_id,
-      database_dialect=DatabaseDialect.POSTGRESQL,
+        database_id,
+        database_dialect=DatabaseDialect.POSTGRESQL,
     )
 
     operation = database.create()
@@ -88,9 +88,9 @@ def create_database(instance_id, database_id):
 def create_table_using_ddl(database_name):
     spanner_client = spanner.Client()
     request = spanner_admin_database_v1.UpdateDatabaseDdlRequest(
-      database=database_name,
-      statements=[
-        """CREATE TABLE Singers (
+        database=database_name,
+        statements=[
+            """CREATE TABLE Singers (
   SingerId   bigint NOT NULL,
   FirstName  character varying(1024),
   LastName   character varying(1024),
@@ -99,13 +99,13 @@ def create_table_using_ddl(database_name):
     GENERATED ALWAYS AS (FirstName || ' ' || LastName) STORED,
   PRIMARY KEY (SingerId)
   )""",
-        """CREATE TABLE Albums (
+            """CREATE TABLE Albums (
   SingerId     bigint NOT NULL,
   AlbumId      bigint NOT NULL,
   AlbumTitle   character varying(1024),
   PRIMARY KEY (SingerId, AlbumId)
   ) INTERLEAVE IN PARENT Singers ON DELETE CASCADE""",
-      ],
+        ],
     )
     operation = spanner_client.database_admin_api.update_database_ddl(request)
     operation.result(OPERATION_TIMEOUT_SECONDS)
@@ -127,27 +127,27 @@ def insert_data(instance_id, database_id):
 
     with database.batch() as batch:
         batch.insert(
-          table="Singers",
-          columns=("SingerId", "FirstName", "LastName"),
-          values=[
-            (1, "Marc", "Richards"),
-            (2, "Catalina", "Smith"),
-            (3, "Alice", "Trentor"),
-            (4, "Lea", "Martin"),
-            (5, "David", "Lomond"),
-          ],
+            table="Singers",
+            columns=("SingerId", "FirstName", "LastName"),
+            values=[
+                (1, "Marc", "Richards"),
+                (2, "Catalina", "Smith"),
+                (3, "Alice", "Trentor"),
+                (4, "Lea", "Martin"),
+                (5, "David", "Lomond"),
+            ],
         )
 
         batch.insert(
-          table="Albums",
-          columns=("SingerId", "AlbumId", "AlbumTitle"),
-          values=[
-            (1, 1, "Total Junk"),
-            (1, 2, "Go, Go, Go"),
-            (2, 1, "Green"),
-            (2, 2, "Forever Hold Your Peace"),
-            (2, 3, "Terrified"),
-          ],
+            table="Albums",
+            columns=("SingerId", "AlbumId", "AlbumTitle"),
+            values=[
+                (1, 1, "Total Junk"),
+                (1, 2, "Go, Go, Go"),
+                (2, 1, "Green"),
+                (2, 2, "Forever Hold Your Peace"),
+                (2, 3, "Terrified"),
+            ],
         )
 
     print("Inserted data.")
@@ -198,7 +198,7 @@ def query_data(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-          "SELECT SingerId, AlbumId, AlbumTitle FROM Albums"
+            "SELECT SingerId, AlbumId, AlbumTitle FROM Albums"
         )
 
         for row in results:
@@ -218,8 +218,7 @@ def read_data(instance_id, database_id):
     with database.snapshot() as snapshot:
         keyset = spanner.KeySet(all_=True)
         results = snapshot.read(
-          table="Albums", columns=("SingerId", "AlbumId", "AlbumTitle"),
-          keyset=keyset
+            table="Albums", columns=("SingerId", "AlbumId", "AlbumTitle"), keyset=keyset
         )
 
         for row in results:
@@ -237,7 +236,7 @@ def add_column(instance_id, database_id):
     database = instance.database(database_id)
 
     operation = database.update_ddl(
-      ["ALTER TABLE Albums ADD COLUMN MarketingBudget BIGINT"]
+        ["ALTER TABLE Albums ADD COLUMN MarketingBudget BIGINT"]
     )
 
     print("Waiting for operation to complete...")
@@ -266,9 +265,9 @@ def update_data(instance_id, database_id):
 
     with database.batch() as batch:
         batch.update(
-          table="Albums",
-          columns=("SingerId", "AlbumId", "MarketingBudget"),
-          values=[(1, 1, 100000), (2, 2, 500000)],
+            table="Albums",
+            columns=("SingerId", "AlbumId", "MarketingBudget"),
+            values=[(1, 1, 100000), (2, 2, 500000)],
         )
 
     print("Updated data.")
@@ -297,10 +296,10 @@ def read_write_transaction(instance_id, database_id):
         # Read the second album budget.
         second_album_keyset = spanner.KeySet(keys=[(2, 2)])
         second_album_result = transaction.read(
-          table="Albums",
-          columns=("MarketingBudget",),
-          keyset=second_album_keyset,
-          limit=1,
+            table="Albums",
+            columns=("MarketingBudget",),
+            keyset=second_album_keyset,
+            limit=1,
         )
         second_album_row = list(second_album_result)[0]
         second_album_budget = second_album_row[0]
@@ -310,16 +309,15 @@ def read_write_transaction(instance_id, database_id):
         if second_album_budget < transfer_amount:
             # Raising an exception will automatically roll back the
             # transaction.
-            raise ValueError(
-              "The second album doesn't have enough funds to transfer")
+            raise ValueError("The second album doesn't have enough funds to transfer")
 
         # Read the first album's budget.
         first_album_keyset = spanner.KeySet(keys=[(1, 1)])
         first_album_result = transaction.read(
-          table="Albums",
-          columns=("MarketingBudget",),
-          keyset=first_album_keyset,
-          limit=1,
+            table="Albums",
+            columns=("MarketingBudget",),
+            keyset=first_album_keyset,
+            limit=1,
         )
         first_album_row = list(first_album_result)[0]
         first_album_budget = first_album_row[0]
@@ -328,15 +326,15 @@ def read_write_transaction(instance_id, database_id):
         second_album_budget -= transfer_amount
         first_album_budget += transfer_amount
         print(
-          "Setting first album's budget to {} and the second album's "
-          "budget to {}.".format(first_album_budget, second_album_budget)
+            "Setting first album's budget to {} and the second album's "
+            "budget to {}.".format(first_album_budget, second_album_budget)
         )
 
         # Update the rows.
         transaction.update(
-          table="Albums",
-          columns=("SingerId", "AlbumId", "MarketingBudget"),
-          values=[(1, 1, first_album_budget), (2, 2, second_album_budget)],
+            table="Albums",
+            columns=("SingerId", "AlbumId", "MarketingBudget"),
+            values=[(1, 1, first_album_budget), (2, 2, second_album_budget)],
         )
 
     database.run_in_transaction(update_albums)
@@ -363,7 +361,7 @@ def query_data_with_new_column(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-          "SELECT SingerId, AlbumId, MarketingBudget FROM Albums"
+            "SELECT SingerId, AlbumId, MarketingBudget FROM Albums"
         )
 
         for row in results:
@@ -381,7 +379,7 @@ def add_index(instance_id, database_id):
     database = instance.database(database_id)
 
     operation = database.update_ddl(
-      ["CREATE INDEX AlbumsByAlbumTitle ON Albums(AlbumTitle)"]
+        ["CREATE INDEX AlbumsByAlbumTitle ON Albums(AlbumTitle)"]
     )
 
     print("Waiting for operation to complete...")
@@ -410,10 +408,10 @@ def read_data_with_index(instance_id, database_id):
     with database.snapshot() as snapshot:
         keyset = spanner.KeySet(all_=True)
         results = snapshot.read(
-          table="Albums",
-          columns=("AlbumId", "AlbumTitle"),
-          keyset=keyset,
-          index="AlbumsByAlbumTitle",
+            table="Albums",
+            columns=("AlbumId", "AlbumTitle"),
+            keyset=keyset,
+            index="AlbumsByAlbumTitle",
         )
 
         for row in results:
@@ -431,10 +429,10 @@ def add_storing_index(instance_id, database_id):
     database = instance.database(database_id)
 
     operation = database.update_ddl(
-      [
-        "CREATE INDEX AlbumsByAlbumTitle2 ON Albums(AlbumTitle)"
-        "INCLUDE (MarketingBudget)"
-      ]
+        [
+            "CREATE INDEX AlbumsByAlbumTitle2 ON Albums(AlbumTitle)"
+            "INCLUDE (MarketingBudget)"
+        ]
     )
 
     print("Waiting for operation to complete...")
@@ -466,15 +464,14 @@ def read_data_with_storing_index(instance_id, database_id):
     with database.snapshot() as snapshot:
         keyset = spanner.KeySet(all_=True)
         results = snapshot.read(
-          table="Albums",
-          columns=("AlbumId", "AlbumTitle", "MarketingBudget"),
-          keyset=keyset,
-          index="AlbumsByAlbumTitle2",
+            table="Albums",
+            columns=("AlbumId", "AlbumTitle", "MarketingBudget"),
+            keyset=keyset,
+            index="AlbumsByAlbumTitle2",
         )
 
         for row in results:
-            print("AlbumId: {}, AlbumTitle: {}, " "MarketingBudget: {}".format(
-              *row))
+            print("AlbumId: {}, AlbumTitle: {}, " "MarketingBudget: {}".format(*row))
 
 
 # [END spanner_postgresql_read_data_with_storing_index]
@@ -494,7 +491,7 @@ def read_only_transaction(instance_id, database_id):
     with database.snapshot(multi_use=True) as snapshot:
         # Read using SQL.
         results = snapshot.execute_sql(
-          "SELECT SingerId, AlbumId, AlbumTitle FROM Albums"
+            "SELECT SingerId, AlbumId, AlbumTitle FROM Albums"
         )
 
         print("Results from first read:")
@@ -506,8 +503,7 @@ def read_only_transaction(instance_id, database_id):
         # return the same data.
         keyset = spanner.KeySet(all_=True)
         results = snapshot.read(
-          table="Albums", columns=("SingerId", "AlbumId", "AlbumTitle"),
-          keyset=keyset
+            table="Albums", columns=("SingerId", "AlbumId", "AlbumTitle"), keyset=keyset
         )
 
         print("Results from second read:")
@@ -529,11 +525,11 @@ def insert_with_dml(instance_id, database_id):
 
     def insert_singers(transaction):
         row_ct = transaction.execute_update(
-          "INSERT INTO Singers (SingerId, FirstName, LastName) VALUES "
-          "(12, 'Melissa', 'Garcia'), "
-          "(13, 'Russell', 'Morales'), "
-          "(14, 'Jacqueline', 'Long'), "
-          "(15, 'Dylan', 'Shaw')"
+            "INSERT INTO Singers (SingerId, FirstName, LastName) VALUES "
+            "(12, 'Melissa', 'Garcia'), "
+            "(13, 'Russell', 'Morales'), "
+            "(14, 'Jacqueline', 'Long'), "
+            "(15, 'Dylan', 'Shaw')"
         )
         print("{} record(s) inserted.".format(row_ct))
 
@@ -542,7 +538,7 @@ def insert_with_dml(instance_id, database_id):
 
 
 def insert_with_dml_returning(instance_id, database_id):
-    """Inserts sample data into the given database using a DML statement having a RETURNING clause. """
+    """Inserts sample data into the given database using a DML statement having a RETURNING clause."""
     # [START spanner_postgresql_dml_insert_returning]
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
@@ -584,9 +580,9 @@ def query_data_with_parameter(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-          "SELECT SingerId, FirstName, LastName FROM Singers " "WHERE LastName = $1",
-          params={"p1": "Garcia"},
-          param_types={"p1": spanner.param_types.STRING},
+            "SELECT SingerId, FirstName, LastName FROM Singers " "WHERE LastName = $1",
+            params={"p1": "Garcia"},
+            param_types={"p1": spanner.param_types.STRING},
         )
 
         for row in results:
@@ -608,7 +604,7 @@ def write_with_dml_transaction(instance_id, database_id):
         # Transfer marketing budget from one album to another. Performed in a
         # single transaction to ensure that the transfer is atomic.
         second_album_result = transaction.execute_sql(
-          "SELECT MarketingBudget from Albums " "WHERE SingerId = 2 and AlbumId = 2"
+            "SELECT MarketingBudget from Albums " "WHERE SingerId = 2 and AlbumId = 2"
         )
         second_album_row = list(second_album_result)[0]
         second_album_budget = second_album_row[0]
@@ -620,8 +616,8 @@ def write_with_dml_transaction(instance_id, database_id):
         # will be rerun by the client library
         if second_album_budget >= transfer_amount:
             first_album_result = transaction.execute_sql(
-              "SELECT MarketingBudget from Albums "
-              "WHERE SingerId = 1 and AlbumId = 1"
+                "SELECT MarketingBudget from Albums "
+                "WHERE SingerId = 1 and AlbumId = 1"
             )
             first_album_row = list(first_album_result)[0]
             first_album_budget = first_album_row[0]
@@ -631,26 +627,26 @@ def write_with_dml_transaction(instance_id, database_id):
 
             # Update first album
             transaction.execute_update(
-              "UPDATE Albums "
-              "SET MarketingBudget = $1 "
-              "WHERE SingerId = 1 and AlbumId = 1",
-              params={"p1": first_album_budget},
-              param_types={"p1": spanner.param_types.INT64},
+                "UPDATE Albums "
+                "SET MarketingBudget = $1 "
+                "WHERE SingerId = 1 and AlbumId = 1",
+                params={"p1": first_album_budget},
+                param_types={"p1": spanner.param_types.INT64},
             )
 
             # Update second album
             transaction.execute_update(
-              "UPDATE Albums "
-              "SET MarketingBudget = $1 "
-              "WHERE SingerId = 2 and AlbumId = 2",
-              params={"p1": second_album_budget},
-              param_types={"p1": spanner.param_types.INT64},
+                "UPDATE Albums "
+                "SET MarketingBudget = $1 "
+                "WHERE SingerId = 2 and AlbumId = 2",
+                params={"p1": second_album_budget},
+                param_types={"p1": spanner.param_types.INT64},
             )
 
             print(
-              "Transferred {} from Album2's budget to Album1's".format(
-                transfer_amount
-              )
+                "Transferred {} from Album2's budget to Album1's".format(
+                    transfer_amount
+                )
             )
 
     database.run_in_transaction(transfer_budget)
@@ -671,9 +667,9 @@ def read_stale_data(instance_id, database_id):
     with database.snapshot(exact_staleness=staleness) as snapshot:
         keyset = spanner.KeySet(all_=True)
         results = snapshot.read(
-          table="Albums",
-          columns=("SingerId", "AlbumId", "MarketingBudget"),
-          keyset=keyset,
+            table="Albums",
+            columns=("SingerId", "AlbumId", "MarketingBudget"),
+            keyset=keyset,
         )
 
         for row in results:
@@ -706,13 +702,12 @@ def update_data_with_timestamp(instance_id, database_id):
 
     with database.batch() as batch:
         batch.update(
-          table="Albums",
-          columns=(
-            "SingerId", "AlbumId", "MarketingBudget", "LastUpdateTime"),
-          values=[
-            (1, 1, 1000000, spanner.COMMIT_TIMESTAMP),
-            (2, 2, 750000, spanner.COMMIT_TIMESTAMP),
-          ],
+            table="Albums",
+            columns=("SingerId", "AlbumId", "MarketingBudget", "LastUpdateTime"),
+            values=[
+                (1, 1, 1000000, spanner.COMMIT_TIMESTAMP),
+                (2, 2, 750000, spanner.COMMIT_TIMESTAMP),
+            ],
         )
 
     print("Updated data.")
@@ -730,17 +725,16 @@ def add_timestamp_column(instance_id, database_id):
     database = instance.database(database_id)
 
     operation = database.update_ddl(
-      [
-        "ALTER TABLE Albums ADD COLUMN LastUpdateTime SPANNER.COMMIT_TIMESTAMP"]
+        ["ALTER TABLE Albums ADD COLUMN LastUpdateTime SPANNER.COMMIT_TIMESTAMP"]
     )
 
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)
 
     print(
-      'Altered table "Albums" on database {} on instance {}.'.format(
-        database_id, instance_id
-      )
+        'Altered table "Albums" on database {} on instance {}.'.format(
+            database_id, instance_id
+        )
     )
 
 
@@ -767,8 +761,8 @@ def query_data_with_timestamp(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-          "SELECT SingerId, AlbumId, MarketingBudget FROM Albums "
-          "ORDER BY LastUpdateTime DESC"
+            "SELECT SingerId, AlbumId, MarketingBudget FROM Albums "
+            "ORDER BY LastUpdateTime DESC"
         )
 
     for row in results:
@@ -787,9 +781,9 @@ def create_table_with_timestamp(instance_id, database_id):
     database = instance.database(database_id)
 
     request = spanner_admin_database_v1.UpdateDatabaseDdlRequest(
-      database=database.name,
-      statements=[
-        """CREATE TABLE Performances (
+        database=database.name,
+        statements=[
+            """CREATE TABLE Performances (
   SingerId     BIGINT NOT NULL,
   VenueId      BIGINT NOT NULL,
   EventDate    Date,
@@ -797,7 +791,7 @@ def create_table_with_timestamp(instance_id, database_id):
   LastUpdateTime SPANNER.COMMIT_TIMESTAMP NOT NULL,
 PRIMARY KEY (SingerId, VenueId, EventDate))
 INTERLEAVE IN PARENT Singers ON DELETE CASCADE"""
-      ],
+        ],
     )
     operation = spanner_client.database_admin_api.update_database_ddl(request)
 
@@ -805,9 +799,9 @@ INTERLEAVE IN PARENT Singers ON DELETE CASCADE"""
     operation.result(OPERATION_TIMEOUT_SECONDS)
 
     print(
-      "Created Performances table on database {} on instance {}".format(
-        database_id, instance_id
-      )
+        "Created Performances table on database {} on instance {}".format(
+            database_id, instance_id
+        )
     )
 
 
@@ -825,14 +819,13 @@ def insert_data_with_timestamp(instance_id, database_id):
 
     with database.batch() as batch:
         batch.insert(
-          table="Performances",
-          columns=(
-            "SingerId", "VenueId", "EventDate", "Revenue", "LastUpdateTime"),
-          values=[
-            (1, 4, "2017-10-05", 11000, spanner.COMMIT_TIMESTAMP),
-            (1, 19, "2017-11-02", 15000, spanner.COMMIT_TIMESTAMP),
-            (2, 42, "2017-12-23", 7000, spanner.COMMIT_TIMESTAMP),
-          ],
+            table="Performances",
+            columns=("SingerId", "VenueId", "EventDate", "Revenue", "LastUpdateTime"),
+            values=[
+                (1, 4, "2017-10-05", 11000, spanner.COMMIT_TIMESTAMP),
+                (1, 19, "2017-11-02", 15000, spanner.COMMIT_TIMESTAMP),
+                (2, 42, "2017-12-23", 7000, spanner.COMMIT_TIMESTAMP),
+            ],
         )
 
     print("Inserted data.")
@@ -853,8 +846,8 @@ def insert_data_with_dml(instance_id, database_id):
 
     def insert_singers(transaction):
         row_ct = transaction.execute_update(
-          "INSERT INTO Singers (SingerId, FirstName, LastName) "
-          " VALUES (10, 'Virginia', 'Watson')"
+            "INSERT INTO Singers (SingerId, FirstName, LastName) "
+            " VALUES (10, 'Virginia', 'Watson')"
         )
 
         print("{} record(s) inserted.".format(row_ct))
@@ -875,9 +868,9 @@ def update_data_with_dml(instance_id, database_id):
 
     def update_albums(transaction):
         row_ct = transaction.execute_update(
-          "UPDATE Albums "
-          "SET MarketingBudget = MarketingBudget * 2 "
-          "WHERE SingerId = 1 and AlbumId = 1"
+            "UPDATE Albums "
+            "SET MarketingBudget = MarketingBudget * 2 "
+            "WHERE SingerId = 1 and AlbumId = 1"
         )
 
         print("{} record(s) updated.".format(row_ct))
@@ -929,7 +922,7 @@ def delete_data_with_dml(instance_id, database_id):
 
     def delete_singers(transaction):
         row_ct = transaction.execute_update(
-          "DELETE FROM Singers WHERE FirstName = 'Alice'"
+            "DELETE FROM Singers WHERE FirstName = 'Alice'"
         )
 
         print("{} record(s) deleted.".format(row_ct))
@@ -939,7 +932,7 @@ def delete_data_with_dml(instance_id, database_id):
 
 
 def delete_data_with_dml_returning(instance_id, database_id):
-    """Deletes sample data from the database using a DML statement having a RETURNING clause. """
+    """Deletes sample data from the database using a DML statement having a RETURNING clause."""
     # [START spanner_postgresql_dml_delete_returning]
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
@@ -980,14 +973,14 @@ def dml_write_read_transaction(instance_id, database_id):
     def write_then_read(transaction):
         # Insert record.
         row_ct = transaction.execute_update(
-          "INSERT INTO Singers (SingerId, FirstName, LastName) "
-          " VALUES (11, 'Timothy', 'Campbell')"
+            "INSERT INTO Singers (SingerId, FirstName, LastName) "
+            " VALUES (11, 'Timothy', 'Campbell')"
         )
         print("{} record(s) inserted.".format(row_ct))
 
         # Read newly inserted record.
         results = transaction.execute_sql(
-          "SELECT FirstName, LastName FROM Singers WHERE SingerId = 11"
+            "SELECT FirstName, LastName FROM Singers WHERE SingerId = 11"
         )
         for result in results:
             print("FirstName: {}, LastName: {}".format(*result))
@@ -1007,7 +1000,7 @@ def update_data_with_partitioned_dml(instance_id, database_id):
     database = instance.database(database_id)
 
     row_ct = database.execute_partitioned_dml(
-      "UPDATE Albums SET MarketingBudget = 100000 WHERE SingerId > 1"
+        "UPDATE Albums SET MarketingBudget = 100000 WHERE SingerId > 1"
     )
 
     print("{} records updated.".format(row_ct))
@@ -1023,8 +1016,7 @@ def delete_data_with_partitioned_dml(instance_id, database_id):
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
 
-    row_ct = database.execute_partitioned_dml(
-      "DELETE FROM Singers WHERE SingerId > 10")
+    row_ct = database.execute_partitioned_dml("DELETE FROM Singers WHERE SingerId > 10")
 
     print("{} record(s) deleted.".format(row_ct))
     # [END spanner_postgresql_dml_partitioned_delete]
@@ -1043,20 +1035,19 @@ def update_with_batch_dml(instance_id, database_id):
     database = instance.database(database_id)
 
     insert_statement = (
-      "INSERT INTO Albums "
-      "(SingerId, AlbumId, AlbumTitle, MarketingBudget) "
-      "VALUES (1, 3, 'Test Album Title', 10000)"
+        "INSERT INTO Albums "
+        "(SingerId, AlbumId, AlbumTitle, MarketingBudget) "
+        "VALUES (1, 3, 'Test Album Title', 10000)"
     )
 
     update_statement = (
-      "UPDATE Albums "
-      "SET MarketingBudget = MarketingBudget * 2 "
-      "WHERE SingerId = 1 and AlbumId = 3"
+        "UPDATE Albums "
+        "SET MarketingBudget = MarketingBudget * 2 "
+        "WHERE SingerId = 1 and AlbumId = 3"
     )
 
     def update_albums(transaction):
-        status, row_cts = transaction.batch_update(
-          [insert_statement, update_statement])
+        status, row_cts = transaction.batch_update([insert_statement, update_statement])
 
         if status.code != OK:
             # Do handling here.
@@ -1064,8 +1055,7 @@ def update_with_batch_dml(instance_id, database_id):
             # `commit` is called by `run_in_transaction`.
             return
 
-        print(
-          "Executed {} SQL statements using Batch DML.".format(len(row_cts)))
+        print("Executed {} SQL statements using Batch DML.".format(len(row_cts)))
 
     database.run_in_transaction(update_albums)
     # [END spanner_postgresql_dml_batch_update]
@@ -1081,9 +1071,9 @@ def create_table_with_datatypes(instance_id, database_id):
     database = instance.database(database_id)
 
     request = spanner_admin_database_v1.UpdateDatabaseDdlRequest(
-      database=database.name,
-      statements=[
-        """CREATE TABLE Venues (
+        database=database.name,
+        statements=[
+            """CREATE TABLE Venues (
   VenueId         BIGINT NOT NULL,
   VenueName       character varying(100),
   VenueInfo       BYTEA,
@@ -1093,7 +1083,7 @@ def create_table_with_datatypes(instance_id, database_id):
   Revenue         NUMERIC,
   LastUpdateTime  SPANNER.COMMIT_TIMESTAMP NOT NULL,
   PRIMARY KEY (VenueId))"""
-      ],
+        ],
     )
     operation = spanner_client.database_admin_api.update_database_ddl(request)
 
@@ -1101,9 +1091,9 @@ def create_table_with_datatypes(instance_id, database_id):
     operation.result(OPERATION_TIMEOUT_SECONDS)
 
     print(
-      "Created Venues table on database {} on instance {}".format(
-        database_id, instance_id
-      )
+        "Created Venues table on database {} on instance {}".format(
+            database_id, instance_id
+        )
     )
     # [END spanner_postgresql_create_table_with_datatypes]
 
@@ -1122,49 +1112,49 @@ def insert_datatypes_data(instance_id, database_id):
     exampleBytes3 = base64.b64encode("Hello World 3".encode())
     with database.batch() as batch:
         batch.insert(
-          table="Venues",
-          columns=(
-            "VenueId",
-            "VenueName",
-            "VenueInfo",
-            "Capacity",
-            "OutdoorVenue",
-            "PopularityScore",
-            "Revenue",
-            "LastUpdateTime",
-          ),
-          values=[
-            (
-              4,
-              "Venue 4",
-              exampleBytes1,
-              1800,
-              False,
-              0.85543,
-              decimal.Decimal("215100.10"),
-              spanner.COMMIT_TIMESTAMP,
+            table="Venues",
+            columns=(
+                "VenueId",
+                "VenueName",
+                "VenueInfo",
+                "Capacity",
+                "OutdoorVenue",
+                "PopularityScore",
+                "Revenue",
+                "LastUpdateTime",
             ),
-            (
-              19,
-              "Venue 19",
-              exampleBytes2,
-              6300,
-              True,
-              0.98716,
-              decimal.Decimal("1200100.00"),
-              spanner.COMMIT_TIMESTAMP,
-            ),
-            (
-              42,
-              "Venue 42",
-              exampleBytes3,
-              3000,
-              False,
-              0.72598,
-              decimal.Decimal("390650.99"),
-              spanner.COMMIT_TIMESTAMP,
-            ),
-          ],
+            values=[
+                (
+                    4,
+                    "Venue 4",
+                    exampleBytes1,
+                    1800,
+                    False,
+                    0.85543,
+                    decimal.Decimal("215100.10"),
+                    spanner.COMMIT_TIMESTAMP,
+                ),
+                (
+                    19,
+                    "Venue 19",
+                    exampleBytes2,
+                    6300,
+                    True,
+                    0.98716,
+                    decimal.Decimal("1200100.00"),
+                    spanner.COMMIT_TIMESTAMP,
+                ),
+                (
+                    42,
+                    "Venue 42",
+                    exampleBytes3,
+                    3000,
+                    False,
+                    0.72598,
+                    decimal.Decimal("390650.99"),
+                    spanner.COMMIT_TIMESTAMP,
+                ),
+            ],
         )
 
     print("Inserted data.")
@@ -1186,10 +1176,10 @@ def query_data_with_bool(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-          "SELECT VenueId, VenueName, OutdoorVenue FROM Venues "
-          "WHERE OutdoorVenue = $1",
-          params=param,
-          param_types=param_type,
+            "SELECT VenueId, VenueName, OutdoorVenue FROM Venues "
+            "WHERE OutdoorVenue = $1",
+            params=param,
+            param_types=param_type,
         )
 
         for row in results:
@@ -1212,9 +1202,9 @@ def query_data_with_bytes(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-          "SELECT VenueId, VenueName FROM Venues " "WHERE VenueInfo = $1",
-          params=param,
-          param_types=param_type,
+            "SELECT VenueId, VenueName FROM Venues " "WHERE VenueInfo = $1",
+            params=param,
+            param_types=param_type,
         )
 
         for row in results:
@@ -1237,15 +1227,14 @@ def query_data_with_float(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-          "SELECT VenueId, VenueName, PopularityScore FROM Venues "
-          "WHERE PopularityScore > $1",
-          params=param,
-          param_types=param_type,
+            "SELECT VenueId, VenueName, PopularityScore FROM Venues "
+            "WHERE PopularityScore > $1",
+            params=param,
+            param_types=param_type,
         )
 
         for row in results:
-            print(
-              "VenueId: {}, VenueName: {}, PopularityScore: {}".format(*row))
+            print("VenueId: {}, VenueName: {}, PopularityScore: {}".format(*row))
     # [END spanner_postgresql_query_with_float_parameter]
 
 
@@ -1264,9 +1253,9 @@ def query_data_with_int(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-          "SELECT VenueId, VenueName, Capacity FROM Venues " "WHERE Capacity >= $1",
-          params=param,
-          param_types=param_type,
+            "SELECT VenueId, VenueName, Capacity FROM Venues " "WHERE Capacity >= $1",
+            params=param,
+            param_types=param_type,
         )
 
         for row in results:
@@ -1289,9 +1278,9 @@ def query_data_with_string(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-          "SELECT VenueId, VenueName FROM Venues " "WHERE VenueName = $1",
-          params=param,
-          param_types=param_type,
+            "SELECT VenueId, VenueName FROM Venues " "WHERE VenueName = $1",
+            params=param,
+            param_types=param_type,
         )
 
         for row in results:
@@ -1312,18 +1301,19 @@ def query_data_with_timestamp_parameter(instance_id, database_id):
     # [END spanner_postgresql_query_with_timestamp_parameter]
     # Avoid time drift on the local machine.
     # https://github.com/GoogleCloudPlatform/python-docs-samples/issues/4197.
-    example_timestamp = (datetime.datetime.utcnow() + datetime.timedelta(days=1)
-                         ).isoformat() + "Z"
+    example_timestamp = (
+        datetime.datetime.utcnow() + datetime.timedelta(days=1)
+    ).isoformat() + "Z"
     # [START spanner_postgresql_query_with_timestamp_parameter]
     param = {"p1": example_timestamp}
     param_type = {"p1": param_types.TIMESTAMP}
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-          "SELECT VenueId, VenueName, LastUpdateTime FROM Venues "
-          "WHERE LastUpdateTime < $1",
-          params=param,
-          param_types=param_type,
+            "SELECT VenueId, VenueName, LastUpdateTime FROM Venues "
+            "WHERE LastUpdateTime < $1",
+            params=param,
+            param_types=param_type,
         )
 
         for row in results:
@@ -1350,13 +1340,13 @@ def update_data_with_numeric(instance_id, database_id):
 
     with database.batch() as batch:
         batch.update(
-          table="Venues",
-          columns=("VenueId", "Revenue"),
-          values=[
-            (4, decimal.Decimal("35000")),
-            (19, decimal.Decimal("104500")),
-            (42, decimal.Decimal("99999999999999999999999999999.99")),
-          ],
+            table="Venues",
+            columns=("VenueId", "Revenue"),
+            values=[
+                (4, decimal.Decimal("35000")),
+                (19, decimal.Decimal("104500")),
+                (42, decimal.Decimal("99999999999999999999999999999.99")),
+            ],
         )
 
     print("Updated data.")
@@ -1380,9 +1370,9 @@ def query_data_with_numeric_parameter(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-          "SELECT VenueId, Revenue FROM Venues WHERE Revenue < $1",
-          params=param,
-          param_types=param_type,
+            "SELECT VenueId, Revenue FROM Venues WHERE Revenue < $1",
+            params=param,
+            param_types=param_type,
         )
 
         for row in results:
@@ -1396,17 +1386,17 @@ def create_client_with_query_options(instance_id, database_id):
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
     spanner_client = spanner.Client(
-      query_options={
-        "optimizer_version": "1",
-        "optimizer_statistics_package": "latest",
-      }
+        query_options={
+            "optimizer_version": "1",
+            "optimizer_statistics_package": "latest",
+        }
     )
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-          "SELECT VenueId, VenueName, LastUpdateTime FROM Venues"
+            "SELECT VenueId, VenueName, LastUpdateTime FROM Venues"
         )
 
         for row in results:
@@ -1425,11 +1415,11 @@ def query_data_with_query_options(instance_id, database_id):
 
     with database.snapshot() as snapshot:
         results = snapshot.execute_sql(
-          "SELECT VenueId, VenueName, LastUpdateTime FROM Venues",
-          query_options={
-            "optimizer_version": "1",
-            "optimizer_statistics_package": "latest",
-          },
+            "SELECT VenueId, VenueName, LastUpdateTime FROM Venues",
+            query_options={
+                "optimizer_version": "1",
+                "optimizer_statistics_package": "latest",
+            },
         )
 
         for row in results:
@@ -1511,9 +1501,7 @@ def update_data_with_jsonb(instance_id, database_id):
                     JsonObject(
                         [
                             JsonObject({"name": None, "open": True}),
-                            JsonObject(
-                                {"name": "room 2", "open": False}
-                            ),
+                            JsonObject({"name": "room 2", "open": False}),
                         ]
                     ),
                 ),
@@ -1564,15 +1552,127 @@ def query_data_with_jsonb_parameter(instance_id, database_id):
 # [END spanner_postgresql_jsonb_query_parameter]
 
 
+# [START spanner_postgresql_create_sequence]
+def create_sequence(instance_id, database_id):
+    """Creates the Sequence and insert data"""
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    request = spanner_admin_database_v1.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=[
+            "CREATE SEQUENCE Seq BIT_REVERSED_POSITIVE",
+            """CREATE TABLE Customers (
+        CustomerId  BIGINT DEFAULT nextval('Seq'),
+        CustomerName  character varying(1024),
+        PRIMARY KEY (CustomerId)
+        )""",
+        ],
+    )
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+
+    print(
+        "Created Seq sequence and Customers table, where the key column CustomerId uses the sequence as a default value on database {} on instance {}".format(
+            database_id, instance_id
+        )
+    )
+
+    def insert_customers(transaction):
+        results = transaction.execute_sql(
+            "INSERT INTO Customers (CustomerName) VALUES "
+            "('Alice'), "
+            "('David'), "
+            "('Marc') "
+            "RETURNING CustomerId"
+        )
+        for result in results:
+            print("Inserted customer record with Customer Id: {}".format(*result))
+        print(
+            "Number of customer records inserted is {}".format(
+                results.stats.row_count_exact
+            )
+        )
+
+    database.run_in_transaction(insert_customers)
+
+
+# [END spanner_postgresql_create_sequence]
+
+# [START spanner_postgresql_alter_sequence]
+def alter_sequence(instance_id, database_id):
+    """Alters the Sequence and insert data"""
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    operation = database.update_ddl(["ALTER SEQUENCE Seq SKIP RANGE 1000 5000000"])
+
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+
+    print(
+        "Altered Seq sequence to skip an inclusive range between 1000 and 5000000 on database {} on instance {}".format(
+            database_id, instance_id
+        )
+    )
+
+    def insert_customers(transaction):
+        results = transaction.execute_sql(
+            "INSERT INTO Customers (CustomerName) VALUES "
+            "('Lea'), "
+            "('Cataline'), "
+            "('Smith') "
+            "RETURNING CustomerId"
+        )
+        for result in results:
+            print("Inserted customer record with Customer Id: {}".format(*result))
+        print(
+            "Number of customer records inserted is {}".format(
+                results.stats.row_count_exact
+            )
+        )
+
+    database.run_in_transaction(insert_customers)
+
+
+# [END spanner_postgresql_alter_sequence]
+
+# [START spanner_postgresql_drop_sequence]
+def drop_sequence(instance_id, database_id):
+    """Drops the Sequence"""
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    operation = database.update_ddl(
+        [
+            "ALTER TABLE Customers ALTER COLUMN CustomerId DROP DEFAULT",
+            "DROP SEQUENCE Seq",
+        ]
+    )
+
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+
+    print(
+        "Altered Customers table to drop DEFAULT from CustomerId column and dropped the Seq sequence on database {} on instance {}".format(
+            database_id, instance_id
+        )
+    )
+
+
+# [END spanner_postgresql_drop_sequence]
+
 if __name__ == "__main__":  # noqa: C901
     parser = argparse.ArgumentParser(
-      description=__doc__,
-      formatter_class=argparse.RawDescriptionHelpFormatter
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     parser.add_argument("instance_id", help="Your Cloud Spanner instance ID.")
     parser.add_argument(
-      "--database-id", help="Your Cloud Spanner database ID.",
-      default="example_db"
+        "--database-id", help="Your Cloud Spanner database ID.", default="example_db"
     )
 
     subparsers = parser.add_subparsers(dest="command")
@@ -1586,98 +1686,91 @@ if __name__ == "__main__":  # noqa: C901
     subparsers.add_parser("add_column", help=add_column.__doc__)
     subparsers.add_parser("update_data", help=update_data.__doc__)
     subparsers.add_parser(
-      "query_data_with_new_column", help=query_data_with_new_column.__doc__
+        "query_data_with_new_column", help=query_data_with_new_column.__doc__
     )
-    subparsers.add_parser("read_write_transaction",
-                          help=read_write_transaction.__doc__)
-    subparsers.add_parser("read_only_transaction",
-                          help=read_only_transaction.__doc__)
+    subparsers.add_parser("read_write_transaction", help=read_write_transaction.__doc__)
+    subparsers.add_parser("read_only_transaction", help=read_only_transaction.__doc__)
     subparsers.add_parser("add_index", help=add_index.__doc__)
-    subparsers.add_parser("read_data_with_index",
-                          help=read_data_with_index.__doc__)
+    subparsers.add_parser("read_data_with_index", help=read_data_with_index.__doc__)
     subparsers.add_parser("add_storing_index", help=add_storing_index.__doc__)
-    subparsers.add_parser("read_data_with_storing_index",
-                          help=read_data_with_storing_index.__doc__)
     subparsers.add_parser(
-      "create_table_with_timestamp", help=create_table_with_timestamp.__doc__
+        "read_data_with_storing_index", help=read_data_with_storing_index.__doc__
     )
     subparsers.add_parser(
-      "insert_data_with_timestamp", help=insert_data_with_timestamp.__doc__
-    )
-    subparsers.add_parser("add_timestamp_column",
-                          help=add_timestamp_column.__doc__)
-    subparsers.add_parser(
-      "update_data_with_timestamp", help=update_data_with_timestamp.__doc__
+        "create_table_with_timestamp", help=create_table_with_timestamp.__doc__
     )
     subparsers.add_parser(
-      "query_data_with_timestamp", help=query_data_with_timestamp.__doc__
+        "insert_data_with_timestamp", help=insert_data_with_timestamp.__doc__
     )
-    subparsers.add_parser("insert_data_with_dml",
-                          help=insert_data_with_dml.__doc__)
-    subparsers.add_parser("update_data_with_dml",
-                          help=update_data_with_dml.__doc__)
-    subparsers.add_parser("update_data_with_dml",
-                          help=update_data_with_dml_returning.__doc__)
-    subparsers.add_parser("delete_data_with_dml",
-                          help=delete_data_with_dml.__doc__)
-    subparsers.add_parser("delete_data_with_dml_returning",
-                          help=delete_data_with_dml_returning.__doc__)
+    subparsers.add_parser("add_timestamp_column", help=add_timestamp_column.__doc__)
     subparsers.add_parser(
-      "dml_write_read_transaction", help=dml_write_read_transaction.__doc__
+        "update_data_with_timestamp", help=update_data_with_timestamp.__doc__
+    )
+    subparsers.add_parser(
+        "query_data_with_timestamp", help=query_data_with_timestamp.__doc__
+    )
+    subparsers.add_parser("insert_data_with_dml", help=insert_data_with_dml.__doc__)
+    subparsers.add_parser("update_data_with_dml", help=update_data_with_dml.__doc__)
+    subparsers.add_parser(
+        "update_data_with_dml", help=update_data_with_dml_returning.__doc__
+    )
+    subparsers.add_parser("delete_data_with_dml", help=delete_data_with_dml.__doc__)
+    subparsers.add_parser(
+        "delete_data_with_dml_returning", help=delete_data_with_dml_returning.__doc__
+    )
+    subparsers.add_parser(
+        "dml_write_read_transaction", help=dml_write_read_transaction.__doc__
     )
     subparsers.add_parser("insert_with_dml", help=insert_with_dml.__doc__)
-    subparsers.add_parser("insert_with_dml_returning", help=insert_with_dml_returning.__doc__)
     subparsers.add_parser(
-      "query_data_with_parameter", help=query_data_with_parameter.__doc__
+        "insert_with_dml_returning", help=insert_with_dml_returning.__doc__
     )
     subparsers.add_parser(
-      "write_with_dml_transaction", help=write_with_dml_transaction.__doc__
+        "query_data_with_parameter", help=query_data_with_parameter.__doc__
     )
     subparsers.add_parser(
-      "update_data_with_partitioned_dml",
-      help=update_data_with_partitioned_dml.__doc__,
+        "write_with_dml_transaction", help=write_with_dml_transaction.__doc__
     )
     subparsers.add_parser(
-      "delete_data_with_partitioned_dml",
-      help=delete_data_with_partitioned_dml.__doc__,
-    )
-    subparsers.add_parser("update_with_batch_dml",
-                          help=update_with_batch_dml.__doc__)
-    subparsers.add_parser(
-      "create_table_with_datatypes", help=create_table_with_datatypes.__doc__
-    )
-    subparsers.add_parser("insert_datatypes_data",
-                          help=insert_datatypes_data.__doc__)
-    subparsers.add_parser("query_data_with_bool",
-                          help=query_data_with_bool.__doc__)
-    subparsers.add_parser("query_data_with_bytes",
-                          help=query_data_with_bytes.__doc__)
-    subparsers.add_parser("query_data_with_float",
-                          help=query_data_with_float.__doc__)
-    subparsers.add_parser("query_data_with_int",
-                          help=query_data_with_int.__doc__)
-    subparsers.add_parser("query_data_with_string",
-                          help=query_data_with_string.__doc__)
-    subparsers.add_parser(
-      "query_data_with_timestamp_parameter",
-      help=query_data_with_timestamp_parameter.__doc__,
+        "update_data_with_partitioned_dml",
+        help=update_data_with_partitioned_dml.__doc__,
     )
     subparsers.add_parser(
-      "update_data_with_numeric",
-      help=update_data_with_numeric.__doc__,
+        "delete_data_with_partitioned_dml",
+        help=delete_data_with_partitioned_dml.__doc__,
+    )
+    subparsers.add_parser("update_with_batch_dml", help=update_with_batch_dml.__doc__)
+    subparsers.add_parser(
+        "create_table_with_datatypes", help=create_table_with_datatypes.__doc__
+    )
+    subparsers.add_parser("insert_datatypes_data", help=insert_datatypes_data.__doc__)
+    subparsers.add_parser("query_data_with_bool", help=query_data_with_bool.__doc__)
+    subparsers.add_parser("query_data_with_bytes", help=query_data_with_bytes.__doc__)
+    subparsers.add_parser("query_data_with_float", help=query_data_with_float.__doc__)
+    subparsers.add_parser("query_data_with_int", help=query_data_with_int.__doc__)
+    subparsers.add_parser("query_data_with_string", help=query_data_with_string.__doc__)
+    subparsers.add_parser(
+        "query_data_with_timestamp_parameter",
+        help=query_data_with_timestamp_parameter.__doc__,
     )
     subparsers.add_parser(
-      "query_data_with_numeric_parameter",
-      help=query_data_with_numeric_parameter.__doc__,
+        "update_data_with_numeric",
+        help=update_data_with_numeric.__doc__,
     )
     subparsers.add_parser(
-      "query_data_with_query_options",
-      help=query_data_with_query_options.__doc__
+        "query_data_with_numeric_parameter",
+        help=query_data_with_numeric_parameter.__doc__,
     )
     subparsers.add_parser(
-      "create_client_with_query_options",
-      help=create_client_with_query_options.__doc__,
+        "query_data_with_query_options", help=query_data_with_query_options.__doc__
     )
+    subparsers.add_parser(
+        "create_client_with_query_options",
+        help=create_client_with_query_options.__doc__,
+    )
+    subparsers.add_parser("create_sequence", help=create_sequence.__doc__)
+    subparsers.add_parser("alter_sequence", help=alter_sequence.__doc__)
+    subparsers.add_parser("drop_sequence", help=drop_sequence.__doc__)
 
     args = parser.parse_args()
 

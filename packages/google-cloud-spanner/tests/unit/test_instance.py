@@ -818,7 +818,7 @@ class TestInstance(unittest.TestCase):
             retry=mock.ANY,
             timeout=mock.ANY,
         )
-        self.assertTrue(all([type(op) == Operation for op in ops]))
+        self.assertTrue(all([type(op) is Operation for op in ops]))
 
     def test_list_backup_operations_w_options(self):
         from google.api_core.operation import Operation
@@ -865,7 +865,7 @@ class TestInstance(unittest.TestCase):
             retry=mock.ANY,
             timeout=mock.ANY,
         )
-        self.assertTrue(all([type(op) == Operation for op in ops]))
+        self.assertTrue(all([type(op) is Operation for op in ops]))
 
     def test_list_database_operations_defaults(self):
         from google.api_core.operation import Operation
@@ -923,7 +923,7 @@ class TestInstance(unittest.TestCase):
             retry=mock.ANY,
             timeout=mock.ANY,
         )
-        self.assertTrue(all([type(op) == Operation for op in ops]))
+        self.assertTrue(all([type(op) is Operation for op in ops]))
 
     def test_list_database_operations_w_options(self):
         from google.api_core.operation import Operation
@@ -988,7 +988,7 @@ class TestInstance(unittest.TestCase):
             retry=mock.ANY,
             timeout=mock.ANY,
         )
-        self.assertTrue(all([type(op) == Operation for op in ops]))
+        self.assertTrue(all([type(op) is Operation for op in ops]))
 
     def test_type_string_to_type_pb_hit(self):
         from google.cloud.spanner_admin_database_v1 import (

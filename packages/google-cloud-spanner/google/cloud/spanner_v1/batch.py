@@ -175,7 +175,7 @@ class Batch(_BatchBase):
 
         if request_options is None:
             request_options = RequestOptions()
-        elif type(request_options) == dict:
+        elif type(request_options) is dict:
             request_options = RequestOptions(request_options)
         request_options.transaction_tag = self.transaction_tag
 

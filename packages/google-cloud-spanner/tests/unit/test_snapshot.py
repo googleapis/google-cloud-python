@@ -654,7 +654,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
 
         if request_options is None:
             request_options = RequestOptions()
-        elif type(request_options) == dict:
+        elif type(request_options) is dict:
             request_options = RequestOptions(request_options)
 
         if partition is not None:  # 'limit' and 'partition' incompatible
@@ -889,7 +889,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
 
         if request_options is None:
             request_options = RequestOptions()
-        elif type(request_options) == dict:
+        elif type(request_options) is dict:
             request_options = RequestOptions(request_options)
 
         result_set = derived.execute_sql(

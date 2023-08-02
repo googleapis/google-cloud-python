@@ -143,7 +143,7 @@ class Client(ClientWithProject):
     ):
         self._emulator_host = _get_spanner_emulator_host()
 
-        if client_options and type(client_options) == dict:
+        if client_options and type(client_options) is dict:
             self._client_options = google.api_core.client_options.from_dict(
                 client_options
             )

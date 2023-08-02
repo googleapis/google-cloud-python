@@ -35,6 +35,7 @@ from google.type import expr_pb2
 from google.iam.v1 import policy_pb2
 from google.cloud.spanner_v1.data_types import JsonObject
 from google.protobuf import field_mask_pb2  # type: ignore
+
 OPERATION_TIMEOUT_SECONDS = 240
 
 
@@ -207,8 +208,7 @@ def update_database(instance_id, database_id):
 
     operation = db.update(["enable_drop_protection"])
 
-    print("Waiting for update operation for {} to complete...".format(
-      db.name))
+    print("Waiting for update operation for {} to complete...".format(db.name))
     operation.result(OPERATION_TIMEOUT_SECONDS)
 
     print("Updated database {}.".format(db.name))
@@ -1423,7 +1423,7 @@ def delete_data_with_dml(instance_id, database_id):
 
 
 def delete_data_with_dml_returning(instance_id, database_id):
-    """Deletes sample data from the database using a DML statement having a THEN RETURN clause. """
+    """Deletes sample data from the database using a DML statement having a THEN RETURN clause."""
     # [START spanner_dml_delete_returning]
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
@@ -1559,7 +1559,7 @@ def insert_with_dml(instance_id, database_id):
 
 
 def insert_with_dml_returning(instance_id, database_id):
-    """Inserts sample data into the given database using a DML statement having a THEN RETURN clause. """
+    """Inserts sample data into the given database using a DML statement having a THEN RETURN clause."""
     # [START spanner_dml_insert_returning]
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
@@ -1748,7 +1748,7 @@ def update_with_batch_dml(instance_id, database_id):
 
 
 def create_table_with_datatypes(instance_id, database_id):
-    """Creates a table with supported datatypes. """
+    """Creates a table with supported datatypes."""
     # [START spanner_create_table_with_datatypes]
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
@@ -2471,7 +2471,7 @@ def create_table_with_foreign_key_delete_cascade(instance_id, database_id):
                CONSTRAINT FKShoppingCartsCustomerId FOREIGN KEY (CustomerId)
                REFERENCES Customers (CustomerId) ON DELETE CASCADE
                ) PRIMARY KEY (CartId)
-            """
+            """,
         ]
     )
 
@@ -2481,7 +2481,7 @@ def create_table_with_foreign_key_delete_cascade(instance_id, database_id):
     print(
         """Created Customers and ShoppingCarts table with FKShoppingCartsCustomerId
            foreign key constraint on database {} on instance {}""".format(
-           database_id, instance_id
+            database_id, instance_id
         )
     )
 
@@ -2512,7 +2512,7 @@ def alter_table_with_foreign_key_delete_cascade(instance_id, database_id):
     print(
         """Altered ShoppingCarts table with FKShoppingCartsCustomerName
            foreign key constraint on database {} on instance {}""".format(
-           database_id, instance_id
+            database_id, instance_id
         )
     )
 
@@ -2540,13 +2540,129 @@ def drop_foreign_key_constraint_delete_cascade(instance_id, database_id):
     print(
         """Altered ShoppingCarts table to drop FKShoppingCartsCustomerName
            foreign key constraint on database {} on instance {}""".format(
-           database_id, instance_id
+            database_id, instance_id
         )
     )
 
 
 # [END spanner_drop_foreign_key_constraint_delete_cascade]
 
+
+# [START spanner_create_sequence]
+def create_sequence(instance_id, database_id):
+    """Creates the Sequence and insert data"""
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    operation = database.update_ddl(
+        [
+            "CREATE SEQUENCE Seq OPTIONS (sequence_kind = 'bit_reversed_positive')",
+            """CREATE TABLE Customers (
+            CustomerId     INT64 DEFAULT (GET_NEXT_SEQUENCE_VALUE(Sequence Seq)),
+            CustomerName      STRING(1024)
+            ) PRIMARY KEY (CustomerId)""",
+        ]
+    )
+
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+
+    print(
+        "Created Seq sequence and Customers table, where the key column CustomerId uses the sequence as a default value on database {} on instance {}".format(
+            database_id, instance_id
+        )
+    )
+
+    def insert_customers(transaction):
+        results = transaction.execute_sql(
+            "INSERT INTO Customers (CustomerName) VALUES "
+            "('Alice'), "
+            "('David'), "
+            "('Marc') "
+            "THEN RETURN CustomerId"
+        )
+        for result in results:
+            print("Inserted customer record with Customer Id: {}".format(*result))
+        print(
+            "Number of customer records inserted is {}".format(
+                results.stats.row_count_exact
+            )
+        )
+
+    database.run_in_transaction(insert_customers)
+
+
+# [END spanner_create_sequence]
+
+# [START spanner_alter_sequence]
+def alter_sequence(instance_id, database_id):
+    """Alters the Sequence and insert data"""
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    operation = database.update_ddl(
+        [
+            "ALTER SEQUENCE Seq SET OPTIONS (skip_range_min = 1000, skip_range_max = 5000000)"
+        ]
+    )
+
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+
+    print(
+        "Altered Seq sequence to skip an inclusive range between 1000 and 5000000 on database {} on instance {}".format(
+            database_id, instance_id
+        )
+    )
+
+    def insert_customers(transaction):
+        results = transaction.execute_sql(
+            "INSERT INTO Customers (CustomerName) VALUES "
+            "('Lea'), "
+            "('Cataline'), "
+            "('Smith') "
+            "THEN RETURN CustomerId"
+        )
+        for result in results:
+            print("Inserted customer record with Customer Id: {}".format(*result))
+        print(
+            "Number of customer records inserted is {}".format(
+                results.stats.row_count_exact
+            )
+        )
+
+    database.run_in_transaction(insert_customers)
+
+
+# [END spanner_alter_sequence]
+
+# [START spanner_drop_sequence]
+def drop_sequence(instance_id, database_id):
+    """Drops the Sequence"""
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    operation = database.update_ddl(
+        [
+            "ALTER TABLE Customers ALTER COLUMN CustomerId DROP DEFAULT",
+            "DROP SEQUENCE Seq",
+        ]
+    )
+
+    print("Waiting for operation to complete...")
+    operation.result(OPERATION_TIMEOUT_SECONDS)
+
+    print(
+        "Altered Customers table to drop DEFAULT from CustomerId column and dropped the Seq sequence on database {} on instance {}".format(
+            database_id, instance_id
+        )
+    )
+
+
+# [END spanner_drop_sequence]
 
 if __name__ == "__main__":  # noqa: C901
     parser = argparse.ArgumentParser(
@@ -2580,7 +2696,9 @@ if __name__ == "__main__":  # noqa: C901
     query_data_with_index_parser.add_argument("--end_title", default="Goo")
     subparsers.add_parser("read_data_with_index", help=read_data_with_index.__doc__)
     subparsers.add_parser("add_storing_index", help=add_storing_index.__doc__)
-    subparsers.add_parser("read_data_with_storing_index", help=read_data_with_storing_index.__doc__)
+    subparsers.add_parser(
+        "read_data_with_storing_index", help=read_data_with_storing_index.__doc__
+    )
     subparsers.add_parser(
         "create_table_with_timestamp", help=create_table_with_timestamp.__doc__
     )
@@ -2606,9 +2724,13 @@ if __name__ == "__main__":  # noqa: C901
     subparsers.add_parser("insert_data_with_dml", help=insert_data_with_dml.__doc__)
     subparsers.add_parser("log_commit_stats", help=log_commit_stats.__doc__)
     subparsers.add_parser("update_data_with_dml", help=update_data_with_dml.__doc__)
-    subparsers.add_parser("update_data_with_dml_returning", help=update_data_with_dml_returning.__doc__)
+    subparsers.add_parser(
+        "update_data_with_dml_returning", help=update_data_with_dml_returning.__doc__
+    )
     subparsers.add_parser("delete_data_with_dml", help=delete_data_with_dml.__doc__)
-    subparsers.add_parser("delete_data_with_dml_returning", help=delete_data_with_dml_returning.__doc__)
+    subparsers.add_parser(
+        "delete_data_with_dml_returning", help=delete_data_with_dml_returning.__doc__
+    )
     subparsers.add_parser(
         "update_data_with_dml_timestamp", help=update_data_with_dml_timestamp.__doc__
     )
@@ -2619,7 +2741,9 @@ if __name__ == "__main__":  # noqa: C901
         "update_data_with_dml_struct", help=update_data_with_dml_struct.__doc__
     )
     subparsers.add_parser("insert_with_dml", help=insert_with_dml.__doc__)
-    subparsers.add_parser("insert_with_dml_returning", help=insert_with_dml_returning.__doc__)
+    subparsers.add_parser(
+        "insert_with_dml_returning", help=insert_with_dml_returning.__doc__
+    )
     subparsers.add_parser(
         "query_data_with_parameter", help=query_data_with_parameter.__doc__
     )
@@ -2664,6 +2788,10 @@ if __name__ == "__main__":  # noqa: C901
         "read_data_with_database_role", help=read_data_with_database_role.__doc__
     )
     subparsers.add_parser("list_database_roles", help=list_database_roles.__doc__)
+    subparsers.add_parser("create_sequence", help=create_sequence.__doc__)
+    subparsers.add_parser("alter_sequence", help=alter_sequence.__doc__)
+    subparsers.add_parser("drop_sequence", help=drop_sequence.__doc__)
+
     enable_fine_grained_access_parser = subparsers.add_parser(
         "enable_fine_grained_access", help=enable_fine_grained_access.__doc__
     )

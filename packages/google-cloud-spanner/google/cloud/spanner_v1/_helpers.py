@@ -81,7 +81,7 @@ def _merge_query_options(base, merge):
         If the resultant object only has empty fields, returns None.
     """
     combined = base or ExecuteSqlRequest.QueryOptions()
-    if type(combined) == dict:
+    if type(combined) is dict:
         combined = ExecuteSqlRequest.QueryOptions(
             optimizer_version=combined.get("optimizer_version", ""),
             optimizer_statistics_package=combined.get(
@@ -89,7 +89,7 @@ def _merge_query_options(base, merge):
             ),
         )
     merge = merge or ExecuteSqlRequest.QueryOptions()
-    if type(merge) == dict:
+    if type(merge) is dict:
         merge = ExecuteSqlRequest.QueryOptions(
             optimizer_version=merge.get("optimizer_version", ""),
             optimizer_statistics_package=merge.get("optimizer_statistics_package", ""),

@@ -436,7 +436,7 @@ class Database(object):
                 db_name = f'"{db_name}"'
             else:
                 db_name = f"`{db_name}`"
-        if type(self._encryption_config) == dict:
+        if type(self._encryption_config) is dict:
             self._encryption_config = EncryptionConfig(**self._encryption_config)
 
         request = CreateDatabaseRequest(
@@ -621,7 +621,7 @@ class Database(object):
         )
         if request_options is None:
             request_options = RequestOptions()
-        elif type(request_options) == dict:
+        elif type(request_options) is dict:
             request_options = RequestOptions(request_options)
         request_options.transaction_tag = None
 
@@ -806,7 +806,7 @@ class Database(object):
         """
         if source is None:
             raise ValueError("Restore source not specified")
-        if type(self._encryption_config) == dict:
+        if type(self._encryption_config) is dict:
             self._encryption_config = RestoreDatabaseEncryptionConfig(
                 **self._encryption_config
             )
@@ -1011,7 +1011,7 @@ class BatchCheckout(object):
         self._session = self._batch = None
         if request_options is None:
             self._request_options = RequestOptions()
-        elif type(request_options) == dict:
+        elif type(request_options) is dict:
             self._request_options = RequestOptions(request_options)
         else:
             self._request_options = request_options
