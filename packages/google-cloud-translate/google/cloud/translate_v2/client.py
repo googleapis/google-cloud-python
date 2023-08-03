@@ -81,7 +81,7 @@ class Client(BaseClient):
 
         kw_args = {"client_info": client_info}
         if client_options:
-            if type(client_options) == dict:
+            if isinstance(client_options, dict):
                 client_options = google.api_core.client_options.from_dict(
                     client_options
                 )
