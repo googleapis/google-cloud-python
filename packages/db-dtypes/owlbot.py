@@ -56,6 +56,14 @@ s.replace(
     ["noxfile.py"], "--cov=google", "--cov=db_dtypes",
 )
 
+s.replace(["noxfile.py"],
+    """FLAKE8_VERSION = \"flake8==6.1.0\"""",
+    """# Pin flake8 to 6.0.0
+# See https://github.com/googleapis/python-db-dtypes-pandas/issues/199
+FLAKE8_VERSION = "flake8==6.0.0"
+"""
+)
+
 # There are no system tests for this package.
 old_sessions = """
     "unit",
