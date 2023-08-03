@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.19.1](https://github.com/googleapis/python-kms/compare/v2.19.0...v2.19.1) (2023-08-02)
+
+
+### Documentation
+
+* Minor formatting ([#411](https://github.com/googleapis/python-kms/issues/411)) ([ea4717c](https://github.com/googleapis/python-kms/commit/ea4717c2a89d90c23146b5a769cb07389e7d3872))
+
 ## [2.19.0](https://github.com/googleapis/python-kms/compare/v2.18.0...v2.19.0) (2023-07-21)
 
 
