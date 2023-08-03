@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.1.1...google-cloud-confidentialcomputing-v0.2.0) (2023-08-03)
+
+
+### Features
+
+* Added support for signed container image and custom audience and nonce requests ([#11525](https://github.com/googleapis/google-cloud-python/issues/11525)) ([58158d3](https://github.com/googleapis/google-cloud-python/commit/58158d397f71f41a3e7fd84203d2a859f9ec462a))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.1.0...google-cloud-confidentialcomputing-v0.1.1) (2023-07-05)
 
 
