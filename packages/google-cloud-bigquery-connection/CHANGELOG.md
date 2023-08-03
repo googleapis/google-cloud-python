@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/googleapis/python-bigquery-connection/compare/v1.13.0...v1.13.1) (2023-08-02)
+
+
+### Documentation
+
+* Minor formatting ([#339](https://github.com/googleapis/python-bigquery-connection/issues/339)) ([527a046](https://github.com/googleapis/python-bigquery-connection/commit/527a04645650d442a5aab62749a9af6b7281907e))
+
 ## [1.13.0](https://github.com/googleapis/python-bigquery-connection/compare/v1.12.1...v1.13.0) (2023-07-10)
 
 
