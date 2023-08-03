@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.12.3](https://github.com/googleapis/python-containeranalysis/compare/v2.12.2...v2.12.3) (2023-08-02)
+
+
+### Documentation
+
+* Minor formatting ([#391](https://github.com/googleapis/python-containeranalysis/issues/391)) ([b4e4f15](https://github.com/googleapis/python-containeranalysis/commit/b4e4f158d0093532a71ebe5c6f6dd0a62c9c6a6b))
+
 ## [2.12.2](https://github.com/googleapis/python-containeranalysis/compare/v2.12.1...v2.12.2) (2023-07-04)
 
 
