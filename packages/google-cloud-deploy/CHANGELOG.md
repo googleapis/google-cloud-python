@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.11.1...google-cloud-deploy-v1.12.0) (2023-08-03)
+
+
+### Features
+
+* added support for predeploy and postdeploy actions ([#11529](https://github.com/googleapis/google-cloud-python/issues/11529)) ([cd98cdb](https://github.com/googleapis/google-cloud-python/commit/cd98cdb817ffc103a7d4b33be2f604ddc67e87f1))
+
 ## [1.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.11.0...google-cloud-deploy-v1.11.1) (2023-07-20)
 
 
