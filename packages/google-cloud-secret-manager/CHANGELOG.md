@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.16.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.16.2...google-cloud-secret-manager-v2.16.3) (2023-08-03)
+
+
+### Documentation
+
+* Minor formatting ([#11543](https://github.com/googleapis/google-cloud-python/issues/11543)) ([8cc031e](https://github.com/googleapis/google-cloud-python/commit/8cc031e723350890b4ceb6e813f24c4bcde3d65f))
+
 ## [2.16.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.16.1...google-cloud-secret-manager-v2.16.2) (2023-07-05)
 
 
