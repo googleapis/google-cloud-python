@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/googleapis/python-gke-backup/compare/v0.5.0...v0.5.1) (2023-08-03)
+
+
+### Documentation
+
+* Minor formatting ([#74](https://github.com/googleapis/python-gke-backup/issues/74)) ([2071a3c](https://github.com/googleapis/python-gke-backup/commit/2071a3cf1e72edd143ebc462c3124b4e3478ae49))
+
 ## [0.5.0](https://github.com/googleapis/python-gke-backup/compare/v0.4.4...v0.5.0) (2023-07-04)
 
 
