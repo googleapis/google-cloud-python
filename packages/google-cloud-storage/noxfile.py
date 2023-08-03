@@ -44,7 +44,9 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION)
+    # Pin flake8 to 6.0.0
+    # See https://github.com/googleapis/python-storage/issues/1102
+    session.install("flake8==6.0.0", BLACK_VERSION)
     session.run(
         "black",
         "--check",
