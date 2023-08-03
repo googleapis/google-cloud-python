@@ -292,12 +292,12 @@ class QueryParameters(proto.Message):
 class QueryInput(proto.Message):
     r"""Represents the query input. It can contain either:
 
-    1.  An audio config which
-        instructs the speech recognizer how to process the speech
-    audio.
-    2.  A conversational query in the form of text,.
+    1. An audio config which instructs the speech recognizer how to
+    process the speech audio.
 
-    3.  An event that specifies which intent to trigger.
+    2. A conversational query in the form of text.
+
+    3. An event that specifies which intent to trigger.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
