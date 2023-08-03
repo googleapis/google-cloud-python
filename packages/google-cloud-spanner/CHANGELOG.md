@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.39.0](https://github.com/googleapis/python-spanner/compare/v3.38.0...v3.39.0) (2023-08-02)
+
+
+### Features
+
+* Foreign key on delete cascade action testing and samples ([#910](https://github.com/googleapis/python-spanner/issues/910)) ([681c8ee](https://github.com/googleapis/python-spanner/commit/681c8eead40582addf75e02c159ea1ff9d6de85e))
+
+
+### Documentation
+
+* Minor formatting ([#991](https://github.com/googleapis/python-spanner/issues/991)) ([60efc42](https://github.com/googleapis/python-spanner/commit/60efc426cf26c4863d81743a5545c5f296308815))
+
 ## [3.38.0](https://github.com/googleapis/python-spanner/compare/v3.37.0...v3.38.0) (2023-07-21)
 
 
