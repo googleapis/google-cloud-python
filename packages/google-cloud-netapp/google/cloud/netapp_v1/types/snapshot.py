@@ -198,7 +198,7 @@ class UpdateSnapshotRequest(proto.Message):
 
 
 class Snapshot(proto.Message):
-    r"""
+    r"""Snapshot is a point-in-time version of a Volume's content.
 
     Attributes:
         name (str):

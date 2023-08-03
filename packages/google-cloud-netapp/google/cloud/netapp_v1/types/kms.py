@@ -39,7 +39,7 @@ __protobuf__ = proto.module(
 
 
 class GetKmsConfigRequest(proto.Message):
-    r"""
+    r"""GetKmsConfigRequest gets a KMS Config.
 
     Attributes:
         name (str):
@@ -53,7 +53,7 @@ class GetKmsConfigRequest(proto.Message):
 
 
 class ListKmsConfigsRequest(proto.Message):
-    r"""
+    r"""ListKmsConfigsRequest lists KMS Configs.
 
     Attributes:
         parent (str):
@@ -93,7 +93,8 @@ class ListKmsConfigsRequest(proto.Message):
 
 
 class ListKmsConfigsResponse(proto.Message):
-    r"""
+    r"""ListKmsConfigsResponse is the response to a
+    ListKmsConfigsRequest.
 
     Attributes:
         kms_configs (MutableSequence[google.cloud.netapp_v1.types.KmsConfig]):
@@ -125,7 +126,7 @@ class ListKmsConfigsResponse(proto.Message):
 
 
 class CreateKmsConfigRequest(proto.Message):
-    r"""
+    r"""CreateKmsConfigRequest creates a KMS Config.
 
     Attributes:
         parent (str):
@@ -155,7 +156,7 @@ class CreateKmsConfigRequest(proto.Message):
 
 
 class UpdateKmsConfigRequest(proto.Message):
-    r"""
+    r"""UpdateKmsConfigRequest updates a KMS Config.
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -182,7 +183,7 @@ class UpdateKmsConfigRequest(proto.Message):
 
 
 class DeleteKmsConfigRequest(proto.Message):
-    r"""
+    r"""DeleteKmsConfigRequest deletes a KMS Config.
 
     Attributes:
         name (str):

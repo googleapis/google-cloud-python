@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "AccessType",
         "SMBSettings",
         "SecurityStyle",
+        "RestrictedAction",
         "ListVolumesRequest",
         "ListVolumesResponse",
         "GetVolumeRequest",
@@ -142,6 +143,20 @@ class SecurityStyle(proto.Enum):
     SECURITY_STYLE_UNSPECIFIED = 0
     NTFS = 1
     UNIX = 2
+
+
+class RestrictedAction(proto.Enum):
+    r"""Actions to be restricted for a volume.
+
+    Values:
+        RESTRICTED_ACTION_UNSPECIFIED (0):
+            Unspecified restricted action
+        DELETE (1):
+            Prevent volume from being deleted when
+            mounted.
+    """
+    RESTRICTED_ACTION_UNSPECIFIED = 0
+    DELETE = 1
 
 
 class ListVolumesRequest(proto.Message):
@@ -418,6 +433,9 @@ class Volume(proto.Message):
         has_replication (bool):
             Output only. Indicates whether the volume is
             part of a replication relationship.
+        restricted_actions (MutableSequence[google.cloud.netapp_v1.types.RestrictedAction]):
+            Optional. List of actions that are restricted
+            on this volume.
     """
 
     class State(proto.Enum):
@@ -577,6 +595,11 @@ class Volume(proto.Message):
     has_replication: bool = proto.Field(
         proto.BOOL,
         number=29,
+    )
+    restricted_actions: MutableSequence["RestrictedAction"] = proto.RepeatedField(
+        proto.ENUM,
+        number=31,
+        enum="RestrictedAction",
     )
 
 
