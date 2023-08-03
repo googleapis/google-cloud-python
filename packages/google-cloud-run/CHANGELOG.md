@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.1](https://github.com/googleapis/python-run/compare/v0.9.0...v0.9.1) (2023-08-02)
+
+
+### Documentation
+
+* Minor formatting ([#120](https://github.com/googleapis/python-run/issues/120)) ([4c14a21](https://github.com/googleapis/python-run/commit/4c14a219395f7195749e142713ca62f81b7a1642))
+
 ## [0.9.0](https://github.com/googleapis/python-run/compare/v0.8.1...v0.9.0) (2023-07-06)
 
 
