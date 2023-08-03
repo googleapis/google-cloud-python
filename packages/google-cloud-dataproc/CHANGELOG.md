@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.4.3](https://github.com/googleapis/python-dataproc/compare/v5.4.2...v5.4.3) (2023-08-02)
+
+
+### Documentation
+
+* Minor formatting ([#551](https://github.com/googleapis/python-dataproc/issues/551)) ([c480e55](https://github.com/googleapis/python-dataproc/commit/c480e55dab2ccd8a4af828fc77ef3dac86528009))
+
 ## [5.4.2](https://github.com/googleapis/python-dataproc/compare/v5.4.1...v5.4.2) (2023-07-04)
 
 
