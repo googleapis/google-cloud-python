@@ -415,7 +415,8 @@ class RestoreConfig(proto.Message):
         Some group kinds are not reasonable choices for a restore, and
         will cause an error if selected here. Any scope selection that
         would restore "all valid" resources automatically excludes these
-        group kinds. - gkebackup.gke.io/BackupJob
+        group kinds.
+        - gkebackup.gke.io/BackupJob
         - gkebackup.gke.io/RestoreJob
         - metrics.k8s.io/NodeMetrics
         - migration.k8s.io/StorageState
@@ -596,14 +597,16 @@ class RestoreConfig(proto.Message):
                 ADD (4):
                     The "add" operation performs one of the
                     following functions, depending upon what the
-                    target location references: 1. If the target
-                    location specifies an array index, a new value
-                    is inserted into the array at the specified
-                    index. 2. If the target location specifies an
-                    object member that does not already exist, a new
-                    member is added to the object. 3. If the target
-                    location specifies an object member that does
-                    exist, that member's value is replaced.
+                    target location references:
+
+                    1. If the target location specifies an array
+                    index, a new value is inserted into the array at
+                    the specified index. 2. If the target location
+                    specifies an object member that does not already
+                    exist, a new member is added to the object. 3.
+                    If the target location specifies an object
+                    member that does exist, that member's value is
+                    replaced.
                 TEST (5):
                     The "test" operation tests that a value at
                     the target location is equal to a specified
