@@ -275,7 +275,8 @@ class NetAppAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.netapp_v1.types.ListStoragePoolsRequest, dict]]):
-                The request object.
+                The request object. ListStoragePoolsRequest lists Storage
+                Pools.
             parent (:class:`str`):
                 Required. Parent value
                 This corresponds to the ``parent`` field
@@ -289,6 +290,8 @@ class NetAppAsyncClient:
 
         Returns:
             google.cloud.netapp_v1.services.net_app.pagers.ListStoragePoolsAsyncPager:
+                ListStoragePoolsResponse is the
+                response to a ListStoragePoolsRequest.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -408,7 +411,8 @@ class NetAppAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.netapp_v1.types.CreateStoragePoolRequest, dict]]):
-                The request object.
+                The request object. CreateStoragePoolRequest creates a
+                Storage Pool.
             parent (:class:`str`):
                 Required. Value for parent.
                 This corresponds to the ``parent`` field
@@ -539,7 +543,8 @@ class NetAppAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.netapp_v1.types.GetStoragePoolRequest, dict]]):
-                The request object.
+                The request object. GetStoragePoolRequest gets a Storage
+                Pool.
             name (:class:`str`):
                 Required. Name of the storage pool
                 This corresponds to the ``name`` field
@@ -664,7 +669,8 @@ class NetAppAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.netapp_v1.types.UpdateStoragePoolRequest, dict]]):
-                The request object.
+                The request object. UpdateStoragePoolRequest updates a
+                Storage Pool.
             storage_pool (:class:`google.cloud.netapp_v1.types.StoragePool`):
                 Required. The pool being updated
                 This corresponds to the ``storage_pool`` field
@@ -795,7 +801,8 @@ class NetAppAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.netapp_v1.types.DeleteStoragePoolRequest, dict]]):
-                The request object.
+                The request object. DeleteStoragePoolRequest deletes a
+                Storage Pool.
             name (:class:`str`):
                 Required. Name of the storage pool
                 This corresponds to the ``name`` field
@@ -1781,6 +1788,8 @@ class NetAppAsyncClient:
 
         Returns:
             google.cloud.netapp_v1.types.Snapshot:
+                Snapshot is a point-in-time version
+                of a Volume's content.
 
         """
         # Create or coerce a protobuf request object.
@@ -1916,7 +1925,8 @@ class NetAppAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.netapp_v1.types.Snapshot`
+                :class:`google.cloud.netapp_v1.types.Snapshot` Snapshot
+                is a point-in-time version of a Volume's content.
 
         """
         # Create or coerce a protobuf request object.
@@ -2167,7 +2177,8 @@ class NetAppAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.netapp_v1.types.Snapshot`
+                :class:`google.cloud.netapp_v1.types.Snapshot` Snapshot
+                is a point-in-time version of a Volume's content.
 
         """
         # Create or coerce a protobuf request object.
@@ -2921,7 +2932,8 @@ class NetAppAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.netapp_v1.types.ListKmsConfigsRequest, dict]]):
-                The request object.
+                The request object. ListKmsConfigsRequest lists KMS
+                Configs.
             parent (:class:`str`):
                 Required. Parent value
                 This corresponds to the ``parent`` field
@@ -2935,6 +2947,8 @@ class NetAppAsyncClient:
 
         Returns:
             google.cloud.netapp_v1.services.net_app.pagers.ListKmsConfigsAsyncPager:
+                ListKmsConfigsResponse is the
+                response to a ListKmsConfigsRequest.
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -3050,7 +3064,8 @@ class NetAppAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.netapp_v1.types.CreateKmsConfigRequest, dict]]):
-                The request object.
+                The request object. CreateKmsConfigRequest creates a KMS
+                Config.
             parent (:class:`str`):
                 Required. Value for parent.
                 This corresponds to the ``parent`` field
@@ -3181,7 +3196,8 @@ class NetAppAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.netapp_v1.types.GetKmsConfigRequest, dict]]):
-                The request object.
+                The request object. GetKmsConfigRequest gets a KMS
+                Config.
             name (:class:`str`):
                 Required. Name of the KmsConfig
                 This corresponds to the ``name`` field
@@ -3297,7 +3313,8 @@ class NetAppAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.netapp_v1.types.UpdateKmsConfigRequest, dict]]):
-                The request object.
+                The request object. UpdateKmsConfigRequest updates a KMS
+                Config.
             kms_config (:class:`google.cloud.netapp_v1.types.KmsConfig`):
                 Required. The KmsConfig being updated
                 This corresponds to the ``kms_config`` field
@@ -3606,7 +3623,8 @@ class NetAppAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.netapp_v1.types.DeleteKmsConfigRequest, dict]]):
-                The request object.
+                The request object. DeleteKmsConfigRequest deletes a KMS
+                Config.
             name (:class:`str`):
                 Required. Name of the KmsConfig.
                 This corresponds to the ``name`` field
@@ -4609,6 +4627,331 @@ class NetAppAsyncClient:
             self._client._transport.operations_client,
             replication.Replication,
             metadata_type=cloud_netapp_service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_operations(
+        self,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.ListOperationsResponse:
+        r"""Lists operations that match the specified filter in the request.
+
+        Args:
+            request (:class:`~.operations_pb2.ListOperationsRequest`):
+                The request object. Request message for
+                `ListOperations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.ListOperationsResponse:
+                Response message for ``ListOperations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.ListOperationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.list_operations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_operation(
+        self,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Gets the latest state of a long-running operation.
+
+        Args:
+            request (:class:`~.operations_pb2.GetOperationRequest`):
+                The request object. Request message for
+                `GetOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.GetOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.get_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_operation(
+        self,
+        request: Optional[operations_pb2.DeleteOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a long-running operation.
+
+        This method indicates that the client is no longer interested
+        in the operation result. It does not cancel the operation.
+        If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.DeleteOperationRequest`):
+                The request object. Request message for
+                `DeleteOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.DeleteOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.delete_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def cancel_operation(
+        self,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Starts asynchronous cancellation on a long-running operation.
+
+        The server makes a best effort to cancel the operation, but success
+        is not guaranteed.  If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.CancelOperationRequest`):
+                The request object. Request message for
+                `CancelOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.CancelOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.cancel_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def get_location(
+        self,
+        request: Optional[locations_pb2.GetLocationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> locations_pb2.Location:
+        r"""Gets information about a location.
+
+        Args:
+            request (:class:`~.location_pb2.GetLocationRequest`):
+                The request object. Request message for
+                `GetLocation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.location_pb2.Location:
+                Location object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = locations_pb2.GetLocationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.get_location,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_locations(
+        self,
+        request: Optional[locations_pb2.ListLocationsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> locations_pb2.ListLocationsResponse:
+        r"""Lists information about the supported locations for this service.
+
+        Args:
+            request (:class:`~.location_pb2.ListLocationsRequest`):
+                The request object. Request message for
+                `ListLocations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                 if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.location_pb2.ListLocationsResponse:
+                Response message for ``ListLocations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = locations_pb2.ListLocationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._client._transport.list_locations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.
