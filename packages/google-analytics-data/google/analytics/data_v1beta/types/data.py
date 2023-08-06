@@ -175,9 +175,8 @@ class Compatibility(proto.Enum):
 
 
 class DateRange(proto.Message):
-    r"""A contiguous set of days: startDate, startDate + 1, ...,
-    endDate. Requests
-    are allowed up to 4 date ranges.
+    r"""A contiguous set of days: ``startDate``, ``startDate + 1``, ...,
+    ``endDate``. Requests are allowed up to 4 date ranges.
 
     Attributes:
         start_date (str):
@@ -215,9 +214,9 @@ class DateRange(proto.Message):
 
 
 class MinuteRange(proto.Message):
-    r"""A contiguous set of minutes: startMinutesAgo, startMinutesAgo
-    + 1, ...,
-    endMinutesAgo. Requests are allowed up to 2 minute ranges.
+    r"""A contiguous set of minutes: ``startMinutesAgo``,
+    ``startMinutesAgo + 1``, ..., ``endMinutesAgo``. Requests are
+    allowed up to 2 minute ranges.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -945,7 +944,7 @@ class Pivot(proto.Message):
             ``limit`` of 10,000 is common for single pivot requests.
 
             The product of the ``limit`` for each ``pivot`` in a
-            ``RunPivotReportRequest`` must not exceed 100,000. For
+            ``RunPivotReportRequest`` must not exceed 250,000. For
             example, a two pivot request with ``limit: 1000`` in each
             pivot will fail because the product is ``1,000,000``.
         metric_aggregations (MutableSequence[google.analytics.data_v1beta.types.MetricAggregation]):
@@ -1196,9 +1195,23 @@ class ResponseMetaData(proto.Message):
 
     Attributes:
         data_loss_from_other_row (bool):
-            If true, indicates some buckets of dimension
-            combinations are rolled into "(other)" row. This
-            can happen for high cardinality reports.
+            If true, indicates some buckets of dimension combinations
+            are rolled into "(other)" row. This can happen for high
+            cardinality reports.
+
+            The metadata parameter dataLossFromOtherRow is populated
+            based on the aggregated data table used in the report. The
+            parameter will be accurately populated regardless of the
+            filters and limits in the report.
+
+            For example, the (other) row could be dropped from the
+            report because the request contains a filter on
+            sessionSource = google. This parameter will still be
+            populated if data loss from other row was present in the
+            input aggregate data used to generate this report.
+
+            To learn more, see `About the (other) row and data
+            sampling <https://support.google.com/analytics/answer/13208658#reports>`__.
         schema_restriction_response (google.analytics.data_v1beta.types.ResponseMetaData.SchemaRestrictionResponse):
             Describes the schema restrictions actively enforced in
             creating this report. To learn more, see `Access and
@@ -1552,13 +1565,13 @@ class PropertyQuota(proto.Message):
     Attributes:
         tokens_per_day (google.analytics.data_v1beta.types.QuotaStatus):
             Standard Analytics Properties can use up to
-            25,000 tokens per day; Analytics 360 Properties
-            can use 250,000 tokens per day. Most requests
+            200,000 tokens per day; Analytics 360 Properties
+            can use 2,000,000 tokens per day. Most requests
             consume fewer than 10 tokens.
         tokens_per_hour (google.analytics.data_v1beta.types.QuotaStatus):
             Standard Analytics Properties can use up to
-            5,000 tokens per hour; Analytics 360 Properties
-            can use 50,000 tokens per hour. An API request
+            40,000 tokens per hour; Analytics 360 Properties
+            can use 400,000 tokens per hour. An API request
             consumes a single number of tokens, and that
             number is deducted from all of the hourly,
             daily, and per project hourly quotas.
@@ -1580,15 +1593,15 @@ class PropertyQuota(proto.Message):
             if the request contains potentially thresholded
             dimensions.
         tokens_per_project_per_hour (google.analytics.data_v1beta.types.QuotaStatus):
-            Analytics Properties can use up to 25% of
+            Analytics Properties can use up to 35% of
             their tokens per project per hour. This amounts
             to standard Analytics Properties can use up to
-            1,250 tokens per project per hour, and Analytics
-            360 Properties can use 12,500 tokens per project
-            per hour. An API request consumes a single
-            number of tokens, and that number is deducted
-            from all of the hourly, daily, and per project
-            hourly quotas.
+            14,000 tokens per project per hour, and
+            Analytics 360 Properties can use 140,000 tokens
+            per project per hour. An API request consumes a
+            single number of tokens, and that number is
+            deducted from all of the hourly, daily, and per
+            project hourly quotas.
     """
 
     tokens_per_day: "QuotaStatus" = proto.Field(

@@ -57,11 +57,6 @@ class CheckCompatibilityRequest(proto.Message):
             ``runReport`` request.
 
             Example: properties/1234
-
-            Set the Property ID to 0 for compatibility checking on
-            dimensions and metrics common to all properties. In this
-            special mode, this method will not return custom dimensions
-            and metrics.
         dimensions (MutableSequence[google.analytics.data_v1beta.types.Dimension]):
             The dimensions in this report. ``dimensions`` should be the
             same value as in your ``runReport`` request.
@@ -193,9 +188,9 @@ class RunReportRequest(proto.Message):
             both date ranges. In a cohort request, this ``dateRanges``
             must be unspecified.
         dimension_filter (google.analytics.data_v1beta.types.FilterExpression):
-            Dimension filters allow you to ask for only specific
-            dimension values in the report. To learn more, see
-            `Fundamentals of Dimension
+            Dimension filters let you ask for only specific dimension
+            values in the report. To learn more, see `Fundamentals of
+            Dimension
             Filters <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>`__
             for examples. Metrics cannot be used in this filter.
         metric_filter (google.analytics.data_v1beta.types.FilterExpression):
@@ -217,7 +212,7 @@ class RunReportRequest(proto.Message):
             `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
         limit (int):
             The number of rows to return. If unspecified, 10,000 rows
-            are returned. The API returns a maximum of 100,000 rows per
+            are returned. The API returns a maximum of 250,000 rows per
             request, no matter how many you ask for. ``limit`` must be
             positive.
 
@@ -246,10 +241,18 @@ class RunReportRequest(proto.Message):
             there is a cohort group in the request the
             'cohort' dimension must be present.
         keep_empty_rows (bool):
-            If false or unspecified, each row with all
-            metrics equal to 0 will not be returned. If
-            true, these rows will be returned if they are
-            not separately removed by a filter.
+            If false or unspecified, each row with all metrics equal to
+            0 will not be returned. If true, these rows will be returned
+            if they are not separately removed by a filter.
+
+            Regardless of this ``keep_empty_rows`` setting, only data
+            recorded by the Google Analytics (GA4) property can be
+            displayed in a report.
+
+            For example if a property never logs a ``purchase`` event,
+            then a query for the ``eventName`` dimension and
+            ``eventCount`` metric will not have a row eventName:
+            "purchase" and eventCount: 0.
         return_property_quota (bool):
             Toggles whether to return the current state of this
             Analytics Property's quota. Quota is returned in
@@ -473,10 +476,18 @@ class RunPivotReportRequest(proto.Message):
             there is a cohort group in the request the
             'cohort' dimension must be present.
         keep_empty_rows (bool):
-            If false or unspecified, each row with all
-            metrics equal to 0 will not be returned. If
-            true, these rows will be returned if they are
-            not separately removed by a filter.
+            If false or unspecified, each row with all metrics equal to
+            0 will not be returned. If true, these rows will be returned
+            if they are not separately removed by a filter.
+
+            Regardless of this ``keep_empty_rows`` setting, only data
+            recorded by the Google Analytics (GA4) property can be
+            displayed in a report.
+
+            For example if a property never logs a ``purchase`` event,
+            then a query for the ``eventName`` dimension and
+            ``eventCount`` metric will not have a row eventName:
+            "purchase" and eventCount: 0.
         return_property_quota (bool):
             Toggles whether to return the current state of this
             Analytics Property's quota. Quota is returned in
@@ -814,7 +825,7 @@ class RunRealtimeReportRequest(proto.Message):
             Dimensions cannot be used in this filter.
         limit (int):
             The number of rows to return. If unspecified, 10,000 rows
-            are returned. The API returns a maximum of 100,000 rows per
+            are returned. The API returns a maximum of 250,000 rows per
             request, no matter how many you ask for. ``limit`` must be
             positive.
 
