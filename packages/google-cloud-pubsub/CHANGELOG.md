@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.18.2](https://github.com/googleapis/python-pubsub/compare/v2.18.1...v2.18.2) (2023-08-07)
+
+
+### Bug Fixes
+
+* Change retry multiplier from 1.3 to 4, for requests that retry Resour… ([#971](https://github.com/googleapis/python-pubsub/issues/971)) ([e4364d2](https://github.com/googleapis/python-pubsub/commit/e4364d2a061bb73fe3410d2ef213a04f3315e282))
+
 ## [2.18.1](https://github.com/googleapis/python-pubsub/compare/v2.18.0...v2.18.1) (2023-07-26)
 
 
