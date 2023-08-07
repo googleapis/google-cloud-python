@@ -448,7 +448,7 @@ class _GAXIterator(Iterator):
         page_iter (google.gax.PageIterator): A GAX page iterator to be wrapped
             to conform to the :class:`Iterator` interface.
         item_to_value (Callable[Iterator, Any]): Callable to convert an item
-            from the the protobuf response into a native object. Will
+            from the protobuf response into a native object. Will
             be called with the iterator and a single item.
         max_results (int): The maximum number of results to fetch.
 
