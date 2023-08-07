@@ -556,7 +556,7 @@ class PublisherAsyncClient:
             default_retry=retries.Retry(
                 initial=0.1,
                 maximum=60.0,
-                multiplier=1.3,
+                multiplier=4.0,
                 predicate=retries.if_exception_type(
                     core_exceptions.Aborted,
                     core_exceptions.Cancelled,
