@@ -1890,7 +1890,7 @@ def test_partition_read_w_index(sessions_database, not_emulator):
         columns,
         spanner_v1.KeySet(all_=True),
         index="name",
-        data_boost_enabled=False,
+        data_boost_enabled=True,
     )
     for batch in batches:
         p_results_iter = batch_txn.process(batch)
@@ -2507,7 +2507,7 @@ def test_partition_query(sessions_database, not_emulator):
     all_data_rows = set(_row_data(row_count))
     union = set()
     batch_txn = sessions_database.batch_snapshot(read_timestamp=committed)
-    for batch in batch_txn.generate_query_batches(sql, data_boost_enabled=False):
+    for batch in batch_txn.generate_query_batches(sql, data_boost_enabled=True):
         p_results_iter = batch_txn.process(batch)
         # Lists aren't hashable so the results need to be converted
         rows = [tuple(result) for result in p_results_iter]
