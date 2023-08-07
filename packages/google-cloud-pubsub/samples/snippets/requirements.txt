@@ -1,4 +1,4 @@
-google-cloud-pubsub==2.18.1
+google-cloud-pubsub==2.18.2
 avro==1.11.2
-protobuf==4.21.9
+protobuf==4.23.4
 avro==1.11.2
