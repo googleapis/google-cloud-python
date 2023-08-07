@@ -25,6 +25,7 @@ import warnings
 
 import nox
 
+FLAKE8_VERSION = "flake8==6.1.0"
 PYTYPE_VERSION = "pytype==2020.7.24"
 BLACK_VERSION = "black==22.3.0"
 ISORT_VERSION = "isort==5.10.1"
@@ -88,7 +89,7 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION)
+    session.install(FLAKE8_VERSION, BLACK_VERSION)
     session.run(
         "black",
         "--check",
