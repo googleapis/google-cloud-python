@@ -313,7 +313,7 @@ def field_mask(original, modified):
         modified = copy.deepcopy(original)
         modified.Clear()
 
-    if type(original) != type(modified):
+    if not isinstance(original, type(modified)):
         raise ValueError(
             "expected that both original and modified should be of the "
             'same type, received "{!r}" and "{!r}".'.format(

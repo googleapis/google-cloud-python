@@ -47,7 +47,6 @@ async def test_polling_future_constructor():
 @pytest.mark.asyncio
 async def test_set_result():
     future = AsyncFuture()
-    callback = mock.Mock()
 
     future.set_result(1)
 
