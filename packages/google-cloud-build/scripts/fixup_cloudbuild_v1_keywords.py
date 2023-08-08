@@ -55,7 +55,7 @@ class cloudbuildCallTransformer(cst.CSTTransformer):
         'receive_trigger_webhook': ('name', 'body', 'project_id', 'trigger', 'secret', ),
         'retry_build': ('project_id', 'id', 'name', ),
         'run_build_trigger': ('project_id', 'trigger_id', 'name', 'source', ),
-        'update_build_trigger': ('project_id', 'trigger_id', 'trigger', ),
+        'update_build_trigger': ('project_id', 'trigger_id', 'trigger', 'update_mask', ),
         'update_worker_pool': ('worker_pool', 'update_mask', 'validate_only', ),
     }
 

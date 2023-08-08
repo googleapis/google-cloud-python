@@ -475,6 +475,7 @@ class ServiceDirectoryConfig(proto.Message):
         service (str):
             Required. The Service Directory service name.
             Format:
+
             projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}.
     """
 

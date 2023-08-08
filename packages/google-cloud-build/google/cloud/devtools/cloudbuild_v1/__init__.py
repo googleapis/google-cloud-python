@@ -45,7 +45,11 @@ from .types.cloudbuild import FileHashes
 from .types.cloudbuild import GetBuildRequest
 from .types.cloudbuild import GetBuildTriggerRequest
 from .types.cloudbuild import GetWorkerPoolRequest
+from .types.cloudbuild import GitFileSource
+from .types.cloudbuild import GitHubEnterpriseConfig
+from .types.cloudbuild import GitHubEnterpriseSecrets
 from .types.cloudbuild import GitHubEventsConfig
+from .types.cloudbuild import GitRepoSource
 from .types.cloudbuild import GitSource
 from .types.cloudbuild import Hash
 from .types.cloudbuild import InlineSecret
@@ -111,7 +115,11 @@ __all__ = (
     "GetBuildRequest",
     "GetBuildTriggerRequest",
     "GetWorkerPoolRequest",
+    "GitFileSource",
+    "GitHubEnterpriseConfig",
+    "GitHubEnterpriseSecrets",
     "GitHubEventsConfig",
+    "GitRepoSource",
     "GitSource",
     "Hash",
     "InlineSecret",

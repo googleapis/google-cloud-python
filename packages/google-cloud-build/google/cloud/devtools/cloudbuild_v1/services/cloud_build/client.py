@@ -247,6 +247,25 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def github_enterprise_config_path(
+        project: str,
+        config: str,
+    ) -> str:
+        """Returns a fully-qualified github_enterprise_config string."""
+        return "projects/{project}/githubEnterpriseConfigs/{config}".format(
+            project=project,
+            config=config,
+        )
+
+    @staticmethod
+    def parse_github_enterprise_config_path(path: str) -> Dict[str, str]:
+        """Parses a github_enterprise_config path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/githubEnterpriseConfigs/(?P<config>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def network_path(
         project: str,
         network: str,

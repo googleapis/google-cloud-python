@@ -63,6 +63,8 @@ __protobuf__ = proto.module(
         "BuildApproval",
         "ApprovalConfig",
         "ApprovalResult",
+        "GitRepoSource",
+        "GitFileSource",
         "BuildTrigger",
         "RepositoryEventConfig",
         "GitHubEventsConfig",
@@ -79,6 +81,8 @@ __protobuf__ = proto.module(
         "BuildOptions",
         "ReceiveTriggerWebhookRequest",
         "ReceiveTriggerWebhookResponse",
+        "GitHubEnterpriseConfig",
+        "GitHubEnterpriseSecrets",
         "WorkerPool",
         "PrivatePoolV1Config",
         "CreateWorkerPoolRequest",
@@ -534,6 +538,8 @@ class UploadedNpmPackage(proto.Message):
 class BuildStep(proto.Message):
     r"""A step in the build pipeline.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Required. The name of the container image that will run this
@@ -645,6 +651,13 @@ class BuildStep(proto.Message):
             A shell script to be executed in the step.
             When script is provided, the user cannot specify
             the entrypoint or args.
+        automap_substitutions (bool):
+            Option to include built-in and custom
+            substitutions as env variables for this build
+            step. This option will override the global
+            option in BuildOption.
+
+            This field is a member of `oneof`_ ``_automap_substitutions``.
     """
 
     name: str = proto.Field(
@@ -719,6 +732,11 @@ class BuildStep(proto.Message):
     script: str = proto.Field(
         proto.STRING,
         number=19,
+    )
+    automap_substitutions: bool = proto.Field(
+        proto.BOOL,
+        number=20,
+        optional=True,
     )
 
 
@@ -2079,6 +2097,164 @@ class ApprovalResult(proto.Message):
     )
 
 
+class GitRepoSource(proto.Message):
+    r"""GitRepoSource describes a repo and ref of a code repository.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        uri (str):
+            The URI of the repo (e.g. https://github.com/user/repo.git).
+            Either ``uri`` or ``repository`` can be specified and is
+            required.
+        repository (str):
+            The connected repository resource name, in the format
+            ``projects/*/locations/*/connections/*/repositories/*``.
+            Either ``uri`` or ``repository`` can be specified and is
+            required.
+
+            This field is a member of `oneof`_ ``source``.
+        ref (str):
+            The branch or tag to use. Must start with
+            "refs/" (required).
+        repo_type (google.cloud.devtools.cloudbuild_v1.types.GitFileSource.RepoType):
+            See RepoType below.
+        github_enterprise_config (str):
+            The full resource name of the github enterprise config.
+            Format:
+            ``projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}``.
+            ``projects/{project}/githubEnterpriseConfigs/{id}``.
+
+            This field is a member of `oneof`_ ``enterprise_config``.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    repository: str = proto.Field(
+        proto.STRING,
+        number=6,
+        oneof="source",
+    )
+    ref: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    repo_type: "GitFileSource.RepoType" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="GitFileSource.RepoType",
+    )
+    github_enterprise_config: str = proto.Field(
+        proto.STRING,
+        number=4,
+        oneof="enterprise_config",
+    )
+
+
+class GitFileSource(proto.Message):
+    r"""GitFileSource describes a file within a (possibly remote)
+    code repository.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        path (str):
+            The path of the file, with the repo root as
+            the root of the path.
+        uri (str):
+            The URI of the repo.
+            Either uri or repository can be specified.
+            If unspecified, the repo from which the trigger
+            invocation originated is assumed to be the repo
+            from which to read the specified path.
+        repository (str):
+            The fully qualified resource name of the
+            Repos API repository. Either URI or repository
+            can be specified. If unspecified, the repo from
+            which the trigger invocation originated is
+            assumed to be the repo from which to read the
+            specified path.
+
+            This field is a member of `oneof`_ ``source``.
+        repo_type (google.cloud.devtools.cloudbuild_v1.types.GitFileSource.RepoType):
+            See RepoType above.
+        revision (str):
+            The branch, tag, arbitrary ref, or SHA
+            version of the repo to use when resolving the
+            filename (optional). This field respects the
+            same syntax/resolution as described here:
+
+            https://git-scm.com/docs/gitrevisions
+            If unspecified, the revision from which the
+            trigger invocation originated is assumed to be
+            the revision from which to read the specified
+            path.
+        github_enterprise_config (str):
+            The full resource name of the github enterprise config.
+            Format:
+            ``projects/{project}/locations/{location}/githubEnterpriseConfigs/{id}``.
+            ``projects/{project}/githubEnterpriseConfigs/{id}``.
+
+            This field is a member of `oneof`_ ``enterprise_config``.
+    """
+
+    class RepoType(proto.Enum):
+        r"""The type of the repo, since it may not be explicit from the ``repo``
+        field (e.g from a URL).
+
+        Values:
+            UNKNOWN (0):
+                The default, unknown repo type. Don't use it,
+                instead use one of the other repo types.
+            CLOUD_SOURCE_REPOSITORIES (1):
+                A Google Cloud Source Repositories-hosted
+                repo.
+            GITHUB (2):
+                A GitHub-hosted repo not necessarily on
+                "github.com" (i.e. GitHub Enterprise).
+            BITBUCKET_SERVER (3):
+                A Bitbucket Server-hosted repo.
+            GITLAB (4):
+                A GitLab-hosted repo.
+        """
+        UNKNOWN = 0
+        CLOUD_SOURCE_REPOSITORIES = 1
+        GITHUB = 2
+        BITBUCKET_SERVER = 3
+        GITLAB = 4
+
+    path: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    repository: str = proto.Field(
+        proto.STRING,
+        number=7,
+        oneof="source",
+    )
+    repo_type: RepoType = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=RepoType,
+    )
+    revision: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    github_enterprise_config: str = proto.Field(
+        proto.STRING,
+        number=5,
+        oneof="enterprise_config",
+    )
+
+
 class BuildTrigger(proto.Message):
     r"""Configuration for an automated build in response to source
     repository changes.
@@ -2105,10 +2281,12 @@ class BuildTrigger(proto.Message):
             User-assigned name of the trigger. Must be
             unique within the project. Trigger names must
             meet the following requirements:
+
             + They must contain only alphanumeric characters
-            and dashes. + They can be 1-64 characters long.
+              and dashes.
+            + They can be 1-64 characters long.
             + They must begin and end with an alphanumeric
-            character.
+              character.
         tags (MutableSequence[str]):
             Tags for annotation of a ``BuildTrigger``
         trigger_template (google.cloud.devtools.cloudbuild_v1.types.RepoSource):
@@ -2136,6 +2314,7 @@ class BuildTrigger(proto.Message):
         autodetect (bool):
             Autodetect build configuration.  The
             following precedence is used (case insensitive):
+
             1. cloudbuild.yaml
             2. cloudbuild.yml
             3. cloudbuild.json
@@ -2152,6 +2331,11 @@ class BuildTrigger(proto.Message):
         filename (str):
             Path, from the source root, to the build
             configuration file (i.e. cloudbuild.yaml).
+
+            This field is a member of `oneof`_ ``build_template``.
+        git_file_source (google.cloud.devtools.cloudbuild_v1.types.GitFileSource):
+            The file source describing the local or
+            remote Build template.
 
             This field is a member of `oneof`_ ``build_template``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -2188,6 +2372,14 @@ class BuildTrigger(proto.Message):
         filter (str):
             Optional. A Common Expression Language
             string.
+        source_to_build (google.cloud.devtools.cloudbuild_v1.types.GitRepoSource):
+            The repo and ref of the repository from which
+            to build. This field is used only for those
+            triggers that do not respond to SCM events.
+            Triggers that respond to such events build
+            source at whatever commit caused the event.
+            This field is currently only used by Webhook,
+            Pub/Sub, Manual, and Cron triggers.
         service_account (str):
             The service account used for all user-controlled operations
             including UpdateBuildTrigger, RunBuildTrigger, CreateBuild,
@@ -2258,6 +2450,12 @@ class BuildTrigger(proto.Message):
         number=8,
         oneof="build_template",
     )
+    git_file_source: "GitFileSource" = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        oneof="build_template",
+        message="GitFileSource",
+    )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=5,
@@ -2283,6 +2481,11 @@ class BuildTrigger(proto.Message):
     filter: str = proto.Field(
         proto.STRING,
         number=30,
+    )
+    source_to_build: "GitRepoSource" = proto.Field(
+        proto.MESSAGE,
+        number=26,
+        message="GitRepoSource",
     )
     service_account: str = proto.Field(
         proto.STRING,
@@ -2806,6 +3009,11 @@ class UpdateBuildTriggerRequest(proto.Message):
             Required. ID of the ``BuildTrigger`` to update.
         trigger (google.cloud.devtools.cloudbuild_v1.types.BuildTrigger):
             Required. ``BuildTrigger`` to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Update mask for the resource. If this is set,
+            the server will only update the fields specified
+            in the field mask. Otherwise, a full update of
+            the mutable resource fields will be performed.
     """
 
     project_id: str = proto.Field(
@@ -2820,6 +3028,11 @@ class UpdateBuildTriggerRequest(proto.Message):
         proto.MESSAGE,
         number=3,
         message="BuildTrigger",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -2856,6 +3069,10 @@ class BuildOptions(proto.Message):
             NOTE: this is always enabled for triggered
             builds and cannot be overridden in the build
             configuration file.
+        automap_substitutions (bool):
+            Option to include built-in and custom
+            substitutions as env variables for all build
+            steps.
         log_streaming_option (google.cloud.devtools.cloudbuild_v1.types.BuildOptions.LogStreamingOption):
             Option to define build log streaming behavior
             to Cloud Storage.
@@ -3082,6 +3299,10 @@ class BuildOptions(proto.Message):
         proto.BOOL,
         number=17,
     )
+    automap_substitutions: bool = proto.Field(
+        proto.BOOL,
+        number=22,
+    )
     log_streaming_option: LogStreamingOption = proto.Field(
         proto.ENUM,
         number=5,
@@ -3170,6 +3391,125 @@ class ReceiveTriggerWebhookResponse(proto.Message):
     for the ReceiveTriggerWebhook method.
 
     """
+
+
+class GitHubEnterpriseConfig(proto.Message):
+    r"""
+
+    Attributes:
+        name (str):
+            Optional. The full resource name for the
+            GitHubEnterpriseConfig For example:
+            "projects/{$project_id}/locations/{$location_id}/githubEnterpriseConfigs/{$config_id}".
+        host_url (str):
+            The URL of the github enterprise host the
+            configuration is for.
+        app_id (int):
+            Required. The GitHub app id of the Cloud
+            Build app on the GitHub Enterprise server.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time when the installation was
+            associated with the project.
+        webhook_key (str):
+            The key that should be attached to webhook
+            calls to the ReceiveWebhook endpoint.
+        peered_network (str):
+            Optional. The network to be used when reaching out to the
+            GitHub Enterprise server. The VPC network must be enabled
+            for private service connection. This should be set if the
+            GitHub Enterprise server is hosted on-premises and not
+            reachable by public internet. If this field is left empty,
+            no network peering will occur and calls to the GitHub
+            Enterprise server will be made over the public internet.
+            Must be in the format
+            ``projects/{project}/global/networks/{network}``, where
+            {project} is a project number or id and {network} is the
+            name of a VPC network in the project.
+        secrets (google.cloud.devtools.cloudbuild_v1.types.GitHubEnterpriseSecrets):
+            Names of secrets in Secret Manager.
+        display_name (str):
+            Name to display for this config.
+        ssl_ca (str):
+            Optional. SSL certificate to use for requests
+            to GitHub Enterprise.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    host_url: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    app_id: int = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    webhook_key: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    peered_network: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    secrets: "GitHubEnterpriseSecrets" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="GitHubEnterpriseSecrets",
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    ssl_ca: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+
+
+class GitHubEnterpriseSecrets(proto.Message):
+    r"""GitHubEnterpriseSecrets represents the names of all necessary
+    secrets in Secret Manager for a GitHub Enterprise server. Format
+    is: projects/<project number>/secrets/<secret name>.
+
+    Attributes:
+        private_key_version_name (str):
+            The resource name for the private key secret
+            version.
+        webhook_secret_version_name (str):
+            The resource name for the webhook secret
+            secret version in Secret Manager.
+        oauth_secret_version_name (str):
+            The resource name for the OAuth secret secret
+            version in Secret Manager.
+        oauth_client_id_version_name (str):
+            The resource name for the OAuth client ID
+            secret version in Secret Manager.
+    """
+
+    private_key_version_name: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    webhook_secret_version_name: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    oauth_secret_version_name: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    oauth_client_id_version_name: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class WorkerPool(proto.Message):
