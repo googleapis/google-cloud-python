@@ -113,6 +113,7 @@ class ExecutionTemplate(proto.Message):
             Example:
             'gcr.io/deeplearning-platform-release/base-cu100'
             More examples can be found at:
+
             https://cloud.google.com/ai-platform/deep-learning-containers/docs/choosing-container
         output_notebook_folder (str):
             Path to the notebook folder to write to. Must be in a Google

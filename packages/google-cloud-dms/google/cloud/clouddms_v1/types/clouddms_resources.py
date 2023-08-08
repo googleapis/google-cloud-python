@@ -1238,6 +1238,7 @@ class MigrationJob(proto.Message):
         name (str):
             The name (URI) of this migration job
             resource, in the form of:
+
             projects/{project}/locations/{location}/migrationJobs/{migrationJob}.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the migration
@@ -1297,7 +1298,9 @@ class MigrationJob(proto.Message):
             Output only. The duration of the migration
             job (in seconds). A duration in seconds with up
             to nine fractional digits, terminated by 's'.
-            Example: "3.5s".
+            Example:
+
+            "3.5s".
         error (google.rpc.status_pb2.Status):
             Output only. The error details in case of
             state FAILED.
