@@ -296,6 +296,13 @@ class Runnable(proto.Message):
                 Optional password for logging in to a docker registry. If
                 password matches ``projects/*/secrets/*/versions/*`` then
                 Batch will read the password from the Secret Manager;
+            enable_image_streaming (bool):
+                Optional. Not yet implemented.
+                If set to true, container will run with Image
+                streaming. The container runtime will be changed
+                to containerd instead of docker. Currently, only
+                imageUri, commands, entrypoint and volumes are
+                supported and any other fields will be ignored.
         """
 
         image_uri: str = proto.Field(
@@ -329,6 +336,10 @@ class Runnable(proto.Message):
         password: str = proto.Field(
             proto.STRING,
             number=11,
+        )
+        enable_image_streaming: bool = proto.Field(
+            proto.BOOL,
+            number=12,
         )
 
     class Script(proto.Message):
