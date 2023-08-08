@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.14.0...google-cloud-batch-v0.15.0) (2023-08-03)
+
+
+### Features
+
+* allow order_by for v1 ListJobs ([f5f6d35](https://github.com/googleapis/google-cloud-python/commit/f5f6d359cc90beb9752ac91203aeb92f9559b06d))
+* Enable gpu driver version field on v1 ([f5f6d35](https://github.com/googleapis/google-cloud-python/commit/f5f6d359cc90beb9752ac91203aeb92f9559b06d))
+
+
+### Documentation
+
+* Add comment to the unsupported order_by field of ListTasksRequest ([f5f6d35](https://github.com/googleapis/google-cloud-python/commit/f5f6d359cc90beb9752ac91203aeb92f9559b06d))
+* Improve url examples formats on Batch API comments ([f5f6d35](https://github.com/googleapis/google-cloud-python/commit/f5f6d359cc90beb9752ac91203aeb92f9559b06d))
+
 ## [0.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.13.0...google-cloud-batch-v0.14.0) (2023-07-25)
 
 

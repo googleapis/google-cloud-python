@@ -87,8 +87,6 @@ class DataScanServiceAsyncClient:
     )
     entity_path = staticmethod(DataScanServiceClient.entity_path)
     parse_entity_path = staticmethod(DataScanServiceClient.parse_entity_path)
-    table_path = staticmethod(DataScanServiceClient.table_path)
-    parse_table_path = staticmethod(DataScanServiceClient.parse_table_path)
     common_billing_account_path = staticmethod(
         DataScanServiceClient.common_billing_account_path
     )

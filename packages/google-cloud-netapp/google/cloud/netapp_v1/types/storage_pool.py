@@ -38,7 +38,7 @@ __protobuf__ = proto.module(
 
 
 class GetStoragePoolRequest(proto.Message):
-    r"""
+    r"""GetStoragePoolRequest gets a Storage Pool.
 
     Attributes:
         name (str):
@@ -52,7 +52,7 @@ class GetStoragePoolRequest(proto.Message):
 
 
 class ListStoragePoolsRequest(proto.Message):
-    r"""
+    r"""ListStoragePoolsRequest lists Storage Pools.
 
     Attributes:
         parent (str):
@@ -92,7 +92,8 @@ class ListStoragePoolsRequest(proto.Message):
 
 
 class ListStoragePoolsResponse(proto.Message):
-    r"""
+    r"""ListStoragePoolsResponse is the response to a
+    ListStoragePoolsRequest.
 
     Attributes:
         storage_pools (MutableSequence[google.cloud.netapp_v1.types.StoragePool]):
@@ -124,7 +125,7 @@ class ListStoragePoolsResponse(proto.Message):
 
 
 class CreateStoragePoolRequest(proto.Message):
-    r"""
+    r"""CreateStoragePoolRequest creates a Storage Pool.
 
     Attributes:
         parent (str):
@@ -154,7 +155,7 @@ class CreateStoragePoolRequest(proto.Message):
 
 
 class UpdateStoragePoolRequest(proto.Message):
-    r"""
+    r"""UpdateStoragePoolRequest updates a Storage Pool.
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -181,7 +182,7 @@ class UpdateStoragePoolRequest(proto.Message):
 
 
 class DeleteStoragePoolRequest(proto.Message):
-    r"""
+    r"""DeleteStoragePoolRequest deletes a Storage Pool.
 
     Attributes:
         name (str):

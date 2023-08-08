@@ -313,7 +313,7 @@ class JobNotification(proto.Message):
     Attributes:
         pubsub_topic (str):
             The Pub/Sub topic where notifications like the job state
-            changes will be published. This topic exist in the same
+            changes will be published. The topic must exist in the same
             project as the job and billings will be charged to this
             project. If not specified, no Pub/Sub messages will be sent.
             Topic format: ``projects/{project}/topics/{topic}``.
@@ -339,10 +339,12 @@ class JobNotification(proto.Message):
         TASK_STATE_CHANGED = 2
 
     class Message(proto.Message):
-        r"""Message details.
-        Describe the attribute that a message should have.
-        Without specified message attributes, no message will be sent by
-        default.
+        r"""Message details. Describe the conditions under which messages will
+        be sent. If no attribute is defined, no message will be sent by
+        default. One message should specify either the job or the task level
+        attributes, but not both. For example, job level: JOB_STATE_CHANGED
+        and/or a specified new_job_state; task level: TASK_STATE_CHANGED
+        and/or a specified new_task_state.
 
         Attributes:
             type_ (google.cloud.batch_v1.types.JobNotification.Type):
@@ -473,21 +475,32 @@ class AllocationPolicy(proto.Message):
 
         Attributes:
             image (str):
-                Name of a public or custom image used as the data source.
-                For example, the following are all valid URLs:
+                Name of an image used as the data source. For example, the
+                following are all valid URLs:
 
                 -  Specify the image by its family name:
-                   projects/{project}/global/images/family/{image_family}
+
+                .. raw:: html
+
+                    <pre><code>projects/<var
+                    class="apiparam">project</var>/global/images/family/<var
+                    class="apiparam">image_family</var></code></pre>
+
                 -  Specify the image version:
-                   projects/{project}/global/images/{image_version}
+
+                .. raw:: html
+
+                    <pre>projects/<var
+                    class="apiparam">project</var>/global/images/<var
+                    class="apiparam">image_version</var></code></pre>
 
                 You can also use Batch customized image in short names. The
                 following image values are supported for a boot disk:
 
-                -  "batch-debian": use Batch Debian images.
-                -  "batch-centos": use Batch CentOS images.
-                -  "batch-cos": use Batch Container-Optimized images.
-                -  "batch-hpc-centos": use Batch HPC CentOS images.
+                -  ``batch-debian``: use Batch Debian images.
+                -  ``batch-centos``: use Batch CentOS images.
+                -  ``batch-cos``: use Batch Container-Optimized images.
+                -  ``batch-hpc-centos``: use Batch HPC CentOS images.
 
                 This field is a member of `oneof`_ ``data_source``.
             snapshot (str):
@@ -597,6 +610,16 @@ class AllocationPolicy(proto.Message):
             install_gpu_drivers (bool):
                 Deprecated: please use instances[0].install_gpu_drivers
                 instead.
+            driver_version (str):
+                Optional. The NVIDIA GPU driver version that
+                should be installed for this type.
+
+                You can define the specific driver version such
+                as "470.103.01", following the driver version
+                requirements in
+                https://cloud.google.com/compute/docs/gpus/install-drivers-gpu#minimum-driver.
+                Batch will install the specific accelerator
+                driver if qualified.
         """
 
         type_: str = proto.Field(
@@ -610,6 +633,10 @@ class AllocationPolicy(proto.Message):
         install_gpu_drivers: bool = proto.Field(
             proto.BOOL,
             number=3,
+        )
+        driver_version: str = proto.Field(
+            proto.STRING,
+            number=4,
         )
 
     class InstancePolicy(proto.Message):
@@ -696,6 +723,12 @@ class AllocationPolicy(proto.Message):
                 drivers from a third party location and install them for
                 GPUs specified in policy.accelerators or instance_template
                 on their behalf. Default is false.
+
+                For Container-Optimized Image cases, Batch will install the
+                accelerator driver following milestones of
+                https://cloud.google.com/container-optimized-os/docs/release-notes.
+                For non Container-Optimized Image cases, following
+                https://github.com/GoogleCloudPlatform/compute-gpu-installation/blob/main/linux/install_gpu_driver.py.
         """
 
         policy: "AllocationPolicy.InstancePolicy" = proto.Field(
@@ -719,23 +752,36 @@ class AllocationPolicy(proto.Message):
 
         Attributes:
             network (str):
-                The URL of an existing network resource. You can specify the
-                network as a full or partial URL.
-
+                The URL of an existing network resource.
+                You can specify the network as a full or partial
+                URL.
                 For example, the following are all valid URLs:
 
-                -  https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}
-                -  projects/{project}/global/networks/{network}
-                -  global/networks/{network}
+                <pre><code>https://www.googleapis.com/compute/v1/projects/<var
+                class="apiparam">project</var>/global/networks/<var
+                class="apiparam">network</var></code></pre>
+                <pre><code>projects/<var
+                class="apiparam">project</var>/global/networks/<var
+                class="apiparam">network</var></code></pre>
+                <pre><code>global/networks/<var
+                class="apiparam">network</var></code></pre>
             subnetwork (str):
-                The URL of an existing subnetwork resource in the network.
-                You can specify the subnetwork as a full or partial URL.
-
+                The URL of an existing subnetwork resource in
+                the network. You can specify the subnetwork as a
+                full or partial URL.
                 For example, the following are all valid URLs:
 
-                -  https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetwork}
-                -  projects/{project}/regions/{region}/subnetworks/{subnetwork}
-                -  regions/{region}/subnetworks/{subnetwork}
+                <pre><code>https://www.googleapis.com/compute/v1/projects/<var
+                class="apiparam">project</var>/regions/<var
+                class="apiparam">region</var>/subnetworks/<var
+                class="apiparam">subnetwork</var></code></pre>
+                <pre><code>projects/<var
+                class="apiparam">project</var>/regions/<var
+                class="apiparam">region</var>/subnetworks/<var
+                class="apiparam">subnetwork</var></code></pre>
+                <pre><code>regions/<var
+                class="apiparam">region</var>/subnetworks/<var
+                class="apiparam">subnetwork</var></code></pre>
             no_external_ip_address (bool):
                 Default is false (with an external IP
                 address). Required if no external public IP
