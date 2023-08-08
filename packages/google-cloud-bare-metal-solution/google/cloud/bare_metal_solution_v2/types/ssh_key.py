@@ -19,15 +19,14 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.baremetalsolution.v2',
+    package="google.cloud.baremetalsolution.v2",
     manifest={
-        'SSHKey',
-        'ListSSHKeysRequest',
-        'ListSSHKeysResponse',
-        'CreateSSHKeyRequest',
-        'DeleteSSHKeyRequest',
+        "SSHKey",
+        "ListSSHKeysRequest",
+        "ListSSHKeysResponse",
+        "CreateSSHKeyRequest",
+        "DeleteSSHKeyRequest",
     },
 )
 
@@ -101,10 +100,10 @@ class ListSSHKeysResponse(proto.Message):
     def raw_page(self):
         return self
 
-    ssh_keys: MutableSequence['SSHKey'] = proto.RepeatedField(
+    ssh_keys: MutableSequence["SSHKey"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='SSHKey',
+        message="SSHKey",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -131,10 +130,10 @@ class CreateSSHKeyRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    ssh_key: 'SSHKey' = proto.Field(
+    ssh_key: "SSHKey" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='SSHKey',
+        message="SSHKey",
     )
     ssh_key_id: str = proto.Field(
         proto.STRING,

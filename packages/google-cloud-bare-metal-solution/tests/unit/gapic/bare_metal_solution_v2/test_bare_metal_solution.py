@@ -42,11 +42,9 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import options_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -65,15 +63,22 @@ from google.cloud.bare_metal_solution_v2.services.bare_metal_solution import (
     transports,
 )
 from google.cloud.bare_metal_solution_v2.types import nfs_share as gcb_nfs_share
-from google.cloud.bare_metal_solution_v2.types import baremetalsolution
+from google.cloud.bare_metal_solution_v2.types import (
+    volume_snapshot as gcb_volume_snapshot,
+)
+from google.cloud.bare_metal_solution_v2.types import common
 from google.cloud.bare_metal_solution_v2.types import instance
 from google.cloud.bare_metal_solution_v2.types import instance as gcb_instance
 from google.cloud.bare_metal_solution_v2.types import lun
 from google.cloud.bare_metal_solution_v2.types import network
 from google.cloud.bare_metal_solution_v2.types import network as gcb_network
 from google.cloud.bare_metal_solution_v2.types import nfs_share
+from google.cloud.bare_metal_solution_v2.types import osimage, provisioning
+from google.cloud.bare_metal_solution_v2.types import ssh_key
+from google.cloud.bare_metal_solution_v2.types import ssh_key as gcb_ssh_key
 from google.cloud.bare_metal_solution_v2.types import volume
 from google.cloud.bare_metal_solution_v2.types import volume as gcb_volume
+from google.cloud.bare_metal_solution_v2.types import volume_snapshot
 
 
 def client_cert_source_callback():
@@ -1213,6 +1218,9 @@ def test_get_instance(request_type, transport: str = "grpc"):
             os_image="os_image_value",
             pod="pod_value",
             network_template="network_template_value",
+            login_info="login_info_value",
+            workload_profile=common.WorkloadProfile.WORKLOAD_PROFILE_GENERIC,
+            firmware_version="firmware_version_value",
         )
         response = client.get_instance(request)
 
@@ -1232,6 +1240,9 @@ def test_get_instance(request_type, transport: str = "grpc"):
     assert response.os_image == "os_image_value"
     assert response.pod == "pod_value"
     assert response.network_template == "network_template_value"
+    assert response.login_info == "login_info_value"
+    assert response.workload_profile == common.WorkloadProfile.WORKLOAD_PROFILE_GENERIC
+    assert response.firmware_version == "firmware_version_value"
 
 
 def test_get_instance_empty_call():
@@ -1277,6 +1288,9 @@ async def test_get_instance_async(
                 os_image="os_image_value",
                 pod="pod_value",
                 network_template="network_template_value",
+                login_info="login_info_value",
+                workload_profile=common.WorkloadProfile.WORKLOAD_PROFILE_GENERIC,
+                firmware_version="firmware_version_value",
             )
         )
         response = await client.get_instance(request)
@@ -1297,6 +1311,9 @@ async def test_get_instance_async(
     assert response.os_image == "os_image_value"
     assert response.pod == "pod_value"
     assert response.network_template == "network_template_value"
+    assert response.login_info == "login_info_value"
+    assert response.workload_profile == common.WorkloadProfile.WORKLOAD_PROFILE_GENERIC
+    assert response.firmware_version == "firmware_version_value"
 
 
 @pytest.mark.asyncio
@@ -1676,6 +1693,288 @@ async def test_update_instance_flattened_error_async():
             gcb_instance.UpdateInstanceRequest(),
             instance=gcb_instance.Instance(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.RenameInstanceRequest,
+        dict,
+    ],
+)
+def test_rename_instance(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_instance), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = instance.Instance(
+            name="name_value",
+            id="id_value",
+            machine_type="machine_type_value",
+            state=instance.Instance.State.PROVISIONING,
+            hyperthreading_enabled=True,
+            interactive_serial_console_enabled=True,
+            os_image="os_image_value",
+            pod="pod_value",
+            network_template="network_template_value",
+            login_info="login_info_value",
+            workload_profile=common.WorkloadProfile.WORKLOAD_PROFILE_GENERIC,
+            firmware_version="firmware_version_value",
+        )
+        response = client.rename_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == instance.RenameInstanceRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, instance.Instance)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.machine_type == "machine_type_value"
+    assert response.state == instance.Instance.State.PROVISIONING
+    assert response.hyperthreading_enabled is True
+    assert response.interactive_serial_console_enabled is True
+    assert response.os_image == "os_image_value"
+    assert response.pod == "pod_value"
+    assert response.network_template == "network_template_value"
+    assert response.login_info == "login_info_value"
+    assert response.workload_profile == common.WorkloadProfile.WORKLOAD_PROFILE_GENERIC
+    assert response.firmware_version == "firmware_version_value"
+
+
+def test_rename_instance_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_instance), "__call__") as call:
+        client.rename_instance()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == instance.RenameInstanceRequest()
+
+
+@pytest.mark.asyncio
+async def test_rename_instance_async(
+    transport: str = "grpc_asyncio", request_type=instance.RenameInstanceRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_instance), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            instance.Instance(
+                name="name_value",
+                id="id_value",
+                machine_type="machine_type_value",
+                state=instance.Instance.State.PROVISIONING,
+                hyperthreading_enabled=True,
+                interactive_serial_console_enabled=True,
+                os_image="os_image_value",
+                pod="pod_value",
+                network_template="network_template_value",
+                login_info="login_info_value",
+                workload_profile=common.WorkloadProfile.WORKLOAD_PROFILE_GENERIC,
+                firmware_version="firmware_version_value",
+            )
+        )
+        response = await client.rename_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == instance.RenameInstanceRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, instance.Instance)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.machine_type == "machine_type_value"
+    assert response.state == instance.Instance.State.PROVISIONING
+    assert response.hyperthreading_enabled is True
+    assert response.interactive_serial_console_enabled is True
+    assert response.os_image == "os_image_value"
+    assert response.pod == "pod_value"
+    assert response.network_template == "network_template_value"
+    assert response.login_info == "login_info_value"
+    assert response.workload_profile == common.WorkloadProfile.WORKLOAD_PROFILE_GENERIC
+    assert response.firmware_version == "firmware_version_value"
+
+
+@pytest.mark.asyncio
+async def test_rename_instance_async_from_dict():
+    await test_rename_instance_async(request_type=dict)
+
+
+def test_rename_instance_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = instance.RenameInstanceRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_instance), "__call__") as call:
+        call.return_value = instance.Instance()
+        client.rename_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_rename_instance_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = instance.RenameInstanceRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_instance), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(instance.Instance())
+        await client.rename_instance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_rename_instance_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_instance), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = instance.Instance()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.rename_instance(
+            name="name_value",
+            new_instance_id="new_instance_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].new_instance_id
+        mock_val = "new_instance_id_value"
+        assert arg == mock_val
+
+
+def test_rename_instance_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rename_instance(
+            instance.RenameInstanceRequest(),
+            name="name_value",
+            new_instance_id="new_instance_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rename_instance_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_instance), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = instance.Instance()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(instance.Instance())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.rename_instance(
+            name="name_value",
+            new_instance_id="new_instance_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].new_instance_id
+        mock_val = "new_instance_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_rename_instance_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.rename_instance(
+            instance.RenameInstanceRequest(),
+            name="name_value",
+            new_instance_id="new_instance_id_value",
         )
 
 
@@ -2360,6 +2659,488 @@ async def test_stop_instance_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        instance.EnableInteractiveSerialConsoleRequest,
+        dict,
+    ],
+)
+def test_enable_interactive_serial_console(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_interactive_serial_console), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.enable_interactive_serial_console(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == instance.EnableInteractiveSerialConsoleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_enable_interactive_serial_console_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_interactive_serial_console), "__call__"
+    ) as call:
+        client.enable_interactive_serial_console()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == instance.EnableInteractiveSerialConsoleRequest()
+
+
+@pytest.mark.asyncio
+async def test_enable_interactive_serial_console_async(
+    transport: str = "grpc_asyncio",
+    request_type=instance.EnableInteractiveSerialConsoleRequest,
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_interactive_serial_console), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.enable_interactive_serial_console(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == instance.EnableInteractiveSerialConsoleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_enable_interactive_serial_console_async_from_dict():
+    await test_enable_interactive_serial_console_async(request_type=dict)
+
+
+def test_enable_interactive_serial_console_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = instance.EnableInteractiveSerialConsoleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_interactive_serial_console), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.enable_interactive_serial_console(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_enable_interactive_serial_console_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = instance.EnableInteractiveSerialConsoleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_interactive_serial_console), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.enable_interactive_serial_console(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_enable_interactive_serial_console_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_interactive_serial_console), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.enable_interactive_serial_console(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_enable_interactive_serial_console_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.enable_interactive_serial_console(
+            instance.EnableInteractiveSerialConsoleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_enable_interactive_serial_console_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.enable_interactive_serial_console), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.enable_interactive_serial_console(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_enable_interactive_serial_console_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.enable_interactive_serial_console(
+            instance.EnableInteractiveSerialConsoleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.DisableInteractiveSerialConsoleRequest,
+        dict,
+    ],
+)
+def test_disable_interactive_serial_console(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_interactive_serial_console), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.disable_interactive_serial_console(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == instance.DisableInteractiveSerialConsoleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_disable_interactive_serial_console_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_interactive_serial_console), "__call__"
+    ) as call:
+        client.disable_interactive_serial_console()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == instance.DisableInteractiveSerialConsoleRequest()
+
+
+@pytest.mark.asyncio
+async def test_disable_interactive_serial_console_async(
+    transport: str = "grpc_asyncio",
+    request_type=instance.DisableInteractiveSerialConsoleRequest,
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_interactive_serial_console), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.disable_interactive_serial_console(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == instance.DisableInteractiveSerialConsoleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_disable_interactive_serial_console_async_from_dict():
+    await test_disable_interactive_serial_console_async(request_type=dict)
+
+
+def test_disable_interactive_serial_console_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = instance.DisableInteractiveSerialConsoleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_interactive_serial_console), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.disable_interactive_serial_console(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_disable_interactive_serial_console_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = instance.DisableInteractiveSerialConsoleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_interactive_serial_console), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.disable_interactive_serial_console(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_disable_interactive_serial_console_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_interactive_serial_console), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.disable_interactive_serial_console(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_disable_interactive_serial_console_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.disable_interactive_serial_console(
+            instance.DisableInteractiveSerialConsoleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_disable_interactive_serial_console_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_interactive_serial_console), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.disable_interactive_serial_console(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_disable_interactive_serial_console_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.disable_interactive_serial_console(
+            instance.DisableInteractiveSerialConsoleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         gcb_instance.DetachLunRequest,
         dict,
     ],
@@ -2590,6 +3371,900 @@ async def test_detach_lun_flattened_error_async():
             gcb_instance.DetachLunRequest(),
             instance="instance_value",
             lun="lun_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ssh_key.ListSSHKeysRequest,
+        dict,
+    ],
+)
+def test_list_ssh_keys(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_ssh_keys), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = ssh_key.ListSSHKeysResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_ssh_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ssh_key.ListSSHKeysRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSSHKeysPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_ssh_keys_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_ssh_keys), "__call__") as call:
+        client.list_ssh_keys()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ssh_key.ListSSHKeysRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_ssh_keys_async(
+    transport: str = "grpc_asyncio", request_type=ssh_key.ListSSHKeysRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_ssh_keys), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ssh_key.ListSSHKeysResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_ssh_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ssh_key.ListSSHKeysRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSSHKeysAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_ssh_keys_async_from_dict():
+    await test_list_ssh_keys_async(request_type=dict)
+
+
+def test_list_ssh_keys_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = ssh_key.ListSSHKeysRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_ssh_keys), "__call__") as call:
+        call.return_value = ssh_key.ListSSHKeysResponse()
+        client.list_ssh_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_ssh_keys_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = ssh_key.ListSSHKeysRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_ssh_keys), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ssh_key.ListSSHKeysResponse()
+        )
+        await client.list_ssh_keys(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_ssh_keys_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_ssh_keys), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = ssh_key.ListSSHKeysResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_ssh_keys(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_ssh_keys_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_ssh_keys(
+            ssh_key.ListSSHKeysRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_ssh_keys_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_ssh_keys), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = ssh_key.ListSSHKeysResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            ssh_key.ListSSHKeysResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_ssh_keys(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_ssh_keys_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_ssh_keys(
+            ssh_key.ListSSHKeysRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_ssh_keys_pager(transport_name: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_ssh_keys), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[
+                    ssh_key.SSHKey(),
+                    ssh_key.SSHKey(),
+                    ssh_key.SSHKey(),
+                ],
+                next_page_token="abc",
+            ),
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[],
+                next_page_token="def",
+            ),
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[
+                    ssh_key.SSHKey(),
+                ],
+                next_page_token="ghi",
+            ),
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[
+                    ssh_key.SSHKey(),
+                    ssh_key.SSHKey(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_ssh_keys(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, ssh_key.SSHKey) for i in results)
+
+
+def test_list_ssh_keys_pages(transport_name: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_ssh_keys), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[
+                    ssh_key.SSHKey(),
+                    ssh_key.SSHKey(),
+                    ssh_key.SSHKey(),
+                ],
+                next_page_token="abc",
+            ),
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[],
+                next_page_token="def",
+            ),
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[
+                    ssh_key.SSHKey(),
+                ],
+                next_page_token="ghi",
+            ),
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[
+                    ssh_key.SSHKey(),
+                    ssh_key.SSHKey(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_ssh_keys(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_ssh_keys_async_pager():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ssh_keys), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[
+                    ssh_key.SSHKey(),
+                    ssh_key.SSHKey(),
+                    ssh_key.SSHKey(),
+                ],
+                next_page_token="abc",
+            ),
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[],
+                next_page_token="def",
+            ),
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[
+                    ssh_key.SSHKey(),
+                ],
+                next_page_token="ghi",
+            ),
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[
+                    ssh_key.SSHKey(),
+                    ssh_key.SSHKey(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_ssh_keys(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, ssh_key.SSHKey) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_ssh_keys_async_pages():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ssh_keys), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[
+                    ssh_key.SSHKey(),
+                    ssh_key.SSHKey(),
+                    ssh_key.SSHKey(),
+                ],
+                next_page_token="abc",
+            ),
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[],
+                next_page_token="def",
+            ),
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[
+                    ssh_key.SSHKey(),
+                ],
+                next_page_token="ghi",
+            ),
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[
+                    ssh_key.SSHKey(),
+                    ssh_key.SSHKey(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_ssh_keys(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcb_ssh_key.CreateSSHKeyRequest,
+        dict,
+    ],
+)
+def test_create_ssh_key(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_ssh_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcb_ssh_key.SSHKey(
+            name="name_value",
+            public_key="public_key_value",
+        )
+        response = client.create_ssh_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_ssh_key.CreateSSHKeyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcb_ssh_key.SSHKey)
+    assert response.name == "name_value"
+    assert response.public_key == "public_key_value"
+
+
+def test_create_ssh_key_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_ssh_key), "__call__") as call:
+        client.create_ssh_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_ssh_key.CreateSSHKeyRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_ssh_key_async(
+    transport: str = "grpc_asyncio", request_type=gcb_ssh_key.CreateSSHKeyRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_ssh_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcb_ssh_key.SSHKey(
+                name="name_value",
+                public_key="public_key_value",
+            )
+        )
+        response = await client.create_ssh_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_ssh_key.CreateSSHKeyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcb_ssh_key.SSHKey)
+    assert response.name == "name_value"
+    assert response.public_key == "public_key_value"
+
+
+@pytest.mark.asyncio
+async def test_create_ssh_key_async_from_dict():
+    await test_create_ssh_key_async(request_type=dict)
+
+
+def test_create_ssh_key_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcb_ssh_key.CreateSSHKeyRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_ssh_key), "__call__") as call:
+        call.return_value = gcb_ssh_key.SSHKey()
+        client.create_ssh_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_ssh_key_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcb_ssh_key.CreateSSHKeyRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_ssh_key), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gcb_ssh_key.SSHKey())
+        await client.create_ssh_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_ssh_key_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_ssh_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcb_ssh_key.SSHKey()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_ssh_key(
+            parent="parent_value",
+            ssh_key=gcb_ssh_key.SSHKey(name="name_value"),
+            ssh_key_id="ssh_key_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].ssh_key
+        mock_val = gcb_ssh_key.SSHKey(name="name_value")
+        assert arg == mock_val
+        arg = args[0].ssh_key_id
+        mock_val = "ssh_key_id_value"
+        assert arg == mock_val
+
+
+def test_create_ssh_key_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_ssh_key(
+            gcb_ssh_key.CreateSSHKeyRequest(),
+            parent="parent_value",
+            ssh_key=gcb_ssh_key.SSHKey(name="name_value"),
+            ssh_key_id="ssh_key_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_ssh_key_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_ssh_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcb_ssh_key.SSHKey()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gcb_ssh_key.SSHKey())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_ssh_key(
+            parent="parent_value",
+            ssh_key=gcb_ssh_key.SSHKey(name="name_value"),
+            ssh_key_id="ssh_key_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].ssh_key
+        mock_val = gcb_ssh_key.SSHKey(name="name_value")
+        assert arg == mock_val
+        arg = args[0].ssh_key_id
+        mock_val = "ssh_key_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_ssh_key_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_ssh_key(
+            gcb_ssh_key.CreateSSHKeyRequest(),
+            parent="parent_value",
+            ssh_key=gcb_ssh_key.SSHKey(name="name_value"),
+            ssh_key_id="ssh_key_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ssh_key.DeleteSSHKeyRequest,
+        dict,
+    ],
+)
+def test_delete_ssh_key(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_ssh_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_ssh_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ssh_key.DeleteSSHKeyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_ssh_key_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_ssh_key), "__call__") as call:
+        client.delete_ssh_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ssh_key.DeleteSSHKeyRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_ssh_key_async(
+    transport: str = "grpc_asyncio", request_type=ssh_key.DeleteSSHKeyRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_ssh_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_ssh_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == ssh_key.DeleteSSHKeyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_ssh_key_async_from_dict():
+    await test_delete_ssh_key_async(request_type=dict)
+
+
+def test_delete_ssh_key_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = ssh_key.DeleteSSHKeyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_ssh_key), "__call__") as call:
+        call.return_value = None
+        client.delete_ssh_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_ssh_key_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = ssh_key.DeleteSSHKeyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_ssh_key), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_ssh_key(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_ssh_key_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_ssh_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_ssh_key(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_ssh_key_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_ssh_key(
+            ssh_key.DeleteSSHKeyRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_ssh_key_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_ssh_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_ssh_key(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_ssh_key_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_ssh_key(
+            ssh_key.DeleteSSHKeyRequest(),
+            name="name_value",
         )
 
 
@@ -3045,13 +4720,22 @@ def test_get_volume(request_type, transport: str = "grpc"):
             storage_type=volume.Volume.StorageType.SSD,
             state=volume.Volume.State.CREATING,
             requested_size_gib=1917,
+            originally_requested_size_gib=3094,
             current_size_gib=1710,
             emergency_size_gib=1898,
+            max_size_gib=1265,
             auto_grown_size_gib=2032,
             remaining_space_gib=1974,
             snapshot_auto_delete_behavior=volume.Volume.SnapshotAutoDeleteBehavior.DISABLED,
             snapshot_enabled=True,
             pod="pod_value",
+            protocol=volume.Volume.Protocol.FIBRE_CHANNEL,
+            boot_volume=True,
+            performance_tier=common.VolumePerformanceTier.VOLUME_PERFORMANCE_TIER_SHARED,
+            notes="notes_value",
+            workload_profile=volume.Volume.WorkloadProfile.GENERIC,
+            instances=["instances_value"],
+            attached=True,
         )
         response = client.get_volume(request)
 
@@ -3067,8 +4751,10 @@ def test_get_volume(request_type, transport: str = "grpc"):
     assert response.storage_type == volume.Volume.StorageType.SSD
     assert response.state == volume.Volume.State.CREATING
     assert response.requested_size_gib == 1917
+    assert response.originally_requested_size_gib == 3094
     assert response.current_size_gib == 1710
     assert response.emergency_size_gib == 1898
+    assert response.max_size_gib == 1265
     assert response.auto_grown_size_gib == 2032
     assert response.remaining_space_gib == 1974
     assert (
@@ -3077,6 +4763,16 @@ def test_get_volume(request_type, transport: str = "grpc"):
     )
     assert response.snapshot_enabled is True
     assert response.pod == "pod_value"
+    assert response.protocol == volume.Volume.Protocol.FIBRE_CHANNEL
+    assert response.boot_volume is True
+    assert (
+        response.performance_tier
+        == common.VolumePerformanceTier.VOLUME_PERFORMANCE_TIER_SHARED
+    )
+    assert response.notes == "notes_value"
+    assert response.workload_profile == volume.Volume.WorkloadProfile.GENERIC
+    assert response.instances == ["instances_value"]
+    assert response.attached is True
 
 
 def test_get_volume_empty_call():
@@ -3118,13 +4814,22 @@ async def test_get_volume_async(
                 storage_type=volume.Volume.StorageType.SSD,
                 state=volume.Volume.State.CREATING,
                 requested_size_gib=1917,
+                originally_requested_size_gib=3094,
                 current_size_gib=1710,
                 emergency_size_gib=1898,
+                max_size_gib=1265,
                 auto_grown_size_gib=2032,
                 remaining_space_gib=1974,
                 snapshot_auto_delete_behavior=volume.Volume.SnapshotAutoDeleteBehavior.DISABLED,
                 snapshot_enabled=True,
                 pod="pod_value",
+                protocol=volume.Volume.Protocol.FIBRE_CHANNEL,
+                boot_volume=True,
+                performance_tier=common.VolumePerformanceTier.VOLUME_PERFORMANCE_TIER_SHARED,
+                notes="notes_value",
+                workload_profile=volume.Volume.WorkloadProfile.GENERIC,
+                instances=["instances_value"],
+                attached=True,
             )
         )
         response = await client.get_volume(request)
@@ -3141,8 +4846,10 @@ async def test_get_volume_async(
     assert response.storage_type == volume.Volume.StorageType.SSD
     assert response.state == volume.Volume.State.CREATING
     assert response.requested_size_gib == 1917
+    assert response.originally_requested_size_gib == 3094
     assert response.current_size_gib == 1710
     assert response.emergency_size_gib == 1898
+    assert response.max_size_gib == 1265
     assert response.auto_grown_size_gib == 2032
     assert response.remaining_space_gib == 1974
     assert (
@@ -3151,6 +4858,16 @@ async def test_get_volume_async(
     )
     assert response.snapshot_enabled is True
     assert response.pod == "pod_value"
+    assert response.protocol == volume.Volume.Protocol.FIBRE_CHANNEL
+    assert response.boot_volume is True
+    assert (
+        response.performance_tier
+        == common.VolumePerformanceTier.VOLUME_PERFORMANCE_TIER_SHARED
+    )
+    assert response.notes == "notes_value"
+    assert response.workload_profile == volume.Volume.WorkloadProfile.GENERIC
+    assert response.instances == ["instances_value"]
+    assert response.attached is True
 
 
 @pytest.mark.asyncio
@@ -3530,6 +5247,562 @@ async def test_update_volume_flattened_error_async():
             gcb_volume.UpdateVolumeRequest(),
             volume=gcb_volume.Volume(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        volume.RenameVolumeRequest,
+        dict,
+    ],
+)
+def test_rename_volume(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_volume), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = volume.Volume(
+            name="name_value",
+            id="id_value",
+            storage_type=volume.Volume.StorageType.SSD,
+            state=volume.Volume.State.CREATING,
+            requested_size_gib=1917,
+            originally_requested_size_gib=3094,
+            current_size_gib=1710,
+            emergency_size_gib=1898,
+            max_size_gib=1265,
+            auto_grown_size_gib=2032,
+            remaining_space_gib=1974,
+            snapshot_auto_delete_behavior=volume.Volume.SnapshotAutoDeleteBehavior.DISABLED,
+            snapshot_enabled=True,
+            pod="pod_value",
+            protocol=volume.Volume.Protocol.FIBRE_CHANNEL,
+            boot_volume=True,
+            performance_tier=common.VolumePerformanceTier.VOLUME_PERFORMANCE_TIER_SHARED,
+            notes="notes_value",
+            workload_profile=volume.Volume.WorkloadProfile.GENERIC,
+            instances=["instances_value"],
+            attached=True,
+        )
+        response = client.rename_volume(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume.RenameVolumeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, volume.Volume)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.storage_type == volume.Volume.StorageType.SSD
+    assert response.state == volume.Volume.State.CREATING
+    assert response.requested_size_gib == 1917
+    assert response.originally_requested_size_gib == 3094
+    assert response.current_size_gib == 1710
+    assert response.emergency_size_gib == 1898
+    assert response.max_size_gib == 1265
+    assert response.auto_grown_size_gib == 2032
+    assert response.remaining_space_gib == 1974
+    assert (
+        response.snapshot_auto_delete_behavior
+        == volume.Volume.SnapshotAutoDeleteBehavior.DISABLED
+    )
+    assert response.snapshot_enabled is True
+    assert response.pod == "pod_value"
+    assert response.protocol == volume.Volume.Protocol.FIBRE_CHANNEL
+    assert response.boot_volume is True
+    assert (
+        response.performance_tier
+        == common.VolumePerformanceTier.VOLUME_PERFORMANCE_TIER_SHARED
+    )
+    assert response.notes == "notes_value"
+    assert response.workload_profile == volume.Volume.WorkloadProfile.GENERIC
+    assert response.instances == ["instances_value"]
+    assert response.attached is True
+
+
+def test_rename_volume_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_volume), "__call__") as call:
+        client.rename_volume()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume.RenameVolumeRequest()
+
+
+@pytest.mark.asyncio
+async def test_rename_volume_async(
+    transport: str = "grpc_asyncio", request_type=volume.RenameVolumeRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_volume), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            volume.Volume(
+                name="name_value",
+                id="id_value",
+                storage_type=volume.Volume.StorageType.SSD,
+                state=volume.Volume.State.CREATING,
+                requested_size_gib=1917,
+                originally_requested_size_gib=3094,
+                current_size_gib=1710,
+                emergency_size_gib=1898,
+                max_size_gib=1265,
+                auto_grown_size_gib=2032,
+                remaining_space_gib=1974,
+                snapshot_auto_delete_behavior=volume.Volume.SnapshotAutoDeleteBehavior.DISABLED,
+                snapshot_enabled=True,
+                pod="pod_value",
+                protocol=volume.Volume.Protocol.FIBRE_CHANNEL,
+                boot_volume=True,
+                performance_tier=common.VolumePerformanceTier.VOLUME_PERFORMANCE_TIER_SHARED,
+                notes="notes_value",
+                workload_profile=volume.Volume.WorkloadProfile.GENERIC,
+                instances=["instances_value"],
+                attached=True,
+            )
+        )
+        response = await client.rename_volume(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume.RenameVolumeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, volume.Volume)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.storage_type == volume.Volume.StorageType.SSD
+    assert response.state == volume.Volume.State.CREATING
+    assert response.requested_size_gib == 1917
+    assert response.originally_requested_size_gib == 3094
+    assert response.current_size_gib == 1710
+    assert response.emergency_size_gib == 1898
+    assert response.max_size_gib == 1265
+    assert response.auto_grown_size_gib == 2032
+    assert response.remaining_space_gib == 1974
+    assert (
+        response.snapshot_auto_delete_behavior
+        == volume.Volume.SnapshotAutoDeleteBehavior.DISABLED
+    )
+    assert response.snapshot_enabled is True
+    assert response.pod == "pod_value"
+    assert response.protocol == volume.Volume.Protocol.FIBRE_CHANNEL
+    assert response.boot_volume is True
+    assert (
+        response.performance_tier
+        == common.VolumePerformanceTier.VOLUME_PERFORMANCE_TIER_SHARED
+    )
+    assert response.notes == "notes_value"
+    assert response.workload_profile == volume.Volume.WorkloadProfile.GENERIC
+    assert response.instances == ["instances_value"]
+    assert response.attached is True
+
+
+@pytest.mark.asyncio
+async def test_rename_volume_async_from_dict():
+    await test_rename_volume_async(request_type=dict)
+
+
+def test_rename_volume_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = volume.RenameVolumeRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_volume), "__call__") as call:
+        call.return_value = volume.Volume()
+        client.rename_volume(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_rename_volume_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = volume.RenameVolumeRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_volume), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(volume.Volume())
+        await client.rename_volume(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_rename_volume_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_volume), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = volume.Volume()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.rename_volume(
+            name="name_value",
+            new_volume_id="new_volume_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].new_volume_id
+        mock_val = "new_volume_id_value"
+        assert arg == mock_val
+
+
+def test_rename_volume_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rename_volume(
+            volume.RenameVolumeRequest(),
+            name="name_value",
+            new_volume_id="new_volume_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rename_volume_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_volume), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = volume.Volume()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(volume.Volume())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.rename_volume(
+            name="name_value",
+            new_volume_id="new_volume_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].new_volume_id
+        mock_val = "new_volume_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_rename_volume_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.rename_volume(
+            volume.RenameVolumeRequest(),
+            name="name_value",
+            new_volume_id="new_volume_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        volume.EvictVolumeRequest,
+        dict,
+    ],
+)
+def test_evict_volume(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.evict_volume), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.evict_volume(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume.EvictVolumeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_evict_volume_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.evict_volume), "__call__") as call:
+        client.evict_volume()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume.EvictVolumeRequest()
+
+
+@pytest.mark.asyncio
+async def test_evict_volume_async(
+    transport: str = "grpc_asyncio", request_type=volume.EvictVolumeRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.evict_volume), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.evict_volume(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume.EvictVolumeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_evict_volume_async_from_dict():
+    await test_evict_volume_async(request_type=dict)
+
+
+def test_evict_volume_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = volume.EvictVolumeRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.evict_volume), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.evict_volume(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_evict_volume_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = volume.EvictVolumeRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.evict_volume), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.evict_volume(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_evict_volume_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.evict_volume), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.evict_volume(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_evict_volume_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.evict_volume(
+            volume.EvictVolumeRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_evict_volume_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.evict_volume), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.evict_volume(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_evict_volume_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.evict_volume(
+            volume.EvictVolumeRequest(),
+            name="name_value",
         )
 
 
@@ -4465,6 +6738,9 @@ def test_get_network(request_type, transport: str = "grpc"):
             vlan_id="vlan_id_value",
             cidr="cidr_value",
             services_cidr="services_cidr_value",
+            pod="pod_value",
+            jumbo_frames_enabled=True,
+            gateway_ip="gateway_ip_value",
         )
         response = client.get_network(request)
 
@@ -4484,6 +6760,9 @@ def test_get_network(request_type, transport: str = "grpc"):
     assert response.vlan_id == "vlan_id_value"
     assert response.cidr == "cidr_value"
     assert response.services_cidr == "services_cidr_value"
+    assert response.pod == "pod_value"
+    assert response.jumbo_frames_enabled is True
+    assert response.gateway_ip == "gateway_ip_value"
 
 
 def test_get_network_empty_call():
@@ -4529,6 +6808,9 @@ async def test_get_network_async(
                 vlan_id="vlan_id_value",
                 cidr="cidr_value",
                 services_cidr="services_cidr_value",
+                pod="pod_value",
+                jumbo_frames_enabled=True,
+                gateway_ip="gateway_ip_value",
             )
         )
         response = await client.get_network(request)
@@ -4549,6 +6831,9 @@ async def test_get_network_async(
     assert response.vlan_id == "vlan_id_value"
     assert response.cidr == "cidr_value"
     assert response.services_cidr == "services_cidr_value"
+    assert response.pod == "pod_value"
+    assert response.jumbo_frames_enabled is True
+    assert response.gateway_ip == "gateway_ip_value"
 
 
 @pytest.mark.asyncio
@@ -4934,6 +7219,1467 @@ async def test_update_network_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        gcb_volume_snapshot.CreateVolumeSnapshotRequest,
+        dict,
+    ],
+)
+def test_create_volume_snapshot(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_volume_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcb_volume_snapshot.VolumeSnapshot(
+            name="name_value",
+            id="id_value",
+            description="description_value",
+            storage_volume="storage_volume_value",
+            type_=gcb_volume_snapshot.VolumeSnapshot.SnapshotType.AD_HOC,
+        )
+        response = client.create_volume_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_volume_snapshot.CreateVolumeSnapshotRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcb_volume_snapshot.VolumeSnapshot)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.description == "description_value"
+    assert response.storage_volume == "storage_volume_value"
+    assert response.type_ == gcb_volume_snapshot.VolumeSnapshot.SnapshotType.AD_HOC
+
+
+def test_create_volume_snapshot_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_volume_snapshot), "__call__"
+    ) as call:
+        client.create_volume_snapshot()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_volume_snapshot.CreateVolumeSnapshotRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_volume_snapshot_async(
+    transport: str = "grpc_asyncio",
+    request_type=gcb_volume_snapshot.CreateVolumeSnapshotRequest,
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_volume_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcb_volume_snapshot.VolumeSnapshot(
+                name="name_value",
+                id="id_value",
+                description="description_value",
+                storage_volume="storage_volume_value",
+                type_=gcb_volume_snapshot.VolumeSnapshot.SnapshotType.AD_HOC,
+            )
+        )
+        response = await client.create_volume_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_volume_snapshot.CreateVolumeSnapshotRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcb_volume_snapshot.VolumeSnapshot)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.description == "description_value"
+    assert response.storage_volume == "storage_volume_value"
+    assert response.type_ == gcb_volume_snapshot.VolumeSnapshot.SnapshotType.AD_HOC
+
+
+@pytest.mark.asyncio
+async def test_create_volume_snapshot_async_from_dict():
+    await test_create_volume_snapshot_async(request_type=dict)
+
+
+def test_create_volume_snapshot_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcb_volume_snapshot.CreateVolumeSnapshotRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_volume_snapshot), "__call__"
+    ) as call:
+        call.return_value = gcb_volume_snapshot.VolumeSnapshot()
+        client.create_volume_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_volume_snapshot_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcb_volume_snapshot.CreateVolumeSnapshotRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_volume_snapshot), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcb_volume_snapshot.VolumeSnapshot()
+        )
+        await client.create_volume_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_volume_snapshot_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_volume_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcb_volume_snapshot.VolumeSnapshot()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_volume_snapshot(
+            parent="parent_value",
+            volume_snapshot=gcb_volume_snapshot.VolumeSnapshot(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].volume_snapshot
+        mock_val = gcb_volume_snapshot.VolumeSnapshot(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_volume_snapshot_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_volume_snapshot(
+            gcb_volume_snapshot.CreateVolumeSnapshotRequest(),
+            parent="parent_value",
+            volume_snapshot=gcb_volume_snapshot.VolumeSnapshot(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_volume_snapshot_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_volume_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcb_volume_snapshot.VolumeSnapshot()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcb_volume_snapshot.VolumeSnapshot()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_volume_snapshot(
+            parent="parent_value",
+            volume_snapshot=gcb_volume_snapshot.VolumeSnapshot(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].volume_snapshot
+        mock_val = gcb_volume_snapshot.VolumeSnapshot(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_volume_snapshot_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_volume_snapshot(
+            gcb_volume_snapshot.CreateVolumeSnapshotRequest(),
+            parent="parent_value",
+            volume_snapshot=gcb_volume_snapshot.VolumeSnapshot(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcb_volume_snapshot.RestoreVolumeSnapshotRequest,
+        dict,
+    ],
+)
+def test_restore_volume_snapshot(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.restore_volume_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.restore_volume_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_volume_snapshot.RestoreVolumeSnapshotRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_restore_volume_snapshot_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.restore_volume_snapshot), "__call__"
+    ) as call:
+        client.restore_volume_snapshot()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_volume_snapshot.RestoreVolumeSnapshotRequest()
+
+
+@pytest.mark.asyncio
+async def test_restore_volume_snapshot_async(
+    transport: str = "grpc_asyncio",
+    request_type=gcb_volume_snapshot.RestoreVolumeSnapshotRequest,
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.restore_volume_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.restore_volume_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_volume_snapshot.RestoreVolumeSnapshotRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_restore_volume_snapshot_async_from_dict():
+    await test_restore_volume_snapshot_async(request_type=dict)
+
+
+def test_restore_volume_snapshot_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcb_volume_snapshot.RestoreVolumeSnapshotRequest()
+
+    request.volume_snapshot = "volume_snapshot_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.restore_volume_snapshot), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.restore_volume_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "volume_snapshot=volume_snapshot_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_restore_volume_snapshot_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcb_volume_snapshot.RestoreVolumeSnapshotRequest()
+
+    request.volume_snapshot = "volume_snapshot_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.restore_volume_snapshot), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.restore_volume_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "volume_snapshot=volume_snapshot_value",
+    ) in kw["metadata"]
+
+
+def test_restore_volume_snapshot_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.restore_volume_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.restore_volume_snapshot(
+            volume_snapshot="volume_snapshot_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].volume_snapshot
+        mock_val = "volume_snapshot_value"
+        assert arg == mock_val
+
+
+def test_restore_volume_snapshot_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.restore_volume_snapshot(
+            gcb_volume_snapshot.RestoreVolumeSnapshotRequest(),
+            volume_snapshot="volume_snapshot_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_restore_volume_snapshot_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.restore_volume_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.restore_volume_snapshot(
+            volume_snapshot="volume_snapshot_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].volume_snapshot
+        mock_val = "volume_snapshot_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_restore_volume_snapshot_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.restore_volume_snapshot(
+            gcb_volume_snapshot.RestoreVolumeSnapshotRequest(),
+            volume_snapshot="volume_snapshot_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        volume_snapshot.DeleteVolumeSnapshotRequest,
+        dict,
+    ],
+)
+def test_delete_volume_snapshot(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_volume_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_volume_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume_snapshot.DeleteVolumeSnapshotRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_volume_snapshot_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_volume_snapshot), "__call__"
+    ) as call:
+        client.delete_volume_snapshot()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume_snapshot.DeleteVolumeSnapshotRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_volume_snapshot_async(
+    transport: str = "grpc_asyncio",
+    request_type=volume_snapshot.DeleteVolumeSnapshotRequest,
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_volume_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_volume_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume_snapshot.DeleteVolumeSnapshotRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_volume_snapshot_async_from_dict():
+    await test_delete_volume_snapshot_async(request_type=dict)
+
+
+def test_delete_volume_snapshot_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = volume_snapshot.DeleteVolumeSnapshotRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_volume_snapshot), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_volume_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_volume_snapshot_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = volume_snapshot.DeleteVolumeSnapshotRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_volume_snapshot), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_volume_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_volume_snapshot_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_volume_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_volume_snapshot(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_volume_snapshot_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_volume_snapshot(
+            volume_snapshot.DeleteVolumeSnapshotRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_volume_snapshot_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_volume_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_volume_snapshot(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_volume_snapshot_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_volume_snapshot(
+            volume_snapshot.DeleteVolumeSnapshotRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        volume_snapshot.GetVolumeSnapshotRequest,
+        dict,
+    ],
+)
+def test_get_volume_snapshot(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_volume_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = volume_snapshot.VolumeSnapshot(
+            name="name_value",
+            id="id_value",
+            description="description_value",
+            storage_volume="storage_volume_value",
+            type_=volume_snapshot.VolumeSnapshot.SnapshotType.AD_HOC,
+        )
+        response = client.get_volume_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume_snapshot.GetVolumeSnapshotRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, volume_snapshot.VolumeSnapshot)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.description == "description_value"
+    assert response.storage_volume == "storage_volume_value"
+    assert response.type_ == volume_snapshot.VolumeSnapshot.SnapshotType.AD_HOC
+
+
+def test_get_volume_snapshot_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_volume_snapshot), "__call__"
+    ) as call:
+        client.get_volume_snapshot()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume_snapshot.GetVolumeSnapshotRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_volume_snapshot_async(
+    transport: str = "grpc_asyncio",
+    request_type=volume_snapshot.GetVolumeSnapshotRequest,
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_volume_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            volume_snapshot.VolumeSnapshot(
+                name="name_value",
+                id="id_value",
+                description="description_value",
+                storage_volume="storage_volume_value",
+                type_=volume_snapshot.VolumeSnapshot.SnapshotType.AD_HOC,
+            )
+        )
+        response = await client.get_volume_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume_snapshot.GetVolumeSnapshotRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, volume_snapshot.VolumeSnapshot)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.description == "description_value"
+    assert response.storage_volume == "storage_volume_value"
+    assert response.type_ == volume_snapshot.VolumeSnapshot.SnapshotType.AD_HOC
+
+
+@pytest.mark.asyncio
+async def test_get_volume_snapshot_async_from_dict():
+    await test_get_volume_snapshot_async(request_type=dict)
+
+
+def test_get_volume_snapshot_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = volume_snapshot.GetVolumeSnapshotRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_volume_snapshot), "__call__"
+    ) as call:
+        call.return_value = volume_snapshot.VolumeSnapshot()
+        client.get_volume_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_volume_snapshot_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = volume_snapshot.GetVolumeSnapshotRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_volume_snapshot), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            volume_snapshot.VolumeSnapshot()
+        )
+        await client.get_volume_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_volume_snapshot_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_volume_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = volume_snapshot.VolumeSnapshot()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_volume_snapshot(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_volume_snapshot_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_volume_snapshot(
+            volume_snapshot.GetVolumeSnapshotRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_volume_snapshot_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_volume_snapshot), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = volume_snapshot.VolumeSnapshot()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            volume_snapshot.VolumeSnapshot()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_volume_snapshot(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_volume_snapshot_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_volume_snapshot(
+            volume_snapshot.GetVolumeSnapshotRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        volume_snapshot.ListVolumeSnapshotsRequest,
+        dict,
+    ],
+)
+def test_list_volume_snapshots(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_volume_snapshots), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = volume_snapshot.ListVolumeSnapshotsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_volume_snapshots(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume_snapshot.ListVolumeSnapshotsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListVolumeSnapshotsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_volume_snapshots_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_volume_snapshots), "__call__"
+    ) as call:
+        client.list_volume_snapshots()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume_snapshot.ListVolumeSnapshotsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_volume_snapshots_async(
+    transport: str = "grpc_asyncio",
+    request_type=volume_snapshot.ListVolumeSnapshotsRequest,
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_volume_snapshots), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_volume_snapshots(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == volume_snapshot.ListVolumeSnapshotsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListVolumeSnapshotsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_volume_snapshots_async_from_dict():
+    await test_list_volume_snapshots_async(request_type=dict)
+
+
+def test_list_volume_snapshots_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = volume_snapshot.ListVolumeSnapshotsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_volume_snapshots), "__call__"
+    ) as call:
+        call.return_value = volume_snapshot.ListVolumeSnapshotsResponse()
+        client.list_volume_snapshots(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_volume_snapshots_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = volume_snapshot.ListVolumeSnapshotsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_volume_snapshots), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            volume_snapshot.ListVolumeSnapshotsResponse()
+        )
+        await client.list_volume_snapshots(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_volume_snapshots_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_volume_snapshots), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = volume_snapshot.ListVolumeSnapshotsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_volume_snapshots(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_volume_snapshots_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_volume_snapshots(
+            volume_snapshot.ListVolumeSnapshotsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_volume_snapshots_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_volume_snapshots), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = volume_snapshot.ListVolumeSnapshotsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            volume_snapshot.ListVolumeSnapshotsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_volume_snapshots(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_volume_snapshots_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_volume_snapshots(
+            volume_snapshot.ListVolumeSnapshotsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_volume_snapshots_pager(transport_name: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_volume_snapshots), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[
+                    volume_snapshot.VolumeSnapshot(),
+                    volume_snapshot.VolumeSnapshot(),
+                    volume_snapshot.VolumeSnapshot(),
+                ],
+                next_page_token="abc",
+            ),
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[],
+                next_page_token="def",
+            ),
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[
+                    volume_snapshot.VolumeSnapshot(),
+                ],
+                next_page_token="ghi",
+            ),
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[
+                    volume_snapshot.VolumeSnapshot(),
+                    volume_snapshot.VolumeSnapshot(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_volume_snapshots(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, volume_snapshot.VolumeSnapshot) for i in results)
+
+
+def test_list_volume_snapshots_pages(transport_name: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_volume_snapshots), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[
+                    volume_snapshot.VolumeSnapshot(),
+                    volume_snapshot.VolumeSnapshot(),
+                    volume_snapshot.VolumeSnapshot(),
+                ],
+                next_page_token="abc",
+            ),
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[],
+                next_page_token="def",
+            ),
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[
+                    volume_snapshot.VolumeSnapshot(),
+                ],
+                next_page_token="ghi",
+            ),
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[
+                    volume_snapshot.VolumeSnapshot(),
+                    volume_snapshot.VolumeSnapshot(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_volume_snapshots(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_volume_snapshots_async_pager():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_volume_snapshots),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[
+                    volume_snapshot.VolumeSnapshot(),
+                    volume_snapshot.VolumeSnapshot(),
+                    volume_snapshot.VolumeSnapshot(),
+                ],
+                next_page_token="abc",
+            ),
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[],
+                next_page_token="def",
+            ),
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[
+                    volume_snapshot.VolumeSnapshot(),
+                ],
+                next_page_token="ghi",
+            ),
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[
+                    volume_snapshot.VolumeSnapshot(),
+                    volume_snapshot.VolumeSnapshot(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_volume_snapshots(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, volume_snapshot.VolumeSnapshot) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_volume_snapshots_async_pages():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_volume_snapshots),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[
+                    volume_snapshot.VolumeSnapshot(),
+                    volume_snapshot.VolumeSnapshot(),
+                    volume_snapshot.VolumeSnapshot(),
+                ],
+                next_page_token="abc",
+            ),
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[],
+                next_page_token="def",
+            ),
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[
+                    volume_snapshot.VolumeSnapshot(),
+                ],
+                next_page_token="ghi",
+            ),
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[
+                    volume_snapshot.VolumeSnapshot(),
+                    volume_snapshot.VolumeSnapshot(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_volume_snapshots(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         lun.GetLunRequest,
         dict,
     ],
@@ -4962,6 +8708,7 @@ def test_get_lun(request_type, transport: str = "grpc"):
             boot_lun=True,
             storage_type=lun.Lun.StorageType.SSD,
             wwid="wwid_value",
+            instances=["instances_value"],
         )
         response = client.get_lun(request)
 
@@ -4982,6 +8729,7 @@ def test_get_lun(request_type, transport: str = "grpc"):
     assert response.boot_lun is True
     assert response.storage_type == lun.Lun.StorageType.SSD
     assert response.wwid == "wwid_value"
+    assert response.instances == ["instances_value"]
 
 
 def test_get_lun_empty_call():
@@ -5028,6 +8776,7 @@ async def test_get_lun_async(
                 boot_lun=True,
                 storage_type=lun.Lun.StorageType.SSD,
                 wwid="wwid_value",
+                instances=["instances_value"],
             )
         )
         response = await client.get_lun(request)
@@ -5049,6 +8798,7 @@ async def test_get_lun_async(
     assert response.boot_lun is True
     assert response.storage_type == lun.Lun.StorageType.SSD
     assert response.wwid == "wwid_value"
+    assert response.instances == ["instances_value"]
 
 
 @pytest.mark.asyncio
@@ -5624,6 +9374,232 @@ async def test_list_luns_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
+        lun.EvictLunRequest,
+        dict,
+    ],
+)
+def test_evict_lun(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.evict_lun), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.evict_lun(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lun.EvictLunRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_evict_lun_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.evict_lun), "__call__") as call:
+        client.evict_lun()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lun.EvictLunRequest()
+
+
+@pytest.mark.asyncio
+async def test_evict_lun_async(
+    transport: str = "grpc_asyncio", request_type=lun.EvictLunRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.evict_lun), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.evict_lun(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == lun.EvictLunRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_evict_lun_async_from_dict():
+    await test_evict_lun_async(request_type=dict)
+
+
+def test_evict_lun_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = lun.EvictLunRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.evict_lun), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.evict_lun(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_evict_lun_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = lun.EvictLunRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.evict_lun), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.evict_lun(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_evict_lun_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.evict_lun), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.evict_lun(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_evict_lun_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.evict_lun(
+            lun.EvictLunRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_evict_lun_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.evict_lun), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.evict_lun(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_evict_lun_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.evict_lun(
+            lun.EvictLunRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         nfs_share.GetNfsShareRequest,
         dict,
     ],
@@ -5644,8 +9620,11 @@ def test_get_nfs_share(request_type, transport: str = "grpc"):
         call.return_value = nfs_share.NfsShare(
             name="name_value",
             nfs_share_id="nfs_share_id_value",
+            id="id_value",
             state=nfs_share.NfsShare.State.PROVISIONED,
             volume="volume_value",
+            requested_size_gib=1917,
+            storage_type=nfs_share.NfsShare.StorageType.SSD,
         )
         response = client.get_nfs_share(request)
 
@@ -5658,8 +9637,11 @@ def test_get_nfs_share(request_type, transport: str = "grpc"):
     assert isinstance(response, nfs_share.NfsShare)
     assert response.name == "name_value"
     assert response.nfs_share_id == "nfs_share_id_value"
+    assert response.id == "id_value"
     assert response.state == nfs_share.NfsShare.State.PROVISIONED
     assert response.volume == "volume_value"
+    assert response.requested_size_gib == 1917
+    assert response.storage_type == nfs_share.NfsShare.StorageType.SSD
 
 
 def test_get_nfs_share_empty_call():
@@ -5698,8 +9680,11 @@ async def test_get_nfs_share_async(
             nfs_share.NfsShare(
                 name="name_value",
                 nfs_share_id="nfs_share_id_value",
+                id="id_value",
                 state=nfs_share.NfsShare.State.PROVISIONED,
                 volume="volume_value",
+                requested_size_gib=1917,
+                storage_type=nfs_share.NfsShare.StorageType.SSD,
             )
         )
         response = await client.get_nfs_share(request)
@@ -5713,8 +9698,11 @@ async def test_get_nfs_share_async(
     assert isinstance(response, nfs_share.NfsShare)
     assert response.name == "name_value"
     assert response.nfs_share_id == "nfs_share_id_value"
+    assert response.id == "id_value"
     assert response.state == nfs_share.NfsShare.State.PROVISIONED
     assert response.volume == "volume_value"
+    assert response.requested_size_gib == 1917
+    assert response.storage_type == nfs_share.NfsShare.StorageType.SSD
 
 
 @pytest.mark.asyncio
@@ -6526,6 +10514,2999 @@ async def test_update_nfs_share_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        gcb_nfs_share.CreateNfsShareRequest,
+        dict,
+    ],
+)
+def test_create_nfs_share(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_nfs_share.CreateNfsShareRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_nfs_share_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_nfs_share), "__call__") as call:
+        client.create_nfs_share()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_nfs_share.CreateNfsShareRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_nfs_share_async(
+    transport: str = "grpc_asyncio", request_type=gcb_nfs_share.CreateNfsShareRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcb_nfs_share.CreateNfsShareRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_nfs_share_async_from_dict():
+    await test_create_nfs_share_async(request_type=dict)
+
+
+def test_create_nfs_share_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcb_nfs_share.CreateNfsShareRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_nfs_share), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_nfs_share_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = gcb_nfs_share.CreateNfsShareRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_nfs_share), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_nfs_share_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_nfs_share(
+            parent="parent_value",
+            nfs_share=gcb_nfs_share.NfsShare(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].nfs_share
+        mock_val = gcb_nfs_share.NfsShare(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_nfs_share_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_nfs_share(
+            gcb_nfs_share.CreateNfsShareRequest(),
+            parent="parent_value",
+            nfs_share=gcb_nfs_share.NfsShare(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_nfs_share_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_nfs_share(
+            parent="parent_value",
+            nfs_share=gcb_nfs_share.NfsShare(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].nfs_share
+        mock_val = gcb_nfs_share.NfsShare(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_nfs_share_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_nfs_share(
+            gcb_nfs_share.CreateNfsShareRequest(),
+            parent="parent_value",
+            nfs_share=gcb_nfs_share.NfsShare(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        nfs_share.RenameNfsShareRequest,
+        dict,
+    ],
+)
+def test_rename_nfs_share(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = nfs_share.NfsShare(
+            name="name_value",
+            nfs_share_id="nfs_share_id_value",
+            id="id_value",
+            state=nfs_share.NfsShare.State.PROVISIONED,
+            volume="volume_value",
+            requested_size_gib=1917,
+            storage_type=nfs_share.NfsShare.StorageType.SSD,
+        )
+        response = client.rename_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == nfs_share.RenameNfsShareRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, nfs_share.NfsShare)
+    assert response.name == "name_value"
+    assert response.nfs_share_id == "nfs_share_id_value"
+    assert response.id == "id_value"
+    assert response.state == nfs_share.NfsShare.State.PROVISIONED
+    assert response.volume == "volume_value"
+    assert response.requested_size_gib == 1917
+    assert response.storage_type == nfs_share.NfsShare.StorageType.SSD
+
+
+def test_rename_nfs_share_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_nfs_share), "__call__") as call:
+        client.rename_nfs_share()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == nfs_share.RenameNfsShareRequest()
+
+
+@pytest.mark.asyncio
+async def test_rename_nfs_share_async(
+    transport: str = "grpc_asyncio", request_type=nfs_share.RenameNfsShareRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            nfs_share.NfsShare(
+                name="name_value",
+                nfs_share_id="nfs_share_id_value",
+                id="id_value",
+                state=nfs_share.NfsShare.State.PROVISIONED,
+                volume="volume_value",
+                requested_size_gib=1917,
+                storage_type=nfs_share.NfsShare.StorageType.SSD,
+            )
+        )
+        response = await client.rename_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == nfs_share.RenameNfsShareRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, nfs_share.NfsShare)
+    assert response.name == "name_value"
+    assert response.nfs_share_id == "nfs_share_id_value"
+    assert response.id == "id_value"
+    assert response.state == nfs_share.NfsShare.State.PROVISIONED
+    assert response.volume == "volume_value"
+    assert response.requested_size_gib == 1917
+    assert response.storage_type == nfs_share.NfsShare.StorageType.SSD
+
+
+@pytest.mark.asyncio
+async def test_rename_nfs_share_async_from_dict():
+    await test_rename_nfs_share_async(request_type=dict)
+
+
+def test_rename_nfs_share_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = nfs_share.RenameNfsShareRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_nfs_share), "__call__") as call:
+        call.return_value = nfs_share.NfsShare()
+        client.rename_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_rename_nfs_share_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = nfs_share.RenameNfsShareRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_nfs_share), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(nfs_share.NfsShare())
+        await client.rename_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_rename_nfs_share_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = nfs_share.NfsShare()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.rename_nfs_share(
+            name="name_value",
+            new_nfsshare_id="new_nfsshare_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].new_nfsshare_id
+        mock_val = "new_nfsshare_id_value"
+        assert arg == mock_val
+
+
+def test_rename_nfs_share_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rename_nfs_share(
+            nfs_share.RenameNfsShareRequest(),
+            name="name_value",
+            new_nfsshare_id="new_nfsshare_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rename_nfs_share_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = nfs_share.NfsShare()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(nfs_share.NfsShare())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.rename_nfs_share(
+            name="name_value",
+            new_nfsshare_id="new_nfsshare_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].new_nfsshare_id
+        mock_val = "new_nfsshare_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_rename_nfs_share_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.rename_nfs_share(
+            nfs_share.RenameNfsShareRequest(),
+            name="name_value",
+            new_nfsshare_id="new_nfsshare_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        nfs_share.DeleteNfsShareRequest,
+        dict,
+    ],
+)
+def test_delete_nfs_share(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == nfs_share.DeleteNfsShareRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_nfs_share_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_nfs_share), "__call__") as call:
+        client.delete_nfs_share()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == nfs_share.DeleteNfsShareRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_nfs_share_async(
+    transport: str = "grpc_asyncio", request_type=nfs_share.DeleteNfsShareRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == nfs_share.DeleteNfsShareRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_nfs_share_async_from_dict():
+    await test_delete_nfs_share_async(request_type=dict)
+
+
+def test_delete_nfs_share_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = nfs_share.DeleteNfsShareRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_nfs_share), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_nfs_share_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = nfs_share.DeleteNfsShareRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_nfs_share), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_nfs_share(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_nfs_share_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_nfs_share(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_nfs_share_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_nfs_share(
+            nfs_share.DeleteNfsShareRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_nfs_share_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_nfs_share), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_nfs_share(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_nfs_share_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_nfs_share(
+            nfs_share.DeleteNfsShareRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        provisioning.ListProvisioningQuotasRequest,
+        dict,
+    ],
+)
+def test_list_provisioning_quotas(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_provisioning_quotas), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = provisioning.ListProvisioningQuotasResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_provisioning_quotas(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == provisioning.ListProvisioningQuotasRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListProvisioningQuotasPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_provisioning_quotas_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_provisioning_quotas), "__call__"
+    ) as call:
+        client.list_provisioning_quotas()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == provisioning.ListProvisioningQuotasRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_provisioning_quotas_async(
+    transport: str = "grpc_asyncio",
+    request_type=provisioning.ListProvisioningQuotasRequest,
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_provisioning_quotas), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            provisioning.ListProvisioningQuotasResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_provisioning_quotas(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == provisioning.ListProvisioningQuotasRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListProvisioningQuotasAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_provisioning_quotas_async_from_dict():
+    await test_list_provisioning_quotas_async(request_type=dict)
+
+
+def test_list_provisioning_quotas_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = provisioning.ListProvisioningQuotasRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_provisioning_quotas), "__call__"
+    ) as call:
+        call.return_value = provisioning.ListProvisioningQuotasResponse()
+        client.list_provisioning_quotas(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_provisioning_quotas_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = provisioning.ListProvisioningQuotasRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_provisioning_quotas), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            provisioning.ListProvisioningQuotasResponse()
+        )
+        await client.list_provisioning_quotas(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_provisioning_quotas_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_provisioning_quotas), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = provisioning.ListProvisioningQuotasResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_provisioning_quotas(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_provisioning_quotas_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_provisioning_quotas(
+            provisioning.ListProvisioningQuotasRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_provisioning_quotas_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_provisioning_quotas), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = provisioning.ListProvisioningQuotasResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            provisioning.ListProvisioningQuotasResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_provisioning_quotas(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_provisioning_quotas_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_provisioning_quotas(
+            provisioning.ListProvisioningQuotasRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_provisioning_quotas_pager(transport_name: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_provisioning_quotas), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[
+                    provisioning.ProvisioningQuota(),
+                    provisioning.ProvisioningQuota(),
+                    provisioning.ProvisioningQuota(),
+                ],
+                next_page_token="abc",
+            ),
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[],
+                next_page_token="def",
+            ),
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[
+                    provisioning.ProvisioningQuota(),
+                ],
+                next_page_token="ghi",
+            ),
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[
+                    provisioning.ProvisioningQuota(),
+                    provisioning.ProvisioningQuota(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_provisioning_quotas(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, provisioning.ProvisioningQuota) for i in results)
+
+
+def test_list_provisioning_quotas_pages(transport_name: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_provisioning_quotas), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[
+                    provisioning.ProvisioningQuota(),
+                    provisioning.ProvisioningQuota(),
+                    provisioning.ProvisioningQuota(),
+                ],
+                next_page_token="abc",
+            ),
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[],
+                next_page_token="def",
+            ),
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[
+                    provisioning.ProvisioningQuota(),
+                ],
+                next_page_token="ghi",
+            ),
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[
+                    provisioning.ProvisioningQuota(),
+                    provisioning.ProvisioningQuota(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_provisioning_quotas(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_provisioning_quotas_async_pager():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_provisioning_quotas),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[
+                    provisioning.ProvisioningQuota(),
+                    provisioning.ProvisioningQuota(),
+                    provisioning.ProvisioningQuota(),
+                ],
+                next_page_token="abc",
+            ),
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[],
+                next_page_token="def",
+            ),
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[
+                    provisioning.ProvisioningQuota(),
+                ],
+                next_page_token="ghi",
+            ),
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[
+                    provisioning.ProvisioningQuota(),
+                    provisioning.ProvisioningQuota(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_provisioning_quotas(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, provisioning.ProvisioningQuota) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_provisioning_quotas_async_pages():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_provisioning_quotas),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[
+                    provisioning.ProvisioningQuota(),
+                    provisioning.ProvisioningQuota(),
+                    provisioning.ProvisioningQuota(),
+                ],
+                next_page_token="abc",
+            ),
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[],
+                next_page_token="def",
+            ),
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[
+                    provisioning.ProvisioningQuota(),
+                ],
+                next_page_token="ghi",
+            ),
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[
+                    provisioning.ProvisioningQuota(),
+                    provisioning.ProvisioningQuota(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_provisioning_quotas(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        provisioning.SubmitProvisioningConfigRequest,
+        dict,
+    ],
+)
+def test_submit_provisioning_config(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.submit_provisioning_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = provisioning.SubmitProvisioningConfigResponse()
+        response = client.submit_provisioning_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == provisioning.SubmitProvisioningConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, provisioning.SubmitProvisioningConfigResponse)
+
+
+def test_submit_provisioning_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.submit_provisioning_config), "__call__"
+    ) as call:
+        client.submit_provisioning_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == provisioning.SubmitProvisioningConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_submit_provisioning_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=provisioning.SubmitProvisioningConfigRequest,
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.submit_provisioning_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            provisioning.SubmitProvisioningConfigResponse()
+        )
+        response = await client.submit_provisioning_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == provisioning.SubmitProvisioningConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, provisioning.SubmitProvisioningConfigResponse)
+
+
+@pytest.mark.asyncio
+async def test_submit_provisioning_config_async_from_dict():
+    await test_submit_provisioning_config_async(request_type=dict)
+
+
+def test_submit_provisioning_config_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = provisioning.SubmitProvisioningConfigRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.submit_provisioning_config), "__call__"
+    ) as call:
+        call.return_value = provisioning.SubmitProvisioningConfigResponse()
+        client.submit_provisioning_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_submit_provisioning_config_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = provisioning.SubmitProvisioningConfigRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.submit_provisioning_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            provisioning.SubmitProvisioningConfigResponse()
+        )
+        await client.submit_provisioning_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_submit_provisioning_config_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.submit_provisioning_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = provisioning.SubmitProvisioningConfigResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.submit_provisioning_config(
+            parent="parent_value",
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].provisioning_config
+        mock_val = provisioning.ProvisioningConfig(name="name_value")
+        assert arg == mock_val
+
+
+def test_submit_provisioning_config_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.submit_provisioning_config(
+            provisioning.SubmitProvisioningConfigRequest(),
+            parent="parent_value",
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_submit_provisioning_config_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.submit_provisioning_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = provisioning.SubmitProvisioningConfigResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            provisioning.SubmitProvisioningConfigResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.submit_provisioning_config(
+            parent="parent_value",
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].provisioning_config
+        mock_val = provisioning.ProvisioningConfig(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_submit_provisioning_config_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.submit_provisioning_config(
+            provisioning.SubmitProvisioningConfigRequest(),
+            parent="parent_value",
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        provisioning.GetProvisioningConfigRequest,
+        dict,
+    ],
+)
+def test_get_provisioning_config(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_provisioning_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = provisioning.ProvisioningConfig(
+            name="name_value",
+            ticket_id="ticket_id_value",
+            handover_service_account="handover_service_account_value",
+            email="email_value",
+            state=provisioning.ProvisioningConfig.State.DRAFT,
+            location="location_value",
+            cloud_console_uri="cloud_console_uri_value",
+            vpc_sc_enabled=True,
+            status_message="status_message_value",
+            custom_id="custom_id_value",
+        )
+        response = client.get_provisioning_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == provisioning.GetProvisioningConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, provisioning.ProvisioningConfig)
+    assert response.name == "name_value"
+    assert response.ticket_id == "ticket_id_value"
+    assert response.handover_service_account == "handover_service_account_value"
+    assert response.email == "email_value"
+    assert response.state == provisioning.ProvisioningConfig.State.DRAFT
+    assert response.location == "location_value"
+    assert response.cloud_console_uri == "cloud_console_uri_value"
+    assert response.vpc_sc_enabled is True
+    assert response.status_message == "status_message_value"
+    assert response.custom_id == "custom_id_value"
+
+
+def test_get_provisioning_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_provisioning_config), "__call__"
+    ) as call:
+        client.get_provisioning_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == provisioning.GetProvisioningConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_provisioning_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=provisioning.GetProvisioningConfigRequest,
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_provisioning_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            provisioning.ProvisioningConfig(
+                name="name_value",
+                ticket_id="ticket_id_value",
+                handover_service_account="handover_service_account_value",
+                email="email_value",
+                state=provisioning.ProvisioningConfig.State.DRAFT,
+                location="location_value",
+                cloud_console_uri="cloud_console_uri_value",
+                vpc_sc_enabled=True,
+                status_message="status_message_value",
+                custom_id="custom_id_value",
+            )
+        )
+        response = await client.get_provisioning_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == provisioning.GetProvisioningConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, provisioning.ProvisioningConfig)
+    assert response.name == "name_value"
+    assert response.ticket_id == "ticket_id_value"
+    assert response.handover_service_account == "handover_service_account_value"
+    assert response.email == "email_value"
+    assert response.state == provisioning.ProvisioningConfig.State.DRAFT
+    assert response.location == "location_value"
+    assert response.cloud_console_uri == "cloud_console_uri_value"
+    assert response.vpc_sc_enabled is True
+    assert response.status_message == "status_message_value"
+    assert response.custom_id == "custom_id_value"
+
+
+@pytest.mark.asyncio
+async def test_get_provisioning_config_async_from_dict():
+    await test_get_provisioning_config_async(request_type=dict)
+
+
+def test_get_provisioning_config_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = provisioning.GetProvisioningConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_provisioning_config), "__call__"
+    ) as call:
+        call.return_value = provisioning.ProvisioningConfig()
+        client.get_provisioning_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_provisioning_config_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = provisioning.GetProvisioningConfigRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_provisioning_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            provisioning.ProvisioningConfig()
+        )
+        await client.get_provisioning_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_provisioning_config_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_provisioning_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = provisioning.ProvisioningConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_provisioning_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_provisioning_config_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_provisioning_config(
+            provisioning.GetProvisioningConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_provisioning_config_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_provisioning_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = provisioning.ProvisioningConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            provisioning.ProvisioningConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_provisioning_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_provisioning_config_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_provisioning_config(
+            provisioning.GetProvisioningConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        provisioning.CreateProvisioningConfigRequest,
+        dict,
+    ],
+)
+def test_create_provisioning_config(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_provisioning_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = provisioning.ProvisioningConfig(
+            name="name_value",
+            ticket_id="ticket_id_value",
+            handover_service_account="handover_service_account_value",
+            email="email_value",
+            state=provisioning.ProvisioningConfig.State.DRAFT,
+            location="location_value",
+            cloud_console_uri="cloud_console_uri_value",
+            vpc_sc_enabled=True,
+            status_message="status_message_value",
+            custom_id="custom_id_value",
+        )
+        response = client.create_provisioning_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == provisioning.CreateProvisioningConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, provisioning.ProvisioningConfig)
+    assert response.name == "name_value"
+    assert response.ticket_id == "ticket_id_value"
+    assert response.handover_service_account == "handover_service_account_value"
+    assert response.email == "email_value"
+    assert response.state == provisioning.ProvisioningConfig.State.DRAFT
+    assert response.location == "location_value"
+    assert response.cloud_console_uri == "cloud_console_uri_value"
+    assert response.vpc_sc_enabled is True
+    assert response.status_message == "status_message_value"
+    assert response.custom_id == "custom_id_value"
+
+
+def test_create_provisioning_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_provisioning_config), "__call__"
+    ) as call:
+        client.create_provisioning_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == provisioning.CreateProvisioningConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_provisioning_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=provisioning.CreateProvisioningConfigRequest,
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_provisioning_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            provisioning.ProvisioningConfig(
+                name="name_value",
+                ticket_id="ticket_id_value",
+                handover_service_account="handover_service_account_value",
+                email="email_value",
+                state=provisioning.ProvisioningConfig.State.DRAFT,
+                location="location_value",
+                cloud_console_uri="cloud_console_uri_value",
+                vpc_sc_enabled=True,
+                status_message="status_message_value",
+                custom_id="custom_id_value",
+            )
+        )
+        response = await client.create_provisioning_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == provisioning.CreateProvisioningConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, provisioning.ProvisioningConfig)
+    assert response.name == "name_value"
+    assert response.ticket_id == "ticket_id_value"
+    assert response.handover_service_account == "handover_service_account_value"
+    assert response.email == "email_value"
+    assert response.state == provisioning.ProvisioningConfig.State.DRAFT
+    assert response.location == "location_value"
+    assert response.cloud_console_uri == "cloud_console_uri_value"
+    assert response.vpc_sc_enabled is True
+    assert response.status_message == "status_message_value"
+    assert response.custom_id == "custom_id_value"
+
+
+@pytest.mark.asyncio
+async def test_create_provisioning_config_async_from_dict():
+    await test_create_provisioning_config_async(request_type=dict)
+
+
+def test_create_provisioning_config_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = provisioning.CreateProvisioningConfigRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_provisioning_config), "__call__"
+    ) as call:
+        call.return_value = provisioning.ProvisioningConfig()
+        client.create_provisioning_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_provisioning_config_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = provisioning.CreateProvisioningConfigRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_provisioning_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            provisioning.ProvisioningConfig()
+        )
+        await client.create_provisioning_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_provisioning_config_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_provisioning_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = provisioning.ProvisioningConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_provisioning_config(
+            parent="parent_value",
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].provisioning_config
+        mock_val = provisioning.ProvisioningConfig(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_provisioning_config_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_provisioning_config(
+            provisioning.CreateProvisioningConfigRequest(),
+            parent="parent_value",
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_provisioning_config_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_provisioning_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = provisioning.ProvisioningConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            provisioning.ProvisioningConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_provisioning_config(
+            parent="parent_value",
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].provisioning_config
+        mock_val = provisioning.ProvisioningConfig(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_provisioning_config_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_provisioning_config(
+            provisioning.CreateProvisioningConfigRequest(),
+            parent="parent_value",
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        provisioning.UpdateProvisioningConfigRequest,
+        dict,
+    ],
+)
+def test_update_provisioning_config(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_provisioning_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = provisioning.ProvisioningConfig(
+            name="name_value",
+            ticket_id="ticket_id_value",
+            handover_service_account="handover_service_account_value",
+            email="email_value",
+            state=provisioning.ProvisioningConfig.State.DRAFT,
+            location="location_value",
+            cloud_console_uri="cloud_console_uri_value",
+            vpc_sc_enabled=True,
+            status_message="status_message_value",
+            custom_id="custom_id_value",
+        )
+        response = client.update_provisioning_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == provisioning.UpdateProvisioningConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, provisioning.ProvisioningConfig)
+    assert response.name == "name_value"
+    assert response.ticket_id == "ticket_id_value"
+    assert response.handover_service_account == "handover_service_account_value"
+    assert response.email == "email_value"
+    assert response.state == provisioning.ProvisioningConfig.State.DRAFT
+    assert response.location == "location_value"
+    assert response.cloud_console_uri == "cloud_console_uri_value"
+    assert response.vpc_sc_enabled is True
+    assert response.status_message == "status_message_value"
+    assert response.custom_id == "custom_id_value"
+
+
+def test_update_provisioning_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_provisioning_config), "__call__"
+    ) as call:
+        client.update_provisioning_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == provisioning.UpdateProvisioningConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_provisioning_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=provisioning.UpdateProvisioningConfigRequest,
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_provisioning_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            provisioning.ProvisioningConfig(
+                name="name_value",
+                ticket_id="ticket_id_value",
+                handover_service_account="handover_service_account_value",
+                email="email_value",
+                state=provisioning.ProvisioningConfig.State.DRAFT,
+                location="location_value",
+                cloud_console_uri="cloud_console_uri_value",
+                vpc_sc_enabled=True,
+                status_message="status_message_value",
+                custom_id="custom_id_value",
+            )
+        )
+        response = await client.update_provisioning_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == provisioning.UpdateProvisioningConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, provisioning.ProvisioningConfig)
+    assert response.name == "name_value"
+    assert response.ticket_id == "ticket_id_value"
+    assert response.handover_service_account == "handover_service_account_value"
+    assert response.email == "email_value"
+    assert response.state == provisioning.ProvisioningConfig.State.DRAFT
+    assert response.location == "location_value"
+    assert response.cloud_console_uri == "cloud_console_uri_value"
+    assert response.vpc_sc_enabled is True
+    assert response.status_message == "status_message_value"
+    assert response.custom_id == "custom_id_value"
+
+
+@pytest.mark.asyncio
+async def test_update_provisioning_config_async_from_dict():
+    await test_update_provisioning_config_async(request_type=dict)
+
+
+def test_update_provisioning_config_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = provisioning.UpdateProvisioningConfigRequest()
+
+    request.provisioning_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_provisioning_config), "__call__"
+    ) as call:
+        call.return_value = provisioning.ProvisioningConfig()
+        client.update_provisioning_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "provisioning_config.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_provisioning_config_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = provisioning.UpdateProvisioningConfigRequest()
+
+    request.provisioning_config.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_provisioning_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            provisioning.ProvisioningConfig()
+        )
+        await client.update_provisioning_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "provisioning_config.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_provisioning_config_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_provisioning_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = provisioning.ProvisioningConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_provisioning_config(
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].provisioning_config
+        mock_val = provisioning.ProvisioningConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_provisioning_config_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_provisioning_config(
+            provisioning.UpdateProvisioningConfigRequest(),
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_provisioning_config_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_provisioning_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = provisioning.ProvisioningConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            provisioning.ProvisioningConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_provisioning_config(
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].provisioning_config
+        mock_val = provisioning.ProvisioningConfig(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_provisioning_config_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_provisioning_config(
+            provisioning.UpdateProvisioningConfigRequest(),
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        network.RenameNetworkRequest,
+        dict,
+    ],
+)
+def test_rename_network(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_network), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = network.Network(
+            name="name_value",
+            id="id_value",
+            type_=network.Network.Type.CLIENT,
+            ip_address="ip_address_value",
+            mac_address=["mac_address_value"],
+            state=network.Network.State.PROVISIONING,
+            vlan_id="vlan_id_value",
+            cidr="cidr_value",
+            services_cidr="services_cidr_value",
+            pod="pod_value",
+            jumbo_frames_enabled=True,
+            gateway_ip="gateway_ip_value",
+        )
+        response = client.rename_network(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == network.RenameNetworkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, network.Network)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.type_ == network.Network.Type.CLIENT
+    assert response.ip_address == "ip_address_value"
+    assert response.mac_address == ["mac_address_value"]
+    assert response.state == network.Network.State.PROVISIONING
+    assert response.vlan_id == "vlan_id_value"
+    assert response.cidr == "cidr_value"
+    assert response.services_cidr == "services_cidr_value"
+    assert response.pod == "pod_value"
+    assert response.jumbo_frames_enabled is True
+    assert response.gateway_ip == "gateway_ip_value"
+
+
+def test_rename_network_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_network), "__call__") as call:
+        client.rename_network()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == network.RenameNetworkRequest()
+
+
+@pytest.mark.asyncio
+async def test_rename_network_async(
+    transport: str = "grpc_asyncio", request_type=network.RenameNetworkRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_network), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            network.Network(
+                name="name_value",
+                id="id_value",
+                type_=network.Network.Type.CLIENT,
+                ip_address="ip_address_value",
+                mac_address=["mac_address_value"],
+                state=network.Network.State.PROVISIONING,
+                vlan_id="vlan_id_value",
+                cidr="cidr_value",
+                services_cidr="services_cidr_value",
+                pod="pod_value",
+                jumbo_frames_enabled=True,
+                gateway_ip="gateway_ip_value",
+            )
+        )
+        response = await client.rename_network(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == network.RenameNetworkRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, network.Network)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.type_ == network.Network.Type.CLIENT
+    assert response.ip_address == "ip_address_value"
+    assert response.mac_address == ["mac_address_value"]
+    assert response.state == network.Network.State.PROVISIONING
+    assert response.vlan_id == "vlan_id_value"
+    assert response.cidr == "cidr_value"
+    assert response.services_cidr == "services_cidr_value"
+    assert response.pod == "pod_value"
+    assert response.jumbo_frames_enabled is True
+    assert response.gateway_ip == "gateway_ip_value"
+
+
+@pytest.mark.asyncio
+async def test_rename_network_async_from_dict():
+    await test_rename_network_async(request_type=dict)
+
+
+def test_rename_network_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = network.RenameNetworkRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_network), "__call__") as call:
+        call.return_value = network.Network()
+        client.rename_network(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_rename_network_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = network.RenameNetworkRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_network), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(network.Network())
+        await client.rename_network(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_rename_network_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_network), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = network.Network()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.rename_network(
+            name="name_value",
+            new_network_id="new_network_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].new_network_id
+        mock_val = "new_network_id_value"
+        assert arg == mock_val
+
+
+def test_rename_network_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rename_network(
+            network.RenameNetworkRequest(),
+            name="name_value",
+            new_network_id="new_network_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rename_network_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rename_network), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = network.Network()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(network.Network())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.rename_network(
+            name="name_value",
+            new_network_id="new_network_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].new_network_id
+        mock_val = "new_network_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_rename_network_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.rename_network(
+            network.RenameNetworkRequest(),
+            name="name_value",
+            new_network_id="new_network_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        osimage.ListOSImagesRequest,
+        dict,
+    ],
+)
+def test_list_os_images(request_type, transport: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_os_images), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = osimage.ListOSImagesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_os_images(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == osimage.ListOSImagesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListOSImagesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_os_images_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_os_images), "__call__") as call:
+        client.list_os_images()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == osimage.ListOSImagesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_os_images_async(
+    transport: str = "grpc_asyncio", request_type=osimage.ListOSImagesRequest
+):
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_os_images), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            osimage.ListOSImagesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_os_images(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == osimage.ListOSImagesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListOSImagesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_os_images_async_from_dict():
+    await test_list_os_images_async(request_type=dict)
+
+
+def test_list_os_images_field_headers():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = osimage.ListOSImagesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_os_images), "__call__") as call:
+        call.return_value = osimage.ListOSImagesResponse()
+        client.list_os_images(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_os_images_field_headers_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = osimage.ListOSImagesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_os_images), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            osimage.ListOSImagesResponse()
+        )
+        await client.list_os_images(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_os_images_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_os_images), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = osimage.ListOSImagesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_os_images(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_os_images_flattened_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_os_images(
+            osimage.ListOSImagesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_os_images_flattened_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_os_images), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = osimage.ListOSImagesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            osimage.ListOSImagesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_os_images(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_os_images_flattened_error_async():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_os_images(
+            osimage.ListOSImagesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_os_images_pager(transport_name: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_os_images), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            osimage.ListOSImagesResponse(
+                os_images=[
+                    osimage.OSImage(),
+                    osimage.OSImage(),
+                    osimage.OSImage(),
+                ],
+                next_page_token="abc",
+            ),
+            osimage.ListOSImagesResponse(
+                os_images=[],
+                next_page_token="def",
+            ),
+            osimage.ListOSImagesResponse(
+                os_images=[
+                    osimage.OSImage(),
+                ],
+                next_page_token="ghi",
+            ),
+            osimage.ListOSImagesResponse(
+                os_images=[
+                    osimage.OSImage(),
+                    osimage.OSImage(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_os_images(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, osimage.OSImage) for i in results)
+
+
+def test_list_os_images_pages(transport_name: str = "grpc"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_os_images), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            osimage.ListOSImagesResponse(
+                os_images=[
+                    osimage.OSImage(),
+                    osimage.OSImage(),
+                    osimage.OSImage(),
+                ],
+                next_page_token="abc",
+            ),
+            osimage.ListOSImagesResponse(
+                os_images=[],
+                next_page_token="def",
+            ),
+            osimage.ListOSImagesResponse(
+                os_images=[
+                    osimage.OSImage(),
+                ],
+                next_page_token="ghi",
+            ),
+            osimage.ListOSImagesResponse(
+                os_images=[
+                    osimage.OSImage(),
+                    osimage.OSImage(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_os_images(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_os_images_async_pager():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_images), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            osimage.ListOSImagesResponse(
+                os_images=[
+                    osimage.OSImage(),
+                    osimage.OSImage(),
+                    osimage.OSImage(),
+                ],
+                next_page_token="abc",
+            ),
+            osimage.ListOSImagesResponse(
+                os_images=[],
+                next_page_token="def",
+            ),
+            osimage.ListOSImagesResponse(
+                os_images=[
+                    osimage.OSImage(),
+                ],
+                next_page_token="ghi",
+            ),
+            osimage.ListOSImagesResponse(
+                os_images=[
+                    osimage.OSImage(),
+                    osimage.OSImage(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_os_images(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, osimage.OSImage) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_os_images_async_pages():
+    client = BareMetalSolutionAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_os_images), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            osimage.ListOSImagesResponse(
+                os_images=[
+                    osimage.OSImage(),
+                    osimage.OSImage(),
+                    osimage.OSImage(),
+                ],
+                next_page_token="abc",
+            ),
+            osimage.ListOSImagesResponse(
+                os_images=[],
+                next_page_token="def",
+            ),
+            osimage.ListOSImagesResponse(
+                os_images=[
+                    osimage.OSImage(),
+                ],
+                next_page_token="ghi",
+            ),
+            osimage.ListOSImagesResponse(
+                os_images=[
+                    osimage.OSImage(),
+                    osimage.OSImage(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_os_images(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         instance.ListInstancesRequest,
         dict,
     ],
@@ -6892,6 +13873,9 @@ def test_get_instance_rest(request_type):
             os_image="os_image_value",
             pod="pod_value",
             network_template="network_template_value",
+            login_info="login_info_value",
+            workload_profile=common.WorkloadProfile.WORKLOAD_PROFILE_GENERIC,
+            firmware_version="firmware_version_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -6915,6 +13899,9 @@ def test_get_instance_rest(request_type):
     assert response.os_image == "os_image_value"
     assert response.pod == "pod_value"
     assert response.network_template == "network_template_value"
+    assert response.login_info == "login_info_value"
+    assert response.workload_profile == common.WorkloadProfile.WORKLOAD_PROFILE_GENERIC
+    assert response.firmware_version == "firmware_version_value"
 
 
 def test_get_instance_rest_required_fields(request_type=instance.GetInstanceRequest):
@@ -7179,6 +14166,41 @@ def test_update_instance_rest(request_type):
                 "boot_lun": True,
                 "storage_type": 1,
                 "wwid": "wwid_value",
+                "expire_time": {},
+                "instances": ["instances_value1", "instances_value2"],
+            }
+        ],
+        "volumes": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "storage_type": 1,
+                "state": 1,
+                "requested_size_gib": 1917,
+                "originally_requested_size_gib": 3094,
+                "current_size_gib": 1710,
+                "emergency_size_gib": 1898,
+                "max_size_gib": 1265,
+                "auto_grown_size_gib": 2032,
+                "remaining_space_gib": 1974,
+                "snapshot_reservation_detail": {
+                    "reserved_space_gib": 1884,
+                    "reserved_space_used_percent": 2859,
+                    "reserved_space_remaining_gib": 2933,
+                    "reserved_space_percent": 2331,
+                },
+                "snapshot_auto_delete_behavior": 1,
+                "labels": {},
+                "snapshot_enabled": True,
+                "pod": "pod_value",
+                "protocol": 1,
+                "boot_volume": True,
+                "performance_tier": 1,
+                "notes": "notes_value",
+                "workload_profile": 1,
+                "expire_time": {},
+                "instances": ["instances_value1", "instances_value2"],
+                "attached": True,
             }
         ],
         "networks": [
@@ -7200,6 +14222,10 @@ def test_update_instance_rest(request_type):
                             "peer_vlan_id": 1256,
                             "peer_ip": "peer_ip_value",
                             "router_ip": "router_ip_value",
+                            "pairing_key": "pairing_key_value",
+                            "qos_policy": {},
+                            "id": "id_value",
+                            "interconnect_attachment": "interconnect_attachment_value",
                         }
                     ],
                 },
@@ -7212,6 +14238,17 @@ def test_update_instance_rest(request_type):
                         "note": "note_value",
                     }
                 ],
+                "pod": "pod_value",
+                "mount_points": [
+                    {
+                        "instance": "instance_value",
+                        "logical_interface": "logical_interface_value",
+                        "default_gateway": True,
+                        "ip_address": "ip_address_value",
+                    }
+                ],
+                "jumbo_frames_enabled": True,
+                "gateway_ip": "gateway_ip_value",
             }
         ],
         "interactive_serial_console_enabled": True,
@@ -7233,6 +14270,9 @@ def test_update_instance_rest(request_type):
                 "interface_index": 1576,
             }
         ],
+        "login_info": "login_info_value",
+        "workload_profile": 1,
+        "firmware_version": "firmware_version_value",
     }
     request = request_type(**request_init)
 
@@ -7428,6 +14468,41 @@ def test_update_instance_rest_bad_request(
                 "boot_lun": True,
                 "storage_type": 1,
                 "wwid": "wwid_value",
+                "expire_time": {},
+                "instances": ["instances_value1", "instances_value2"],
+            }
+        ],
+        "volumes": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "storage_type": 1,
+                "state": 1,
+                "requested_size_gib": 1917,
+                "originally_requested_size_gib": 3094,
+                "current_size_gib": 1710,
+                "emergency_size_gib": 1898,
+                "max_size_gib": 1265,
+                "auto_grown_size_gib": 2032,
+                "remaining_space_gib": 1974,
+                "snapshot_reservation_detail": {
+                    "reserved_space_gib": 1884,
+                    "reserved_space_used_percent": 2859,
+                    "reserved_space_remaining_gib": 2933,
+                    "reserved_space_percent": 2331,
+                },
+                "snapshot_auto_delete_behavior": 1,
+                "labels": {},
+                "snapshot_enabled": True,
+                "pod": "pod_value",
+                "protocol": 1,
+                "boot_volume": True,
+                "performance_tier": 1,
+                "notes": "notes_value",
+                "workload_profile": 1,
+                "expire_time": {},
+                "instances": ["instances_value1", "instances_value2"],
+                "attached": True,
             }
         ],
         "networks": [
@@ -7449,6 +14524,10 @@ def test_update_instance_rest_bad_request(
                             "peer_vlan_id": 1256,
                             "peer_ip": "peer_ip_value",
                             "router_ip": "router_ip_value",
+                            "pairing_key": "pairing_key_value",
+                            "qos_policy": {},
+                            "id": "id_value",
+                            "interconnect_attachment": "interconnect_attachment_value",
                         }
                     ],
                 },
@@ -7461,6 +14540,17 @@ def test_update_instance_rest_bad_request(
                         "note": "note_value",
                     }
                 ],
+                "pod": "pod_value",
+                "mount_points": [
+                    {
+                        "instance": "instance_value",
+                        "logical_interface": "logical_interface_value",
+                        "default_gateway": True,
+                        "ip_address": "ip_address_value",
+                    }
+                ],
+                "jumbo_frames_enabled": True,
+                "gateway_ip": "gateway_ip_value",
             }
         ],
         "interactive_serial_console_enabled": True,
@@ -7482,6 +14572,9 @@ def test_update_instance_rest_bad_request(
                 "interface_index": 1576,
             }
         ],
+        "login_info": "login_info_value",
+        "workload_profile": 1,
+        "firmware_version": "firmware_version_value",
     }
     request = request_type(**request_init)
 
@@ -7557,6 +14650,309 @@ def test_update_instance_rest_flattened_error(transport: str = "rest"):
 
 
 def test_update_instance_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.RenameInstanceRequest,
+        dict,
+    ],
+)
+def test_rename_instance_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = instance.Instance(
+            name="name_value",
+            id="id_value",
+            machine_type="machine_type_value",
+            state=instance.Instance.State.PROVISIONING,
+            hyperthreading_enabled=True,
+            interactive_serial_console_enabled=True,
+            os_image="os_image_value",
+            pod="pod_value",
+            network_template="network_template_value",
+            login_info="login_info_value",
+            workload_profile=common.WorkloadProfile.WORKLOAD_PROFILE_GENERIC,
+            firmware_version="firmware_version_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = instance.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.rename_instance(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, instance.Instance)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.machine_type == "machine_type_value"
+    assert response.state == instance.Instance.State.PROVISIONING
+    assert response.hyperthreading_enabled is True
+    assert response.interactive_serial_console_enabled is True
+    assert response.os_image == "os_image_value"
+    assert response.pod == "pod_value"
+    assert response.network_template == "network_template_value"
+    assert response.login_info == "login_info_value"
+    assert response.workload_profile == common.WorkloadProfile.WORKLOAD_PROFILE_GENERIC
+    assert response.firmware_version == "firmware_version_value"
+
+
+def test_rename_instance_rest_required_fields(
+    request_type=instance.RenameInstanceRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["new_instance_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rename_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["newInstanceId"] = "new_instance_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rename_instance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "newInstanceId" in jsonified_request
+    assert jsonified_request["newInstanceId"] == "new_instance_id_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = instance.Instance()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = instance.Instance.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.rename_instance(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_rename_instance_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.rename_instance._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "newInstanceId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_rename_instance_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_rename_instance"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_rename_instance"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = instance.RenameInstanceRequest.pb(instance.RenameInstanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = instance.Instance.to_json(instance.Instance())
+
+        request = instance.RenameInstanceRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = instance.Instance()
+
+        client.rename_instance(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_rename_instance_rest_bad_request(
+    transport: str = "rest", request_type=instance.RenameInstanceRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.rename_instance(request)
+
+
+def test_rename_instance_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = instance.Instance()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/instances/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            new_instance_id="new_instance_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = instance.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.rename_instance(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/instances/*}:rename"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_rename_instance_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rename_instance(
+            instance.RenameInstanceRequest(),
+            name="name_value",
+            new_instance_id="new_instance_id_value",
+        )
+
+
+def test_rename_instance_rest_error():
     client = BareMetalSolutionClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -8355,6 +15751,551 @@ def test_stop_instance_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        instance.EnableInteractiveSerialConsoleRequest,
+        dict,
+    ],
+)
+def test_enable_interactive_serial_console_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.enable_interactive_serial_console(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_enable_interactive_serial_console_rest_required_fields(
+    request_type=instance.EnableInteractiveSerialConsoleRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).enable_interactive_serial_console._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).enable_interactive_serial_console._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.enable_interactive_serial_console(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_enable_interactive_serial_console_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.enable_interactive_serial_console._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_enable_interactive_serial_console_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_enable_interactive_serial_console",
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "pre_enable_interactive_serial_console",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = instance.EnableInteractiveSerialConsoleRequest.pb(
+            instance.EnableInteractiveSerialConsoleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = instance.EnableInteractiveSerialConsoleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.enable_interactive_serial_console(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_enable_interactive_serial_console_rest_bad_request(
+    transport: str = "rest", request_type=instance.EnableInteractiveSerialConsoleRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.enable_interactive_serial_console(request)
+
+
+def test_enable_interactive_serial_console_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/instances/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.enable_interactive_serial_console(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/instances/*}:enableInteractiveSerialConsole"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_enable_interactive_serial_console_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.enable_interactive_serial_console(
+            instance.EnableInteractiveSerialConsoleRequest(),
+            name="name_value",
+        )
+
+
+def test_enable_interactive_serial_console_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        instance.DisableInteractiveSerialConsoleRequest,
+        dict,
+    ],
+)
+def test_disable_interactive_serial_console_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.disable_interactive_serial_console(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_disable_interactive_serial_console_rest_required_fields(
+    request_type=instance.DisableInteractiveSerialConsoleRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).disable_interactive_serial_console._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).disable_interactive_serial_console._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.disable_interactive_serial_console(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_disable_interactive_serial_console_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.disable_interactive_serial_console._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_disable_interactive_serial_console_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "post_disable_interactive_serial_console",
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor,
+        "pre_disable_interactive_serial_console",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = instance.DisableInteractiveSerialConsoleRequest.pb(
+            instance.DisableInteractiveSerialConsoleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = instance.DisableInteractiveSerialConsoleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.disable_interactive_serial_console(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_disable_interactive_serial_console_rest_bad_request(
+    transport: str = "rest",
+    request_type=instance.DisableInteractiveSerialConsoleRequest,
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/instances/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.disable_interactive_serial_console(request)
+
+
+def test_disable_interactive_serial_console_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/instances/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.disable_interactive_serial_console(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/instances/*}:disableInteractiveSerialConsole"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_disable_interactive_serial_console_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.disable_interactive_serial_console(
+            instance.DisableInteractiveSerialConsoleRequest(),
+            name="name_value",
+        )
+
+
+def test_disable_interactive_serial_console_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         gcb_instance.DetachLunRequest,
         dict,
     ],
@@ -8623,6 +16564,885 @@ def test_detach_lun_rest_flattened_error(transport: str = "rest"):
 
 
 def test_detach_lun_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ssh_key.ListSSHKeysRequest,
+        dict,
+    ],
+)
+def test_list_ssh_keys_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = ssh_key.ListSSHKeysResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = ssh_key.ListSSHKeysResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_ssh_keys(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSSHKeysPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_ssh_keys_rest_required_fields(request_type=ssh_key.ListSSHKeysRequest):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_ssh_keys._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_ssh_keys._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = ssh_key.ListSSHKeysResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = ssh_key.ListSSHKeysResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_ssh_keys(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_ssh_keys_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_ssh_keys._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_ssh_keys_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_list_ssh_keys"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_list_ssh_keys"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = ssh_key.ListSSHKeysRequest.pb(ssh_key.ListSSHKeysRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = ssh_key.ListSSHKeysResponse.to_json(
+            ssh_key.ListSSHKeysResponse()
+        )
+
+        request = ssh_key.ListSSHKeysRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = ssh_key.ListSSHKeysResponse()
+
+        client.list_ssh_keys(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_ssh_keys_rest_bad_request(
+    transport: str = "rest", request_type=ssh_key.ListSSHKeysRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_ssh_keys(request)
+
+
+def test_list_ssh_keys_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = ssh_key.ListSSHKeysResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = ssh_key.ListSSHKeysResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_ssh_keys(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*}/sshKeys" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_ssh_keys_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_ssh_keys(
+            ssh_key.ListSSHKeysRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_ssh_keys_rest_pager(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[
+                    ssh_key.SSHKey(),
+                    ssh_key.SSHKey(),
+                    ssh_key.SSHKey(),
+                ],
+                next_page_token="abc",
+            ),
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[],
+                next_page_token="def",
+            ),
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[
+                    ssh_key.SSHKey(),
+                ],
+                next_page_token="ghi",
+            ),
+            ssh_key.ListSSHKeysResponse(
+                ssh_keys=[
+                    ssh_key.SSHKey(),
+                    ssh_key.SSHKey(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(ssh_key.ListSSHKeysResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_ssh_keys(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, ssh_key.SSHKey) for i in results)
+
+        pages = list(client.list_ssh_keys(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcb_ssh_key.CreateSSHKeyRequest,
+        dict,
+    ],
+)
+def test_create_ssh_key_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["ssh_key"] = {"name": "name_value", "public_key": "public_key_value"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcb_ssh_key.SSHKey(
+            name="name_value",
+            public_key="public_key_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcb_ssh_key.SSHKey.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_ssh_key(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcb_ssh_key.SSHKey)
+    assert response.name == "name_value"
+    assert response.public_key == "public_key_value"
+
+
+def test_create_ssh_key_rest_required_fields(
+    request_type=gcb_ssh_key.CreateSSHKeyRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["ssh_key_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "sshKeyId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_ssh_key._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "sshKeyId" in jsonified_request
+    assert jsonified_request["sshKeyId"] == request_init["ssh_key_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["sshKeyId"] = "ssh_key_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_ssh_key._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("ssh_key_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "sshKeyId" in jsonified_request
+    assert jsonified_request["sshKeyId"] == "ssh_key_id_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcb_ssh_key.SSHKey()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gcb_ssh_key.SSHKey.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_ssh_key(request)
+
+            expected_params = [
+                (
+                    "sshKeyId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_ssh_key_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_ssh_key._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("sshKeyId",))
+        & set(
+            (
+                "parent",
+                "sshKey",
+                "sshKeyId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_ssh_key_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_create_ssh_key"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_create_ssh_key"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcb_ssh_key.CreateSSHKeyRequest.pb(
+            gcb_ssh_key.CreateSSHKeyRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcb_ssh_key.SSHKey.to_json(gcb_ssh_key.SSHKey())
+
+        request = gcb_ssh_key.CreateSSHKeyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcb_ssh_key.SSHKey()
+
+        client.create_ssh_key(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_ssh_key_rest_bad_request(
+    transport: str = "rest", request_type=gcb_ssh_key.CreateSSHKeyRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["ssh_key"] = {"name": "name_value", "public_key": "public_key_value"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_ssh_key(request)
+
+
+def test_create_ssh_key_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcb_ssh_key.SSHKey()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            ssh_key=gcb_ssh_key.SSHKey(name="name_value"),
+            ssh_key_id="ssh_key_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcb_ssh_key.SSHKey.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_ssh_key(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*}/sshKeys" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_ssh_key_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_ssh_key(
+            gcb_ssh_key.CreateSSHKeyRequest(),
+            parent="parent_value",
+            ssh_key=gcb_ssh_key.SSHKey(name="name_value"),
+            ssh_key_id="ssh_key_id_value",
+        )
+
+
+def test_create_ssh_key_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        ssh_key.DeleteSSHKeyRequest,
+        dict,
+    ],
+)
+def test_delete_ssh_key_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/sshKeys/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_ssh_key(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_ssh_key_rest_required_fields(request_type=ssh_key.DeleteSSHKeyRequest):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_ssh_key._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_ssh_key._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_ssh_key(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_ssh_key_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_ssh_key._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_ssh_key_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_delete_ssh_key"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = ssh_key.DeleteSSHKeyRequest.pb(ssh_key.DeleteSSHKeyRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = ssh_key.DeleteSSHKeyRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_ssh_key(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_ssh_key_rest_bad_request(
+    transport: str = "rest", request_type=ssh_key.DeleteSSHKeyRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/sshKeys/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_ssh_key(request)
+
+
+def test_delete_ssh_key_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/sshKeys/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_ssh_key(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/sshKeys/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_ssh_key_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_ssh_key(
+            ssh_key.DeleteSSHKeyRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_ssh_key_rest_error():
     client = BareMetalSolutionClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -8991,13 +17811,22 @@ def test_get_volume_rest(request_type):
             storage_type=volume.Volume.StorageType.SSD,
             state=volume.Volume.State.CREATING,
             requested_size_gib=1917,
+            originally_requested_size_gib=3094,
             current_size_gib=1710,
             emergency_size_gib=1898,
+            max_size_gib=1265,
             auto_grown_size_gib=2032,
             remaining_space_gib=1974,
             snapshot_auto_delete_behavior=volume.Volume.SnapshotAutoDeleteBehavior.DISABLED,
             snapshot_enabled=True,
             pod="pod_value",
+            protocol=volume.Volume.Protocol.FIBRE_CHANNEL,
+            boot_volume=True,
+            performance_tier=common.VolumePerformanceTier.VOLUME_PERFORMANCE_TIER_SHARED,
+            notes="notes_value",
+            workload_profile=volume.Volume.WorkloadProfile.GENERIC,
+            instances=["instances_value"],
+            attached=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -9017,8 +17846,10 @@ def test_get_volume_rest(request_type):
     assert response.storage_type == volume.Volume.StorageType.SSD
     assert response.state == volume.Volume.State.CREATING
     assert response.requested_size_gib == 1917
+    assert response.originally_requested_size_gib == 3094
     assert response.current_size_gib == 1710
     assert response.emergency_size_gib == 1898
+    assert response.max_size_gib == 1265
     assert response.auto_grown_size_gib == 2032
     assert response.remaining_space_gib == 1974
     assert (
@@ -9027,6 +17858,16 @@ def test_get_volume_rest(request_type):
     )
     assert response.snapshot_enabled is True
     assert response.pod == "pod_value"
+    assert response.protocol == volume.Volume.Protocol.FIBRE_CHANNEL
+    assert response.boot_volume is True
+    assert (
+        response.performance_tier
+        == common.VolumePerformanceTier.VOLUME_PERFORMANCE_TIER_SHARED
+    )
+    assert response.notes == "notes_value"
+    assert response.workload_profile == volume.Volume.WorkloadProfile.GENERIC
+    assert response.instances == ["instances_value"]
+    assert response.attached is True
 
 
 def test_get_volume_rest_required_fields(request_type=volume.GetVolumeRequest):
@@ -9274,8 +18115,10 @@ def test_update_volume_rest(request_type):
         "storage_type": 1,
         "state": 1,
         "requested_size_gib": 1917,
+        "originally_requested_size_gib": 3094,
         "current_size_gib": 1710,
         "emergency_size_gib": 1898,
+        "max_size_gib": 1265,
         "auto_grown_size_gib": 2032,
         "remaining_space_gib": 1974,
         "snapshot_reservation_detail": {
@@ -9288,6 +18131,14 @@ def test_update_volume_rest(request_type):
         "labels": {},
         "snapshot_enabled": True,
         "pod": "pod_value",
+        "protocol": 1,
+        "boot_volume": True,
+        "performance_tier": 1,
+        "notes": "notes_value",
+        "workload_profile": 1,
+        "expire_time": {"seconds": 751, "nanos": 543},
+        "instances": ["instances_value1", "instances_value2"],
+        "attached": True,
     }
     request = request_type(**request_init)
 
@@ -9466,8 +18317,10 @@ def test_update_volume_rest_bad_request(
         "storage_type": 1,
         "state": 1,
         "requested_size_gib": 1917,
+        "originally_requested_size_gib": 3094,
         "current_size_gib": 1710,
         "emergency_size_gib": 1898,
+        "max_size_gib": 1265,
         "auto_grown_size_gib": 2032,
         "remaining_space_gib": 1974,
         "snapshot_reservation_detail": {
@@ -9480,6 +18333,14 @@ def test_update_volume_rest_bad_request(
         "labels": {},
         "snapshot_enabled": True,
         "pod": "pod_value",
+        "protocol": 1,
+        "boot_volume": True,
+        "performance_tier": 1,
+        "notes": "notes_value",
+        "workload_profile": 1,
+        "expire_time": {"seconds": 751, "nanos": 543},
+        "instances": ["instances_value1", "instances_value2"],
+        "attached": True,
     }
     request = request_type(**request_init)
 
@@ -9555,6 +18416,589 @@ def test_update_volume_rest_flattened_error(transport: str = "rest"):
 
 
 def test_update_volume_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        volume.RenameVolumeRequest,
+        dict,
+    ],
+)
+def test_rename_volume_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/volumes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = volume.Volume(
+            name="name_value",
+            id="id_value",
+            storage_type=volume.Volume.StorageType.SSD,
+            state=volume.Volume.State.CREATING,
+            requested_size_gib=1917,
+            originally_requested_size_gib=3094,
+            current_size_gib=1710,
+            emergency_size_gib=1898,
+            max_size_gib=1265,
+            auto_grown_size_gib=2032,
+            remaining_space_gib=1974,
+            snapshot_auto_delete_behavior=volume.Volume.SnapshotAutoDeleteBehavior.DISABLED,
+            snapshot_enabled=True,
+            pod="pod_value",
+            protocol=volume.Volume.Protocol.FIBRE_CHANNEL,
+            boot_volume=True,
+            performance_tier=common.VolumePerformanceTier.VOLUME_PERFORMANCE_TIER_SHARED,
+            notes="notes_value",
+            workload_profile=volume.Volume.WorkloadProfile.GENERIC,
+            instances=["instances_value"],
+            attached=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = volume.Volume.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.rename_volume(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, volume.Volume)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.storage_type == volume.Volume.StorageType.SSD
+    assert response.state == volume.Volume.State.CREATING
+    assert response.requested_size_gib == 1917
+    assert response.originally_requested_size_gib == 3094
+    assert response.current_size_gib == 1710
+    assert response.emergency_size_gib == 1898
+    assert response.max_size_gib == 1265
+    assert response.auto_grown_size_gib == 2032
+    assert response.remaining_space_gib == 1974
+    assert (
+        response.snapshot_auto_delete_behavior
+        == volume.Volume.SnapshotAutoDeleteBehavior.DISABLED
+    )
+    assert response.snapshot_enabled is True
+    assert response.pod == "pod_value"
+    assert response.protocol == volume.Volume.Protocol.FIBRE_CHANNEL
+    assert response.boot_volume is True
+    assert (
+        response.performance_tier
+        == common.VolumePerformanceTier.VOLUME_PERFORMANCE_TIER_SHARED
+    )
+    assert response.notes == "notes_value"
+    assert response.workload_profile == volume.Volume.WorkloadProfile.GENERIC
+    assert response.instances == ["instances_value"]
+    assert response.attached is True
+
+
+def test_rename_volume_rest_required_fields(request_type=volume.RenameVolumeRequest):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["new_volume_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rename_volume._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["newVolumeId"] = "new_volume_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rename_volume._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "newVolumeId" in jsonified_request
+    assert jsonified_request["newVolumeId"] == "new_volume_id_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = volume.Volume()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = volume.Volume.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.rename_volume(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_rename_volume_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.rename_volume._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "newVolumeId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_rename_volume_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_rename_volume"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_rename_volume"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = volume.RenameVolumeRequest.pb(volume.RenameVolumeRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = volume.Volume.to_json(volume.Volume())
+
+        request = volume.RenameVolumeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = volume.Volume()
+
+        client.rename_volume(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_rename_volume_rest_bad_request(
+    transport: str = "rest", request_type=volume.RenameVolumeRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/volumes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.rename_volume(request)
+
+
+def test_rename_volume_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = volume.Volume()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/volumes/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            new_volume_id="new_volume_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = volume.Volume.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.rename_volume(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/volumes/*}:rename"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_rename_volume_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rename_volume(
+            volume.RenameVolumeRequest(),
+            name="name_value",
+            new_volume_id="new_volume_id_value",
+        )
+
+
+def test_rename_volume_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        volume.EvictVolumeRequest,
+        dict,
+    ],
+)
+def test_evict_volume_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/volumes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.evict_volume(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_evict_volume_rest_required_fields(request_type=volume.EvictVolumeRequest):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).evict_volume._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).evict_volume._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.evict_volume(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_evict_volume_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.evict_volume._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_evict_volume_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_evict_volume"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_evict_volume"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = volume.EvictVolumeRequest.pb(volume.EvictVolumeRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = volume.EvictVolumeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.evict_volume(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_evict_volume_rest_bad_request(
+    transport: str = "rest", request_type=volume.EvictVolumeRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/volumes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.evict_volume(request)
+
+
+def test_evict_volume_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/volumes/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.evict_volume(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/volumes/*}:evict"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_evict_volume_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.evict_volume(
+            volume.EvictVolumeRequest(),
+            name="name_value",
+        )
+
+
+def test_evict_volume_rest_error():
     client = BareMetalSolutionClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -10458,6 +19902,9 @@ def test_get_network_rest(request_type):
             vlan_id="vlan_id_value",
             cidr="cidr_value",
             services_cidr="services_cidr_value",
+            pod="pod_value",
+            jumbo_frames_enabled=True,
+            gateway_ip="gateway_ip_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -10481,6 +19928,9 @@ def test_get_network_rest(request_type):
     assert response.vlan_id == "vlan_id_value"
     assert response.cidr == "cidr_value"
     assert response.services_cidr == "services_cidr_value"
+    assert response.pod == "pod_value"
+    assert response.jumbo_frames_enabled is True
+    assert response.gateway_ip == "gateway_ip_value"
 
 
 def test_get_network_rest_required_fields(request_type=network.GetNetworkRequest):
@@ -10740,6 +20190,10 @@ def test_update_network_rest(request_type):
                     "peer_vlan_id": 1256,
                     "peer_ip": "peer_ip_value",
                     "router_ip": "router_ip_value",
+                    "pairing_key": "pairing_key_value",
+                    "qos_policy": {},
+                    "id": "id_value",
+                    "interconnect_attachment": "interconnect_attachment_value",
                 }
             ],
         },
@@ -10752,6 +20206,17 @@ def test_update_network_rest(request_type):
                 "note": "note_value",
             }
         ],
+        "pod": "pod_value",
+        "mount_points": [
+            {
+                "instance": "instance_value",
+                "logical_interface": "logical_interface_value",
+                "default_gateway": True,
+                "ip_address": "ip_address_value",
+            }
+        ],
+        "jumbo_frames_enabled": True,
+        "gateway_ip": "gateway_ip_value",
     }
     request = request_type(**request_init)
 
@@ -10944,6 +20409,10 @@ def test_update_network_rest_bad_request(
                     "peer_vlan_id": 1256,
                     "peer_ip": "peer_ip_value",
                     "router_ip": "router_ip_value",
+                    "pairing_key": "pairing_key_value",
+                    "qos_policy": {},
+                    "id": "id_value",
+                    "interconnect_attachment": "interconnect_attachment_value",
                 }
             ],
         },
@@ -10956,6 +20425,17 @@ def test_update_network_rest_bad_request(
                 "note": "note_value",
             }
         ],
+        "pod": "pod_value",
+        "mount_points": [
+            {
+                "instance": "instance_value",
+                "logical_interface": "logical_interface_value",
+                "default_gateway": True,
+                "ip_address": "ip_address_value",
+            }
+        ],
+        "jumbo_frames_enabled": True,
+        "gateway_ip": "gateway_ip_value",
     }
     request = request_type(**request_init)
 
@@ -11039,6 +20519,1472 @@ def test_update_network_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        gcb_volume_snapshot.CreateVolumeSnapshotRequest,
+        dict,
+    ],
+)
+def test_create_volume_snapshot_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/volumes/sample3"}
+    request_init["volume_snapshot"] = {
+        "name": "name_value",
+        "id": "id_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "storage_volume": "storage_volume_value",
+        "type_": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcb_volume_snapshot.VolumeSnapshot(
+            name="name_value",
+            id="id_value",
+            description="description_value",
+            storage_volume="storage_volume_value",
+            type_=gcb_volume_snapshot.VolumeSnapshot.SnapshotType.AD_HOC,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcb_volume_snapshot.VolumeSnapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_volume_snapshot(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcb_volume_snapshot.VolumeSnapshot)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.description == "description_value"
+    assert response.storage_volume == "storage_volume_value"
+    assert response.type_ == gcb_volume_snapshot.VolumeSnapshot.SnapshotType.AD_HOC
+
+
+def test_create_volume_snapshot_rest_required_fields(
+    request_type=gcb_volume_snapshot.CreateVolumeSnapshotRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_volume_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_volume_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = gcb_volume_snapshot.VolumeSnapshot()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = gcb_volume_snapshot.VolumeSnapshot.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_volume_snapshot(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_volume_snapshot_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_volume_snapshot._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "volumeSnapshot",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_volume_snapshot_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_create_volume_snapshot"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_create_volume_snapshot"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcb_volume_snapshot.CreateVolumeSnapshotRequest.pb(
+            gcb_volume_snapshot.CreateVolumeSnapshotRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = gcb_volume_snapshot.VolumeSnapshot.to_json(
+            gcb_volume_snapshot.VolumeSnapshot()
+        )
+
+        request = gcb_volume_snapshot.CreateVolumeSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = gcb_volume_snapshot.VolumeSnapshot()
+
+        client.create_volume_snapshot(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_volume_snapshot_rest_bad_request(
+    transport: str = "rest",
+    request_type=gcb_volume_snapshot.CreateVolumeSnapshotRequest,
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/volumes/sample3"}
+    request_init["volume_snapshot"] = {
+        "name": "name_value",
+        "id": "id_value",
+        "description": "description_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "storage_volume": "storage_volume_value",
+        "type_": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_volume_snapshot(request)
+
+
+def test_create_volume_snapshot_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gcb_volume_snapshot.VolumeSnapshot()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/volumes/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            volume_snapshot=gcb_volume_snapshot.VolumeSnapshot(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = gcb_volume_snapshot.VolumeSnapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_volume_snapshot(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*/volumes/*}/snapshots"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_volume_snapshot_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_volume_snapshot(
+            gcb_volume_snapshot.CreateVolumeSnapshotRequest(),
+            parent="parent_value",
+            volume_snapshot=gcb_volume_snapshot.VolumeSnapshot(name="name_value"),
+        )
+
+
+def test_create_volume_snapshot_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcb_volume_snapshot.RestoreVolumeSnapshotRequest,
+        dict,
+    ],
+)
+def test_restore_volume_snapshot_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "volume_snapshot": "projects/sample1/locations/sample2/volumes/sample3/snapshots/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.restore_volume_snapshot(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_restore_volume_snapshot_rest_required_fields(
+    request_type=gcb_volume_snapshot.RestoreVolumeSnapshotRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["volume_snapshot"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).restore_volume_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["volumeSnapshot"] = "volume_snapshot_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).restore_volume_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "volumeSnapshot" in jsonified_request
+    assert jsonified_request["volumeSnapshot"] == "volume_snapshot_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.restore_volume_snapshot(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_restore_volume_snapshot_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.restore_volume_snapshot._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("volumeSnapshot",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_restore_volume_snapshot_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_restore_volume_snapshot"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_restore_volume_snapshot"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcb_volume_snapshot.RestoreVolumeSnapshotRequest.pb(
+            gcb_volume_snapshot.RestoreVolumeSnapshotRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gcb_volume_snapshot.RestoreVolumeSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.restore_volume_snapshot(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_restore_volume_snapshot_rest_bad_request(
+    transport: str = "rest",
+    request_type=gcb_volume_snapshot.RestoreVolumeSnapshotRequest,
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "volume_snapshot": "projects/sample1/locations/sample2/volumes/sample3/snapshots/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.restore_volume_snapshot(request)
+
+
+def test_restore_volume_snapshot_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "volume_snapshot": "projects/sample1/locations/sample2/volumes/sample3/snapshots/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            volume_snapshot="volume_snapshot_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.restore_volume_snapshot(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{volume_snapshot=projects/*/locations/*/volumes/*/snapshots/*}:restoreVolumeSnapshot"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_restore_volume_snapshot_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.restore_volume_snapshot(
+            gcb_volume_snapshot.RestoreVolumeSnapshotRequest(),
+            volume_snapshot="volume_snapshot_value",
+        )
+
+
+def test_restore_volume_snapshot_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        volume_snapshot.DeleteVolumeSnapshotRequest,
+        dict,
+    ],
+)
+def test_delete_volume_snapshot_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/volumes/sample3/snapshots/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_volume_snapshot(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_volume_snapshot_rest_required_fields(
+    request_type=volume_snapshot.DeleteVolumeSnapshotRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_volume_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_volume_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_volume_snapshot(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_volume_snapshot_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_volume_snapshot._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_volume_snapshot_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_delete_volume_snapshot"
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = volume_snapshot.DeleteVolumeSnapshotRequest.pb(
+            volume_snapshot.DeleteVolumeSnapshotRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = volume_snapshot.DeleteVolumeSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_volume_snapshot(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_volume_snapshot_rest_bad_request(
+    transport: str = "rest", request_type=volume_snapshot.DeleteVolumeSnapshotRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/volumes/sample3/snapshots/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_volume_snapshot(request)
+
+
+def test_delete_volume_snapshot_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/volumes/sample3/snapshots/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_volume_snapshot(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/volumes/*/snapshots/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_volume_snapshot_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_volume_snapshot(
+            volume_snapshot.DeleteVolumeSnapshotRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_volume_snapshot_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        volume_snapshot.GetVolumeSnapshotRequest,
+        dict,
+    ],
+)
+def test_get_volume_snapshot_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/volumes/sample3/snapshots/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = volume_snapshot.VolumeSnapshot(
+            name="name_value",
+            id="id_value",
+            description="description_value",
+            storage_volume="storage_volume_value",
+            type_=volume_snapshot.VolumeSnapshot.SnapshotType.AD_HOC,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = volume_snapshot.VolumeSnapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_volume_snapshot(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, volume_snapshot.VolumeSnapshot)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.description == "description_value"
+    assert response.storage_volume == "storage_volume_value"
+    assert response.type_ == volume_snapshot.VolumeSnapshot.SnapshotType.AD_HOC
+
+
+def test_get_volume_snapshot_rest_required_fields(
+    request_type=volume_snapshot.GetVolumeSnapshotRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_volume_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_volume_snapshot._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = volume_snapshot.VolumeSnapshot()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = volume_snapshot.VolumeSnapshot.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_volume_snapshot(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_volume_snapshot_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_volume_snapshot._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_volume_snapshot_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_get_volume_snapshot"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_get_volume_snapshot"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = volume_snapshot.GetVolumeSnapshotRequest.pb(
+            volume_snapshot.GetVolumeSnapshotRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = volume_snapshot.VolumeSnapshot.to_json(
+            volume_snapshot.VolumeSnapshot()
+        )
+
+        request = volume_snapshot.GetVolumeSnapshotRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = volume_snapshot.VolumeSnapshot()
+
+        client.get_volume_snapshot(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_volume_snapshot_rest_bad_request(
+    transport: str = "rest", request_type=volume_snapshot.GetVolumeSnapshotRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/volumes/sample3/snapshots/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_volume_snapshot(request)
+
+
+def test_get_volume_snapshot_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = volume_snapshot.VolumeSnapshot()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/volumes/sample3/snapshots/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = volume_snapshot.VolumeSnapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_volume_snapshot(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/volumes/*/snapshots/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_volume_snapshot_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_volume_snapshot(
+            volume_snapshot.GetVolumeSnapshotRequest(),
+            name="name_value",
+        )
+
+
+def test_get_volume_snapshot_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        volume_snapshot.ListVolumeSnapshotsRequest,
+        dict,
+    ],
+)
+def test_list_volume_snapshots_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/volumes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = volume_snapshot.ListVolumeSnapshotsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = volume_snapshot.ListVolumeSnapshotsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_volume_snapshots(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListVolumeSnapshotsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_volume_snapshots_rest_required_fields(
+    request_type=volume_snapshot.ListVolumeSnapshotsRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_volume_snapshots._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_volume_snapshots._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = volume_snapshot.ListVolumeSnapshotsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = volume_snapshot.ListVolumeSnapshotsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_volume_snapshots(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_volume_snapshots_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_volume_snapshots._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_volume_snapshots_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_list_volume_snapshots"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_list_volume_snapshots"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = volume_snapshot.ListVolumeSnapshotsRequest.pb(
+            volume_snapshot.ListVolumeSnapshotsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = volume_snapshot.ListVolumeSnapshotsResponse.to_json(
+            volume_snapshot.ListVolumeSnapshotsResponse()
+        )
+
+        request = volume_snapshot.ListVolumeSnapshotsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = volume_snapshot.ListVolumeSnapshotsResponse()
+
+        client.list_volume_snapshots(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_volume_snapshots_rest_bad_request(
+    transport: str = "rest", request_type=volume_snapshot.ListVolumeSnapshotsRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/volumes/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_volume_snapshots(request)
+
+
+def test_list_volume_snapshots_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = volume_snapshot.ListVolumeSnapshotsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/volumes/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = volume_snapshot.ListVolumeSnapshotsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_volume_snapshots(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*/volumes/*}/snapshots"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_volume_snapshots_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_volume_snapshots(
+            volume_snapshot.ListVolumeSnapshotsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_volume_snapshots_rest_pager(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[
+                    volume_snapshot.VolumeSnapshot(),
+                    volume_snapshot.VolumeSnapshot(),
+                    volume_snapshot.VolumeSnapshot(),
+                ],
+                next_page_token="abc",
+            ),
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[],
+                next_page_token="def",
+            ),
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[
+                    volume_snapshot.VolumeSnapshot(),
+                ],
+                next_page_token="ghi",
+            ),
+            volume_snapshot.ListVolumeSnapshotsResponse(
+                volume_snapshots=[
+                    volume_snapshot.VolumeSnapshot(),
+                    volume_snapshot.VolumeSnapshot(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            volume_snapshot.ListVolumeSnapshotsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/volumes/sample3"
+        }
+
+        pager = client.list_volume_snapshots(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, volume_snapshot.VolumeSnapshot) for i in results)
+
+        pages = list(client.list_volume_snapshots(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         lun.GetLunRequest,
         dict,
     ],
@@ -11069,6 +22015,7 @@ def test_get_lun_rest(request_type):
             boot_lun=True,
             storage_type=lun.Lun.StorageType.SSD,
             wwid="wwid_value",
+            instances=["instances_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -11093,6 +22040,7 @@ def test_get_lun_rest(request_type):
     assert response.boot_lun is True
     assert response.storage_type == lun.Lun.StorageType.SSD
     assert response.wwid == "wwid_value"
+    assert response.instances == ["instances_value"]
 
 
 def test_get_lun_rest_required_fields(request_type=lun.GetLunRequest):
@@ -11663,6 +22611,272 @@ def test_list_luns_rest_pager(transport: str = "rest"):
 @pytest.mark.parametrize(
     "request_type",
     [
+        lun.EvictLunRequest,
+        dict,
+    ],
+)
+def test_evict_lun_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/volumes/sample3/luns/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.evict_lun(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_evict_lun_rest_required_fields(request_type=lun.EvictLunRequest):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).evict_lun._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).evict_lun._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.evict_lun(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_evict_lun_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.evict_lun._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_evict_lun_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_evict_lun"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_evict_lun"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = lun.EvictLunRequest.pb(lun.EvictLunRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = lun.EvictLunRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.evict_lun(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_evict_lun_rest_bad_request(
+    transport: str = "rest", request_type=lun.EvictLunRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/volumes/sample3/luns/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.evict_lun(request)
+
+
+def test_evict_lun_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/volumes/sample3/luns/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.evict_lun(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/volumes/*/luns/*}:evict"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_evict_lun_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.evict_lun(
+            lun.EvictLunRequest(),
+            name="name_value",
+        )
+
+
+def test_evict_lun_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         nfs_share.GetNfsShareRequest,
         dict,
     ],
@@ -11683,8 +22897,11 @@ def test_get_nfs_share_rest(request_type):
         return_value = nfs_share.NfsShare(
             name="name_value",
             nfs_share_id="nfs_share_id_value",
+            id="id_value",
             state=nfs_share.NfsShare.State.PROVISIONED,
             volume="volume_value",
+            requested_size_gib=1917,
+            storage_type=nfs_share.NfsShare.StorageType.SSD,
         )
 
         # Wrap the value into a proper Response obj
@@ -11701,8 +22918,11 @@ def test_get_nfs_share_rest(request_type):
     assert isinstance(response, nfs_share.NfsShare)
     assert response.name == "name_value"
     assert response.nfs_share_id == "nfs_share_id_value"
+    assert response.id == "id_value"
     assert response.state == nfs_share.NfsShare.State.PROVISIONED
     assert response.volume == "volume_value"
+    assert response.requested_size_gib == 1917
+    assert response.storage_type == nfs_share.NfsShare.StorageType.SSD
 
 
 def test_get_nfs_share_rest_required_fields(request_type=nfs_share.GetNfsShareRequest):
@@ -12288,6 +23508,7 @@ def test_update_nfs_share_rest(request_type):
     request_init["nfs_share"] = {
         "name": "projects/sample1/locations/sample2/nfsShares/sample3",
         "nfs_share_id": "nfs_share_id_value",
+        "id": "id_value",
         "state": 1,
         "volume": "volume_value",
         "allowed_clients": [
@@ -12299,9 +23520,12 @@ def test_update_nfs_share_rest(request_type):
                 "allow_dev": True,
                 "allow_suid": True,
                 "no_root_squash": True,
+                "nfs_path": "nfs_path_value",
             }
         ],
         "labels": {},
+        "requested_size_gib": 1917,
+        "storage_type": 1,
     }
     request = request_type(**request_init)
 
@@ -12479,6 +23703,7 @@ def test_update_nfs_share_rest_bad_request(
     request_init["nfs_share"] = {
         "name": "projects/sample1/locations/sample2/nfsShares/sample3",
         "nfs_share_id": "nfs_share_id_value",
+        "id": "id_value",
         "state": 1,
         "volume": "volume_value",
         "allowed_clients": [
@@ -12490,9 +23715,12 @@ def test_update_nfs_share_rest_bad_request(
                 "allow_dev": True,
                 "allow_suid": True,
                 "no_root_squash": True,
+                "nfs_path": "nfs_path_value",
             }
         ],
         "labels": {},
+        "requested_size_gib": 1917,
+        "storage_type": 1,
     }
     request = request_type(**request_init)
 
@@ -12573,6 +23801,3407 @@ def test_update_nfs_share_rest_error():
     client = BareMetalSolutionClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcb_nfs_share.CreateNfsShareRequest,
+        dict,
+    ],
+)
+def test_create_nfs_share_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["nfs_share"] = {
+        "name": "name_value",
+        "nfs_share_id": "nfs_share_id_value",
+        "id": "id_value",
+        "state": 1,
+        "volume": "volume_value",
+        "allowed_clients": [
+            {
+                "network": "network_value",
+                "share_ip": "share_ip_value",
+                "allowed_clients_cidr": "allowed_clients_cidr_value",
+                "mount_permissions": 1,
+                "allow_dev": True,
+                "allow_suid": True,
+                "no_root_squash": True,
+                "nfs_path": "nfs_path_value",
+            }
+        ],
+        "labels": {},
+        "requested_size_gib": 1917,
+        "storage_type": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_nfs_share(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_nfs_share_rest_required_fields(
+    request_type=gcb_nfs_share.CreateNfsShareRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_nfs_share._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_nfs_share._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_nfs_share(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_nfs_share_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_nfs_share._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "nfsShare",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_nfs_share_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_create_nfs_share"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_create_nfs_share"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = gcb_nfs_share.CreateNfsShareRequest.pb(
+            gcb_nfs_share.CreateNfsShareRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = gcb_nfs_share.CreateNfsShareRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_nfs_share(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_nfs_share_rest_bad_request(
+    transport: str = "rest", request_type=gcb_nfs_share.CreateNfsShareRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["nfs_share"] = {
+        "name": "name_value",
+        "nfs_share_id": "nfs_share_id_value",
+        "id": "id_value",
+        "state": 1,
+        "volume": "volume_value",
+        "allowed_clients": [
+            {
+                "network": "network_value",
+                "share_ip": "share_ip_value",
+                "allowed_clients_cidr": "allowed_clients_cidr_value",
+                "mount_permissions": 1,
+                "allow_dev": True,
+                "allow_suid": True,
+                "no_root_squash": True,
+                "nfs_path": "nfs_path_value",
+            }
+        ],
+        "labels": {},
+        "requested_size_gib": 1917,
+        "storage_type": 1,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_nfs_share(request)
+
+
+def test_create_nfs_share_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            nfs_share=gcb_nfs_share.NfsShare(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_nfs_share(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*}/nfsShares" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_nfs_share_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_nfs_share(
+            gcb_nfs_share.CreateNfsShareRequest(),
+            parent="parent_value",
+            nfs_share=gcb_nfs_share.NfsShare(name="name_value"),
+        )
+
+
+def test_create_nfs_share_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        nfs_share.RenameNfsShareRequest,
+        dict,
+    ],
+)
+def test_rename_nfs_share_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/nfsShares/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = nfs_share.NfsShare(
+            name="name_value",
+            nfs_share_id="nfs_share_id_value",
+            id="id_value",
+            state=nfs_share.NfsShare.State.PROVISIONED,
+            volume="volume_value",
+            requested_size_gib=1917,
+            storage_type=nfs_share.NfsShare.StorageType.SSD,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = nfs_share.NfsShare.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.rename_nfs_share(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, nfs_share.NfsShare)
+    assert response.name == "name_value"
+    assert response.nfs_share_id == "nfs_share_id_value"
+    assert response.id == "id_value"
+    assert response.state == nfs_share.NfsShare.State.PROVISIONED
+    assert response.volume == "volume_value"
+    assert response.requested_size_gib == 1917
+    assert response.storage_type == nfs_share.NfsShare.StorageType.SSD
+
+
+def test_rename_nfs_share_rest_required_fields(
+    request_type=nfs_share.RenameNfsShareRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["new_nfsshare_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rename_nfs_share._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["newNfsshareId"] = "new_nfsshare_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rename_nfs_share._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "newNfsshareId" in jsonified_request
+    assert jsonified_request["newNfsshareId"] == "new_nfsshare_id_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = nfs_share.NfsShare()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = nfs_share.NfsShare.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.rename_nfs_share(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_rename_nfs_share_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.rename_nfs_share._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "newNfsshareId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_rename_nfs_share_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_rename_nfs_share"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_rename_nfs_share"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = nfs_share.RenameNfsShareRequest.pb(
+            nfs_share.RenameNfsShareRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = nfs_share.NfsShare.to_json(nfs_share.NfsShare())
+
+        request = nfs_share.RenameNfsShareRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = nfs_share.NfsShare()
+
+        client.rename_nfs_share(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_rename_nfs_share_rest_bad_request(
+    transport: str = "rest", request_type=nfs_share.RenameNfsShareRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/nfsShares/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.rename_nfs_share(request)
+
+
+def test_rename_nfs_share_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = nfs_share.NfsShare()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/nfsShares/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            new_nfsshare_id="new_nfsshare_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = nfs_share.NfsShare.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.rename_nfs_share(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/nfsShares/*}:rename"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_rename_nfs_share_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rename_nfs_share(
+            nfs_share.RenameNfsShareRequest(),
+            name="name_value",
+            new_nfsshare_id="new_nfsshare_id_value",
+        )
+
+
+def test_rename_nfs_share_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        nfs_share.DeleteNfsShareRequest,
+        dict,
+    ],
+)
+def test_delete_nfs_share_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/nfsShares/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_nfs_share(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_nfs_share_rest_required_fields(
+    request_type=nfs_share.DeleteNfsShareRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_nfs_share._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_nfs_share._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_nfs_share(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_nfs_share_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_nfs_share._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_nfs_share_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_delete_nfs_share"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_delete_nfs_share"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = nfs_share.DeleteNfsShareRequest.pb(
+            nfs_share.DeleteNfsShareRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = nfs_share.DeleteNfsShareRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_nfs_share(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_nfs_share_rest_bad_request(
+    transport: str = "rest", request_type=nfs_share.DeleteNfsShareRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/nfsShares/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_nfs_share(request)
+
+
+def test_delete_nfs_share_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/nfsShares/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_nfs_share(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/nfsShares/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_nfs_share_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_nfs_share(
+            nfs_share.DeleteNfsShareRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_nfs_share_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        provisioning.ListProvisioningQuotasRequest,
+        dict,
+    ],
+)
+def test_list_provisioning_quotas_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = provisioning.ListProvisioningQuotasResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = provisioning.ListProvisioningQuotasResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_provisioning_quotas(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListProvisioningQuotasPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_provisioning_quotas_rest_required_fields(
+    request_type=provisioning.ListProvisioningQuotasRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_provisioning_quotas._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_provisioning_quotas._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = provisioning.ListProvisioningQuotasResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = provisioning.ListProvisioningQuotasResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_provisioning_quotas(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_provisioning_quotas_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_provisioning_quotas._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_provisioning_quotas_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_list_provisioning_quotas"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_list_provisioning_quotas"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = provisioning.ListProvisioningQuotasRequest.pb(
+            provisioning.ListProvisioningQuotasRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = provisioning.ListProvisioningQuotasResponse.to_json(
+            provisioning.ListProvisioningQuotasResponse()
+        )
+
+        request = provisioning.ListProvisioningQuotasRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = provisioning.ListProvisioningQuotasResponse()
+
+        client.list_provisioning_quotas(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_provisioning_quotas_rest_bad_request(
+    transport: str = "rest", request_type=provisioning.ListProvisioningQuotasRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_provisioning_quotas(request)
+
+
+def test_list_provisioning_quotas_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = provisioning.ListProvisioningQuotasResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = provisioning.ListProvisioningQuotasResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_provisioning_quotas(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*}/provisioningQuotas"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_provisioning_quotas_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_provisioning_quotas(
+            provisioning.ListProvisioningQuotasRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_provisioning_quotas_rest_pager(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[
+                    provisioning.ProvisioningQuota(),
+                    provisioning.ProvisioningQuota(),
+                    provisioning.ProvisioningQuota(),
+                ],
+                next_page_token="abc",
+            ),
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[],
+                next_page_token="def",
+            ),
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[
+                    provisioning.ProvisioningQuota(),
+                ],
+                next_page_token="ghi",
+            ),
+            provisioning.ListProvisioningQuotasResponse(
+                provisioning_quotas=[
+                    provisioning.ProvisioningQuota(),
+                    provisioning.ProvisioningQuota(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            provisioning.ListProvisioningQuotasResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_provisioning_quotas(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, provisioning.ProvisioningQuota) for i in results)
+
+        pages = list(client.list_provisioning_quotas(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        provisioning.SubmitProvisioningConfigRequest,
+        dict,
+    ],
+)
+def test_submit_provisioning_config_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = provisioning.SubmitProvisioningConfigResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = provisioning.SubmitProvisioningConfigResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.submit_provisioning_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, provisioning.SubmitProvisioningConfigResponse)
+
+
+def test_submit_provisioning_config_rest_required_fields(
+    request_type=provisioning.SubmitProvisioningConfigRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).submit_provisioning_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).submit_provisioning_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = provisioning.SubmitProvisioningConfigResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = provisioning.SubmitProvisioningConfigResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.submit_provisioning_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_submit_provisioning_config_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.submit_provisioning_config._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "provisioningConfig",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_submit_provisioning_config_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_submit_provisioning_config"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_submit_provisioning_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = provisioning.SubmitProvisioningConfigRequest.pb(
+            provisioning.SubmitProvisioningConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            provisioning.SubmitProvisioningConfigResponse.to_json(
+                provisioning.SubmitProvisioningConfigResponse()
+            )
+        )
+
+        request = provisioning.SubmitProvisioningConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = provisioning.SubmitProvisioningConfigResponse()
+
+        client.submit_provisioning_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_submit_provisioning_config_rest_bad_request(
+    transport: str = "rest", request_type=provisioning.SubmitProvisioningConfigRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.submit_provisioning_config(request)
+
+
+def test_submit_provisioning_config_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = provisioning.SubmitProvisioningConfigResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = provisioning.SubmitProvisioningConfigResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.submit_provisioning_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*}/provisioningConfigs:submit"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_submit_provisioning_config_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.submit_provisioning_config(
+            provisioning.SubmitProvisioningConfigRequest(),
+            parent="parent_value",
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+        )
+
+
+def test_submit_provisioning_config_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        provisioning.GetProvisioningConfigRequest,
+        dict,
+    ],
+)
+def test_get_provisioning_config_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/provisioningConfigs/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = provisioning.ProvisioningConfig(
+            name="name_value",
+            ticket_id="ticket_id_value",
+            handover_service_account="handover_service_account_value",
+            email="email_value",
+            state=provisioning.ProvisioningConfig.State.DRAFT,
+            location="location_value",
+            cloud_console_uri="cloud_console_uri_value",
+            vpc_sc_enabled=True,
+            status_message="status_message_value",
+            custom_id="custom_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_provisioning_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, provisioning.ProvisioningConfig)
+    assert response.name == "name_value"
+    assert response.ticket_id == "ticket_id_value"
+    assert response.handover_service_account == "handover_service_account_value"
+    assert response.email == "email_value"
+    assert response.state == provisioning.ProvisioningConfig.State.DRAFT
+    assert response.location == "location_value"
+    assert response.cloud_console_uri == "cloud_console_uri_value"
+    assert response.vpc_sc_enabled is True
+    assert response.status_message == "status_message_value"
+    assert response.custom_id == "custom_id_value"
+
+
+def test_get_provisioning_config_rest_required_fields(
+    request_type=provisioning.GetProvisioningConfigRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_provisioning_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_provisioning_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = provisioning.ProvisioningConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_provisioning_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_provisioning_config_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_provisioning_config._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_provisioning_config_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_get_provisioning_config"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_get_provisioning_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = provisioning.GetProvisioningConfigRequest.pb(
+            provisioning.GetProvisioningConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = provisioning.ProvisioningConfig.to_json(
+            provisioning.ProvisioningConfig()
+        )
+
+        request = provisioning.GetProvisioningConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = provisioning.ProvisioningConfig()
+
+        client.get_provisioning_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_provisioning_config_rest_bad_request(
+    transport: str = "rest", request_type=provisioning.GetProvisioningConfigRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/provisioningConfigs/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_provisioning_config(request)
+
+
+def test_get_provisioning_config_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = provisioning.ProvisioningConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/provisioningConfigs/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_provisioning_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/provisioningConfigs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_provisioning_config_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_provisioning_config(
+            provisioning.GetProvisioningConfigRequest(),
+            name="name_value",
+        )
+
+
+def test_get_provisioning_config_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        provisioning.CreateProvisioningConfigRequest,
+        dict,
+    ],
+)
+def test_create_provisioning_config_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["provisioning_config"] = {
+        "name": "name_value",
+        "instances": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "instance_type": "instance_type_value",
+                "hyperthreading": True,
+                "os_image": "os_image_value",
+                "client_network": {
+                    "network_id": "network_id_value",
+                    "address": "address_value",
+                    "existing_network_id": "existing_network_id_value",
+                },
+                "private_network": {},
+                "user_note": "user_note_value",
+                "account_networks_enabled": True,
+                "network_config": 1,
+                "network_template": "network_template_value",
+                "logical_interfaces": [
+                    {
+                        "logical_network_interfaces": [
+                            {
+                                "network": "network_value",
+                                "ip_address": "ip_address_value",
+                                "default_gateway": True,
+                                "network_type": 1,
+                                "id": "id_value",
+                            }
+                        ],
+                        "name": "name_value",
+                        "interface_index": 1576,
+                    }
+                ],
+                "ssh_key_names": ["ssh_key_names_value1", "ssh_key_names_value2"],
+            }
+        ],
+        "networks": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "type_": 1,
+                "bandwidth": 1,
+                "vlan_attachments": [
+                    {"id": "id_value", "pairing_key": "pairing_key_value"}
+                ],
+                "cidr": "cidr_value",
+                "service_cidr": 1,
+                "user_note": "user_note_value",
+                "gcp_service": "gcp_service_value",
+                "vlan_same_project": True,
+                "jumbo_frames_enabled": True,
+            }
+        ],
+        "volumes": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "snapshots_enabled": True,
+                "type_": 1,
+                "protocol": 1,
+                "size_gb": 739,
+                "lun_ranges": [{"quantity": 895, "size_gb": 739}],
+                "machine_ids": ["machine_ids_value1", "machine_ids_value2"],
+                "nfs_exports": [
+                    {
+                        "network_id": "network_id_value",
+                        "machine_id": "machine_id_value",
+                        "cidr": "cidr_value",
+                        "permissions": 1,
+                        "no_root_squash": True,
+                        "allow_suid": True,
+                        "allow_dev": True,
+                    }
+                ],
+                "user_note": "user_note_value",
+                "gcp_service": "gcp_service_value",
+                "performance_tier": 1,
+            }
+        ],
+        "ticket_id": "ticket_id_value",
+        "handover_service_account": "handover_service_account_value",
+        "email": "email_value",
+        "state": 1,
+        "location": "location_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "cloud_console_uri": "cloud_console_uri_value",
+        "vpc_sc_enabled": True,
+        "status_message": "status_message_value",
+        "custom_id": "custom_id_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = provisioning.ProvisioningConfig(
+            name="name_value",
+            ticket_id="ticket_id_value",
+            handover_service_account="handover_service_account_value",
+            email="email_value",
+            state=provisioning.ProvisioningConfig.State.DRAFT,
+            location="location_value",
+            cloud_console_uri="cloud_console_uri_value",
+            vpc_sc_enabled=True,
+            status_message="status_message_value",
+            custom_id="custom_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_provisioning_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, provisioning.ProvisioningConfig)
+    assert response.name == "name_value"
+    assert response.ticket_id == "ticket_id_value"
+    assert response.handover_service_account == "handover_service_account_value"
+    assert response.email == "email_value"
+    assert response.state == provisioning.ProvisioningConfig.State.DRAFT
+    assert response.location == "location_value"
+    assert response.cloud_console_uri == "cloud_console_uri_value"
+    assert response.vpc_sc_enabled is True
+    assert response.status_message == "status_message_value"
+    assert response.custom_id == "custom_id_value"
+
+
+def test_create_provisioning_config_rest_required_fields(
+    request_type=provisioning.CreateProvisioningConfigRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_provisioning_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_provisioning_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("email",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = provisioning.ProvisioningConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_provisioning_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_provisioning_config_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_provisioning_config._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("email",))
+        & set(
+            (
+                "parent",
+                "provisioningConfig",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_provisioning_config_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_create_provisioning_config"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_create_provisioning_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = provisioning.CreateProvisioningConfigRequest.pb(
+            provisioning.CreateProvisioningConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = provisioning.ProvisioningConfig.to_json(
+            provisioning.ProvisioningConfig()
+        )
+
+        request = provisioning.CreateProvisioningConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = provisioning.ProvisioningConfig()
+
+        client.create_provisioning_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_provisioning_config_rest_bad_request(
+    transport: str = "rest", request_type=provisioning.CreateProvisioningConfigRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["provisioning_config"] = {
+        "name": "name_value",
+        "instances": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "instance_type": "instance_type_value",
+                "hyperthreading": True,
+                "os_image": "os_image_value",
+                "client_network": {
+                    "network_id": "network_id_value",
+                    "address": "address_value",
+                    "existing_network_id": "existing_network_id_value",
+                },
+                "private_network": {},
+                "user_note": "user_note_value",
+                "account_networks_enabled": True,
+                "network_config": 1,
+                "network_template": "network_template_value",
+                "logical_interfaces": [
+                    {
+                        "logical_network_interfaces": [
+                            {
+                                "network": "network_value",
+                                "ip_address": "ip_address_value",
+                                "default_gateway": True,
+                                "network_type": 1,
+                                "id": "id_value",
+                            }
+                        ],
+                        "name": "name_value",
+                        "interface_index": 1576,
+                    }
+                ],
+                "ssh_key_names": ["ssh_key_names_value1", "ssh_key_names_value2"],
+            }
+        ],
+        "networks": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "type_": 1,
+                "bandwidth": 1,
+                "vlan_attachments": [
+                    {"id": "id_value", "pairing_key": "pairing_key_value"}
+                ],
+                "cidr": "cidr_value",
+                "service_cidr": 1,
+                "user_note": "user_note_value",
+                "gcp_service": "gcp_service_value",
+                "vlan_same_project": True,
+                "jumbo_frames_enabled": True,
+            }
+        ],
+        "volumes": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "snapshots_enabled": True,
+                "type_": 1,
+                "protocol": 1,
+                "size_gb": 739,
+                "lun_ranges": [{"quantity": 895, "size_gb": 739}],
+                "machine_ids": ["machine_ids_value1", "machine_ids_value2"],
+                "nfs_exports": [
+                    {
+                        "network_id": "network_id_value",
+                        "machine_id": "machine_id_value",
+                        "cidr": "cidr_value",
+                        "permissions": 1,
+                        "no_root_squash": True,
+                        "allow_suid": True,
+                        "allow_dev": True,
+                    }
+                ],
+                "user_note": "user_note_value",
+                "gcp_service": "gcp_service_value",
+                "performance_tier": 1,
+            }
+        ],
+        "ticket_id": "ticket_id_value",
+        "handover_service_account": "handover_service_account_value",
+        "email": "email_value",
+        "state": 1,
+        "location": "location_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "cloud_console_uri": "cloud_console_uri_value",
+        "vpc_sc_enabled": True,
+        "status_message": "status_message_value",
+        "custom_id": "custom_id_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_provisioning_config(request)
+
+
+def test_create_provisioning_config_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = provisioning.ProvisioningConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_provisioning_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*}/provisioningConfigs"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_provisioning_config_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_provisioning_config(
+            provisioning.CreateProvisioningConfigRequest(),
+            parent="parent_value",
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+        )
+
+
+def test_create_provisioning_config_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        provisioning.UpdateProvisioningConfigRequest,
+        dict,
+    ],
+)
+def test_update_provisioning_config_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "provisioning_config": {
+            "name": "projects/sample1/locations/sample2/provisioningConfigs/sample3"
+        }
+    }
+    request_init["provisioning_config"] = {
+        "name": "projects/sample1/locations/sample2/provisioningConfigs/sample3",
+        "instances": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "instance_type": "instance_type_value",
+                "hyperthreading": True,
+                "os_image": "os_image_value",
+                "client_network": {
+                    "network_id": "network_id_value",
+                    "address": "address_value",
+                    "existing_network_id": "existing_network_id_value",
+                },
+                "private_network": {},
+                "user_note": "user_note_value",
+                "account_networks_enabled": True,
+                "network_config": 1,
+                "network_template": "network_template_value",
+                "logical_interfaces": [
+                    {
+                        "logical_network_interfaces": [
+                            {
+                                "network": "network_value",
+                                "ip_address": "ip_address_value",
+                                "default_gateway": True,
+                                "network_type": 1,
+                                "id": "id_value",
+                            }
+                        ],
+                        "name": "name_value",
+                        "interface_index": 1576,
+                    }
+                ],
+                "ssh_key_names": ["ssh_key_names_value1", "ssh_key_names_value2"],
+            }
+        ],
+        "networks": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "type_": 1,
+                "bandwidth": 1,
+                "vlan_attachments": [
+                    {"id": "id_value", "pairing_key": "pairing_key_value"}
+                ],
+                "cidr": "cidr_value",
+                "service_cidr": 1,
+                "user_note": "user_note_value",
+                "gcp_service": "gcp_service_value",
+                "vlan_same_project": True,
+                "jumbo_frames_enabled": True,
+            }
+        ],
+        "volumes": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "snapshots_enabled": True,
+                "type_": 1,
+                "protocol": 1,
+                "size_gb": 739,
+                "lun_ranges": [{"quantity": 895, "size_gb": 739}],
+                "machine_ids": ["machine_ids_value1", "machine_ids_value2"],
+                "nfs_exports": [
+                    {
+                        "network_id": "network_id_value",
+                        "machine_id": "machine_id_value",
+                        "cidr": "cidr_value",
+                        "permissions": 1,
+                        "no_root_squash": True,
+                        "allow_suid": True,
+                        "allow_dev": True,
+                    }
+                ],
+                "user_note": "user_note_value",
+                "gcp_service": "gcp_service_value",
+                "performance_tier": 1,
+            }
+        ],
+        "ticket_id": "ticket_id_value",
+        "handover_service_account": "handover_service_account_value",
+        "email": "email_value",
+        "state": 1,
+        "location": "location_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "cloud_console_uri": "cloud_console_uri_value",
+        "vpc_sc_enabled": True,
+        "status_message": "status_message_value",
+        "custom_id": "custom_id_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = provisioning.ProvisioningConfig(
+            name="name_value",
+            ticket_id="ticket_id_value",
+            handover_service_account="handover_service_account_value",
+            email="email_value",
+            state=provisioning.ProvisioningConfig.State.DRAFT,
+            location="location_value",
+            cloud_console_uri="cloud_console_uri_value",
+            vpc_sc_enabled=True,
+            status_message="status_message_value",
+            custom_id="custom_id_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_provisioning_config(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, provisioning.ProvisioningConfig)
+    assert response.name == "name_value"
+    assert response.ticket_id == "ticket_id_value"
+    assert response.handover_service_account == "handover_service_account_value"
+    assert response.email == "email_value"
+    assert response.state == provisioning.ProvisioningConfig.State.DRAFT
+    assert response.location == "location_value"
+    assert response.cloud_console_uri == "cloud_console_uri_value"
+    assert response.vpc_sc_enabled is True
+    assert response.status_message == "status_message_value"
+    assert response.custom_id == "custom_id_value"
+
+
+def test_update_provisioning_config_rest_required_fields(
+    request_type=provisioning.UpdateProvisioningConfigRequest,
+):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_provisioning_config._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_provisioning_config._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "email",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = provisioning.ProvisioningConfig()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_provisioning_config(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_provisioning_config_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_provisioning_config._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "email",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "provisioningConfig",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_provisioning_config_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_update_provisioning_config"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_update_provisioning_config"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = provisioning.UpdateProvisioningConfigRequest.pb(
+            provisioning.UpdateProvisioningConfigRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = provisioning.ProvisioningConfig.to_json(
+            provisioning.ProvisioningConfig()
+        )
+
+        request = provisioning.UpdateProvisioningConfigRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = provisioning.ProvisioningConfig()
+
+        client.update_provisioning_config(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_provisioning_config_rest_bad_request(
+    transport: str = "rest", request_type=provisioning.UpdateProvisioningConfigRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "provisioning_config": {
+            "name": "projects/sample1/locations/sample2/provisioningConfigs/sample3"
+        }
+    }
+    request_init["provisioning_config"] = {
+        "name": "projects/sample1/locations/sample2/provisioningConfigs/sample3",
+        "instances": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "instance_type": "instance_type_value",
+                "hyperthreading": True,
+                "os_image": "os_image_value",
+                "client_network": {
+                    "network_id": "network_id_value",
+                    "address": "address_value",
+                    "existing_network_id": "existing_network_id_value",
+                },
+                "private_network": {},
+                "user_note": "user_note_value",
+                "account_networks_enabled": True,
+                "network_config": 1,
+                "network_template": "network_template_value",
+                "logical_interfaces": [
+                    {
+                        "logical_network_interfaces": [
+                            {
+                                "network": "network_value",
+                                "ip_address": "ip_address_value",
+                                "default_gateway": True,
+                                "network_type": 1,
+                                "id": "id_value",
+                            }
+                        ],
+                        "name": "name_value",
+                        "interface_index": 1576,
+                    }
+                ],
+                "ssh_key_names": ["ssh_key_names_value1", "ssh_key_names_value2"],
+            }
+        ],
+        "networks": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "type_": 1,
+                "bandwidth": 1,
+                "vlan_attachments": [
+                    {"id": "id_value", "pairing_key": "pairing_key_value"}
+                ],
+                "cidr": "cidr_value",
+                "service_cidr": 1,
+                "user_note": "user_note_value",
+                "gcp_service": "gcp_service_value",
+                "vlan_same_project": True,
+                "jumbo_frames_enabled": True,
+            }
+        ],
+        "volumes": [
+            {
+                "name": "name_value",
+                "id": "id_value",
+                "snapshots_enabled": True,
+                "type_": 1,
+                "protocol": 1,
+                "size_gb": 739,
+                "lun_ranges": [{"quantity": 895, "size_gb": 739}],
+                "machine_ids": ["machine_ids_value1", "machine_ids_value2"],
+                "nfs_exports": [
+                    {
+                        "network_id": "network_id_value",
+                        "machine_id": "machine_id_value",
+                        "cidr": "cidr_value",
+                        "permissions": 1,
+                        "no_root_squash": True,
+                        "allow_suid": True,
+                        "allow_dev": True,
+                    }
+                ],
+                "user_note": "user_note_value",
+                "gcp_service": "gcp_service_value",
+                "performance_tier": 1,
+            }
+        ],
+        "ticket_id": "ticket_id_value",
+        "handover_service_account": "handover_service_account_value",
+        "email": "email_value",
+        "state": 1,
+        "location": "location_value",
+        "update_time": {"seconds": 751, "nanos": 543},
+        "cloud_console_uri": "cloud_console_uri_value",
+        "vpc_sc_enabled": True,
+        "status_message": "status_message_value",
+        "custom_id": "custom_id_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_provisioning_config(request)
+
+
+def test_update_provisioning_config_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = provisioning.ProvisioningConfig()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "provisioning_config": {
+                "name": "projects/sample1/locations/sample2/provisioningConfigs/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_provisioning_config(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{provisioning_config.name=projects/*/locations/*/provisioningConfigs/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_provisioning_config_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_provisioning_config(
+            provisioning.UpdateProvisioningConfigRequest(),
+            provisioning_config=provisioning.ProvisioningConfig(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_provisioning_config_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        network.RenameNetworkRequest,
+        dict,
+    ],
+)
+def test_rename_network_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/networks/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = network.Network(
+            name="name_value",
+            id="id_value",
+            type_=network.Network.Type.CLIENT,
+            ip_address="ip_address_value",
+            mac_address=["mac_address_value"],
+            state=network.Network.State.PROVISIONING,
+            vlan_id="vlan_id_value",
+            cidr="cidr_value",
+            services_cidr="services_cidr_value",
+            pod="pod_value",
+            jumbo_frames_enabled=True,
+            gateway_ip="gateway_ip_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = network.Network.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.rename_network(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, network.Network)
+    assert response.name == "name_value"
+    assert response.id == "id_value"
+    assert response.type_ == network.Network.Type.CLIENT
+    assert response.ip_address == "ip_address_value"
+    assert response.mac_address == ["mac_address_value"]
+    assert response.state == network.Network.State.PROVISIONING
+    assert response.vlan_id == "vlan_id_value"
+    assert response.cidr == "cidr_value"
+    assert response.services_cidr == "services_cidr_value"
+    assert response.pod == "pod_value"
+    assert response.jumbo_frames_enabled is True
+    assert response.gateway_ip == "gateway_ip_value"
+
+
+def test_rename_network_rest_required_fields(request_type=network.RenameNetworkRequest):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request_init["new_network_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rename_network._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+    jsonified_request["newNetworkId"] = "new_network_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).rename_network._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+    assert "newNetworkId" in jsonified_request
+    assert jsonified_request["newNetworkId"] == "new_network_id_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = network.Network()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = network.Network.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.rename_network(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_rename_network_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.rename_network._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "newNetworkId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_rename_network_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_rename_network"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_rename_network"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = network.RenameNetworkRequest.pb(network.RenameNetworkRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = network.Network.to_json(network.Network())
+
+        request = network.RenameNetworkRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = network.Network()
+
+        client.rename_network(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_rename_network_rest_bad_request(
+    transport: str = "rest", request_type=network.RenameNetworkRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/networks/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.rename_network(request)
+
+
+def test_rename_network_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = network.Network()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/networks/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            new_network_id="new_network_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = network.Network.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.rename_network(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{name=projects/*/locations/*/networks/*}:rename"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_rename_network_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.rename_network(
+            network.RenameNetworkRequest(),
+            name="name_value",
+            new_network_id="new_network_id_value",
+        )
+
+
+def test_rename_network_rest_error():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        osimage.ListOSImagesRequest,
+        dict,
+    ],
+)
+def test_list_os_images_rest(request_type):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = osimage.ListOSImagesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = osimage.ListOSImagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_os_images(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListOSImagesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_os_images_rest_required_fields(request_type=osimage.ListOSImagesRequest):
+    transport_class = transports.BareMetalSolutionRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_os_images._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_os_images._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = osimage.ListOSImagesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = osimage.ListOSImagesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_os_images(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_os_images_rest_unset_required_fields():
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_os_images._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_os_images_rest_interceptors(null_interceptor):
+    transport = transports.BareMetalSolutionRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.BareMetalSolutionRestInterceptor(),
+    )
+    client = BareMetalSolutionClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "post_list_os_images"
+    ) as post, mock.patch.object(
+        transports.BareMetalSolutionRestInterceptor, "pre_list_os_images"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = osimage.ListOSImagesRequest.pb(osimage.ListOSImagesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = osimage.ListOSImagesResponse.to_json(
+            osimage.ListOSImagesResponse()
+        )
+
+        request = osimage.ListOSImagesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = osimage.ListOSImagesResponse()
+
+        client.list_os_images(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_os_images_rest_bad_request(
+    transport: str = "rest", request_type=osimage.ListOSImagesRequest
+):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_os_images(request)
+
+
+def test_list_os_images_rest_flattened():
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = osimage.ListOSImagesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = osimage.ListOSImagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_os_images(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v2/{parent=projects/*/locations/*}/osImages" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_os_images_rest_flattened_error(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_os_images(
+            osimage.ListOSImagesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_os_images_rest_pager(transport: str = "rest"):
+    client = BareMetalSolutionClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            osimage.ListOSImagesResponse(
+                os_images=[
+                    osimage.OSImage(),
+                    osimage.OSImage(),
+                    osimage.OSImage(),
+                ],
+                next_page_token="abc",
+            ),
+            osimage.ListOSImagesResponse(
+                os_images=[],
+                next_page_token="def",
+            ),
+            osimage.ListOSImagesResponse(
+                os_images=[
+                    osimage.OSImage(),
+                ],
+                next_page_token="ghi",
+            ),
+            osimage.ListOSImagesResponse(
+                os_images=[
+                    osimage.OSImage(),
+                    osimage.OSImage(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(osimage.ListOSImagesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_os_images(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, osimage.OSImage) for i in results)
+
+        pages = list(client.list_os_images(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 def test_credentials_transport_error():
@@ -12717,23 +27346,47 @@ def test_bare_metal_solution_base_transport():
         "list_instances",
         "get_instance",
         "update_instance",
+        "rename_instance",
         "reset_instance",
         "start_instance",
         "stop_instance",
+        "enable_interactive_serial_console",
+        "disable_interactive_serial_console",
         "detach_lun",
+        "list_ssh_keys",
+        "create_ssh_key",
+        "delete_ssh_key",
         "list_volumes",
         "get_volume",
         "update_volume",
+        "rename_volume",
+        "evict_volume",
         "resize_volume",
         "list_networks",
         "list_network_usage",
         "get_network",
         "update_network",
+        "create_volume_snapshot",
+        "restore_volume_snapshot",
+        "delete_volume_snapshot",
+        "get_volume_snapshot",
+        "list_volume_snapshots",
         "get_lun",
         "list_luns",
+        "evict_lun",
         "get_nfs_share",
         "list_nfs_shares",
         "update_nfs_share",
+        "create_nfs_share",
+        "rename_nfs_share",
+        "delete_nfs_share",
+        "list_provisioning_quotas",
+        "submit_provisioning_config",
+        "get_provisioning_config",
+        "create_provisioning_config",
+        "update_provisioning_config",
+        "rename_network",
+        "list_os_images",
         "get_location",
         "list_locations",
     )
@@ -13027,6 +27680,9 @@ def test_bare_metal_solution_client_transport_session_collision(transport_name):
     session1 = client1.transport.update_instance._session
     session2 = client2.transport.update_instance._session
     assert session1 != session2
+    session1 = client1.transport.rename_instance._session
+    session2 = client2.transport.rename_instance._session
+    assert session1 != session2
     session1 = client1.transport.reset_instance._session
     session2 = client2.transport.reset_instance._session
     assert session1 != session2
@@ -13036,8 +27692,23 @@ def test_bare_metal_solution_client_transport_session_collision(transport_name):
     session1 = client1.transport.stop_instance._session
     session2 = client2.transport.stop_instance._session
     assert session1 != session2
+    session1 = client1.transport.enable_interactive_serial_console._session
+    session2 = client2.transport.enable_interactive_serial_console._session
+    assert session1 != session2
+    session1 = client1.transport.disable_interactive_serial_console._session
+    session2 = client2.transport.disable_interactive_serial_console._session
+    assert session1 != session2
     session1 = client1.transport.detach_lun._session
     session2 = client2.transport.detach_lun._session
+    assert session1 != session2
+    session1 = client1.transport.list_ssh_keys._session
+    session2 = client2.transport.list_ssh_keys._session
+    assert session1 != session2
+    session1 = client1.transport.create_ssh_key._session
+    session2 = client2.transport.create_ssh_key._session
+    assert session1 != session2
+    session1 = client1.transport.delete_ssh_key._session
+    session2 = client2.transport.delete_ssh_key._session
     assert session1 != session2
     session1 = client1.transport.list_volumes._session
     session2 = client2.transport.list_volumes._session
@@ -13047,6 +27718,12 @@ def test_bare_metal_solution_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.update_volume._session
     session2 = client2.transport.update_volume._session
+    assert session1 != session2
+    session1 = client1.transport.rename_volume._session
+    session2 = client2.transport.rename_volume._session
+    assert session1 != session2
+    session1 = client1.transport.evict_volume._session
+    session2 = client2.transport.evict_volume._session
     assert session1 != session2
     session1 = client1.transport.resize_volume._session
     session2 = client2.transport.resize_volume._session
@@ -13063,11 +27740,29 @@ def test_bare_metal_solution_client_transport_session_collision(transport_name):
     session1 = client1.transport.update_network._session
     session2 = client2.transport.update_network._session
     assert session1 != session2
+    session1 = client1.transport.create_volume_snapshot._session
+    session2 = client2.transport.create_volume_snapshot._session
+    assert session1 != session2
+    session1 = client1.transport.restore_volume_snapshot._session
+    session2 = client2.transport.restore_volume_snapshot._session
+    assert session1 != session2
+    session1 = client1.transport.delete_volume_snapshot._session
+    session2 = client2.transport.delete_volume_snapshot._session
+    assert session1 != session2
+    session1 = client1.transport.get_volume_snapshot._session
+    session2 = client2.transport.get_volume_snapshot._session
+    assert session1 != session2
+    session1 = client1.transport.list_volume_snapshots._session
+    session2 = client2.transport.list_volume_snapshots._session
+    assert session1 != session2
     session1 = client1.transport.get_lun._session
     session2 = client2.transport.get_lun._session
     assert session1 != session2
     session1 = client1.transport.list_luns._session
     session2 = client2.transport.list_luns._session
+    assert session1 != session2
+    session1 = client1.transport.evict_lun._session
+    session2 = client2.transport.evict_lun._session
     assert session1 != session2
     session1 = client1.transport.get_nfs_share._session
     session2 = client2.transport.get_nfs_share._session
@@ -13077,6 +27772,36 @@ def test_bare_metal_solution_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.update_nfs_share._session
     session2 = client2.transport.update_nfs_share._session
+    assert session1 != session2
+    session1 = client1.transport.create_nfs_share._session
+    session2 = client2.transport.create_nfs_share._session
+    assert session1 != session2
+    session1 = client1.transport.rename_nfs_share._session
+    session2 = client2.transport.rename_nfs_share._session
+    assert session1 != session2
+    session1 = client1.transport.delete_nfs_share._session
+    session2 = client2.transport.delete_nfs_share._session
+    assert session1 != session2
+    session1 = client1.transport.list_provisioning_quotas._session
+    session2 = client2.transport.list_provisioning_quotas._session
+    assert session1 != session2
+    session1 = client1.transport.submit_provisioning_config._session
+    session2 = client2.transport.submit_provisioning_config._session
+    assert session1 != session2
+    session1 = client1.transport.get_provisioning_config._session
+    session2 = client2.transport.get_provisioning_config._session
+    assert session1 != session2
+    session1 = client1.transport.create_provisioning_config._session
+    session2 = client2.transport.create_provisioning_config._session
+    assert session1 != session2
+    session1 = client1.transport.update_provisioning_config._session
+    session2 = client2.transport.update_provisioning_config._session
+    assert session1 != session2
+    session1 = client1.transport.rename_network._session
+    session2 = client2.transport.rename_network._session
+    assert session1 != session2
+    session1 = client1.transport.list_os_images._session
+    session2 = client2.transport.list_os_images._session
     assert session1 != session2
 
 
@@ -13266,11 +27991,95 @@ def test_parse_instance_path():
     assert expected == actual
 
 
-def test_lun_path():
+def test_instance_config_path():
     project = "cuttlefish"
     location = "mussel"
-    volume = "winkle"
-    lun = "nautilus"
+    instance_config = "winkle"
+    expected = "projects/{project}/locations/{location}/instanceConfigs/{instance_config}".format(
+        project=project,
+        location=location,
+        instance_config=instance_config,
+    )
+    actual = BareMetalSolutionClient.instance_config_path(
+        project, location, instance_config
+    )
+    assert expected == actual
+
+
+def test_parse_instance_config_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "instance_config": "abalone",
+    }
+    path = BareMetalSolutionClient.instance_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BareMetalSolutionClient.parse_instance_config_path(path)
+    assert expected == actual
+
+
+def test_instance_quota_path():
+    project = "squid"
+    location = "clam"
+    instance_quota = "whelk"
+    expected = "projects/{project}/locations/{location}/instanceQuotas/{instance_quota}".format(
+        project=project,
+        location=location,
+        instance_quota=instance_quota,
+    )
+    actual = BareMetalSolutionClient.instance_quota_path(
+        project, location, instance_quota
+    )
+    assert expected == actual
+
+
+def test_parse_instance_quota_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "instance_quota": "nudibranch",
+    }
+    path = BareMetalSolutionClient.instance_quota_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BareMetalSolutionClient.parse_instance_quota_path(path)
+    assert expected == actual
+
+
+def test_interconnect_attachment_path():
+    project = "cuttlefish"
+    region = "mussel"
+    interconnect_attachment = "winkle"
+    expected = "projects/{project}/regions/{region}/interconnectAttachments/{interconnect_attachment}".format(
+        project=project,
+        region=region,
+        interconnect_attachment=interconnect_attachment,
+    )
+    actual = BareMetalSolutionClient.interconnect_attachment_path(
+        project, region, interconnect_attachment
+    )
+    assert expected == actual
+
+
+def test_parse_interconnect_attachment_path():
+    expected = {
+        "project": "nautilus",
+        "region": "scallop",
+        "interconnect_attachment": "abalone",
+    }
+    path = BareMetalSolutionClient.interconnect_attachment_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BareMetalSolutionClient.parse_interconnect_attachment_path(path)
+    assert expected == actual
+
+
+def test_lun_path():
+    project = "squid"
+    location = "clam"
+    volume = "whelk"
+    lun = "octopus"
     expected = (
         "projects/{project}/locations/{location}/volumes/{volume}/luns/{lun}".format(
             project=project,
@@ -13285,10 +28094,10 @@ def test_lun_path():
 
 def test_parse_lun_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "volume": "squid",
-        "lun": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
+        "volume": "cuttlefish",
+        "lun": "mussel",
     }
     path = BareMetalSolutionClient.lun_path(**expected)
 
@@ -13298,9 +28107,9 @@ def test_parse_lun_path():
 
 
 def test_network_path():
-    project = "whelk"
-    location = "octopus"
-    network = "oyster"
+    project = "winkle"
+    location = "nautilus"
+    network = "scallop"
     expected = "projects/{project}/locations/{location}/networks/{network}".format(
         project=project,
         location=location,
@@ -13312,14 +28121,42 @@ def test_network_path():
 
 def test_parse_network_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "network": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "network": "clam",
     }
     path = BareMetalSolutionClient.network_path(**expected)
 
     # Check that the path construction is reversible.
     actual = BareMetalSolutionClient.parse_network_path(path)
+    assert expected == actual
+
+
+def test_network_config_path():
+    project = "whelk"
+    location = "octopus"
+    network_config = "oyster"
+    expected = "projects/{project}/locations/{location}/networkConfigs/{network_config}".format(
+        project=project,
+        location=location,
+        network_config=network_config,
+    )
+    actual = BareMetalSolutionClient.network_config_path(
+        project, location, network_config
+    )
+    assert expected == actual
+
+
+def test_parse_network_config_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "network_config": "mussel",
+    }
+    path = BareMetalSolutionClient.network_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BareMetalSolutionClient.parse_network_config_path(path)
     assert expected == actual
 
 
@@ -13349,10 +28186,92 @@ def test_parse_nfs_share_path():
     assert expected == actual
 
 
-def test_server_network_template_path():
+def test_os_image_path():
     project = "whelk"
     location = "octopus"
-    server_network_template = "oyster"
+    os_image = "oyster"
+    expected = "projects/{project}/locations/{location}/osImages/{os_image}".format(
+        project=project,
+        location=location,
+        os_image=os_image,
+    )
+    actual = BareMetalSolutionClient.os_image_path(project, location, os_image)
+    assert expected == actual
+
+
+def test_parse_os_image_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "os_image": "mussel",
+    }
+    path = BareMetalSolutionClient.os_image_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BareMetalSolutionClient.parse_os_image_path(path)
+    assert expected == actual
+
+
+def test_provisioning_config_path():
+    project = "winkle"
+    location = "nautilus"
+    provisioning_config = "scallop"
+    expected = "projects/{project}/locations/{location}/provisioningConfigs/{provisioning_config}".format(
+        project=project,
+        location=location,
+        provisioning_config=provisioning_config,
+    )
+    actual = BareMetalSolutionClient.provisioning_config_path(
+        project, location, provisioning_config
+    )
+    assert expected == actual
+
+
+def test_parse_provisioning_config_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "provisioning_config": "clam",
+    }
+    path = BareMetalSolutionClient.provisioning_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BareMetalSolutionClient.parse_provisioning_config_path(path)
+    assert expected == actual
+
+
+def test_provisioning_quota_path():
+    project = "whelk"
+    location = "octopus"
+    provisioning_quota = "oyster"
+    expected = "projects/{project}/locations/{location}/provisioningQuotas/{provisioning_quota}".format(
+        project=project,
+        location=location,
+        provisioning_quota=provisioning_quota,
+    )
+    actual = BareMetalSolutionClient.provisioning_quota_path(
+        project, location, provisioning_quota
+    )
+    assert expected == actual
+
+
+def test_parse_provisioning_quota_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "provisioning_quota": "mussel",
+    }
+    path = BareMetalSolutionClient.provisioning_quota_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BareMetalSolutionClient.parse_provisioning_quota_path(path)
+    assert expected == actual
+
+
+def test_server_network_template_path():
+    project = "winkle"
+    location = "nautilus"
+    server_network_template = "scallop"
     expected = "projects/{project}/locations/{location}/serverNetworkTemplate/{server_network_template}".format(
         project=project,
         location=location,
@@ -13366,14 +28285,40 @@ def test_server_network_template_path():
 
 def test_parse_server_network_template_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "server_network_template": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "server_network_template": "clam",
     }
     path = BareMetalSolutionClient.server_network_template_path(**expected)
 
     # Check that the path construction is reversible.
     actual = BareMetalSolutionClient.parse_server_network_template_path(path)
+    assert expected == actual
+
+
+def test_ssh_key_path():
+    project = "whelk"
+    location = "octopus"
+    ssh_key = "oyster"
+    expected = "projects/{project}/locations/{location}/sshKeys/{ssh_key}".format(
+        project=project,
+        location=location,
+        ssh_key=ssh_key,
+    )
+    actual = BareMetalSolutionClient.ssh_key_path(project, location, ssh_key)
+    assert expected == actual
+
+
+def test_parse_ssh_key_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "ssh_key": "mussel",
+    }
+    path = BareMetalSolutionClient.ssh_key_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BareMetalSolutionClient.parse_ssh_key_path(path)
     assert expected == actual
 
 
@@ -13403,8 +28348,69 @@ def test_parse_volume_path():
     assert expected == actual
 
 
+def test_volume_config_path():
+    project = "whelk"
+    location = "octopus"
+    volume_config = "oyster"
+    expected = (
+        "projects/{project}/locations/{location}/volumeConfigs/{volume_config}".format(
+            project=project,
+            location=location,
+            volume_config=volume_config,
+        )
+    )
+    actual = BareMetalSolutionClient.volume_config_path(
+        project, location, volume_config
+    )
+    assert expected == actual
+
+
+def test_parse_volume_config_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "volume_config": "mussel",
+    }
+    path = BareMetalSolutionClient.volume_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BareMetalSolutionClient.parse_volume_config_path(path)
+    assert expected == actual
+
+
+def test_volume_snapshot_path():
+    project = "winkle"
+    location = "nautilus"
+    volume = "scallop"
+    snapshot = "abalone"
+    expected = "projects/{project}/locations/{location}/volumes/{volume}/snapshots/{snapshot}".format(
+        project=project,
+        location=location,
+        volume=volume,
+        snapshot=snapshot,
+    )
+    actual = BareMetalSolutionClient.volume_snapshot_path(
+        project, location, volume, snapshot
+    )
+    assert expected == actual
+
+
+def test_parse_volume_snapshot_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "volume": "whelk",
+        "snapshot": "octopus",
+    }
+    path = BareMetalSolutionClient.volume_snapshot_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BareMetalSolutionClient.parse_volume_snapshot_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -13414,7 +28420,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nudibranch",
     }
     path = BareMetalSolutionClient.common_billing_account_path(**expected)
 
@@ -13424,7 +28430,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -13434,7 +28440,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "mussel",
     }
     path = BareMetalSolutionClient.common_folder_path(**expected)
 
@@ -13444,7 +28450,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -13454,7 +28460,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "nautilus",
     }
     path = BareMetalSolutionClient.common_organization_path(**expected)
 
@@ -13464,7 +28470,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -13474,7 +28480,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "abalone",
     }
     path = BareMetalSolutionClient.common_project_path(**expected)
 
@@ -13484,8 +28490,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -13496,8 +28502,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = BareMetalSolutionClient.common_location_path(**expected)
 

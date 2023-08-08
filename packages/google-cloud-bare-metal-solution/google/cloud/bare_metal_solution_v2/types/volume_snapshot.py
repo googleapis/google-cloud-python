@@ -17,21 +17,19 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.protobuf import timestamp_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.cloud.baremetalsolution.v2',
+    package="google.cloud.baremetalsolution.v2",
     manifest={
-        'VolumeSnapshot',
-        'GetVolumeSnapshotRequest',
-        'ListVolumeSnapshotsRequest',
-        'ListVolumeSnapshotsResponse',
-        'DeleteVolumeSnapshotRequest',
-        'CreateVolumeSnapshotRequest',
-        'RestoreVolumeSnapshotRequest',
+        "VolumeSnapshot",
+        "GetVolumeSnapshotRequest",
+        "ListVolumeSnapshotsRequest",
+        "ListVolumeSnapshotsResponse",
+        "DeleteVolumeSnapshotRequest",
+        "CreateVolumeSnapshotRequest",
+        "RestoreVolumeSnapshotRequest",
     },
 )
 
@@ -58,6 +56,7 @@ class VolumeSnapshot(proto.Message):
             indicates whether it was scheduled or
             manual/ad-hoc.
     """
+
     class SnapshotType(proto.Enum):
         r"""Represents the type of a snapshot.
 
@@ -163,10 +162,10 @@ class ListVolumeSnapshotsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    volume_snapshots: MutableSequence['VolumeSnapshot'] = proto.RepeatedField(
+    volume_snapshots: MutableSequence["VolumeSnapshot"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='VolumeSnapshot',
+        message="VolumeSnapshot",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -206,10 +205,10 @@ class CreateVolumeSnapshotRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    volume_snapshot: 'VolumeSnapshot' = proto.Field(
+    volume_snapshot: "VolumeSnapshot" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='VolumeSnapshot',
+        message="VolumeSnapshot",
     )
 
 

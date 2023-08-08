@@ -33,8 +33,6 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import json_format
 import grpc  # type: ignore
@@ -47,16 +45,24 @@ except AttributeError:  # pragma: NO COVER
 
 
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.bare_metal_solution_v2.types import nfs_share as gcb_nfs_share
+from google.cloud.bare_metal_solution_v2.types import (
+    volume_snapshot as gcb_volume_snapshot,
+)
 from google.cloud.bare_metal_solution_v2.types import instance
 from google.cloud.bare_metal_solution_v2.types import instance as gcb_instance
 from google.cloud.bare_metal_solution_v2.types import lun
 from google.cloud.bare_metal_solution_v2.types import network
 from google.cloud.bare_metal_solution_v2.types import network as gcb_network
 from google.cloud.bare_metal_solution_v2.types import nfs_share
+from google.cloud.bare_metal_solution_v2.types import osimage, provisioning
+from google.cloud.bare_metal_solution_v2.types import ssh_key
+from google.cloud.bare_metal_solution_v2.types import ssh_key as gcb_ssh_key
 from google.cloud.bare_metal_solution_v2.types import volume
 from google.cloud.bare_metal_solution_v2.types import volume as gcb_volume
+from google.cloud.bare_metal_solution_v2.types import volume_snapshot
 
 from .base import BareMetalSolutionTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -83,11 +89,91 @@ class BareMetalSolutionRestInterceptor:
 
     .. code-block:: python
         class MyCustomBareMetalSolutionInterceptor(BareMetalSolutionRestInterceptor):
+            def pre_create_nfs_share(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_nfs_share(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_provisioning_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_provisioning_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_ssh_key(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_ssh_key(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_volume_snapshot(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_volume_snapshot(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_nfs_share(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_nfs_share(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_ssh_key(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_volume_snapshot(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_detach_lun(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_detach_lun(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_disable_interactive_serial_console(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_disable_interactive_serial_console(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_enable_interactive_serial_console(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_enable_interactive_serial_console(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_evict_lun(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_evict_lun(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_evict_volume(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_evict_volume(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -123,11 +209,27 @@ class BareMetalSolutionRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_provisioning_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_provisioning_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_volume(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_volume(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_volume_snapshot(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_volume_snapshot(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -171,11 +273,75 @@ class BareMetalSolutionRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_os_images(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_os_images(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_provisioning_quotas(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_provisioning_quotas(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_ssh_keys(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_ssh_keys(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_volumes(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_list_volumes(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_volume_snapshots(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_volume_snapshots(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_rename_instance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_rename_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_rename_network(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_rename_network(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_rename_nfs_share(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_rename_nfs_share(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_rename_volume(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_rename_volume(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -195,6 +361,14 @@ class BareMetalSolutionRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_restore_volume_snapshot(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_restore_volume_snapshot(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_start_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -208,6 +382,14 @@ class BareMetalSolutionRestInterceptor:
                 return request, metadata
 
             def post_stop_instance(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_submit_provisioning_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_submit_provisioning_config(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -235,6 +417,14 @@ class BareMetalSolutionRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_provisioning_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_provisioning_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_update_volume(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -248,6 +438,143 @@ class BareMetalSolutionRestInterceptor:
 
 
     """
+
+    def pre_create_nfs_share(
+        self,
+        request: gcb_nfs_share.CreateNfsShareRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[gcb_nfs_share.CreateNfsShareRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_nfs_share
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_create_nfs_share(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_nfs_share
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_provisioning_config(
+        self,
+        request: provisioning.CreateProvisioningConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[provisioning.CreateProvisioningConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_provisioning_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_create_provisioning_config(
+        self, response: provisioning.ProvisioningConfig
+    ) -> provisioning.ProvisioningConfig:
+        """Post-rpc interceptor for create_provisioning_config
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_ssh_key(
+        self,
+        request: gcb_ssh_key.CreateSSHKeyRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[gcb_ssh_key.CreateSSHKeyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_ssh_key
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_create_ssh_key(self, response: gcb_ssh_key.SSHKey) -> gcb_ssh_key.SSHKey:
+        """Post-rpc interceptor for create_ssh_key
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_volume_snapshot(
+        self,
+        request: gcb_volume_snapshot.CreateVolumeSnapshotRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        gcb_volume_snapshot.CreateVolumeSnapshotRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_volume_snapshot
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_create_volume_snapshot(
+        self, response: gcb_volume_snapshot.VolumeSnapshot
+    ) -> gcb_volume_snapshot.VolumeSnapshot:
+        """Post-rpc interceptor for create_volume_snapshot
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_nfs_share(
+        self,
+        request: nfs_share.DeleteNfsShareRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[nfs_share.DeleteNfsShareRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_nfs_share
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_delete_nfs_share(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_nfs_share
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_delete_ssh_key(
+        self, request: ssh_key.DeleteSSHKeyRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[ssh_key.DeleteSSHKeyRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_ssh_key
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def pre_delete_volume_snapshot(
+        self,
+        request: volume_snapshot.DeleteVolumeSnapshotRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[volume_snapshot.DeleteVolumeSnapshotRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_volume_snapshot
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
 
     def pre_detach_lun(
         self,
@@ -265,6 +592,98 @@ class BareMetalSolutionRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for detach_lun
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_disable_interactive_serial_console(
+        self,
+        request: instance.DisableInteractiveSerialConsoleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        instance.DisableInteractiveSerialConsoleRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for disable_interactive_serial_console
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_disable_interactive_serial_console(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for disable_interactive_serial_console
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_enable_interactive_serial_console(
+        self,
+        request: instance.EnableInteractiveSerialConsoleRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        instance.EnableInteractiveSerialConsoleRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for enable_interactive_serial_console
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_enable_interactive_serial_console(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for enable_interactive_serial_console
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_evict_lun(
+        self, request: lun.EvictLunRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[lun.EvictLunRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for evict_lun
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_evict_lun(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for evict_lun
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_evict_volume(
+        self, request: volume.EvictVolumeRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[volume.EvictVolumeRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for evict_volume
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_evict_volume(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for evict_volume
 
         Override in a subclass to manipulate the response
         after it is returned by the BareMetalSolution server but before
@@ -348,6 +767,29 @@ class BareMetalSolutionRestInterceptor:
         """
         return response
 
+    def pre_get_provisioning_config(
+        self,
+        request: provisioning.GetProvisioningConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[provisioning.GetProvisioningConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_provisioning_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_get_provisioning_config(
+        self, response: provisioning.ProvisioningConfig
+    ) -> provisioning.ProvisioningConfig:
+        """Post-rpc interceptor for get_provisioning_config
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_volume(
         self, request: volume.GetVolumeRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[volume.GetVolumeRequest, Sequence[Tuple[str, str]]]:
@@ -360,6 +802,29 @@ class BareMetalSolutionRestInterceptor:
 
     def post_get_volume(self, response: volume.Volume) -> volume.Volume:
         """Post-rpc interceptor for get_volume
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_volume_snapshot(
+        self,
+        request: volume_snapshot.GetVolumeSnapshotRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[volume_snapshot.GetVolumeSnapshotRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_volume_snapshot
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_get_volume_snapshot(
+        self, response: volume_snapshot.VolumeSnapshot
+    ) -> volume_snapshot.VolumeSnapshot:
+        """Post-rpc interceptor for get_volume_snapshot
 
         Override in a subclass to manipulate the response
         after it is returned by the BareMetalSolution server but before
@@ -476,6 +941,71 @@ class BareMetalSolutionRestInterceptor:
         """
         return response
 
+    def pre_list_os_images(
+        self, request: osimage.ListOSImagesRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[osimage.ListOSImagesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_os_images
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_list_os_images(
+        self, response: osimage.ListOSImagesResponse
+    ) -> osimage.ListOSImagesResponse:
+        """Post-rpc interceptor for list_os_images
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_provisioning_quotas(
+        self,
+        request: provisioning.ListProvisioningQuotasRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[provisioning.ListProvisioningQuotasRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_provisioning_quotas
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_list_provisioning_quotas(
+        self, response: provisioning.ListProvisioningQuotasResponse
+    ) -> provisioning.ListProvisioningQuotasResponse:
+        """Post-rpc interceptor for list_provisioning_quotas
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_ssh_keys(
+        self, request: ssh_key.ListSSHKeysRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[ssh_key.ListSSHKeysRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_ssh_keys
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_list_ssh_keys(
+        self, response: ssh_key.ListSSHKeysResponse
+    ) -> ssh_key.ListSSHKeysResponse:
+        """Post-rpc interceptor for list_ssh_keys
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_volumes(
         self, request: volume.ListVolumesRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[volume.ListVolumesRequest, Sequence[Tuple[str, str]]]:
@@ -490,6 +1020,109 @@ class BareMetalSolutionRestInterceptor:
         self, response: volume.ListVolumesResponse
     ) -> volume.ListVolumesResponse:
         """Post-rpc interceptor for list_volumes
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_volume_snapshots(
+        self,
+        request: volume_snapshot.ListVolumeSnapshotsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[volume_snapshot.ListVolumeSnapshotsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_volume_snapshots
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_list_volume_snapshots(
+        self, response: volume_snapshot.ListVolumeSnapshotsResponse
+    ) -> volume_snapshot.ListVolumeSnapshotsResponse:
+        """Post-rpc interceptor for list_volume_snapshots
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_rename_instance(
+        self,
+        request: instance.RenameInstanceRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[instance.RenameInstanceRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for rename_instance
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_rename_instance(self, response: instance.Instance) -> instance.Instance:
+        """Post-rpc interceptor for rename_instance
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_rename_network(
+        self, request: network.RenameNetworkRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[network.RenameNetworkRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for rename_network
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_rename_network(self, response: network.Network) -> network.Network:
+        """Post-rpc interceptor for rename_network
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_rename_nfs_share(
+        self,
+        request: nfs_share.RenameNfsShareRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[nfs_share.RenameNfsShareRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for rename_nfs_share
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_rename_nfs_share(self, response: nfs_share.NfsShare) -> nfs_share.NfsShare:
+        """Post-rpc interceptor for rename_nfs_share
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_rename_volume(
+        self, request: volume.RenameVolumeRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[volume.RenameVolumeRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for rename_volume
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_rename_volume(self, response: volume.Volume) -> volume.Volume:
+        """Post-rpc interceptor for rename_volume
 
         Override in a subclass to manipulate the response
         after it is returned by the BareMetalSolution server but before
@@ -543,6 +1176,31 @@ class BareMetalSolutionRestInterceptor:
         """
         return response
 
+    def pre_restore_volume_snapshot(
+        self,
+        request: gcb_volume_snapshot.RestoreVolumeSnapshotRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        gcb_volume_snapshot.RestoreVolumeSnapshotRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for restore_volume_snapshot
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_restore_volume_snapshot(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for restore_volume_snapshot
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_start_instance(
         self,
         request: instance.StartInstanceRequest,
@@ -580,6 +1238,29 @@ class BareMetalSolutionRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for stop_instance
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_submit_provisioning_config(
+        self,
+        request: provisioning.SubmitProvisioningConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[provisioning.SubmitProvisioningConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for submit_provisioning_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_submit_provisioning_config(
+        self, response: provisioning.SubmitProvisioningConfigResponse
+    ) -> provisioning.SubmitProvisioningConfigResponse:
+        """Post-rpc interceptor for submit_provisioning_config
 
         Override in a subclass to manipulate the response
         after it is returned by the BareMetalSolution server but before
@@ -649,6 +1330,29 @@ class BareMetalSolutionRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_nfs_share
+
+        Override in a subclass to manipulate the response
+        after it is returned by the BareMetalSolution server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_provisioning_config(
+        self,
+        request: provisioning.UpdateProvisioningConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[provisioning.UpdateProvisioningConfigRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_provisioning_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the BareMetalSolution server.
+        """
+        return request, metadata
+
+    def post_update_provisioning_config(
+        self, response: provisioning.ProvisioningConfig
+    ) -> provisioning.ProvisioningConfig:
+        """Post-rpc interceptor for update_provisioning_config
 
         Override in a subclass to manipulate the response
         after it is returned by the BareMetalSolution server but before
@@ -858,6 +1562,643 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         # Return the client from cache.
         return self._operations_client
 
+    class _CreateNfsShare(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("CreateNfsShare")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: gcb_nfs_share.CreateNfsShareRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create nfs share method over HTTP.
+
+            Args:
+                request (~.gcb_nfs_share.CreateNfsShareRequest):
+                    The request object. Message for creating an NFS share.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{parent=projects/*/locations/*}/nfsShares",
+                    "body": "nfs_share",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_nfs_share(
+                request, metadata
+            )
+            pb_request = gcb_nfs_share.CreateNfsShareRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_nfs_share(resp)
+            return resp
+
+    class _CreateProvisioningConfig(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("CreateProvisioningConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: provisioning.CreateProvisioningConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> provisioning.ProvisioningConfig:
+            r"""Call the create provisioning
+            config method over HTTP.
+
+                Args:
+                    request (~.provisioning.CreateProvisioningConfigRequest):
+                        The request object. Request for CreateProvisioningConfig.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.provisioning.ProvisioningConfig:
+                        A provisioning configuration.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{parent=projects/*/locations/*}/provisioningConfigs",
+                    "body": "provisioning_config",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_provisioning_config(
+                request, metadata
+            )
+            pb_request = provisioning.CreateProvisioningConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = provisioning.ProvisioningConfig()
+            pb_resp = provisioning.ProvisioningConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_provisioning_config(resp)
+            return resp
+
+    class _CreateSSHKey(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("CreateSSHKey")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "sshKeyId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: gcb_ssh_key.CreateSSHKeyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gcb_ssh_key.SSHKey:
+            r"""Call the create ssh key method over HTTP.
+
+            Args:
+                request (~.gcb_ssh_key.CreateSSHKeyRequest):
+                    The request object. Message for registering a public SSH
+                key in a project.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gcb_ssh_key.SSHKey:
+                    An SSH key, used for authorizing with
+                the interactive serial console feature.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{parent=projects/*/locations/*}/sshKeys",
+                    "body": "ssh_key",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_ssh_key(request, metadata)
+            pb_request = gcb_ssh_key.CreateSSHKeyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gcb_ssh_key.SSHKey()
+            pb_resp = gcb_ssh_key.SSHKey.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_ssh_key(resp)
+            return resp
+
+    class _CreateVolumeSnapshot(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("CreateVolumeSnapshot")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: gcb_volume_snapshot.CreateVolumeSnapshotRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gcb_volume_snapshot.VolumeSnapshot:
+            r"""Call the create volume snapshot method over HTTP.
+
+            Args:
+                request (~.gcb_volume_snapshot.CreateVolumeSnapshotRequest):
+                    The request object. Message for creating a volume
+                snapshot.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gcb_volume_snapshot.VolumeSnapshot:
+                    A snapshot of a volume. Only boot
+                volumes can have snapshots.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{parent=projects/*/locations/*/volumes/*}/snapshots",
+                    "body": "volume_snapshot",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_volume_snapshot(
+                request, metadata
+            )
+            pb_request = gcb_volume_snapshot.CreateVolumeSnapshotRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gcb_volume_snapshot.VolumeSnapshot()
+            pb_resp = gcb_volume_snapshot.VolumeSnapshot.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_volume_snapshot(resp)
+            return resp
+
+    class _DeleteNfsShare(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("DeleteNfsShare")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: nfs_share.DeleteNfsShareRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete nfs share method over HTTP.
+
+            Args:
+                request (~.nfs_share.DeleteNfsShareRequest):
+                    The request object. Message for deleting an NFS share.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v2/{name=projects/*/locations/*/nfsShares/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_nfs_share(
+                request, metadata
+            )
+            pb_request = nfs_share.DeleteNfsShareRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_nfs_share(resp)
+            return resp
+
+    class _DeleteSSHKey(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("DeleteSSHKey")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: ssh_key.DeleteSSHKeyRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete ssh key method over HTTP.
+
+            Args:
+                request (~.ssh_key.DeleteSSHKeyRequest):
+                    The request object. Message for deleting an SSH key from
+                a project.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v2/{name=projects/*/locations/*/sshKeys/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_ssh_key(request, metadata)
+            pb_request = ssh_key.DeleteSSHKeyRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteVolumeSnapshot(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("DeleteVolumeSnapshot")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: volume_snapshot.DeleteVolumeSnapshotRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete volume snapshot method over HTTP.
+
+            Args:
+                request (~.volume_snapshot.DeleteVolumeSnapshotRequest):
+                    The request object. Message for deleting named Volume
+                snapshot.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v2/{name=projects/*/locations/*/volumes/*/snapshots/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_volume_snapshot(
+                request, metadata
+            )
+            pb_request = volume_snapshot.DeleteVolumeSnapshotRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _DetachLun(BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("DetachLun")
@@ -953,6 +2294,403 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_detach_lun(resp)
+            return resp
+
+    class _DisableInteractiveSerialConsole(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("DisableInteractiveSerialConsole")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: instance.DisableInteractiveSerialConsoleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the disable interactive
+            serial console method over HTTP.
+
+                Args:
+                    request (~.instance.DisableInteractiveSerialConsoleRequest):
+                        The request object. Message for disabling the interactive
+                    serial console on an instance.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{name=projects/*/locations/*/instances/*}:disableInteractiveSerialConsole",
+                    "body": "*",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_disable_interactive_serial_console(
+                request, metadata
+            )
+            pb_request = instance.DisableInteractiveSerialConsoleRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_disable_interactive_serial_console(resp)
+            return resp
+
+    class _EnableInteractiveSerialConsole(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("EnableInteractiveSerialConsole")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: instance.EnableInteractiveSerialConsoleRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the enable interactive serial
+            console method over HTTP.
+
+                Args:
+                    request (~.instance.EnableInteractiveSerialConsoleRequest):
+                        The request object. Message for enabling the interactive
+                    serial console on an instance.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{name=projects/*/locations/*/instances/*}:enableInteractiveSerialConsole",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_enable_interactive_serial_console(
+                request, metadata
+            )
+            pb_request = instance.EnableInteractiveSerialConsoleRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_enable_interactive_serial_console(resp)
+            return resp
+
+    class _EvictLun(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("EvictLun")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: lun.EvictLunRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the evict lun method over HTTP.
+
+            Args:
+                request (~.lun.EvictLunRequest):
+                    The request object. Request for skip lun cooloff and
+                delete it.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{name=projects/*/locations/*/volumes/*/luns/*}:evict",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_evict_lun(request, metadata)
+            pb_request = lun.EvictLunRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_evict_lun(resp)
+            return resp
+
+    class _EvictVolume(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("EvictVolume")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: volume.EvictVolumeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the evict volume method over HTTP.
+
+            Args:
+                request (~.volume.EvictVolumeRequest):
+                    The request object. Request for skip volume cooloff and
+                delete it.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{name=projects/*/locations/*/volumes/*}:evict",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_evict_volume(request, metadata)
+            pb_request = volume.EvictVolumeRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_evict_volume(resp)
             return resp
 
     class _GetInstance(BareMetalSolutionRestStub):
@@ -1305,6 +3043,94 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_get_nfs_share(resp)
             return resp
 
+    class _GetProvisioningConfig(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("GetProvisioningConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: provisioning.GetProvisioningConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> provisioning.ProvisioningConfig:
+            r"""Call the get provisioning config method over HTTP.
+
+            Args:
+                request (~.provisioning.GetProvisioningConfigRequest):
+                    The request object. Request for GetProvisioningConfig.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.provisioning.ProvisioningConfig:
+                    A provisioning configuration.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=projects/*/locations/*/provisioningConfigs/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_provisioning_config(
+                request, metadata
+            )
+            pb_request = provisioning.GetProvisioningConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = provisioning.ProvisioningConfig()
+            pb_resp = provisioning.ProvisioningConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_provisioning_config(resp)
+            return resp
+
     class _GetVolume(BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("GetVolume")
@@ -1390,6 +3216,97 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_volume(resp)
+            return resp
+
+    class _GetVolumeSnapshot(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("GetVolumeSnapshot")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: volume_snapshot.GetVolumeSnapshotRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> volume_snapshot.VolumeSnapshot:
+            r"""Call the get volume snapshot method over HTTP.
+
+            Args:
+                request (~.volume_snapshot.GetVolumeSnapshotRequest):
+                    The request object. Message for requesting volume
+                snapshot information.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.volume_snapshot.VolumeSnapshot:
+                    A snapshot of a volume. Only boot
+                volumes can have snapshots.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=projects/*/locations/*/volumes/*/snapshots/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_volume_snapshot(
+                request, metadata
+            )
+            pb_request = volume_snapshot.GetVolumeSnapshotRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = volume_snapshot.VolumeSnapshot()
+            pb_resp = volume_snapshot.VolumeSnapshot.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_volume_snapshot(resp)
             return resp
 
     class _ListInstances(BareMetalSolutionRestStub):
@@ -1836,6 +3753,273 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_list_nfs_shares(resp)
             return resp
 
+    class _ListOSImages(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("ListOSImages")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: osimage.ListOSImagesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> osimage.ListOSImagesResponse:
+            r"""Call the list os images method over HTTP.
+
+            Args:
+                request (~.osimage.ListOSImagesRequest):
+                    The request object. Request for getting all available OS
+                images.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.osimage.ListOSImagesResponse:
+                    Request for getting all available OS
+                images.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=projects/*/locations/*}/osImages",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_os_images(request, metadata)
+            pb_request = osimage.ListOSImagesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = osimage.ListOSImagesResponse()
+            pb_resp = osimage.ListOSImagesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_os_images(resp)
+            return resp
+
+    class _ListProvisioningQuotas(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("ListProvisioningQuotas")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: provisioning.ListProvisioningQuotasRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> provisioning.ListProvisioningQuotasResponse:
+            r"""Call the list provisioning quotas method over HTTP.
+
+            Args:
+                request (~.provisioning.ListProvisioningQuotasRequest):
+                    The request object. Message for requesting the list of
+                provisioning quotas.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.provisioning.ListProvisioningQuotasResponse:
+                    Response message for the list of
+                provisioning quotas.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=projects/*/locations/*}/provisioningQuotas",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_provisioning_quotas(
+                request, metadata
+            )
+            pb_request = provisioning.ListProvisioningQuotasRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = provisioning.ListProvisioningQuotasResponse()
+            pb_resp = provisioning.ListProvisioningQuotasResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_provisioning_quotas(resp)
+            return resp
+
+    class _ListSSHKeys(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("ListSSHKeys")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: ssh_key.ListSSHKeysRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> ssh_key.ListSSHKeysResponse:
+            r"""Call the list ssh keys method over HTTP.
+
+            Args:
+                request (~.ssh_key.ListSSHKeysRequest):
+                    The request object. Message for listing the public SSH
+                keys in a project.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.ssh_key.ListSSHKeysResponse:
+                    Message for response of ListSSHKeys.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=projects/*/locations/*}/sshKeys",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_ssh_keys(request, metadata)
+            pb_request = ssh_key.ListSSHKeysRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = ssh_key.ListSSHKeysResponse()
+            pb_resp = ssh_key.ListSSHKeysResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_ssh_keys(resp)
+            return resp
+
     class _ListVolumes(BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("ListVolumes")
@@ -1923,6 +4107,483 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_volumes(resp)
+            return resp
+
+    class _ListVolumeSnapshots(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("ListVolumeSnapshots")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: volume_snapshot.ListVolumeSnapshotsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> volume_snapshot.ListVolumeSnapshotsResponse:
+            r"""Call the list volume snapshots method over HTTP.
+
+            Args:
+                request (~.volume_snapshot.ListVolumeSnapshotsRequest):
+                    The request object. Message for requesting a list of
+                volume snapshots.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.volume_snapshot.ListVolumeSnapshotsResponse:
+                    Response message containing the list
+                of volume snapshots.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=projects/*/locations/*/volumes/*}/snapshots",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_volume_snapshots(
+                request, metadata
+            )
+            pb_request = volume_snapshot.ListVolumeSnapshotsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = volume_snapshot.ListVolumeSnapshotsResponse()
+            pb_resp = volume_snapshot.ListVolumeSnapshotsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_volume_snapshots(resp)
+            return resp
+
+    class _RenameInstance(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("RenameInstance")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: instance.RenameInstanceRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> instance.Instance:
+            r"""Call the rename instance method over HTTP.
+
+            Args:
+                request (~.instance.RenameInstanceRequest):
+                    The request object. Message requesting rename of a
+                server.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.instance.Instance:
+                    A server.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{name=projects/*/locations/*/instances/*}:rename",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_rename_instance(request, metadata)
+            pb_request = instance.RenameInstanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = instance.Instance()
+            pb_resp = instance.Instance.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_rename_instance(resp)
+            return resp
+
+    class _RenameNetwork(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("RenameNetwork")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: network.RenameNetworkRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> network.Network:
+            r"""Call the rename network method over HTTP.
+
+            Args:
+                request (~.network.RenameNetworkRequest):
+                    The request object. Message requesting rename of a
+                server.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.network.Network:
+                    A Network.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{name=projects/*/locations/*/networks/*}:rename",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_rename_network(request, metadata)
+            pb_request = network.RenameNetworkRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = network.Network()
+            pb_resp = network.Network.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_rename_network(resp)
+            return resp
+
+    class _RenameNfsShare(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("RenameNfsShare")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: nfs_share.RenameNfsShareRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> nfs_share.NfsShare:
+            r"""Call the rename nfs share method over HTTP.
+
+            Args:
+                request (~.nfs_share.RenameNfsShareRequest):
+                    The request object. Message requesting rename of a
+                server.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.nfs_share.NfsShare:
+                    An NFS share.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{name=projects/*/locations/*/nfsShares/*}:rename",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_rename_nfs_share(
+                request, metadata
+            )
+            pb_request = nfs_share.RenameNfsShareRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = nfs_share.NfsShare()
+            pb_resp = nfs_share.NfsShare.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_rename_nfs_share(resp)
+            return resp
+
+    class _RenameVolume(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("RenameVolume")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: volume.RenameVolumeRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> volume.Volume:
+            r"""Call the rename volume method over HTTP.
+
+            Args:
+                request (~.volume.RenameVolumeRequest):
+                    The request object. Message requesting rename of a
+                server.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.volume.Volume:
+                    A storage volume.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{name=projects/*/locations/*/volumes/*}:rename",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_rename_volume(request, metadata)
+            pb_request = volume.RenameVolumeRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = volume.Volume()
+            pb_resp = volume.Volume.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_rename_volume(resp)
             return resp
 
     class _ResetInstance(BareMetalSolutionRestStub):
@@ -2117,6 +4778,105 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = self._interceptor.post_resize_volume(resp)
             return resp
 
+    class _RestoreVolumeSnapshot(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("RestoreVolumeSnapshot")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: gcb_volume_snapshot.RestoreVolumeSnapshotRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the restore volume snapshot method over HTTP.
+
+            Args:
+                request (~.gcb_volume_snapshot.RestoreVolumeSnapshotRequest):
+                    The request object. Message for restoring a volume
+                snapshot.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{volume_snapshot=projects/*/locations/*/volumes/*/snapshots/*}:restoreVolumeSnapshot",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_restore_volume_snapshot(
+                request, metadata
+            )
+            pb_request = gcb_volume_snapshot.RestoreVolumeSnapshotRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_restore_volume_snapshot(resp)
+            return resp
+
     class _StartInstance(BareMetalSolutionRestStub):
         def __hash__(self):
             return hash("StartInstance")
@@ -2307,6 +5067,106 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_stop_instance(resp)
+            return resp
+
+    class _SubmitProvisioningConfig(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("SubmitProvisioningConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: provisioning.SubmitProvisioningConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> provisioning.SubmitProvisioningConfigResponse:
+            r"""Call the submit provisioning
+            config method over HTTP.
+
+                Args:
+                    request (~.provisioning.SubmitProvisioningConfigRequest):
+                        The request object. Request for SubmitProvisioningConfig.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.provisioning.SubmitProvisioningConfigResponse:
+                        Response for
+                    SubmitProvisioningConfig.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v2/{parent=projects/*/locations/*}/provisioningConfigs:submit",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_submit_provisioning_config(
+                request, metadata
+            )
+            pb_request = provisioning.SubmitProvisioningConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = provisioning.SubmitProvisioningConfigResponse()
+            pb_resp = provisioning.SubmitProvisioningConfigResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_submit_provisioning_config(resp)
             return resp
 
     class _UpdateInstance(BareMetalSolutionRestStub):
@@ -2529,7 +5389,7 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
 
             Args:
                 request (~.gcb_nfs_share.UpdateNfsShareRequest):
-                    The request object. Message requesting to updating a NFS
+                    The request object. Message requesting to updating an NFS
                 share.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -2600,6 +5460,107 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_update_nfs_share(resp)
+            return resp
+
+    class _UpdateProvisioningConfig(BareMetalSolutionRestStub):
+        def __hash__(self):
+            return hash("UpdateProvisioningConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: provisioning.UpdateProvisioningConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> provisioning.ProvisioningConfig:
+            r"""Call the update provisioning
+            config method over HTTP.
+
+                Args:
+                    request (~.provisioning.UpdateProvisioningConfigRequest):
+                        The request object. Message for updating a
+                    ProvisioningConfig.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.provisioning.ProvisioningConfig:
+                        A provisioning configuration.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v2/{provisioning_config.name=projects/*/locations/*/provisioningConfigs/*}",
+                    "body": "provisioning_config",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_provisioning_config(
+                request, metadata
+            )
+            pb_request = provisioning.UpdateProvisioningConfigRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = provisioning.ProvisioningConfig()
+            pb_resp = provisioning.ProvisioningConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_provisioning_config(resp)
             return resp
 
     class _UpdateVolume(BareMetalSolutionRestStub):
@@ -2699,12 +5660,107 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
             return resp
 
     @property
+    def create_nfs_share(
+        self,
+    ) -> Callable[[gcb_nfs_share.CreateNfsShareRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateNfsShare(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_provisioning_config(
+        self,
+    ) -> Callable[
+        [provisioning.CreateProvisioningConfigRequest], provisioning.ProvisioningConfig
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateProvisioningConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_ssh_key(
+        self,
+    ) -> Callable[[gcb_ssh_key.CreateSSHKeyRequest], gcb_ssh_key.SSHKey]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateSSHKey(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_volume_snapshot(
+        self,
+    ) -> Callable[
+        [gcb_volume_snapshot.CreateVolumeSnapshotRequest],
+        gcb_volume_snapshot.VolumeSnapshot,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateVolumeSnapshot(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_nfs_share(
+        self,
+    ) -> Callable[[nfs_share.DeleteNfsShareRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteNfsShare(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_ssh_key(
+        self,
+    ) -> Callable[[ssh_key.DeleteSSHKeyRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteSSHKey(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_volume_snapshot(
+        self,
+    ) -> Callable[[volume_snapshot.DeleteVolumeSnapshotRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteVolumeSnapshot(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def detach_lun(
         self,
     ) -> Callable[[gcb_instance.DetachLunRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DetachLun(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def disable_interactive_serial_console(
+        self,
+    ) -> Callable[
+        [instance.DisableInteractiveSerialConsoleRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DisableInteractiveSerialConsole(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def enable_interactive_serial_console(
+        self,
+    ) -> Callable[
+        [instance.EnableInteractiveSerialConsoleRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._EnableInteractiveSerialConsole(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def evict_lun(self) -> Callable[[lun.EvictLunRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._EvictLun(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def evict_volume(
+        self,
+    ) -> Callable[[volume.EvictVolumeRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._EvictVolume(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_instance(
@@ -2735,10 +5791,30 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         return self._GetNfsShare(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_provisioning_config(
+        self,
+    ) -> Callable[
+        [provisioning.GetProvisioningConfigRequest], provisioning.ProvisioningConfig
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetProvisioningConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_volume(self) -> Callable[[volume.GetVolumeRequest], volume.Volume]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetVolume(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_volume_snapshot(
+        self,
+    ) -> Callable[
+        [volume_snapshot.GetVolumeSnapshotRequest], volume_snapshot.VolumeSnapshot
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetVolumeSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_instances(
@@ -2779,12 +5855,80 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         return self._ListNfsShares(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_os_images(
+        self,
+    ) -> Callable[[osimage.ListOSImagesRequest], osimage.ListOSImagesResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListOSImages(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_provisioning_quotas(
+        self,
+    ) -> Callable[
+        [provisioning.ListProvisioningQuotasRequest],
+        provisioning.ListProvisioningQuotasResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListProvisioningQuotas(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_ssh_keys(
+        self,
+    ) -> Callable[[ssh_key.ListSSHKeysRequest], ssh_key.ListSSHKeysResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListSSHKeys(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_volumes(
         self,
     ) -> Callable[[volume.ListVolumesRequest], volume.ListVolumesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVolumes(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_volume_snapshots(
+        self,
+    ) -> Callable[
+        [volume_snapshot.ListVolumeSnapshotsRequest],
+        volume_snapshot.ListVolumeSnapshotsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListVolumeSnapshots(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def rename_instance(
+        self,
+    ) -> Callable[[instance.RenameInstanceRequest], instance.Instance]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RenameInstance(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def rename_network(
+        self,
+    ) -> Callable[[network.RenameNetworkRequest], network.Network]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RenameNetwork(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def rename_nfs_share(
+        self,
+    ) -> Callable[[nfs_share.RenameNfsShareRequest], nfs_share.NfsShare]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RenameNfsShare(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def rename_volume(self) -> Callable[[volume.RenameVolumeRequest], volume.Volume]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RenameVolume(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def reset_instance(
@@ -2803,6 +5947,16 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         return self._ResizeVolume(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def restore_volume_snapshot(
+        self,
+    ) -> Callable[
+        [gcb_volume_snapshot.RestoreVolumeSnapshotRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RestoreVolumeSnapshot(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def start_instance(
         self,
     ) -> Callable[[instance.StartInstanceRequest], operations_pb2.Operation]:
@@ -2817,6 +5971,17 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StopInstance(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def submit_provisioning_config(
+        self,
+    ) -> Callable[
+        [provisioning.SubmitProvisioningConfigRequest],
+        provisioning.SubmitProvisioningConfigResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._SubmitProvisioningConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_instance(
@@ -2841,6 +6006,16 @@ class BareMetalSolutionRestTransport(BareMetalSolutionTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateNfsShare(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_provisioning_config(
+        self,
+    ) -> Callable[
+        [provisioning.UpdateProvisioningConfigRequest], provisioning.ProvisioningConfig
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateProvisioningConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_volume(

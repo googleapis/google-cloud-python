@@ -17,31 +17,29 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
-from google.cloud.bare_metal_solution_v2.types import common
-from google.cloud.bare_metal_solution_v2.types import network
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.bare_metal_solution_v2.types import common, network
 
 __protobuf__ = proto.module(
-    package='google.cloud.baremetalsolution.v2',
+    package="google.cloud.baremetalsolution.v2",
     manifest={
-        'ProvisioningConfig',
-        'SubmitProvisioningConfigRequest',
-        'SubmitProvisioningConfigResponse',
-        'ProvisioningQuota',
-        'ListProvisioningQuotasRequest',
-        'ListProvisioningQuotasResponse',
-        'InstanceConfig',
-        'VolumeConfig',
-        'NetworkConfig',
-        'InstanceQuota',
-        'GetProvisioningConfigRequest',
-        'CreateProvisioningConfigRequest',
-        'UpdateProvisioningConfigRequest',
-        'ServerNetworkTemplate',
+        "ProvisioningConfig",
+        "SubmitProvisioningConfigRequest",
+        "SubmitProvisioningConfigResponse",
+        "ProvisioningQuota",
+        "ListProvisioningQuotasRequest",
+        "ListProvisioningQuotasResponse",
+        "InstanceConfig",
+        "VolumeConfig",
+        "NetworkConfig",
+        "InstanceQuota",
+        "GetProvisioningConfigRequest",
+        "CreateProvisioningConfigRequest",
+        "UpdateProvisioningConfigRequest",
+        "ServerNetworkTemplate",
     },
 )
 
@@ -90,6 +88,7 @@ class ProvisioningConfig(proto.Message):
             Optional. The user-defined identifier of the
             provisioning config.
     """
+
     class State(proto.Enum):
         r"""The possible states for this ProvisioningConfig.
 
@@ -133,20 +132,20 @@ class ProvisioningConfig(proto.Message):
         proto.STRING,
         number=1,
     )
-    instances: MutableSequence['InstanceConfig'] = proto.RepeatedField(
+    instances: MutableSequence["InstanceConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
-        message='InstanceConfig',
+        message="InstanceConfig",
     )
-    networks: MutableSequence['NetworkConfig'] = proto.RepeatedField(
+    networks: MutableSequence["NetworkConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
-        message='NetworkConfig',
+        message="NetworkConfig",
     )
-    volumes: MutableSequence['VolumeConfig'] = proto.RepeatedField(
+    volumes: MutableSequence["VolumeConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
-        message='VolumeConfig',
+        message="VolumeConfig",
     )
     ticket_id: str = proto.Field(
         proto.STRING,
@@ -210,10 +209,10 @@ class SubmitProvisioningConfigRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    provisioning_config: 'ProvisioningConfig' = proto.Field(
+    provisioning_config: "ProvisioningConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='ProvisioningConfig',
+        message="ProvisioningConfig",
     )
     email: str = proto.Field(
         proto.STRING,
@@ -229,10 +228,10 @@ class SubmitProvisioningConfigResponse(proto.Message):
             The submitted provisioning config.
     """
 
-    provisioning_config: 'ProvisioningConfig' = proto.Field(
+    provisioning_config: "ProvisioningConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='ProvisioningConfig',
+        message="ProvisioningConfig",
     )
 
 
@@ -277,6 +276,7 @@ class ProvisioningQuota(proto.Message):
 
             This field is a member of `oneof`_ ``availability``.
     """
+
     class AssetType(proto.Enum):
         r"""The available asset types for intake.
 
@@ -316,26 +316,26 @@ class ProvisioningQuota(proto.Message):
         proto.INT32,
         number=5,
     )
-    instance_quota: 'InstanceQuota' = proto.Field(
+    instance_quota: "InstanceQuota" = proto.Field(
         proto.MESSAGE,
         number=6,
-        oneof='quota',
-        message='InstanceQuota',
+        oneof="quota",
+        message="InstanceQuota",
     )
     server_count: int = proto.Field(
         proto.INT64,
         number=7,
-        oneof='availability',
+        oneof="availability",
     )
     network_bandwidth: int = proto.Field(
         proto.INT64,
         number=8,
-        oneof='availability',
+        oneof="availability",
     )
     storage_gib: int = proto.Field(
         proto.INT64,
         number=9,
-        oneof='availability',
+        oneof="availability",
     )
 
 
@@ -388,10 +388,10 @@ class ListProvisioningQuotasResponse(proto.Message):
     def raw_page(self):
         return self
 
-    provisioning_quotas: MutableSequence['ProvisioningQuota'] = proto.RepeatedField(
+    provisioning_quotas: MutableSequence["ProvisioningQuota"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='ProvisioningQuota',
+        message="ProvisioningQuota",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -445,6 +445,7 @@ class InstanceConfig(proto.Message):
             List of names of ssh keys used to provision
             the instance.
     """
+
     class NetworkConfig(proto.Enum):
         r"""The network configuration of the instance.
 
@@ -583,6 +584,7 @@ class VolumeConfig(proto.Message):
             Performance tier of the Volume.
             Default is SHARED.
     """
+
     class Type(proto.Enum):
         r"""The types of Volumes.
 
@@ -667,6 +669,7 @@ class VolumeConfig(proto.Message):
                 Allow dev flag in NfsShare
                 AllowedClientsRequest.
         """
+
         class Permissions(proto.Enum):
             r"""Permissions that can granted for an export.
 
@@ -689,17 +692,17 @@ class VolumeConfig(proto.Message):
         machine_id: str = proto.Field(
             proto.STRING,
             number=2,
-            oneof='client',
+            oneof="client",
         )
         cidr: str = proto.Field(
             proto.STRING,
             number=3,
-            oneof='client',
+            oneof="client",
         )
-        permissions: 'VolumeConfig.NfsExport.Permissions' = proto.Field(
+        permissions: "VolumeConfig.NfsExport.Permissions" = proto.Field(
             proto.ENUM,
             number=4,
-            enum='VolumeConfig.NfsExport.Permissions',
+            enum="VolumeConfig.NfsExport.Permissions",
         )
         no_root_squash: bool = proto.Field(
             proto.BOOL,
@@ -806,6 +809,7 @@ class NetworkConfig(proto.Message):
             The JumboFramesEnabled option for customer to
             set.
     """
+
     class Type(proto.Enum):
         r"""Network type.
 
@@ -1008,10 +1012,10 @@ class CreateProvisioningConfigRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    provisioning_config: 'ProvisioningConfig' = proto.Field(
+    provisioning_config: "ProvisioningConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='ProvisioningConfig',
+        message="ProvisioningConfig",
     )
     email: str = proto.Field(
         proto.STRING,
@@ -1032,10 +1036,10 @@ class UpdateProvisioningConfigRequest(proto.Message):
             confirmation with provisioning config to.
     """
 
-    provisioning_config: 'ProvisioningConfig' = proto.Field(
+    provisioning_config: "ProvisioningConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='ProvisioningConfig',
+        message="ProvisioningConfig",
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
@@ -1082,6 +1086,7 @@ class ServerNetworkTemplate(proto.Message):
                 If true, interface must have network
                 connected.
         """
+
         class InterfaceType(proto.Enum):
             r"""Interface type.
 
@@ -1101,10 +1106,10 @@ class ServerNetworkTemplate(proto.Message):
             proto.STRING,
             number=1,
         )
-        type_: 'ServerNetworkTemplate.LogicalInterface.InterfaceType' = proto.Field(
+        type_: "ServerNetworkTemplate.LogicalInterface.InterfaceType" = proto.Field(
             proto.ENUM,
             number=2,
-            enum='ServerNetworkTemplate.LogicalInterface.InterfaceType',
+            enum="ServerNetworkTemplate.LogicalInterface.InterfaceType",
         )
         required: bool = proto.Field(
             proto.BOOL,

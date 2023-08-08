@@ -19,13 +19,12 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.baremetalsolution.v2',
+    package="google.cloud.baremetalsolution.v2",
     manifest={
-        'OSImage',
-        'ListOSImagesRequest',
-        'ListOSImagesResponse',
+        "OSImage",
+        "ListOSImagesRequest",
+        "ListOSImagesResponse",
     },
 )
 
@@ -118,10 +117,10 @@ class ListOSImagesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    os_images: MutableSequence['OSImage'] = proto.RepeatedField(
+    os_images: MutableSequence["OSImage"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='OSImage',
+        message="OSImage",
     )
     next_page_token: str = proto.Field(
         proto.STRING,

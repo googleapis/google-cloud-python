@@ -49,23 +49,29 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.bare_metal_solution_v2.services.bare_metal_solution import pagers
 from google.cloud.bare_metal_solution_v2.types import nfs_share as gcb_nfs_share
-from google.cloud.bare_metal_solution_v2.types import baremetalsolution
+from google.cloud.bare_metal_solution_v2.types import (
+    volume_snapshot as gcb_volume_snapshot,
+)
+from google.cloud.bare_metal_solution_v2.types import common
 from google.cloud.bare_metal_solution_v2.types import instance
 from google.cloud.bare_metal_solution_v2.types import instance as gcb_instance
 from google.cloud.bare_metal_solution_v2.types import lun
 from google.cloud.bare_metal_solution_v2.types import network
 from google.cloud.bare_metal_solution_v2.types import network as gcb_network
 from google.cloud.bare_metal_solution_v2.types import nfs_share
+from google.cloud.bare_metal_solution_v2.types import osimage, provisioning
+from google.cloud.bare_metal_solution_v2.types import ssh_key
+from google.cloud.bare_metal_solution_v2.types import ssh_key as gcb_ssh_key
 from google.cloud.bare_metal_solution_v2.types import volume
 from google.cloud.bare_metal_solution_v2.types import volume as gcb_volume
+from google.cloud.bare_metal_solution_v2.types import volume_snapshot
 
 from .transports.base import DEFAULT_CLIENT_INFO, BareMetalSolutionTransport
 from .transports.grpc import BareMetalSolutionGrpcTransport
@@ -227,6 +233,72 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def instance_config_path(
+        project: str,
+        location: str,
+        instance_config: str,
+    ) -> str:
+        """Returns a fully-qualified instance_config string."""
+        return "projects/{project}/locations/{location}/instanceConfigs/{instance_config}".format(
+            project=project,
+            location=location,
+            instance_config=instance_config,
+        )
+
+    @staticmethod
+    def parse_instance_config_path(path: str) -> Dict[str, str]:
+        """Parses a instance_config path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/instanceConfigs/(?P<instance_config>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def instance_quota_path(
+        project: str,
+        location: str,
+        instance_quota: str,
+    ) -> str:
+        """Returns a fully-qualified instance_quota string."""
+        return "projects/{project}/locations/{location}/instanceQuotas/{instance_quota}".format(
+            project=project,
+            location=location,
+            instance_quota=instance_quota,
+        )
+
+    @staticmethod
+    def parse_instance_quota_path(path: str) -> Dict[str, str]:
+        """Parses a instance_quota path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/instanceQuotas/(?P<instance_quota>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def interconnect_attachment_path(
+        project: str,
+        region: str,
+        interconnect_attachment: str,
+    ) -> str:
+        """Returns a fully-qualified interconnect_attachment string."""
+        return "projects/{project}/regions/{region}/interconnectAttachments/{interconnect_attachment}".format(
+            project=project,
+            region=region,
+            interconnect_attachment=interconnect_attachment,
+        )
+
+    @staticmethod
+    def parse_interconnect_attachment_path(path: str) -> Dict[str, str]:
+        """Parses a interconnect_attachment path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/interconnectAttachments/(?P<interconnect_attachment>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def lun_path(
         project: str,
         location: str,
@@ -273,6 +345,28 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def network_config_path(
+        project: str,
+        location: str,
+        network_config: str,
+    ) -> str:
+        """Returns a fully-qualified network_config string."""
+        return "projects/{project}/locations/{location}/networkConfigs/{network_config}".format(
+            project=project,
+            location=location,
+            network_config=network_config,
+        )
+
+    @staticmethod
+    def parse_network_config_path(path: str) -> Dict[str, str]:
+        """Parses a network_config path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/networkConfigs/(?P<network_config>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def nfs_share_path(
         project: str,
         location: str,
@@ -290,6 +384,72 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         """Parses a nfs_share path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/nfsShares/(?P<nfs_share>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def os_image_path(
+        project: str,
+        location: str,
+        os_image: str,
+    ) -> str:
+        """Returns a fully-qualified os_image string."""
+        return "projects/{project}/locations/{location}/osImages/{os_image}".format(
+            project=project,
+            location=location,
+            os_image=os_image,
+        )
+
+    @staticmethod
+    def parse_os_image_path(path: str) -> Dict[str, str]:
+        """Parses a os_image path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/osImages/(?P<os_image>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def provisioning_config_path(
+        project: str,
+        location: str,
+        provisioning_config: str,
+    ) -> str:
+        """Returns a fully-qualified provisioning_config string."""
+        return "projects/{project}/locations/{location}/provisioningConfigs/{provisioning_config}".format(
+            project=project,
+            location=location,
+            provisioning_config=provisioning_config,
+        )
+
+    @staticmethod
+    def parse_provisioning_config_path(path: str) -> Dict[str, str]:
+        """Parses a provisioning_config path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/provisioningConfigs/(?P<provisioning_config>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def provisioning_quota_path(
+        project: str,
+        location: str,
+        provisioning_quota: str,
+    ) -> str:
+        """Returns a fully-qualified provisioning_quota string."""
+        return "projects/{project}/locations/{location}/provisioningQuotas/{provisioning_quota}".format(
+            project=project,
+            location=location,
+            provisioning_quota=provisioning_quota,
+        )
+
+    @staticmethod
+    def parse_provisioning_quota_path(path: str) -> Dict[str, str]:
+        """Parses a provisioning_quota path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/provisioningQuotas/(?P<provisioning_quota>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -317,6 +477,28 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def ssh_key_path(
+        project: str,
+        location: str,
+        ssh_key: str,
+    ) -> str:
+        """Returns a fully-qualified ssh_key string."""
+        return "projects/{project}/locations/{location}/sshKeys/{ssh_key}".format(
+            project=project,
+            location=location,
+            ssh_key=ssh_key,
+        )
+
+    @staticmethod
+    def parse_ssh_key_path(path: str) -> Dict[str, str]:
+        """Parses a ssh_key path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/sshKeys/(?P<ssh_key>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def volume_path(
         project: str,
         location: str,
@@ -334,6 +516,52 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         """Parses a volume path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/volumes/(?P<volume>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def volume_config_path(
+        project: str,
+        location: str,
+        volume_config: str,
+    ) -> str:
+        """Returns a fully-qualified volume_config string."""
+        return "projects/{project}/locations/{location}/volumeConfigs/{volume_config}".format(
+            project=project,
+            location=location,
+            volume_config=volume_config,
+        )
+
+    @staticmethod
+    def parse_volume_config_path(path: str) -> Dict[str, str]:
+        """Parses a volume_config path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/volumeConfigs/(?P<volume_config>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def volume_snapshot_path(
+        project: str,
+        location: str,
+        volume: str,
+        snapshot: str,
+    ) -> str:
+        """Returns a fully-qualified volume_snapshot string."""
+        return "projects/{project}/locations/{location}/volumes/{volume}/snapshots/{snapshot}".format(
+            project=project,
+            location=location,
+            volume=volume,
+            snapshot=snapshot,
+        )
+
+    @staticmethod
+    def parse_volume_snapshot_path(path: str) -> Dict[str, str]:
+        """Parses a volume_snapshot path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/volumes/(?P<volume>.+?)/snapshots/(?P<snapshot>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -921,7 +1149,119 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             gcb_instance.Instance,
-            metadata_type=baremetalsolution.OperationMetadata,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def rename_instance(
+        self,
+        request: Optional[Union[instance.RenameInstanceRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        new_instance_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> instance.Instance:
+        r"""RenameInstance sets a new name for an instance.
+        Use with caution, previous names become immediately
+        invalidated.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_rename_instance():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.RenameInstanceRequest(
+                    name="name_value",
+                    new_instance_id="new_instance_id_value",
+                )
+
+                # Make the request
+                response = client.rename_instance(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.RenameInstanceRequest, dict]):
+                The request object. Message requesting rename of a
+                server.
+            name (str):
+                Required. The ``name`` field is used to identify the
+                instance. Format:
+                projects/{project}/locations/{location}/instances/{instance}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            new_instance_id (str):
+                Required. The new ``id`` of the instance.
+                This corresponds to the ``new_instance_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bare_metal_solution_v2.types.Instance:
+                A server.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, new_instance_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a instance.RenameInstanceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, instance.RenameInstanceRequest):
+            request = instance.RenameInstanceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if new_instance_id is not None:
+                request.new_instance_id = new_instance_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.rename_instance]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1036,8 +1376,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            baremetalsolution.ResetInstanceResponse,
-            metadata_type=baremetalsolution.OperationMetadata,
+            instance.ResetInstanceResponse,
+            metadata_type=common.OperationMetadata,
         )
 
         # Done; return the response.
@@ -1151,7 +1491,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             instance.StartInstanceResponse,
-            metadata_type=baremetalsolution.OperationMetadata,
+            metadata_type=common.OperationMetadata,
         )
 
         # Done; return the response.
@@ -1265,7 +1605,247 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             instance.StopInstanceResponse,
-            metadata_type=baremetalsolution.OperationMetadata,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def enable_interactive_serial_console(
+        self,
+        request: Optional[
+            Union[instance.EnableInteractiveSerialConsoleRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Enable the interactive serial console feature on an
+        instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_enable_interactive_serial_console():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.EnableInteractiveSerialConsoleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.enable_interactive_serial_console(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.EnableInteractiveSerialConsoleRequest, dict]):
+                The request object. Message for enabling the interactive
+                serial console on an instance.
+            name (str):
+                Required. Name of the resource.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.bare_metal_solution_v2.types.EnableInteractiveSerialConsoleResponse`
+                Message for response of EnableInteractiveSerialConsole.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a instance.EnableInteractiveSerialConsoleRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, instance.EnableInteractiveSerialConsoleRequest):
+            request = instance.EnableInteractiveSerialConsoleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.enable_interactive_serial_console
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            instance.EnableInteractiveSerialConsoleResponse,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def disable_interactive_serial_console(
+        self,
+        request: Optional[
+            Union[instance.DisableInteractiveSerialConsoleRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Disable the interactive serial console feature on an
+        instance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_disable_interactive_serial_console():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.DisableInteractiveSerialConsoleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.disable_interactive_serial_console(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.DisableInteractiveSerialConsoleRequest, dict]):
+                The request object. Message for disabling the interactive
+                serial console on an instance.
+            name (str):
+                Required. Name of the resource.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.bare_metal_solution_v2.types.DisableInteractiveSerialConsoleResponse`
+                Message for response of DisableInteractiveSerialConsole.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a instance.DisableInteractiveSerialConsoleRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, instance.DisableInteractiveSerialConsoleRequest):
+            request = instance.DisableInteractiveSerialConsoleRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.disable_interactive_serial_console
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            instance.DisableInteractiveSerialConsoleResponse,
+            metadata_type=common.OperationMetadata,
         )
 
         # Done; return the response.
@@ -1389,11 +1969,344 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             gcb_instance.Instance,
-            metadata_type=baremetalsolution.OperationMetadata,
+            metadata_type=common.OperationMetadata,
         )
 
         # Done; return the response.
         return response
+
+    def list_ssh_keys(
+        self,
+        request: Optional[Union[ssh_key.ListSSHKeysRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSSHKeysPager:
+        r"""Lists the public SSH keys registered for the
+        specified project. These SSH keys are used only for the
+        interactive serial console feature.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_list_ssh_keys():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.ListSSHKeysRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_ssh_keys(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.ListSSHKeysRequest, dict]):
+                The request object. Message for listing the public SSH
+                keys in a project.
+            parent (str):
+                Required. The parent containing the
+                SSH keys. Currently, the only valid
+                value for the location is "global".
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bare_metal_solution_v2.services.bare_metal_solution.pagers.ListSSHKeysPager:
+                Message for response of ListSSHKeys.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a ssh_key.ListSSHKeysRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, ssh_key.ListSSHKeysRequest):
+            request = ssh_key.ListSSHKeysRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_ssh_keys]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListSSHKeysPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_ssh_key(
+        self,
+        request: Optional[Union[gcb_ssh_key.CreateSSHKeyRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        ssh_key: Optional[gcb_ssh_key.SSHKey] = None,
+        ssh_key_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcb_ssh_key.SSHKey:
+        r"""Register a public SSH key in the specified project
+        for use with the interactive serial console feature.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_create_ssh_key():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.CreateSSHKeyRequest(
+                    parent="parent_value",
+                    ssh_key_id="ssh_key_id_value",
+                )
+
+                # Make the request
+                response = client.create_ssh_key(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.CreateSSHKeyRequest, dict]):
+                The request object. Message for registering a public SSH
+                key in a project.
+            parent (str):
+                Required. The parent containing the
+                SSH keys.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            ssh_key (google.cloud.bare_metal_solution_v2.types.SSHKey):
+                Required. The SSH key to register.
+                This corresponds to the ``ssh_key`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            ssh_key_id (str):
+                Required. The ID to use for the key, which will become
+                the final component of the key's resource name.
+
+                This value must match the regex: [a-zA-Z0-9@.-_]{1,64}
+
+                This corresponds to the ``ssh_key_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bare_metal_solution_v2.types.SSHKey:
+                An SSH key, used for authorizing with
+                the interactive serial console feature.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, ssh_key, ssh_key_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a gcb_ssh_key.CreateSSHKeyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, gcb_ssh_key.CreateSSHKeyRequest):
+            request = gcb_ssh_key.CreateSSHKeyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if ssh_key is not None:
+                request.ssh_key = ssh_key
+            if ssh_key_id is not None:
+                request.ssh_key_id = ssh_key_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_ssh_key]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_ssh_key(
+        self,
+        request: Optional[Union[ssh_key.DeleteSSHKeyRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a public SSH key registered in the specified
+        project.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_delete_ssh_key():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.DeleteSSHKeyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_ssh_key(request=request)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.DeleteSSHKeyRequest, dict]):
+                The request object. Message for deleting an SSH key from
+                a project.
+            name (str):
+                Required. The name of the SSH key to
+                delete. Currently, the only valid value
+                for the location is "global".
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a ssh_key.DeleteSSHKeyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, ssh_key.DeleteSSHKeyRequest):
+            request = ssh_key.DeleteSSHKeyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_ssh_key]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     def list_volumes(
         self,
@@ -1663,11 +2576,10 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The list of fields to update. The only currently
-                supported fields are: ``snapshot_auto_delete_behavior``
-                ``snapshot_schedule_policy_name`` 'labels'
-                'snapshot_enabled'
-                'snapshot_reservation_detail.reserved_space_percent'
+                The list of fields to update.
+                The only currently supported fields are:
+
+                  'labels'
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1735,7 +2647,242 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             gcb_volume.Volume,
-            metadata_type=baremetalsolution.OperationMetadata,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def rename_volume(
+        self,
+        request: Optional[Union[volume.RenameVolumeRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        new_volume_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> volume.Volume:
+        r"""RenameVolume sets a new name for a volume.
+        Use with caution, previous names become immediately
+        invalidated.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_rename_volume():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.RenameVolumeRequest(
+                    name="name_value",
+                    new_volume_id="new_volume_id_value",
+                )
+
+                # Make the request
+                response = client.rename_volume(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.RenameVolumeRequest, dict]):
+                The request object. Message requesting rename of a
+                server.
+            name (str):
+                Required. The ``name`` field is used to identify the
+                volume. Format:
+                projects/{project}/locations/{location}/volumes/{volume}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            new_volume_id (str):
+                Required. The new ``id`` of the volume.
+                This corresponds to the ``new_volume_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bare_metal_solution_v2.types.Volume:
+                A storage volume.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, new_volume_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a volume.RenameVolumeRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, volume.RenameVolumeRequest):
+            request = volume.RenameVolumeRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if new_volume_id is not None:
+                request.new_volume_id = new_volume_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.rename_volume]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def evict_volume(
+        self,
+        request: Optional[Union[volume.EvictVolumeRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Skips volume's cooloff and deletes it now.
+        Volume must be in cooloff state.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_evict_volume():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.EvictVolumeRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.evict_volume(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.EvictVolumeRequest, dict]):
+                The request object. Request for skip volume cooloff and
+                delete it.
+            name (str):
+                Required. The name of the Volume.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a volume.EvictVolumeRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, volume.EvictVolumeRequest):
+            request = volume.EvictVolumeRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.evict_volume]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=common.OperationMetadata,
         )
 
         # Done; return the response.
@@ -1857,7 +3004,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             gcb_volume.Volume,
-            metadata_type=baremetalsolution.OperationMetadata,
+            metadata_type=common.OperationMetadata,
         )
 
         # Done; return the response.
@@ -2234,7 +3381,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The list of fields to update. The only currently
-                supported fields are: ``labels``, ``reservations``
+                supported fields are: ``labels``, ``reservations``,
+                ``vrf.vlan_attachments``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2302,7 +3450,555 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             gcb_network.Network,
-            metadata_type=baremetalsolution.OperationMetadata,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_volume_snapshot(
+        self,
+        request: Optional[
+            Union[gcb_volume_snapshot.CreateVolumeSnapshotRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        volume_snapshot: Optional[gcb_volume_snapshot.VolumeSnapshot] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcb_volume_snapshot.VolumeSnapshot:
+        r"""Takes a snapshot of a boot volume. Returns INVALID_ARGUMENT if
+        called for a non-boot volume.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_create_volume_snapshot():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.CreateVolumeSnapshotRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_volume_snapshot(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.CreateVolumeSnapshotRequest, dict]):
+                The request object. Message for creating a volume
+                snapshot.
+            parent (str):
+                Required. The volume to snapshot.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            volume_snapshot (google.cloud.bare_metal_solution_v2.types.VolumeSnapshot):
+                Required. The snapshot to create.
+                This corresponds to the ``volume_snapshot`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bare_metal_solution_v2.types.VolumeSnapshot:
+                A snapshot of a volume. Only boot
+                volumes can have snapshots.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, volume_snapshot])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a gcb_volume_snapshot.CreateVolumeSnapshotRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, gcb_volume_snapshot.CreateVolumeSnapshotRequest):
+            request = gcb_volume_snapshot.CreateVolumeSnapshotRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if volume_snapshot is not None:
+                request.volume_snapshot = volume_snapshot
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_volume_snapshot]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def restore_volume_snapshot(
+        self,
+        request: Optional[
+            Union[gcb_volume_snapshot.RestoreVolumeSnapshotRequest, dict]
+        ] = None,
+        *,
+        volume_snapshot: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Uses the specified snapshot to restore its parent volume.
+        Returns INVALID_ARGUMENT if called for a non-boot volume.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_restore_volume_snapshot():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.RestoreVolumeSnapshotRequest(
+                    volume_snapshot="volume_snapshot_value",
+                )
+
+                # Make the request
+                operation = client.restore_volume_snapshot(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.RestoreVolumeSnapshotRequest, dict]):
+                The request object. Message for restoring a volume
+                snapshot.
+            volume_snapshot (str):
+                Required. Name of the snapshot which
+                will be used to restore its parent
+                volume.
+
+                This corresponds to the ``volume_snapshot`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.bare_metal_solution_v2.types.VolumeSnapshot`
+                A snapshot of a volume. Only boot volumes can have
+                snapshots.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([volume_snapshot])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a gcb_volume_snapshot.RestoreVolumeSnapshotRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, gcb_volume_snapshot.RestoreVolumeSnapshotRequest):
+            request = gcb_volume_snapshot.RestoreVolumeSnapshotRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if volume_snapshot is not None:
+                request.volume_snapshot = volume_snapshot
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.restore_volume_snapshot]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("volume_snapshot", request.volume_snapshot),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gcb_volume_snapshot.VolumeSnapshot,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_volume_snapshot(
+        self,
+        request: Optional[
+            Union[volume_snapshot.DeleteVolumeSnapshotRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a volume snapshot. Returns INVALID_ARGUMENT if called
+        for a non-boot volume.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_delete_volume_snapshot():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.DeleteVolumeSnapshotRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_volume_snapshot(request=request)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.DeleteVolumeSnapshotRequest, dict]):
+                The request object. Message for deleting named Volume
+                snapshot.
+            name (str):
+                Required. The name of the snapshot to
+                delete.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a volume_snapshot.DeleteVolumeSnapshotRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, volume_snapshot.DeleteVolumeSnapshotRequest):
+            request = volume_snapshot.DeleteVolumeSnapshotRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_volume_snapshot]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def get_volume_snapshot(
+        self,
+        request: Optional[Union[volume_snapshot.GetVolumeSnapshotRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> volume_snapshot.VolumeSnapshot:
+        r"""Returns the specified snapshot resource. Returns
+        INVALID_ARGUMENT if called for a non-boot volume.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_get_volume_snapshot():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.GetVolumeSnapshotRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_volume_snapshot(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.GetVolumeSnapshotRequest, dict]):
+                The request object. Message for requesting volume
+                snapshot information.
+            name (str):
+                Required. The name of the snapshot.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bare_metal_solution_v2.types.VolumeSnapshot:
+                A snapshot of a volume. Only boot
+                volumes can have snapshots.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a volume_snapshot.GetVolumeSnapshotRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, volume_snapshot.GetVolumeSnapshotRequest):
+            request = volume_snapshot.GetVolumeSnapshotRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_volume_snapshot]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_volume_snapshots(
+        self,
+        request: Optional[
+            Union[volume_snapshot.ListVolumeSnapshotsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListVolumeSnapshotsPager:
+        r"""Retrieves the list of snapshots for the specified
+        volume. Returns a response with an empty list of
+        snapshots if called for a non-boot volume.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_list_volume_snapshots():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.ListVolumeSnapshotsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_volume_snapshots(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsRequest, dict]):
+                The request object. Message for requesting a list of
+                volume snapshots.
+            parent (str):
+                Required. Parent value for
+                ListVolumesRequest.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bare_metal_solution_v2.services.bare_metal_solution.pagers.ListVolumeSnapshotsPager:
+                Response message containing the list
+                of volume snapshots.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a volume_snapshot.ListVolumeSnapshotsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, volume_snapshot.ListVolumeSnapshotsRequest):
+            request = volume_snapshot.ListVolumeSnapshotsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_volume_snapshots]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListVolumeSnapshotsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2519,6 +4215,129 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             request=request,
             response=response,
             metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def evict_lun(
+        self,
+        request: Optional[Union[lun.EvictLunRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Skips lun's cooloff and deletes it now.
+        Lun must be in cooloff state.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_evict_lun():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.EvictLunRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.evict_lun(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.EvictLunRequest, dict]):
+                The request object. Request for skip lun cooloff and
+                delete it.
+            name (str):
+                Required. The name of the lun.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a lun.EvictLunRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, lun.EvictLunRequest):
+            request = lun.EvictLunRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.evict_lun]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=common.OperationMetadata,
         )
 
         # Done; return the response.
@@ -2780,7 +4599,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         Args:
             request (Union[google.cloud.bare_metal_solution_v2.types.UpdateNfsShareRequest, dict]):
-                The request object. Message requesting to updating a NFS
+                The request object. Message requesting to updating an NFS
                 share.
             nfs_share (google.cloud.bare_metal_solution_v2.types.NfsShare):
                 Required. The NFS share to update.
@@ -2794,7 +4613,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The list of fields to update. The only currently
-                supported fields are: ``labels``
+                supported fields are: ``labels`` ``allowed_clients``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2862,7 +4681,1160 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             gcb_nfs_share.NfsShare,
-            metadata_type=baremetalsolution.OperationMetadata,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_nfs_share(
+        self,
+        request: Optional[Union[gcb_nfs_share.CreateNfsShareRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        nfs_share: Optional[gcb_nfs_share.NfsShare] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Create an NFS share.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_create_nfs_share():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.CreateNfsShareRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.create_nfs_share(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.CreateNfsShareRequest, dict]):
+                The request object. Message for creating an NFS share.
+            parent (str):
+                Required. The parent project and
+                location.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            nfs_share (google.cloud.bare_metal_solution_v2.types.NfsShare):
+                Required. The NfsShare to create.
+                This corresponds to the ``nfs_share`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.bare_metal_solution_v2.types.NfsShare`
+                An NFS share.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, nfs_share])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a gcb_nfs_share.CreateNfsShareRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, gcb_nfs_share.CreateNfsShareRequest):
+            request = gcb_nfs_share.CreateNfsShareRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if nfs_share is not None:
+                request.nfs_share = nfs_share
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_nfs_share]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gcb_nfs_share.NfsShare,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def rename_nfs_share(
+        self,
+        request: Optional[Union[nfs_share.RenameNfsShareRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        new_nfsshare_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> nfs_share.NfsShare:
+        r"""RenameNfsShare sets a new name for an nfsshare.
+        Use with caution, previous names become immediately
+        invalidated.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_rename_nfs_share():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.RenameNfsShareRequest(
+                    name="name_value",
+                    new_nfsshare_id="new_nfsshare_id_value",
+                )
+
+                # Make the request
+                response = client.rename_nfs_share(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.RenameNfsShareRequest, dict]):
+                The request object. Message requesting rename of a
+                server.
+            name (str):
+                Required. The ``name`` field is used to identify the
+                nfsshare. Format:
+                projects/{project}/locations/{location}/nfsshares/{nfsshare}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            new_nfsshare_id (str):
+                Required. The new ``id`` of the nfsshare.
+                This corresponds to the ``new_nfsshare_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bare_metal_solution_v2.types.NfsShare:
+                An NFS share.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, new_nfsshare_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a nfs_share.RenameNfsShareRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, nfs_share.RenameNfsShareRequest):
+            request = nfs_share.RenameNfsShareRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if new_nfsshare_id is not None:
+                request.new_nfsshare_id = new_nfsshare_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.rename_nfs_share]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_nfs_share(
+        self,
+        request: Optional[Union[nfs_share.DeleteNfsShareRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Delete an NFS share. The underlying volume is
+        automatically deleted.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_delete_nfs_share():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.DeleteNfsShareRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_nfs_share(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.DeleteNfsShareRequest, dict]):
+                The request object. Message for deleting an NFS share.
+            name (str):
+                Required. The name of the NFS share
+                to delete.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a nfs_share.DeleteNfsShareRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, nfs_share.DeleteNfsShareRequest):
+            request = nfs_share.DeleteNfsShareRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_nfs_share]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_provisioning_quotas(
+        self,
+        request: Optional[
+            Union[provisioning.ListProvisioningQuotasRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListProvisioningQuotasPager:
+        r"""List the budget details to provision resources on a
+        given project.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_list_provisioning_quotas():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.ListProvisioningQuotasRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_provisioning_quotas(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.ListProvisioningQuotasRequest, dict]):
+                The request object. Message for requesting the list of
+                provisioning quotas.
+            parent (str):
+                Required. Parent value for
+                ListProvisioningQuotasRequest.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bare_metal_solution_v2.services.bare_metal_solution.pagers.ListProvisioningQuotasPager:
+                Response message for the list of
+                provisioning quotas.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a provisioning.ListProvisioningQuotasRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, provisioning.ListProvisioningQuotasRequest):
+            request = provisioning.ListProvisioningQuotasRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_provisioning_quotas]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListProvisioningQuotasPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def submit_provisioning_config(
+        self,
+        request: Optional[
+            Union[provisioning.SubmitProvisioningConfigRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        provisioning_config: Optional[provisioning.ProvisioningConfig] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> provisioning.SubmitProvisioningConfigResponse:
+        r"""Submit a provisiong configuration for a given
+        project.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_submit_provisioning_config():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.SubmitProvisioningConfigRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.submit_provisioning_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.SubmitProvisioningConfigRequest, dict]):
+                The request object. Request for SubmitProvisioningConfig.
+            parent (str):
+                Required. The parent project and
+                location containing the
+                ProvisioningConfig.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            provisioning_config (google.cloud.bare_metal_solution_v2.types.ProvisioningConfig):
+                Required. The ProvisioningConfig to
+                create.
+
+                This corresponds to the ``provisioning_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bare_metal_solution_v2.types.SubmitProvisioningConfigResponse:
+                Response for
+                SubmitProvisioningConfig.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, provisioning_config])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a provisioning.SubmitProvisioningConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, provisioning.SubmitProvisioningConfigRequest):
+            request = provisioning.SubmitProvisioningConfigRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if provisioning_config is not None:
+                request.provisioning_config = provisioning_config
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.submit_provisioning_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_provisioning_config(
+        self,
+        request: Optional[
+            Union[provisioning.GetProvisioningConfigRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> provisioning.ProvisioningConfig:
+        r"""Get ProvisioningConfig by name.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_get_provisioning_config():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.GetProvisioningConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_provisioning_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.GetProvisioningConfigRequest, dict]):
+                The request object. Request for GetProvisioningConfig.
+            name (str):
+                Required. Name of the
+                ProvisioningConfig.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bare_metal_solution_v2.types.ProvisioningConfig:
+                A provisioning configuration.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a provisioning.GetProvisioningConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, provisioning.GetProvisioningConfigRequest):
+            request = provisioning.GetProvisioningConfigRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_provisioning_config]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_provisioning_config(
+        self,
+        request: Optional[
+            Union[provisioning.CreateProvisioningConfigRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        provisioning_config: Optional[provisioning.ProvisioningConfig] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> provisioning.ProvisioningConfig:
+        r"""Create new ProvisioningConfig.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_create_provisioning_config():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.CreateProvisioningConfigRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_provisioning_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.CreateProvisioningConfigRequest, dict]):
+                The request object. Request for CreateProvisioningConfig.
+            parent (str):
+                Required. The parent project and
+                location containing the
+                ProvisioningConfig.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            provisioning_config (google.cloud.bare_metal_solution_v2.types.ProvisioningConfig):
+                Required. The ProvisioningConfig to
+                create.
+
+                This corresponds to the ``provisioning_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bare_metal_solution_v2.types.ProvisioningConfig:
+                A provisioning configuration.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, provisioning_config])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a provisioning.CreateProvisioningConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, provisioning.CreateProvisioningConfigRequest):
+            request = provisioning.CreateProvisioningConfigRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if provisioning_config is not None:
+                request.provisioning_config = provisioning_config
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_provisioning_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_provisioning_config(
+        self,
+        request: Optional[
+            Union[provisioning.UpdateProvisioningConfigRequest, dict]
+        ] = None,
+        *,
+        provisioning_config: Optional[provisioning.ProvisioningConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> provisioning.ProvisioningConfig:
+        r"""Update existing ProvisioningConfig.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_update_provisioning_config():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.UpdateProvisioningConfigRequest(
+                )
+
+                # Make the request
+                response = client.update_provisioning_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.UpdateProvisioningConfigRequest, dict]):
+                The request object. Message for updating a
+                ProvisioningConfig.
+            provisioning_config (google.cloud.bare_metal_solution_v2.types.ProvisioningConfig):
+                Required. The ProvisioningConfig to
+                update.
+
+                This corresponds to the ``provisioning_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The list of fields to
+                update.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bare_metal_solution_v2.types.ProvisioningConfig:
+                A provisioning configuration.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([provisioning_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a provisioning.UpdateProvisioningConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, provisioning.UpdateProvisioningConfigRequest):
+            request = provisioning.UpdateProvisioningConfigRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if provisioning_config is not None:
+                request.provisioning_config = provisioning_config
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.update_provisioning_config
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("provisioning_config.name", request.provisioning_config.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def rename_network(
+        self,
+        request: Optional[Union[network.RenameNetworkRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        new_network_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> network.Network:
+        r"""RenameNetwork sets a new name for a network.
+        Use with caution, previous names become immediately
+        invalidated.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_rename_network():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.RenameNetworkRequest(
+                    name="name_value",
+                    new_network_id="new_network_id_value",
+                )
+
+                # Make the request
+                response = client.rename_network(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.RenameNetworkRequest, dict]):
+                The request object. Message requesting rename of a
+                server.
+            name (str):
+                Required. The ``name`` field is used to identify the
+                network. Format:
+                projects/{project}/locations/{location}/networks/{network}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            new_network_id (str):
+                Required. The new ``id`` of the network.
+                This corresponds to the ``new_network_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bare_metal_solution_v2.types.Network:
+                A Network.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, new_network_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a network.RenameNetworkRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, network.RenameNetworkRequest):
+            request = network.RenameNetworkRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if new_network_id is not None:
+                request.new_network_id = new_network_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.rename_network]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_os_images(
+        self,
+        request: Optional[Union[osimage.ListOSImagesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListOSImagesPager:
+        r"""Retrieves the list of OS images which are currently
+        approved.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bare_metal_solution_v2
+
+            def sample_list_os_images():
+                # Create a client
+                client = bare_metal_solution_v2.BareMetalSolutionClient()
+
+                # Initialize request argument(s)
+                request = bare_metal_solution_v2.ListOSImagesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_os_images(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.bare_metal_solution_v2.types.ListOSImagesRequest, dict]):
+                The request object. Request for getting all available OS
+                images.
+            parent (str):
+                Required. Parent value for
+                ListProvisioningQuotasRequest.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bare_metal_solution_v2.services.bare_metal_solution.pagers.ListOSImagesPager:
+                Request for getting all available OS
+                images.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a osimage.ListOSImagesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, osimage.ListOSImagesRequest):
+            request = osimage.ListOSImagesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_os_images]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListOSImagesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
