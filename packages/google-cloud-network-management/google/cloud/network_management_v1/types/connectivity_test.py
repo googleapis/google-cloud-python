@@ -197,7 +197,7 @@ class Endpoint(proto.Message):
             provide forwarding information in the control
             plane. Format:
 
-             projects/{project}/global/forwardingRules/{id}
+            projects/{project}/global/forwardingRules/{id}
             or
             projects/{project}/regions/{region}/forwardingRules/{id}
         gke_master_cluster (str):
@@ -226,6 +226,7 @@ class Endpoint(proto.Message):
                project. In this case, the network that the IP
                address resides in is defined in the host
                project.
+
     """
 
     class NetworkType(proto.Enum):
