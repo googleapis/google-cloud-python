@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.12.0](https://github.com/googleapis/python-translate/compare/v3.11.3...v3.12.0) (2023-08-08)
+
+
+### Features
+
+* Added shadow removal and rotation correction options to Document Translation and Batch Document Translation API ([#511](https://github.com/googleapis/python-translate/issues/511)) ([285059a](https://github.com/googleapis/python-translate/commit/285059ab033410226003d92b44fa83f9b4a78606))
+
 ## [3.11.3](https://github.com/googleapis/python-translate/compare/v3.11.2...v3.11.3) (2023-07-28)
 
 
