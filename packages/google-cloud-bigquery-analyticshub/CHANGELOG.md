@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.4.1...google-cloud-bigquery-analyticshub-v0.4.2) (2023-08-03)
+
+
+### Documentation
+
+* Minor formatting ([#11543](https://github.com/googleapis/google-cloud-python/issues/11543)) ([8cc031e](https://github.com/googleapis/google-cloud-python/commit/8cc031e723350890b4ceb6e813f24c4bcde3d65f))
+
 ## [0.4.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.4.0...google-cloud-bigquery-analyticshub-v0.4.1) (2023-07-05)
 
 

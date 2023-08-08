@@ -89,6 +89,7 @@ from google.cloud.netapp_v1.types.volume import (
     MountOption,
     Protocols,
     RestoreParameters,
+    RestrictedAction,
     RevertVolumeRequest,
     SecurityStyle,
     SimpleExportPolicyRule,
@@ -167,6 +168,7 @@ __all__ = (
     "WeeklySchedule",
     "AccessType",
     "Protocols",
+    "RestrictedAction",
     "SecurityStyle",
     "SMBSettings",
 )

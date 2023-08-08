@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tpu-v1.12.0...google-cloud-tpu-v1.13.0) (2023-08-03)
+
+
+### Features
+
+* Add `spot` tier in v2alpha Create QueuedResource API request ([#11526](https://github.com/googleapis/google-cloud-python/issues/11526)) ([5ad269d](https://github.com/googleapis/google-cloud-python/commit/5ad269d1c897e8725acd7e002a788c12e814c27e))
+
 ## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tpu-v1.11.2...google-cloud-tpu-v1.12.0) (2023-07-25)
 
 

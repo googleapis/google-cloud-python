@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.2.1...google-cloud-advisorynotifications-v0.3.0) (2023-08-03)
+
+
+### Features
+
+* Add `NOTIFICATION_TYPE_SECURITY_MSA` and `NOTIFICATION_TYPE_THREAT_HORIZONS` notification types ([#11538](https://github.com/googleapis/google-cloud-python/issues/11538)) ([4679f2a](https://github.com/googleapis/google-cloud-python/commit/4679f2a4b6f4bcb16d63fde3cb5ba836340af6c0))
+
 ## [0.2.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.2.0...google-cloud-advisorynotifications-v0.2.1) (2023-07-05)
 
 

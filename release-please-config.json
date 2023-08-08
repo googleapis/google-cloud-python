@@ -396,25 +396,6 @@
             ],
             "release-type": "python"
         },
-        "packages/google-cloud-commerce-consumer-procurement": {
-            "component": "google-cloud-commerce-consumer-procurement",
-            "extra-files": [
-                "google/cloud/commerce/consumer/procurement/gapic_version.py",
-                "google/cloud/commerce/consumer/procurement_v1/gapic_version.py",
-                "google/cloud/commerce/consumer/procurement_v1alpha1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.commerce.consumer.procurement.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.commerce.consumer.procurement.v1alpha1.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
         "packages/google-cloud-confidentialcomputing": {
             "component": "google-cloud-confidentialcomputing",
             "extra-files": [
@@ -949,7 +930,6 @@
             "extra-files": [
                 "google/cloud/netapp/gapic_version.py",
                 "google/cloud/netapp_v1/gapic_version.py",
-                "google/cloud/netapp_v1beta1/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.netapp.v1.json",
@@ -1068,6 +1048,19 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.policytroubleshooter.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-policysimulator": {
+            "component": "google-cloud-policysimulator",
+            "extra-files": [
+                "google/cloud/policysimulator/gapic_version.py",
+                "google/cloud/policysimulator_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.policysimulator.v1.json",
                     "type": "json"
                 }
             ],

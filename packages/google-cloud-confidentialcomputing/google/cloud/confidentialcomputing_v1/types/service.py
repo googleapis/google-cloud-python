@@ -372,12 +372,12 @@ class ContainerImageSignature(proto.Message):
 
     Attributes:
         payload (bytes):
-            Required. The binary signature payload following the
+            Optional. The binary signature payload following the
             SimpleSigning format
             https://github.com/sigstore/cosign/blob/main/specs/SIGNATURE_SPEC.md#simple-signing.
             This payload includes the container image digest.
         signature (bytes):
-            Required. A signature over the payload. The container image
+            Optional. A signature over the payload. The container image
             digest is incorporated into the signature as follows:
 
             1. Generate a SimpleSigning format payload that includes the
@@ -387,11 +387,9 @@ class ContainerImageSignature(proto.Message):
                follows:
                ``Sign(sha256(SimpleSigningPayload(sha256(Image Manifest))))``
         public_key (bytes):
-            Required. An associated public key used to
-            verify the signature.
+            Optional. Reserved for future use.
         sig_alg (google.cloud.confidentialcomputing_v1.types.SigningAlgorithm):
-            Required. The algorithm used to produce the
-            container image signature.
+            Optional. Reserved for future use.
     """
 
     payload: bytes = proto.Field(
