@@ -220,12 +220,12 @@ class Endpoint(proto.Message):
             provide the project ID:
 
             1. Only the IP address is specified, and the IP
-            address is within a Google Cloud project.
+               address is within a Google Cloud project.
             2. When you are using Shared VPC and the IP
-            address that you provide is from the service
-            project. In this case, the network that the IP
-            address resides in is defined in the host
-            project.
+               address that you provide is from the service
+               project. In this case, the network that the IP
+               address resides in is defined in the host
+               project.
     """
 
     class NetworkType(proto.Enum):
