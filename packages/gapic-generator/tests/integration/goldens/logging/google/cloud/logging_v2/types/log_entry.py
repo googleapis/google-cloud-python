@@ -90,6 +90,7 @@ class LogEntry(proto.Message):
             protocol buffer. Some Google Cloud Platform
             services use this field for their log entry
             payloads.
+
             The following protocol buffer types are
             supported; user-defined types are not supported:
 

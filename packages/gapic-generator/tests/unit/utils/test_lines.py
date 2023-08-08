@@ -101,6 +101,15 @@ Wales falls mainly on the snails."""
     assert lines.wrap(input, width=60) == expected
 
 
+def test_lines_which_have_2_spaces_following_period():
+    input = """Information related to the a standard versioned package.  This includes
+package info for APT, Yum, Zypper, and Googet package managers."""
+    expected = """Information related to the a standard versioned package.
+This includes package info for APT, Yum, Zypper, and Googet
+package managers."""
+    assert lines.wrap(input, width=60) == expected
+
+
 def test_list_each_item_in_list_has_new_line():
     input = """Type of weather:
 - Hail
@@ -176,4 +185,64 @@ def test_new_line_added_short_text_before_list():
   finally clear sky
 - Rain
 - Snow"""
+    assert lines.wrap(input, width=60) == expected
+
+
+def test_new_line_preserved_short_text_before_list_without_colon():
+    input = """Today's forecast will have different weather.
+
+- A mix of hail and snow, followed by rain clouds, then finally clear sky
+- Rain
+- Snow"""
+    expected = """Today's forecast will have different weather.
+
+- A mix of hail and snow, followed by rain clouds, then
+  finally clear sky
+- Rain
+- Snow"""
+    assert lines.wrap(input, width=60) == expected
+
+
+def test_list_with_multiple_paragraphs():
+    input = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porta euismod est a viverra. Integer vulputate ipsum id lacus tincidunt, id tincidunt tortor ullamcorper. Vestibulum facilisis at nulla nec lobortis. Nunc consectetur suscipit lacus id aliquam.
+
+Donec et urna aliquam, efficitur mauris et, consectetur enim. Aliquam aliquet turpis eget erat gravida condimentum. Sed vel feugiat risus.
+
+Sed interdum.
+
+Convallis turpis nec congue. Integer vulputate sed urna eu mollis. Mauris in congue nisi, sed pellentesque ex.
+
+- Ut vestibulum
+- consequat imperdiet
+- Integer rhoncus varius. Ante, ac tempus augue
+finibus sit amet. Integer ac fermentum neque, a sodales nibh. Mauris et dictum ipsum. Integer sit amet posuere urna. Nullam cursus molestie posuere. Praesent imperdiet cursus purus, in posuere odio. 
+- Orci varius natoque penatibus et
+
+Aagnis dis parturient montes, nascetur ridiculus mus. Mauris mattis turpis quis hendrerit gravida. Curabitur nec diam erat. In nec est nisl. Quisque ut orci efficitur, vestibulum ante non, vestibulum erat. Donec mollis ultricies nisl."""
+    expected = """Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Donec porta euismod est a viverra. Integer vulputate ipsum
+id lacus tincidunt, id tincidunt tortor ullamcorper.
+Vestibulum facilisis at nulla nec lobortis. Nunc consectetur
+suscipit lacus id aliquam.  Donec et urna aliquam, efficitur
+mauris et, consectetur enim. Aliquam aliquet turpis eget
+erat gravida condimentum. Sed vel feugiat risus.
+
+Sed interdum.
+
+Convallis turpis nec congue. Integer vulputate sed urna eu
+mollis. Mauris in congue nisi, sed pellentesque ex.
+
+- Ut vestibulum
+- consequat imperdiet
+- Integer rhoncus varius. Ante, ac tempus augue finibus sit
+  amet. Integer ac fermentum neque, a sodales nibh. Mauris
+  et dictum ipsum. Integer sit amet posuere urna. Nullam
+  cursus molestie posuere. Praesent imperdiet cursus purus,
+  in posuere odio.
+- Orci varius natoque penatibus et
+
+Aagnis dis parturient montes, nascetur ridiculus mus. Mauris
+mattis turpis quis hendrerit gravida. Curabitur nec diam
+erat. In nec est nisl. Quisque ut orci efficitur, vestibulum
+ante non, vestibulum erat. Donec mollis ultricies nisl."""
     assert lines.wrap(input, width=60) == expected

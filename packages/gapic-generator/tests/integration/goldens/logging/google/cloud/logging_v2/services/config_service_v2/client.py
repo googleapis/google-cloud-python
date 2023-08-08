@@ -491,6 +491,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         Returns:
             google.cloud.logging_v2.services.config_service_v2.pagers.ListBucketsPager:
                 The response from ListBuckets.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -997,6 +998,7 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         Returns:
             google.cloud.logging_v2.services.config_service_v2.pagers.ListViewsPager:
                 The response from ListViews.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

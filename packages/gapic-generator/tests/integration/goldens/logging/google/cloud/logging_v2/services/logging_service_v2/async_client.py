@@ -818,6 +818,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         Returns:
             google.cloud.logging_v2.services.logging_service_v2.pagers.ListLogsAsyncPager:
                 Result returned from ListLogs.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

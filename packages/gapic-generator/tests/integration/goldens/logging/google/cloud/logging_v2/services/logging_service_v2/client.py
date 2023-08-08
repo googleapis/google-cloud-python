@@ -980,6 +980,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         Returns:
             google.cloud.logging_v2.services.logging_service_v2.pagers.ListLogsPager:
                 Result returned from ListLogs.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

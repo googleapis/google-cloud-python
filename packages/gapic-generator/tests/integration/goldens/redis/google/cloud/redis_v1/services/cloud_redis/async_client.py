@@ -1021,6 +1021,7 @@ class CloudRedisAsyncClient:
         r"""Export Redis instance data into a Redis RDB format
         file in Cloud Storage.
         Redis will continue serving during this operation.
+
         The returned operation is automatically deleted after a
         few hours, so there is no need to call DeleteOperation.
 

@@ -153,6 +153,7 @@ class EventFilter(proto.Message):
             Required. The name of a CloudEvents
             attribute. Currently, only a subset of
             attributes are supported for filtering.
+
             All triggers MUST provide a filter for the
             'type' attribute.
         value (str):
@@ -222,6 +223,7 @@ class CloudRun(proto.Message):
             Required. The name of the Cloud Run service
             being addressed. See
             https://cloud.google.com/run/docs/reference/rest/v1/namespaces.services.
+
             Only services located in the same project of the
             trigger object can be addressed.
         path (str):

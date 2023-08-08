@@ -441,6 +441,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         Returns:
             google.cloud.logging_v2.services.metrics_service_v2.pagers.ListLogMetricsPager:
                 Result returned from ListLogMetrics.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -558,6 +559,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 value of the metric is the number of log
                 entries that match a logs filter in a
                 given time interval.
+
                 Logs-based metrics can also be used to
                 extract values from logs and create a
                 distribution of the values. The
@@ -687,6 +689,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 value of the metric is the number of log
                 entries that match a logs filter in a
                 given time interval.
+
                 Logs-based metrics can also be used to
                 extract values from logs and create a
                 distribution of the values. The
@@ -817,6 +820,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 value of the metric is the number of log
                 entries that match a logs filter in a
                 given time interval.
+
                 Logs-based metrics can also be used to
                 extract values from logs and create a
                 distribution of the values. The

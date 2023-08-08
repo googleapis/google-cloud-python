@@ -567,6 +567,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.ListAssetsPager:
                 ListAssets response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1388,6 +1389,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.SearchAllResourcesPager:
                 Search all resources response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1576,6 +1578,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.SearchAllIamPoliciesPager:
                 Search all IAM policies response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

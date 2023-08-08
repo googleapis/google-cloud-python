@@ -363,6 +363,7 @@ class AssetServiceAsyncClient:
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.ListAssetsAsyncPager:
                 ListAssets response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1211,6 +1212,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.SearchAllResourcesAsyncPager:
                 Search all resources response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1406,6 +1408,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.SearchAllIamPoliciesAsyncPager:
                 Search all IAM policies response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

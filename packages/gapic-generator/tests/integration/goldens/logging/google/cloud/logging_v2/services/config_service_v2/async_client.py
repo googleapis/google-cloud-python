@@ -261,6 +261,7 @@ class ConfigServiceV2AsyncClient:
         Returns:
             google.cloud.logging_v2.services.config_service_v2.pagers.ListBucketsAsyncPager:
                 The response from ListBuckets.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -762,6 +763,7 @@ class ConfigServiceV2AsyncClient:
         Returns:
             google.cloud.logging_v2.services.config_service_v2.pagers.ListViewsAsyncPager:
                 The response from ListViews.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
