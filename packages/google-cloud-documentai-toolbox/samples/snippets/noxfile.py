@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
 from __future__ import print_function
 
 import glob
@@ -42,7 +43,7 @@ TEST_CONFIG = {
     "ignored_versions": ["2.7", "3.6"],
     # Old samples are opted out of enforcing Python type hints
     # All new samples should feature them
-    "enforce_type_hints": False,
+    "enforce_type_hints": True,
     # An envvar key for determining the project id to use. Change it
     # to 'BUILD_SPECIFIC_GCLOUD_PROJECT' if you want to opt in using a
     # build specific Cloud project. You can also use your own string
@@ -88,7 +89,7 @@ def get_pytest_env_vars() -> Dict[str, str]:
 
 # DO NOT EDIT - automatically generated.
 # All versions used to tested samples.
-ALL_VERSIONS = ["2.7", "3.6", "3.7", "3.8", "3.9", "3.10"]
+ALL_VERSIONS = ["2.7", "3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
 
 # Any default versions that should be ignored.
 IGNORED_VERSIONS = TEST_CONFIG["ignored_versions"]
@@ -194,23 +195,42 @@ def _session_tests(
     if TEST_CONFIG["pip_version_override"]:
         pip_version = TEST_CONFIG["pip_version_override"]
         session.install(f"pip=={pip_version}")
+    else:
+        session.install("--upgrade", "pip")
+
     """Runs py.test for a particular project."""
     concurrent_args = []
     if os.path.exists("requirements.txt"):
-        if os.path.exists("constraints.txt"):
-            session.install("-r", "requirements.txt", "-c", "constraints.txt")
-        else:
-            session.install("-r", "requirements.txt")
         with open("requirements.txt") as rfile:
             packages = rfile.read()
+        if os.path.exists("constraints.txt"):
+            session.install(
+                "-r",
+                "requirements.txt",
+                "-c",
+                "constraints.txt",
+                "--only-binary",
+                ":all",
+            )
+        elif "pyspark" in packages:
+            session.install("-r", "requirements.txt", "--use-pep517")
+        else:
+            session.install("-r", "requirements.txt", "--only-binary", ":all")
 
     if os.path.exists("requirements-test.txt"):
-        if os.path.exists("constraints-test.txt"):
-            session.install("-r", "requirements-test.txt", "-c", "constraints-test.txt")
-        else:
-            session.install("-r", "requirements-test.txt")
         with open("requirements-test.txt") as rtfile:
             packages += rtfile.read()
+        if os.path.exists("constraints-test.txt"):
+            session.install(
+                "-r",
+                "requirements-test.txt",
+                "-c",
+                "constraints-test.txt",
+                "--only-binary",
+                ":all",
+            )
+        else:
+            session.install("-r", "requirements-test.txt", "--only-binary", ":all")
 
     if INSTALL_LIBRARY_FROM_SOURCE:
         session.install("-e", _get_repo_root())
