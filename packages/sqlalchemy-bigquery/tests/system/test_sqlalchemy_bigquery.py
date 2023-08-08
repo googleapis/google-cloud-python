@@ -432,7 +432,7 @@ def test_labels(session, table, session_using_test_dataset, table_using_test_dat
             # Valid
             table.c.string.label("_123abc"),
             # Invalid, contains illegal characters
-            table.c.string.label("!@#$%^&*()~`"),
+            table.c.string.label("!@$^*()\n{};/,.~abc"),
         )
         result = result.all()
         assert len(result) > 0
