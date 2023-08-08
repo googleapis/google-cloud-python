@@ -630,7 +630,7 @@ class OutputConfig(proto.Message):
             Since index.csv will be keeping updated during the process,
             please make sure there is no custom retention policy applied
             on the output bucket that may avoid file updating.
-            (https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy)
+            (https://cloud.google.com/storage/docs/bucket-lock#retention-policy)
 
             The format of translations_file (for target language code
             'trg') is:
@@ -887,6 +887,26 @@ class TranslateDocumentRequest(proto.Message):
             See
             https://cloud.google.com/translate/docs/advanced/labels
             for more information.
+        customized_attribution (str):
+            Optional. This flag is to support user customized
+            attribution. If not provided, the default is
+            ``Machine Translated by Google``. Customized attribution
+            should follow rules in
+            https://cloud.google.com/translate/attribution#attribution_and_logos
+        is_translate_native_pdf_only (bool):
+            Optional. is_translate_native_pdf_only field for external
+            customers. If true, the page limit of online native pdf
+            translation is 300 and only native pdf pages will be
+            translated.
+        enable_shadow_removal_native_pdf (bool):
+            Optional. If true, use the text removal server to remove the
+            shadow text on background image for native pdf translation.
+            Shadow removal feature can only be enabled when
+            is_translate_native_pdf_only: false && pdf_native_only:
+            false
+        enable_rotation_correction (bool):
+            Optional. If true, enable auto rotation
+            correction in DVS.
     """
 
     parent: str = proto.Field(
@@ -924,6 +944,22 @@ class TranslateDocumentRequest(proto.Message):
         proto.STRING,
         proto.STRING,
         number=8,
+    )
+    customized_attribution: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    is_translate_native_pdf_only: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
+    enable_shadow_removal_native_pdf: bool = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
+    enable_rotation_correction: bool = proto.Field(
+        proto.BOOL,
+        number=13,
     )
 
 
@@ -1266,10 +1302,9 @@ class GlossaryInputConfig(proto.Message):
             For equivalent term sets glossaries:
 
             -  CSV (``.csv``): Multi-column CSV file defining equivalent
-               glossary terms in multiple languages. The format is
-               defined for Google Translation Toolkit and documented in
-               `Use a
-               glossary <https://support.google.com/translatortoolkit/answer/6306379?hl=en>`__.
+               glossary terms in multiple languages. See documentation
+               for more information -
+               `glossaries <https://cloud.google.com/translate/docs/advanced/glossary>`__.
 
             This field is a member of `oneof`_ ``source``.
     """
@@ -1760,6 +1795,21 @@ class BatchTranslateDocumentRequest(proto.Message):
 
             If nothing specified, output files will be in the same
             format as the original file.
+        customized_attribution (str):
+            Optional. This flag is to support user customized
+            attribution. If not provided, the default is
+            ``Machine Translated by Google``. Customized attribution
+            should follow rules in
+            https://cloud.google.com/translate/attribution#attribution_and_logos
+        enable_shadow_removal_native_pdf (bool):
+            Optional. If true, use the text removal server to remove the
+            shadow text on background image for native pdf translation.
+            Shadow removal feature can only be enabled when
+            is_translate_native_pdf_only: false && pdf_native_only:
+            false
+        enable_rotation_correction (bool):
+            Optional. If true, enable auto rotation
+            correction in DVS.
     """
 
     parent: str = proto.Field(
@@ -1799,6 +1849,18 @@ class BatchTranslateDocumentRequest(proto.Message):
         proto.STRING,
         proto.STRING,
         number=8,
+    )
+    customized_attribution: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    enable_shadow_removal_native_pdf: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
+    enable_rotation_correction: bool = proto.Field(
+        proto.BOOL,
+        number=12,
     )
 
 

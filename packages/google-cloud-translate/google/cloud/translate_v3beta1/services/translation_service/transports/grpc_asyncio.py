@@ -414,12 +414,12 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
     ]:
         r"""Return a callable for the batch translate document method over gRPC.
 
-        Translates a large volume of documents in
-        asynchronous batch mode. This function provides
-        real-time output as the inputs are being processed. If
-        caller cancels a request, the partial results (for an
-        input file, it's all or nothing) may still be available
-        on the specified output location.
+        Translates a large volume of document in asynchronous
+        batch mode. This function provides real-time output as
+        the inputs are being processed. If caller cancels a
+        request, the partial results (for an input file, it's
+        all or nothing) may still be available on the specified
+        output location.
         This call returns immediately and you can use
         google.longrunning.Operation.name to poll the status of
         the call.

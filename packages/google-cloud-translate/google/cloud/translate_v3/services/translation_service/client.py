@@ -550,7 +550,7 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
                 ``projects/{project-number-or-id}/locations/global/models/general/nmt``.
 
                 If not provided, the default Google model (NMT) will be
-                used.
+                used
 
                 This corresponds to the ``model`` field
                 on the ``request`` instance; if ``request`` is provided, this
