@@ -9845,6 +9845,18 @@ class MonitoringComponentConfig(proto.Message):
                 kube-scheduler
             CONTROLLER_MANAGER (5):
                 kube-controller-manager
+            STORAGE (7):
+                Storage
+            HPA (8):
+                Horizontal Pod Autoscaling
+            POD (9):
+                Pod
+            DAEMONSET (10):
+                DaemonSet
+            DEPLOYMENT (11):
+                Deployment
+            STATEFULSET (12):
+                Statefulset
         """
         COMPONENT_UNSPECIFIED = 0
         SYSTEM_COMPONENTS = 1
@@ -9852,6 +9864,12 @@ class MonitoringComponentConfig(proto.Message):
         APISERVER = 3
         SCHEDULER = 4
         CONTROLLER_MANAGER = 5
+        STORAGE = 7
+        HPA = 8
+        POD = 9
+        DAEMONSET = 10
+        DEPLOYMENT = 11
+        STATEFULSET = 12
 
     enable_components: MutableSequence[Component] = proto.RepeatedField(
         proto.ENUM,
