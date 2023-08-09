@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.14.0...google-cloud-datacatalog-v3.15.0) (2023-08-09)
+
+
+### Features
+
+* add support for admin_search in SearchCatalog() API method ([#11539](https://github.com/googleapis/google-cloud-python/issues/11539)) ([6dced1a](https://github.com/googleapis/google-cloud-python/commit/6dced1ad7fa20372241b7384cfbeabf0ad6f5e25))
+
 ## [3.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.13.1...google-cloud-datacatalog-v3.14.0) (2023-07-10)
 
 
