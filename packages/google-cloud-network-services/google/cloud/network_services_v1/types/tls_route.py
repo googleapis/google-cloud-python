@@ -114,11 +114,12 @@ class TlsRoute(proto.Message):
             sni_host (MutableSequence[str]):
                 Optional. SNI (server name indicator) to match against. SNI
                 will be matched against all wildcard domains, i.e.
-                www.example.com will be first matched against
-                www.example.com, then \*.example.com, then \*.com. Partial
-                wildcards are not supported, and values like \*w.example.com
-                are invalid. At least one of sni_host and alpn is required.
-                Up to 5 sni hosts across all matches can be set.
+                ``www.example.com`` will be first matched against
+                ``www.example.com``, then ``*.example.com``, then ``*.com.``
+                Partial wildcards are not supported, and values like
+                \*w.example.com are invalid. At least one of sni_host and
+                alpn is required. Up to 5 sni hosts across all matches can
+                be set.
             alpn (MutableSequence[str]):
                 Optional. ALPN (Application-Layer Protocol Negotiation) to
                 match against. Examples: "http/1.1", "h2". At least one of
@@ -164,8 +165,10 @@ class TlsRoute(proto.Message):
             weight (int):
                 Optional. Specifies the proportion of requests forwareded to
                 the backend referenced by the service_name field. This is
-                computed as: weight/Sum(weights in destinations) Weights in
-                all destinations does not need to sum up to 100.
+                computed as:
+
+                -  weight/Sum(weights in destinations) Weights in all
+                   destinations does not need to sum up to 100.
         """
 
         service_name: str = proto.Field(
@@ -298,7 +301,7 @@ class CreateTlsRouteRequest(proto.Message):
             the format ``projects/*/locations/global``.
         tls_route_id (str):
             Required. Short name of the TlsRoute resource
-            to be created. E.g. TODO(Add an example).
+            to be created.
         tls_route (google.cloud.network_services_v1.types.TlsRoute):
             Required. TlsRoute resource to be created.
     """

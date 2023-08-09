@@ -64,14 +64,14 @@ class HttpRoute(proto.Message):
             exception that:
 
             -  IPs are not allowed.
-            -  A hostname may be prefixed with a wildcard label (\*.).
-               The wildcard label must appear by itself as the first
-               label.
+            -  A hostname may be prefixed with a wildcard label
+               (``*.``). The wildcard label must appear by itself as the
+               first label.
 
             Hostname can be "precise" which is a domain name without the
-            terminating dot of a network host (e.g. "foo.example.com")
+            terminating dot of a network host (e.g. ``foo.example.com``)
             or "wildcard", which is a domain name prefixed with a single
-            wildcard label (e.g. \*.example.com).
+            wildcard label (e.g. ``*.example.com``).
 
             Note that as per RFC1035 and RFC1123, a label must consist
             of lower case alphanumeric characters or '-', and must start
@@ -84,10 +84,10 @@ class HttpRoute(proto.Message):
             rejected.
 
             For example, while it is acceptable for routes for the
-            hostnames "\*.foo.bar.com" and "\*.bar.com" to be associated
-            with the same Mesh (or Gateways under the same scope), it is
-            not possible to associate two routes both with "\*.bar.com"
-            or both with "bar.com".
+            hostnames ``*.foo.bar.com`` and ``*.bar.com`` to be
+            associated with the same Mesh (or Gateways under the same
+            scope), it is not possible to associate two routes both with
+            ``*.bar.com`` or both with ``bar.com``.
         meshes (MutableSequence[str]):
             Optional. Meshes defines a list of meshes this HttpRoute is
             attached to, as one of the routing rules to route the
@@ -382,10 +382,13 @@ class HttpRoute(proto.Message):
                 Specifies the proportion of requests
                 forwarded to the backend referenced by the
                 serviceName field. This is computed as:
-                weight/Sum(weights in this destination list).
-                For non-zero values, there may be some epsilon
-                from the exact proportion defined here depending
-                on the precision an implementation supports.
+
+                - weight/Sum(weights in this destination list).
+                  For non-zero values, there may be some epsilon
+                  from the exact proportion defined here
+                  depending on the precision an implementation
+                  supports.
+
                 If only one serviceName is specified and it has
                 a weight greater than 0, 100% of the traffic is
                 forwarded to that backend.
@@ -805,11 +808,18 @@ class HttpRoute(proto.Message):
             request_header_modifier (google.cloud.network_services_v1.types.HttpRoute.HeaderModifier):
                 The specification for modifying the headers
                 of a matching request prior to delivery of the
-                request to the destination.
+                request to the destination. If HeaderModifiers
+                are set on both the Destination and the
+                RouteAction, they will be merged. Conflicts
+                between the two will not be resolved on the
+                configuration.
             response_header_modifier (google.cloud.network_services_v1.types.HttpRoute.HeaderModifier):
                 The specification for modifying the headers
                 of a response prior to sending the response back
-                to the client.
+                to the client. If HeaderModifiers are set on
+                both the Destination and the RouteAction, they
+                will be merged. Conflicts between the two will
+                not be resolved on the configuration.
             url_rewrite (google.cloud.network_services_v1.types.HttpRoute.URLRewrite):
                 The specification for rewrite URL before
                 forwarding requests to the destination.

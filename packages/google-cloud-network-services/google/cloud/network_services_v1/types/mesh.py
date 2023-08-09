@@ -68,7 +68,7 @@ class Mesh(proto.Message):
             traffic to be redirected to this port regardless
             of its actual ip:port destination. If unset, a
             port '15001' is used as the interception port.
-            This will is applicable only for sidecar proxy
+            This is applicable only for sidecar proxy
             deployments.
     """
 

@@ -3085,8 +3085,7 @@ class NetworkServicesAsyncClient:
                 should not be set.
             tcp_route_id (:class:`str`):
                 Required. Short name of the TcpRoute
-                resource to be created. E.g. TODO(Add an
-                example).
+                resource to be created.
 
                 This corresponds to the ``tcp_route_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3704,8 +3703,7 @@ class NetworkServicesAsyncClient:
                 should not be set.
             tls_route_id (:class:`str`):
                 Required. Short name of the TlsRoute
-                resource to be created. E.g. TODO(Add an
-                example).
+                resource to be created.
 
                 This corresponds to the ``tls_route_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

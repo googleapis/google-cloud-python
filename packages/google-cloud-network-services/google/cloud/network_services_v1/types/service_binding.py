@@ -41,7 +41,7 @@ class ServiceBinding(proto.Message):
         name (str):
             Required. Name of the ServiceBinding resource. It matches
             pattern
-            ``projects/*/locations/global/serviceBindings/service_binding_name>``.
+            ``projects/*/locations/global/serviceBindings/service_binding_name``.
         description (str):
             Optional. A free-text description of the
             resource. Max length 1024 characters.

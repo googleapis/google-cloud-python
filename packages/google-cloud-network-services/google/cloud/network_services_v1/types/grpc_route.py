@@ -70,14 +70,14 @@ class GrpcRoute(proto.Message):
             with 2 notable exceptions:
 
             -  IPs are not allowed.
-            -  A hostname may be prefixed with a wildcard label (\*.).
-               The wildcard label must appear by itself as the first
-               label.
+            -  A hostname may be prefixed with a wildcard label
+               (``*.``). The wildcard label must appear by itself as the
+               first label.
 
             Hostname can be "precise" which is a domain name without the
-            terminating dot of a network host (e.g. "foo.example.com")
+            terminating dot of a network host (e.g. ``foo.example.com``)
             or "wildcard", which is a domain name prefixed with a single
-            wildcard label (e.g. \*.example.com).
+            wildcard label (e.g. ``*.example.com``).
 
             Note that as per RFC1035 and RFC1123, a label must consist
             of lower case alphanumeric characters or '-', and must start
@@ -90,9 +90,10 @@ class GrpcRoute(proto.Message):
             rejected.
 
             For example, while it is acceptable for routes for the
-            hostnames "\*.foo.bar.com" and "\*.bar.com" to be associated
-            with the same route, it is not possible to associate two
-            routes both with "\*.bar.com" or both with "bar.com".
+            hostnames ``*.foo.bar.com`` and ``*.bar.com`` to be
+            associated with the same route, it is not possible to
+            associate two routes both with ``*.bar.com`` or both with
+            ``bar.com``.
 
             If a port is specified, then gRPC clients must use the
             channel URI with the port to match this rule (i.e.
@@ -272,10 +273,13 @@ class GrpcRoute(proto.Message):
                 Optional. Specifies the proportion of
                 requests forwarded to the backend referenced by
                 the serviceName field. This is computed as:
-                weight/Sum(weights in this destination list).
-                For non-zero values, there may be some epsilon
-                from the exact proportion defined here depending
-                on the precision an implementation supports.
+
+                - weight/Sum(weights in this destination list).
+                  For non-zero values, there may be some epsilon
+                  from the exact proportion defined here
+                  depending on the precision an implementation
+                  supports.
+
                 If only one serviceName is specified and it has
                 a weight greater than 0, 100% of the traffic is
                 forwarded to that backend.
