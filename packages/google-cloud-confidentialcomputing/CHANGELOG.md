@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.2.0...google-cloud-confidentialcomputing-v0.3.0) (2023-08-09)
+
+
+### Features
+
+* Mark all fields `Optional` for `ContainerImageSignagure` proto ([#11547](https://github.com/googleapis/google-cloud-python/issues/11547)) ([f6a6175](https://github.com/googleapis/google-cloud-python/commit/f6a617587e1591c6b3aaa6b41a901f40b95b0f73))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.1.1...google-cloud-confidentialcomputing-v0.2.0) (2023-08-03)
 
 

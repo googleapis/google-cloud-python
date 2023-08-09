@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.2.0...google-cloud-netapp-v0.3.0) (2023-08-09)
+
+
+### Features
+
+* add actions for Operations and Locations ([a3f4a23](https://github.com/googleapis/google-cloud-python/commit/a3f4a236b14bec15f0cbed7a2c40d81cb818efb4))
+* add RestrictedAction to Volume ([a3f4a23](https://github.com/googleapis/google-cloud-python/commit/a3f4a236b14bec15f0cbed7a2c40d81cb818efb4))
+
+
+### Documentation
+
+* add comments to a few messages ([a3f4a23](https://github.com/googleapis/google-cloud-python/commit/a3f4a236b14bec15f0cbed7a2c40d81cb818efb4))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.1.0...google-cloud-netapp-v0.2.0) (2023-08-03)
 
 
