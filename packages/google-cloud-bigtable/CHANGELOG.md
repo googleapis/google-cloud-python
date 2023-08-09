@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.21.0](https://github.com/googleapis/python-bigtable/compare/v2.20.0...v2.21.0) (2023-08-02)
+
+
+### Features
+
+* Add last_scanned_row_responses to FeatureFlags ([#845](https://github.com/googleapis/python-bigtable/issues/845)) ([14a6739](https://github.com/googleapis/python-bigtable/commit/14a673901f82fa247c8027730a0bba41e0ec4757))
+
+
+### Documentation
+
+* Minor formatting ([#851](https://github.com/googleapis/python-bigtable/issues/851)) ([5ebe231](https://github.com/googleapis/python-bigtable/commit/5ebe2312dab70210811fca68c6625d2546442afd))
+
 ## [2.20.0](https://github.com/googleapis/python-bigtable/compare/v2.19.0...v2.20.0) (2023-07-17)
 
 
