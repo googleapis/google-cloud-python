@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.10.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.9.1-alpha...v0.10.0-alpha) (2023-08-09)
+
+
+### Features
+
+* Add export merged sharded Document proto ([#145](https://github.com/googleapis/python-documentai-toolbox/issues/145)) ([a5e1f5c](https://github.com/googleapis/python-documentai-toolbox/commit/a5e1f5c331025d2cd748c952147f206595431cc7))
+
+
+### Bug Fixes
+
+* Update noxfile.py ([#129](https://github.com/googleapis/python-documentai-toolbox/issues/129)) ([e4db698](https://github.com/googleapis/python-documentai-toolbox/commit/e4db698d2de4bbe08417ff297523d0ac834d3031))
+
 ## [0.9.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.9.0-alpha...v0.9.1-alpha) (2023-07-27)
 
 

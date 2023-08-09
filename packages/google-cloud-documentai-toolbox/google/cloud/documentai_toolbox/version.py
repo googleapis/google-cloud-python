@@ -13,4 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-__version__ = "0.9.1-alpha"
+__version__ = "0.10.0-alpha"
