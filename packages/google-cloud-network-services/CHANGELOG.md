@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.3](https://github.com/googleapis/python-network-services/compare/v0.5.2...v0.5.3) (2023-08-09)
+
+
+### Documentation
+
+* Add clarifications for fields in `RouteAction` message ([4ebd038](https://github.com/googleapis/python-network-services/commit/4ebd038751c9b6d82b1bc5df76507520170d259c))
+* Minor formatting ([4ebd038](https://github.com/googleapis/python-network-services/commit/4ebd038751c9b6d82b1bc5df76507520170d259c))
+
 ## [0.5.2](https://github.com/googleapis/python-network-services/compare/v0.5.1...v0.5.2) (2023-07-04)
 
 
