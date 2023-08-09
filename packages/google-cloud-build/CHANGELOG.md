@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.20.0](https://github.com/googleapis/python-cloudbuild/compare/v3.19.0...v3.20.0) (2023-08-08)
+
+
+### Features
+
+* Add automap_substitutions flag to use substitutions as envs in Cloud Build ([a1e03be](https://github.com/googleapis/python-cloudbuild/commit/a1e03be14459c19421bc4cc5af90ef4618980761))
+* Add git_file_source and git_repo_source to build_trigger ([a1e03be](https://github.com/googleapis/python-cloudbuild/commit/a1e03be14459c19421bc4cc5af90ef4618980761))
+* Add update_mask to UpdateBuildTriggerRequest proto ([a1e03be](https://github.com/googleapis/python-cloudbuild/commit/a1e03be14459c19421bc4cc5af90ef4618980761))
+
 ## [3.19.0](https://github.com/googleapis/python-cloudbuild/compare/v3.18.0...v3.19.0) (2023-07-17)
 
 
