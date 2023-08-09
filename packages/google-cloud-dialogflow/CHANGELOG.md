@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.23.3](https://github.com/googleapis/python-dialogflow/compare/v2.23.2...v2.23.3) (2023-08-03)
+
+
+### Documentation
+
+* Minor formatting ([#658](https://github.com/googleapis/python-dialogflow/issues/658)) ([4a2c65c](https://github.com/googleapis/python-dialogflow/commit/4a2c65c8114a3d1375ceabe9bba74ad7031d7f6d))
+* Minor formatting ([#664](https://github.com/googleapis/python-dialogflow/issues/664)) ([466e6dd](https://github.com/googleapis/python-dialogflow/commit/466e6ddfceb74a2621234203f55e7da45cd9c78e))
+
 ## [2.23.2](https://github.com/googleapis/python-dialogflow/compare/v2.23.1...v2.23.2) (2023-07-10)
 
 
