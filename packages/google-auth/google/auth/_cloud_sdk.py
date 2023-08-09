@@ -23,9 +23,7 @@ from google.auth import exceptions
 
 
 # The ~/.config subdirectory containing gcloud credentials.
-_CONFIG_DIRECTORY_GCLOUD = "gcloud"
-# The ~/.config subdirectory containing gcloud credentials for bq.
-_CONFIG_DIRECTORY_BQ = "bq"
+_CONFIG_DIRECTORY = "gcloud"
 # Windows systems store config at %APPDATA%\gcloud
 _WINDOWS_CONFIG_ROOT_ENV_VAR = "APPDATA"
 # The name of the file in the Cloud SDK config that contains default
@@ -44,14 +42,11 @@ CLOUD_SDK_CLIENT_ID = (
 )
 
 
-def get_config_path(config_directory=_CONFIG_DIRECTORY_GCLOUD):
-    """Returns the absolute path of the given configuration directory.
-
-    Args:
-        config_directory: The absolute path of the configuration directory.
+def get_config_path():
+    """Returns the absolute path the the Cloud SDK's configuration directory.
 
     Returns:
-        str: The config path.
+        str: The Cloud SDK config path.
     """
     # If the path is explicitly set, return that.
     try:
@@ -59,38 +54,20 @@ def get_config_path(config_directory=_CONFIG_DIRECTORY_GCLOUD):
     except KeyError:
         pass
 
-    # Non-windows systems store this at ~/.config/<config_directory>.
+    # Non-windows systems store this at ~/.config/gcloud
     if os.name != "nt":
-        return os.path.join(os.path.expanduser("~"), ".config", config_directory)
-    # Windows systems store config at %APPDATA%\<config_directory>.
+        return os.path.join(os.path.expanduser("~"), ".config", _CONFIG_DIRECTORY)
+    # Windows systems store config at %APPDATA%\gcloud
     else:
         try:
             return os.path.join(
-                os.environ[_WINDOWS_CONFIG_ROOT_ENV_VAR], config_directory
+                os.environ[_WINDOWS_CONFIG_ROOT_ENV_VAR], _CONFIG_DIRECTORY
             )
         except KeyError:
             # This should never happen unless someone is really
             # messing with things, but we'll cover the case anyway.
             drive = os.environ.get("SystemDrive", "C:")
-            return os.path.join(drive, "\\", config_directory)
-
-
-def get_gcloud_config_path():
-    """Returns the absolute path of Cloud CLI's configuration directory.
-
-    Returns:
-        str: The Cloud CLI config path.
-    """
-    return get_config_path(config_directory=_CONFIG_DIRECTORY_GCLOUD)
-
-
-def get_bq_config_path():
-    """Returns the absolute path of bq's configuration directory.
-
-    Returns:
-        str: The bq config path.
-    """
-    return get_config_path(config_directory=_CONFIG_DIRECTORY_BQ)
+            return os.path.join(drive, "\\", _CONFIG_DIRECTORY)
 
 
 def get_application_default_credentials_path():
@@ -101,7 +78,7 @@ def get_application_default_credentials_path():
     Returns:
         str: The full path to application default credentials.
     """
-    config_path = get_gcloud_config_path()
+    config_path = get_config_path()
     return os.path.join(config_path, _CREDENTIALS_FILENAME)
 
 
