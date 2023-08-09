@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.17.0](https://github.com/googleapis/python-datastore/compare/v2.16.1...v2.17.0) (2023-08-09)
+
+
+### Features
+
+* Publish proto definitions for SUM/AVG in Datastore ([cfcd0c2](https://github.com/googleapis/python-datastore/commit/cfcd0c2552c5dcf503cb3dee8c57b1e82be2d432))
+
+
+### Documentation
+
+* Minor formatting in Datastore Admin API ([cfcd0c2](https://github.com/googleapis/python-datastore/commit/cfcd0c2552c5dcf503cb3dee8c57b1e82be2d432))
+* Specify limit for `properties` in `Index` message in Datastore Admin API ([cfcd0c2](https://github.com/googleapis/python-datastore/commit/cfcd0c2552c5dcf503cb3dee8c57b1e82be2d432))
+
 ## [2.16.1](https://github.com/googleapis/python-datastore/compare/v2.16.0...v2.16.1) (2023-07-05)
 
 
