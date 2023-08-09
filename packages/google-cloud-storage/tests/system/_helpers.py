@@ -91,7 +91,11 @@ def empty_bucket(bucket):
 
 
 def delete_blob(blob):
-    errors = (exceptions.Conflict, exceptions.TooManyRequests)
+    errors = (
+        exceptions.Conflict,
+        exceptions.TooManyRequests,
+        exceptions.ServiceUnavailable,
+    )
     retry = RetryErrors(errors)
     try:
         retry(blob.delete)(timeout=120)  # seconds
@@ -105,7 +109,11 @@ def delete_blob(blob):
 
 
 def delete_bucket(bucket):
-    errors = (exceptions.Conflict, exceptions.TooManyRequests)
+    errors = (
+        exceptions.Conflict,
+        exceptions.TooManyRequests,
+        exceptions.ServiceUnavailable,
+    )
     retry = RetryErrors(errors, max_tries=15)
     retry(empty_bucket)(bucket)
     retry(bucket.delete)(force=True)

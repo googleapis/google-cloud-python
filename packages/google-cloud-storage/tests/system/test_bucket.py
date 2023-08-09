@@ -1059,7 +1059,7 @@ def test_new_bucket_with_autoclass(
 
     # Autoclass can be enabled/disabled via bucket patch
     bucket.autoclass_enabled = False
-    bucket.patch()
+    bucket.patch(if_metageneration_match=bucket.metageneration)
 
     assert bucket.autoclass_enabled is False
     assert bucket.autoclass_toggle_time != previous_toggle_time
