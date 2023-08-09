@@ -192,7 +192,7 @@ def test_upload_many_suppresses_412_with_skip_if_exists():
         worker_type=transfer_manager.THREAD,
     )
     for result in results:
-        assert type(result) == exceptions.PreconditionFailed
+        assert isinstance(result, exceptions.PreconditionFailed)
 
 
 def test_upload_many_with_processes():

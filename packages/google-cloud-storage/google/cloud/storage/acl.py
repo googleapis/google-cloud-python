@@ -137,7 +137,6 @@ class ACL(object):
 
     # Subclasses must override to provide these attributes (typically,
     # as properties).
-    client = None
     reload_path = None
     save_path = None
     user_project = None

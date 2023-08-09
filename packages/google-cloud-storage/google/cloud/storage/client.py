@@ -147,7 +147,7 @@ class Client(ClientWithProject):
         kw_args["api_endpoint"] = storage_host if _is_emulator_set else None
 
         if client_options:
-            if type(client_options) == dict:
+            if isinstance(client_options, dict):
                 client_options = google.api_core.client_options.from_dict(
                     client_options
                 )
