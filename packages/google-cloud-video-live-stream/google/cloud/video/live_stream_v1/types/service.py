@@ -26,6 +26,11 @@ from google.cloud.video.live_stream_v1.types import resources
 __protobuf__ = proto.module(
     package="google.cloud.video.livestream.v1",
     manifest={
+        "CreateAssetRequest",
+        "DeleteAssetRequest",
+        "ListAssetsRequest",
+        "ListAssetsResponse",
+        "GetAssetRequest",
         "CreateChannelRequest",
         "ListChannelsRequest",
         "ListChannelsResponse",
@@ -47,8 +52,186 @@ __protobuf__ = proto.module(
         "DeleteEventRequest",
         "ChannelOperationResponse",
         "OperationMetadata",
+        "GetPoolRequest",
+        "UpdatePoolRequest",
     },
 )
+
+
+class CreateAssetRequest(proto.Message):
+    r"""Request message for "LivestreamService.CreateAsset".
+
+    Attributes:
+        parent (str):
+            Required. The parent location for the resource, in the form
+            of: ``projects/{project}/locations/{location}``.
+        asset (google.cloud.video.live_stream_v1.types.Asset):
+            Required. The asset resource to be created.
+        asset_id (str):
+            Required. The ID of the asset resource to be created. This
+            value must be 1-63 characters, begin and end with
+            ``[a-z0-9]``, could contain dashes (-) in between.
+        request_id (str):
+            A request ID to identify requests. Specify a unique request
+            ID so that if you must retry your request, the server will
+            know to ignore the request if it has already been completed.
+            The server will guarantee that for at least 60 minutes since
+            the first request.
+
+            For example, consider a situation where you make an initial
+            request and the request times out. If you make the request
+            again with the same request ID, the server can check if
+            original operation with the same request ID was received,
+            and if so, will ignore the second request. This prevents
+            clients from accidentally creating duplicate commitments.
+
+            The request ID must be a valid UUID with the exception that
+            zero UUID is not supported
+            ``(00000000-0000-0000-0000-000000000000)``.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    asset: resources.Asset = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.Asset,
+    )
+    asset_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class DeleteAssetRequest(proto.Message):
+    r"""Request message for "LivestreamService.DeleteAsset".
+
+    Attributes:
+        name (str):
+            Required. The name of the asset resource, in the form of:
+            ``projects/{project}/locations/{location}/assets/{assetId}``.
+        request_id (str):
+            A request ID to identify requests. Specify a unique request
+            ID so that if you must retry your request, the server will
+            know to ignore the request if it has already been completed.
+            The server will guarantee that for at least 60 minutes after
+            the first request.
+
+            For example, consider a situation where you make an initial
+            request and the request times out. If you make the request
+            again with the same request ID, the server can check if
+            original operation with the same request ID was received,
+            and if so, will ignore the second request. This prevents
+            clients from accidentally creating duplicate commitments.
+
+            The request ID must be a valid UUID with the exception that
+            zero UUID is not supported
+            ``(00000000-0000-0000-0000-000000000000)``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListAssetsRequest(proto.Message):
+    r"""Request message for "LivestreamService.ListAssets".
+
+    Attributes:
+        parent (str):
+            Required. The parent location for the resource, in the form
+            of: ``projects/{project}/locations/{location}``.
+        page_size (int):
+            Requested page size. Server may return fewer
+            items than requested. If unspecified, server
+            will pick an appropriate default.
+        page_token (str):
+            A token identifying a page of results the
+            server should return.
+        filter (str):
+            Filtering results
+        order_by (str):
+            Hint for how to order the results
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListAssetsResponse(proto.Message):
+    r"""Response message for "LivestreamService.ListAssets".
+
+    Attributes:
+        assets (MutableSequence[google.cloud.video.live_stream_v1.types.Asset]):
+            The list of Assets
+        next_page_token (str):
+            The next_page_token value returned from a previous List
+            request, if any.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    assets: MutableSequence[resources.Asset] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Asset,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetAssetRequest(proto.Message):
+    r"""Request message for "LivestreamService.GetAsset".
+
+    Attributes:
+        name (str):
+            Required. Name of the resource, in the following form:
+            ``projects/{project}/locations/{location}/assets/{asset}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateChannelRequest(proto.Message):
@@ -860,6 +1043,72 @@ class OperationMetadata(proto.Message):
     api_version: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+
+
+class GetPoolRequest(proto.Message):
+    r"""Request message for "LivestreamService.GetPool".
+
+    Attributes:
+        name (str):
+            Required. The name of the pool resource, in the form of:
+            ``projects/{project}/locations/{location}/pools/{poolId}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdatePoolRequest(proto.Message):
+    r"""Request message for "LivestreamService.UpdatePool".
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Field mask is used to specify the fields to be overwritten
+            in the Pool resource by the update. You can only update the
+            following fields:
+
+            -  ``networkConfig``
+
+            The fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask.
+        pool (google.cloud.video.live_stream_v1.types.Pool):
+            Required. The pool resource to be updated.
+        request_id (str):
+            A request ID to identify requests. Specify a unique request
+            ID so that if you must retry your request, the server will
+            know to ignore the request if it has already been completed.
+            The server will guarantee that for at least 60 minutes since
+            the first request.
+
+            For example, consider a situation where you make an initial
+            request and the request times out. If you make the request
+            again with the same request ID, the server can check if
+            original operation with the same request ID was received,
+            and if so, will ignore the second request. This prevents
+            clients from accidentally creating duplicate commitments.
+
+            The request ID must be a valid UUID with the exception that
+            zero UUID is not supported
+            ``(00000000-0000-0000-0000-000000000000)``.
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    pool: resources.Pool = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.Pool,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "LivestreamServiceClient",
           "rpcs": {
+            "CreateAsset": {
+              "methods": [
+                "create_asset"
+              ]
+            },
             "CreateChannel": {
               "methods": [
                 "create_channel"
@@ -23,6 +28,11 @@
             "CreateInput": {
               "methods": [
                 "create_input"
+              ]
+            },
+            "DeleteAsset": {
+              "methods": [
+                "delete_asset"
               ]
             },
             "DeleteChannel": {
@@ -40,6 +50,11 @@
                 "delete_input"
               ]
             },
+            "GetAsset": {
+              "methods": [
+                "get_asset"
+              ]
+            },
             "GetChannel": {
               "methods": [
                 "get_channel"
@@ -53,6 +68,16 @@
             "GetInput": {
               "methods": [
                 "get_input"
+              ]
+            },
+            "GetPool": {
+              "methods": [
+                "get_pool"
+              ]
+            },
+            "ListAssets": {
+              "methods": [
+                "list_assets"
               ]
             },
             "ListChannels": {
@@ -88,6 +113,11 @@
             "UpdateInput": {
               "methods": [
                 "update_input"
+              ]
+            },
+            "UpdatePool": {
+              "methods": [
+                "update_pool"
               ]
             }
           }
@@ -95,6 +125,11 @@
         "grpc-async": {
           "libraryClient": "LivestreamServiceAsyncClient",
           "rpcs": {
+            "CreateAsset": {
+              "methods": [
+                "create_asset"
+              ]
+            },
             "CreateChannel": {
               "methods": [
                 "create_channel"
@@ -108,6 +143,11 @@
             "CreateInput": {
               "methods": [
                 "create_input"
+              ]
+            },
+            "DeleteAsset": {
+              "methods": [
+                "delete_asset"
               ]
             },
             "DeleteChannel": {
@@ -125,6 +165,11 @@
                 "delete_input"
               ]
             },
+            "GetAsset": {
+              "methods": [
+                "get_asset"
+              ]
+            },
             "GetChannel": {
               "methods": [
                 "get_channel"
@@ -138,6 +183,16 @@
             "GetInput": {
               "methods": [
                 "get_input"
+              ]
+            },
+            "GetPool": {
+              "methods": [
+                "get_pool"
+              ]
+            },
+            "ListAssets": {
+              "methods": [
+                "list_assets"
               ]
             },
             "ListChannels": {
@@ -173,6 +228,11 @@
             "UpdateInput": {
               "methods": [
                 "update_input"
+              ]
+            },
+            "UpdatePool": {
+              "methods": [
+                "update_pool"
               ]
             }
           }
@@ -180,6 +240,11 @@
         "rest": {
           "libraryClient": "LivestreamServiceClient",
           "rpcs": {
+            "CreateAsset": {
+              "methods": [
+                "create_asset"
+              ]
+            },
             "CreateChannel": {
               "methods": [
                 "create_channel"
@@ -193,6 +258,11 @@
             "CreateInput": {
               "methods": [
                 "create_input"
+              ]
+            },
+            "DeleteAsset": {
+              "methods": [
+                "delete_asset"
               ]
             },
             "DeleteChannel": {
@@ -210,6 +280,11 @@
                 "delete_input"
               ]
             },
+            "GetAsset": {
+              "methods": [
+                "get_asset"
+              ]
+            },
             "GetChannel": {
               "methods": [
                 "get_channel"
@@ -223,6 +298,16 @@
             "GetInput": {
               "methods": [
                 "get_input"
+              ]
+            },
+            "GetPool": {
+              "methods": [
+                "get_pool"
+              ]
+            },
+            "ListAssets": {
+              "methods": [
+                "list_assets"
               ]
             },
             "ListChannels": {
@@ -258,6 +343,11 @@
             "UpdateInput": {
               "methods": [
                 "update_input"
+              ]
+            },
+            "UpdatePool": {
+              "methods": [
+                "update_pool"
               ]
             }
           }

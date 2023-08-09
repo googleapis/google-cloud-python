@@ -38,7 +38,9 @@ __protobuf__ = proto.module(
         "AudioFormat",
         "InputAttachment",
         "Event",
+        "Asset",
         "Encryption",
+        "Pool",
     },
 )
 
@@ -684,23 +686,27 @@ class Event(proto.Message):
         labels (MutableMapping[str, str]):
             User-defined key/value metadata.
         input_switch (google.cloud.video.live_stream_v1.types.Event.InputSwitchTask):
-            Required. Switches to another input stream.
+            Switches to another input stream.
 
             This field is a member of `oneof`_ ``task``.
         ad_break (google.cloud.video.live_stream_v1.types.Event.AdBreakTask):
-            Required. Inserts a new ad opportunity.
+            Inserts a new ad opportunity.
 
             This field is a member of `oneof`_ ``task``.
         return_to_program (google.cloud.video.live_stream_v1.types.Event.ReturnToProgramTask):
-            Required. Stops any running ad break.
+            Stops any running ad break.
+
+            This field is a member of `oneof`_ ``task``.
+        slate (google.cloud.video.live_stream_v1.types.Event.SlateTask):
+            Inserts a slate.
 
             This field is a member of `oneof`_ ``task``.
         mute (google.cloud.video.live_stream_v1.types.Event.MuteTask):
-            Required. Mutes the stream.
+            Mutes the stream.
 
             This field is a member of `oneof`_ ``task``.
         unmute (google.cloud.video.live_stream_v1.types.Event.UnmuteTask):
-            Required. Unmutes the stream.
+            Unmutes the stream.
 
             This field is a member of `oneof`_ ``task``.
         execute_now (bool):
@@ -786,6 +792,31 @@ class Event(proto.Message):
             message=duration_pb2.Duration,
         )
 
+    class SlateTask(proto.Message):
+        r"""Inserts a slate.
+
+        Attributes:
+            duration (google.protobuf.duration_pb2.Duration):
+                Optional. Duration of the slate. Must be
+                greater than 0 if specified. Omit this field for
+                a long running slate.
+            asset (str):
+                Slate asset to use for the duration. If its duration is less
+                than the duration of the SlateTask, then it will be looped.
+                The slate must be represented in the form of:
+                ``projects/{project}/locations/{location}/assets/{assetId}``.
+        """
+
+        duration: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=duration_pb2.Duration,
+        )
+        asset: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
     class ReturnToProgramTask(proto.Message):
         r"""Stops any events which are currently running. This only
         applies to events with a duration.
@@ -851,6 +882,12 @@ class Event(proto.Message):
         oneof="task",
         message=ReturnToProgramTask,
     )
+    slate: SlateTask = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        oneof="task",
+        message=SlateTask,
+    )
     mute: MuteTask = proto.Field(
         proto.MESSAGE,
         number=15,
@@ -880,6 +917,151 @@ class Event(proto.Message):
     error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
         number=12,
+        message=status_pb2.Status,
+    )
+
+
+class Asset(proto.Message):
+    r"""An asset represents a video or an image.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            The resource name of the asset, in the form of:
+            ``projects/{project}/locations/{location}/assets/{assetId}``.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The creation time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The update time.
+        labels (MutableMapping[str, str]):
+            User-defined key/value metadata.
+        video (google.cloud.video.live_stream_v1.types.Asset.VideoAsset):
+            VideoAsset represents a video.
+
+            This field is a member of `oneof`_ ``resource``.
+        image (google.cloud.video.live_stream_v1.types.Asset.ImageAsset):
+            ImageAsset represents an image.
+
+            This field is a member of `oneof`_ ``resource``.
+        crc32c (str):
+            Based64-encoded CRC32c checksum of the asset file. For more
+            information, see the crc32c checksum of the `Cloud Storage
+            Objects
+            resource <https://cloud.google.com/storage/docs/json_api/v1/objects>`__.
+            If crc32c is omitted or left empty when the asset is
+            created, this field is filled by the crc32c checksum of the
+            Cloud Storage object indicated by [VideoAsset.uri] or
+            [ImageAsset.uri]. If crc32c is set, the asset can't be
+            created if the crc32c value does not match with the crc32c
+            checksum of the Cloud Storage object indicated by
+            [VideoAsset.uri] or [ImageAsset.uri].
+        state (google.cloud.video.live_stream_v1.types.Asset.State):
+            Output only. The state of the asset resource.
+        error (google.rpc.status_pb2.Status):
+            Output only. Only present when ``state`` is ``ERROR``. The
+            reason for the error state of the asset.
+    """
+
+    class State(proto.Enum):
+        r"""State of the asset resource.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                State is not specified.
+            CREATING (1):
+                The asset is being created.
+            ACTIVE (2):
+                The asset is ready for use.
+            DELETING (3):
+                The asset is being deleted.
+            ERROR (4):
+                The asset has an error.
+        """
+        STATE_UNSPECIFIED = 0
+        CREATING = 1
+        ACTIVE = 2
+        DELETING = 3
+        ERROR = 4
+
+    class VideoAsset(proto.Message):
+        r"""VideoAsset represents a video. The supported formats are MP4,
+        MPEG-TS, and FLV. The supported video codec is H264. The
+        supported audio codecs are AAC, AC3, MP2, and MP3.
+
+        Attributes:
+            uri (str):
+                Cloud Storage URI of the video. The format is
+                ``gs://my-bucket/my-object``.
+        """
+
+        uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class ImageAsset(proto.Message):
+        r"""Image represents an image. The supported format is JPEG.
+
+        Attributes:
+            uri (str):
+                Cloud Storage URI of the image. The format is
+                ``gs://my-bucket/my-object``.
+        """
+
+        uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    video: VideoAsset = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="resource",
+        message=VideoAsset,
+    )
+    image: ImageAsset = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="resource",
+        message=ImageAsset,
+    )
+    crc32c: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=State,
+    )
+    error: status_pb2.Status = proto.Field(
+        proto.MESSAGE,
+        number=9,
         message=status_pb2.Status,
     )
 
@@ -1036,6 +1218,74 @@ class Encryption(proto.Message):
         number=6,
         oneof="encryption_mode",
         message=MpegCommonEncryption,
+    )
+
+
+class Pool(proto.Message):
+    r"""Pool resource defines the configuration of Live Stream pools
+    for a specific location. Currently we support only one pool
+    resource per project per location. After the creation of the
+    first input, a default pool is created automatically at
+    "projects/{project}/locations/{location}/pools/default".
+
+    Attributes:
+        name (str):
+            The resource name of the pool, in the form of:
+            ``projects/{project}/locations/{location}/pools/{poolId}``.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The creation time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The update time.
+        labels (MutableMapping[str, str]):
+            User-defined key/value metadata.
+        network_config (google.cloud.video.live_stream_v1.types.Pool.NetworkConfig):
+            Network configuration for the pool.
+    """
+
+    class NetworkConfig(proto.Message):
+        r"""Defines the network configuration for the pool.
+
+        Attributes:
+            peered_network (str):
+                peered_network is the network resource URL of the network
+                that is peered to the service provider network. Must be of
+                the format
+                projects/NETWORK_PROJECT_NUMBER/global/networks/NETWORK_NAME,
+                where NETWORK_PROJECT_NUMBER is the project number of the
+                Cloud project that holds your VPC network and NETWORK_NAME
+                is the name of your VPC network. If peered_network is
+                omitted or empty, the pool will use endpoints that are
+                publicly available.
+        """
+
+        peered_network: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    network_config: NetworkConfig = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=NetworkConfig,
     )
 
 

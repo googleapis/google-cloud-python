@@ -259,6 +259,36 @@ class LivestreamServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_asset: gapic_v1.method.wrap_method(
+                self.create_asset,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_asset: gapic_v1.method.wrap_method(
+                self.delete_asset,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_asset: gapic_v1.method.wrap_method(
+                self.get_asset,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_assets: gapic_v1.method.wrap_method(
+                self.list_assets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_pool: gapic_v1.method.wrap_method(
+                self.get_pool,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_pool: gapic_v1.method.wrap_method(
+                self.update_pool,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -412,6 +442,58 @@ class LivestreamServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.DeleteEventRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_asset(
+        self,
+    ) -> Callable[
+        [service.CreateAssetRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_asset(
+        self,
+    ) -> Callable[
+        [service.DeleteAssetRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_asset(
+        self,
+    ) -> Callable[
+        [service.GetAssetRequest], Union[resources.Asset, Awaitable[resources.Asset]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_assets(
+        self,
+    ) -> Callable[
+        [service.ListAssetsRequest],
+        Union[service.ListAssetsResponse, Awaitable[service.ListAssetsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_pool(
+        self,
+    ) -> Callable[
+        [service.GetPoolRequest], Union[resources.Pool, Awaitable[resources.Pool]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_pool(
+        self,
+    ) -> Callable[
+        [service.UpdatePoolRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

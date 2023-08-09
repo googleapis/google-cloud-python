@@ -39,15 +39,20 @@ def partition(
 class live_streamCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'create_asset': ('parent', 'asset', 'asset_id', 'request_id', ),
         'create_channel': ('parent', 'channel', 'channel_id', 'request_id', ),
         'create_event': ('parent', 'event', 'event_id', 'request_id', ),
         'create_input': ('parent', 'input', 'input_id', 'request_id', ),
+        'delete_asset': ('name', 'request_id', ),
         'delete_channel': ('name', 'request_id', 'force', ),
         'delete_event': ('name', 'request_id', ),
         'delete_input': ('name', 'request_id', ),
+        'get_asset': ('name', ),
         'get_channel': ('name', ),
         'get_event': ('name', ),
         'get_input': ('name', ),
+        'get_pool': ('name', ),
+        'list_assets': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_channels': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_events': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_inputs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
@@ -55,6 +60,7 @@ class live_streamCallTransformer(cst.CSTTransformer):
         'stop_channel': ('name', 'request_id', ),
         'update_channel': ('channel', 'update_mask', 'request_id', ),
         'update_input': ('input', 'update_mask', 'request_id', ),
+        'update_pool': ('pool', 'update_mask', 'request_id', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

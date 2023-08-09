@@ -73,12 +73,18 @@ class LivestreamServiceAsyncClient:
     DEFAULT_ENDPOINT = LivestreamServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = LivestreamServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    asset_path = staticmethod(LivestreamServiceClient.asset_path)
+    parse_asset_path = staticmethod(LivestreamServiceClient.parse_asset_path)
     channel_path = staticmethod(LivestreamServiceClient.channel_path)
     parse_channel_path = staticmethod(LivestreamServiceClient.parse_channel_path)
     event_path = staticmethod(LivestreamServiceClient.event_path)
     parse_event_path = staticmethod(LivestreamServiceClient.parse_event_path)
     input_path = staticmethod(LivestreamServiceClient.input_path)
     parse_input_path = staticmethod(LivestreamServiceClient.parse_input_path)
+    network_path = staticmethod(LivestreamServiceClient.network_path)
+    parse_network_path = staticmethod(LivestreamServiceClient.parse_network_path)
+    pool_path = staticmethod(LivestreamServiceClient.pool_path)
+    parse_pool_path = staticmethod(LivestreamServiceClient.parse_pool_path)
     secret_version_path = staticmethod(LivestreamServiceClient.secret_version_path)
     parse_secret_version_path = staticmethod(
         LivestreamServiceClient.parse_secret_version_path
@@ -2241,6 +2247,734 @@ class LivestreamServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+
+    async def create_asset(
+        self,
+        request: Optional[Union[service.CreateAssetRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        asset: Optional[resources.Asset] = None,
+        asset_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a Asset with the provided unique ID in the
+        specified region.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.video import live_stream_v1
+
+            async def sample_create_asset():
+                # Create a client
+                client = live_stream_v1.LivestreamServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = live_stream_v1.CreateAssetRequest(
+                    parent="parent_value",
+                    asset_id="asset_id_value",
+                )
+
+                # Make the request
+                operation = client.create_asset(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.CreateAssetRequest, dict]]):
+                The request object. Request message for
+                "LivestreamService.CreateAsset".
+            parent (:class:`str`):
+                Required. The parent location for the resource, in the
+                form of: ``projects/{project}/locations/{location}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            asset (:class:`google.cloud.video.live_stream_v1.types.Asset`):
+                Required. The asset resource to be
+                created.
+
+                This corresponds to the ``asset`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            asset_id (:class:`str`):
+                Required. The ID of the asset resource to be created.
+                This value must be 1-63 characters, begin and end with
+                ``[a-z0-9]``, could contain dashes (-) in between.
+
+                This corresponds to the ``asset_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.video.live_stream_v1.types.Asset`
+                An asset represents a video or an image.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, asset, asset_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.CreateAssetRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if asset is not None:
+            request.asset = asset
+        if asset_id is not None:
+            request.asset_id = asset_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_asset,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            resources.Asset,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_asset(
+        self,
+        request: Optional[Union[service.DeleteAssetRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes the specified asset if it is not used.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.video import live_stream_v1
+
+            async def sample_delete_asset():
+                # Create a client
+                client = live_stream_v1.LivestreamServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = live_stream_v1.DeleteAssetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_asset(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.DeleteAssetRequest, dict]]):
+                The request object. Request message for
+                "LivestreamService.DeleteAsset".
+            name (:class:`str`):
+                Required. The name of the asset resource, in the form
+                of:
+                ``projects/{project}/locations/{location}/assets/{assetId}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.DeleteAssetRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_asset,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_asset(
+        self,
+        request: Optional[Union[service.GetAssetRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.Asset:
+        r"""Returns the specified asset.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.video import live_stream_v1
+
+            async def sample_get_asset():
+                # Create a client
+                client = live_stream_v1.LivestreamServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = live_stream_v1.GetAssetRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_asset(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.GetAssetRequest, dict]]):
+                The request object. Request message for
+                "LivestreamService.GetAsset".
+            name (:class:`str`):
+                Required. Name of the resource, in the following form:
+                ``projects/{project}/locations/{location}/assets/{asset}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.video.live_stream_v1.types.Asset:
+                An asset represents a video or an
+                image.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.GetAssetRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_asset,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_assets(
+        self,
+        request: Optional[Union[service.ListAssetsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListAssetsAsyncPager:
+        r"""Returns a list of all assets in the specified region.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.video import live_stream_v1
+
+            async def sample_list_assets():
+                # Create a client
+                client = live_stream_v1.LivestreamServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = live_stream_v1.ListAssetsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_assets(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.ListAssetsRequest, dict]]):
+                The request object. Request message for
+                "LivestreamService.ListAssets".
+            parent (:class:`str`):
+                Required. The parent location for the resource, in the
+                form of: ``projects/{project}/locations/{location}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.video.live_stream_v1.services.livestream_service.pagers.ListAssetsAsyncPager:
+                Response message for
+                "LivestreamService.ListAssets".
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.ListAssetsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_assets,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListAssetsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_pool(
+        self,
+        request: Optional[Union[service.GetPoolRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.Pool:
+        r"""Returns the specified pool.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.video import live_stream_v1
+
+            async def sample_get_pool():
+                # Create a client
+                client = live_stream_v1.LivestreamServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = live_stream_v1.GetPoolRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_pool(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.GetPoolRequest, dict]]):
+                The request object. Request message for
+                "LivestreamService.GetPool".
+            name (:class:`str`):
+                Required. The name of the pool resource, in the form of:
+                ``projects/{project}/locations/{location}/pools/{poolId}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.video.live_stream_v1.types.Pool:
+                Pool resource defines the
+                configuration of Live Stream pools for a
+                specific location. Currently we support
+                only one pool resource per project per
+                location. After the creation of the
+                first input, a default pool is created
+                automatically at
+                "projects/{project}/locations/{location}/pools/default".
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.GetPoolRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_pool,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_pool(
+        self,
+        request: Optional[Union[service.UpdatePoolRequest, dict]] = None,
+        *,
+        pool: Optional[resources.Pool] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Updates the specified pool.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.video import live_stream_v1
+
+            async def sample_update_pool():
+                # Create a client
+                client = live_stream_v1.LivestreamServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = live_stream_v1.UpdatePoolRequest(
+                )
+
+                # Make the request
+                operation = client.update_pool(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.video.live_stream_v1.types.UpdatePoolRequest, dict]]):
+                The request object. Request message for
+                "LivestreamService.UpdatePool".
+            pool (:class:`google.cloud.video.live_stream_v1.types.Pool`):
+                Required. The pool resource to be
+                updated.
+
+                This corresponds to the ``pool`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Field mask is used to specify the fields to be
+                overwritten in the Pool resource by the update. You can
+                only update the following fields:
+
+                -  ``networkConfig``
+
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
+                overwritten if it is in the mask.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.video.live_stream_v1.types.Pool` Pool resource defines the configuration of Live Stream pools for a specific
+                   location. Currently we support only one pool resource
+                   per project per location. After the creation of the
+                   first input, a default pool is created automatically
+                   at
+                   "projects/{project}/locations/{location}/pools/default".
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([pool, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.UpdatePoolRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if pool is not None:
+            request.pool = pool
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_pool,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("pool.name", request.pool.name),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            resources.Pool,
+            metadata_type=service.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
 
     async def list_operations(
         self,

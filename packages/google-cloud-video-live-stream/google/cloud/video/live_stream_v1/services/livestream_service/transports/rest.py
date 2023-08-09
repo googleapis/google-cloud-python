@@ -74,6 +74,14 @@ class LivestreamServiceRestInterceptor:
 
     .. code-block:: python
         class MyCustomLivestreamServiceInterceptor(LivestreamServiceRestInterceptor):
+            def pre_create_asset(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_asset(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_channel(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -98,6 +106,14 @@ class LivestreamServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_delete_asset(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_asset(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_channel(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -115,6 +131,14 @@ class LivestreamServiceRestInterceptor:
                 return request, metadata
 
             def post_delete_input(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_asset(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_asset(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -139,6 +163,22 @@ class LivestreamServiceRestInterceptor:
                 return request, metadata
 
             def post_get_input(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_pool(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_pool(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_assets(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_assets(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -198,11 +238,40 @@ class LivestreamServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_pool(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_pool(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = LivestreamServiceRestTransport(interceptor=MyCustomLivestreamServiceInterceptor())
         client = LivestreamServiceClient(transport=transport)
 
 
     """
+
+    def pre_create_asset(
+        self, request: service.CreateAssetRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.CreateAssetRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for create_asset
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the LivestreamService server.
+        """
+        return request, metadata
+
+    def post_create_asset(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_asset
+
+        Override in a subclass to manipulate the response
+        after it is returned by the LivestreamService server but before
+        it is returned to user code.
+        """
+        return response
 
     def pre_create_channel(
         self, request: service.CreateChannelRequest, metadata: Sequence[Tuple[str, str]]
@@ -265,6 +334,27 @@ class LivestreamServiceRestInterceptor:
         """
         return response
 
+    def pre_delete_asset(
+        self, request: service.DeleteAssetRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.DeleteAssetRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for delete_asset
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the LivestreamService server.
+        """
+        return request, metadata
+
+    def post_delete_asset(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_asset
+
+        Override in a subclass to manipulate the response
+        after it is returned by the LivestreamService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_delete_channel(
         self, request: service.DeleteChannelRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[service.DeleteChannelRequest, Sequence[Tuple[str, str]]]:
@@ -310,6 +400,25 @@ class LivestreamServiceRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_input
+
+        Override in a subclass to manipulate the response
+        after it is returned by the LivestreamService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_asset(
+        self, request: service.GetAssetRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.GetAssetRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_asset
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the LivestreamService server.
+        """
+        return request, metadata
+
+    def post_get_asset(self, response: resources.Asset) -> resources.Asset:
+        """Post-rpc interceptor for get_asset
 
         Override in a subclass to manipulate the response
         after it is returned by the LivestreamService server but before
@@ -367,6 +476,46 @@ class LivestreamServiceRestInterceptor:
 
     def post_get_input(self, response: resources.Input) -> resources.Input:
         """Post-rpc interceptor for get_input
+
+        Override in a subclass to manipulate the response
+        after it is returned by the LivestreamService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_pool(
+        self, request: service.GetPoolRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.GetPoolRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_pool
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the LivestreamService server.
+        """
+        return request, metadata
+
+    def post_get_pool(self, response: resources.Pool) -> resources.Pool:
+        """Post-rpc interceptor for get_pool
+
+        Override in a subclass to manipulate the response
+        after it is returned by the LivestreamService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_assets(
+        self, request: service.ListAssetsRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.ListAssetsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_assets
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the LivestreamService server.
+        """
+        return request, metadata
+
+    def post_list_assets(
+        self, response: service.ListAssetsResponse
+    ) -> service.ListAssetsResponse:
+        """Post-rpc interceptor for list_assets
 
         Override in a subclass to manipulate the response
         after it is returned by the LivestreamService server but before
@@ -514,6 +663,27 @@ class LivestreamServiceRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_input
+
+        Override in a subclass to manipulate the response
+        after it is returned by the LivestreamService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_pool(
+        self, request: service.UpdatePoolRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[service.UpdatePoolRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for update_pool
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the LivestreamService server.
+        """
+        return request, metadata
+
+    def post_update_pool(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_pool
 
         Override in a subclass to manipulate the response
         after it is returned by the LivestreamService server but before
@@ -810,6 +980,105 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
 
         # Return the client from cache.
         return self._operations_client
+
+    class _CreateAsset(LivestreamServiceRestStub):
+        def __hash__(self):
+            return hash("CreateAsset")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "assetId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.CreateAssetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create asset method over HTTP.
+
+            Args:
+                request (~.service.CreateAssetRequest):
+                    The request object. Request message for
+                "LivestreamService.CreateAsset".
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*}/assets",
+                    "body": "asset",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_asset(request, metadata)
+            pb_request = service.CreateAssetRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_asset(resp)
+            return resp
 
     class _CreateChannel(LivestreamServiceRestStub):
         def __hash__(self):
@@ -1111,6 +1380,94 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
             resp = self._interceptor.post_create_input(resp)
             return resp
 
+    class _DeleteAsset(LivestreamServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteAsset")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.DeleteAssetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete asset method over HTTP.
+
+            Args:
+                request (~.service.DeleteAssetRequest):
+                    The request object. Request message for
+                "LivestreamService.DeleteAsset".
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/assets/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_asset(request, metadata)
+            pb_request = service.DeleteAssetRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_delete_asset(resp)
+            return resp
+
     class _DeleteChannel(LivestreamServiceRestStub):
         def __hash__(self):
             return hash("DeleteChannel")
@@ -1360,6 +1717,95 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
             resp = operations_pb2.Operation()
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_input(resp)
+            return resp
+
+    class _GetAsset(LivestreamServiceRestStub):
+        def __hash__(self):
+            return hash("GetAsset")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.GetAssetRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.Asset:
+            r"""Call the get asset method over HTTP.
+
+            Args:
+                request (~.service.GetAssetRequest):
+                    The request object. Request message for
+                "LivestreamService.GetAsset".
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.Asset:
+                    An asset represents a video or an
+                image.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/assets/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_asset(request, metadata)
+            pb_request = service.GetAssetRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.Asset()
+            pb_resp = resources.Asset.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_asset(resp)
             return resp
 
     class _GetChannel(LivestreamServiceRestStub):
@@ -1636,6 +2082,190 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_input(resp)
+            return resp
+
+    class _GetPool(LivestreamServiceRestStub):
+        def __hash__(self):
+            return hash("GetPool")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.GetPoolRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.Pool:
+            r"""Call the get pool method over HTTP.
+
+            Args:
+                request (~.service.GetPoolRequest):
+                    The request object. Request message for
+                "LivestreamService.GetPool".
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.Pool:
+                    Pool resource defines the
+                configuration of Live Stream pools for a
+                specific location. Currently we support
+                only one pool resource per project per
+                location. After the creation of the
+                first input, a default pool is created
+                automatically at
+                "projects/{project}/locations/{location}/pools/default".
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/pools/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_pool(request, metadata)
+            pb_request = service.GetPoolRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.Pool()
+            pb_resp = resources.Pool.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_pool(resp)
+            return resp
+
+    class _ListAssets(LivestreamServiceRestStub):
+        def __hash__(self):
+            return hash("ListAssets")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.ListAssetsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> service.ListAssetsResponse:
+            r"""Call the list assets method over HTTP.
+
+            Args:
+                request (~.service.ListAssetsRequest):
+                    The request object. Request message for
+                "LivestreamService.ListAssets".
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.service.ListAssetsResponse:
+                    Response message for
+                "LivestreamService.ListAssets".
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/assets",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_assets(request, metadata)
+            pb_request = service.ListAssetsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = service.ListAssetsResponse()
+            pb_resp = service.ListAssetsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_assets(resp)
             return resp
 
     class _ListChannels(LivestreamServiceRestStub):
@@ -2293,6 +2923,111 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
             resp = self._interceptor.post_update_input(resp)
             return resp
 
+    class _UpdatePool(LivestreamServiceRestStub):
+        def __hash__(self):
+            return hash("UpdatePool")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.UpdatePoolRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update pool method over HTTP.
+
+            Args:
+                request (~.service.UpdatePoolRequest):
+                    The request object. Request message for
+                "LivestreamService.UpdatePool".
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1/{pool.name=projects/*/locations/*/pools/*}",
+                    "body": "pool",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_pool(request, metadata)
+            pb_request = service.UpdatePoolRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_pool(resp)
+            return resp
+
+    @property
+    def create_asset(
+        self,
+    ) -> Callable[[service.CreateAssetRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateAsset(self._session, self._host, self._interceptor)  # type: ignore
+
     @property
     def create_channel_(
         self,
@@ -2314,6 +3049,14 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInput(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_asset(
+        self,
+    ) -> Callable[[service.DeleteAssetRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_channel(
@@ -2338,6 +3081,12 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
         return self._DeleteInput(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_asset(self) -> Callable[[service.GetAssetRequest], resources.Asset]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAsset(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_channel(self) -> Callable[[service.GetChannelRequest], resources.Channel]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -2354,6 +3103,20 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInput(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_pool(self) -> Callable[[service.GetPoolRequest], resources.Pool]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetPool(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_assets(
+        self,
+    ) -> Callable[[service.ListAssetsRequest], service.ListAssetsResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListAssets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_channels(
@@ -2410,6 +3173,14 @@ class LivestreamServiceRestTransport(LivestreamServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInput(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_pool(
+        self,
+    ) -> Callable[[service.UpdatePoolRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdatePool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_location(self):

@@ -335,14 +335,16 @@ class PreprocessingConfig(proto.Message):
                 loudness units relative to full scale (LUFS).
                 Enter a value between -24 and 0 according to the
                 following:
+
                 - -24 is the Advanced Television Systems
-                Committee (ATSC A/85) - -23 is the EU R128
-                broadcast standard
+                  Committee (ATSC A/85)
+                - -23 is the EU R128 broadcast standard
                 - -19 is the prior standard for online mono
-                audio - -18 is the ReplayGain standard
+                  audio
+                - -18 is the ReplayGain standard
                 - -16 is the prior standard for stereo audio
                 - -14 is the new online audio standard
-                recommended by Spotify, as well as Amazon Echo
+                  recommended by Spotify, as well as Amazon Echo
                 - 0 disables normalization. The default is 0.
         """
 
@@ -482,9 +484,11 @@ class VideoStream(proto.Message):
             bitrate_bps (int):
                 Required. The video bitrate in bits per
                 second. Minimum value is 10,000.
+
                 - For SD resolution (< 720p), must be <=
-                3,000,000 (3 Mbps). - For HD resolution (<=
-                1080p), must be <= 15,000,000 (15 Mbps).
+                  3,000,000 (3 Mbps).
+                - For HD resolution (<= 1080p), must be <=
+                  15,000,000 (15 Mbps).
             allow_open_gop (bool):
                 Specifies whether an open Group of Pictures (GOP) structure
                 should be allowed or not. The default is ``false``.

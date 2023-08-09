@@ -683,6 +683,161 @@ class LivestreamServiceGrpcAsyncIOTransport(LivestreamServiceTransport):
             )
         return self._stubs["delete_event"]
 
+    @property
+    def create_asset(
+        self,
+    ) -> Callable[[service.CreateAssetRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the create asset method over gRPC.
+
+        Creates a Asset with the provided unique ID in the
+        specified region.
+
+        Returns:
+            Callable[[~.CreateAssetRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_asset" not in self._stubs:
+            self._stubs["create_asset"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/CreateAsset",
+                request_serializer=service.CreateAssetRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_asset"]
+
+    @property
+    def delete_asset(
+        self,
+    ) -> Callable[[service.DeleteAssetRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the delete asset method over gRPC.
+
+        Deletes the specified asset if it is not used.
+
+        Returns:
+            Callable[[~.DeleteAssetRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_asset" not in self._stubs:
+            self._stubs["delete_asset"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/DeleteAsset",
+                request_serializer=service.DeleteAssetRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_asset"]
+
+    @property
+    def get_asset(
+        self,
+    ) -> Callable[[service.GetAssetRequest], Awaitable[resources.Asset]]:
+        r"""Return a callable for the get asset method over gRPC.
+
+        Returns the specified asset.
+
+        Returns:
+            Callable[[~.GetAssetRequest],
+                    Awaitable[~.Asset]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_asset" not in self._stubs:
+            self._stubs["get_asset"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/GetAsset",
+                request_serializer=service.GetAssetRequest.serialize,
+                response_deserializer=resources.Asset.deserialize,
+            )
+        return self._stubs["get_asset"]
+
+    @property
+    def list_assets(
+        self,
+    ) -> Callable[[service.ListAssetsRequest], Awaitable[service.ListAssetsResponse]]:
+        r"""Return a callable for the list assets method over gRPC.
+
+        Returns a list of all assets in the specified region.
+
+        Returns:
+            Callable[[~.ListAssetsRequest],
+                    Awaitable[~.ListAssetsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_assets" not in self._stubs:
+            self._stubs["list_assets"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/ListAssets",
+                request_serializer=service.ListAssetsRequest.serialize,
+                response_deserializer=service.ListAssetsResponse.deserialize,
+            )
+        return self._stubs["list_assets"]
+
+    @property
+    def get_pool(self) -> Callable[[service.GetPoolRequest], Awaitable[resources.Pool]]:
+        r"""Return a callable for the get pool method over gRPC.
+
+        Returns the specified pool.
+
+        Returns:
+            Callable[[~.GetPoolRequest],
+                    Awaitable[~.Pool]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_pool" not in self._stubs:
+            self._stubs["get_pool"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/GetPool",
+                request_serializer=service.GetPoolRequest.serialize,
+                response_deserializer=resources.Pool.deserialize,
+            )
+        return self._stubs["get_pool"]
+
+    @property
+    def update_pool(
+        self,
+    ) -> Callable[[service.UpdatePoolRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the update pool method over gRPC.
+
+        Updates the specified pool.
+
+        Returns:
+            Callable[[~.UpdatePoolRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_pool" not in self._stubs:
+            self._stubs["update_pool"] = self.grpc_channel.unary_unary(
+                "/google.cloud.video.livestream.v1.LivestreamService/UpdatePool",
+                request_serializer=service.UpdatePoolRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_pool"]
+
     def close(self):
         return self.grpc_channel.close()
 
