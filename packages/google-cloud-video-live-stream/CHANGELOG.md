@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-video-live-stream/compare/v1.4.1...v1.5.0) (2023-08-09)
+
+
+### Features
+
+* Added a new asset resource which can be used as the content of slate events ([825eedf](https://github.com/googleapis/python-video-live-stream/commit/825eedff15c4bb036cbcd2fe52bf7ae0fa4c9c46))
+* Added a new pool resource for protecting input endpoints within a VPC Service Controls perimeter ([825eedf](https://github.com/googleapis/python-video-live-stream/commit/825eedff15c4bb036cbcd2fe52bf7ae0fa4c9c46))
+* Added support for slate events which allow users to create and insert a slate into a live stream to replace the main live stream content ([825eedf](https://github.com/googleapis/python-video-live-stream/commit/825eedff15c4bb036cbcd2fe52bf7ae0fa4c9c46))
+
 ## [1.4.1](https://github.com/googleapis/python-video-live-stream/compare/v1.4.0...v1.4.1) (2023-07-04)
 
 
