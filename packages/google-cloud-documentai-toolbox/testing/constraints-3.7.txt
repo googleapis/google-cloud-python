@@ -10,7 +10,7 @@ pandas==1.0.0
 proto-plus==1.22.0
 grpc-google-iam-v1==0.12.4
 google-cloud-bigquery==3.5.0
-google-cloud-documentai==2.12.0
+google-cloud-documentai==2.17.0
 google-cloud-storage==2.7.0
 numpy==1.18.1
 pikepdf==6.2.9

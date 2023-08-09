@@ -43,6 +43,9 @@ setuptools.setup(
     namespace_packages=("google", "google.cloud"),
     platforms="Posix; MacOS X; Windows",
     include_package_data=True,
+    package_data={
+        "google.cloud.documentai_toolbox": ["templates/*.xml.j2"],
+    },
     install_requires=(
         "google-api-core >= 1.31.5, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
         "pandas >= 1.0.0, <3.0.0",
@@ -51,7 +54,7 @@ setuptools.setup(
         "proto-plus >= 1.22.2, <2.0.0dev; python_version>='3.11'",
         "grpc-google-iam-v1 >= 0.12.4, < 0.13dev",
         "google-cloud-bigquery >= 3.5.0, < 4.0.0dev",
-        "google-cloud-documentai >= 1.2.1, < 3.0.0dev",
+        "google-cloud-documentai >= 2.17.0, < 3.0.0dev",
         "google-cloud-storage >= 1.31.0, < 3.0.0dev",
         "google-cloud-vision >= 2.7.0, < 4.0.0dev ",
         "numpy >= 1.18.1",

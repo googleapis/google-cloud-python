@@ -15,7 +15,9 @@
 #
 """Wrappers for Document AI Document type."""
 
+import copy
 import dataclasses
+import glob
 import os
 import re
 from typing import Dict, List, Optional, Type, Union
@@ -23,6 +25,7 @@ from typing import Dict, List, Optional, Type, Union
 from google.api_core.client_options import ClientOptions
 from google.cloud.vision import AnnotateFileResponse
 from google.longrunning.operations_pb2 import GetOperationRequest, Operation
+
 from jinja2 import Environment, PackageLoader
 from pikepdf import Pdf
 
@@ -284,6 +287,39 @@ def _dict_to_bigquery(
     )
 
 
+def _apply_text_offset(
+    documentai_object: Union[Dict[str, Dict], List], text_offset: int
+) -> None:
+    r"""Applies a text offset to all text_segments in `documentai_object`.
+
+    Args:
+        documentai_object (object):
+            Required. Document AI object to apply `text_offset` to.
+        text_offset (int):
+            Required. Text offset to apply. From `Document.shard_info.text_offset`.
+    Returns:
+        None
+
+    """
+    if isinstance(documentai_object, dict):
+        for key, value in documentai_object.items():
+            if key == "text_segments":
+                documentai_object[key] = [
+                    {
+                        "start_index": int(text_segment.get("start_index", 0))
+                        + text_offset,
+                        "end_index": int(text_segment.get("end_index", 0))
+                        + text_offset,
+                    }
+                    for text_segment in value
+                ]
+            else:
+                _apply_text_offset(value, text_offset)
+    elif isinstance(documentai_object, list):
+        for item in documentai_object:
+            _apply_text_offset(item, text_offset)
+
+
 @dataclasses.dataclass
 class Document:
     r"""Represents a wrapped `Document`.
@@ -344,21 +380,31 @@ class Document:
 
                 from google.cloud.documentai_toolbox import document
 
-                document_path = "/path/to/local/file.json
+                document_path = "/path/to/local/file.json"
                 wrapped_document = document.Document.from_document_path(document_path)
 
         Args:
             document_path (str):
-                Required. The path to the `document.json` file.
+                Required. The path to the `document.json` file or directory containing sharded `document.json` files.
         Returns:
             Document:
                 A document from local `document_path`.
         """
+        document_paths = [document_path]
 
-        with open(document_path, "r", encoding="utf-8") as f:
-            doc = documentai.Document.from_json(f.read(), ignore_unknown_fields=True)
+        if os.path.isdir(document_path):
+            document_paths = glob.glob(
+                os.path.join(document_path, f"*{constants.JSON_EXTENSION}")
+            )
 
-        return cls(shards=[doc])
+        documents = []
+        for file_path in document_paths:
+            with open(file_path, "r", encoding="utf-8") as f:
+                documents.append(
+                    documentai.Document.from_json(f.read(), ignore_unknown_fields=True)
+                )
+
+        return cls(shards=documents)
 
     @classmethod
     def from_documentai_document(
@@ -422,7 +468,7 @@ class Document:
     @classmethod
     def from_batch_process_metadata(
         cls: Type["Document"], metadata: documentai.BatchProcessMetadata
-    ) -> "Document":
+    ) -> List["Document"]:
         r"""Loads Documents from Cloud Storage, using the output from `BatchProcessMetadata`.
 
             .. code-block:: python
@@ -444,26 +490,18 @@ class Document:
         if metadata.state != documentai.BatchProcessMetadata.State.SUCCEEDED:
             raise ValueError(f"Batch Process Failed: {metadata.state_message}")
 
-        documents: List[Document] = []
-        # Each process corresponds to one input document
-        for process in list(metadata.individual_process_statuses):
-            # output_gcs_destination format: gs://BUCKET/PREFIX/OPERATION_NUMBER/INPUT_FILE_NUMBER/
-            gcs_bucket_name, gcs_prefix = gcs_utilities.split_gcs_uri(
-                process.output_gcs_destination
+        return [
+            Document.from_gcs(
+                *gcs_utilities.split_gcs_uri(process.output_gcs_destination),
+                gcs_input_uri=process.input_gcs_source,
             )
-
-            documents.append(
-                Document.from_gcs(
-                    gcs_bucket_name, gcs_prefix, gcs_input_uri=process.input_gcs_source
-                )
-            )
-
-        return documents
+            for process in list(metadata.individual_process_statuses)
+        ]
 
     @classmethod
     def from_batch_process_operation(
         cls: Type["Document"], location: str, operation_name: str
-    ) -> "Document":
+    ) -> List["Document"]:
         r"""Loads Documents from Cloud Storage, using the operation name returned from `batch_process_documents()`.
 
             .. code-block:: python
@@ -771,3 +809,28 @@ class Document:
         template = environment.get_template("hocr_document_template.xml.j2")
         content = template.render(pages=self.pages, title=title)
         return content
+
+    def to_merged_documentai_document(self) -> documentai.Document:
+        r"""Exports a documentai.Document from the wrapped document with shards merged.
+
+        Args:
+            None.
+        Returns:
+            documentai.Document:
+                Document with all shards merged and text offsets applied.
+        """
+        if len(self.shards) == 1:
+            return self.shards[0]
+
+        merged_document = documentai.Document(text=self.text, pages=[], entities=[])
+        for shard in self.shards:
+            modified_shard = copy.deepcopy(shard)
+
+            _apply_text_offset(
+                documentai_object=modified_shard,
+                text_offset=int(modified_shard.shard_info.text_offset),
+            )
+            merged_document.pages.extend(modified_shard.pages)
+            merged_document.entities.extend(modified_shard.entities)
+
+        return merged_document
