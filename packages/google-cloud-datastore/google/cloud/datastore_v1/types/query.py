@@ -246,11 +246,24 @@ class AggregationQuery(proto.Message):
     class Aggregation(proto.Message):
         r"""Defines an aggregation that produces a single result.
 
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             count (google.cloud.datastore_v1.types.AggregationQuery.Aggregation.Count):
                 Count aggregator.
+
+                This field is a member of `oneof`_ ``operator``.
+            sum (google.cloud.datastore_v1.types.AggregationQuery.Aggregation.Sum):
+                Sum aggregator.
+
+                This field is a member of `oneof`_ ``operator``.
+            avg (google.cloud.datastore_v1.types.AggregationQuery.Aggregation.Avg):
+                Average aggregator.
 
                 This field is a member of `oneof`_ ``operator``.
             alias (str):
@@ -328,11 +341,82 @@ class AggregationQuery(proto.Message):
                 message=wrappers_pb2.Int64Value,
             )
 
+        class Sum(proto.Message):
+            r"""Sum of the values of the requested property.
+
+            -  Only numeric values will be aggregated. All non-numeric values
+               including ``NULL`` are skipped.
+
+            -  If the aggregated values contain ``NaN``, returns ``NaN``.
+               Infinity math follows IEEE-754 standards.
+
+            -  If the aggregated value set is empty, returns 0.
+
+            -  Returns a 64-bit integer if all aggregated numbers are integers
+               and the sum result does not overflow. Otherwise, the result is
+               returned as a double. Note that even if all the aggregated values
+               are integers, the result is returned as a double if it cannot fit
+               within a 64-bit signed integer. When this occurs, the returned
+               value will lose precision.
+
+            -  When underflow occurs, floating-point aggregation is
+               non-deterministic. This means that running the same query
+               repeatedly without any changes to the underlying values could
+               produce slightly different results each time. In those cases,
+               values should be stored as integers over floating-point numbers.
+
+            Attributes:
+                property (google.cloud.datastore_v1.types.PropertyReference):
+                    The property to aggregate on.
+            """
+
+            property: "PropertyReference" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="PropertyReference",
+            )
+
+        class Avg(proto.Message):
+            r"""Average of the values of the requested property.
+
+            -  Only numeric values will be aggregated. All non-numeric values
+               including ``NULL`` are skipped.
+
+            -  If the aggregated values contain ``NaN``, returns ``NaN``.
+               Infinity math follows IEEE-754 standards.
+
+            -  If the aggregated value set is empty, returns ``NULL``.
+
+            -  Always returns the result as a double.
+
+            Attributes:
+                property (google.cloud.datastore_v1.types.PropertyReference):
+                    The property to aggregate on.
+            """
+
+            property: "PropertyReference" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="PropertyReference",
+            )
+
         count: "AggregationQuery.Aggregation.Count" = proto.Field(
             proto.MESSAGE,
             number=1,
             oneof="operator",
             message="AggregationQuery.Aggregation.Count",
+        )
+        sum: "AggregationQuery.Aggregation.Sum" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="operator",
+            message="AggregationQuery.Aggregation.Sum",
+        )
+        avg: "AggregationQuery.Aggregation.Avg" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="operator",
+            message="AggregationQuery.Aggregation.Avg",
         )
         alias: str = proto.Field(
             proto.STRING,
@@ -565,9 +649,9 @@ class PropertyFilter(proto.Message):
 
                 Requires:
 
-                -  That ``value`` is a non-empty ``ArrayValue`` with at most
-                   10 values.
-                -  No other ``IN`` or ``NOT_IN`` is in the same query.
+                -  That ``value`` is a non-empty ``ArrayValue``, subject to
+                   disjunction limits.
+                -  No ``NOT_IN`` is in the same query.
             NOT_EQUAL (9):
                 The given ``property`` is not equal to the given ``value``.
 
@@ -583,7 +667,8 @@ class PropertyFilter(proto.Message):
                 Requires:
 
                 -  That ``value`` is an entity key.
-                -  No other ``HAS_ANCESTOR`` is in the same query.
+                -  All evaluated disjunctions must have the same
+                   ``HAS_ANCESTOR`` filter.
             NOT_IN (13):
                 The value of the ``property`` is not in the given array.
 
@@ -591,8 +676,8 @@ class PropertyFilter(proto.Message):
 
                 -  That ``value`` is a non-empty ``ArrayValue`` with at most
                    10 values.
-                -  No other ``IN``, ``NOT_IN``, ``NOT_EQUAL`` is in the same
-                   query.
+                -  No other ``OR``, ``IN``, ``NOT_IN``, ``NOT_EQUAL`` is in
+                   the same query.
                 -  That ``field`` comes first in the ``order_by``.
         """
         OPERATOR_UNSPECIFIED = 0

@@ -265,8 +265,8 @@ class Value(proto.Message):
         entity_value (google.cloud.datastore_v1.types.Entity):
             An entity value.
             - May have no key.
-            - May have a key with an incomplete key path. -
-            May have a reserved/read-only key.
+            - May have a key with an incomplete key path.
+            - May have a reserved/read-only key.
 
             This field is a member of `oneof`_ ``value_type``.
         array_value (google.cloud.datastore_v1.types.ArrayValue):

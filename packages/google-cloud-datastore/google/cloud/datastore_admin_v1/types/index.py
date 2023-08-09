@@ -43,8 +43,12 @@ class Index(proto.Message):
             Required. The index's ancestor mode. Must not be
             ANCESTOR_MODE_UNSPECIFIED.
         properties (MutableSequence[google.cloud.datastore_admin_v1.types.Index.IndexedProperty]):
-            Required. An ordered sequence of property
-            names and their index attributes.
+            Required. An ordered sequence of property names and their
+            index attributes.
+
+            Requires:
+
+            -  A maximum of 100 properties.
         state (google.cloud.datastore_admin_v1.types.Index.State):
             Output only. The state of the index.
     """
