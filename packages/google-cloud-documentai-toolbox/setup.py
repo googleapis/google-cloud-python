@@ -50,6 +50,7 @@ setuptools.setup(
         "google-api-core >= 1.31.5, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
         "pandas >= 1.0.0, <3.0.0",
         "pandas >= 1.0.0, <2.0.0; python_version<'3.8'",
+        "tabulate >= 0.9.0, <1.0.0",
         "proto-plus >= 1.22.0, <2.0.0dev",
         "proto-plus >= 1.22.2, <2.0.0dev; python_version>='3.11'",
         "grpc-google-iam-v1 >= 0.12.4, < 0.13dev",

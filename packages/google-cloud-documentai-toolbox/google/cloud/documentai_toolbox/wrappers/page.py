@@ -79,37 +79,6 @@ class Table:
 
         return pd.DataFrame(self.body_rows, columns=columns)
 
-    def to_csv(self) -> str:
-        r"""Returns a csv str.
-
-            .. code-block:: python
-
-                from google.cloud.documentai_toolbox import Document
-
-                def sample_table_to_csv():
-
-                    #Wrap document from gcs_path
-                    merged_document = Document('gs://abc/def/gh/1')
-
-                    #Use first page
-                    page = merged_document.pages[0]
-
-                    #export the first table in page 1 to csv
-                    csv_text = page.tables[0].to_csv()
-
-                    print(csv_text)
-
-        Args:
-            dataframe (pd.Dataframe):
-                Required. Two-dimensional, size-mutable, potentially heterogeneous tabular data.
-
-        Returns:
-            str:
-                The table in csv format.
-
-        """
-        return self.to_dataframe().to_csv(index=False)
-
 
 @dataclasses.dataclass
 class FormField:

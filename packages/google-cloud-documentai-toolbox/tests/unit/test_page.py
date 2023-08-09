@@ -46,7 +46,7 @@ def test_table_to_csv(docproto):
         documentai_object=docproto_page.tables[0], document_text=docproto.text
     )
 
-    contents = table.to_csv()
+    contents = table.to_dataframe().to_csv(index=False)
 
     assert (
         contents
@@ -68,7 +68,7 @@ def test_table_to_csv_with_empty_body_rows(docproto):
     )
     table.body_rows = None
 
-    contents = table.to_csv()
+    contents = table.to_dataframe().to_csv(index=False)
 
     assert (
         contents
@@ -84,7 +84,7 @@ def test_table_to_csv_with_empty_header_rows(docproto):
     )
     table.header_rows = None
 
-    contents = table.to_csv()
+    contents = table.to_dataframe().to_csv(index=False)
 
     assert (
         contents
@@ -107,7 +107,7 @@ def test_table_to_csv_with_empty_header_rows_and_single_body(docproto):
     table.header_rows = []
     table.body_rows = [[table.body_rows[0][0]]]
 
-    contents = table.to_csv()
+    contents = table.to_dataframe().to_csv(index=False)
     assert (
         contents
         == """""
