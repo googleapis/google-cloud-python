@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.29.0](https://github.com/googleapis/python-container/compare/v2.28.0...v2.29.0) (2023-08-09)
+
+
+### Features
+
+* Add APIs for GKE OOTB metrics packages ([#403](https://github.com/googleapis/python-container/issues/403)) ([834872a](https://github.com/googleapis/python-container/commit/834872af197b113183024f6711e36e8a88aad47e))
+
 ## [2.28.0](https://github.com/googleapis/python-container/compare/v2.27.0...v2.28.0) (2023-07-24)
 
 
