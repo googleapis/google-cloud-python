@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.17.1](https://github.com/googleapis/python-analytics-data/compare/v0.17.0...v0.17.1) (2023-08-06)
+
+
+### Documentation
+
+* Add clarifications ([e1cecc7](https://github.com/googleapis/python-analytics-data/commit/e1cecc717db10b1069b50b2e1f2ff90741c71075))
+* Minor formatting ([e1cecc7](https://github.com/googleapis/python-analytics-data/commit/e1cecc717db10b1069b50b2e1f2ff90741c71075))
+
 ## [0.17.0](https://github.com/googleapis/python-analytics-data/compare/v0.16.3...v0.17.0) (2023-07-11)
 
 
