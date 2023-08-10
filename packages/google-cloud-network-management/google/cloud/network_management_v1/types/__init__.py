@@ -26,6 +26,9 @@ from .reachability import (
 )
 from .trace import (
     AbortInfo,
+    AppEngineVersionInfo,
+    CloudFunctionInfo,
+    CloudRunRevisionInfo,
     CloudSQLInstanceInfo,
     DeliverInfo,
     DropInfo,
@@ -41,6 +44,7 @@ from .trace import (
     RouteInfo,
     Step,
     Trace,
+    VpcConnectorInfo,
     VpnGatewayInfo,
     VpnTunnelInfo,
 )
@@ -58,6 +62,9 @@ __all__ = (
     "RerunConnectivityTestRequest",
     "UpdateConnectivityTestRequest",
     "AbortInfo",
+    "AppEngineVersionInfo",
+    "CloudFunctionInfo",
+    "CloudRunRevisionInfo",
     "CloudSQLInstanceInfo",
     "DeliverInfo",
     "DropInfo",
@@ -73,6 +80,7 @@ __all__ = (
     "RouteInfo",
     "Step",
     "Trace",
+    "VpcConnectorInfo",
     "VpnGatewayInfo",
     "VpnTunnelInfo",
 )

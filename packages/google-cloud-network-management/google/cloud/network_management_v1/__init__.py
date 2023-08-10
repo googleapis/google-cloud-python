@@ -35,6 +35,9 @@ from .types.reachability import (
 )
 from .types.trace import (
     AbortInfo,
+    AppEngineVersionInfo,
+    CloudFunctionInfo,
+    CloudRunRevisionInfo,
     CloudSQLInstanceInfo,
     DeliverInfo,
     DropInfo,
@@ -50,6 +53,7 @@ from .types.trace import (
     RouteInfo,
     Step,
     Trace,
+    VpcConnectorInfo,
     VpnGatewayInfo,
     VpnTunnelInfo,
 )
@@ -57,6 +61,9 @@ from .types.trace import (
 __all__ = (
     "ReachabilityServiceAsyncClient",
     "AbortInfo",
+    "AppEngineVersionInfo",
+    "CloudFunctionInfo",
+    "CloudRunRevisionInfo",
     "CloudSQLInstanceInfo",
     "ConnectivityTest",
     "CreateConnectivityTestRequest",
@@ -84,6 +91,7 @@ __all__ = (
     "Step",
     "Trace",
     "UpdateConnectivityTestRequest",
+    "VpcConnectorInfo",
     "VpnGatewayInfo",
     "VpnTunnelInfo",
 )

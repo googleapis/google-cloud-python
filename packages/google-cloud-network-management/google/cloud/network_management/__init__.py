@@ -41,6 +41,9 @@ from google.cloud.network_management_v1.types.reachability import (
 )
 from google.cloud.network_management_v1.types.trace import (
     AbortInfo,
+    AppEngineVersionInfo,
+    CloudFunctionInfo,
+    CloudRunRevisionInfo,
     CloudSQLInstanceInfo,
     DeliverInfo,
     DropInfo,
@@ -56,6 +59,7 @@ from google.cloud.network_management_v1.types.trace import (
     RouteInfo,
     Step,
     Trace,
+    VpcConnectorInfo,
     VpnGatewayInfo,
     VpnTunnelInfo,
 )
@@ -75,6 +79,9 @@ __all__ = (
     "RerunConnectivityTestRequest",
     "UpdateConnectivityTestRequest",
     "AbortInfo",
+    "AppEngineVersionInfo",
+    "CloudFunctionInfo",
+    "CloudRunRevisionInfo",
     "CloudSQLInstanceInfo",
     "DeliverInfo",
     "DropInfo",
@@ -90,6 +97,7 @@ __all__ = (
     "RouteInfo",
     "Step",
     "Trace",
+    "VpcConnectorInfo",
     "VpnGatewayInfo",
     "VpnTunnelInfo",
 )

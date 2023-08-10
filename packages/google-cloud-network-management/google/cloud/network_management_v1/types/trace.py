@@ -40,6 +40,10 @@ __protobuf__ = proto.module(
         "DropInfo",
         "GKEMasterInfo",
         "CloudSQLInstanceInfo",
+        "CloudFunctionInfo",
+        "CloudRunRevisionInfo",
+        "AppEngineVersionInfo",
+        "VpcConnectorInfo",
     },
 )
 
@@ -150,6 +154,10 @@ class Step(proto.Message):
             tunnel.
 
             This field is a member of `oneof`_ ``step_info``.
+        vpc_connector (google.cloud.network_management_v1.types.VpcConnectorInfo):
+            Display information of a VPC connector.
+
+            This field is a member of `oneof`_ ``step_info``.
         deliver (google.cloud.network_management_v1.types.DeliverInfo):
             Display information of the final state
             "deliver" and reason.
@@ -188,6 +196,19 @@ class Step(proto.Message):
             Display information of a Cloud SQL instance.
 
             This field is a member of `oneof`_ ``step_info``.
+        cloud_function (google.cloud.network_management_v1.types.CloudFunctionInfo):
+            Display information of a Cloud Function.
+
+            This field is a member of `oneof`_ ``step_info``.
+        app_engine_version (google.cloud.network_management_v1.types.AppEngineVersionInfo):
+            Display information of an App Engine service
+            version.
+
+            This field is a member of `oneof`_ ``step_info``.
+        cloud_run_revision (google.cloud.network_management_v1.types.CloudRunRevisionInfo):
+            Display information of a Cloud Run revision.
+
+            This field is a member of `oneof`_ ``step_info``.
     """
 
     class State(proto.Enum):
@@ -223,6 +244,21 @@ class Step(proto.Message):
                 Cloud SQL instance.
                 A CloudSQLInstanceInfo is populated with
                 starting instance information.
+            START_FROM_CLOUD_FUNCTION (23):
+                Initial state: packet originating from a
+                Cloud Function.
+                A CloudFunctionInfo is populated with starting
+                function information.
+            START_FROM_APP_ENGINE_VERSION (25):
+                Initial state: packet originating from an App
+                Engine service version.
+                An AppEngineVersionInfo is populated with
+                starting version information.
+            START_FROM_CLOUD_RUN_REVISION (26):
+                Initial state: packet originating from a
+                Cloud Run revision.
+                A CloudRunRevisionInfo is populated with
+                starting revision information.
             APPLY_INGRESS_FIREWALL_RULE (4):
                 Config checking state: verify ingress
                 firewall rule.
@@ -252,6 +288,9 @@ class Step(proto.Message):
             ARRIVE_AT_VPN_TUNNEL (13):
                 Forwarding state: arriving at a Cloud VPN
                 tunnel.
+            ARRIVE_AT_VPC_CONNECTOR (24):
+                Forwarding state: arriving at a VPC
+                connector.
             NAT (14):
                 Transition state: packet header translated.
             PROXY_CONNECTION (15):
@@ -279,6 +318,9 @@ class Step(proto.Message):
         START_FROM_PRIVATE_NETWORK = 3
         START_FROM_GKE_MASTER = 21
         START_FROM_CLOUD_SQL_INSTANCE = 22
+        START_FROM_CLOUD_FUNCTION = 23
+        START_FROM_APP_ENGINE_VERSION = 25
+        START_FROM_CLOUD_RUN_REVISION = 26
         APPLY_INGRESS_FIREWALL_RULE = 4
         APPLY_EGRESS_FIREWALL_RULE = 5
         APPLY_ROUTE = 6
@@ -289,6 +331,7 @@ class Step(proto.Message):
         ARRIVE_AT_EXTERNAL_LOAD_BALANCER = 11
         ARRIVE_AT_VPN_GATEWAY = 12
         ARRIVE_AT_VPN_TUNNEL = 13
+        ARRIVE_AT_VPC_CONNECTOR = 24
         NAT = 14
         PROXY_CONNECTION = 15
         DELIVER = 16
@@ -356,6 +399,12 @@ class Step(proto.Message):
         oneof="step_info",
         message="VpnTunnelInfo",
     )
+    vpc_connector: "VpcConnectorInfo" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        oneof="step_info",
+        message="VpcConnectorInfo",
+    )
     deliver: "DeliverInfo" = proto.Field(
         proto.MESSAGE,
         number=12,
@@ -403,6 +452,24 @@ class Step(proto.Message):
         number=19,
         oneof="step_info",
         message="CloudSQLInstanceInfo",
+    )
+    cloud_function: "CloudFunctionInfo" = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        oneof="step_info",
+        message="CloudFunctionInfo",
+    )
+    app_engine_version: "AppEngineVersionInfo" = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        oneof="step_info",
+        message="AppEngineVersionInfo",
+    )
+    cloud_run_revision: "CloudRunRevisionInfo" = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        oneof="step_info",
+        message="CloudRunRevisionInfo",
     )
 
 
@@ -547,11 +614,18 @@ class FirewallInfo(proto.Message):
             IMPLIED_VPC_FIREWALL_RULE (3):
                 Implied VPC firewall rule. For details, see `Implied
                 rules <https://cloud.google.com/vpc/docs/firewalls#default_firewall_rules>`__.
+            SERVERLESS_VPC_ACCESS_MANAGED_FIREWALL_RULE (4):
+                Implicit firewall rules that are managed by serverless VPC
+                access to allow ingress access. They are not visible in the
+                Google Cloud console. For details, see `VPC connector's
+                implicit
+                rules <https://cloud.google.com/functions/docs/networking/connecting-vpc#restrict-access>`__.
         """
         FIREWALL_RULE_TYPE_UNSPECIFIED = 0
         HIERARCHICAL_FIREWALL_POLICY_RULE = 1
         VPC_FIREWALL_RULE = 2
         IMPLIED_VPC_FIREWALL_RULE = 3
+        SERVERLESS_VPC_ACCESS_MANAGED_FIREWALL_RULE = 4
 
     display_name: str = proto.Field(
         proto.STRING,
@@ -1455,6 +1529,15 @@ class DropInfo(proto.Message):
                 Packet was dropped because the Cloud SQL
                 instance has neither a private nor a public IP
                 address.
+            CLOUD_FUNCTION_NOT_ACTIVE (22):
+                Packet could be dropped because the Cloud
+                function is not in an active status.
+            VPC_CONNECTOR_NOT_SET (23):
+                Packet could be dropped because no VPC
+                connector is set.
+            VPC_CONNECTOR_NOT_RUNNING (24):
+                Packet could be dropped because the VPC
+                connector is not in a running state.
         """
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_EXTERNAL_ADDRESS = 1
@@ -1478,6 +1561,9 @@ class DropInfo(proto.Message):
         DROPPED_INSIDE_CLOUD_SQL_SERVICE = 19
         GOOGLE_MANAGED_SERVICE_NO_PEERING = 20
         CLOUD_SQL_INSTANCE_NO_IP_ADDRESS = 21
+        CLOUD_FUNCTION_NOT_ACTIVE = 22
+        VPC_CONNECTOR_NOT_SET = 23
+        VPC_CONNECTOR_NOT_RUNNING = 24
 
     cause: Cause = proto.Field(
         proto.ENUM,
@@ -1567,6 +1653,135 @@ class CloudSQLInstanceInfo(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+
+
+class CloudFunctionInfo(proto.Message):
+    r"""For display only. Metadata associated with a Cloud Function.
+
+    Attributes:
+        display_name (str):
+            Name of a Cloud Function.
+        uri (str):
+            URI of a Cloud Function.
+        location (str):
+            Location in which the Cloud Function is
+            deployed.
+        version_id (int):
+            Latest successfully deployed version id of
+            the Cloud Function.
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    version_id: int = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+
+
+class CloudRunRevisionInfo(proto.Message):
+    r"""For display only. Metadata associated with a Cloud Run
+    revision.
+
+    Attributes:
+        display_name (str):
+            Name of a Cloud Run revision.
+        uri (str):
+            URI of a Cloud Run revision.
+        location (str):
+            Location in which this revision is deployed.
+        service_uri (str):
+            URI of Cloud Run service this revision
+            belongs to.
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    service_uri: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class AppEngineVersionInfo(proto.Message):
+    r"""For display only. Metadata associated with an App Engine
+    version.
+
+    Attributes:
+        display_name (str):
+            Name of an App Engine version.
+        uri (str):
+            URI of an App Engine version.
+        runtime (str):
+            Runtime of the App Engine version.
+        environment (str):
+            App Engine execution environment for a
+            version.
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    runtime: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    environment: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class VpcConnectorInfo(proto.Message):
+    r"""For display only. Metadata associated with a VPC connector.
+
+    Attributes:
+        display_name (str):
+            Name of a VPC connector.
+        uri (str):
+            URI of a VPC connector.
+        location (str):
+            Location in which the VPC connector is
+            deployed.
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 

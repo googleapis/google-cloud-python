@@ -39,7 +39,7 @@ class ConnectivityTest(proto.Message):
     Attributes:
         name (str):
             Required. Unique name of the resource using the form:
-            ``projects/{project_id}/locations/global/connectivityTests/{test_id}``
+            ``projects/{project_id}/locations/global/connectivityTests/{test}``
         description (str):
             The user-supplied description of the
             Connectivity Test. Maximum of 512 characters.
@@ -197,7 +197,7 @@ class Endpoint(proto.Message):
             provide forwarding information in the control
             plane. Format:
 
-            projects/{project}/global/forwardingRules/{id}
+             projects/{project}/global/forwardingRules/{id}
             or
             projects/{project}/regions/{region}/forwardingRules/{id}
         gke_master_cluster (str):
@@ -205,6 +205,15 @@ class Endpoint(proto.Message):
             master <https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture>`__.
         cloud_sql_instance (str):
             A `Cloud SQL <https://cloud.google.com/sql>`__ instance URI.
+        cloud_function (google.cloud.network_management_v1.types.Endpoint.CloudFunctionEndpoint):
+            A `Cloud Function <https://cloud.google.com/functions>`__.
+        app_engine_version (google.cloud.network_management_v1.types.Endpoint.AppEngineVersionEndpoint):
+            An `App Engine <https://cloud.google.com/appengine>`__
+            `service
+            version <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions>`__.
+        cloud_run_revision (google.cloud.network_management_v1.types.Endpoint.CloudRunRevisionEndpoint):
+            A `Cloud Run <https://cloud.google.com/run>`__
+            `revision <https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get>`__
         network (str):
             A Compute Engine network URI.
         network_type (google.cloud.network_management_v1.types.Endpoint.NetworkType):
@@ -220,13 +229,12 @@ class Endpoint(proto.Message):
             provide the project ID:
 
             1. Only the IP address is specified, and the IP
-               address is within a Google Cloud project.
+            address is within a Google Cloud project.
             2. When you are using Shared VPC and the IP
-               address that you provide is from the service
-               project. In this case, the network that the IP
-               address resides in is defined in the host
-               project.
-
+            address that you provide is from the service
+            project. In this case, the network that the IP
+            address resides in is defined in the host
+            project.
     """
 
     class NetworkType(proto.Enum):
@@ -248,6 +256,52 @@ class Endpoint(proto.Message):
         NETWORK_TYPE_UNSPECIFIED = 0
         GCP_NETWORK = 1
         NON_GCP_NETWORK = 2
+
+    class CloudFunctionEndpoint(proto.Message):
+        r"""Wrapper for Cloud Function attributes.
+
+        Attributes:
+            uri (str):
+                A `Cloud Function <https://cloud.google.com/functions>`__
+                name.
+        """
+
+        uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class AppEngineVersionEndpoint(proto.Message):
+        r"""Wrapper for the App Engine service version attributes.
+
+        Attributes:
+            uri (str):
+                An `App Engine <https://cloud.google.com/appengine>`__
+                `service
+                version <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions>`__
+                name.
+        """
+
+        uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class CloudRunRevisionEndpoint(proto.Message):
+        r"""Wrapper for Cloud Run revision attributes.
+
+        Attributes:
+            uri (str):
+                A `Cloud Run <https://cloud.google.com/run>`__
+                `revision <https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get>`__
+                URI. The format is:
+                projects/{project}/locations/{location}/revisions/{revision}
+        """
+
+        uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     ip_address: str = proto.Field(
         proto.STRING,
@@ -272,6 +326,21 @@ class Endpoint(proto.Message):
     cloud_sql_instance: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+    cloud_function: CloudFunctionEndpoint = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=CloudFunctionEndpoint,
+    )
+    app_engine_version: AppEngineVersionEndpoint = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=AppEngineVersionEndpoint,
+    )
+    cloud_run_revision: CloudRunRevisionEndpoint = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=CloudRunRevisionEndpoint,
     )
     network: str = proto.Field(
         proto.STRING,
