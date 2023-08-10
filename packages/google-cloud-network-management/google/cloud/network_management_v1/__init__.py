@@ -22,7 +22,14 @@ from .services.reachability_service import (
     ReachabilityServiceAsyncClient,
     ReachabilityServiceClient,
 )
-from .types.connectivity_test import ConnectivityTest, Endpoint, ReachabilityDetails
+from .types.connectivity_test import (
+    ConnectivityTest,
+    Endpoint,
+    LatencyDistribution,
+    LatencyPercentile,
+    ProbingDetails,
+    ReachabilityDetails,
+)
 from .types.reachability import (
     CreateConnectivityTestRequest,
     DeleteConnectivityTestRequest,
@@ -35,6 +42,9 @@ from .types.reachability import (
 )
 from .types.trace import (
     AbortInfo,
+    AppEngineVersionInfo,
+    CloudFunctionInfo,
+    CloudRunRevisionInfo,
     CloudSQLInstanceInfo,
     DeliverInfo,
     DropInfo,
@@ -46,10 +56,12 @@ from .types.trace import (
     InstanceInfo,
     LoadBalancerBackend,
     LoadBalancerInfo,
+    LoadBalancerType,
     NetworkInfo,
     RouteInfo,
     Step,
     Trace,
+    VpcConnectorInfo,
     VpnGatewayInfo,
     VpnTunnelInfo,
 )
@@ -57,6 +69,9 @@ from .types.trace import (
 __all__ = (
     "ReachabilityServiceAsyncClient",
     "AbortInfo",
+    "AppEngineVersionInfo",
+    "CloudFunctionInfo",
+    "CloudRunRevisionInfo",
     "CloudSQLInstanceInfo",
     "ConnectivityTest",
     "CreateConnectivityTestRequest",
@@ -71,12 +86,16 @@ __all__ = (
     "GKEMasterInfo",
     "GetConnectivityTestRequest",
     "InstanceInfo",
+    "LatencyDistribution",
+    "LatencyPercentile",
     "ListConnectivityTestsRequest",
     "ListConnectivityTestsResponse",
     "LoadBalancerBackend",
     "LoadBalancerInfo",
+    "LoadBalancerType",
     "NetworkInfo",
     "OperationMetadata",
+    "ProbingDetails",
     "ReachabilityDetails",
     "ReachabilityServiceClient",
     "RerunConnectivityTestRequest",
@@ -84,6 +103,7 @@ __all__ = (
     "Step",
     "Trace",
     "UpdateConnectivityTestRequest",
+    "VpcConnectorInfo",
     "VpnGatewayInfo",
     "VpnTunnelInfo",
 )
