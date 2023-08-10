@@ -1,5 +1,4 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("@rules_python//python:pip.bzl", "pip_install")
 
 _PANDOC_BUILD_FILE = """
 filegroup(
@@ -9,11 +8,6 @@ filegroup(
 )"""
 
 def gapic_generator_python():
-    _maybe(
-        pip_install,
-        name = "gapic_generator_python_pip_deps",
-        requirements = "@gapic_generator_python//:requirements.txt",
-    )
 
     _protobuf_version = "3.21.12"
     _protobuf_sha256 = "930c2c3b5ecc6c9c12615cf5ad93f1cd6e12d0aba862b572e076259970ac3a53"

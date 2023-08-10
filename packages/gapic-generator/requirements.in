@@ -1,0 +1,14 @@
+click
+google-api-core
+googleapis-common-protos
+jinja2
+MarkupSafe
+protobuf
+pypandoc
+PyYAML
+setuptools
+grpc-google-iam-v1
+proto-plus
+pytest-asyncio
+libcst
+inflection
