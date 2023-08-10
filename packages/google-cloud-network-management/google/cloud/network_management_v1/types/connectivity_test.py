@@ -192,12 +192,14 @@ class ConnectivityTest(proto.Message):
 class Endpoint(proto.Message):
     r"""Source or destination of the Connectivity Test.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         ip_address (str):
             The IP address of the endpoint, which can be an external or
             internal IP. An IPv6 address is only allowed when the test's
             destination is a `global load balancer
-            VIP </load-balancing/docs/load-balancing-overview>`__.
+            VIP <https://cloud.google.com/load-balancing/docs/load-balancing-overview>`__.
         port (int):
             The IP protocol port of the endpoint.
             Only applicable when protocol is TCP or UDP.
@@ -215,6 +217,22 @@ class Endpoint(proto.Message):
              projects/{project}/global/forwardingRules/{id}
             or
             projects/{project}/regions/{region}/forwardingRules/{id}
+        forwarding_rule_target (google.cloud.network_management_v1.types.Endpoint.ForwardingRuleTarget):
+            Output only. Specifies the type of the target
+            of the forwarding rule.
+
+            This field is a member of `oneof`_ ``_forwarding_rule_target``.
+        load_balancer_id (str):
+            Output only. ID of the load balancer the
+            forwarding rule points to. Empty for forwarding
+            rules not related to load balancers.
+
+            This field is a member of `oneof`_ ``_load_balancer_id``.
+        load_balancer_type (google.cloud.network_management_v1.types.LoadBalancerType):
+            Output only. Type of the load balancer the
+            forwarding rule points to.
+
+            This field is a member of `oneof`_ ``_load_balancer_type``.
         gke_master_cluster (str):
             A cluster URI for `Google Kubernetes Engine
             master <https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture>`__.
@@ -271,6 +289,31 @@ class Endpoint(proto.Message):
         NETWORK_TYPE_UNSPECIFIED = 0
         GCP_NETWORK = 1
         NON_GCP_NETWORK = 2
+
+    class ForwardingRuleTarget(proto.Enum):
+        r"""Type of the target of a forwarding rule.
+
+        Values:
+            FORWARDING_RULE_TARGET_UNSPECIFIED (0):
+                Forwarding rule target is unknown.
+            INSTANCE (1):
+                Compute Engine instance for protocol
+                forwarding.
+            LOAD_BALANCER (2):
+                Load Balancer. The specific type can be found from
+                [load_balancer_type]
+                [google.cloud.networkmanagement.v1.Endpoint.load_balancer_type].
+            VPN_GATEWAY (3):
+                Classic Cloud VPN Gateway.
+            PSC (4):
+                Forwarding Rule is a Private Service Connect
+                endpoint.
+        """
+        FORWARDING_RULE_TARGET_UNSPECIFIED = 0
+        INSTANCE = 1
+        LOAD_BALANCER = 2
+        VPN_GATEWAY = 3
+        PSC = 4
 
     class CloudFunctionEndpoint(proto.Message):
         r"""Wrapper for Cloud Function attributes.
@@ -333,6 +376,23 @@ class Endpoint(proto.Message):
     forwarding_rule: str = proto.Field(
         proto.STRING,
         number=13,
+    )
+    forwarding_rule_target: ForwardingRuleTarget = proto.Field(
+        proto.ENUM,
+        number=14,
+        optional=True,
+        enum=ForwardingRuleTarget,
+    )
+    load_balancer_id: str = proto.Field(
+        proto.STRING,
+        number=15,
+        optional=True,
+    )
+    load_balancer_type: trace.LoadBalancerType = proto.Field(
+        proto.ENUM,
+        number=16,
+        optional=True,
+        enum=trace.LoadBalancerType,
     )
     gke_master_cluster: str = proto.Field(
         proto.STRING,

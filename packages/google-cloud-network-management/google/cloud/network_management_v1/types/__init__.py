@@ -47,6 +47,7 @@ from .trace import (
     InstanceInfo,
     LoadBalancerBackend,
     LoadBalancerInfo,
+    LoadBalancerType,
     NetworkInfo,
     RouteInfo,
     Step,
@@ -93,4 +94,5 @@ __all__ = (
     "VpcConnectorInfo",
     "VpnGatewayInfo",
     "VpnTunnelInfo",
+    "LoadBalancerType",
 )

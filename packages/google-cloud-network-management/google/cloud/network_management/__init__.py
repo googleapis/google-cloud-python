@@ -58,6 +58,7 @@ from google.cloud.network_management_v1.types.trace import (
     InstanceInfo,
     LoadBalancerBackend,
     LoadBalancerInfo,
+    LoadBalancerType,
     NetworkInfo,
     RouteInfo,
     Step,
@@ -106,4 +107,5 @@ __all__ = (
     "VpcConnectorInfo",
     "VpnGatewayInfo",
     "VpnTunnelInfo",
+    "LoadBalancerType",
 )

@@ -3040,6 +3040,9 @@ def test_create_connectivity_test_rest(request_type):
             "port": 453,
             "instance": "instance_value",
             "forwarding_rule": "forwarding_rule_value",
+            "forwarding_rule_target": 1,
+            "load_balancer_id": "load_balancer_id_value",
+            "load_balancer_type": 1,
             "gke_master_cluster": "gke_master_cluster_value",
             "cloud_sql_instance": "cloud_sql_instance_value",
             "cloud_function": {"uri": "uri_value"},
@@ -3079,6 +3082,7 @@ def test_create_connectivity_test_rest(request_type):
                         "destination_port": 1734,
                         "source_network_uri": "source_network_uri_value",
                         "destination_network_uri": "destination_network_uri_value",
+                        "source_agent_uri": "source_agent_uri_value",
                     },
                     "steps": [
                         {
@@ -3467,6 +3471,9 @@ def test_create_connectivity_test_rest_bad_request(
             "port": 453,
             "instance": "instance_value",
             "forwarding_rule": "forwarding_rule_value",
+            "forwarding_rule_target": 1,
+            "load_balancer_id": "load_balancer_id_value",
+            "load_balancer_type": 1,
             "gke_master_cluster": "gke_master_cluster_value",
             "cloud_sql_instance": "cloud_sql_instance_value",
             "cloud_function": {"uri": "uri_value"},
@@ -3506,6 +3513,7 @@ def test_create_connectivity_test_rest_bad_request(
                         "destination_port": 1734,
                         "source_network_uri": "source_network_uri_value",
                         "destination_network_uri": "destination_network_uri_value",
+                        "source_agent_uri": "source_agent_uri_value",
                     },
                     "steps": [
                         {
@@ -3794,6 +3802,9 @@ def test_update_connectivity_test_rest(request_type):
             "port": 453,
             "instance": "instance_value",
             "forwarding_rule": "forwarding_rule_value",
+            "forwarding_rule_target": 1,
+            "load_balancer_id": "load_balancer_id_value",
+            "load_balancer_type": 1,
             "gke_master_cluster": "gke_master_cluster_value",
             "cloud_sql_instance": "cloud_sql_instance_value",
             "cloud_function": {"uri": "uri_value"},
@@ -3833,6 +3844,7 @@ def test_update_connectivity_test_rest(request_type):
                         "destination_port": 1734,
                         "source_network_uri": "source_network_uri_value",
                         "destination_network_uri": "destination_network_uri_value",
+                        "source_agent_uri": "source_agent_uri_value",
                     },
                     "steps": [
                         {
@@ -4206,6 +4218,9 @@ def test_update_connectivity_test_rest_bad_request(
             "port": 453,
             "instance": "instance_value",
             "forwarding_rule": "forwarding_rule_value",
+            "forwarding_rule_target": 1,
+            "load_balancer_id": "load_balancer_id_value",
+            "load_balancer_type": 1,
             "gke_master_cluster": "gke_master_cluster_value",
             "cloud_sql_instance": "cloud_sql_instance_value",
             "cloud_function": {"uri": "uri_value"},
@@ -4245,6 +4260,7 @@ def test_update_connectivity_test_rest_bad_request(
                         "destination_port": 1734,
                         "source_network_uri": "source_network_uri_value",
                         "destination_network_uri": "destination_network_uri_value",
+                        "source_agent_uri": "source_agent_uri_value",
                     },
                     "steps": [
                         {

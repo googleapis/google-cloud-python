@@ -22,6 +22,7 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.networkmanagement.v1",
     manifest={
+        "LoadBalancerType",
         "Trace",
         "Step",
         "InstanceInfo",
@@ -46,6 +47,52 @@ __protobuf__ = proto.module(
         "VpcConnectorInfo",
     },
 )
+
+
+class LoadBalancerType(proto.Enum):
+    r"""Type of a load balancer. For more information, see `Summary of
+    Google Cloud load
+    balancers <https://cloud.google.com/load-balancing/docs/load-balancing-overview#summary-of-google-cloud-load-balancers>`__.
+
+    Values:
+        LOAD_BALANCER_TYPE_UNSPECIFIED (0):
+            Forwarding rule points to a different target
+            than a load balancer or a load balancer type is
+            unknown.
+        HTTPS_ADVANCED_LOAD_BALANCER (1):
+            Global external HTTP(S) load balancer.
+        HTTPS_LOAD_BALANCER (2):
+            Global external HTTP(S) load balancer
+            (classic)
+        REGIONAL_HTTPS_LOAD_BALANCER (3):
+            Regional external HTTP(S) load balancer.
+        INTERNAL_HTTPS_LOAD_BALANCER (4):
+            Internal HTTP(S) load balancer.
+        SSL_PROXY_LOAD_BALANCER (5):
+            External SSL proxy load balancer.
+        TCP_PROXY_LOAD_BALANCER (6):
+            External TCP proxy load balancer.
+        INTERNAL_TCP_PROXY_LOAD_BALANCER (7):
+            Internal regional TCP proxy load balancer.
+        NETWORK_LOAD_BALANCER (8):
+            External TCP/UDP Network load balancer.
+        LEGACY_NETWORK_LOAD_BALANCER (9):
+            Target-pool based external TCP/UDP Network
+            load balancer.
+        TCP_UDP_INTERNAL_LOAD_BALANCER (10):
+            Internal TCP/UDP load balancer.
+    """
+    LOAD_BALANCER_TYPE_UNSPECIFIED = 0
+    HTTPS_ADVANCED_LOAD_BALANCER = 1
+    HTTPS_LOAD_BALANCER = 2
+    REGIONAL_HTTPS_LOAD_BALANCER = 3
+    INTERNAL_HTTPS_LOAD_BALANCER = 4
+    SSL_PROXY_LOAD_BALANCER = 5
+    TCP_PROXY_LOAD_BALANCER = 6
+    INTERNAL_TCP_PROXY_LOAD_BALANCER = 7
+    NETWORK_LOAD_BALANCER = 8
+    LEGACY_NETWORK_LOAD_BALANCER = 9
+    TCP_UDP_INTERNAL_LOAD_BALANCER = 10
 
 
 class Trace(proto.Message):
@@ -926,10 +973,14 @@ class LoadBalancerInfo(proto.Message):
                 backend.
             TARGET_POOL (2):
                 Target Pool as the load balancer's backend.
+            TARGET_INSTANCE (3):
+                Target Instance as the load balancer's
+                backend.
         """
         BACKEND_TYPE_UNSPECIFIED = 0
         BACKEND_SERVICE = 1
         TARGET_POOL = 2
+        TARGET_INSTANCE = 3
 
     load_balancer_type: LoadBalancerType = proto.Field(
         proto.ENUM,
@@ -1187,6 +1238,9 @@ class EndpointInfo(proto.Message):
         destination_network_uri (str):
             URI of the network where this packet is sent
             to.
+        source_agent_uri (str):
+            URI of the source telemetry agent this packet
+            originates from.
     """
 
     source_ip: str = proto.Field(
@@ -1216,6 +1270,10 @@ class EndpointInfo(proto.Message):
     destination_network_uri: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    source_agent_uri: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 
@@ -1247,6 +1305,18 @@ class DeliverInfo(proto.Message):
                 master.
             CLOUD_SQL_INSTANCE (5):
                 Target is a Cloud SQL instance.
+            PSC_PUBLISHED_SERVICE (6):
+                Target is a published service that uses `Private Service
+                Connect <https://cloud.google.com/vpc/docs/configure-private-service-connect-services>`__.
+            PSC_GOOGLE_API (7):
+                Target is all Google APIs that use `Private Service
+                Connect <https://cloud.google.com/vpc/docs/configure-private-service-connect-apis>`__.
+            PSC_VPC_SC (8):
+                Target is a VPC-SC that uses `Private Service
+                Connect <https://cloud.google.com/vpc/docs/configure-private-service-connect-apis>`__.
+            SERVERLESS_NEG (9):
+                Target is a serverless network endpoint
+                group.
         """
         TARGET_UNSPECIFIED = 0
         INSTANCE = 1
@@ -1254,6 +1324,10 @@ class DeliverInfo(proto.Message):
         GOOGLE_API = 3
         GKE_MASTER = 4
         CLOUD_SQL_INSTANCE = 5
+        PSC_PUBLISHED_SERVICE = 6
+        PSC_GOOGLE_API = 7
+        PSC_VPC_SC = 8
+        SERVERLESS_NEG = 9
 
     target: Target = proto.Field(
         proto.ENUM,
@@ -1298,6 +1372,9 @@ class ForwardInfo(proto.Message):
                 imported from a peering VPC.
             CLOUD_SQL_INSTANCE (6):
                 Forwarded to a Cloud SQL instance.
+            ANOTHER_PROJECT (7):
+                Forwarded to a VPC network in another
+                project.
         """
         TARGET_UNSPECIFIED = 0
         PEERING_VPC = 1
@@ -1306,6 +1383,7 @@ class ForwardInfo(proto.Message):
         GKE_MASTER = 4
         IMPORTED_CUSTOM_ROUTE_NEXT_HOP = 5
         CLOUD_SQL_INSTANCE = 6
+        ANOTHER_PROJECT = 7
 
     target: Target = proto.Field(
         proto.ENUM,
@@ -1538,6 +1616,13 @@ class DropInfo(proto.Message):
             VPC_CONNECTOR_NOT_RUNNING (24):
                 Packet could be dropped because the VPC
                 connector is not in a running state.
+            FORWARDING_RULE_REGION_MISMATCH (25):
+                Packet could be dropped because it was sent
+                from a different region to a regional forwarding
+                without global access.
+            PSC_CONNECTION_NOT_ACCEPTED (26):
+                Privte Service Connect (PSC) connection is
+                not in accepted state.
         """
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_EXTERNAL_ADDRESS = 1
@@ -1564,6 +1649,8 @@ class DropInfo(proto.Message):
         CLOUD_FUNCTION_NOT_ACTIVE = 22
         VPC_CONNECTOR_NOT_SET = 23
         VPC_CONNECTOR_NOT_RUNNING = 24
+        FORWARDING_RULE_REGION_MISMATCH = 25
+        PSC_CONNECTION_NOT_ACCEPTED = 26
 
     cause: Cause = proto.Field(
         proto.ENUM,
