@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.20.0](https://github.com/googleapis/python-analytics-admin/compare/v0.19.0...v0.20.0) (2023-08-10)
+
+
+### Features
+
+* **v1alpha:** Add `UpdateConversionEvent` method to the Admin API v1 alpha ([7685881](https://github.com/googleapis/python-analytics-admin/commit/7685881c45f9a58158ccf8dbb625c9d8f91bc4b2))
+* **v1alpha:** Add the `ConversionCountingMethod` enum ([7685881](https://github.com/googleapis/python-analytics-admin/commit/7685881c45f9a58158ccf8dbb625c9d8f91bc4b2))
+* **v1alpha:** Add the `counting_method` field to the `ConversionEvent` type ([7685881](https://github.com/googleapis/python-analytics-admin/commit/7685881c45f9a58158ccf8dbb625c9d8f91bc4b2))
+
+
+### Bug Fixes
+
+* **v1alpha:** Rename the `intraday_export_enabled` field to `enterprise_export_enabled`  in the `BigQueryLink` resource ([7685881](https://github.com/googleapis/python-analytics-admin/commit/7685881c45f9a58158ccf8dbb625c9d8f91bc4b2))
+
 ## [0.19.0](https://github.com/googleapis/python-analytics-admin/compare/v0.18.1...v0.19.0) (2023-07-27)
 
 
