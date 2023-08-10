@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -192,11 +193,20 @@ class VerifyAttestationResponse(proto.Message):
     Attributes:
         oidc_claims_token (str):
             Output only. Same as claims_token, but as a string.
+        partial_errors (MutableSequence[google.rpc.status_pb2.Status]):
+            Output only. A list of messages that carry
+            the partial error details related to
+            VerifyAttestation.
     """
 
     oidc_claims_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    partial_errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=status_pb2.Status,
     )
 
 
