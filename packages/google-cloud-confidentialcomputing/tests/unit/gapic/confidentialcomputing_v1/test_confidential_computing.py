@@ -36,6 +36,7 @@ from google.cloud.location import locations_pb2
 from google.oauth2 import service_account
 from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
