@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.6.1...google-cloud-dataplex-v1.6.2) (2023-08-09)
+
+
+### Bug Fixes
+
+* remove unused annotation in results_table ([#11548](https://github.com/googleapis/google-cloud-python/issues/11548)) ([840fc36](https://github.com/googleapis/google-cloud-python/commit/840fc369045a16000ba876eebbeb1e0b5d1ee1d8))
+
 ## [1.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.6.0...google-cloud-dataplex-v1.6.1) (2023-08-03)
 
 

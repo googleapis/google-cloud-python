@@ -3040,8 +3040,14 @@ def test_create_connectivity_test_rest(request_type):
             "port": 453,
             "instance": "instance_value",
             "forwarding_rule": "forwarding_rule_value",
+            "forwarding_rule_target": 1,
+            "load_balancer_id": "load_balancer_id_value",
+            "load_balancer_type": 1,
             "gke_master_cluster": "gke_master_cluster_value",
             "cloud_sql_instance": "cloud_sql_instance_value",
+            "cloud_function": {"uri": "uri_value"},
+            "app_engine_version": {"uri": "uri_value"},
+            "cloud_run_revision": {"uri": "uri_value"},
             "network": "network_value",
             "network_type": 1,
             "project_id": "project_id_value",
@@ -3076,6 +3082,7 @@ def test_create_connectivity_test_rest(request_type):
                         "destination_port": 1734,
                         "source_network_uri": "source_network_uri_value",
                         "destination_network_uri": "destination_network_uri_value",
+                        "source_agent_uri": "source_agent_uri_value",
                     },
                     "steps": [
                         {
@@ -3157,6 +3164,11 @@ def test_create_connectivity_test_rest(request_type):
                                 "region": "region_value",
                                 "routing_type": 1,
                             },
+                            "vpc_connector": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "location": "location_value",
+                            },
                             "deliver": {
                                 "target": 1,
                                 "resource_uri": "resource_uri_value",
@@ -3214,10 +3226,43 @@ def test_create_connectivity_test_rest(request_type):
                                 "external_ip": "external_ip_value",
                                 "region": "region_value",
                             },
+                            "cloud_function": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "location": "location_value",
+                                "version_id": 1074,
+                            },
+                            "app_engine_version": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "runtime": "runtime_value",
+                                "environment": "environment_value",
+                            },
+                            "cloud_run_revision": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "location": "location_value",
+                                "service_uri": "service_uri_value",
+                            },
                         }
                     ],
                 }
             ],
+        },
+        "probing_details": {
+            "result": 1,
+            "verify_time": {},
+            "error": {},
+            "abort_cause": 1,
+            "sent_probe_count": 1721,
+            "successful_probe_count": 2367,
+            "endpoint_info": {},
+            "probing_latency": {
+                "latency_percentiles": [{"percent": 753, "latency_micros": 1500}]
+            },
+            "destination_egress_location": {
+                "metropolitan_area": "metropolitan_area_value"
+            },
         },
     }
     request = request_type(**request_init)
@@ -3426,8 +3471,14 @@ def test_create_connectivity_test_rest_bad_request(
             "port": 453,
             "instance": "instance_value",
             "forwarding_rule": "forwarding_rule_value",
+            "forwarding_rule_target": 1,
+            "load_balancer_id": "load_balancer_id_value",
+            "load_balancer_type": 1,
             "gke_master_cluster": "gke_master_cluster_value",
             "cloud_sql_instance": "cloud_sql_instance_value",
+            "cloud_function": {"uri": "uri_value"},
+            "app_engine_version": {"uri": "uri_value"},
+            "cloud_run_revision": {"uri": "uri_value"},
             "network": "network_value",
             "network_type": 1,
             "project_id": "project_id_value",
@@ -3462,6 +3513,7 @@ def test_create_connectivity_test_rest_bad_request(
                         "destination_port": 1734,
                         "source_network_uri": "source_network_uri_value",
                         "destination_network_uri": "destination_network_uri_value",
+                        "source_agent_uri": "source_agent_uri_value",
                     },
                     "steps": [
                         {
@@ -3543,6 +3595,11 @@ def test_create_connectivity_test_rest_bad_request(
                                 "region": "region_value",
                                 "routing_type": 1,
                             },
+                            "vpc_connector": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "location": "location_value",
+                            },
                             "deliver": {
                                 "target": 1,
                                 "resource_uri": "resource_uri_value",
@@ -3600,10 +3657,43 @@ def test_create_connectivity_test_rest_bad_request(
                                 "external_ip": "external_ip_value",
                                 "region": "region_value",
                             },
+                            "cloud_function": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "location": "location_value",
+                                "version_id": 1074,
+                            },
+                            "app_engine_version": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "runtime": "runtime_value",
+                                "environment": "environment_value",
+                            },
+                            "cloud_run_revision": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "location": "location_value",
+                                "service_uri": "service_uri_value",
+                            },
                         }
                     ],
                 }
             ],
+        },
+        "probing_details": {
+            "result": 1,
+            "verify_time": {},
+            "error": {},
+            "abort_cause": 1,
+            "sent_probe_count": 1721,
+            "successful_probe_count": 2367,
+            "endpoint_info": {},
+            "probing_latency": {
+                "latency_percentiles": [{"percent": 753, "latency_micros": 1500}]
+            },
+            "destination_egress_location": {
+                "metropolitan_area": "metropolitan_area_value"
+            },
         },
     }
     request = request_type(**request_init)
@@ -3712,8 +3802,14 @@ def test_update_connectivity_test_rest(request_type):
             "port": 453,
             "instance": "instance_value",
             "forwarding_rule": "forwarding_rule_value",
+            "forwarding_rule_target": 1,
+            "load_balancer_id": "load_balancer_id_value",
+            "load_balancer_type": 1,
             "gke_master_cluster": "gke_master_cluster_value",
             "cloud_sql_instance": "cloud_sql_instance_value",
+            "cloud_function": {"uri": "uri_value"},
+            "app_engine_version": {"uri": "uri_value"},
+            "cloud_run_revision": {"uri": "uri_value"},
             "network": "network_value",
             "network_type": 1,
             "project_id": "project_id_value",
@@ -3748,6 +3844,7 @@ def test_update_connectivity_test_rest(request_type):
                         "destination_port": 1734,
                         "source_network_uri": "source_network_uri_value",
                         "destination_network_uri": "destination_network_uri_value",
+                        "source_agent_uri": "source_agent_uri_value",
                     },
                     "steps": [
                         {
@@ -3829,6 +3926,11 @@ def test_update_connectivity_test_rest(request_type):
                                 "region": "region_value",
                                 "routing_type": 1,
                             },
+                            "vpc_connector": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "location": "location_value",
+                            },
                             "deliver": {
                                 "target": 1,
                                 "resource_uri": "resource_uri_value",
@@ -3886,10 +3988,43 @@ def test_update_connectivity_test_rest(request_type):
                                 "external_ip": "external_ip_value",
                                 "region": "region_value",
                             },
+                            "cloud_function": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "location": "location_value",
+                                "version_id": 1074,
+                            },
+                            "app_engine_version": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "runtime": "runtime_value",
+                                "environment": "environment_value",
+                            },
+                            "cloud_run_revision": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "location": "location_value",
+                                "service_uri": "service_uri_value",
+                            },
                         }
                     ],
                 }
             ],
+        },
+        "probing_details": {
+            "result": 1,
+            "verify_time": {},
+            "error": {},
+            "abort_cause": 1,
+            "sent_probe_count": 1721,
+            "successful_probe_count": 2367,
+            "endpoint_info": {},
+            "probing_latency": {
+                "latency_percentiles": [{"percent": 753, "latency_micros": 1500}]
+            },
+            "destination_egress_location": {
+                "metropolitan_area": "metropolitan_area_value"
+            },
         },
     }
     request = request_type(**request_init)
@@ -4083,8 +4218,14 @@ def test_update_connectivity_test_rest_bad_request(
             "port": 453,
             "instance": "instance_value",
             "forwarding_rule": "forwarding_rule_value",
+            "forwarding_rule_target": 1,
+            "load_balancer_id": "load_balancer_id_value",
+            "load_balancer_type": 1,
             "gke_master_cluster": "gke_master_cluster_value",
             "cloud_sql_instance": "cloud_sql_instance_value",
+            "cloud_function": {"uri": "uri_value"},
+            "app_engine_version": {"uri": "uri_value"},
+            "cloud_run_revision": {"uri": "uri_value"},
             "network": "network_value",
             "network_type": 1,
             "project_id": "project_id_value",
@@ -4119,6 +4260,7 @@ def test_update_connectivity_test_rest_bad_request(
                         "destination_port": 1734,
                         "source_network_uri": "source_network_uri_value",
                         "destination_network_uri": "destination_network_uri_value",
+                        "source_agent_uri": "source_agent_uri_value",
                     },
                     "steps": [
                         {
@@ -4200,6 +4342,11 @@ def test_update_connectivity_test_rest_bad_request(
                                 "region": "region_value",
                                 "routing_type": 1,
                             },
+                            "vpc_connector": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "location": "location_value",
+                            },
                             "deliver": {
                                 "target": 1,
                                 "resource_uri": "resource_uri_value",
@@ -4257,10 +4404,43 @@ def test_update_connectivity_test_rest_bad_request(
                                 "external_ip": "external_ip_value",
                                 "region": "region_value",
                             },
+                            "cloud_function": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "location": "location_value",
+                                "version_id": 1074,
+                            },
+                            "app_engine_version": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "runtime": "runtime_value",
+                                "environment": "environment_value",
+                            },
+                            "cloud_run_revision": {
+                                "display_name": "display_name_value",
+                                "uri": "uri_value",
+                                "location": "location_value",
+                                "service_uri": "service_uri_value",
+                            },
                         }
                     ],
                 }
             ],
+        },
+        "probing_details": {
+            "result": 1,
+            "verify_time": {},
+            "error": {},
+            "abort_cause": 1,
+            "sent_probe_count": 1721,
+            "successful_probe_count": 2367,
+            "endpoint_info": {},
+            "probing_latency": {
+                "latency_percentiles": [{"percent": 753, "latency_micros": 1500}]
+            },
+            "destination_egress_location": {
+                "metropolitan_area": "metropolitan_area_value"
+            },
         },
     }
     request = request_type(**request_init)
