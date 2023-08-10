@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.26.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.25.0...v1.26.0) (2023-08-10)
+
+
+### Features
+
+* Added agent level route group ([30e8c2b](https://github.com/googleapis/python-dialogflow-cx/commit/30e8c2b6d687e35168801660be70caa52131ff17))
+* Added flow import strategy ([30e8c2b](https://github.com/googleapis/python-dialogflow-cx/commit/30e8c2b6d687e35168801660be70caa52131ff17))
+
 ## [1.25.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.24.0...v1.25.0) (2023-07-11)
 
 
