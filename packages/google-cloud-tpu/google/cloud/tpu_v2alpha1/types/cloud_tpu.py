@@ -895,6 +895,9 @@ class QueuedResourceState(proto.Message):
             Further data for the suspended state.
 
             This field is a member of `oneof`_ ``state_data``.
+        state_initiator (google.cloud.tpu_v2alpha1.types.QueuedResourceState.StateInitiator):
+            Output only. The initiator of the
+            QueuedResources's current state.
     """
 
     class State(proto.Enum):
@@ -948,6 +951,24 @@ class QueuedResourceState(proto.Message):
         ACTIVE = 6
         SUSPENDING = 7
         SUSPENDED = 8
+
+    class StateInitiator(proto.Enum):
+        r"""The initiator of the QueuedResource's SUSPENDING/SUSPENDED
+        state.
+
+        Values:
+            STATE_INITIATOR_UNSPECIFIED (0):
+                The state initiator is unspecified.
+            USER (1):
+                The current QueuedResource state was
+                initiated by the user.
+            SERVICE (2):
+                The current QueuedResource state was
+                initiated by the service.
+        """
+        STATE_INITIATOR_UNSPECIFIED = 0
+        USER = 1
+        SERVICE = 2
 
     class CreatingData(proto.Message):
         r"""Further data for the creating state."""
@@ -1037,6 +1058,11 @@ class QueuedResourceState(proto.Message):
         number=9,
         oneof="state_data",
         message=SuspendedData,
+    )
+    state_initiator: StateInitiator = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=StateInitiator,
     )
 
 
