@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.3.0...google-cloud-confidentialcomputing-v0.4.0) (2023-08-10)
+
+
+### Features
+
+* Add a new field `partial_errors` to `VerifyAttestationResponse` proto ([#11559](https://github.com/googleapis/google-cloud-python/issues/11559)) ([0c9b83a](https://github.com/googleapis/google-cloud-python/commit/0c9b83abfad6c66bc91008991b760118d1b70a01))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.2.0...google-cloud-confidentialcomputing-v0.3.0) (2023-08-09)
 
 
