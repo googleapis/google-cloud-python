@@ -3245,6 +3245,21 @@ def test_create_connectivity_test_rest(request_type):
                 }
             ],
         },
+        "probing_details": {
+            "result": 1,
+            "verify_time": {},
+            "error": {},
+            "abort_cause": 1,
+            "sent_probe_count": 1721,
+            "successful_probe_count": 2367,
+            "endpoint_info": {},
+            "probing_latency": {
+                "latency_percentiles": [{"percent": 753, "latency_micros": 1500}]
+            },
+            "destination_egress_location": {
+                "metropolitan_area": "metropolitan_area_value"
+            },
+        },
     }
     request = request_type(**request_init)
 
@@ -3657,6 +3672,21 @@ def test_create_connectivity_test_rest_bad_request(
                 }
             ],
         },
+        "probing_details": {
+            "result": 1,
+            "verify_time": {},
+            "error": {},
+            "abort_cause": 1,
+            "sent_probe_count": 1721,
+            "successful_probe_count": 2367,
+            "endpoint_info": {},
+            "probing_latency": {
+                "latency_percentiles": [{"percent": 753, "latency_micros": 1500}]
+            },
+            "destination_egress_location": {
+                "metropolitan_area": "metropolitan_area_value"
+            },
+        },
     }
     request = request_type(**request_init)
 
@@ -3968,6 +3998,21 @@ def test_update_connectivity_test_rest(request_type):
                     ],
                 }
             ],
+        },
+        "probing_details": {
+            "result": 1,
+            "verify_time": {},
+            "error": {},
+            "abort_cause": 1,
+            "sent_probe_count": 1721,
+            "successful_probe_count": 2367,
+            "endpoint_info": {},
+            "probing_latency": {
+                "latency_percentiles": [{"percent": 753, "latency_micros": 1500}]
+            },
+            "destination_egress_location": {
+                "metropolitan_area": "metropolitan_area_value"
+            },
         },
     }
     request = request_type(**request_init)
@@ -4365,6 +4410,21 @@ def test_update_connectivity_test_rest_bad_request(
                     ],
                 }
             ],
+        },
+        "probing_details": {
+            "result": 1,
+            "verify_time": {},
+            "error": {},
+            "abort_cause": 1,
+            "sent_probe_count": 1721,
+            "successful_probe_count": 2367,
+            "endpoint_info": {},
+            "probing_latency": {
+                "latency_percentiles": [{"percent": 753, "latency_micros": 1500}]
+            },
+            "destination_egress_location": {
+                "metropolitan_area": "metropolitan_area_value"
+            },
         },
     }
     request = request_type(**request_init)

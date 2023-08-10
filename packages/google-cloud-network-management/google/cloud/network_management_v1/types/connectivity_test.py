@@ -29,6 +29,9 @@ __protobuf__ = proto.module(
         "ConnectivityTest",
         "Endpoint",
         "ReachabilityDetails",
+        "LatencyPercentile",
+        "LatencyDistribution",
+        "ProbingDetails",
     },
 )
 
@@ -120,6 +123,13 @@ class ConnectivityTest(proto.Message):
             updated when creating a new test, updating an
             existing test, or triggering a one-time rerun of
             an existing test.
+        probing_details (google.cloud.network_management_v1.types.ProbingDetails):
+            Output only. The probing details of this test
+            from the latest run, present for applicable
+            tests only. The details are updated when
+            creating a new test, updating an existing test,
+            or triggering a one-time rerun of an existing
+            test.
     """
 
     name: str = proto.Field(
@@ -171,6 +181,11 @@ class ConnectivityTest(proto.Message):
         proto.MESSAGE,
         number=12,
         message="ReachabilityDetails",
+    )
+    probing_details: "ProbingDetails" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message="ProbingDetails",
     )
 
 
@@ -439,6 +454,187 @@ class ReachabilityDetails(proto.Message):
         proto.MESSAGE,
         number=5,
         message=trace.Trace,
+    )
+
+
+class LatencyPercentile(proto.Message):
+    r"""Latency percentile rank and value.
+
+    Attributes:
+        percent (int):
+            Percentage of samples this data point applies
+            to.
+        latency_micros (int):
+            percent-th percentile of latency observed, in
+            microseconds. Fraction of percent/100 of samples
+            have latency lower or equal to the value of this
+            field.
+    """
+
+    percent: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    latency_micros: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+
+
+class LatencyDistribution(proto.Message):
+    r"""Describes measured latency distribution.
+
+    Attributes:
+        latency_percentiles (MutableSequence[google.cloud.network_management_v1.types.LatencyPercentile]):
+            Representative latency percentiles.
+    """
+
+    latency_percentiles: MutableSequence["LatencyPercentile"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="LatencyPercentile",
+    )
+
+
+class ProbingDetails(proto.Message):
+    r"""Results of active probing from the last run of the test.
+
+    Attributes:
+        result (google.cloud.network_management_v1.types.ProbingDetails.ProbingResult):
+            The overall result of active probing.
+        verify_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time that reachability was assessed
+            through active probing.
+        error (google.rpc.status_pb2.Status):
+            Details about an internal failure or the
+            cancellation of active probing.
+        abort_cause (google.cloud.network_management_v1.types.ProbingDetails.ProbingAbortCause):
+            The reason probing was aborted.
+        sent_probe_count (int):
+            Number of probes sent.
+        successful_probe_count (int):
+            Number of probes that reached the
+            destination.
+        endpoint_info (google.cloud.network_management_v1.types.EndpointInfo):
+            The source and destination endpoints derived
+            from the test input and used for active probing.
+        probing_latency (google.cloud.network_management_v1.types.LatencyDistribution):
+            Latency as measured by active probing in one
+            direction:
+
+            from the source to the destination endpoint.
+        destination_egress_location (google.cloud.network_management_v1.types.ProbingDetails.EdgeLocation):
+            The EdgeLocation from which a packet destined
+            for/originating from the internet will egress/ingress the
+            Google network. This will only be populated for a
+            connectivity test which has an internet destination/source
+            address. The absence of this field *must not* be used as an
+            indication that the destination/source is part of the Google
+            network.
+    """
+
+    class ProbingResult(proto.Enum):
+        r"""Overall probing result of the test.
+
+        Values:
+            PROBING_RESULT_UNSPECIFIED (0):
+                No result was specified.
+            REACHABLE (1):
+                At least 95% of packets reached the
+                destination.
+            UNREACHABLE (2):
+                No packets reached the destination.
+            REACHABILITY_INCONSISTENT (3):
+                Less than 95% of packets reached the
+                destination.
+            UNDETERMINED (4):
+                Reachability could not be determined. Possible reasons are:
+
+                -  The user lacks permission to access some of the network
+                   resources required to run the test.
+                -  No valid source endpoint could be derived from the
+                   request.
+                -  An internal error occurred.
+        """
+        PROBING_RESULT_UNSPECIFIED = 0
+        REACHABLE = 1
+        UNREACHABLE = 2
+        REACHABILITY_INCONSISTENT = 3
+        UNDETERMINED = 4
+
+    class ProbingAbortCause(proto.Enum):
+        r"""Abort cause types.
+
+        Values:
+            PROBING_ABORT_CAUSE_UNSPECIFIED (0):
+                No reason was specified.
+            PERMISSION_DENIED (1):
+                The user lacks permission to access some of
+                the network resources required to run the test.
+            NO_SOURCE_LOCATION (2):
+                No valid source endpoint could be derived
+                from the request.
+        """
+        PROBING_ABORT_CAUSE_UNSPECIFIED = 0
+        PERMISSION_DENIED = 1
+        NO_SOURCE_LOCATION = 2
+
+    class EdgeLocation(proto.Message):
+        r"""Representation of a network edge location as per
+        https://cloud.google.com/vpc/docs/edge-locations.
+
+        Attributes:
+            metropolitan_area (str):
+                Name of the metropolitan area.
+        """
+
+        metropolitan_area: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    result: ProbingResult = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ProbingResult,
+    )
+    verify_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    error: status_pb2.Status = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=status_pb2.Status,
+    )
+    abort_cause: ProbingAbortCause = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=ProbingAbortCause,
+    )
+    sent_probe_count: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    successful_probe_count: int = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+    endpoint_info: trace.EndpointInfo = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=trace.EndpointInfo,
+    )
+    probing_latency: "LatencyDistribution" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="LatencyDistribution",
+    )
+    destination_egress_location: EdgeLocation = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=EdgeLocation,
     )
 
 

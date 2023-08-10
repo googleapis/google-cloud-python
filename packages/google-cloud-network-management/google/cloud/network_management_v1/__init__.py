@@ -22,7 +22,14 @@ from .services.reachability_service import (
     ReachabilityServiceAsyncClient,
     ReachabilityServiceClient,
 )
-from .types.connectivity_test import ConnectivityTest, Endpoint, ReachabilityDetails
+from .types.connectivity_test import (
+    ConnectivityTest,
+    Endpoint,
+    LatencyDistribution,
+    LatencyPercentile,
+    ProbingDetails,
+    ReachabilityDetails,
+)
 from .types.reachability import (
     CreateConnectivityTestRequest,
     DeleteConnectivityTestRequest,
@@ -78,12 +85,15 @@ __all__ = (
     "GKEMasterInfo",
     "GetConnectivityTestRequest",
     "InstanceInfo",
+    "LatencyDistribution",
+    "LatencyPercentile",
     "ListConnectivityTestsRequest",
     "ListConnectivityTestsResponse",
     "LoadBalancerBackend",
     "LoadBalancerInfo",
     "NetworkInfo",
     "OperationMetadata",
+    "ProbingDetails",
     "ReachabilityDetails",
     "ReachabilityServiceClient",
     "RerunConnectivityTestRequest",

@@ -27,6 +27,9 @@ from google.cloud.network_management_v1.services.reachability_service.client imp
 from google.cloud.network_management_v1.types.connectivity_test import (
     ConnectivityTest,
     Endpoint,
+    LatencyDistribution,
+    LatencyPercentile,
+    ProbingDetails,
     ReachabilityDetails,
 )
 from google.cloud.network_management_v1.types.reachability import (
@@ -69,6 +72,9 @@ __all__ = (
     "ReachabilityServiceAsyncClient",
     "ConnectivityTest",
     "Endpoint",
+    "LatencyDistribution",
+    "LatencyPercentile",
+    "ProbingDetails",
     "ReachabilityDetails",
     "CreateConnectivityTestRequest",
     "DeleteConnectivityTestRequest",
