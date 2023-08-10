@@ -721,28 +721,55 @@ class RouteInfo(proto.Message):
     r"""For display only. Metadata associated with a Compute Engine
     route.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         route_type (google.cloud.network_management_v1.types.RouteInfo.RouteType):
             Type of route.
         next_hop_type (google.cloud.network_management_v1.types.RouteInfo.NextHopType):
             Type of next hop.
+        route_scope (google.cloud.network_management_v1.types.RouteInfo.RouteScope):
+            Indicates where route is applicable.
         display_name (str):
-            Name of a Compute Engine route.
+            Name of a route.
         uri (str):
-            URI of a Compute Engine route.
-            Dynamic route from cloud router does not have a
-            URI. Advertised route from Google Cloud VPC to
-            on-premises network also does not have a URI.
+            URI of a route.
+            Dynamic, peering static and peering dynamic
+            routes do not have an URI. Advertised route from
+            Google Cloud VPC to on-premises network also
+            does not have an URI.
         dest_ip_range (str):
             Destination IP range of the route.
         next_hop (str):
             Next hop of the route.
         network_uri (str):
-            URI of a Compute Engine network.
+            URI of a Compute Engine network. NETWORK
+            routes only.
         priority (int):
             Priority of the route.
         instance_tags (MutableSequence[str]):
             Instance tags of the route.
+        src_ip_range (str):
+            Source IP address range of the route. Policy
+            based routes only.
+        dest_port_ranges (MutableSequence[str]):
+            Destination port ranges of the route. Policy
+            based routes only.
+        src_port_ranges (MutableSequence[str]):
+            Source port ranges of the route. Policy based
+            routes only.
+        protocols (MutableSequence[str]):
+            Protocols of the route. Policy based routes
+            only.
+        ncc_hub_uri (str):
+            URI of a NCC Hub. NCC_HUB routes only.
+
+            This field is a member of `oneof`_ ``_ncc_hub_uri``.
+        ncc_spoke_uri (str):
+            URI of a NCC Spoke. NCC_HUB routes only.
+
+            This field is a member of `oneof`_ ``_ncc_spoke_uri``.
     """
 
     class RouteType(proto.Enum):
@@ -766,6 +793,8 @@ class RouteInfo(proto.Message):
             PEERING_DYNAMIC (6):
                 A dynamic route received from peering
                 network.
+            POLICY_BASED (7):
+                Policy based route.
         """
         ROUTE_TYPE_UNSPECIFIED = 0
         SUBNET = 1
@@ -774,6 +803,7 @@ class RouteInfo(proto.Message):
         PEERING_SUBNET = 4
         PEERING_STATIC = 5
         PEERING_DYNAMIC = 6
+        POLICY_BASED = 7
 
     class NextHopType(proto.Enum):
         r"""Type of next hop:
@@ -811,6 +841,8 @@ class RouteInfo(proto.Message):
             NEXT_HOP_ROUTER_APPLIANCE (11):
                 Next hop is a `router appliance
                 instance <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/ra-overview>`__.
+            NEXT_HOP_NCC_HUB (12):
+                Next hop is an NCC hub.
         """
         NEXT_HOP_TYPE_UNSPECIFIED = 0
         NEXT_HOP_IP = 1
@@ -824,6 +856,23 @@ class RouteInfo(proto.Message):
         NEXT_HOP_BLACKHOLE = 9
         NEXT_HOP_ILB = 10
         NEXT_HOP_ROUTER_APPLIANCE = 11
+        NEXT_HOP_NCC_HUB = 12
+
+    class RouteScope(proto.Enum):
+        r"""Indicates where routes are applicable.
+
+        Values:
+            ROUTE_SCOPE_UNSPECIFIED (0):
+                Unspecified scope. Default value.
+            NETWORK (1):
+                Route is applicable to packets in Network.
+            NCC_HUB (2):
+                Route is applicable to packets using NCC
+                Hub's routing table.
+        """
+        ROUTE_SCOPE_UNSPECIFIED = 0
+        NETWORK = 1
+        NCC_HUB = 2
 
     route_type: RouteType = proto.Field(
         proto.ENUM,
@@ -834,6 +883,11 @@ class RouteInfo(proto.Message):
         proto.ENUM,
         number=9,
         enum=NextHopType,
+    )
+    route_scope: RouteScope = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum=RouteScope,
     )
     display_name: str = proto.Field(
         proto.STRING,
@@ -862,6 +916,32 @@ class RouteInfo(proto.Message):
     instance_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
+    )
+    src_ip_range: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    dest_port_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=11,
+    )
+    src_port_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=12,
+    )
+    protocols: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=13,
+    )
+    ncc_hub_uri: str = proto.Field(
+        proto.STRING,
+        number=15,
+        optional=True,
+    )
+    ncc_spoke_uri: str = proto.Field(
+        proto.STRING,
+        number=16,
+        optional=True,
     )
 
 
@@ -1375,6 +1455,8 @@ class ForwardInfo(proto.Message):
             ANOTHER_PROJECT (7):
                 Forwarded to a VPC network in another
                 project.
+            NCC_HUB (8):
+                Forwarded to an NCC Hub.
         """
         TARGET_UNSPECIFIED = 0
         PEERING_VPC = 1
@@ -1384,6 +1466,7 @@ class ForwardInfo(proto.Message):
         IMPORTED_CUSTOM_ROUTE_NEXT_HOP = 5
         CLOUD_SQL_INSTANCE = 6
         ANOTHER_PROJECT = 7
+        NCC_HUB = 8
 
     target: Target = proto.Field(
         proto.ENUM,
