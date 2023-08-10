@@ -29,6 +29,9 @@ __protobuf__ = proto.module(
         "ConnectivityTest",
         "Endpoint",
         "ReachabilityDetails",
+        "LatencyPercentile",
+        "LatencyDistribution",
+        "ProbingDetails",
     },
 )
 
@@ -39,7 +42,7 @@ class ConnectivityTest(proto.Message):
     Attributes:
         name (str):
             Required. Unique name of the resource using the form:
-            ``projects/{project_id}/locations/global/connectivityTests/{test_id}``
+            ``projects/{project_id}/locations/global/connectivityTests/{test}``
         description (str):
             The user-supplied description of the
             Connectivity Test. Maximum of 512 characters.
@@ -120,6 +123,13 @@ class ConnectivityTest(proto.Message):
             updated when creating a new test, updating an
             existing test, or triggering a one-time rerun of
             an existing test.
+        probing_details (google.cloud.network_management_v1.types.ProbingDetails):
+            Output only. The probing details of this test
+            from the latest run, present for applicable
+            tests only. The details are updated when
+            creating a new test, updating an existing test,
+            or triggering a one-time rerun of an existing
+            test.
     """
 
     name: str = proto.Field(
@@ -172,17 +182,24 @@ class ConnectivityTest(proto.Message):
         number=12,
         message="ReachabilityDetails",
     )
+    probing_details: "ProbingDetails" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message="ProbingDetails",
+    )
 
 
 class Endpoint(proto.Message):
     r"""Source or destination of the Connectivity Test.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         ip_address (str):
             The IP address of the endpoint, which can be an external or
             internal IP. An IPv6 address is only allowed when the test's
             destination is a `global load balancer
-            VIP </load-balancing/docs/load-balancing-overview>`__.
+            VIP <https://cloud.google.com/load-balancing/docs/load-balancing-overview>`__.
         port (int):
             The IP protocol port of the endpoint.
             Only applicable when protocol is TCP or UDP.
@@ -200,11 +217,36 @@ class Endpoint(proto.Message):
             projects/{project}/global/forwardingRules/{id}
             or
             projects/{project}/regions/{region}/forwardingRules/{id}
+        forwarding_rule_target (google.cloud.network_management_v1.types.Endpoint.ForwardingRuleTarget):
+            Output only. Specifies the type of the target
+            of the forwarding rule.
+
+            This field is a member of `oneof`_ ``_forwarding_rule_target``.
+        load_balancer_id (str):
+            Output only. ID of the load balancer the
+            forwarding rule points to. Empty for forwarding
+            rules not related to load balancers.
+
+            This field is a member of `oneof`_ ``_load_balancer_id``.
+        load_balancer_type (google.cloud.network_management_v1.types.LoadBalancerType):
+            Output only. Type of the load balancer the
+            forwarding rule points to.
+
+            This field is a member of `oneof`_ ``_load_balancer_type``.
         gke_master_cluster (str):
             A cluster URI for `Google Kubernetes Engine
             master <https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture>`__.
         cloud_sql_instance (str):
             A `Cloud SQL <https://cloud.google.com/sql>`__ instance URI.
+        cloud_function (google.cloud.network_management_v1.types.Endpoint.CloudFunctionEndpoint):
+            A `Cloud Function <https://cloud.google.com/functions>`__.
+        app_engine_version (google.cloud.network_management_v1.types.Endpoint.AppEngineVersionEndpoint):
+            An `App Engine <https://cloud.google.com/appengine>`__
+            `service
+            version <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions>`__.
+        cloud_run_revision (google.cloud.network_management_v1.types.Endpoint.CloudRunRevisionEndpoint):
+            A `Cloud Run <https://cloud.google.com/run>`__
+            `revision <https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get>`__
         network (str):
             A Compute Engine network URI.
         network_type (google.cloud.network_management_v1.types.Endpoint.NetworkType):
@@ -249,6 +291,77 @@ class Endpoint(proto.Message):
         GCP_NETWORK = 1
         NON_GCP_NETWORK = 2
 
+    class ForwardingRuleTarget(proto.Enum):
+        r"""Type of the target of a forwarding rule.
+
+        Values:
+            FORWARDING_RULE_TARGET_UNSPECIFIED (0):
+                Forwarding rule target is unknown.
+            INSTANCE (1):
+                Compute Engine instance for protocol
+                forwarding.
+            LOAD_BALANCER (2):
+                Load Balancer. The specific type can be found from
+                [load_balancer_type]
+                [google.cloud.networkmanagement.v1.Endpoint.load_balancer_type].
+            VPN_GATEWAY (3):
+                Classic Cloud VPN Gateway.
+            PSC (4):
+                Forwarding Rule is a Private Service Connect
+                endpoint.
+        """
+        FORWARDING_RULE_TARGET_UNSPECIFIED = 0
+        INSTANCE = 1
+        LOAD_BALANCER = 2
+        VPN_GATEWAY = 3
+        PSC = 4
+
+    class CloudFunctionEndpoint(proto.Message):
+        r"""Wrapper for Cloud Function attributes.
+
+        Attributes:
+            uri (str):
+                A `Cloud Function <https://cloud.google.com/functions>`__
+                name.
+        """
+
+        uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class AppEngineVersionEndpoint(proto.Message):
+        r"""Wrapper for the App Engine service version attributes.
+
+        Attributes:
+            uri (str):
+                An `App Engine <https://cloud.google.com/appengine>`__
+                `service
+                version <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions>`__
+                name.
+        """
+
+        uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class CloudRunRevisionEndpoint(proto.Message):
+        r"""Wrapper for Cloud Run revision attributes.
+
+        Attributes:
+            uri (str):
+                A `Cloud Run <https://cloud.google.com/run>`__
+                `revision <https://cloud.google.com/run/docs/reference/rest/v1/namespaces.revisions/get>`__
+                URI. The format is:
+                projects/{project}/locations/{location}/revisions/{revision}
+        """
+
+        uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
     ip_address: str = proto.Field(
         proto.STRING,
         number=1,
@@ -265,6 +378,23 @@ class Endpoint(proto.Message):
         proto.STRING,
         number=13,
     )
+    forwarding_rule_target: ForwardingRuleTarget = proto.Field(
+        proto.ENUM,
+        number=14,
+        optional=True,
+        enum=ForwardingRuleTarget,
+    )
+    load_balancer_id: str = proto.Field(
+        proto.STRING,
+        number=15,
+        optional=True,
+    )
+    load_balancer_type: trace.LoadBalancerType = proto.Field(
+        proto.ENUM,
+        number=16,
+        optional=True,
+        enum=trace.LoadBalancerType,
+    )
     gke_master_cluster: str = proto.Field(
         proto.STRING,
         number=7,
@@ -272,6 +402,21 @@ class Endpoint(proto.Message):
     cloud_sql_instance: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+    cloud_function: CloudFunctionEndpoint = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=CloudFunctionEndpoint,
+    )
+    app_engine_version: AppEngineVersionEndpoint = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=AppEngineVersionEndpoint,
+    )
+    cloud_run_revision: CloudRunRevisionEndpoint = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=CloudRunRevisionEndpoint,
     )
     network: str = proto.Field(
         proto.STRING,
@@ -370,6 +515,187 @@ class ReachabilityDetails(proto.Message):
         proto.MESSAGE,
         number=5,
         message=trace.Trace,
+    )
+
+
+class LatencyPercentile(proto.Message):
+    r"""Latency percentile rank and value.
+
+    Attributes:
+        percent (int):
+            Percentage of samples this data point applies
+            to.
+        latency_micros (int):
+            percent-th percentile of latency observed, in
+            microseconds. Fraction of percent/100 of samples
+            have latency lower or equal to the value of this
+            field.
+    """
+
+    percent: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    latency_micros: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+
+
+class LatencyDistribution(proto.Message):
+    r"""Describes measured latency distribution.
+
+    Attributes:
+        latency_percentiles (MutableSequence[google.cloud.network_management_v1.types.LatencyPercentile]):
+            Representative latency percentiles.
+    """
+
+    latency_percentiles: MutableSequence["LatencyPercentile"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="LatencyPercentile",
+    )
+
+
+class ProbingDetails(proto.Message):
+    r"""Results of active probing from the last run of the test.
+
+    Attributes:
+        result (google.cloud.network_management_v1.types.ProbingDetails.ProbingResult):
+            The overall result of active probing.
+        verify_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time that reachability was assessed
+            through active probing.
+        error (google.rpc.status_pb2.Status):
+            Details about an internal failure or the
+            cancellation of active probing.
+        abort_cause (google.cloud.network_management_v1.types.ProbingDetails.ProbingAbortCause):
+            The reason probing was aborted.
+        sent_probe_count (int):
+            Number of probes sent.
+        successful_probe_count (int):
+            Number of probes that reached the
+            destination.
+        endpoint_info (google.cloud.network_management_v1.types.EndpointInfo):
+            The source and destination endpoints derived
+            from the test input and used for active probing.
+        probing_latency (google.cloud.network_management_v1.types.LatencyDistribution):
+            Latency as measured by active probing in one
+            direction:
+
+            from the source to the destination endpoint.
+        destination_egress_location (google.cloud.network_management_v1.types.ProbingDetails.EdgeLocation):
+            The EdgeLocation from which a packet destined
+            for/originating from the internet will egress/ingress the
+            Google network. This will only be populated for a
+            connectivity test which has an internet destination/source
+            address. The absence of this field *must not* be used as an
+            indication that the destination/source is part of the Google
+            network.
+    """
+
+    class ProbingResult(proto.Enum):
+        r"""Overall probing result of the test.
+
+        Values:
+            PROBING_RESULT_UNSPECIFIED (0):
+                No result was specified.
+            REACHABLE (1):
+                At least 95% of packets reached the
+                destination.
+            UNREACHABLE (2):
+                No packets reached the destination.
+            REACHABILITY_INCONSISTENT (3):
+                Less than 95% of packets reached the
+                destination.
+            UNDETERMINED (4):
+                Reachability could not be determined. Possible reasons are:
+
+                -  The user lacks permission to access some of the network
+                   resources required to run the test.
+                -  No valid source endpoint could be derived from the
+                   request.
+                -  An internal error occurred.
+        """
+        PROBING_RESULT_UNSPECIFIED = 0
+        REACHABLE = 1
+        UNREACHABLE = 2
+        REACHABILITY_INCONSISTENT = 3
+        UNDETERMINED = 4
+
+    class ProbingAbortCause(proto.Enum):
+        r"""Abort cause types.
+
+        Values:
+            PROBING_ABORT_CAUSE_UNSPECIFIED (0):
+                No reason was specified.
+            PERMISSION_DENIED (1):
+                The user lacks permission to access some of
+                the network resources required to run the test.
+            NO_SOURCE_LOCATION (2):
+                No valid source endpoint could be derived
+                from the request.
+        """
+        PROBING_ABORT_CAUSE_UNSPECIFIED = 0
+        PERMISSION_DENIED = 1
+        NO_SOURCE_LOCATION = 2
+
+    class EdgeLocation(proto.Message):
+        r"""Representation of a network edge location as per
+        https://cloud.google.com/vpc/docs/edge-locations.
+
+        Attributes:
+            metropolitan_area (str):
+                Name of the metropolitan area.
+        """
+
+        metropolitan_area: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    result: ProbingResult = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ProbingResult,
+    )
+    verify_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    error: status_pb2.Status = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=status_pb2.Status,
+    )
+    abort_cause: ProbingAbortCause = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=ProbingAbortCause,
+    )
+    sent_probe_count: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    successful_probe_count: int = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+    endpoint_info: trace.EndpointInfo = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=trace.EndpointInfo,
+    )
+    probing_latency: "LatencyDistribution" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="LatencyDistribution",
+    )
+    destination_egress_location: EdgeLocation = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=EdgeLocation,
     )
 
 
