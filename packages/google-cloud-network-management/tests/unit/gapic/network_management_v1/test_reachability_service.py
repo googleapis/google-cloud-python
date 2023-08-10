@@ -3149,6 +3149,10 @@ def test_create_connectivity_test_rest(request_type):
                                 "ncc_spoke_uri": "ncc_spoke_uri_value",
                             },
                             "endpoint": {},
+                            "google_service": {
+                                "source_ip": "source_ip_value",
+                                "google_service_type": 1,
+                            },
                             "forwarding_rule": {
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
@@ -3593,6 +3597,10 @@ def test_create_connectivity_test_rest_bad_request(
                                 "ncc_spoke_uri": "ncc_spoke_uri_value",
                             },
                             "endpoint": {},
+                            "google_service": {
+                                "source_ip": "source_ip_value",
+                                "google_service_type": 1,
+                            },
                             "forwarding_rule": {
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
@@ -3937,6 +3945,10 @@ def test_update_connectivity_test_rest(request_type):
                                 "ncc_spoke_uri": "ncc_spoke_uri_value",
                             },
                             "endpoint": {},
+                            "google_service": {
+                                "source_ip": "source_ip_value",
+                                "google_service_type": 1,
+                            },
                             "forwarding_rule": {
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
@@ -4366,6 +4378,10 @@ def test_update_connectivity_test_rest_bad_request(
                                 "ncc_spoke_uri": "ncc_spoke_uri_value",
                             },
                             "endpoint": {},
+                            "google_service": {
+                                "source_ip": "source_ip_value",
+                                "google_service_type": 1,
+                            },
                             "forwarding_rule": {
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",

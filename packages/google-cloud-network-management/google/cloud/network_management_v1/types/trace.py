@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
         "NetworkInfo",
         "FirewallInfo",
         "RouteInfo",
+        "GoogleServiceInfo",
         "ForwardingRuleInfo",
         "LoadBalancerInfo",
         "LoadBalancerBackend",
@@ -186,6 +187,10 @@ class Step(proto.Message):
             by state like NAT, or Connection Proxy.
 
             This field is a member of `oneof`_ ``step_info``.
+        google_service (google.cloud.network_management_v1.types.GoogleServiceInfo):
+            Display information of a Google service
+
+            This field is a member of `oneof`_ ``step_info``.
         forwarding_rule (google.cloud.network_management_v1.types.ForwardingRuleInfo):
             Display information of a Compute Engine
             forwarding rule.
@@ -274,6 +279,13 @@ class Step(proto.Message):
                 Initial state: packet originating from the
                 internet.
                 The endpoint information is populated.
+            START_FROM_GOOGLE_SERVICE (27):
+                Initial state: packet originating from a
+                Google service. Some Google
+                services, such as health check probers or
+                Identity Aware Proxy use special routes, outside
+                VPC routing configuration to reach Compute
+                Engine Instances.
             START_FROM_PRIVATE_NETWORK (3):
                 Initial state: packet originating from a VPC
                 or on-premises network
@@ -362,6 +374,7 @@ class Step(proto.Message):
         STATE_UNSPECIFIED = 0
         START_FROM_INSTANCE = 1
         START_FROM_INTERNET = 2
+        START_FROM_GOOGLE_SERVICE = 27
         START_FROM_PRIVATE_NETWORK = 3
         START_FROM_GKE_MASTER = 21
         START_FROM_CLOUD_SQL_INSTANCE = 22
@@ -427,6 +440,12 @@ class Step(proto.Message):
         number=8,
         oneof="step_info",
         message="EndpointInfo",
+    )
+    google_service: "GoogleServiceInfo" = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        oneof="step_info",
+        message="GoogleServiceInfo",
     )
     forwarding_rule: "ForwardingRuleInfo" = proto.Field(
         proto.MESSAGE,
@@ -942,6 +961,59 @@ class RouteInfo(proto.Message):
         proto.STRING,
         number=16,
         optional=True,
+    )
+
+
+class GoogleServiceInfo(proto.Message):
+    r"""For display only. Details of a Google Service sending packets to a
+    VPC network. Although the source IP might be a publicly routable
+    address, some Google Services use special routes within Google
+    production infrastructure to reach Compute Engine Instances.
+    https://cloud.google.com/vpc/docs/routes#special_return_paths
+
+    Attributes:
+        source_ip (str):
+            Source IP address.
+        google_service_type (google.cloud.network_management_v1.types.GoogleServiceInfo.GoogleServiceType):
+            Recognized type of a Google Service.
+    """
+
+    class GoogleServiceType(proto.Enum):
+        r"""Recognized type of a Google Service.
+
+        Values:
+            GOOGLE_SERVICE_TYPE_UNSPECIFIED (0):
+                Unspecified Google Service. Includes most of
+                Google APIs and services.
+            IAP (1):
+                Identity aware proxy.
+                https://cloud.google.com/iap/docs/using-tcp-forwarding
+            GFE_PROXY_OR_HEALTH_CHECK_PROBER (2):
+                One of two services sharing IP ranges:
+
+                -  Load Balancer proxy
+                -  Centralized Health Check prober
+                   https://cloud.google.com/load-balancing/docs/firewall-rules
+            CLOUD_DNS (3):
+                Connectivity from Cloud DNS to forwarding
+                targets or alternate name servers that use
+                private routing.
+                https://cloud.google.com/dns/docs/zones/forwarding-zones#firewall-rules
+                https://cloud.google.com/dns/docs/policies#firewall-rules
+        """
+        GOOGLE_SERVICE_TYPE_UNSPECIFIED = 0
+        IAP = 1
+        GFE_PROXY_OR_HEALTH_CHECK_PROBER = 2
+        CLOUD_DNS = 3
+
+    source_ip: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    google_service_type: GoogleServiceType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=GoogleServiceType,
     )
 
 
