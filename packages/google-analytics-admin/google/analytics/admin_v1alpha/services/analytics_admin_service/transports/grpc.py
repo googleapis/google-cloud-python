@@ -1430,6 +1430,35 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["create_conversion_event"]
 
     @property
+    def update_conversion_event(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateConversionEventRequest], resources.ConversionEvent
+    ]:
+        r"""Return a callable for the update conversion event method over gRPC.
+
+        Updates a conversion event with the specified
+        attributes.
+
+        Returns:
+            Callable[[~.UpdateConversionEventRequest],
+                    ~.ConversionEvent]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_conversion_event" not in self._stubs:
+            self._stubs["update_conversion_event"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateConversionEvent",
+                request_serializer=analytics_admin.UpdateConversionEventRequest.serialize,
+                response_deserializer=resources.ConversionEvent.deserialize,
+            )
+        return self._stubs["update_conversion_event"]
+
+    @property
     def get_conversion_event(
         self,
     ) -> Callable[

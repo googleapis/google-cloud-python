@@ -550,6 +550,11 @@
                 "update_channel_group"
               ]
             },
+            "UpdateConversionEvent": {
+              "methods": [
+                "update_conversion_event"
+              ]
+            },
             "UpdateCustomDimension": {
               "methods": [
                 "update_custom_dimension"
@@ -1165,6 +1170,11 @@
                 "update_channel_group"
               ]
             },
+            "UpdateConversionEvent": {
+              "methods": [
+                "update_conversion_event"
+              ]
+            },
             "UpdateCustomDimension": {
               "methods": [
                 "update_custom_dimension"
@@ -1778,6 +1788,11 @@
             "UpdateChannelGroup": {
               "methods": [
                 "update_channel_group"
+              ]
+            },
+            "UpdateConversionEvent": {
+              "methods": [
+                "update_conversion_event"
               ]
             },
             "UpdateCustomDimension": {

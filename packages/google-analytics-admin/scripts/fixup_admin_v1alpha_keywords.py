@@ -147,6 +147,7 @@ class adminCallTransformer(cst.CSTTransformer):
         'update_attribution_settings': ('attribution_settings', 'update_mask', ),
         'update_audience': ('audience', 'update_mask', ),
         'update_channel_group': ('channel_group', 'update_mask', ),
+        'update_conversion_event': ('conversion_event', 'update_mask', ),
         'update_custom_dimension': ('update_mask', 'custom_dimension', ),
         'update_custom_metric': ('update_mask', 'custom_metric', ),
         'update_data_retention_settings': ('data_retention_settings', 'update_mask', ),

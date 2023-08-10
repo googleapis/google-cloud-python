@@ -1814,7 +1814,29 @@ class ConversionEvent(proto.Message):
             Custom events count towards the maximum number
             of custom conversion events that may be created
             per property.
+        counting_method (google.analytics.admin_v1alpha.types.ConversionEvent.ConversionCountingMethod):
+            Optional. The method by which conversions will be counted
+            across multiple events within a session. If this value is
+            not provided, it will be set to ``ONCE_PER_EVENT``.
     """
+
+    class ConversionCountingMethod(proto.Enum):
+        r"""The method by which conversions will be counted across
+        multiple events within a session.
+
+        Values:
+            CONVERSION_COUNTING_METHOD_UNSPECIFIED (0):
+                Counting method not specified.
+            ONCE_PER_EVENT (1):
+                Each Event instance is considered a
+                Conversion.
+            ONCE_PER_SESSION (2):
+                An Event instance is considered a Conversion
+                at most once per session per user.
+        """
+        CONVERSION_COUNTING_METHOD_UNSPECIFIED = 0
+        ONCE_PER_EVENT = 1
+        ONCE_PER_SESSION = 2
 
     name: str = proto.Field(
         proto.STRING,
@@ -1836,6 +1858,11 @@ class ConversionEvent(proto.Message):
     custom: bool = proto.Field(
         proto.BOOL,
         number=5,
+    )
+    counting_method: ConversionCountingMethod = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=ConversionCountingMethod,
     )
 
 
@@ -2433,8 +2460,8 @@ class BigQueryLink(proto.Message):
         streaming_export_enabled (bool):
             If set true, enables streaming export to the
             linked Google Cloud project.
-        intraday_export_enabled (bool):
-            If set true, enables intraday export to the
+        enterprise_export_enabled (bool):
+            If set true, enables enterprise export to the
             linked Google Cloud project.
         include_advertising_id (bool):
             If set true, exported data will include
@@ -2470,7 +2497,7 @@ class BigQueryLink(proto.Message):
         proto.BOOL,
         number=5,
     )
-    intraday_export_enabled: bool = proto.Field(
+    enterprise_export_enabled: bool = proto.Field(
         proto.BOOL,
         number=9,
     )

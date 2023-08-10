@@ -89,6 +89,7 @@ __protobuf__ = proto.module(
         "GetGoogleSignalsSettingsRequest",
         "UpdateGoogleSignalsSettingsRequest",
         "CreateConversionEventRequest",
+        "UpdateConversionEventRequest",
         "GetConversionEventRequest",
         "DeleteConversionEventRequest",
         "ListConversionEventsRequest",
@@ -1767,6 +1768,32 @@ class CreateConversionEventRequest(proto.Message):
     parent: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class UpdateConversionEventRequest(proto.Message):
+    r"""Request message for UpdateConversionEvent RPC
+
+    Attributes:
+        conversion_event (google.analytics.admin_v1alpha.types.ConversionEvent):
+            Required. The conversion event to update. The ``name`` field
+            is used to identify the settings to be updated.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Field names must
+            be in snake case (e.g., "field_to_update"). Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
+    """
+
+    conversion_event: resources.ConversionEvent = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.ConversionEvent,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
