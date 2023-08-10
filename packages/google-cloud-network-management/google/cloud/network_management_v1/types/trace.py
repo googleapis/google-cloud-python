@@ -686,12 +686,22 @@ class FirewallInfo(proto.Message):
                 Google Cloud console. For details, see `VPC connector's
                 implicit
                 rules <https://cloud.google.com/functions/docs/networking/connecting-vpc#restrict-access>`__.
+            NETWORK_FIREWALL_POLICY_RULE (5):
+                Global network firewall policy rule. For details, see
+                `Network firewall
+                policies <https://cloud.google.com/vpc/docs/network-firewall-policies>`__.
+            NETWORK_REGIONAL_FIREWALL_POLICY_RULE (6):
+                Regional network firewall policy rule. For details, see
+                `Regional network firewall
+                policies <https://cloud.google.com/firewall/docs/regional-firewall-policies>`__.
         """
         FIREWALL_RULE_TYPE_UNSPECIFIED = 0
         HIERARCHICAL_FIREWALL_POLICY_RULE = 1
         VPC_FIREWALL_RULE = 2
         IMPLIED_VPC_FIREWALL_RULE = 3
         SERVERLESS_VPC_ACCESS_MANAGED_FIREWALL_RULE = 4
+        NETWORK_FIREWALL_POLICY_RULE = 5
+        NETWORK_REGIONAL_FIREWALL_POLICY_RULE = 6
 
     display_name: str = proto.Field(
         proto.STRING,
