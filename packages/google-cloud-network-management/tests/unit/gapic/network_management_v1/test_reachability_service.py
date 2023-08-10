@@ -3124,6 +3124,7 @@ def test_create_connectivity_test_rest(request_type):
                             "route": {
                                 "route_type": 1,
                                 "next_hop_type": 1,
+                                "route_scope": 1,
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
                                 "dest_ip_range": "dest_ip_range_value",
@@ -3134,6 +3135,18 @@ def test_create_connectivity_test_rest(request_type):
                                     "instance_tags_value1",
                                     "instance_tags_value2",
                                 ],
+                                "src_ip_range": "src_ip_range_value",
+                                "dest_port_ranges": [
+                                    "dest_port_ranges_value1",
+                                    "dest_port_ranges_value2",
+                                ],
+                                "src_port_ranges": [
+                                    "src_port_ranges_value1",
+                                    "src_port_ranges_value2",
+                                ],
+                                "protocols": ["protocols_value1", "protocols_value2"],
+                                "ncc_hub_uri": "ncc_hub_uri_value",
+                                "ncc_spoke_uri": "ncc_spoke_uri_value",
                             },
                             "endpoint": {},
                             "forwarding_rule": {
@@ -3555,6 +3568,7 @@ def test_create_connectivity_test_rest_bad_request(
                             "route": {
                                 "route_type": 1,
                                 "next_hop_type": 1,
+                                "route_scope": 1,
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
                                 "dest_ip_range": "dest_ip_range_value",
@@ -3565,6 +3579,18 @@ def test_create_connectivity_test_rest_bad_request(
                                     "instance_tags_value1",
                                     "instance_tags_value2",
                                 ],
+                                "src_ip_range": "src_ip_range_value",
+                                "dest_port_ranges": [
+                                    "dest_port_ranges_value1",
+                                    "dest_port_ranges_value2",
+                                ],
+                                "src_port_ranges": [
+                                    "src_port_ranges_value1",
+                                    "src_port_ranges_value2",
+                                ],
+                                "protocols": ["protocols_value1", "protocols_value2"],
+                                "ncc_hub_uri": "ncc_hub_uri_value",
+                                "ncc_spoke_uri": "ncc_spoke_uri_value",
                             },
                             "endpoint": {},
                             "forwarding_rule": {
@@ -3886,6 +3912,7 @@ def test_update_connectivity_test_rest(request_type):
                             "route": {
                                 "route_type": 1,
                                 "next_hop_type": 1,
+                                "route_scope": 1,
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
                                 "dest_ip_range": "dest_ip_range_value",
@@ -3896,6 +3923,18 @@ def test_update_connectivity_test_rest(request_type):
                                     "instance_tags_value1",
                                     "instance_tags_value2",
                                 ],
+                                "src_ip_range": "src_ip_range_value",
+                                "dest_port_ranges": [
+                                    "dest_port_ranges_value1",
+                                    "dest_port_ranges_value2",
+                                ],
+                                "src_port_ranges": [
+                                    "src_port_ranges_value1",
+                                    "src_port_ranges_value2",
+                                ],
+                                "protocols": ["protocols_value1", "protocols_value2"],
+                                "ncc_hub_uri": "ncc_hub_uri_value",
+                                "ncc_spoke_uri": "ncc_spoke_uri_value",
                             },
                             "endpoint": {},
                             "forwarding_rule": {
@@ -4302,6 +4341,7 @@ def test_update_connectivity_test_rest_bad_request(
                             "route": {
                                 "route_type": 1,
                                 "next_hop_type": 1,
+                                "route_scope": 1,
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
                                 "dest_ip_range": "dest_ip_range_value",
@@ -4312,6 +4352,18 @@ def test_update_connectivity_test_rest_bad_request(
                                     "instance_tags_value1",
                                     "instance_tags_value2",
                                 ],
+                                "src_ip_range": "src_ip_range_value",
+                                "dest_port_ranges": [
+                                    "dest_port_ranges_value1",
+                                    "dest_port_ranges_value2",
+                                ],
+                                "src_port_ranges": [
+                                    "src_port_ranges_value1",
+                                    "src_port_ranges_value2",
+                                ],
+                                "protocols": ["protocols_value1", "protocols_value2"],
+                                "ncc_hub_uri": "ncc_hub_uri_value",
+                                "ncc_spoke_uri": "ncc_spoke_uri_value",
                             },
                             "endpoint": {},
                             "forwarding_rule": {
