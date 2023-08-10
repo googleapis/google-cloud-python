@@ -127,6 +127,7 @@ from .types.flow import DeleteFlowRequest
 from .types.flow import ExportFlowRequest
 from .types.flow import ExportFlowResponse
 from .types.flow import Flow
+from .types.flow import FlowImportStrategy
 from .types.flow import FlowValidationResult
 from .types.flow import GetFlowRequest
 from .types.flow import GetFlowValidationResultRequest
@@ -140,6 +141,7 @@ from .types.flow import UpdateFlowRequest
 from .types.flow import ValidateFlowRequest
 from .types.fulfillment import Fulfillment
 from .types.gcs import GcsDestination
+from .types.import_strategy import ImportStrategy
 from .types.intent import CreateIntentRequest
 from .types.intent import DeleteIntentRequest
 from .types.intent import GetIntentRequest
@@ -345,6 +347,7 @@ __all__ = (
     "ExportTestCasesRequest",
     "ExportTestCasesResponse",
     "Flow",
+    "FlowImportStrategy",
     "FlowValidationResult",
     "FlowsClient",
     "Form",
@@ -372,6 +375,7 @@ __all__ = (
     "GetWebhookRequest",
     "ImportFlowRequest",
     "ImportFlowResponse",
+    "ImportStrategy",
     "ImportTestCasesMetadata",
     "ImportTestCasesRequest",
     "ImportTestCasesResponse",

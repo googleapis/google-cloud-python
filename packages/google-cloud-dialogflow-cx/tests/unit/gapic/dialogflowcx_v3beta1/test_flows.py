@@ -55,6 +55,7 @@ from google.cloud.dialogflowcx_v3beta1.services.flows import transports
 from google.cloud.dialogflowcx_v3beta1.types import flow
 from google.cloud.dialogflowcx_v3beta1.types import flow as gcdc_flow
 from google.cloud.dialogflowcx_v3beta1.types import fulfillment
+from google.cloud.dialogflowcx_v3beta1.types import import_strategy
 from google.cloud.dialogflowcx_v3beta1.types import page
 from google.cloud.dialogflowcx_v3beta1.types import response_message
 from google.cloud.dialogflowcx_v3beta1.types import validation_message

@@ -92,7 +92,7 @@ class dialogflowcxCallTransformer(cst.CSTTransformer):
         'get_transition_route_group': ('name', 'language_code', ),
         'get_version': ('name', ),
         'get_webhook': ('name', ),
-        'import_flow': ('parent', 'flow_uri', 'flow_content', 'import_option', ),
+        'import_flow': ('parent', 'flow_uri', 'flow_content', 'import_option', 'flow_import_strategy', ),
         'import_test_cases': ('parent', 'gcs_uri', 'content', ),
         'list_agents': ('parent', 'page_size', 'page_token', ),
         'list_changelogs': ('parent', 'filter', 'page_size', 'page_token', ),

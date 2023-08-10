@@ -74,8 +74,9 @@ class Agent(proto.Message):
     Types][google.cloud.dialogflow.cx.v3beta1.EntityType],
     [Flows][google.cloud.dialogflow.cx.v3beta1.Flow],
     [Fulfillments][google.cloud.dialogflow.cx.v3beta1.Fulfillment],
-    [Webhooks][google.cloud.dialogflow.cx.v3beta1.Webhook], and so on to
-    manage the conversation flows..
+    [Webhooks][google.cloud.dialogflow.cx.v3beta1.Webhook],
+    [TransitionRouteGroups][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
+    and so on to manage the conversation flows.
 
     Attributes:
         name (str):

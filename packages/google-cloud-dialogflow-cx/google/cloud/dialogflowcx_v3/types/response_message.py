@@ -118,12 +118,39 @@ class ResponseMessage(proto.Message):
             third-party endpoint.
 
             This field is a member of `oneof`_ ``message``.
+        response_type (google.cloud.dialogflowcx_v3.types.ResponseMessage.ResponseType):
+            Response type.
         channel (str):
             The channel which the response is associated with. Clients
             can specify the channel via
             [QueryParameters.channel][google.cloud.dialogflow.cx.v3.QueryParameters.channel],
             and only associated channel response will be returned.
     """
+
+    class ResponseType(proto.Enum):
+        r"""Represents different response types.
+
+        Values:
+            RESPONSE_TYPE_UNSPECIFIED (0):
+                Not specified.
+            ENTRY_PROMPT (1):
+                The response is from an [entry
+                prompt][google.cloud.dialogflow.cx.v3.Page.entry_fulfillment]
+                in the page.
+            PARAMETER_PROMPT (2):
+                The response is from [form-filling
+                prompt][google.cloud.dialogflow.cx.v3.Form.Parameter.fill_behavior]
+                in the page.
+            HANDLER_PROMPT (3):
+                The response is from a [transition
+                route][google.cloud.dialogflow.cx.v3.TransitionRoute] or an
+                [event handler][EventHandler] in the page or flow or
+                transition route group.
+        """
+        RESPONSE_TYPE_UNSPECIFIED = 0
+        ENTRY_PROMPT = 1
+        PARAMETER_PROMPT = 2
+        HANDLER_PROMPT = 3
 
     class Text(proto.Message):
         r"""The text response message.
@@ -426,6 +453,11 @@ class ResponseMessage(proto.Message):
         number=18,
         oneof="message",
         message=TelephonyTransferCall,
+    )
+    response_type: ResponseType = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=ResponseType,
     )
     channel: str = proto.Field(
         proto.STRING,

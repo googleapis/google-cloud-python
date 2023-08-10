@@ -94,7 +94,10 @@ class Page(proto.Message):
                the same intent, then the first group in the ordered list
                takes precedence.
 
-            Format:\ ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>``.
+            Format:\ ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>``
+            or
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/transitionRouteGroups/<TransitionRouteGroup ID>``
+            for agent-level groups.
         transition_routes (MutableSequence[google.cloud.dialogflowcx_v3.types.TransitionRoute]):
             A list of transitions for the transition rules of this page.
             They route the conversation to another page in the same

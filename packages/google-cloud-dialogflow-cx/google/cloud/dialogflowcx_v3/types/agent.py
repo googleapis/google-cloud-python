@@ -74,8 +74,9 @@ class Agent(proto.Message):
     Types][google.cloud.dialogflow.cx.v3.EntityType],
     [Flows][google.cloud.dialogflow.cx.v3.Flow],
     [Fulfillments][google.cloud.dialogflow.cx.v3.Fulfillment],
-    [Webhooks][google.cloud.dialogflow.cx.v3.Webhook], and so on to
-    manage the conversation flows..
+    [Webhooks][google.cloud.dialogflow.cx.v3.Webhook],
+    [TransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
+    and so on to manage the conversation flows.
 
     Attributes:
         name (str):
@@ -173,8 +174,8 @@ class Agent(proto.Message):
                     The GitHub repository URI related to the
                     agent.
                 tracking_branch (str):
-                    The branch of GitHub repository tracked for
-                    this agent.
+                    The branch of the GitHub repository tracked
+                    for this agent.
                 access_token (str):
                     The access token used to authenticate the
                     access to the GitHub repository.
@@ -545,7 +546,7 @@ class ExportAgentResponse(proto.Message):
             This field is a member of `oneof`_ ``agent``.
         commit_sha (str):
             Commit SHA of the git push. This field is populated if
-            ``git_destination`` are specified in
+            ``git_destination`` is specified in
             [ExportAgentRequest][google.cloud.dialogflow.cx.v3.ExportAgentRequest].
 
             This field is a member of `oneof`_ ``agent``.

@@ -754,7 +754,8 @@ class AgentsClient(metaclass=AgentsClientMeta):
                    [Flows][google.cloud.dialogflow.cx.v3beta1.Flow],
                    [Fulfillments][google.cloud.dialogflow.cx.v3beta1.Fulfillment],
                    [Webhooks][google.cloud.dialogflow.cx.v3beta1.Webhook],
-                   and so on to manage the conversation flows..
+                   [TransitionRouteGroups][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
+                   and so on to manage the conversation flows.
 
         """
         # Create or coerce a protobuf request object.
@@ -884,7 +885,8 @@ class AgentsClient(metaclass=AgentsClientMeta):
                    [Flows][google.cloud.dialogflow.cx.v3beta1.Flow],
                    [Fulfillments][google.cloud.dialogflow.cx.v3beta1.Fulfillment],
                    [Webhooks][google.cloud.dialogflow.cx.v3beta1.Webhook],
-                   and so on to manage the conversation flows..
+                   [TransitionRouteGroups][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
+                   and so on to manage the conversation flows.
 
         """
         # Create or coerce a protobuf request object.
@@ -1016,7 +1018,8 @@ class AgentsClient(metaclass=AgentsClientMeta):
                    [Flows][google.cloud.dialogflow.cx.v3beta1.Flow],
                    [Fulfillments][google.cloud.dialogflow.cx.v3beta1.Fulfillment],
                    [Webhooks][google.cloud.dialogflow.cx.v3beta1.Webhook],
-                   and so on to manage the conversation flows..
+                   [TransitionRouteGroups][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
+                   and so on to manage the conversation flows.
 
         """
         # Create or coerce a protobuf request object.

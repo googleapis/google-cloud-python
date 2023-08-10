@@ -38,7 +38,7 @@ __protobuf__ = proto.module(
 
 
 class TransitionRouteGroup(proto.Message):
-    r"""An TransitionRouteGroup represents a group of
+    r"""A TransitionRouteGroup represents a group of
     [``TransitionRoutes``][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
     to be used by a [Page][google.cloud.dialogflow.cx.v3beta1.Page].
 
@@ -47,7 +47,10 @@ class TransitionRouteGroup(proto.Message):
             The unique identifier of the transition route group.
             [TransitionRouteGroups.CreateTransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroups.CreateTransitionRouteGroup]
             populates the name automatically. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``.
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``
+            or
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/transitionRouteGroups/<TransitionRouteGroup ID>``
+            for agent-level groups.
         display_name (str):
             Required. The human-readable name of the
             transition route group, unique within the flow.
@@ -81,7 +84,8 @@ class ListTransitionRouteGroupsRequest(proto.Message):
         parent (str):
             Required. The flow to list all transition route groups for.
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``
+            or \`projects//locations//agents/.
         page_size (int):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
@@ -165,7 +169,9 @@ class GetTransitionRouteGroupRequest(proto.Message):
             Required. The name of the
             [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``.
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``
+            or
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/transitionRouteGroups/<Transition Route Group ID>``.
         language_code (str):
             The language to retrieve the transition route group for. The
             following fields are language dependent:
@@ -201,7 +207,10 @@ class CreateTransitionRouteGroupRequest(proto.Message):
             Required. The flow to create an
             [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
             for. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``
+            or
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``
+            for agent-level groups.
         transition_route_group (google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup):
             Required. The transition route group to
             create.
@@ -287,7 +296,9 @@ class DeleteTransitionRouteGroupRequest(proto.Message):
             Required. The name of the
             [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
             to delete. Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``.
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``
+            or
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/transitionRouteGroups/<Transition Route Group ID>``.
         force (bool):
             This field has no effect for transition route group that no
             page is using. If the transition route group is referenced

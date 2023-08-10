@@ -640,8 +640,9 @@ class AgentsRestTransport(AgentsTransport):
                 Types][google.cloud.dialogflow.cx.v3.EntityType],
                 [Flows][google.cloud.dialogflow.cx.v3.Flow],
                 [Fulfillments][google.cloud.dialogflow.cx.v3.Fulfillment],
-                [Webhooks][google.cloud.dialogflow.cx.v3.Webhook], and
-                so on to manage the conversation flows..
+                [Webhooks][google.cloud.dialogflow.cx.v3.Webhook],
+                [TransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
+                and so on to manage the conversation flows.
 
             """
 
@@ -921,8 +922,9 @@ class AgentsRestTransport(AgentsTransport):
                 Types][google.cloud.dialogflow.cx.v3.EntityType],
                 [Flows][google.cloud.dialogflow.cx.v3.Flow],
                 [Fulfillments][google.cloud.dialogflow.cx.v3.Fulfillment],
-                [Webhooks][google.cloud.dialogflow.cx.v3.Webhook], and
-                so on to manage the conversation flows..
+                [Webhooks][google.cloud.dialogflow.cx.v3.Webhook],
+                [TransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
+                and so on to manage the conversation flows.
 
             """
 
@@ -1299,8 +1301,9 @@ class AgentsRestTransport(AgentsTransport):
                 Types][google.cloud.dialogflow.cx.v3.EntityType],
                 [Flows][google.cloud.dialogflow.cx.v3.Flow],
                 [Fulfillments][google.cloud.dialogflow.cx.v3.Fulfillment],
-                [Webhooks][google.cloud.dialogflow.cx.v3.Webhook], and
-                so on to manage the conversation flows..
+                [Webhooks][google.cloud.dialogflow.cx.v3.Webhook],
+                [TransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
+                and so on to manage the conversation flows.
 
             """
 

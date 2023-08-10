@@ -285,7 +285,8 @@ class TransitionRouteGroupsAsyncClient:
             parent (:class:`str`):
                 Required. The flow to list all transition route groups
                 for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``
+                or \`projects//locations//agents/.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -404,7 +405,9 @@ class TransitionRouteGroupsAsyncClient:
                 Required. The name of the
                 [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
                 Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``.
+                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``
+                or
+                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/transitionRouteGroups/<Transition Route Group ID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -417,7 +420,7 @@ class TransitionRouteGroupsAsyncClient:
 
         Returns:
             google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup:
-                An TransitionRouteGroup represents a group of
+                A TransitionRouteGroup represents a group of
                    [TransitionRoutes][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
                    to be used by a
                    [Page][google.cloud.dialogflow.cx.v3beta1.Page].
@@ -525,7 +528,10 @@ class TransitionRouteGroupsAsyncClient:
                 Required. The flow to create an
                 [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
                 for. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``
+                or
+                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``
+                for agent-level groups.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -545,7 +551,7 @@ class TransitionRouteGroupsAsyncClient:
 
         Returns:
             google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup:
-                An TransitionRouteGroup represents a group of
+                A TransitionRouteGroup represents a group of
                    [TransitionRoutes][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
                    to be used by a
                    [Page][google.cloud.dialogflow.cx.v3beta1.Page].
@@ -671,7 +677,7 @@ class TransitionRouteGroupsAsyncClient:
 
         Returns:
             google.cloud.dialogflowcx_v3beta1.types.TransitionRouteGroup:
-                An TransitionRouteGroup represents a group of
+                A TransitionRouteGroup represents a group of
                    [TransitionRoutes][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
                    to be used by a
                    [Page][google.cloud.dialogflow.cx.v3beta1.Page].
@@ -772,7 +778,9 @@ class TransitionRouteGroupsAsyncClient:
                 Required. The name of the
                 [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
                 to delete. Format:
-                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``.
+                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``
+                or
+                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/transitionRouteGroups/<Transition Route Group ID>``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

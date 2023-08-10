@@ -55,6 +55,7 @@ from google.cloud.dialogflowcx_v3.services.flows import transports
 from google.cloud.dialogflowcx_v3.types import flow
 from google.cloud.dialogflowcx_v3.types import flow as gcdc_flow
 from google.cloud.dialogflowcx_v3.types import fulfillment
+from google.cloud.dialogflowcx_v3.types import import_strategy
 from google.cloud.dialogflowcx_v3.types import page
 from google.cloud.dialogflowcx_v3.types import response_message
 from google.cloud.dialogflowcx_v3.types import validation_message
@@ -3026,6 +3027,7 @@ def test_create_flow_rest(request_type):
                             "telephony_transfer_call": {
                                 "phone_number": "phone_number_value"
                             },
+                            "response_type": 1,
                             "channel": "channel_value",
                         }
                     ],
@@ -3308,6 +3310,7 @@ def test_create_flow_rest_bad_request(
                             "telephony_transfer_call": {
                                 "phone_number": "phone_number_value"
                             },
+                            "response_type": 1,
                             "channel": "channel_value",
                         }
                     ],
@@ -4364,6 +4367,7 @@ def test_update_flow_rest(request_type):
                             "telephony_transfer_call": {
                                 "phone_number": "phone_number_value"
                             },
+                            "response_type": 1,
                             "channel": "channel_value",
                         }
                     ],
@@ -4650,6 +4654,7 @@ def test_update_flow_rest_bad_request(
                             "telephony_transfer_call": {
                                 "phone_number": "phone_number_value"
                             },
+                            "response_type": 1,
                             "channel": "channel_value",
                         }
                     ],

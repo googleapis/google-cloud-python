@@ -848,14 +848,14 @@ class QueryParameters(proto.Message):
 class QueryInput(proto.Message):
     r"""Represents the query input. It can contain one of:
 
-    1.  A conversational query in the form of text.
+    1. A conversational query in the form of text.
 
-    2.  An intent query that specifies which intent to trigger.
-    3.  Natural language speech audio to be processed.
+    2. An intent query that specifies which intent to trigger.
+    3. Natural language speech audio to be processed.
 
-    4.  An event to be triggered.
+    4. An event to be triggered.
 
-    5.  DTMF digits to invoke an intent and fill in parameter value.
+    5. DTMF digits to invoke an intent and fill in parameter value.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.

@@ -417,7 +417,8 @@ class AgentsAsyncClient:
                    [Flows][google.cloud.dialogflow.cx.v3.Flow],
                    [Fulfillments][google.cloud.dialogflow.cx.v3.Fulfillment],
                    [Webhooks][google.cloud.dialogflow.cx.v3.Webhook],
-                   and so on to manage the conversation flows..
+                   [TransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
+                   and so on to manage the conversation flows.
 
         """
         # Create or coerce a protobuf request object.
@@ -547,7 +548,8 @@ class AgentsAsyncClient:
                    [Flows][google.cloud.dialogflow.cx.v3.Flow],
                    [Fulfillments][google.cloud.dialogflow.cx.v3.Fulfillment],
                    [Webhooks][google.cloud.dialogflow.cx.v3.Webhook],
-                   and so on to manage the conversation flows..
+                   [TransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
+                   and so on to manage the conversation flows.
 
         """
         # Create or coerce a protobuf request object.
@@ -688,7 +690,8 @@ class AgentsAsyncClient:
                    [Flows][google.cloud.dialogflow.cx.v3.Flow],
                    [Fulfillments][google.cloud.dialogflow.cx.v3.Fulfillment],
                    [Webhooks][google.cloud.dialogflow.cx.v3.Webhook],
-                   and so on to manage the conversation flows..
+                   [TransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
+                   and so on to manage the conversation flows.
 
         """
         # Create or coerce a protobuf request object.

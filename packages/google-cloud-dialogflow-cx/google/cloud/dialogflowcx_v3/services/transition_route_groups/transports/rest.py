@@ -483,7 +483,7 @@ class TransitionRouteGroupsRestTransport(TransitionRouteGroupsTransport):
 
                 Returns:
                     ~.gcdc_transition_route_group.TransitionRouteGroup:
-                        An TransitionRouteGroup represents a group of
+                        A TransitionRouteGroup represents a group of
                     [``TransitionRoutes``][google.cloud.dialogflow.cx.v3.TransitionRoute]
                     to be used by a
                     [Page][google.cloud.dialogflow.cx.v3.Page].
@@ -494,6 +494,11 @@ class TransitionRouteGroupsRestTransport(TransitionRouteGroupsTransport):
                 {
                     "method": "post",
                     "uri": "/v3/{parent=projects/*/locations/*/agents/*/flows/*}/transitionRouteGroups",
+                    "body": "transition_route_group",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v3/{parent=projects/*/locations/*/agents/*}/transitionRouteGroups",
                     "body": "transition_route_group",
                 },
             ]
@@ -594,6 +599,10 @@ class TransitionRouteGroupsRestTransport(TransitionRouteGroupsTransport):
                     "method": "delete",
                     "uri": "/v3/{name=projects/*/locations/*/agents/*/flows/*/transitionRouteGroups/*}",
                 },
+                {
+                    "method": "delete",
+                    "uri": "/v3/{name=projects/*/locations/*/agents/*/transitionRouteGroups/*}",
+                },
             ]
             request, metadata = self._interceptor.pre_delete_transition_route_group(
                 request, metadata
@@ -670,7 +679,7 @@ class TransitionRouteGroupsRestTransport(TransitionRouteGroupsTransport):
 
                 Returns:
                     ~.transition_route_group.TransitionRouteGroup:
-                        An TransitionRouteGroup represents a group of
+                        A TransitionRouteGroup represents a group of
                     [``TransitionRoutes``][google.cloud.dialogflow.cx.v3.TransitionRoute]
                     to be used by a
                     [Page][google.cloud.dialogflow.cx.v3.Page].
@@ -681,6 +690,10 @@ class TransitionRouteGroupsRestTransport(TransitionRouteGroupsTransport):
                 {
                     "method": "get",
                     "uri": "/v3/{name=projects/*/locations/*/agents/*/flows/*/transitionRouteGroups/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v3/{name=projects/*/locations/*/agents/*/transitionRouteGroups/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_get_transition_route_group(
@@ -776,6 +789,10 @@ class TransitionRouteGroupsRestTransport(TransitionRouteGroupsTransport):
                     "method": "get",
                     "uri": "/v3/{parent=projects/*/locations/*/agents/*/flows/*}/transitionRouteGroups",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v3/{parent=projects/*/locations/*/agents/*}/transitionRouteGroups",
+                },
             ]
             request, metadata = self._interceptor.pre_list_transition_route_groups(
                 request, metadata
@@ -860,7 +877,7 @@ class TransitionRouteGroupsRestTransport(TransitionRouteGroupsTransport):
 
                 Returns:
                     ~.gcdc_transition_route_group.TransitionRouteGroup:
-                        An TransitionRouteGroup represents a group of
+                        A TransitionRouteGroup represents a group of
                     [``TransitionRoutes``][google.cloud.dialogflow.cx.v3.TransitionRoute]
                     to be used by a
                     [Page][google.cloud.dialogflow.cx.v3.Page].
@@ -871,6 +888,11 @@ class TransitionRouteGroupsRestTransport(TransitionRouteGroupsTransport):
                 {
                     "method": "patch",
                     "uri": "/v3/{transition_route_group.name=projects/*/locations/*/agents/*/flows/*/transitionRouteGroups/*}",
+                    "body": "transition_route_group",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v3/{transition_route_group.name=projects/*/locations/*/agents/*/transitionRouteGroups/*}",
                     "body": "transition_route_group",
                 },
             ]

@@ -167,6 +167,7 @@ from google.cloud.dialogflowcx_v3.types.flow import DeleteFlowRequest
 from google.cloud.dialogflowcx_v3.types.flow import ExportFlowRequest
 from google.cloud.dialogflowcx_v3.types.flow import ExportFlowResponse
 from google.cloud.dialogflowcx_v3.types.flow import Flow
+from google.cloud.dialogflowcx_v3.types.flow import FlowImportStrategy
 from google.cloud.dialogflowcx_v3.types.flow import FlowValidationResult
 from google.cloud.dialogflowcx_v3.types.flow import GetFlowRequest
 from google.cloud.dialogflowcx_v3.types.flow import GetFlowValidationResultRequest
@@ -180,6 +181,7 @@ from google.cloud.dialogflowcx_v3.types.flow import UpdateFlowRequest
 from google.cloud.dialogflowcx_v3.types.flow import ValidateFlowRequest
 from google.cloud.dialogflowcx_v3.types.fulfillment import Fulfillment
 from google.cloud.dialogflowcx_v3.types.gcs import GcsDestination
+from google.cloud.dialogflowcx_v3.types.import_strategy import ImportStrategy
 from google.cloud.dialogflowcx_v3.types.intent import CreateIntentRequest
 from google.cloud.dialogflowcx_v3.types.intent import DeleteIntentRequest
 from google.cloud.dialogflowcx_v3.types.intent import GetIntentRequest
@@ -446,6 +448,7 @@ __all__ = (
     "ExportFlowRequest",
     "ExportFlowResponse",
     "Flow",
+    "FlowImportStrategy",
     "FlowValidationResult",
     "GetFlowRequest",
     "GetFlowValidationResultRequest",
@@ -459,6 +462,7 @@ __all__ = (
     "ValidateFlowRequest",
     "Fulfillment",
     "GcsDestination",
+    "ImportStrategy",
     "CreateIntentRequest",
     "DeleteIntentRequest",
     "GetIntentRequest",

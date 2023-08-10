@@ -19,6 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3beta1.types import import_strategy
 from google.cloud.dialogflowcx_v3beta1.types import page
 from google.cloud.dialogflowcx_v3beta1.types import validation_message
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -41,6 +42,7 @@ __protobuf__ = proto.module(
         "GetFlowValidationResultRequest",
         "FlowValidationResult",
         "ImportFlowRequest",
+        "FlowImportStrategy",
         "ImportFlowResponse",
         "ExportFlowRequest",
         "ExportFlowResponse",
@@ -193,7 +195,10 @@ class Flow(proto.Message):
                groups defined in the page have higher priority than
                those defined in the flow.
 
-            Format:\ ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>``.
+            Format:\ ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>``
+            or
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/transitionRouteGroups/<TransitionRouteGroup ID>``
+            for agent-level groups.
         nlu_settings (google.cloud.dialogflowcx_v3beta1.types.NluSettings):
             NLU related settings of the flow.
     """
@@ -584,6 +589,9 @@ class ImportFlowRequest(proto.Message):
             This field is a member of `oneof`_ ``flow``.
         import_option (google.cloud.dialogflowcx_v3beta1.types.ImportFlowRequest.ImportOption):
             Flow import mode. If not specified, ``KEEP`` is assumed.
+        flow_import_strategy (google.cloud.dialogflowcx_v3beta1.types.FlowImportStrategy):
+            Optional. Specifies the import strategy used
+            when resolving resource conflicts.
     """
 
     class ImportOption(proto.Enum):
@@ -625,6 +633,32 @@ class ImportFlowRequest(proto.Message):
         proto.ENUM,
         number=4,
         enum=ImportOption,
+    )
+    flow_import_strategy: "FlowImportStrategy" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="FlowImportStrategy",
+    )
+
+
+class FlowImportStrategy(proto.Message):
+    r"""The flow import strategy used for resource conflict resolution
+    associated with an
+    [ImportFlowRequest][google.cloud.dialogflow.cx.v3beta1.ImportFlowRequest].
+
+    Attributes:
+        global_import_strategy (google.cloud.dialogflowcx_v3beta1.types.ImportStrategy):
+            Optional. Global flow import strategy for resource conflict
+            resolution. The import Import strategy for resource conflict
+            resolution, applied globally throughout the flow. It will be
+            applied for all display name conflicts in the imported
+            content. If not specified, 'CREATE_NEW' is assumed.
+    """
+
+    global_import_strategy: import_strategy.ImportStrategy = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=import_strategy.ImportStrategy,
     )
 
 

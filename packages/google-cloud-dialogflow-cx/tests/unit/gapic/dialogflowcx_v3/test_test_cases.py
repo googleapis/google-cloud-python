@@ -4567,6 +4567,7 @@ def test_create_test_case_rest(request_type):
                                     "telephony_transfer_call": {
                                         "phone_number": "phone_number_value"
                                     },
+                                    "response_type": 1,
                                     "channel": "channel_value",
                                 }
                             ],
@@ -4964,6 +4965,7 @@ def test_create_test_case_rest_bad_request(
                                     "telephony_transfer_call": {
                                         "phone_number": "phone_number_value"
                                     },
+                                    "response_type": 1,
                                     "channel": "channel_value",
                                 }
                             ],
@@ -5268,6 +5270,7 @@ def test_update_test_case_rest(request_type):
                                     "telephony_transfer_call": {
                                         "phone_number": "phone_number_value"
                                     },
+                                    "response_type": 1,
                                     "channel": "channel_value",
                                 }
                             ],
@@ -5666,6 +5669,7 @@ def test_update_test_case_rest_bad_request(
                                     "telephony_transfer_call": {
                                         "phone_number": "phone_number_value"
                                     },
+                                    "response_type": 1,
                                     "channel": "channel_value",
                                 }
                             ],
