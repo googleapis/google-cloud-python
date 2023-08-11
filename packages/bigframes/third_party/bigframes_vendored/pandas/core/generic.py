@@ -19,7 +19,8 @@ class NDFrame(indexing.IndexingMixin):
     def ndim(self) -> int:
         """Return an int representing the number of axes / array dimensions.
 
-        Return 1 if Series. Otherwise return 2 if DataFrame.
+        Returns:
+            int: Return 1 if Series. Otherwise return 2 if DataFrame.
         """
         raise NotImplementedError("abstract method")
 
@@ -27,8 +28,9 @@ class NDFrame(indexing.IndexingMixin):
     def size(self) -> int:
         """Return an int representing the number of elements in this object.
 
-        Return the number of rows if Series. Otherwise return the number of
-        rows times number of columns if DataFrame.
+        Returns:
+            int: Return the number of rows if Series. Otherwise return the number of
+                rows times number of columns if DataFrame.
         """
         raise NotImplementedError("abstract method")
 
@@ -42,6 +44,7 @@ class NDFrame(indexing.IndexingMixin):
 
         Returns:
             Series/DataFrame containing the absolute value of each element.
+            Returns a Series/DataFrame containing the absolute value of each element.
         """
         raise NotImplementedError("abstract method")
 
@@ -49,18 +52,18 @@ class NDFrame(indexing.IndexingMixin):
         """
         Cast a pandas object to a specified dtype ``dtype``.
 
-        Parameters
-        ----------
-        dtype : str, data type, Series or Mapping of column name -> data type
-            Use a str, numpy.dtype, pandas.ExtensionDtype or Python type to
-            cast entire pandas object to the same type. Alternatively, use a
-            mapping, e.g. {col: dtype, ...}, where col is a column label and dtype is
-            a numpy.dtype or Python type to cast one or more of the DataFrame's
-            columns to column-specific types.
+        Args:
+            dtype (str or pandas.ExtensionDtype):
+                A dtype supported by BigQuery DataFrame include 'boolean','Float64','Int64',
+                'string', 'tring[pyarrow]','timestamp[us, tz=UTC][pyarrow]',
+                'timestamp[us][pyarrow]','date32[day][pyarrow]','time64[us][pyarrow]'
+                A pandas.ExtensionDtype include pandas.BooleanDtype(), pandas.Float64Dtype(),
+                pandas.Int64Dtype(), pandas.StringDtype(storage="pyarrow"),
+                pd.ArrowDtype(pa.date32()), pd.ArrowDtype(pa.time64("us")),
+                pd.ArrowDtype(pa.timestamp("us")), pd.ArrowDtype(pa.timestamp("us", tz="UTC")).
 
-        Returns
-        -------
-        same type as caller
+        Returns:
+            same type as caller
 
         """
         raise NotImplementedError("abstract method")
@@ -70,17 +73,17 @@ class NDFrame(indexing.IndexingMixin):
 
     @property
     def empty(self) -> bool:
-        """Indicator whether Series/DataFrame is empty.
+        """Indicates whether Series/DataFrame is empty.
 
         True if Series/DataFrame is entirely empty (no items), meaning any of the
         axes are of length 0.
 
-        Returns:
-            If Series/DataFrame is empty, return True, if not return False.
-
-        Note:
+        .. note::
             If Series/DataFrame contains only NA values, it is still not
             considered empty.
+
+        Returns:
+            bool: If Series/DataFrame is empty, return True, if not return False.
         """
         raise NotImplementedError("abstract method")
 
@@ -97,27 +100,27 @@ class NDFrame(indexing.IndexingMixin):
         index: bool = True,
         lines: bool = False,
     ) -> str | None:
-        """Convert the object to a JSON string, written to GCS.
+        """Convert the object to a JSON string, written to Cloud Storage.
 
         Note NaN's and None will be converted to null and datetime objects
         will be converted to UNIX timestamps.
 
+        .. note::
+            Only ``orient='records'`` and ``lines=True`` is supported so far.
+
         Args:
-            path_or_buf:
-                A destination URI of GCS files(s) to store the extracted dataframe
-                in format of ``gs://<bucket_name>/<object_name_or_glob>``.
+            path_or_buf (str):
+                A destination URI of Cloud Storage files(s) to store the extracted
+                dataframe in format of ``gs://<bucket_name>/<object_name_or_glob>``.
+                Must contain a wildcard `*` character.
 
                 If the data size is more than 1GB, you must use a wildcard to
                 export the data into multiple files and the size of the files
                 varies.
 
                 None, file-like objects or local file paths not yet supported.
-            orient:
+            orient ({`split`, `records`, `index`, `columns`, `values`, `table`}, default 'columns):
                 Indication of expected JSON string format.
-
-                .. note::
-
-                    In BigQuery DataFrame, only `orient='records'` is supported so far.
 
                 * Series:
 
@@ -141,30 +144,25 @@ class NDFrame(indexing.IndexingMixin):
                     - 'table' : dict like {{'schema': {{schema}}, 'data': {{data}}}}
 
                     Describing the data, where data component is like ``orient='records'``.
+            index (bool, default True):
+                If True, write row names (index).
 
-            lines:
+            lines (bool, default False):
                 If 'orient' is 'records' write out line-delimited json format. Will
                 throw ValueError if incorrect 'orient' since others are not
                 list-like.
 
-                .. note::
-
-                   BigQuery DataFrames only supports ``lines=True`` so far.
-
-            index:
-                If True, write row names (index).
-
         Returns:
-            None. String output not yet supported.
+            None: String output not yet supported.
         """
         raise NotImplementedError("abstract method")
 
     def to_csv(self, path_or_buf: str, *, index: bool = True) -> str | None:
-        """Write object to a comma-separated values (csv) file on GCS.
+        """Write object to a comma-separated values (csv) file on Cloud Storage.
 
         Args:
-            path_or_buf:
-                A destination URI of GCS files(s) to store the extracted dataframe
+            path_or_buf (str):
+                A destination URI of Cloud Storage files(s) to store the extracted dataframe
                 in format of ``gs://<bucket_name>/<object_name_or_glob>``.
 
                 If the data size is more than 1GB, you must use a wildcard to
@@ -173,11 +171,11 @@ class NDFrame(indexing.IndexingMixin):
 
                 None, file-like objects or local file paths not yet supported.
 
-            index:
+            index (bool, default True):
                 If True, write row names (index).
 
         Returns:
-            None. String output not yet supported.
+            None: String output not yet supported.
         """
         raise NotImplementedError("abstract method")
 
@@ -208,11 +206,11 @@ class NDFrame(indexing.IndexingMixin):
         For DataFrame, the column labels are prefixed.
 
         Args:
-            prefix:
+            prefix (str):
                 The string to add before each label.
-            axis:
+            axis (int or str or None, default None):
                 ``{{0 or 'index', 1 or 'columns', None}}``, default None. Axis
-                to add prefix on
+                to add prefix on.
 
         Returns:
             New Series or DataFrame with updated labels.
@@ -250,7 +248,7 @@ class NDFrame(indexing.IndexingMixin):
         If n is larger than the number of rows, this function returns all rows.
 
         Args:
-            n:
+            n (int, default 5):
                 Default 5. Number of rows to select.
 
         Returns:
@@ -271,7 +269,8 @@ class NDFrame(indexing.IndexingMixin):
         If n is larger than the number of rows, this function returns all rows.
 
         Args:
-            n: int, default 5.  Number of rows to select.
+            n (int, default 5):
+                Number of rows to select.
 
         Returns:
             The last `n` rows of the caller object.
@@ -290,12 +289,12 @@ class NDFrame(indexing.IndexingMixin):
         You can use `random_state` for reproducibility.
 
         Args:
-            n:
+            n (Optional[int], default None):
                 Number of items from axis to return. Cannot be used with `frac`.
                 Default = 1 if `frac` = None.
-            frac:
+            frac (Optional[float], default None):
                 Fraction of axis items to return. Cannot be used with `n`.
-            random_state:
+            random_state (Optional[int], default None):
                 Seed for random number generator.
 
         Returns:
@@ -360,7 +359,7 @@ class NDFrame(indexing.IndexingMixin):
         NA values get mapped to False values.
 
         Returns:
-            Mask of bool values for each element that indicates whether an
+            NDFrame: Mask of bool values for each element that indicates whether an
             element is not an NA value.
         """
         raise NotImplementedError("abstract method")
@@ -376,11 +375,11 @@ class NDFrame(indexing.IndexingMixin):
         Shifts the index without realigning the data.
 
         Args:
-            periods:
+            periods int:
                 Number of periods to shift. Can be positive or negative.
 
         Returns:
-            Copy of input object, shifted.
+            NDFrame:  Copy of input object, shifted.
         """
         raise NotImplementedError("abstract method")
 
@@ -398,34 +397,27 @@ class NDFrame(indexing.IndexingMixin):
         By default, equal values are assigned a rank that is the average of the
         ranks of those values.
 
-        Parameters
-        ----------
-        method : {'average', 'min', 'max', 'first', 'dense'}, default 'average'
-            How to rank the group of records that have the same value (i.e. ties):
+        Args:
+            method ({'average', 'min', 'max', 'first', 'dense'}, default 'average'):
+                How to rank the group of records that have the same value (i.e. ties):
+                `average`: average rank of the group, `min`: lowest rank in the group
+                max`: highest rank in the group, `first`: ranks assigned in order they
+                appear in the array, `dense`: like 'min', but rank always increases by
+                1 between groups.
 
-            * average: average rank of the group
-            * min: lowest rank in the group
-            * max: highest rank in the group
-            * first: ranks assigned in order they appear in the array
-            * dense: like 'min', but rank always increases by 1 between groups.
+            numeric_only (bool, default False):
+                For DataFrame objects, rank only numeric columns if set to True.
 
-        numeric_only : bool, default False
-            For DataFrame objects, rank only numeric columns if set to True.
+            na_option ({'keep', 'top', 'bottom'}, default 'keep'):
+                How to rank NaN values: `keep`: assign NaN rank to NaN values,
+                , `top`: assign lowest rank to NaN values, `bottom`: assign highest
+                rank to NaN values.
 
-        na_option : {'keep', 'top', 'bottom'}, default 'keep'
-            How to rank NaN values:
+            ascending (bool, default True):
+                Whether or not the elements should be ranked in ascending order.
 
-            * keep: assign NaN rank to NaN values
-            * top: assign lowest rank to NaN values
-            * bottom: assign highest rank to NaN values
-
-        ascending : bool, default True
-            Whether or not the elements should be ranked in ascending order.
-
-        Returns
-        -------
-        same type as caller
-            Return a Series or DataFrame with data ranks as values.
+        Returns:
+            same type as caller: Return a Series or DataFrame with data ranks as values.
         """
         raise NotImplementedError("abstract method")
 

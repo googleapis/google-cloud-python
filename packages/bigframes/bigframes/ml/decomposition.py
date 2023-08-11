@@ -13,34 +13,32 @@
 # limitations under the License.
 
 """Matrix Decomposition models. This module is styled after Scikit-Learn's decomposition module:
-https://scikit-learn.org/stable/modules/decomposition.html"""
+https://scikit-learn.org/stable/modules/decomposition.html."""
 
 from __future__ import annotations
 
-from typing import cast, List, Optional, TYPE_CHECKING
+from typing import cast, List, Optional, Union
 
 from google.cloud import bigquery
 
-if TYPE_CHECKING:
-    import bigframes
-
-import bigframes.ml.base
-import bigframes.ml.core
+import bigframes
+from bigframes.ml import base, core, utils
+import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.decomposition._pca
 
 
 class PCA(
     third_party.bigframes_vendored.sklearn.decomposition._pca.PCA,
-    bigframes.ml.base.TrainablePredictor,
+    base.TrainablePredictor,
 ):
     __doc__ = third_party.bigframes_vendored.sklearn.decomposition._pca.PCA.__doc__
 
     def __init__(self, n_components=3):
         self.n_components = n_components
-        self._bqml_model: Optional[bigframes.ml.core.BqmlModel] = None
+        self._bqml_model: Optional[core.BqmlModel] = None
 
-    @staticmethod
-    def _from_bq(session: bigframes.Session, model: bigquery.Model) -> PCA:
+    @classmethod
+    def _from_bq(cls, session: bigframes.Session, model: bigquery.Model) -> PCA:
         assert model.model_type == "PCA"
 
         kwargs = {}
@@ -50,17 +48,19 @@ class PCA(
         if "numPrincipalComponents" in last_fitting:
             kwargs["n_components"] = int(last_fitting["numPrincipalComponents"])
 
-        new_pca = PCA(**kwargs)
-        new_pca._bqml_model = bigframes.ml.core.BqmlModel(session, model)
+        new_pca = cls(**kwargs)
+        new_pca._bqml_model = core.BqmlModel(session, model)
         return new_pca
 
     def fit(
         self,
-        X: bigframes.dataframe.DataFrame,
+        X: Union[bpd.DataFrame, bpd.Series],
         y=None,
         transforms: Optional[List[str]] = None,
-    ):
-        self._bqml_model = bigframes.ml.core.create_bqml_model(
+    ) -> PCA:
+        (X,) = utils.convert_to_dataframe(X)
+
+        self._bqml_model = core.create_bqml_model(
             train_X=X,
             transforms=transforms,
             options={
@@ -68,37 +68,45 @@ class PCA(
                 "num_principal_components": self.n_components,
             },
         )
+        return self
 
-    def predict(
-        self, X: bigframes.dataframe.DataFrame
-    ) -> bigframes.dataframe.DataFrame:
-        """Predict the closest cluster for each sample in X.
-
-        Args:
-            X: a BigQuery DataFrame to predict.
-            y: ignored for API consistency.
-
-        Returns: predicted BigQuery DataFrames."""
+    def predict(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
 
+        (X,) = utils.convert_to_dataframe(X)
+
         return cast(
-            bigframes.dataframe.DataFrame,
+            bpd.DataFrame,
             self._bqml_model.predict(X)[
                 ["principal_component_" + str(i + 1) for i in range(self.n_components)]
             ],
         )
 
     def to_gbq(self, model_name: str, replace: bool = False) -> PCA:
-        """Save the model to Google Cloud BigQuey.
+        """Save the model to BigQuery.
 
         Args:
-            model_name: the name of the model.
-            replace: whether to replace if the model already exists. Default to False.
+            model_name (str):
+                the name of the model.
+            replace (bool, default False):
+                whether to replace if the model already exists. Default to False.
 
-        Returns: saved model."""
+        Returns:
+            PCA: saved model."""
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before it can be saved")
 
         new_model = self._bqml_model.copy(model_name, replace)
         return new_model.session.read_gbq_model(model_name)
+
+    def score(
+        self,
+        X=None,
+        y=None,
+    ) -> bpd.DataFrame:
+        if not self._bqml_model:
+            raise RuntimeError("A model must be fitted before score")
+
+        # TODO(b/291973741): X param is ignored. Update BQML supports input in ML.EVALUTE.
+        return self._bqml_model.evaluate()

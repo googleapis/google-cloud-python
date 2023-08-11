@@ -35,7 +35,7 @@ def test_linear_regression_configure_fit_score(penguins_df_default_index, datase
     model.fit(train_X, train_y)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).compute()
+    result = model.score(train_X, train_y).to_pandas()
     expected = pd.DataFrame(
         {
             "mean_absolute_error": [225.735767],
@@ -80,7 +80,7 @@ def test_linear_regression_manual_split_configure_fit_score(
     model.fit(train_X, train_y)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).compute()
+    result = model.score(train_X, train_y).to_pandas()
     expected = pd.DataFrame(
         {
             "mean_absolute_error": [225.735767],
@@ -121,7 +121,7 @@ def test_logistic_regression_auto_class_weights_configure_fit_score(
     model.fit(train_X, train_y)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).compute()
+    result = model.score(train_X, train_y).to_pandas()
     expected = pd.DataFrame(
         {
             "precision": [0.58085],
@@ -169,7 +169,7 @@ def test_logistic_regression_manual_split_configure_fit_score(
     model.fit(train_X, train_y)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).compute()
+    result = model.score(train_X, train_y).to_pandas()
     expected = pd.DataFrame(
         {
             "precision": [0.616753],

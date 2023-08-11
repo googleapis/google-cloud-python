@@ -16,7 +16,7 @@ import pandas as pd
 import pytest
 
 import bigframes
-from bigframes.remote_function import remote_function
+from bigframes.remote_function import read_gbq_function, remote_function
 from tests.system.utils import assert_pandas_df_equal_ignore_ordering
 
 
@@ -29,9 +29,72 @@ def bq_cf_connection() -> str:
 
 
 @pytest.fixture(scope="module")
+def bq_cf_connection_location() -> str:
+    """Pre-created BQ connection to invoke cloud function for bigframes-dev
+    $ bq show --connection --location=us --project_id=bigframes-dev bigframes-rf-conn
+    """
+    return "us.bigframes-rf-conn"
+
+
+@pytest.fixture(scope="module")
+def bq_cf_connection_location_mistached() -> str:
+    """Pre-created BQ connection to invoke cloud function for bigframes-dev
+    $ bq show --connection --location=us-east1 --project_id=bigframes-dev bigframes-rf-conn
+    """
+    return "us-east1.bigframes-rf-conn"
+
+
+@pytest.fixture(scope="module")
+def bq_cf_connection_location_project() -> str:
+    """Pre-created BQ connection to invoke cloud function for bigframes-dev
+    $ bq show --connection --location=us --project_id=bigframes-dev bigframes-rf-conn
+    """
+    return "bigframes-dev.us.bigframes-rf-conn"
+
+
+@pytest.fixture(scope="module")
+def bq_cf_connection_location_project_mistached() -> str:
+    """Pre-created BQ connection to invoke cloud function for bigframes-dev
+    $ bq show --connection --location=us-east1 --project_id=bigframes-metrics bigframes-rf-conn
+    """
+    return "bigframes-metrics.us-east1.bigframes-rf-conn"
+
+
+@pytest.fixture(scope="module")
 def session_with_bq_connection(bq_cf_connection) -> bigframes.Session:
     return bigframes.Session(
         bigframes.BigQueryOptions(remote_udf_connection=bq_cf_connection)
+    )
+
+
+@pytest.fixture(scope="module")
+def session_with_bq_connection_location_specified(
+    bq_cf_connection_location,
+) -> bigframes.Session:
+    return bigframes.Session(
+        bigframes.BigQueryOptions(remote_udf_connection=bq_cf_connection_location)
+    )
+
+
+@pytest.fixture(scope="module")
+def session_with_bq_connection_location_mistached(
+    bq_cf_connection_location_mistached,
+) -> bigframes.Session:
+    return bigframes.Session(
+        bigframes.BigQueryOptions(
+            remote_udf_connection=bq_cf_connection_location_mistached
+        )
+    )
+
+
+@pytest.fixture(scope="module")
+def session_with_bq_connection_location_project_specified(
+    bq_cf_connection_location_project,
+) -> bigframes.Session:
+    return bigframes.Session(
+        bigframes.BigQueryOptions(
+            remote_udf_connection=bq_cf_connection_location_project
+        )
     )
 
 
@@ -39,6 +102,7 @@ def session_with_bq_connection(bq_cf_connection) -> bigframes.Session:
 def test_remote_function_direct_no_session_param(
     bigquery_client,
     bigqueryconnection_client,
+    cloudfunctions_client,
     scalars_dfs,
     dataset_id_permanent,
     bq_cf_connection,
@@ -48,6 +112,7 @@ def test_remote_function_direct_no_session_param(
         int,
         bigquery_client=bigquery_client,
         bigquery_connection_client=bigqueryconnection_client,
+        cloud_functions_client=cloudfunctions_client,
         dataset=dataset_id_permanent,
         bigquery_connection=bq_cf_connection,
         # See e2e tests for tests that actually deploy the Cloud Function.
@@ -56,13 +121,18 @@ def test_remote_function_direct_no_session_param(
     def square(x):
         return x * x
 
+    assert square.bigframes_remote_function
+    assert square.bigframes_cloud_function
+
     scalars_df, scalars_pandas_df = scalars_dfs
 
     bf_int64_col = scalars_df["int64_col"]
     bf_int64_col_filter = bf_int64_col.notnull()
     bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
     bf_result_col = bf_int64_col_filtered.apply(square)
-    bf_result = bf_int64_col_filtered.to_frame().assign(result=bf_result_col).compute()
+    bf_result = (
+        bf_int64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
+    )
 
     pd_int64_col = scalars_pandas_df["int64_col"]
     pd_int64_col_filter = pd_int64_col.notnull()
@@ -76,6 +146,172 @@ def test_remote_function_direct_no_session_param(
     pd_result = pd_int64_col_filtered.to_frame().assign(result=pd_result_col)
 
     assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_direct_no_session_param_location_specified(
+    bigquery_client,
+    bigqueryconnection_client,
+    cloudfunctions_client,
+    scalars_dfs,
+    dataset_id_permanent,
+    bq_cf_connection_location,
+):
+    @remote_function(
+        [int],
+        int,
+        bigquery_client=bigquery_client,
+        bigquery_connection_client=bigqueryconnection_client,
+        cloud_functions_client=cloudfunctions_client,
+        dataset=dataset_id_permanent,
+        bigquery_connection=bq_cf_connection_location,
+        # See e2e tests for tests that actually deploy the Cloud Function.
+        reuse=True,
+    )
+    def square(x):
+        return x * x
+
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_int64_col = scalars_df["int64_col"]
+    bf_int64_col_filter = bf_int64_col.notnull()
+    bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
+    bf_result_col = bf_int64_col_filtered.apply(square)
+    bf_result = (
+        bf_int64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
+    )
+
+    pd_int64_col = scalars_pandas_df["int64_col"]
+    pd_int64_col_filter = pd_int64_col.notnull()
+    pd_int64_col_filtered = pd_int64_col[pd_int64_col_filter]
+    pd_result_col = pd_int64_col_filtered.apply(lambda x: x * x)
+    # TODO(shobs): Figure why pandas .apply() changes the dtype, i.e.
+    # pd_int64_col_filtered.dtype is Int64Dtype()
+    # pd_int64_col_filtered.apply(lambda x: x * x).dtype is int64.
+    # For this test let's force the pandas dtype to be same as bigframes' dtype.
+    pd_result_col = pd_result_col.astype(pd.Int64Dtype())
+    pd_result = pd_int64_col_filtered.to_frame().assign(result=pd_result_col)
+
+    assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_direct_no_session_param_location_mistached(
+    bigquery_client,
+    bigqueryconnection_client,
+    cloudfunctions_client,
+    scalars_dfs,
+    dataset_id_permanent,
+    bq_cf_connection_location_mistached,
+):
+    @remote_function(
+        [int],
+        int,
+        bigquery_client=bigquery_client,
+        bigquery_connection_client=bigqueryconnection_client,
+        cloud_functions_client=cloudfunctions_client,
+        dataset=dataset_id_permanent,
+        bigquery_connection=bq_cf_connection_location_mistached,
+        # See e2e tests for tests that actually deploy the Cloud Function.
+        reuse=True,
+    )
+    def square(x):
+        return x * x
+
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_int64_col = scalars_df["int64_col"]
+    bf_int64_col_filter = bf_int64_col.notnull()
+    bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
+    bf_result_col = bf_int64_col_filtered.apply(square)
+    bf_result = (
+        bf_int64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
+    )
+
+    pd_int64_col = scalars_pandas_df["int64_col"]
+    pd_int64_col_filter = pd_int64_col.notnull()
+    pd_int64_col_filtered = pd_int64_col[pd_int64_col_filter]
+    pd_result_col = pd_int64_col_filtered.apply(lambda x: x * x)
+    # TODO(shobs): Figure why pandas .apply() changes the dtype, i.e.
+    # pd_int64_col_filtered.dtype is Int64Dtype()
+    # pd_int64_col_filtered.apply(lambda x: x * x).dtype is int64.
+    # For this test let's force the pandas dtype to be same as bigframes' dtype.
+    pd_result_col = pd_result_col.astype(pd.Int64Dtype())
+    pd_result = pd_int64_col_filtered.to_frame().assign(result=pd_result_col)
+
+    assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_direct_no_session_param_location_project_specified(
+    bigquery_client,
+    bigqueryconnection_client,
+    cloudfunctions_client,
+    scalars_dfs,
+    dataset_id_permanent,
+    bq_cf_connection_location_project,
+):
+    @remote_function(
+        [int],
+        int,
+        bigquery_client=bigquery_client,
+        bigquery_connection_client=bigqueryconnection_client,
+        cloud_functions_client=cloudfunctions_client,
+        dataset=dataset_id_permanent,
+        bigquery_connection=bq_cf_connection_location_project,
+        # See e2e tests for tests that actually deploy the Cloud Function.
+        reuse=True,
+    )
+    def square(x):
+        return x * x
+
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_int64_col = scalars_df["int64_col"]
+    bf_int64_col_filter = bf_int64_col.notnull()
+    bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
+    bf_result_col = bf_int64_col_filtered.apply(square)
+    bf_result = (
+        bf_int64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
+    )
+
+    pd_int64_col = scalars_pandas_df["int64_col"]
+    pd_int64_col_filter = pd_int64_col.notnull()
+    pd_int64_col_filtered = pd_int64_col[pd_int64_col_filter]
+    pd_result_col = pd_int64_col_filtered.apply(lambda x: x * x)
+    # TODO(shobs): Figure why pandas .apply() changes the dtype, i.e.
+    # pd_int64_col_filtered.dtype is Int64Dtype()
+    # pd_int64_col_filtered.apply(lambda x: x * x).dtype is int64.
+    # For this test let's force the pandas dtype to be same as bigframes' dtype.
+    pd_result_col = pd_result_col.astype(pd.Int64Dtype())
+    pd_result = pd_int64_col_filtered.to_frame().assign(result=pd_result_col)
+
+    assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_direct_no_session_param_project_mismatched(
+    bigquery_client,
+    bigqueryconnection_client,
+    cloudfunctions_client,
+    dataset_id_permanent,
+    bq_cf_connection_location_project_mistached,
+):
+    with pytest.raises(ValueError):
+
+        @remote_function(
+            [int],
+            int,
+            bigquery_client=bigquery_client,
+            bigquery_connection_client=bigqueryconnection_client,
+            cloud_functions_client=cloudfunctions_client,
+            dataset=dataset_id_permanent,
+            bigquery_connection=bq_cf_connection_location_project_mistached,
+            # See e2e tests for tests that actually deploy the Cloud Function.
+            reuse=True,
+        )
+        def square(x):
+            return x * x
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -94,7 +330,9 @@ def test_remote_function_direct_session_param(session_with_bq_connection, scalar
     bf_int64_col_filter = bf_int64_col.notnull()
     bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
     bf_result_col = bf_int64_col_filtered.apply(square)
-    bf_result = bf_int64_col_filtered.to_frame().assign(result=bf_result_col).compute()
+    bf_result = (
+        bf_int64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
+    )
 
     pd_int64_col = scalars_pandas_df["int64_col"]
     pd_int64_col_filter = pd_int64_col.notnull()
@@ -129,7 +367,9 @@ def test_remote_function_via_session_default(session_with_bq_connection, scalars
     bf_int64_col_filter = bf_int64_col.notnull()
     bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
     bf_result_col = bf_int64_col_filtered.apply(square)
-    bf_result = bf_int64_col_filtered.to_frame().assign(result=bf_result_col).compute()
+    bf_result = (
+        bf_int64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
+    )
 
     pd_int64_col = scalars_pandas_df["int64_col"]
     pd_int64_col_filter = pd_int64_col.notnull()
@@ -166,7 +406,9 @@ def test_remote_function_via_session_with_overrides(
     bf_int64_col_filter = bf_int64_col.notnull()
     bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
     bf_result_col = bf_int64_col_filtered.apply(square)
-    bf_result = bf_int64_col_filtered.to_frame().assign(result=bf_result_col).compute()
+    bf_result = (
+        bf_int64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
+    )
 
     pd_int64_col = scalars_pandas_df["int64_col"]
     pd_int64_col_filter = pd_int64_col.notnull()
@@ -210,7 +452,9 @@ def test_remote_function_via_session_context_connection_setter(
     bf_int64_col_filter = bf_int64_col.notnull()
     bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
     bf_result_col = bf_int64_col_filtered.apply(square)
-    bf_result = bf_int64_col_filtered.to_frame().assign(result=bf_result_col).compute()
+    bf_result = (
+        bf_int64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
+    )
 
     pd_int64_col = scalars_pandas_df["int64_col"]
     pd_int64_col_filter = pd_int64_col.notnull()
@@ -238,7 +482,7 @@ def test_dataframe_applymap(session_with_bq_connection, scalars_dfs):
 
     bf_int64_df = scalars_df[int64_cols]
     bf_int64_df_filtered = bf_int64_df.dropna()
-    bf_result = bf_int64_df_filtered.applymap(remote_add_one).compute()
+    bf_result = bf_int64_df_filtered.applymap(remote_add_one).to_pandas()
 
     pd_int64_df = scalars_pandas_df[int64_cols]
     pd_int64_df_filtered = pd_int64_df.dropna()
@@ -264,7 +508,7 @@ def test_dataframe_applymap_na_ignore(session_with_bq_connection, scalars_dfs):
     int64_cols = ["int64_col", "int64_too"]
 
     bf_int64_df = scalars_df[int64_cols]
-    bf_result = bf_int64_df.applymap(remote_add_one, na_action="ignore").compute()
+    bf_result = bf_int64_df.applymap(remote_add_one, na_action="ignore").to_pandas()
 
     pd_int64_df = scalars_pandas_df[int64_cols]
     pd_result = pd_int64_df.applymap(add_one, na_action="ignore")
@@ -276,3 +520,56 @@ def test_dataframe_applymap_na_ignore(session_with_bq_connection, scalars_dfs):
         pd_result[col] = pd_result[col].astype(pd_int64_df[col].dtype)
 
     assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_read_gbq_function_like_original(
+    bigquery_client,
+    bigqueryconnection_client,
+    cloudfunctions_client,
+    scalars_df_index,
+    dataset_id_permanent,
+    bq_cf_connection,
+):
+    @remote_function(
+        [int],
+        int,
+        bigquery_client=bigquery_client,
+        bigquery_connection_client=bigqueryconnection_client,
+        dataset=dataset_id_permanent,
+        cloud_functions_client=cloudfunctions_client,
+        bigquery_connection=bq_cf_connection,
+        reuse=True,
+    )
+    def square1(x):
+        return x * x
+
+    square2 = read_gbq_function(
+        function_name=square1.bigframes_remote_function,
+        bigquery_client=bigquery_client,
+    )
+
+    # The newly-created function (square1) should have a remote function AND a
+    # cloud function associated with it, while the read-back version (square2)
+    # should only have a remote function.
+    assert square1.bigframes_remote_function
+    assert square1.bigframes_cloud_function
+
+    assert square2.bigframes_remote_function
+    assert not hasattr(square2, "bigframes_cloud_function")
+
+    # They should point to the same function.
+    assert square1.bigframes_remote_function == square2.bigframes_remote_function
+
+    # The result of applying them should be the same.
+    int64_col = scalars_df_index["int64_col"]
+    int64_col_filter = int64_col.notnull()
+    int64_col_filtered = int64_col[int64_col_filter]
+
+    s1_result_col = int64_col_filtered.apply(square1)
+    s1_result = int64_col_filtered.to_frame().assign(result=s1_result_col)
+
+    s2_result_col = int64_col_filtered.apply(square2)
+    s2_result = int64_col_filtered.to_frame().assign(result=s2_result_col)
+
+    assert_pandas_df_equal_ignore_ordering(s1_result.to_pandas(), s2_result.to_pandas())

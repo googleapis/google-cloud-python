@@ -46,38 +46,92 @@ import bigframes.dataframe
 import bigframes.series
 import bigframes.session
 import third_party.bigframes_vendored.pandas.core.reshape.concat as vendored_pandas_concat
+import third_party.bigframes_vendored.pandas.core.reshape.tile as vendored_pandas_tile
+
+# Support pandas dtype attribute
+NA = pandas.NA
+BooleanDtype = pandas.BooleanDtype
+Float64Dtype = pandas.Float64Dtype
+Int64Dtype = pandas.Int64Dtype
+StringDtype = pandas.StringDtype
+ArrowDtype = pandas.ArrowDtype
 
 
 # Include method definition so that the method appears in our docs for
 # bigframes.pandas general functions.
 @typing.overload
 def concat(
-    objs: Iterable[bigframes.dataframe.DataFrame], *, join, ignore_index
+    objs: Iterable[bigframes.series.Series],
+    *,
+    axis: typing.Literal["index", 0] = ...,
+    join=...,
+    ignore_index=...,
+) -> bigframes.series.Series:
+    ...
+
+
+@typing.overload
+def concat(
+    objs: Iterable[bigframes.dataframe.DataFrame],
+    *,
+    axis: typing.Literal["index", 0] = ...,
+    join=...,
+    ignore_index=...,
 ) -> bigframes.dataframe.DataFrame:
     ...
 
 
 @typing.overload
 def concat(
-    objs: Iterable[bigframes.series.Series], *, join, ignore_index
-) -> bigframes.series.Series:
+    objs: Iterable[Union[bigframes.dataframe.DataFrame, bigframes.series.Series]],
+    *,
+    axis: typing.Literal["columns", 1],
+    join=...,
+    ignore_index=...,
+) -> bigframes.dataframe.DataFrame:
+    ...
+
+
+@typing.overload
+def concat(
+    objs: Iterable[Union[bigframes.dataframe.DataFrame, bigframes.series.Series]],
+    *,
+    axis=...,
+    join=...,
+    ignore_index=...,
+) -> Union[bigframes.dataframe.DataFrame, bigframes.series.Series]:
     ...
 
 
 def concat(
-    objs: Union[
-        Iterable[bigframes.dataframe.DataFrame], Iterable[bigframes.series.Series]
-    ],
+    objs: Iterable[Union[bigframes.dataframe.DataFrame, bigframes.series.Series]],
     *,
+    axis: typing.Union[str, int] = 0,
     join: Literal["inner", "outer"] = "outer",
     ignore_index: bool = False,
 ) -> Union[bigframes.dataframe.DataFrame, bigframes.series.Series]:
     return bigframes.core.reshape.concat(
-        objs=objs, join=join, ignore_index=ignore_index
+        objs=objs, axis=axis, join=join, ignore_index=ignore_index
     )
 
 
 concat.__doc__ = vendored_pandas_concat.concat.__doc__
+
+
+def cut(
+    x: bigframes.series.Series,
+    bins: int,
+    *,
+    labels: Optional[bool] = None,
+) -> bigframes.series.Series:
+    return bigframes.core.reshape.cut(
+        x,
+        bins,
+        labels=labels,
+    )
+
+
+cut.__doc__ = vendored_pandas_tile.cut.__doc__
 
 
 options = config.options
@@ -88,9 +142,12 @@ _global_session_lock = threading.Lock()
 
 
 def reset_session() -> None:
-    """Start a fresh session next time a function requires a session.
+    """Start a fresh session the next time a function requires a session.
 
     Closes the current session if it was already started.
+
+    Returns:
+        None
     """
     global _global_session
 
@@ -124,15 +181,22 @@ def _with_default_session(func: Callable[..., _T], *args, **kwargs) -> _T:
 
 
 def _set_default_session_location_if_possible(query):
-    # If the default session has not started yet and this is the first API user
-    # is calling, then set the default location as per the query.
+    # Set the location as per the query if this is the first query the user is
+    # running and:
+    # (1) Default session has not started yet, and
+    # (2) Location is not set yet, and
+    # (3) Use of regional endpoints is not set.
     # If query is a table name, then it would be the location of the table.
     # If query is a SQL with a table, then it would be table's location.
     # If query is a SQL with no table, then it would be the BQ default location.
-    if options.bigquery._session_started or options.bigquery.use_regional_endpoints:
+    if (
+        options.bigquery._session_started
+        or options.bigquery.location
+        or options.bigquery.use_regional_endpoints
+    ):
         return
 
-    bqclient, _, _ = bigframes.session._create_bq_clients(
+    bqclient, _, _, _ = bigframes.session._create_cloud_clients(
         project=options.bigquery.project,
         location=options.bigquery.location,
         use_regional_endpoints=options.bigquery.use_regional_endpoints,
@@ -320,6 +384,16 @@ def remote_function(
 remote_function.__doc__ = inspect.getdoc(bigframes.session.Session.remote_function)
 
 
+def read_gbq_function(function_name: str):
+    return _with_default_session(
+        bigframes.session.Session.read_gbq_function,
+        function_name=function_name,
+    )
+
+
+read_gbq_function.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_function)
+
+
 # Other aliases
 DataFrame = bigframes.dataframe.DataFrame
 Index = bigframes.core.indexes.Index
@@ -332,6 +406,7 @@ __all___ = [
     "options",
     "read_csv",
     "read_gbq",
+    "read_gbq_function",
     "read_gbq_model",
     "read_pandas",
     "remote_function",

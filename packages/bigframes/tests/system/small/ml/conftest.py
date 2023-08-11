@@ -21,11 +21,17 @@ import google.cloud.exceptions
 import pandas as pd
 import pytest
 
-from bigframes.ml import core, forecasting, imported, llm
-import bigframes.ml.cluster
-import bigframes.ml.core
-import bigframes.ml.ensemble
-import bigframes.ml.linear_model
+import bigframes
+from bigframes.ml import (
+    cluster,
+    core,
+    decomposition,
+    ensemble,
+    forecasting,
+    imported,
+    linear_model,
+    llm,
+)
 
 
 @pytest.fixture(scope="session")
@@ -34,17 +40,15 @@ def ml_connection() -> str:
 
 
 @pytest.fixture(scope="session")
-def penguins_bqml_linear_model(
-    session, penguins_linear_model_name
-) -> bigframes.ml.core.BqmlModel:
+def penguins_bqml_linear_model(session, penguins_linear_model_name) -> core.BqmlModel:
     model = session.bqclient.get_model(penguins_linear_model_name)
-    return bigframes.ml.core.BqmlModel(session, model)
+    return core.BqmlModel(session, model)
 
 
 @pytest.fixture(scope="function")
 def ephemera_penguins_bqml_linear_model(
     penguins_bqml_linear_model,
-) -> bigframes.ml.linear_model.LinearRegression:
+) -> linear_model.LinearRegression:
     model = penguins_bqml_linear_model
     return model.copy(
         f"{model._model.project}.{model._model.dataset_id}.{uuid.uuid4().hex}"
@@ -54,18 +58,18 @@ def ephemera_penguins_bqml_linear_model(
 @pytest.fixture(scope="session")
 def penguins_linear_model(
     session, penguins_linear_model_name: str
-) -> bigframes.ml.linear_model.LinearRegression:
+) -> linear_model.LinearRegression:
     return cast(
-        bigframes.ml.linear_model.LinearRegression,
+        linear_model.LinearRegression,
         session.read_gbq_model(penguins_linear_model_name),
     )
 
 
 @pytest.fixture(scope="function")
 def ephemera_penguins_linear_model(
-    ephemera_penguins_bqml_linear_model: bigframes.ml.core.BqmlModel,
-) -> bigframes.ml.linear_model.LinearRegression:
-    bf_model = bigframes.ml.linear_model.LinearRegression()
+    ephemera_penguins_bqml_linear_model: core.BqmlModel,
+) -> linear_model.LinearRegression:
+    bf_model = linear_model.LinearRegression()
     bf_model._bqml_model = ephemera_penguins_bqml_linear_model
     return bf_model
 
@@ -73,9 +77,9 @@ def ephemera_penguins_linear_model(
 @pytest.fixture(scope="session")
 def penguins_logistic_model(
     session, penguins_logistic_model_name
-) -> bigframes.ml.linear_model.LogisticRegression:
+) -> linear_model.LogisticRegression:
     return cast(
-        bigframes.ml.linear_model.LogisticRegression,
+        linear_model.LogisticRegression,
         session.read_gbq_model(penguins_logistic_model_name),
     )
 
@@ -83,9 +87,9 @@ def penguins_logistic_model(
 @pytest.fixture(scope="session")
 def penguins_xgbregressor_model(
     session, penguins_xgbregressor_model_name
-) -> bigframes.ml.ensemble.XGBRegressor:
+) -> ensemble.XGBRegressor:
     return cast(
-        bigframes.ml.ensemble.XGBRegressor,
+        ensemble.XGBRegressor,
         session.read_gbq_model(penguins_xgbregressor_model_name),
     )
 
@@ -93,9 +97,9 @@ def penguins_xgbregressor_model(
 @pytest.fixture(scope="session")
 def penguins_xgbclassifier_model(
     session, penguins_xgbclassifier_model_name
-) -> bigframes.ml.ensemble.XGBClassifier:
+) -> ensemble.XGBClassifier:
     return cast(
-        bigframes.ml.ensemble.XGBClassifier,
+        ensemble.XGBClassifier,
         session.read_gbq_model(penguins_xgbclassifier_model_name),
     )
 
@@ -103,9 +107,9 @@ def penguins_xgbclassifier_model(
 @pytest.fixture(scope="session")
 def penguins_randomforest_regressor_model(
     session, penguins_randomforest_regressor_model_name
-) -> bigframes.ml.ensemble.RandomForestRegressor:
+) -> ensemble.RandomForestRegressor:
     return cast(
-        bigframes.ml.ensemble.RandomForestRegressor,
+        ensemble.RandomForestRegressor,
         session.read_gbq_model(penguins_randomforest_regressor_model_name),
     )
 
@@ -113,9 +117,9 @@ def penguins_randomforest_regressor_model(
 @pytest.fixture(scope="session")
 def penguins_randomforest_classifier_model(
     session, penguins_randomforest_classifier_model_name
-) -> bigframes.ml.ensemble.RandomForestClassifier:
+) -> ensemble.RandomForestClassifier:
     return cast(
-        bigframes.ml.ensemble.RandomForestClassifier,
+        ensemble.RandomForestClassifier,
         session.read_gbq_model(penguins_randomforest_classifier_model_name),
     )
 
@@ -123,7 +127,7 @@ def penguins_randomforest_classifier_model(
 @pytest.fixture(scope="session")
 def penguins_kmeans_model(
     session: bigframes.Session, dataset_id_permanent, penguins_table_id
-) -> bigframes.ml.cluster.KMeans:
+) -> cluster.KMeans:
     """Provides a pretrained model as a test fixture that is cached across test runs.
     This lets us run system tests without having to wait for a model.fit(...)"""
     sql = f"""
@@ -154,7 +158,7 @@ FROM `{penguins_table_id}`"""
 @pytest.fixture(scope="session")
 def penguins_pca_model(
     session: bigframes.Session, dataset_id_permanent, penguins_table_id
-) -> bigframes.ml.decomposition.PCA:
+) -> decomposition.PCA:
 
     # TODO(yunmengxie): Create a shared method to get different types of pretrained models.
     sql = f"""
@@ -248,8 +252,10 @@ def ephemera_palm2_text_generator_model(
 @pytest.fixture(scope="session")
 def palm2_embedding_generator_model(
     session, ml_connection
-) -> llm.PaLM2EmbeddingGenerator:
-    return llm.PaLM2EmbeddingGenerator(session=session, connection_name=ml_connection)
+) -> llm.PaLM2TextEmbeddingGenerator:
+    return llm.PaLM2TextEmbeddingGenerator(
+        session=session, connection_name=ml_connection
+    )
 
 
 @pytest.fixture(scope="session")
@@ -257,7 +263,7 @@ def time_series_bqml_arima_plus_model(
     session, time_series_arima_plus_model_name
 ) -> core.BqmlModel:
     model = session.bqclient.get_model(time_series_arima_plus_model_name)
-    return bigframes.ml.core.BqmlModel(session, model)
+    return core.BqmlModel(session, model)
 
 
 @pytest.fixture(scope="session")
@@ -287,8 +293,8 @@ def ephemera_imported_tensorflow_model(session) -> imported.TensorFlowModel:
 
 
 @pytest.fixture(scope="session")
-def imported_onnx_model(session) -> imported.OnnxModel:
-    return imported.OnnxModel(
+def imported_onnx_model(session) -> imported.ONNXModel:
+    return imported.ONNXModel(
         session=session,
         model_path="gs://cloud-samples-data/bigquery/ml/onnx/pipeline_rf.onnx",
     )

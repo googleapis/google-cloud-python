@@ -30,7 +30,7 @@ description = "Scalable DataFrames with BigQuery"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 3 - Alpha"
 dependencies = [
-    "cloudpickle >= 2.2.1",
+    "cloudpickle >= 2.0.0",
     "fsspec >=2023.3.0",
     "gcsfs >=2023.3.0",
     "geopandas >=0.12.2",
@@ -39,9 +39,10 @@ dependencies = [
     "google-cloud-functions >=1.10.1",
     "google-cloud-bigquery-connection >=1.12.0",
     "google-cloud-storage >=2.0.0",
-    "ibis-framework[bigquery] >=6.0.0",
+    # TODO: Relax upper bound once we have fixed `system_prerelease` tests.
+    "ibis-framework[bigquery] >=6.0.0,<=6.1.0",
     "pandas >=1.5.0",
-    "pydata-google-auth >=1.5.0",
+    "pydata-google-auth >=1.8.2",
     "scikit-learn >=1.2.2",
     "sqlalchemy >=1.4,<3.0",
     "ipywidgets >=7.7.1",

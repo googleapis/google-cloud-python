@@ -14,61 +14,81 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Union
+from types import MappingProxyType
+from typing import Union
 
 from google.cloud import bigquery
 
-if TYPE_CHECKING:
-    import bigframes
+import bigframes
+import bigframes.constants as constants
+from bigframes.ml import (
+    cluster,
+    decomposition,
+    ensemble,
+    forecasting,
+    imported,
+    linear_model,
+    pipeline,
+)
 
-import bigframes.ml.cluster
-import bigframes.ml.decomposition
-import bigframes.ml.ensemble
-import bigframes.ml.forecasting
-import bigframes.ml.linear_model
+_BQML_MODEL_TYPE_MAPPING = MappingProxyType(
+    {
+        "LINEAR_REGRESSION": linear_model.LinearRegression,
+        "LOGISTIC_REGRESSION": linear_model.LogisticRegression,
+        "KMEANS": cluster.KMeans,
+        "PCA": decomposition.PCA,
+        "BOOSTED_TREE_REGRESSOR": ensemble.XGBRegressor,
+        "BOOSTED_TREE_CLASSIFIER": ensemble.XGBClassifier,
+        "ARIMA_PLUS": forecasting.ARIMAPlus,
+        "RANDOM_FOREST_REGRESSOR": ensemble.RandomForestRegressor,
+        "RANDOM_FOREST_CLASSIFIER": ensemble.RandomForestClassifier,
+        "TENSORFLOW": imported.TensorFlowModel,
+        "ONNX": imported.ONNXModel,
+    }
+)
 
 
 def from_bq(
-    session: bigframes.Session, model: bigquery.Model
+    session: bigframes.Session, bq_model: bigquery.Model
 ) -> Union[
-    bigframes.ml.decomposition.PCA,
-    bigframes.ml.cluster.KMeans,
-    bigframes.ml.linear_model.LinearRegression,
-    bigframes.ml.linear_model.LogisticRegression,
-    bigframes.ml.ensemble.XGBRegressor,
-    bigframes.ml.ensemble.XGBClassifier,
-    bigframes.ml.forecasting.ARIMAPlus,
-    bigframes.ml.ensemble.RandomForestRegressor,
-    bigframes.ml.ensemble.RandomForestClassifier,
+    decomposition.PCA,
+    cluster.KMeans,
+    linear_model.LinearRegression,
+    linear_model.LogisticRegression,
+    ensemble.XGBRegressor,
+    ensemble.XGBClassifier,
+    forecasting.ARIMAPlus,
+    ensemble.RandomForestRegressor,
+    ensemble.RandomForestClassifier,
+    imported.TensorFlowModel,
+    imported.ONNXModel,
+    pipeline.Pipeline,
 ]:
     """Load a BQML model to BigQuery DataFrames ML.
 
     Args:
         session: a BigQuery DataFrames session.
-        model: a BigQuery model.
+        bq_model: a BigQuery model.
 
     Returns:
         A BigQuery DataFrames ML model object.
     """
-    if model.model_type == "LINEAR_REGRESSION":
-        return bigframes.ml.linear_model.LinearRegression._from_bq(session, model)
-    elif model.model_type == "KMEANS":
-        return bigframes.ml.cluster.KMeans._from_bq(session, model)
-    elif model.model_type == "PCA":
-        return bigframes.ml.decomposition.PCA._from_bq(session, model)
-    elif model.model_type == "LOGISTIC_REGRESSION":
-        return bigframes.ml.linear_model.LogisticRegression._from_bq(session, model)
-    elif model.model_type == "BOOSTED_TREE_REGRESSOR":
-        return bigframes.ml.ensemble.XGBRegressor._from_bq(session, model)
-    elif model.model_type == "BOOSTED_TREE_CLASSIFIER":
-        return bigframes.ml.ensemble.XGBClassifier._from_bq(session, model)
-    elif model.model_type == "ARIMA_PLUS":
-        return bigframes.ml.forecasting.ARIMAPlus._from_bq(session, model)
-    elif model.model_type == "RANDOM_FOREST_REGRESSOR":
-        return bigframes.ml.ensemble.RandomForestRegressor._from_bq(session, model)
-    elif model.model_type == "RANDOM_FOREST_CLASSIFIER":
-        return bigframes.ml.ensemble.RandomForestClassifier._from_bq(session, model)
-    else:
-        raise NotImplementedError(
-            f"Model type {model.model_type} is not yet supported by BigQuery DataFrames."
+    if _is_bq_model_pipeline(bq_model):
+        return pipeline.Pipeline._from_bq(session, bq_model)
+
+    return _model_from_bq(session, bq_model)
+
+
+def _model_from_bq(session: bigframes.Session, bq_model: bigquery.Model):
+    if bq_model.model_type in _BQML_MODEL_TYPE_MAPPING:
+        return _BQML_MODEL_TYPE_MAPPING[bq_model.model_type]._from_bq(  # type: ignore
+            session=session, model=bq_model
         )
+
+    raise NotImplementedError(
+        f"Model type {bq_model.model_type} is not yet supported by BigQuery DataFrames. {constants.FEEDBACK_LINK}"
+    )
+
+
+def _is_bq_model_pipeline(bq_model: bigquery.Model) -> bool:
+    return "transformColumns" in bq_model._properties

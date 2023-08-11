@@ -21,7 +21,7 @@ import pytz
 
 def test_model_predict(time_series_arima_plus_model):
     utc = pytz.utc
-    predictions = time_series_arima_plus_model.predict().compute()
+    predictions = time_series_arima_plus_model.predict().to_pandas()
     expected = pd.DataFrame(
         {
             "forecast_timestamp": [
@@ -38,6 +38,50 @@ def test_model_predict(time_series_arima_plus_model):
     )
     pd.testing.assert_frame_equal(
         predictions,
+        expected,
+        rtol=0.1,
+        check_index_type=False,
+    )
+
+
+def test_model_score(time_series_arima_plus_model, new_time_series_df):
+    result = time_series_arima_plus_model.score(
+        new_time_series_df[["parsed_date"]], new_time_series_df[["total_visits"]]
+    ).to_pandas()
+    expected = pd.DataFrame(
+        {
+            "mean_absolute_error": [154.742547],
+            "mean_squared_error": [26844.868855],
+            "root_mean_squared_error": [163.844038],
+            "mean_absolute_percentage_error": [6.189702],
+            "symmetric_mean_absolute_percentage_error": [6.097155],
+        },
+        dtype="Float64",
+    )
+    pd.testing.assert_frame_equal(
+        result,
+        expected,
+        rtol=0.1,
+        check_index_type=False,
+    )
+
+
+def test_model_score_series(time_series_arima_plus_model, new_time_series_df):
+    result = time_series_arima_plus_model.score(
+        new_time_series_df["parsed_date"], new_time_series_df["total_visits"]
+    ).to_pandas()
+    expected = pd.DataFrame(
+        {
+            "mean_absolute_error": [154.742547],
+            "mean_squared_error": [26844.868855],
+            "root_mean_squared_error": [163.844038],
+            "mean_absolute_percentage_error": [6.189702],
+            "symmetric_mean_absolute_percentage_error": [6.097155],
+        },
+        dtype="Float64",
+    )
+    pd.testing.assert_frame_equal(
+        result,
         expected,
         rtol=0.1,
         check_index_type=False,

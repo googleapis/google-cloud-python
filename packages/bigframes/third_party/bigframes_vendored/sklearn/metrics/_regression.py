@@ -41,13 +41,12 @@ def r2_score(y_true, y_pred, force_finite=True) -> float:
     predictions) respectively.
 
     Args:
-        y_true: DataFrame of shape (n_samples,)
+        y_true (Series or DataFrame of shape (n_samples,)):
             Ground truth (correct) target values.
-        y_pred: DataFrame of shape (n_samples,)
+        y_pred (Series or DataFrame of shape (n_samples,)):
             Estimated target values.
 
     Returns:
-        z: float.
-            The :math:`R^2` score.
+        float: The :math:`R^2` score.
     """
     raise NotImplementedError("abstract method")

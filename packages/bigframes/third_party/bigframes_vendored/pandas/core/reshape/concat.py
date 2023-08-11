@@ -8,6 +8,7 @@ from __future__ import annotations
 def concat(
     objs,
     *,
+    axis=0,
     join: str = "outer",
     ignore_index: bool = False,
 ):
@@ -25,6 +26,8 @@ def concat(
     objs:
         Objects to concatenate. Any None objects will be dropped silently unless
         they are all None in which case a ValueError will be raised.
+    axis : {0/'index', 1/'columns'}, default 0
+        The axis to concatenate along.
     join: {'inner', 'outer'}, default 'outer'
         How to handle indexes on other axis (or axes).
     ignore_index : bool, default False

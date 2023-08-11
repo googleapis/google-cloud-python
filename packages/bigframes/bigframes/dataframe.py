@@ -16,7 +16,6 @@
 
 from __future__ import annotations
 
-import random
 import re
 import textwrap
 import typing
@@ -33,13 +32,13 @@ from typing import (
 )
 
 import google.cloud.bigquery as bigquery
-import ibis.expr.datatypes as ibis_dtypes
 import numpy
-import pandas as pd
+import pandas
 import typing_extensions
 
 import bigframes
 import bigframes._config.display_options as display_options
+import bigframes.constants as constants
 import bigframes.core
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
@@ -47,9 +46,12 @@ import bigframes.core.groupby as groupby
 import bigframes.core.guid
 import bigframes.core.indexers as indexers
 import bigframes.core.indexes as indexes
+import bigframes.core.io
 import bigframes.core.joins as joins
 import bigframes.core.ordering as order
+import bigframes.core.utils as utils
 import bigframes.dtypes
+import bigframes.formatting_helpers as formatter
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.series
@@ -64,10 +66,20 @@ if typing.TYPE_CHECKING:
 
 # BigQuery has 1 MB query size limit, 5000 items shouldn't take more than 10% of this depending on data type.
 # TODO(tbergeron): Convert to bytes-based limit
-MAX_INLINE_DF_SIZE = 5000
+# TODO(swast): Address issues with string escaping and empty tables before
+# re-enabling inline data (ibis.memtable) feature.
+MAX_INLINE_DF_SIZE = -1
 
-LevelsType = typing.Union[str, int, typing.Sequence[typing.Union[str, int]]]
+LevelType = typing.Union[str, int]
+LevelsType = typing.Union[LevelType, typing.Sequence[LevelType]]
 SingleItemValue = Union[bigframes.series.Series, int, float, Callable]
+
+ERROR_IO_ONLY_GS_PATHS = f"Only Google Cloud Storage (gs://...) paths are supported. {constants.FEEDBACK_LINK}"
+ERROR_IO_REQUIRES_WILDCARD = (
+    "Google Cloud Storage path must contain a wildcard '*' character. See: "
+    "https://cloud.google.com/bigquery/docs/reference/standard-sql/other-statements#export_data_statement"
+    f"{constants.FEEDBACK_LINK}"
+)
 
 
 # Inherits from pandas DataFrame so that we can use the same docstrings.
@@ -87,7 +99,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         session: typing.Optional[bigframes.session.Session] = None,
     ):
         if copy is not None and not copy:
-            raise ValueError("DataFrame constructor only supports copy=True")
+            raise ValueError(
+                f"DataFrame constructor only supports copy=True. {constants.FEEDBACK_LINK}"
+            )
 
         # Check to see if constructing from BigQuery-backed objects before
         # falling back to pandas constructor
@@ -106,7 +120,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         ):
             if not all(isinstance(data[key], bf_series.Series) for key in data.keys()):
                 # TODO(tbergeron): Support local list/series data by converting to memtable.
-                raise NotImplementedError("Cannot mix Series with other types.")
+                raise NotImplementedError(
+                    f"Cannot mix Series with other types. {constants.FEEDBACK_LINK}"
+                )
             keys = list(data.keys())
             first_label, first_series = keys[0], data[keys[0]]
             block = (
@@ -128,7 +144,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if block:
             if index:
                 raise NotImplementedError(
-                    "DataFrame 'index' constructor parameter not supported when passing BigQuery-backed objects"
+                    "DataFrame 'index' constructor parameter not supported "
+                    f"when passing BigQuery-backed objects. {constants.FEEDBACK_LINK}"
                 )
             if columns:
                 block = block.select_columns(list(columns))  # type:ignore
@@ -141,7 +158,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         else:
             import bigframes.pandas
 
-            pd_dataframe = pd.DataFrame(
+            pd_dataframe = pandas.DataFrame(
                 data=data,
                 index=index,  # type:ignore
                 columns=columns,  # type:ignore
@@ -182,12 +199,14 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def _resolve_label_exact(self, label) -> str:
         matches = self._block.label_to_col_id.get(label, [])
         if len(matches) != 1:
-            raise ValueError("Index data must be 1-dimensional")
+            raise ValueError(
+                f"Index data must be 1-dimensional. {constants.FEEDBACK_LINK}"
+            )
         return matches[0]
 
     def _sql_names(
         self,
-        columns: Union[blocks.Label, Sequence[blocks.Label], pd.Index],
+        columns: Union[blocks.Label, Sequence[blocks.Label], pandas.Index],
         tolerance: bool = False,
     ) -> Sequence[str]:
         """Retrieve sql name (column name in BQ schema) of column(s)."""
@@ -215,11 +234,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return indexers.ILocDataFrameIndexer(self)
 
     @property
-    def dtypes(self) -> pd.Series:
-        return pd.Series(data=self._block.dtypes, index=self._block.column_labels)
+    def dtypes(self) -> pandas.Series:
+        return pandas.Series(data=self._block.dtypes, index=self._block.column_labels)
 
     @property
-    def columns(self) -> pd.Index:
+    def columns(self) -> pandas.Index:
         return self.dtypes.index
 
     @property
@@ -253,19 +272,21 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         return self._apply_to_rows(ops.AsTypeOp(dtype))
 
-    def to_sql_query(
+    def _to_sql_query(
         self, always_include_index: bool
     ) -> Tuple[str, List[Tuple[str, bool]]]:
-        """Compiles this dataframe's expression tree to SQL, optionally
-        including unnamed index columns
+        """Compiles this DataFrame's expression tree to SQL, optionally
+        including unnamed index columns.
 
         Args:
-            always_include_index: whether to include unnamed index columns.
-            If False, only named indexes are included.
+            always_include_index (bool):
+                whether to include unnamed index columns. If False, only named
+                indexes are included.
 
-        Returns: a tuple of (sql_string, index_column_list). Each entry in the
-            index column list is a tuple of (column_name, named). If named is
-            is false, then the column name exists only in SQL"""
+        Returns: a tuple of (sql_string, index_column_list)
+            Each entry in the index column list is a tuple of (column_name, named).
+            If named is false, then the column name exists only in SQL
+        """
         # Has to be unordered as it is impossible to order the sql without
         # including metadata columns in selection with ibis.
         ibis_expr = self._block.expr.to_ibis_expr(ordering_mode="unordered")
@@ -325,14 +346,24 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     @property
     def sql(self) -> str:
-        """Compiles this dataframe's expression tree to SQL"""
-        sql, _ = self.to_sql_query(always_include_index=False)
+        """Compiles this DataFrame's expression tree to SQL."""
+        sql, _ = self._to_sql_query(always_include_index=False)
         return sql
 
     @property
     def query_job(self) -> Optional[bigquery.QueryJob]:
-        """BigQuery job metadata for the most recent query."""
+        """BigQuery job metadata for the most recent query.
+
+        Returns:
+            The most recent `QueryJob
+            <https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJob>`_.
+        """
+        if self._query_job is None:
+            self._set_internal_query_job(self._compute_dry_run())
         return self._query_job
+
+    def _set_internal_query_job(self, query_job: bigquery.QueryJob):
+        self._query_job = query_job
 
     @typing.overload
     def __getitem__(self, key: bigframes.series.Series) -> DataFrame:
@@ -343,7 +374,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         ...
 
     @typing.overload
-    def __getitem__(self, key: pd.Index) -> DataFrame:  # type:ignore
+    def __getitem__(self, key: pandas.Index) -> DataFrame:  # type:ignore
         ...
 
     @typing.overload
@@ -356,7 +387,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             blocks.Label,
             Sequence[blocks.Label],
             # Index of column labels can be treated the same as a sequence of column labels.
-            pd.Index,
+            pandas.Index,
             bigframes.series.Series,
         ],
     ) -> Union[bigframes.series.Series, "DataFrame"]:
@@ -397,8 +428,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     # Bool Series selects rows
     def _getitem_bool_series(self, key: bigframes.series.Series) -> DataFrame:
-        if not key._to_ibis_expr().type() == ibis_dtypes.bool:
-            raise ValueError("Only boolean series currently supported for indexing.")
+        if not key.dtype == pandas.BooleanDtype():
+            raise NotImplementedError(
+                f"Only boolean series currently supported for indexing. {constants.FEEDBACK_LINK}"
+            )
             # TODO: enforce stricter alignment
         combined_index, (
             get_column_left,
@@ -413,16 +446,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def __getattr__(self, key: str):
         if key in self._block.column_labels:
             return self.__getitem__(key)
-        elif hasattr(pd.DataFrame, key):
+        elif hasattr(pandas.DataFrame, key):
             raise NotImplementedError(
                 textwrap.dedent(
                     f"""
                 BigQuery DataFrames has not yet implemented an equivalent to
-                'pandas.DataFrame.{key}'. Please check
-                https://github.com/googleapis/python-bigquery-dataframes/issues for
-                existing feature requests, or file your own.
-                Please include information about your use case, as well as
-                relevant code snippets.
+                'pandas.DataFrame.{key}'. {constants.FEEDBACK_LINK}
                 """
                 )
             )
@@ -432,14 +461,21 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def __repr__(self) -> str:
         """Converts a DataFrame to a string. Calls compute.
 
-        Only represents the first ``bigframes.options.display.max_rows``.
+        Only represents the first `bigframes.options.display.max_rows`.
         """
         opts = bigframes.options.display
         max_results = opts.max_rows
+        if opts.repr_mode == "deferred":
+            return formatter.repr_query_job(self.query_job)
         # TODO(swast): pass max_columns and get the true column count back. Maybe
         # get 1 more column than we have requested so that pandas can add the
         # ... for us?
-        pandas_df, row_count = self._retrieve_repr_request_results(max_results)
+        pandas_df, row_count, query_job = self._block.retrieve_repr_request_results(
+            max_results
+        )
+
+        self._set_internal_query_job(query_job)
+
         column_count = len(pandas_df.columns)
 
         with display_options.pandas_repr(opts):
@@ -466,10 +502,17 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         """
         opts = bigframes.options.display
         max_results = bigframes.options.display.max_rows
+        if opts.repr_mode == "deferred":
+            return formatter.repr_query_job_html(self.query_job)
         # TODO(swast): pass max_columns and get the true column count back. Maybe
         # get 1 more column than we have requested so that pandas can add the
         # ... for us?
-        pandas_df, row_count = self._retrieve_repr_request_results(max_results)
+        pandas_df, row_count, query_job = self._block.retrieve_repr_request_results(
+            max_results
+        )
+
+        self._set_internal_query_job(query_job)
+
         column_count = len(pandas_df.columns)
 
         with display_options.pandas_repr(opts):
@@ -478,33 +521,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         html_string += f"[{row_count} rows x {column_count} columns in total]"
         return html_string
-
-    def _retrieve_repr_request_results(
-        self, max_results: int
-    ) -> Tuple[pd.DataFrame, int]:
-        """
-        Retrieves a pandas dataframe containing only max_results many rows for use
-        with printing methods.
-
-        Returns a tuple of the dataframe and the overall number of rows of the query.
-        """
-        # TODO(swast): Select a subset of columns if max_columns is less than the
-        # number of columns in the schema.
-        count = self.shape[0]
-        if count > max_results:
-            head_df = self.head(n=max_results)
-            computed_df, query_job = head_df._block.compute(max_results=max_results)
-        else:
-            head_df = self
-            computed_df, query_job = head_df._block.compute()
-
-        formatted_df = computed_df.set_axis(self._block.column_labels, axis=1)
-        # don't update details when the cache is hit
-        if self.query_job is None or not query_job.cache_hit:
-            self._query_job = query_job
-        # we reset the axis and substitute the bf index name for the default
-        formatted_df.index.name = self.index.name
-        return formatted_df, count
 
     def __setitem__(self, key: str, value: SingleItemValue):
         """Modify or insert a column into the DataFrame.
@@ -527,6 +543,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             return self._apply_series_binop(other, op, axis=axis)
         raise NotImplementedError(
             f"binary operation is not implemented on the second operand of type {type(other).__name__}."
+            f"{constants.FEEDBACK_LINK}"
         )
 
     def _apply_scalar_binop(self, other: float | int, op: ops.BinaryOp) -> DataFrame:
@@ -549,7 +566,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             raise ValueError(f"Invalid input: axis {axis}.")
 
         if axis in ("columns", 1):
-            raise NotImplementedError("Row Series operations haven't been supported.")
+            raise NotImplementedError(
+                f"Row Series operations haven't been supported. {constants.FEEDBACK_LINK}"
+            )
 
         joined_index, (get_column_left, get_column_right) = self._block.index.join(
             other._block.index, how="outer"
@@ -572,6 +591,16 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         block = block.drop_columns([series_col])
         block = block.with_index_labels(self.index.names)
         return DataFrame(block)
+
+    def eq(self, other: typing.Any, axis: str | int = "columns") -> DataFrame:
+        return self._apply_binop(other, ops.eq_op, axis=axis)
+
+    def ne(self, other: typing.Any, axis: str | int = "columns") -> DataFrame:
+        return self._apply_binop(other, ops.ne_op, axis=axis)
+
+    __eq__ = eq  # type: ignore
+
+    __ne__ = ne  # type: ignore
 
     def le(self, other: typing.Any, axis: str | int = "columns") -> DataFrame:
         return self._apply_binop(other, ops.le_op, axis=axis)
@@ -661,12 +690,47 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     __rmod__ = rmod
 
-    def compute(self) -> pd.DataFrame:
-        """Executes deferred operations and downloads the results."""
+    def to_pandas(
+        self,
+        max_download_size: Optional[int] = None,
+        sampling_method: Optional[str] = None,
+        random_state: Optional[int] = None,
+    ) -> pandas.DataFrame:
+        """Write DataFrame to pandas DataFrame.
+
+        Args:
+            max_download_size (int, default None):
+                Download size threshold in MB. If max_download_size is exceeded when downloading data
+                (e.g., to_pandas()), the data will be downsampled if
+                bigframes.options.sampling.enable_downsampling is True, otherwise, an error will be
+                raised. If set to a value other than None, this will supersede the global config.
+            sampling_method (str, default None):
+                Downsampling algorithms to be chosen from, the choices are: "head": This algorithm
+                returns a portion of the data from the beginning. It is fast and requires minimal
+                computations to perform the downsampling; "uniform": This algorithm returns uniform
+                random samples of the data. If set to a value other than None, this will supersede
+                the global config.
+            random_state (int, default None):
+                The seed for the uniform downsampling algorithm. If provided, the uniform method may
+                take longer to execute and require more computation. If set to a value other than
+                None, this will supersede the global config.
+
+        Returns:
+            pandas.DataFrame: A pandas DataFrame with all rows and columns of this DataFrame if the
+                data_sampling_threshold_mb is not exceeded; otherwise, a pandas DataFrame with
+                downsampled rows and all columns of this DataFrame.
+        """
         # TODO(orrbradford): Optimize this in future. Potentially some cases where we can return the stored query job
-        df, query_job = self._block.compute()
-        self._query_job = query_job
-        return df.set_axis(self._block.column_labels, axis=1)
+        df, query_job = self._block.to_pandas(
+            max_download_size=max_download_size,
+            sampling_method=sampling_method,
+            random_state=random_state,
+        )
+        self._set_internal_query_job(query_job)
+        return df.set_axis(self._block.column_labels, axis=1, copy=False)
+
+    def _compute_dry_run(self) -> bigquery.QueryJob:
+        return self._block._compute_dry_run()
 
     def copy(self) -> DataFrame:
         return DataFrame(self._block)
@@ -677,12 +741,50 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def tail(self, n: int = 5) -> DataFrame:
         return typing.cast(DataFrame, self.iloc[-n:])
 
-    def drop(self, *, columns: Union[str, Iterable[str]]) -> DataFrame:
-        if not _is_list_like(columns):
-            columns = [columns]  # type:ignore
-        columns = list(columns)
+    def drop(
+        self,
+        labels: typing.Any = None,
+        *,
+        axis: typing.Union[int, str] = 0,
+        index: typing.Any = None,
+        columns: Union[blocks.Label, Iterable[blocks.Label]] = None,
+        level: typing.Optional[LevelType] = None,
+    ) -> DataFrame:
+        if labels:
+            if index or columns:
+                raise ValueError("Cannot specify both 'labels' and 'index'/'columns")
+            axis_n = utils.get_axis_number(axis)
+            if axis_n == 0:
+                index = labels
+            else:
+                columns = labels
 
-        block = self._block.drop_columns(self._sql_names(columns))
+        block = self._block
+        if index:
+            level_id = self._resolve_levels(level or 0)[0]
+
+            if _is_list_like(index):
+                block, inverse_condition_id = block.apply_unary_op(
+                    level_id, ops.IsInOp(index, match_nulls=True)
+                )
+                block, condition_id = block.apply_unary_op(
+                    inverse_condition_id, ops.invert_op
+                )
+            else:
+                block, condition_id = block.apply_unary_op(
+                    level_id, ops.partial_right(ops.ne_op, index)
+                )
+            block = block.filter(condition_id, keep_null=True).select_columns(
+                self._block.value_columns
+            )
+        if columns:
+            if not _is_list_like(columns):
+                columns = [columns]  # type:ignore
+            columns = list(columns)
+
+            block = block.drop_columns(self._sql_names(columns))
+        if not index and not columns:
+            raise ValueError("Must specify 'labels' or 'index'/'columns")
         return DataFrame(block)
 
     def droplevel(self, level: LevelsType):
@@ -722,7 +824,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         if len(kwargs) != 0:
             raise NotImplementedError(
-                "rename_axis does not currently support any keyword arguments."
+                f"rename_axis does not currently support any keyword arguments. {constants.FEEDBACK_LINK}"
             )
         # limited implementation: the new index name is simply the 'mapper' parameter
         if _is_list_like(mapper):
@@ -795,7 +897,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             # Update case, remove after copying into columns
             block = block.drop_columns([source_column])
 
-        return DataFrame(block.with_index_labels([self.index.name]))
+        return DataFrame(block.with_index_labels(self.index.names))
 
     def reset_index(self, *, drop: bool = False) -> DataFrame:
         block = self._block.reset_index(drop)
@@ -814,9 +916,20 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         col_ids = [self._resolve_label_exact(key) for key in keys]
         return DataFrame(self._block.set_index(col_ids, append=append, drop=drop))
 
-    def sort_index(self) -> DataFrame:
+    def sort_index(
+        self, ascending: bool = True, na_position: Literal["first", "last"] = "last"
+    ) -> DataFrame:
+        if na_position not in ["first", "last"]:
+            raise ValueError("Param na_position must be one of 'first' or 'last'")
+        direction = (
+            order.OrderingDirection.ASC if ascending else order.OrderingDirection.DESC
+        )
+        na_last = na_position == "last"
         index_columns = self._block.index_columns
-        ordering = [order.OrderingColumnReference(column) for column in index_columns]
+        ordering = [
+            order.OrderingColumnReference(column, direction=direction, na_last=na_last)
+            for column in index_columns
+        ]
         return DataFrame(self._block.order_by(ordering))
 
     def sort_values(
@@ -824,6 +937,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         by: str | typing.Sequence[str],
         *,
         ascending: bool | typing.Sequence[bool] = True,
+        kind: str = "quicksort",
         na_position: typing.Literal["first", "last"] = "last",
     ) -> DataFrame:
         if na_position not in {"first", "last"}:
@@ -854,8 +968,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                     column_id, direction=direction, na_last=na_last
                 )
             )
-
-        return DataFrame(self._block.order_by(ordering))
+        return DataFrame(
+            self._block.order_by(ordering, stable=kind in order.STABLE_SORTS)
+        )
 
     def value_counts(
         self,
@@ -902,7 +1017,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         else:
             frame = self._drop_non_bool()
         block = frame._block.aggregate_all_and_pivot(
-            agg_ops.any_op, dtype=pd.BooleanDtype()
+            agg_ops.any_op, dtype=pandas.BooleanDtype()
         )
         return bigframes.series.Series(block.select_column("values"))
 
@@ -912,7 +1027,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         else:
             frame = self._drop_non_bool()
         block = frame._block.aggregate_all_and_pivot(
-            agg_ops.all_op, dtype=pd.BooleanDtype()
+            agg_ops.all_op, dtype=pandas.BooleanDtype()
         )
         return bigframes.series.Series(block.select_column("values"))
 
@@ -930,6 +1045,20 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         else:
             frame = self._drop_non_numeric()
         block = frame._block.aggregate_all_and_pivot(agg_ops.mean_op)
+        return bigframes.series.Series(block.select_column("values"))
+
+    def median(
+        self, *, numeric_only: bool = False, exact: bool = False
+    ) -> bigframes.series.Series:
+        if exact:
+            raise NotImplementedError(
+                f"Only approximate median is supported. {constants.FEEDBACK_LINK}"
+            )
+        if not numeric_only:
+            frame = self._raise_on_non_numeric("median")
+        else:
+            frame = self._drop_non_numeric()
+        block = frame._block.aggregate_all_and_pivot(agg_ops.median_op)
         return bigframes.series.Series(block.select_column("values"))
 
     def std(self, *, numeric_only: bool = False) -> bigframes.series.Series:
@@ -986,11 +1115,52 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         block = self._block.aggregate_all_and_pivot(agg_ops.nunique_op)
         return bigframes.series.Series(block.select_column("values"))
 
-    def _drop_non_numeric(self) -> DataFrame:
+    def agg(
+        self, func: str | typing.Sequence[str]
+    ) -> DataFrame | bigframes.series.Series:
+        if _is_list_like(func):
+            if any(
+                dtype not in bigframes.dtypes.NUMERIC_BIGFRAMES_TYPES
+                for dtype in self.dtypes
+            ):
+                raise NotImplementedError(
+                    f"Multiple aggregations only supported on numeric columns. {constants.FEEDBACK_LINK}"
+                )
+            aggregations = [agg_ops.AGGREGATIONS_LOOKUP[f] for f in func]
+            return DataFrame(
+                self._block.summarize(
+                    self._block.value_columns,
+                    aggregations,
+                )
+            )
+        else:
+            return bigframes.series.Series(
+                self._block.aggregate_all_and_pivot(
+                    agg_ops.AGGREGATIONS_LOOKUP[typing.cast(str, func)]
+                )
+            )
+
+    aggregate = agg
+
+    def describe(self) -> DataFrame:
+        df_numeric = self._drop_non_numeric(keep_bool=False)
+        if len(df_numeric.columns) == 0:
+            raise NotImplementedError(
+                f"df.describe() currently only supports numeric values. {constants.FEEDBACK_LINK}"
+            )
+        result = df_numeric.agg(
+            ["count", "mean", "std", "min", "25%", "50%", "75%", "max"]
+        )
+        return typing.cast(DataFrame, result)
+
+    def _drop_non_numeric(self, keep_bool=True) -> DataFrame:
+        types_to_keep = set(bigframes.dtypes.NUMERIC_BIGFRAMES_TYPES)
+        if not keep_bool:
+            types_to_keep -= set(bigframes.dtypes.BOOL_BIGFRAMES_TYPES)
         non_numeric_cols = [
             col_id
             for col_id, dtype in zip(self._block.value_columns, self._block.dtypes)
-            if dtype not in bigframes.dtypes.NUMERIC_BIGFRAMES_TYPES
+            if dtype not in types_to_keep
         ]
         return DataFrame(self._block.drop_columns(non_numeric_cols))
 
@@ -1008,7 +1178,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             for dtype in self._block.dtypes
         ):
             raise NotImplementedError(
-                f"'{op}' does not support non-numeric columns. Set 'numeric_only'=True to ignore non-numeric columns"
+                f"'{op}' does not support non-numeric columns. "
+                f"Set 'numeric_only'=True to ignore non-numeric columns. {constants.FEEDBACK_LINK}"
             )
         return self
 
@@ -1018,7 +1189,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             for dtype in self._block.dtypes
         ):
             raise NotImplementedError(
-                f"'{op}' does not support non-bool columns. Set 'bool_only'=True to ignore non-bool columns"
+                f"'{op}' does not support non-bool columns. "
+                f"Set 'bool_only'=True to ignore non-bool columns. {constants.FEEDBACK_LINK}"
             )
         return self
 
@@ -1044,10 +1216,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         if on is None:
             if left_on is None or right_on is None:
-                raise ValueError("Must specify either on or left_on + right_on.")
+                raise ValueError("Must specify `on` or `left_on` + `right_on`.")
         else:
             if left_on is not None or right_on is not None:
-                raise ValueError("Can not pass both on and left_on + right_on params.")
+                raise ValueError(
+                    "Can not pass both `on` and `left_on` + `right_on` params."
+                )
             left_on, right_on = on, on
 
         left = self
@@ -1075,7 +1249,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             sort=sort,
             # In merging on the same column, it only returns 1 key column from coalesced both.
             # While if 2 different columns, both will be presented in the result.
-            get_both_join_key_cols=(left_on != right_on),
+            coalesce_join_keys=(left_on == right_on),
         )
         # TODO(swast): Add suffixes to the column labels instead of reusing the
         # column IDs as the new labels.
@@ -1138,14 +1312,57 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         return left_col_labels + right_col_labels
 
-    def join(self, other: DataFrame, *, how: str = "left") -> DataFrame:
-        if not self.columns.intersection(other.columns).empty:
-            raise NotImplementedError("Deduping column names is not implemented")
+    def join(
+        self, other: DataFrame, *, on: Optional[str] = None, how: str = "left"
+    ) -> DataFrame:
+        left, right = self, other
+        if not left.columns.intersection(right.columns).empty:
+            raise NotImplementedError(
+                f"Deduping column names is not implemented. {constants.FEEDBACK_LINK}"
+            )
 
-        left = self
-        right = other
-        combined_index, (get_column_left, get_column_right) = left._block.index.join(
-            right._block.index, how=how
+        # Join left columns with right index
+        if on is not None:
+            if other._block.index.nlevels != 1:
+                raise ValueError(
+                    "Join on columns must match the index level of the other DataFrame. Join on column with multi-index haven't been supported."
+                )
+            # Switch left index with on column
+            left_columns = left.columns
+            left_idx_original_names = left.index.names
+            left_idx_names_in_cols = [
+                f"bigframes_left_idx_name_{i}" for i in range(len(left.index.names))
+            ]
+            left.index.names = left_idx_names_in_cols
+            left = left.reset_index(drop=False)
+            left = left.set_index(on)
+
+            # Join on index and switch back
+            combined_df = left._perform_join_by_index(right, how=how)
+            combined_df.index.name = on
+            combined_df = combined_df.reset_index(drop=False)
+            combined_df = combined_df.set_index(left_idx_names_in_cols)
+
+            # To be consistent with Pandas
+            combined_df.index.names = (
+                left_idx_original_names
+                if how in ("inner", "left")
+                else ([None] * len(combined_df.index.names))
+            )
+
+            # Reorder columns
+            combined_df = combined_df[list(left_columns) + list(right.columns)]
+            return combined_df
+
+        # Join left index with right index
+        if left._block.index.nlevels != right._block.index.nlevels:
+            raise ValueError("Index to join on must have the same number of levels.")
+
+        return left._perform_join_by_index(right, how=how)
+
+    def _perform_join_by_index(self, other: DataFrame, *, how: str = "left"):
+        combined_index, _ = self._block.index.join(
+            other._block.index, how=how, block_identity_join=True
         )
         return DataFrame(combined_index._block)
 
@@ -1178,7 +1395,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ):
         return groupby.DataFrameGroupBy(
             self._block,
-            self._resolve_levels(level),
+            by_col_ids=self._resolve_levels(level),
             as_index=as_index,
             dropna=dropna,
         )
@@ -1220,13 +1437,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 matches = [*col_matches, *level_matches]
                 if len(matches) != 1:
                     raise ValueError(
-                        f"GroupBy key {key} does not map to unambiguous column or index level"
+                        f"GroupBy key {key} does not match a unique column or index level. BigQuery DataFrames only interprets lists of strings as column or index names, not directly as per-row group assignments."
                     )
                 col_ids = [*col_ids, matches[0]]
 
         return groupby.DataFrameGroupBy(
             block,
-            col_ids,
+            by_col_ids=col_ids,
             as_index=as_index,
             dropna=dropna,
         )
@@ -1311,8 +1528,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         ns = (n,) if n is not None else ()
         fracs = (frac,) if frac is not None else ()
-
-        return self._split(ns=ns, fracs=fracs, random_state=random_state)[0]
+        return DataFrame(
+            self._block._split(ns=ns, fracs=fracs, random_state=random_state)[0]
+        )
 
     def _split(
         self,
@@ -1326,88 +1544,33 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         At most one of ns and fracs can be passed in. If neither, default to ns = (1,).
         Return a list of sampled DataFrames.
         """
-        if ns and fracs:
-            raise ValueError("Only one of 'ns' or 'fracs' parameter must be specified.")
+        blocks = self._block._split(ns=ns, fracs=fracs, random_state=random_state)
+        return [DataFrame(block) for block in blocks]
 
-        block = self._block
-        if not ns and not fracs:
-            ns = (1,)
-
-        if ns:
-            sample_sizes = ns
-        else:
-            total_rows = block.shape[0]
-            # Round to nearest integer. "round half to even" rule applies.
-            # At least to be 1.
-            sample_sizes = [round(frac * total_rows) or 1 for frac in fracs]
-
-        # Set random_state if it is not provided
-        if random_state is None:
-            random_state = random.randint(-(2**30), 2**30)
-
-        # Create a new column with random_state value.
-        block, random_state_col = block.create_constant(random_state)
-
-        # Create an ordering col and a new sum col which is ordering+random_state.
-        block, ordering_col = block.promote_offsets()
-        block, sum_col = block.apply_binary_op(
-            ordering_col, random_state_col, ops.add_op
-        )
-
-        # Apply hash method to sum col and order by it.
-        block, string_sum_col = block.apply_unary_op(
-            sum_col, ops.AsTypeOp("string[pyarrow]")
-        )
-        block, hash_string_sum_col = block.apply_unary_op(string_sum_col, ops.hash_op)
-        block = block.order_by([order.OrderingColumnReference(hash_string_sum_col)])
-
-        drop_cols = [
-            random_state_col,
-            ordering_col,
-            sum_col,
-            string_sum_col,
-            hash_string_sum_col,
-        ]
-        block = block.drop_columns(drop_cols)
-        df = DataFrame(block)
-
-        intervals = []
-        cur = 0
-        for sample_size in sample_sizes:
-            intervals.append((cur, cur + sample_size))
-            cur += sample_size
-
-        # DF.iloc[slice] always returns DF.
-        return [
-            typing.cast(DataFrame, df.iloc[lower:upper]) for lower, upper in intervals
-        ]
-
-    def to_pandas(self) -> pd.DataFrame:
-        """Writes DataFrame to Pandas DataFrame."""
-        # TODO(chelsealin): Support block parameters.
-        # TODO(chelsealin): Add to_pandas_batches() API.
-        return self.compute()
-
-    def to_csv(self, path_or_buf: str, *, index: bool = True) -> None:
+    def to_csv(
+        self, path_or_buf: str, sep=",", *, header: bool = True, index: bool = True
+    ) -> None:
         # TODO(swast): Can we support partition columns argument?
         # TODO(chelsealin): Support local file paths.
         # TODO(swast): Some warning that wildcard is recommended for large
         # query results? See:
         # https://cloud.google.com/bigquery/docs/exporting-data#limit_the_exported_file_size
         if not path_or_buf.startswith("gs://"):
-            raise NotImplementedError(
-                "Only Google Cloud Storage (gs://...) paths are supported."
-            )
+            raise NotImplementedError(ERROR_IO_ONLY_GS_PATHS)
+        if "*" not in path_or_buf:
+            raise NotImplementedError(ERROR_IO_REQUIRES_WILDCARD)
 
-        source_table = self._execute_query(index=index)
-        job_config = bigquery.ExtractJobConfig(
-            destination_format=bigquery.DestinationFormat.CSV
+        result_table = self._run_io_query(
+            index=index, ordering_id=bigframes.core.io.IO_ORDERING_ID
         )
-        self._block.expr._session._extract_table(
-            source_table,
-            destination_uris=[path_or_buf],
-            job_config=job_config,
+        export_data_statement = bigframes.core.io.create_export_csv_statement(
+            f"{result_table.project}.{result_table.dataset_id}.{result_table.table_id}",
+            uri=path_or_buf,
+            field_delimiter=sep,
+            header=header,
         )
+        _, query_job = self._block.expr._session._start_query(export_data_statement)
+        self._set_internal_query_job(query_job)
 
     def to_json(
         self,
@@ -1421,13 +1584,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> None:
         # TODO(swast): Can we support partition columns argument?
         # TODO(chelsealin): Support local file paths.
-        # TODO(swast): Some warning that wildcard is recommended for large
-        # query results? See:
-        # https://cloud.google.com/bigquery/docs/exporting-data#limit_the_exported_file_size
         if not path_or_buf.startswith("gs://"):
-            raise NotImplementedError(
-                "Only Google Cloud Storage (gs://...) paths are supported."
-            )
+            raise NotImplementedError(ERROR_IO_ONLY_GS_PATHS)
+
+        if "*" not in path_or_buf:
+            raise NotImplementedError(ERROR_IO_REQUIRES_WILDCARD)
 
         if lines is True and orient != "records":
             raise ValueError(
@@ -1438,18 +1599,20 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         # See: https://cloud.google.com/bigquery/docs/reference/standard-sql/json_functions#to_json_string
         if lines is False:
             raise NotImplementedError(
-                "Only newline delimited JSON format is supported."
+                f"Only newline delimited JSON format is supported. {constants.FEEDBACK_LINK}"
             )
 
-        source_table = self._execute_query(index=index)
-        job_config = bigquery.ExtractJobConfig(
-            destination_format=bigquery.DestinationFormat.NEWLINE_DELIMITED_JSON
+        result_table = self._run_io_query(
+            index=index, ordering_id=bigframes.core.io.IO_ORDERING_ID
         )
-        self._block.expr._session._extract_table(
-            source_table,
-            destination_uris=[path_or_buf],
-            job_config=job_config,
+        export_data_statement = bigframes.core.io.create_export_data_statement(
+            f"{result_table.project}.{result_table.dataset_id}.{result_table.table_id}",
+            uri=path_or_buf,
+            format="JSON",
+            export_options={},
         )
+        _, query_job = self._block.expr._session._start_query(export_data_statement)
+        self._set_internal_query_job(query_job)
 
     def to_gbq(
         self,
@@ -1457,6 +1620,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         *,
         if_exists: Optional[Literal["fail", "replace", "append"]] = "fail",
         index: bool = True,
+        ordering_id: Optional[str] = None,
     ) -> None:
         if "." not in destination_table:
             raise ValueError(
@@ -1480,12 +1644,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             ),
         )
 
-        self._execute_query(index=index, job_config=job_config)
+        self._run_io_query(index=index, ordering_id=ordering_id, job_config=job_config)
 
     def to_numpy(
         self, dtype=None, copy=False, na_value=None, **kwargs
     ) -> numpy.ndarray:
-        return self.compute().to_numpy(dtype, copy, na_value, **kwargs)
+        return self.to_pandas().to_numpy(dtype, copy, na_value, **kwargs)
 
     __array__ = to_numpy
 
@@ -1496,30 +1660,29 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         # query results? See:
         # https://cloud.google.com/bigquery/docs/exporting-data#limit_the_exported_file_size
         if not path.startswith("gs://"):
-            raise NotImplementedError(
-                "Only Google Cloud Storage (gs://...) paths are supported."
-            )
+            raise NotImplementedError(ERROR_IO_ONLY_GS_PATHS)
 
-        source_table = self._execute_query(index=index)
-        job_config = bigquery.ExtractJobConfig(
-            destination_format=bigquery.DestinationFormat.PARQUET
-        )
+        if "*" not in path:
+            raise NotImplementedError(ERROR_IO_REQUIRES_WILDCARD)
 
-        self._block.expr._session._extract_table(
-            source_table,
-            destination_uris=[path],
-            job_config=job_config,
+        result_table = self._run_io_query(
+            index=index, ordering_id=bigframes.core.io.IO_ORDERING_ID
         )
+        export_data_statement = bigframes.core.io.create_export_data_statement(
+            f"{result_table.project}.{result_table.dataset_id}.{result_table.table_id}",
+            uri=path,
+            format="PARQUET",
+            export_options={},
+        )
+        _, query_job = self._block.expr._session._start_query(export_data_statement)
+        self._set_internal_query_job(query_job)
 
     def _apply_to_rows(self, operation: ops.UnaryOp):
         block = self._block.multi_apply_unary_op(self._block.value_columns, operation)
         return DataFrame(block)
 
-    def _execute_query(
-        self, index: bool, job_config: Optional[bigquery.job.QueryJobConfig] = None
-    ):
-        """Executes a query job presenting this dataframe and returns the destination
-        table."""
+    def _create_io_query(self, index: bool, ordering_id: Optional[str]) -> str:
+        """Create query text representing this dataframe for I/O."""
         expr = self._block.expr
         session = expr._session
         columns = list(self._block.value_columns)
@@ -1531,26 +1694,53 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if index and self.index.name is not None:
             columns.extend(self._block.index_columns)
             column_labels.extend(self.index.names)
-        # TODO(chelsealin): normalize the file formats if we needs, such as arbitrary
-        # unicode for column labels.
-        value_columns = (expr.get_column(column_name) for column_name in columns)
-        expr = expr.projection(value_columns)
+        else:
+            expr = expr.drop_columns(self._block.index_columns)
 
         # Make columns in SQL reflect _labels_ not _ids_. Note: This may use
         # the arbitrary unicode column labels feature in BigQuery, which is
         # currently (June 2023) in preview.
         # TODO(swast): Handle duplicate and NULL labels.
-        ibis_expr = expr.to_ibis_expr()
-        renamed_columns = [
-            ibis_expr[col_id].name(col_label)
+        id_overrides = {
+            col_id: col_label
             for col_id, col_label in zip(columns, column_labels)
-        ]
-        ibis_expr = ibis_expr.select(*renamed_columns)
-        sql = session.ibis_client.compile(ibis_expr)  # type: ignore
+            if col_label
+        }
+
+        if ordering_id is not None:
+            ibis_expr = expr.to_ibis_expr(
+                ordering_mode="offset_col",
+                col_id_overrides=id_overrides,
+                order_col_name=ordering_id,
+            )
+        else:
+            ibis_expr = expr.to_ibis_expr(
+                ordering_mode="unordered",
+                col_id_overrides=id_overrides,
+            )
+
+        return session.ibis_client.compile(ibis_expr)  # type: ignore
+
+    def _run_io_query(
+        self,
+        index: bool,
+        ordering_id: Optional[str] = None,
+        job_config: Optional[bigquery.job.QueryJobConfig] = None,
+    ) -> bigquery.TableReference:
+        """Executes a query job presenting this dataframe and returns the destination
+        table."""
+        expr = self._block.expr
+        session = expr._session
+        sql = self._create_io_query(index=index, ordering_id=ordering_id)
         _, query_job = session._start_query(
             sql=sql, job_config=job_config  # type: ignore
         )
-        return query_job.destination
+        self._set_internal_query_job(query_job)
+
+        # The query job should have finished, so there should be always be a result table.
+        result_table = query_job.destination
+        assert result_table is not None
+        return result_table
 
     def map(self, func, na_action: Optional[str] = None) -> DataFrame:
         if not callable(func):
@@ -1560,18 +1750,29 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             raise ValueError(f"na_action={na_action} not supported")
 
         # TODO(shobs): Support **kwargs
-
-        return self._apply_to_rows(
+        # Reproject as workaround to applying filter too late. This forces the filter
+        # to be applied before passing data to remote function, protecting from bad
+        # inputs causing errors.
+        reprojected_df = DataFrame(self._block._force_reproject())
+        return reprojected_df._apply_to_rows(
             ops.RemoteFunctionOp(func, apply_on_null=(na_action is None))
         )
 
-    def drop_duplicates(self, subset=None, *, keep: str = "first") -> DataFrame:
+    def drop_duplicates(
+        self,
+        subset: typing.Union[blocks.Label, typing.Sequence[blocks.Label]] = None,
+        *,
+        keep: str = "first",
+    ) -> DataFrame:
         if subset is None:
             column_ids = self._block.value_columns
-        else:
+        elif _is_list_like(subset):
             column_ids = [
                 id for label in subset for id in self._block.label_to_col_id[label]
             ]
+        else:
+            # interpret as single label
+            column_ids = self._block.label_to_col_id[typing.cast(blocks.Label, subset)]
         block = block_ops.drop_duplicates(self._block, column_ids, keep)
         return DataFrame(block)
 
@@ -1619,8 +1820,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
 
 def _is_list_like(obj: typing.Any) -> typing_extensions.TypeGuard[typing.Sequence]:
-    return pd.api.types.is_list_like(obj)
+    return pandas.api.types.is_list_like(obj)
 
 
 def _is_dict_like(obj: typing.Any) -> typing_extensions.TypeGuard[typing.Mapping]:
-    return pd.api.types.is_dict_like(obj)
+    return pandas.api.types.is_dict_like(obj)

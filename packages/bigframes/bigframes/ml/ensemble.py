@@ -12,20 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Linear models. This module is styled after Scikit-Learn's linear_model module:
-https://scikit-learn.org/stable/modules/linear_model.html"""
+"""Ensemble models. This module is styled after Scikit-Learn's ensemble module:
+https://scikit-learn.org/stable/modules/ensemble.html"""
 
 from __future__ import annotations
 
-from typing import cast, Dict, List, Literal, Optional, TYPE_CHECKING
+from typing import cast, Dict, List, Literal, Optional, Union
 
 from google.cloud import bigquery
 
-if TYPE_CHECKING:
-    import bigframes
-
-import bigframes.ml.base
-import bigframes.ml.core
+import bigframes
+from bigframes.ml import base, core, utils
+import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.ensemble._forest
 import third_party.bigframes_vendored.xgboost.sklearn
 
@@ -51,7 +49,7 @@ _BQML_PARAMS_MAPPING = {
 
 class XGBRegressor(
     third_party.bigframes_vendored.xgboost.sklearn.XGBRegressor,
-    bigframes.ml.base.TrainablePredictor,
+    base.TrainablePredictor,
 ):
     __doc__ = third_party.bigframes_vendored.xgboost.sklearn.XGBRegressor.__doc__
 
@@ -96,10 +94,12 @@ class XGBRegressor(
         self.min_rel_progress = min_rel_progress
         self.enable_global_explain = enable_global_explain
         self.xgboost_version = xgboost_version
-        self._bqml_model: Optional[bigframes.ml.core.BqmlModel] = None
+        self._bqml_model: Optional[core.BqmlModel] = None
 
-    @staticmethod
-    def _from_bq(session: bigframes.Session, model: bigquery.Model) -> XGBRegressor:
+    @classmethod
+    def _from_bq(
+        cls, session: bigframes.Session, model: bigquery.Model
+    ) -> XGBRegressor:
         assert model.model_type == "BOOSTED_TREE_REGRESSOR"
 
         kwargs = {}
@@ -107,14 +107,14 @@ class XGBRegressor(
         # See https://cloud.google.com/bigquery/docs/reference/rest/v2/models#trainingrun
         last_fitting = model.training_runs[-1]["trainingOptions"]
 
-        dummy_regressor = XGBRegressor()
+        dummy_regressor = cls()
         for bf_param, bf_value in dummy_regressor.__dict__.items():
             bqml_param = _BQML_PARAMS_MAPPING.get(bf_param)
             if bqml_param is not None:
                 kwargs[bf_param] = type(bf_value)(last_fitting[bqml_param])
 
-        new_xgb_regressor = XGBRegressor(**kwargs)
-        new_xgb_regressor._bqml_model = bigframes.ml.core.BqmlModel(session, model)
+        new_xgb_regressor = cls(**kwargs)
+        new_xgb_regressor._bqml_model = core.BqmlModel(session, model)
         return new_xgb_regressor
 
     @property
@@ -145,26 +145,31 @@ class XGBRegressor(
 
     def fit(
         self,
-        X: bigframes.dataframe.DataFrame,
-        y: bigframes.dataframe.DataFrame,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series],
         transforms: Optional[List[str]] = None,
-    ):
-        self._bqml_model = bigframes.ml.core.create_bqml_model(
+    ) -> XGBRegressor:
+        X, y = utils.convert_to_dataframe(X, y)
+
+        self._bqml_model = core.create_bqml_model(
             X,
             y,
             transforms=transforms,
             options=self._bqml_options,
         )
+        return self
 
     def predict(
-        self, X: bigframes.dataframe.DataFrame
-    ) -> bigframes.dataframe.DataFrame:
+        self,
+        X: Union[bpd.DataFrame, bpd.Series],
+    ) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
+        (X,) = utils.convert_to_dataframe(X)
 
         df = self._bqml_model.predict(X)
         return cast(
-            bigframes.dataframe.DataFrame,
+            bpd.DataFrame,
             df[
                 [
                     cast(str, field.name)
@@ -175,9 +180,11 @@ class XGBRegressor(
 
     def score(
         self,
-        X: bigframes.dataframe.DataFrame,
-        y: bigframes.dataframe.DataFrame,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series],
     ):
+        X, y = utils.convert_to_dataframe(X, y)
+
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
 
@@ -187,11 +194,13 @@ class XGBRegressor(
         return self._bqml_model.evaluate(input_data)
 
     def to_gbq(self, model_name: str, replace: bool = False) -> XGBRegressor:
-        """Save the model to Google Cloud BigQuey.
+        """Save the model to BigQuery.
 
         Args:
-            model_name: the name of the model.
-            replace: whether to replace if the model already exists. Default to False.
+            model_name (str):
+                the name of the model.
+            replace (bool, default False):
+                whether to replace if the model already exists. Default to False.
 
         Returns: saved model."""
         if not self._bqml_model:
@@ -203,7 +212,7 @@ class XGBRegressor(
 
 class XGBClassifier(
     third_party.bigframes_vendored.xgboost.sklearn.XGBClassifier,
-    bigframes.ml.base.TrainablePredictor,
+    base.TrainablePredictor,
 ):
 
     __doc__ = third_party.bigframes_vendored.xgboost.sklearn.XGBClassifier.__doc__
@@ -249,10 +258,12 @@ class XGBClassifier(
         self.min_rel_progress = min_rel_progress
         self.enable_global_explain = enable_global_explain
         self.xgboost_version = xgboost_version
-        self._bqml_model: Optional[bigframes.ml.core.BqmlModel] = None
+        self._bqml_model: Optional[core.BqmlModel] = None
 
-    @staticmethod
-    def _from_bq(session: bigframes.Session, model: bigquery.Model) -> XGBClassifier:
+    @classmethod
+    def _from_bq(
+        cls, session: bigframes.Session, model: bigquery.Model
+    ) -> XGBClassifier:
         assert model.model_type == "BOOSTED_TREE_CLASSIFIER"
 
         kwargs = {}
@@ -266,8 +277,8 @@ class XGBClassifier(
             if bqml_param is not None:
                 kwargs[bf_param] = type(bf_value)(last_fitting[bqml_param])
 
-        new_xgb_classifier = XGBClassifier(**kwargs)
-        new_xgb_classifier._bqml_model = bigframes.ml.core.BqmlModel(session, model)
+        new_xgb_classifier = cls(**kwargs)
+        new_xgb_classifier._bqml_model = core.BqmlModel(session, model)
         return new_xgb_classifier
 
     @property
@@ -298,26 +309,29 @@ class XGBClassifier(
 
     def fit(
         self,
-        X: bigframes.dataframe.DataFrame,
-        y: bigframes.dataframe.DataFrame,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series],
         transforms: Optional[List[str]] = None,
-    ):
-        self._bqml_model = bigframes.ml.core.create_bqml_model(
+    ) -> XGBClassifier:
+        X, y = utils.convert_to_dataframe(X, y)
+
+        self._bqml_model = core.create_bqml_model(
             X,
             y,
             transforms=transforms,
             options=self._bqml_options,
         )
+        return self
 
-    def predict(
-        self, X: bigframes.dataframe.DataFrame
-    ) -> bigframes.dataframe.DataFrame:
+    def predict(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
 
+        (X,) = utils.convert_to_dataframe(X)
+
         df = self._bqml_model.predict(X)
         return cast(
-            bigframes.dataframe.DataFrame,
+            bpd.DataFrame,
             df[
                 [
                     cast(str, field.name)
@@ -328,11 +342,13 @@ class XGBClassifier(
 
     def score(
         self,
-        X: bigframes.dataframe.DataFrame,
-        y: bigframes.dataframe.DataFrame,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series],
     ):
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
+
+        X, y = utils.convert_to_dataframe(X, y)
 
         input_data = (
             X.join(y, how="outer") if (X is not None) and (y is not None) else None
@@ -340,13 +356,16 @@ class XGBClassifier(
         return self._bqml_model.evaluate(input_data)
 
     def to_gbq(self, model_name: str, replace: bool = False) -> XGBClassifier:
-        """Save the model to Google Cloud BigQuey.
+        """Save the model to BigQuery.
 
         Args:
-            model_name: the name of the model.
-            replace: whether to replace if the model already exists. Default to False.
+            model_name (str):
+                the name of the model.
+            replace (bool, default False):
+                whether to replace if the model already exists. Default to False.
 
-        Returns: saved model."""
+        Returns:
+            XGBClassifier: saved model."""
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before it can be saved")
 
@@ -356,7 +375,7 @@ class XGBClassifier(
 
 class RandomForestRegressor(
     third_party.bigframes_vendored.sklearn.ensemble._forest.RandomForestRegressor,
-    bigframes.ml.base.TrainablePredictor,
+    base.TrainablePredictor,
 ):
 
     __doc__ = (
@@ -396,11 +415,11 @@ class RandomForestRegressor(
         self.min_rel_progress = min_rel_progress
         self.enable_global_explain = enable_global_explain
         self.xgboost_version = xgboost_version
-        self._bqml_model: Optional[bigframes.ml.core.BqmlModel] = None
+        self._bqml_model: Optional[core.BqmlModel] = None
 
-    @staticmethod
+    @classmethod
     def _from_bq(
-        session: bigframes.Session, model: bigquery.Model
+        cls, session: bigframes.Session, model: bigquery.Model
     ) -> RandomForestRegressor:
         assert model.model_type == "RANDOM_FOREST_REGRESSOR"
 
@@ -409,16 +428,14 @@ class RandomForestRegressor(
         # See https://cloud.google.com/bigquery/docs/reference/rest/v2/models#trainingrun
         last_fitting = model.training_runs[-1]["trainingOptions"]
 
-        dummy_model = RandomForestRegressor()
+        dummy_model = cls()
         for bf_param, bf_value in dummy_model.__dict__.items():
             bqml_param = _BQML_PARAMS_MAPPING.get(bf_param)
             if bqml_param is not None:
                 kwargs[bf_param] = type(bf_value)(last_fitting[bqml_param])
 
-        new_random_forest_regressor = RandomForestRegressor(**kwargs)
-        new_random_forest_regressor._bqml_model = bigframes.ml.core.BqmlModel(
-            session, model
-        )
+        new_random_forest_regressor = cls(**kwargs)
+        new_random_forest_regressor._bqml_model = core.BqmlModel(session, model)
         return new_random_forest_regressor
 
     @property
@@ -446,26 +463,32 @@ class RandomForestRegressor(
 
     def fit(
         self,
-        X: bigframes.dataframe.DataFrame,
-        y: bigframes.dataframe.DataFrame,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series],
         transforms: Optional[List[str]] = None,
-    ):
-        self._bqml_model = bigframes.ml.core.create_bqml_model(
+    ) -> RandomForestRegressor:
+        X, y = utils.convert_to_dataframe(X, y)
+
+        self._bqml_model = core.create_bqml_model(
             X,
             y,
             transforms=transforms,
             options=self._bqml_options,
         )
+        return self
 
     def predict(
-        self, X: bigframes.dataframe.DataFrame
-    ) -> bigframes.dataframe.DataFrame:
+        self,
+        X: Union[bpd.DataFrame, bpd.Series],
+    ) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
 
+        (X,) = utils.convert_to_dataframe(X)
+
         df = self._bqml_model.predict(X)
         return cast(
-            bigframes.dataframe.DataFrame,
+            bpd.DataFrame,
             df[
                 [
                     cast(str, field.name)
@@ -476,36 +499,41 @@ class RandomForestRegressor(
 
     def score(
         self,
-        X: bigframes.dataframe.DataFrame,
-        y: bigframes.dataframe.DataFrame,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series],
     ):
         """Calculate evaluation metrics of the model.
 
         Args:
-            X: a BigFrames DataFrame as evaluation data.
-            y: a BigFrames DataFrame as evaluation labels.
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                A BigQuery DataFrame as evaluation data.
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                A BigQuery DataFrame as evaluation labels.
 
-        Returns: a BigFrames DataFrame as evaluation result."""
+        Returns:
+            bigframes.dataframe.DataFrame: The DataFrame as evaluation result.
+        """
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
 
-        if (X is None) != (y is None):
-            raise ValueError(
-                "Either both or neither of test_X and test_y must be specified"
-            )
+        X, y = utils.convert_to_dataframe(X, y)
+
         input_data = (
             X.join(y, how="outer") if (X is not None) and (y is not None) else None
         )
         return self._bqml_model.evaluate(input_data)
 
     def to_gbq(self, model_name: str, replace: bool = False) -> RandomForestRegressor:
-        """Save the model to Google Cloud BigQuey.
+        """Save the model to BigQuery.
 
         Args:
-            model_name: the name of the model.
-            replace: whether to replace if the model already exists. Default to False.
+            model_name (str):
+                the name of the model.
+            replace (bool, default False):
+                whether to replace if the model already exists. Default to False.
 
-        Returns: saved model."""
+        Returns:
+            RandomForestRegressor: saved model."""
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before it can be saved")
 
@@ -515,7 +543,7 @@ class RandomForestRegressor(
 
 class RandomForestClassifier(
     third_party.bigframes_vendored.sklearn.ensemble._forest.RandomForestClassifier,
-    bigframes.ml.base.TrainablePredictor,
+    base.TrainablePredictor,
 ):
 
     __doc__ = (
@@ -555,11 +583,11 @@ class RandomForestClassifier(
         self.min_rel_progress = min_rel_progress
         self.enable_global_explain = enable_global_explain
         self.xgboost_version = xgboost_version
-        self._bqml_model: Optional[bigframes.ml.core.BqmlModel] = None
+        self._bqml_model: Optional[core.BqmlModel] = None
 
-    @staticmethod
+    @classmethod
     def _from_bq(
-        session: bigframes.Session, model: bigquery.Model
+        cls, session: bigframes.Session, model: bigquery.Model
     ) -> RandomForestClassifier:
         assert model.model_type == "RANDOM_FOREST_CLASSIFIER"
 
@@ -574,10 +602,8 @@ class RandomForestClassifier(
             if bqml_param is not None:
                 kwargs[bf_param] = type(bf_value)(last_fitting[bqml_param])
 
-        new_random_forest_classifier = RandomForestClassifier(**kwargs)
-        new_random_forest_classifier._bqml_model = bigframes.ml.core.BqmlModel(
-            session, model
-        )
+        new_random_forest_classifier = cls(**kwargs)
+        new_random_forest_classifier._bqml_model = core.BqmlModel(session, model)
         return new_random_forest_classifier
 
     @property
@@ -605,26 +631,32 @@ class RandomForestClassifier(
 
     def fit(
         self,
-        X: bigframes.dataframe.DataFrame,
-        y: bigframes.dataframe.DataFrame,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series],
         transforms: Optional[List[str]] = None,
-    ):
-        self._bqml_model = bigframes.ml.core.create_bqml_model(
+    ) -> RandomForestClassifier:
+        X, y = utils.convert_to_dataframe(X, y)
+
+        self._bqml_model = core.create_bqml_model(
             X,
             y,
             transforms=transforms,
             options=self._bqml_options,
         )
+        return self
 
     def predict(
-        self, X: bigframes.dataframe.DataFrame
-    ) -> bigframes.dataframe.DataFrame:
+        self,
+        X: Union[bpd.DataFrame, bpd.Series],
+    ) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
 
+        (X,) = utils.convert_to_dataframe(X)
+
         df = self._bqml_model.predict(X)
         return cast(
-            bigframes.dataframe.DataFrame,
+            bpd.DataFrame,
             df[
                 [
                     cast(str, field.name)
@@ -635,36 +667,41 @@ class RandomForestClassifier(
 
     def score(
         self,
-        X: bigframes.dataframe.DataFrame,
-        y: bigframes.dataframe.DataFrame,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series],
     ):
         """Calculate evaluation metrics of the model.
 
         Args:
-            X: a BigFrames DataFrame as evaluation data.
-            y: a BigFrames DataFrame as evaluation labels.
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                A BigQuery DataFrame as evaluation data.
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                A BigQuery DataFrame as evaluation labels.
 
-        Returns: a BigFrames DataFrame as evaluation result."""
+        Returns:
+            bigframes.dataframe.DataFrame: The DataFrame as evaluation result.
+        """
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
 
-        if (X is None) != (y is None):
-            raise ValueError(
-                "Either both or neither of test_X and test_y must be specified"
-            )
+        X, y = utils.convert_to_dataframe(X, y)
+
         input_data = (
             X.join(y, how="outer") if (X is not None) and (y is not None) else None
         )
         return self._bqml_model.evaluate(input_data)
 
     def to_gbq(self, model_name: str, replace: bool = False) -> RandomForestClassifier:
-        """Save the model to Google Cloud BigQuey.
+        """Save the model to BigQuery.
 
         Args:
-            model_name: the name of the model.
-            replace: whether to replace if the model already exists. Default to False.
+            model_name (str):
+                the name of the model.
+            replace (bool, default False):
+                whether to replace if the model already exists. Default to False.
 
-        Returns: saved model."""
+        Returns:
+            RandomForestClassifier: saved model."""
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before it can be saved")
 

@@ -21,11 +21,14 @@ from typing import Optional
 import google.api_core.exceptions
 import google.auth.credentials
 
-SESSION_STARTED_MESSAGE = "Cannot change '{attribute}' once a session has started."
+SESSION_STARTED_MESSAGE = (
+    "Cannot change '{attribute}' once a session has started. "
+    "Call bigframes.pandas.reset_session() first, if you are using the bigframes.pandas API."
+)
 
 
 class BigQueryOptions:
-    """Encapsulates configuration for working with an Session."""
+    """Encapsulates configuration for working with a session."""
 
     def __init__(
         self,
@@ -55,7 +58,7 @@ class BigQueryOptions:
 
     @property
     def location(self) -> Optional[str]:
-        """Default location for jobs / datasets / tables.
+        """Default location for job, datasets, and tables.
 
         See: https://cloud.google.com/bigquery/docs/locations
         """
@@ -69,7 +72,7 @@ class BigQueryOptions:
 
     @property
     def project(self) -> Optional[str]:
-        """Google Cloud project ID to use for billing and default data project."""
+        """Google Cloud project ID to use for billing and as the default project."""
         return self._project
 
     @project.setter
@@ -80,10 +83,12 @@ class BigQueryOptions:
 
     @property
     def remote_udf_connection(self) -> Optional[str]:
-        """Name of the BigQuery connection for the purpose of remote UDFs.
+        """Name of the BigQuery connection to use for remote functions.
 
-        It should be either pre created in `location`, or the user should have
-        privilege to create one.
+        You should either have the connection already created in the
+        <code>location</code> you have chosen, or you should have the Project IAM
+        Admin role to enable the service to create the connection for you if you
+        need it.
         """
         return self._remote_udf_connection
 
@@ -97,7 +102,7 @@ class BigQueryOptions:
 
     @property
     def use_regional_endpoints(self) -> bool:
-        """In preview. Flag to connect to regional API endpoints.
+        """Flag to connect to regional API endpoints.
 
         Requires ``location`` to also be set. For example, set
         ``location='asia-northeast1'`` and ``use_regional_endpoints=True`` to

@@ -23,6 +23,7 @@ from typing import Callable, Tuple
 import ibis
 import ibis.expr.types as ibis_types
 
+import bigframes.constants as constants
 import bigframes.core as core
 
 SUPPORTED_ROW_IDENTITY_HOW = {"outer", "left", "inner"}
@@ -33,7 +34,9 @@ def join_by_row_identity(
 ) -> Tuple[core.ArrayValue, Tuple[Callable[[str], str], Callable[[str], str]],]:
     """Compute join when we are joining by row identity not a specific column."""
     if how not in SUPPORTED_ROW_IDENTITY_HOW:
-        raise NotImplementedError("Only how='outer','left','inner' currently supported")
+        raise NotImplementedError(
+            f"Only how='outer','left','inner' currently supported. {constants.FEEDBACK_LINK}"
+        )
 
     if not left.table.equals(right.table):
         raise ValueError(
@@ -67,47 +70,41 @@ def join_by_row_identity(
         for key in right.column_names.keys()
     ]
 
-    hidden_ordering_columns = []
-    new_ordering = core.ExpressionOrdering()
-    if left._ordering and right._ordering:
-        # These ordering columns will be present in the ArrayValue, as we
-        # haven't hidden any value / index column(s). Code that is aware of
-        # which columns are index columns / value columns columns will need to
-        # add the previous columns to hidden columns.
-        new_ordering = left._ordering.with_ordering_columns(
-            [
-                col_ref.with_name(map_left_id(col_ref.column_id))
-                for col_ref in left._ordering.ordering_value_columns
-            ]
-            + [
-                col_ref.with_name(map_right_id(col_ref.column_id))
-                for col_ref in right._ordering.ordering_value_columns
-            ]
+    # If left isn't being masked, can just use left ordering
+    if not left_mask:
+        col_mapping = {
+            order_ref.column_id: map_left_id(order_ref.column_id)
+            for order_ref in left._ordering.ordering_value_columns
+        }
+        new_ordering = left._ordering.with_column_remap(col_mapping)
+    else:
+        ordering_columns = [
+            col_ref.with_name(map_left_id(col_ref.column_id))
+            for col_ref in left._ordering.ordering_value_columns
+        ] + [
+            col_ref.with_name(map_right_id(col_ref.column_id))
+            for col_ref in right._ordering.ordering_value_columns
+        ]
+        left_total_order_cols = frozenset(
+            map_left_id(col) for col in left._ordering.total_ordering_columns
+        )
+        # Assume that left ordering is sufficient since 1:1 join over same base table
+        join_total_order_cols = left_total_order_cols
+        new_ordering = core.ExpressionOrdering(
+            ordering_columns, total_ordering_columns=join_total_order_cols
         )
 
-        hidden_ordering_columns = [
-            left._get_hidden_ordering_column(key.column_id).name(
-                map_left_id(key.column_id)
-            )
-            for key in left._ordering.ordering_value_columns
-            if key.column_id in left._hidden_ordering_column_names.keys()
-        ] + [
-            right._get_hidden_ordering_column(key.column_id).name(
-                map_right_id(key.column_id)
-            )
-            for key in right._ordering.ordering_value_columns
-            if key.column_id in right._hidden_ordering_column_names.keys()
-        ]
-
-        left_ordering_id = left._ordering.ordering_id
-        if left_ordering_id:
-            new_ordering = new_ordering.with_ordering_id(map_left_id(left_ordering_id))
-            if left_ordering_id in left._hidden_ordering_column_names.keys():
-                hidden_ordering_columns.append(
-                    left._get_hidden_ordering_column(left_ordering_id).name(
-                        map_left_id(left_ordering_id)
-                    )
-                )
+    hidden_ordering_columns = [
+        left._get_hidden_ordering_column(key.column_id).name(map_left_id(key.column_id))
+        for key in left._ordering.ordering_value_columns
+        if key.column_id in left._hidden_ordering_column_names.keys()
+    ] + [
+        right._get_hidden_ordering_column(key.column_id).name(
+            map_right_id(key.column_id)
+        )
+        for key in right._ordering.ordering_value_columns
+        if key.column_id in right._hidden_ordering_column_names.keys()
+    ]
 
     joined_expr = core.ArrayValue(
         left._session,
@@ -169,7 +166,9 @@ def _join_predicates(
         )
         return (*left_predicates, *right_relative_predicates)
     else:
-        raise ValueError("Unsupported join_type: " + join_type)
+        raise ValueError(
+            f"Unsupported join_type: {join_type}. {constants.FEEDBACK_LINK}"
+        )
 
 
 def _get_relative_predicates(

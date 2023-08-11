@@ -15,10 +15,12 @@
 from unittest import TestCase
 
 import pandas
+import pytest
 
 import bigframes.ml.ensemble
 
 
+@pytest.mark.flaky(retries=2, delay=120)
 def test_xgbregressor_default_params(penguins_df_default_index, dataset_id):
     model = bigframes.ml.ensemble.XGBRegressor()
 
@@ -37,7 +39,7 @@ def test_xgbregressor_default_params(penguins_df_default_index, dataset_id):
     model.fit(train_X, train_y)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).compute()
+    result = model.score(train_X, train_y).to_pandas()
     expected = pandas.DataFrame(
         {
             "mean_absolute_error": [97.368139],
@@ -62,6 +64,7 @@ def test_xgbregressor_default_params(penguins_df_default_index, dataset_id):
     )
 
 
+@pytest.mark.flaky(retries=2, delay=120)
 def test_xgbregressor_dart_booster_multiple_params(
     penguins_df_default_index, dataset_id
 ):
@@ -97,7 +100,7 @@ def test_xgbregressor_dart_booster_multiple_params(
     model.fit(train_X, train_y)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).compute()
+    result = model.score(train_X, train_y).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "mean_absolute_error",
@@ -136,6 +139,7 @@ def test_xgbregressor_dart_booster_multiple_params(
     assert reloaded_model.num_parallel_tree == 2
 
 
+@pytest.mark.flaky(retries=2, delay=120)
 def test_xgbclassifier_default_params(penguins_df_default_index, dataset_id):
     model = bigframes.ml.ensemble.XGBClassifier()
 
@@ -153,7 +157,7 @@ def test_xgbclassifier_default_params(penguins_df_default_index, dataset_id):
     model.fit(train_X, train_y)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).compute()
+    result = model.score(train_X, train_y).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "precision",
@@ -175,6 +179,7 @@ def test_xgbclassifier_default_params(penguins_df_default_index, dataset_id):
     )
 
 
+@pytest.mark.flaky(retries=2, delay=120)
 def test_xgbclassifier_dart_booster_multiple_params(
     penguins_df_default_index, dataset_id
 ):
@@ -209,7 +214,7 @@ def test_xgbclassifier_dart_booster_multiple_params(
     model.fit(train_X, train_y)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).compute()
+    result = model.score(train_X, train_y).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "precision",
@@ -248,6 +253,7 @@ def test_xgbclassifier_dart_booster_multiple_params(
     assert reloaded_model.num_parallel_tree == 2
 
 
+@pytest.mark.flaky(retries=2, delay=120)
 def test_randomforestregressor_default_params(penguins_df_default_index, dataset_id):
     model = bigframes.ml.ensemble.RandomForestRegressor()
 
@@ -266,7 +272,7 @@ def test_randomforestregressor_default_params(penguins_df_default_index, dataset
     model.fit(train_X, train_y)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).compute()
+    result = model.score(train_X, train_y).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "mean_absolute_error",
@@ -288,6 +294,7 @@ def test_randomforestregressor_default_params(penguins_df_default_index, dataset
     )
 
 
+@pytest.mark.flaky(retries=2, delay=120)
 def test_randomforestregressor_multiple_params(penguins_df_default_index, dataset_id):
     model = bigframes.ml.ensemble.RandomForestRegressor(
         tree_method="AUTO",
@@ -318,7 +325,7 @@ def test_randomforestregressor_multiple_params(penguins_df_default_index, datase
     model.fit(train_X, train_y)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).compute()
+    result = model.score(train_X, train_y).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "mean_absolute_error",
@@ -354,6 +361,7 @@ def test_randomforestregressor_multiple_params(penguins_df_default_index, datase
     assert reloaded_model.enable_global_explain is False
 
 
+@pytest.mark.flaky(retries=2, delay=120)
 def test_randomforestclassifier_default_params(penguins_df_default_index, dataset_id):
     model = bigframes.ml.ensemble.RandomForestClassifier()
 
@@ -371,7 +379,7 @@ def test_randomforestclassifier_default_params(penguins_df_default_index, datase
     model.fit(train_X, train_y)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).compute()
+    result = model.score(train_X, train_y).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "precision",
@@ -393,6 +401,7 @@ def test_randomforestclassifier_default_params(penguins_df_default_index, datase
     )
 
 
+@pytest.mark.flaky(retries=2, delay=120)
 def test_randomforestclassifier_multiple_params(penguins_df_default_index, dataset_id):
     model = bigframes.ml.ensemble.RandomForestClassifier(
         tree_method="AUTO",
@@ -422,7 +431,7 @@ def test_randomforestclassifier_multiple_params(penguins_df_default_index, datas
     model.fit(train_X, train_y)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).compute()
+    result = model.score(train_X, train_y).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "precision",

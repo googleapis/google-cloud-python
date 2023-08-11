@@ -27,7 +27,7 @@ def test_arima_plus_model_fit_score(
 
     result = model.score(
         new_time_series_df[["parsed_date"]], new_time_series_df[["total_visits"]]
-    ).compute()
+    ).to_pandas()
     expected = pd.DataFrame(
         {
             "mean_absolute_error": [154.742547],

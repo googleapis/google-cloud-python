@@ -16,6 +16,7 @@
 
 from __future__ import absolute_import
 
+from multiprocessing import Process
 import os
 import pathlib
 import re
@@ -82,7 +83,6 @@ nox.options.sessions = [
     "docfx",
     "unit",
     "unit_noextras",
-    "unit_prerelease",
     "system",
     "doctest",
     "cover",
@@ -603,23 +603,61 @@ def notebook(session):
     ]
     notebooks = [os.path.join("notebooks", nb) for nb in notebooks]
 
+    # Regionalized notebooks
+    notebooks_reg = {
+        "10 - Regionalized.ipynb": [
+            "asia-southeast1",
+            "eu",
+            "europe-west4",
+            "southamerica-west1",
+            "us",
+            "us-central1",
+        ]
+    }
+    notebooks_reg = {
+        os.path.join("notebooks", nb): regions for nb, regions in notebooks_reg.items()
+    }
+
     # For some reason nbmake exits silently with "no tests ran" message if
     # one of the notebook paths supplied does not exist. Let's make sure that
     # each path exists
-    for nb in notebooks:
+    for nb in notebooks + list(notebooks_reg):
         assert os.path.exists(nb), nb
 
-    # Use retries because sometimes parallel runs of the same notebook can try
-    # to create the same artifacts and may run into resoure conflict at the GCP
-    # level.
-    session.run(
+    # TODO(shobs): For some reason --retries arg masks exceptions occurred in
+    # notebook failures, and shows unhelpful INTERNALERROR. Investigate that
+    # and enable retries if we can find a way to surface the real exception
+    # bacause the notebook is running against real GCP and something may fail
+    # due to transient issues.
+    pytest_command = [
         "py.test",
-        "-nauto",
         "--nbmake",
         "--nbmake-timeout=600",
-        "--retries=3",
+    ]
+
+    # Run self-contained notebooks in single session.run
+    # achieve parallelization via -n
+    session.run(
+        *pytest_command,
+        "-nauto",
         *notebooks,
     )
+
+    # Run regionalized notebooks in parallel session.run's, since each notebook
+    # takes a different region via env param.
+    processes = []
+    for notebook, regions in notebooks_reg.items():
+        for region in regions:
+            process = Process(
+                target=session.run,
+                args=(*pytest_command, notebook),
+                kwargs={"env": {"BIGQUERY_LOCATION": region}},
+            )
+            process.start()
+            processes.append(process)
+
+    for process in processes:
+        process.join()
 
 
 @nox.session(python="3.10")

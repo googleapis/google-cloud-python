@@ -14,7 +14,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 import math
 import typing
@@ -27,6 +27,8 @@ import ibis.expr.types as ibis_types
 ORDERING_ID_STRING_BASE: int = 10
 # Sufficient to store any value up to 2^63
 DEFAULT_ORDERING_ID_LENGTH: int = math.ceil(63 * math.log(2, ORDERING_ID_STRING_BASE))
+
+STABLE_SORTS = ["mergesort", "stable"]
 
 
 class OrderingDirection(Enum):
@@ -61,121 +63,162 @@ class OrderingColumnReference:
         )
 
 
+# Encoding classes specify additional properties for some ordering representations
+@dataclass(frozen=True)
+class StringEncoding:
+    """String encoded order ids are fixed length and can be concat together in joins."""
+
+    is_encoded: bool = False
+    # Encoding size must be tracked in order to know what how to combine ordering ids across tables (eg how much to pad when combining different length).
+    # Also will be needed to determine when length is too large and need to compact ordering id with a ROW_NUMBER operation.
+    length: int = DEFAULT_ORDERING_ID_LENGTH
+
+
+@dataclass(frozen=True)
+class IntegerEncoding:
+    """Integer encoded order ids are guaranteed non-negative."""
+
+    is_encoded: bool = False
+    is_sequential: bool = False
+
+
 @dataclass(frozen=True)
 class ExpressionOrdering:
     """Immutable object that holds information about the ordering of rows in a ArrayValue object."""
 
     ordering_value_columns: Sequence[OrderingColumnReference] = ()
-    ordering_id_column: Optional[OrderingColumnReference] = None
-    is_sequential: bool = False
-    # Encoding size must be tracked in order to know what how to combine ordering ids across tables (eg how much to pad when combining different length).
-    # Also will be needed to determine when length is too large and need to compact ordering id with a ROW_NUMBER operation.
-    ordering_encoding_size: int = DEFAULT_ORDERING_ID_LENGTH
+    integer_encoding: IntegerEncoding = IntegerEncoding(False)
+    string_encoding: StringEncoding = StringEncoding(False)
+    # A table has a total ordering defined by the identities of a set of 1 or more columns.
+    # These columns must always be part of the ordering, in order to guarantee that the ordering is total.
+    # Therefore, any modifications(or drops) done to these columns must result in hidden copies being made.
+    total_ordering_columns: frozenset[str] = field(default_factory=frozenset)
 
-    def with_is_sequential(self, is_sequential: bool):
+    def with_non_sequential(self):
         """Create a copy that is marked as non-sequential.
 
         This is useful when filtering, but not sorting, an expression.
         """
-        return ExpressionOrdering(
-            self.ordering_value_columns,
-            self.ordering_id_column,
-            is_sequential,
-            ordering_encoding_size=self.ordering_encoding_size,
-        )
+        if self.integer_encoding.is_sequential:
+            return ExpressionOrdering(
+                self.ordering_value_columns,
+                integer_encoding=IntegerEncoding(
+                    self.integer_encoding.is_encoded, is_sequential=False
+                ),
+                total_ordering_columns=self.total_ordering_columns,
+            )
+
+        return self
 
     def with_ordering_columns(
         self,
         ordering_value_columns: Sequence[OrderingColumnReference] = (),
         stable: bool = False,
-    ):
-        """Creates a new ordering that preserves ordering id, but replaces ordering value column list."""
+    ) -> ExpressionOrdering:
+        """Creates a new ordering that reorders by the given columns.
+
+        Args:
+            ordering_value_columns:
+                In decreasing precedence order, the values used to sort the ordering
+            stable:
+                If True, will use apply a stable sorting, using the old ordering where
+                the new ordering produces ties. Otherwise, ties will be resolved in
+                a performance maximizing way,
+
+        Returns:
+            Modified ExpressionOrdering
+        """
+        col_ids_new = [
+            ordering_ref.column_id for ordering_ref in ordering_value_columns
+        ]
         if stable:
-            col_ids_new = [
-                ordering_ref.column_id for ordering_ref in ordering_value_columns
-            ]
             # Only reference each column once, so discard old referenc if there is a new reference
             old_ordering_keep = [
                 ordering_ref
                 for ordering_ref in self.ordering_value_columns
                 if ordering_ref.column_id not in col_ids_new
             ]
-            new_ordering = (*ordering_value_columns, *old_ordering_keep)
-        else:  # Not stable, so discard old ordering completely
-            new_ordering = tuple(ordering_value_columns)
+        else:
+            # New ordering needs to keep all total ordering columns no matter what.
+            # All other old ordering references can be discarded as does not need
+            # to be a stable sort.
+            old_ordering_keep = [
+                ordering_ref
+                for ordering_ref in self.ordering_value_columns
+                if (ordering_ref.column_id not in col_ids_new)
+                and (ordering_ref.column_id in self.total_ordering_columns)
+            ]
+        new_ordering = (*ordering_value_columns, *old_ordering_keep)
         return ExpressionOrdering(
             new_ordering,
-            self.ordering_id_column,
-            is_sequential=False,
-            ordering_encoding_size=self.ordering_encoding_size,
-        )
-
-    def with_ordering_id(self, ordering_id: str):
-        """Creates a new ordering that preserves other properties, but with a different ordering id.
-
-        Useful when reprojecting ordering for implicit joins.
-        """
-        return ExpressionOrdering(
-            self.ordering_value_columns,
-            OrderingColumnReference(ordering_id),
-            is_sequential=self.is_sequential,
-            ordering_encoding_size=self.ordering_encoding_size,
+            total_ordering_columns=self.total_ordering_columns,
         )
 
     def with_reverse(self):
         """Reverses the ordering."""
         return ExpressionOrdering(
             tuple([col.with_reverse() for col in self.ordering_value_columns]),
-            self.ordering_id_column.with_reverse()
-            if self.ordering_id_column is not None
-            else None,
-            is_sequential=False,
-            ordering_encoding_size=self.ordering_encoding_size,
+            total_ordering_columns=self.total_ordering_columns,
+        )
+
+    def with_column_remap(self, mapping: typing.Mapping[str, str]):
+        new_value_columns = [
+            col.with_name(mapping.get(col.column_id, col.column_id))
+            for col in self.ordering_value_columns
+        ]
+        new_total_order = frozenset(
+            mapping.get(col_id, col_id) for col_id in self.total_ordering_columns
+        )
+        return ExpressionOrdering(
+            new_value_columns,
+            integer_encoding=self.integer_encoding,
+            string_encoding=self.string_encoding,
+            total_ordering_columns=new_total_order,
         )
 
     @property
-    def ordering_id(self) -> Optional[str]:
-        return self.ordering_id_column.column_id if self.ordering_id_column else None
+    def total_order_col(self) -> Optional[OrderingColumnReference]:
+        """Returns column id of columns that defines total ordering, if such as column exists"""
+        if len(self.ordering_value_columns) != 1:
+            return None
+        order_ref = self.ordering_value_columns[0]
+        if order_ref.direction != OrderingDirection.ASC:
+            return None
+        return order_ref
 
     @property
-    def order_id_defined(self) -> bool:
-        """True if ordering is fully defined in ascending order by its ordering id."""
-        return bool(
-            self.ordering_id_column
-            and (not self.ordering_value_columns)
-            and self.ordering_id_column.direction == OrderingDirection.ASC
-        )
+    def is_string_encoded(self) -> bool:
+        """True if ordering is fully defined by a fixed length string column."""
+        return self.string_encoding.is_encoded
+
+    @property
+    def is_sequential(self) -> bool:
+        return self.integer_encoding.is_encoded and self.integer_encoding.is_sequential
 
     @property
     def all_ordering_columns(self) -> Sequence[OrderingColumnReference]:
-        return (
-            list(self.ordering_value_columns)
-            if self.ordering_id_column is None
-            else [*self.ordering_value_columns, self.ordering_id_column]
-        )
+        return list(self.ordering_value_columns)
 
 
-def stringify_order_id(
-    order_id: ibis_types.Value, length: int = DEFAULT_ORDERING_ID_LENGTH
-) -> ibis_types.StringValue:
+def encode_order_string(
+    order_id: ibis_types.IntegerColumn, length: int = DEFAULT_ORDERING_ID_LENGTH
+) -> ibis_types.StringColumn:
     """Converts an order id value to string if it is not already a string. MUST produced fixed-length strings."""
-    if order_id.type().is_int64():
-        # This is very inefficient encoding base-10 string uses only 10 characters per byte(out of 256 bit combinations)
-        # Furthermore, if know tighter bounds on order id are known, can produce smaller strings.
-        # 19 characters chosen as it can represent any positive Int64 in base-10
-        # For missing values, ":" * 19 is used as it is larger than any other value this function produces, so null values will be last.
-        string_order_id = (
-            typing.cast(
-                ibis_types.StringValue,
-                typing.cast(ibis_types.IntegerValue, order_id).cast(ibis_dtypes.string),
-            )
-            .lpad(length, "0")
-            .fillna(ibis_types.literal(":" * length))
-        )
-    else:
-        string_order_id = (
-            typing.cast(ibis_types.StringValue, order_id)
-            .lpad(length, "0")
-            .fillna(ibis_types.literal(":" * length))
-        )
-    return typing.cast(ibis_types.StringValue, string_order_id)
+    # This is very inefficient encoding base-10 string uses only 10 characters per byte(out of 256 bit combinations)
+    # Furthermore, if know tighter bounds on order id are known, can produce smaller strings.
+    # 19 characters chosen as it can represent any positive Int64 in base-10
+    # For missing values, ":" * 19 is used as it is larger than any other value this function produces, so null values will be last.
+    string_order_id = typing.cast(
+        ibis_types.StringValue,
+        order_id.cast(ibis_dtypes.string),
+    ).lpad(length, "0")
+    return typing.cast(ibis_types.StringColumn, string_order_id)
+
+
+def reencode_order_string(
+    order_id: ibis_types.StringColumn, length: int
+) -> ibis_types.StringColumn:
+    return typing.cast(
+        ibis_types.StringColumn,
+        (typing.cast(ibis_types.StringValue, order_id).lpad(length, "0")),
+    )

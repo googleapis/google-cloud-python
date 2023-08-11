@@ -14,6 +14,7 @@
 
 """Mappings for Pandas dtypes supported by BigQuery DataFrames package"""
 
+import textwrap
 import typing
 from typing import Any, Dict, Iterable, Literal, Tuple, Union
 
@@ -24,6 +25,8 @@ import ibis.expr.types as ibis_types
 import numpy as np
 import pandas as pd
 import pyarrow as pa
+
+import bigframes.constants as constants
 
 # Type hints for Pandas dtypes supported by BigQuery DataFrame
 Dtype = Union[
@@ -36,6 +39,9 @@ Dtype = Union[
 
 # Corresponds to the pandas concept of numeric type (such as when 'numeric_only' is specified in an operation)
 NUMERIC_BIGFRAMES_TYPES = [pd.BooleanDtype(), pd.Float64Dtype(), pd.Int64Dtype()]
+
+# On BQ side, ARRAY, STRUCT, GEOGRAPHY, JSON are not orderable
+UNORDERED_DTYPES = [gpd.array.GeometryDtype()]
 
 # Type hints for dtype strings supported by BigQuery DataFrame
 DtypeString = Literal[
@@ -150,7 +156,9 @@ def ibis_dtype_to_bigframes_dtype(
     if ibis_dtype in IBIS_TO_BIGFRAMES:
         return IBIS_TO_BIGFRAMES[ibis_dtype]
     else:
-        raise ValueError(f"Unexpected Ibis data type {type(ibis_dtype)}")
+        raise ValueError(
+            f"Unexpected Ibis data type {type(ibis_dtype)}. {constants.FEEDBACK_LINK}"
+        )
 
 
 def ibis_value_to_canonical_type(value: ibis_types.Value) -> ibis_types.Value:
@@ -182,14 +190,14 @@ def bigframes_dtype_to_ibis_dtype(
     """Converts a BigQuery DataFrames supported dtype to an Ibis dtype.
 
     Args:
-        bigframes_dtype: A dtype supported by BigQuery DataFrame
+        bigframes_dtype:
+            A dtype supported by BigQuery DataFrame
 
     Returns:
-        The corresponding Ibis type
+        IbisDtype: The corresponding Ibis type
 
     Raises:
-        ValueError:
-            If passed a dtype not supported by BigQuery DataFrames.
+        ValueError: If passed a dtype not supported by BigQuery DataFrames.
     """
     type_string = str(bigframes_dtype)
     if type_string in BIGFRAMES_STRING_TO_BIGFRAMES:
@@ -197,7 +205,23 @@ def bigframes_dtype_to_ibis_dtype(
             typing.cast(DtypeString, type_string)
         ]
     else:
-        raise ValueError(f"Unexpected data type {bigframes_dtype}")
+        raise ValueError(
+            textwrap.dedent(
+                f"""
+                Unexpected data type {bigframes_dtype}. The following
+                        str dtypes are supppted: 'boolean','Float64','Int64', 'string',
+                        'tring[pyarrow]','timestamp[us, tz=UTC][pyarrow]',
+                        'timestamp[us][pyarrow]','date32[day][pyarrow]',
+                        'time64[us][pyarrow]'. The following pandas.ExtensionDtype are
+                        supported: pandas.BooleanDtype(), pandas.Float64Dtype(),
+                        pandas.Int64Dtype(), pandas.StringDtype(storage="pyarrow"),
+                        pd.ArrowDtype(pa.date32()), pd.ArrowDtype(pa.time64("us")),
+                        pd.ArrowDtype(pa.timestamp("us")),
+                        pd.ArrowDtype(pa.timestamp("us", tz="UTC")).
+                {constants.FEEDBACK_LINK}
+                """
+            )
+        )
 
     return BIGFRAMES_TO_IBIS[bigframes_dtype]
 
@@ -209,8 +233,10 @@ def literal_to_ibis_scalar(
     expression with a BigQuery DataFrames compatible data type
 
     Args:
-        literal: any value accepted by Ibis
-        force_dtype: force the value to a specific dtype
+        literal:
+            any value accepted by Ibis
+        force_dtype:
+            force the value to a specific dtype
         validate:
             If true, will raise ValueError if type cannot be stored in a
             BigQuery DataFrames object. If used as a subexpression, this should
@@ -227,7 +253,9 @@ def literal_to_ibis_scalar(
 
     if pd.api.types.is_list_like(literal):
         if validate:
-            raise ValueError("List types can't be stored in BigQuery DataFrames")
+            raise ValueError(
+                f"List types can't be stored in BigQuery DataFrames. {constants.FEEDBACK_LINK}"
+            )
         # "correct" way would be to use ibis.array, but this produces invalid BQ SQL syntax
         return tuple(literal)
     if not pd.api.types.is_list_like(literal) and pd.isna(literal):
@@ -246,7 +274,9 @@ def literal_to_ibis_scalar(
 
     # TODO(bmil): support other literals that can be coerced to compatible types
     if validate and (scalar_expr.type() not in BIGFRAMES_TO_IBIS.values()):
-        raise ValueError(f"Literal did not coerce to a supported data type: {literal}")
+        raise ValueError(
+            f"Literal did not coerce to a supported data type: {literal}. {constants.FEEDBACK_LINK}"
+        )
 
     return scalar_expr
 
@@ -255,9 +285,11 @@ def cast_ibis_value(value: ibis_types.Value, to_type: IbisDtype) -> ibis_types.V
     """Perform compatible type casts of ibis values
 
     Args:
-        value: Ibis value, which could be a literal, scalar, or column
+        value:
+            Ibis value, which could be a literal, scalar, or column
 
-        to_type: The Ibis type to cast to
+        to_type:
+            The Ibis type to cast to
 
     Returns:
         A new Ibis value of type to_type
@@ -275,7 +307,7 @@ def cast_ibis_value(value: ibis_types.Value, to_type: IbisDtype) -> ibis_types.V
             ibis_dtypes.float64,
             ibis_dtypes.string,
         ),
-        ibis_dtypes.float64: (ibis_dtypes.string,),
+        ibis_dtypes.float64: (ibis_dtypes.string, ibis_dtypes.int64),
         ibis_dtypes.string: (),
         ibis_dtypes.date: (),
         ibis_dtypes.time: (),
@@ -289,7 +321,9 @@ def cast_ibis_value(value: ibis_types.Value, to_type: IbisDtype) -> ibis_types.V
             return value.cast(to_type)
     else:
         # this should never happen
-        raise TypeError(f"Unexpected value type {value.type()}")
+        raise TypeError(
+            f"Unexpected value type {value.type()}. {constants.FEEDBACK_LINK}"
+        )
 
     # casts that need some encouragement
 
@@ -301,4 +335,9 @@ def cast_ibis_value(value: ibis_types.Value, to_type: IbisDtype) -> ibis_types.V
     if value.type() == ibis_dtypes.bool and to_type == ibis_dtypes.float64:
         return value.cast(ibis_dtypes.int64).cast(ibis_dtypes.float64)
 
-    raise TypeError(f"Unsupported cast {value.type()} to {to_type}")
+    if value.type() == ibis_dtypes.float64 and to_type == ibis_dtypes.bool:
+        return value != ibis_types.literal(0)
+
+    raise TypeError(
+        f"Unsupported cast {value.type()} to {to_type}. {constants.FEEDBACK_LINK}"
+    )

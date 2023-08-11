@@ -22,9 +22,9 @@ This library is an evolving attempt to
 """
 
 import abc
-from typing import Optional, TypeVar
+from typing import cast, Optional, TypeVar
 
-from bigframes.ml.core import BqmlModel
+from bigframes.ml import core
 import third_party.bigframes_vendored.sklearn.base
 
 
@@ -92,7 +92,7 @@ class Predictor(BaseEstimator):
     """A BigQuery DataFrames ML Model base class that can be used to predict outputs."""
 
     def __init__(self):
-        self._bqml_model: Optional[BqmlModel] = None
+        self._bqml_model: Optional[core.BqmlModel] = None
 
     @abc.abstractmethod
     def predict(self, X):
@@ -102,21 +102,32 @@ class Predictor(BaseEstimator):
 
     def register(self: _T, vertex_ai_model_id: Optional[str] = None) -> _T:
         """Register the model to Vertex AI.
+
+        After register, go to https://pantheon.corp.google.com/vertex-ai/models to manage the model registries.
+        Refer to https://cloud.google.com/vertex-ai/docs/model-registry/introduction for more options.
+
         Args:
-            vertex_ai_model_id: optional string id as model id in Vertex. If not set, will by default to 'bigframes_{bq_model_id}'.
+            vertex_ai_model_id (Optional[str], default None):
+                optional string id as model id in Vertex. If not set, will by default to 'bigframes_{bq_model_id}'.
+                Vertex Ai model id will be truncated to 63 characters due to its limitation.
 
         Returns:
             BigQuery DataFrames Model after register.
         """
         if not self._bqml_model:
-            raise RuntimeError("A model must be trained before register.")
+            # TODO(garrettwu): find a more elegant way to do this.
+            try:
+                self._bqml_model = self._create_bqml_model()  # type: ignore
+            except AttributeError:
+                raise RuntimeError("A model must be trained before register.")
+        self._bqml_model = cast(core.BqmlModel, self._bqml_model)
 
         self._bqml_model.register(vertex_ai_model_id)
         return self
 
 
 class TrainablePredictor(Predictor):
-    """A BigQuery DataFrame ML Model base class that can be used to fit and predict outputs.
+    """A BigQuery DataFrames ML Model base class that can be used to fit and predict outputs.
 
     Also the predictor can be attached to a pipeline with transformers."""
 
@@ -124,10 +135,9 @@ class TrainablePredictor(Predictor):
     def fit(self, X, y, transforms):
         pass
 
-    # TODO(b/289280565): enable signatures after updating KMeans and PCA
-    # @abc.abstractmethod
-    # def score(self, X, y):
-    #     pass
+    @abc.abstractmethod
+    def score(self, X, y):
+        pass
 
     # TODO(b/291812029): move to Predictor after implement in LLM and imported models
     @abc.abstractmethod

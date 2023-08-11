@@ -23,6 +23,7 @@ import ibis
 import ibis.expr.datatypes as ibis_dtypes
 import ibis.expr.types as ibis_types
 
+import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.guid
 import bigframes.core.joins.row_identity
@@ -42,7 +43,8 @@ def join_by_column(
         "right",
     ],
     sort: bool = False,
-    get_both_join_key_cols: bool = False,
+    coalesce_join_keys: bool = True,
+    allow_row_identity_join: bool = True,
 ) -> Tuple[
     core.ArrayValue,
     typing.Sequence[str],
@@ -56,8 +58,11 @@ def join_by_column(
         right: Expression for right table to join.
         right_column_ids: Column IDs (not label) to join by.
         how: The type of join to perform.
-        get_both_join_key_cols: if set to True, returned column ids will contain
+        coalesce_join_keys: if set to False, returned column ids will contain
             both left and right join key columns.
+        allow_row_identity_join (bool):
+            If True, allow matching by row identity. Set to False to always
+            perform a true JOIN in generated SQL.
 
     Returns:
         The joined expression and the objects needed to interpret it.
@@ -66,19 +71,22 @@ def join_by_column(
         * Sequence[str]: Column IDs of the coalesced join columns. Sometimes either the
           left/right table will have missing rows. This column pulls the
           non-NULL value from either left/right.
-          If get_both_join_key_cols is True, will return uncombined left and
+          If coalesce_join_keys is False, will return uncombined left and
           right key columns.
         * Tuple[Callable, Callable]: For a given column ID from left or right,
           respectively, return the new column id from the combined expression.
     """
-
     if (
-        how in bigframes.core.joins.row_identity.SUPPORTED_ROW_IDENTITY_HOW
+        allow_row_identity_join
+        and how in bigframes.core.joins.row_identity.SUPPORTED_ROW_IDENTITY_HOW
         and left.table.equals(right.table)
-        # Compare ibis expressions for left/right columns because its possible that
-        # they both have the same names but were modified in different ways.
+        # Make sure we're joining on exactly the same column(s), at least with
+        # regards to value its possible that they both have the same names but
+        # were modified in different ways. Ignore differences in the names.
         and all(
-            left.get_any_column(lcol).equals(right.get_any_column(rcol))
+            left.get_any_column(lcol)
+            .name("index")
+            .equals(right.get_any_column(rcol).name("index"))
             for lcol, rcol in zip(left_column_ids, right_column_ids)
         )
     ):
@@ -86,15 +94,42 @@ def join_by_column(
             get_column_left,
             get_column_right,
         ) = bigframes.core.joins.row_identity.join_by_row_identity(left, right, how=how)
-        original_ordering = combined_expr._ordering
+        left_join_keys = [
+            combined_expr.get_column(get_column_left(col)) for col in left_column_ids
+        ]
+        right_join_keys = [
+            combined_expr.get_column(get_column_right(col)) for col in right_column_ids
+        ]
+        join_key_cols = get_join_cols(
+            left_join_keys, right_join_keys, how, coalesce_join_keys
+        )
+        join_key_ids = [col.get_name() for col in join_key_cols]
+        combined_expr = combined_expr.projection(
+            [*join_key_cols, *combined_expr.columns]
+        )
+        if sort:
+            combined_expr = combined_expr.order_by(
+                [
+                    core.OrderingColumnReference(join_col_id)
+                    for join_col_id in join_key_ids
+                ]
+            )
+        return (
+            combined_expr,
+            join_key_ids,
+            (
+                get_column_left,
+                get_column_right,
+            ),
+        )
     else:
         # Generate offsets if non-default ordering is applied
         # Assumption, both sides are totally ordered, otherwise offsets will be nondeterministic
         left_table = left.to_ibis_expr(
-            ordering_mode="ordered_col", order_col_name=core.ORDER_ID_COLUMN
+            ordering_mode="string_encoded", order_col_name=core.ORDER_ID_COLUMN
         )
         right_table = right.to_ibis_expr(
-            ordering_mode="ordered_col", order_col_name=core.ORDER_ID_COLUMN
+            ordering_mode="string_encoded", order_col_name=core.ORDER_ID_COLUMN
         )
         join_conditions = [
             value_to_join_key(left_table[left_index])
@@ -144,66 +179,105 @@ def join_by_column(
             return key
 
         left_ordering_encoding_size = (
-            left._ordering.ordering_encoding_size
-            or bigframes.core.ordering.DEFAULT_ORDERING_ID_LENGTH
+            left._ordering.string_encoding.length
+            if left._ordering.is_string_encoded
+            else bigframes.core.ordering.DEFAULT_ORDERING_ID_LENGTH
         )
         right_ordering_encoding_size = (
-            right._ordering.ordering_encoding_size
-            or bigframes.core.ordering.DEFAULT_ORDERING_ID_LENGTH
+            right._ordering.string_encoding.length
+            if right._ordering.is_string_encoded
+            else bigframes.core.ordering.DEFAULT_ORDERING_ID_LENGTH
         )
 
         # Preserve original ordering accross joins.
         left_order_id = get_column_left(core.ORDER_ID_COLUMN)
         right_order_id = get_column_right(core.ORDER_ID_COLUMN)
         new_order_id_col = _merge_order_ids(
-            combined_table[left_order_id],
+            typing.cast(ibis_types.StringColumn, combined_table[left_order_id]),
             left_ordering_encoding_size,
-            combined_table[right_order_id],
+            typing.cast(ibis_types.StringColumn, combined_table[right_order_id]),
             right_ordering_encoding_size,
             how,
         )
         new_order_id = new_order_id_col.get_name()
         if new_order_id is None:
             raise ValueError("new_order_id unexpectedly has no name")
+
         hidden_columns = (new_order_id_col,)
-        original_ordering = core.ExpressionOrdering(
-            ordering_id_column=core.OrderingColumnReference(new_order_id)
-            if (new_order_id_col is not None)
-            else None,
-            ordering_encoding_size=left_ordering_encoding_size
-            + right_ordering_encoding_size,
+        ordering = core.ExpressionOrdering(
+            # Order id is non-nullable but na_last=False generates simpler sql with current impl
+            ordering_value_columns=[
+                core.OrderingColumnReference(new_order_id, na_last=False)
+            ],
+            total_ordering_columns=frozenset([new_order_id]),
+            string_encoding=core.StringEncoding(
+                True, left_ordering_encoding_size + right_ordering_encoding_size
+            ),
+        )
+
+        left_join_keys = [
+            combined_table[get_column_left(col)] for col in left_column_ids
+        ]
+        right_join_keys = [
+            combined_table[get_column_right(col)] for col in right_column_ids
+        ]
+        join_key_cols = get_join_cols(
+            left_join_keys, right_join_keys, how, coalesce_join_keys
+        )
+        # We could filter out the original join columns, but predicates/ordering
+        # might still reference them in implicit joins.
+        columns = (
+            join_key_cols
+            + [combined_table[get_column_left(col.get_name())] for col in left.columns]
+            + [
+                combined_table[get_column_right(col.get_name())]
+                for col in right.columns
+            ]
         )
         combined_expr = core.ArrayValue(
             left._session,
             combined_table,
+            columns=columns,
             hidden_ordering_columns=hidden_columns,
+            ordering=ordering,
+        )
+        if sort:
+            combined_expr = combined_expr.order_by(
+                [
+                    core.OrderingColumnReference(join_key_col.get_name())
+                    for join_key_col in join_key_cols
+                ]
+            )
+        return (
+            combined_expr,
+            [key.get_name() for key in join_key_cols],
+            (get_column_left, get_column_right),
         )
 
+
+def get_join_cols(
+    left_join_cols: typing.Iterable[ibis_types.Value],
+    right_join_cols: typing.Iterable[ibis_types.Value],
+    how: str,
+    coalesce_join_keys: bool = True,
+) -> typing.List[ibis_types.Value]:
     join_key_cols: list[ibis_types.Value] = []
-    for lcol, rcol in zip(left_column_ids, right_column_ids):
-        if get_both_join_key_cols:
+    for left_col, right_col in zip(left_join_cols, right_join_cols):
+        if not coalesce_join_keys:
             join_key_cols.append(
-                combined_expr.get_column(get_column_left(lcol)).name(
-                    bigframes.core.guid.generate_guid(prefix="index_")
-                )
+                left_col.name(bigframes.core.guid.generate_guid(prefix="index_"))
             )
             join_key_cols.append(
-                combined_expr.get_column(get_column_right(rcol)).name(
-                    bigframes.core.guid.generate_guid(prefix="index_")
-                )
+                right_col.name(bigframes.core.guid.generate_guid(prefix="index_"))
             )
         else:
             if how == "left" or how == "inner":
                 join_key_cols.append(
-                    combined_expr.get_column(get_column_left(lcol)).name(
-                        bigframes.core.guid.generate_guid(prefix="index_")
-                    )
+                    left_col.name(bigframes.core.guid.generate_guid(prefix="index_"))
                 )
             elif how == "right":
                 join_key_cols.append(
-                    combined_expr.get_column(get_column_right(rcol)).name(
-                        bigframes.core.guid.generate_guid(prefix="index_")
-                    )
+                    right_col.name(bigframes.core.guid.generate_guid(prefix="index_"))
                 )
             elif how == "outer":
                 # The left index and the right index might contain null values, for
@@ -211,48 +285,25 @@ def join_by_column(
                 # these to take the index value from either column.
                 # Use a random name in case the left index and the right index have the
                 # same name. In such a case, _x and _y suffixes will already be used.
-                join_key_cols.append(
-                    ibis.coalesce(
-                        combined_expr.get_column(get_column_left(lcol)),
-                        combined_expr.get_column(get_column_right(rcol)),
-                    ).name(bigframes.core.guid.generate_guid(prefix="index_"))
-                )
+                # Don't need to coalesce if they are exactly the same column.
+                if left_col.name("index").equals(right_col.name("index")):
+                    join_key_cols.append(
+                        left_col.name(
+                            bigframes.core.guid.generate_guid(prefix="index_")
+                        )
+                    )
+                else:
+                    join_key_cols.append(
+                        ibis.coalesce(
+                            left_col,
+                            right_col,
+                        ).name(bigframes.core.guid.generate_guid(prefix="index_"))
+                    )
             else:
-                raise ValueError(f"Unexpected join type: {how}")
-
-    # We could filter out the original join columns, but predicates/ordering
-    # might still reference them in implicit joins.
-    columns = (
-        join_key_cols
-        + [
-            combined_expr.get_column(get_column_left(key))
-            for key in left.column_names.keys()
-        ]
-        + [
-            combined_expr.get_column(get_column_right(key))
-            for key in right.column_names.keys()
-        ]
-    )
-
-    if sort:
-        ordering = original_ordering.with_ordering_columns(
-            [
-                core.OrderingColumnReference(join_key_col.get_name())
-                for join_key_col in join_key_cols
-            ]
-        )
-    else:
-        ordering = original_ordering
-
-    combined_expr_builder = combined_expr.builder()
-    combined_expr_builder.columns = columns
-    combined_expr_builder.ordering = ordering
-    combined_expr = combined_expr_builder.build()
-    return (
-        combined_expr,
-        [key.get_name() for key in join_key_cols],
-        (get_column_left, get_column_right),
-    )
+                raise ValueError(
+                    f"Unexpected join type: {how}. {constants.FEEDBACK_LINK}"
+                )
+    return join_key_cols
 
 
 def value_to_join_key(value: ibis_types.Value):
@@ -263,19 +314,31 @@ def value_to_join_key(value: ibis_types.Value):
 
 
 def _merge_order_ids(
-    left_id: ibis_types.Value,
+    left_id: ibis_types.StringColumn,
     left_encoding_size: int,
-    right_id: ibis_types.Value,
+    right_id: ibis_types.StringColumn,
     right_encoding_size: int,
     how: str,
-) -> ibis_types.StringValue:
+) -> ibis_types.StringColumn:
     if how == "right":
         return _merge_order_ids(
             right_id, right_encoding_size, left_id, left_encoding_size, "left"
         )
-    return (
-        (
-            bigframes.core.ordering.stringify_order_id(left_id, left_encoding_size)
-            + bigframes.core.ordering.stringify_order_id(right_id, right_encoding_size)
+
+    if how == "left":
+        right_id = typing.cast(
+            ibis_types.StringColumn,
+            right_id.fillna(ibis_types.literal(":" * right_encoding_size)),
         )
-    ).name(bigframes.core.guid.generate_guid(prefix="bigframes_ordering_id_"))
+    elif how != "inner":  # outer join
+        left_id = typing.cast(
+            ibis_types.StringColumn,
+            left_id.fillna(ibis_types.literal(":" * left_encoding_size)),
+        )
+        right_id = typing.cast(
+            ibis_types.StringColumn,
+            right_id.fillna(ibis_types.literal(":" * right_encoding_size)),
+        )
+    return (left_id + right_id).name(
+        bigframes.core.guid.generate_guid(prefix="bigframes_ordering_id_")
+    )

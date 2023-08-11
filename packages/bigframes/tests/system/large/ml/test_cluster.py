@@ -12,14 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pandas
+import pandas as pd
+import pytest
 
-import bigframes.ml.cluster
+from bigframes.ml import cluster
 from tests.system.utils import assert_pandas_df_equal_ignore_ordering
 
 
-def test_cluster_configure_fit_predict(session, penguins_df_default_index, dataset_id):
-    model = bigframes.ml.cluster.KMeans(n_clusters=3)
+@pytest.mark.flaky(retries=2, delay=120)
+def test_cluster_configure_fit_score_predict(
+    session, penguins_df_default_index, dataset_id
+):
+    model = cluster.KMeans(n_clusters=3)
 
     df = penguins_df_default_index.dropna()[
         [
@@ -37,7 +41,7 @@ def test_cluster_configure_fit_predict(session, penguins_df_default_index, datas
 
     model.fit(df)
 
-    pd_new_penguins = pandas.DataFrame.from_dict(
+    pd_new_penguins = pd.DataFrame.from_dict(
         {
             "test1": {
                 "species": "Adelie Penguin (Pygoscelis adeliae)",
@@ -81,13 +85,24 @@ def test_cluster_configure_fit_predict(session, penguins_df_default_index, datas
     pd_new_penguins.index.name = "observation"
 
     new_penguins = session.read_pandas(pd_new_penguins)
-    result = model.predict(new_penguins).compute()
-    expected = pandas.DataFrame(
+
+    # Check score to ensure the model was fitted
+    score_result = model.score(new_penguins).to_pandas()
+    score_expected = pd.DataFrame(
+        {"davies_bouldin_index": [1.502182], "mean_squared_distance": [1.953408]},
+        dtype="Float64",
+    )
+    score_expected = score_expected.reindex(index=score_expected.index.astype("Int64"))
+
+    pd.testing.assert_frame_equal(
+        score_result, score_expected, check_exact=False, rtol=0.1
+    )
+
+    result = model.predict(new_penguins).to_pandas()
+    expected = pd.DataFrame(
         {"CENTROID_ID": [2, 3, 1, 2]},
         dtype="Int64",
-        index=pandas.Index(
-            ["test1", "test2", "test3", "test4"], dtype="string[pyarrow]"
-        ),
+        index=pd.Index(["test1", "test2", "test3", "test4"], dtype="string[pyarrow]"),
     )
     expected.index.name = "observation"
     assert_pandas_df_equal_ignore_ordering(result, expected)

@@ -15,7 +15,8 @@
 import pandas as pd
 import pytest
 
-import bigframes.ml.model_selection
+from bigframes.ml import model_selection
+import bigframes.pandas as bpd
 
 
 def test_train_test_split_default_correct_shape(penguins_df_default_index):
@@ -27,15 +28,29 @@ def test_train_test_split_default_correct_shape(penguins_df_default_index):
         ]
     ]
     y = penguins_df_default_index[["body_mass_g"]]
-    X_train, X_test, y_train, y_test = bigframes.ml.model_selection.train_test_split(
-        X, y
-    )
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y)
 
     # even though the default seed is random, it should always result in this shape
     assert X_train.shape == (258, 3)
     assert X_test.shape == (86, 3)
     assert y_train.shape == (258, 1)
     assert y_test.shape == (86, 1)
+
+
+def test_train_test_split_series_default_correct_shape(penguins_df_default_index):
+    X = penguins_df_default_index[["species"]]
+    y = penguins_df_default_index["body_mass_g"]
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y)
+    assert isinstance(X_train, bpd.DataFrame)
+    assert isinstance(X_test, bpd.DataFrame)
+    assert isinstance(y_train, bpd.Series)
+    assert isinstance(y_test, bpd.Series)
+
+    # even though the default seed is random, it should always result in this shape
+    assert X_train.shape == (258, 1)
+    assert X_test.shape == (86, 1)
+    assert y_train.shape == (258,)
+    assert y_test.shape == (86,)
 
 
 def test_train_test_double_split_correct_shape(penguins_df_default_index):
@@ -47,7 +62,7 @@ def test_train_test_double_split_correct_shape(penguins_df_default_index):
         ]
     ]
     y = penguins_df_default_index[["body_mass_g"]]
-    X_train, X_test, y_train, y_test = bigframes.ml.model_selection.train_test_split(
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(
         X, y, test_size=0.2, train_size=0.4
     )
 
@@ -78,7 +93,7 @@ def test_train_test_three_dataframes_correct_shape(penguins_df_default_index):
         B_test,
         C_train,
         C_test,
-    ) = bigframes.ml.model_selection.train_test_split(A, B, C)
+    ) = model_selection.train_test_split(A, B, C)
 
     assert A_train.shape == (258, 2)
     assert A_test.shape == (86, 2)
@@ -111,7 +126,7 @@ def test_train_test_split_seeded_correct_rows(
         ]
     ]
     y = df[["body_mass_g"]]
-    X_train, X_test, y_train, y_test = bigframes.ml.model_selection.train_test_split(
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(
         X, y, random_state=42
     )
 
@@ -124,31 +139,31 @@ def test_train_test_split_seeded_correct_rows(
         [
             144,
             146,
-            148,
             168,
             183,
             186,
             217,
+            221,
             225,
-            226,
             237,
+            240,
             244,
             245,
+            257,
             260,
             262,
             263,
+            264,
             266,
+            267,
             268,
-            269,
-            289,
             290,
-            291,
         ],
         dtype="Int64",
         name="rowindex",
     )
     test_index = pd.Index(
-        [161, 221, 240, 257, 264, 267, 278], dtype="Int64", name="rowindex"
+        [148, 161, 226, 269, 278, 289, 291], dtype="Int64", name="rowindex"
     )
 
     all_data.index.name = "_"
@@ -209,6 +224,6 @@ def test_train_test_split_value_error(penguins_df_default_index, train_size, tes
     ]
     y = penguins_df_default_index[["body_mass_g"]]
     with pytest.raises(ValueError):
-        bigframes.ml.model_selection.train_test_split(
+        model_selection.train_test_split(
             X, y, train_size=train_size, test_size=test_size
         )

@@ -28,7 +28,7 @@ def test_linear_reg_register(
     )
     # Only registered model contains the field, and the field includes project/dataset. Here only check model_id.
     assert (
-        model_name
+        model_name[:63]  # truncated
         in cast(core.BqmlModel, model._bqml_model).model.training_runs[-1][
             "vertexAiModelId"
         ]
@@ -44,7 +44,7 @@ def test_linear_reg_register_with_params(
 
     # Only registered model contains the field, and the field includes project/dataset. Here only check model_id.
     assert (
-        model_name
+        model_name[:63]  # truncated
         in cast(core.BqmlModel, model._bqml_model).model.training_runs[-1][
             "vertexAiModelId"
         ]
@@ -62,7 +62,7 @@ def test_palm2_text_generator_register(
     )
     # Only registered model contains the field, and the field includes project/dataset. Here only check model_id.
     assert (
-        model_name
+        model_name[:63]  # truncated
         in cast(core.BqmlModel, model._bqml_model).model.training_runs[-1][
             "vertexAiModelId"
         ]
@@ -80,7 +80,7 @@ def test_imported_tensorflow_register(
     )
     # Only registered model contains the field, and the field includes project/dataset. Here only check model_id.
     assert (
-        model_name
+        model_name[:63]  # truncated
         in cast(core.BqmlModel, model._bqml_model).model.training_runs[-1][
             "vertexAiModelId"
         ]

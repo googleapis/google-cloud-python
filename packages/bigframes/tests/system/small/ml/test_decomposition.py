@@ -12,44 +12,59 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pandas
+import pandas as pd
 
-import bigframes.ml.decomposition
+from bigframes.ml import decomposition
+
+_PD_NEW_PENGUINS = pd.DataFrame(
+    {
+        "tag_number": [1633, 1672, 1690],
+        "species": [
+            "Adelie Penguin (Pygoscelis adeliae)",
+            "Gentoo penguin (Pygoscelis papua)",
+            "Adelie Penguin (Pygoscelis adeliae)",
+        ],
+        "island": ["Dream", "Biscoe", "Torgersen"],
+        "culmen_length_mm": [37.8, 46.5, 41.1],
+        "culmen_depth_mm": [18.1, 14.8, 18.6],
+        "flipper_length_mm": [193.0, 217.0, 189.0],
+        "body_mass_g": [3750.0, 5200.0, 3325.0],
+        "sex": ["MALE", "FEMALE", "MALE"],
+    }
+).set_index("tag_number")
 
 
-def test_model_predict(session, penguins_pca_model: bigframes.ml.decomposition.PCA):
-    new_penguins = session.read_pandas(
-        pandas.DataFrame(
-            {
-                "tag_number": [1633, 1672, 1690],
-                "species": [
-                    "Adelie Penguin (Pygoscelis adeliae)",
-                    "Gentoo penguin (Pygoscelis papua)",
-                    "Adelie Penguin (Pygoscelis adeliae)",
-                ],
-                "island": ["Dream", "Biscoe", "Torgersen"],
-                "culmen_length_mm": [37.8, 46.5, 41.1],
-                "culmen_depth_mm": [18.1, 14.8, 18.6],
-                "flipper_length_mm": [193.0, 217.0, 189.0],
-                "body_mass_g": [3750.0, 5200.0, 3325.0],
-                "sex": ["MALE", "FEMALE", "MALE"],
-            }
-        ).set_index("tag_number")
-    )
+def test_pca_predict(session, penguins_pca_model: decomposition.PCA):
+    new_penguins = session.read_pandas(_PD_NEW_PENGUINS)
 
-    predictions = penguins_pca_model.predict(new_penguins).compute()
-    expected = pandas.DataFrame(
+    predictions = penguins_pca_model.predict(new_penguins).to_pandas()
+    expected = pd.DataFrame(
         {
             "principal_component_1": [-1.459, 2.258, -1.685],
             "principal_component_2": [-1.120, -1.351, -0.874],
             "principal_component_3": [-0.646, 0.443, -0.704],
         },
         dtype="Float64",
-        index=pandas.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
     )
-    pandas.testing.assert_frame_equal(
+    pd.testing.assert_frame_equal(
         predictions.sort_index(),
         expected,
         check_exact=False,
         rtol=0.1,
+    )
+
+
+def test_pca_score(session, penguins_pca_model: decomposition.PCA):
+    result = penguins_pca_model.score().to_pandas()
+    expected = pd.DataFrame(
+        {"total_explained_variance_ratio": [0.812383]},
+        dtype="Float64",
+    )
+    pd.testing.assert_frame_equal(
+        result,
+        expected,
+        check_exact=False,
+        rtol=0.1,
+        check_index_type=False,
     )

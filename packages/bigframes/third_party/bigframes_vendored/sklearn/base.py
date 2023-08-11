@@ -13,7 +13,7 @@ from typing import Any, Dict, List
 class BaseEstimator:
     """Base class for all estimators.
 
-    Notes:
+    .. note::
         All estimators should specify all the parameters that can be set
         at the class level in their ``__init__`` as explicit keyword
         arguments (no ``*args`` or ``**kwargs``).
@@ -54,12 +54,12 @@ class BaseEstimator:
         """Get parameters for this estimator.
 
         Args:
-            deep:
+            deep (bool, default True):
                 Default ``True``. If True, will return the parameters for this
                 estimator and contained subobjects that are estimators.
 
         Returns:
-            A dictionary of parameter names mapped to their values.
+            Dictionary: A dictionary of parameter names mapped to their values.
         """
         out: Dict = dict()
         for key in self._get_param_names():
@@ -84,15 +84,15 @@ class ClassifierMixin:
         each label set be correctly predicted.
 
         Args:
-            X:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
                 DataFrame of shape (n_samples, n_features). Test samples.
 
-            y:
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series):
                 DataFrame of shape (n_samples,) or (n_samples, n_outputs). True
                 labels for `X`.
 
         Returns:
-            A DataFrame of the evaluation result.
+            bigframes.dataframe.DataFrame: A DataFrame of the evaluation result.
         """
         raise NotImplementedError("abstract method")
 
@@ -106,19 +106,19 @@ class RegressorMixin:
         """Return the evaluation metrics of the model.
 
         Args:
-            X:
-                DataFrame of shape (n_samples, n_features). Test samples. For
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                Series or DataFrame of shape (n_samples, n_features). Test samples. For
                 some estimators this may be a precomputed kernel matrix or a
                 list of generic objects instead with shape
                 ``(n_samples, n_samples_fitted)``, where ``n_samples_fitted``
                 is the number of samples used in the fitting for the estimator.
 
-            y:
-                DataFrame of shape (n_samples,) or (n_samples, n_outputs). True
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series:
+                Series or DataFrame of shape (n_samples,) or (n_samples, n_outputs). True
                 values for `X`.
 
         Returns:
-            A DataFrame of the evaluation result.
+            bigframes.dataframe.DataFrame: A DataFrame of the evaluation result.
         """
         raise NotImplementedError("abstract method")
 

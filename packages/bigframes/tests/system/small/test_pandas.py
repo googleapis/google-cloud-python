@@ -21,7 +21,7 @@ import bigframes.pandas as bpd
 def test_concat_dataframe(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_result = bpd.concat(11 * [scalars_df])
-    bf_result = bf_result.compute()
+    bf_result = bf_result.to_pandas()
     pd_result = pd.concat(11 * [scalars_pandas_df])
 
     pd.testing.assert_frame_equal(bf_result, pd_result)
@@ -32,7 +32,7 @@ def test_concat_series(scalars_dfs):
     bf_result = bpd.concat(
         [scalars_df.int64_col, scalars_df.int64_too, scalars_df.int64_col]
     )
-    bf_result = bf_result.compute()
+    bf_result = bf_result.to_pandas()
     pd_result = pd.concat(
         [
             scalars_pandas_df.int64_col,
@@ -45,10 +45,10 @@ def test_concat_series(scalars_dfs):
 
 
 @pytest.mark.parametrize(
-    ("how",),
+    ("how"),
     [
-        ("inner",),
-        ("outer",),
+        ("inner"),
+        ("outer"),
     ],
 )
 def test_concat_dataframe_mismatched_columns(scalars_dfs, how):
@@ -56,9 +56,52 @@ def test_concat_dataframe_mismatched_columns(scalars_dfs, how):
     cols2 = ["int64_col", "string_col", "int64_too"]
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_result = bpd.concat([scalars_df[cols1], scalars_df[cols2]], join=how)
-    bf_result = bf_result.compute()
+    bf_result = bf_result.to_pandas()
     pd_result = pd.concat(
-        [scalars_pandas_df[cols1], scalars_pandas_df[cols2]], join=how
+        [scalars_pandas_df[cols1], scalars_pandas_df[cols2]],
+        join=how,
     )
 
     pd.testing.assert_frame_equal(bf_result, pd_result)
+
+
+@pytest.mark.parametrize(
+    ("how",),
+    [
+        ("inner",),
+        ("outer",),
+    ],
+)
+def test_concat_axis_1(scalars_dfs, how):
+    if pd.__version__.startswith("1."):
+        pytest.skip("pandas has different behavior in 1.x")
+    scalars_df, scalars_pandas_df = scalars_dfs
+    cols1 = ["int64_col", "float64_col", "rowindex_2"]
+    cols2 = ["int64_col", "bool_col", "string_col", "rowindex_2"]
+
+    part1 = scalars_df[cols1]
+    part1.index.name = "newindexname"
+    # Offset the rows somewhat so that outer join can have an effect.
+    part2 = (
+        scalars_df[cols2]
+        .assign(rowindex_2=scalars_df["rowindex_2"] + 2)
+        .sort_values(["string_col"], kind="stable")
+    )
+    part3 = scalars_df["int64_too"].cumsum().iloc[2:]
+
+    bf_result = bpd.concat([part1, part2, part3], join=how, axis=1)
+
+    # Copy since modifying index
+    pd_part1 = scalars_pandas_df.copy()[cols1]
+    pd_part1.index.name = "newindexname"
+    # Offset the rows somewhat so that outer join can have an effect.
+    pd_part2 = (
+        scalars_pandas_df[cols2]
+        .assign(rowindex_2=scalars_pandas_df["rowindex_2"] + 2)
+        .sort_values(["string_col"], kind="stable")
+    )
+    pd_part3 = scalars_pandas_df["int64_too"].cumsum().iloc[2:]
+
+    pd_result = pd.concat([pd_part1, pd_part2, pd_part3], join=how, axis=1)
+
+    pd.testing.assert_frame_equal(bf_result.to_pandas(), pd_result)

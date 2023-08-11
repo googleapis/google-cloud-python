@@ -27,7 +27,7 @@ import bigframes.ml.core
 def test_model_eval(
     penguins_bqml_linear_model,
 ):
-    result = penguins_bqml_linear_model.evaluate().compute()
+    result = penguins_bqml_linear_model.evaluate().to_pandas()
     expected = pd.DataFrame(
         {
             "mean_absolute_error": [227.01223],
@@ -52,7 +52,7 @@ def test_model_eval(
 def test_model_eval_with_data(penguins_bqml_linear_model, penguins_df_default_index):
     result = penguins_bqml_linear_model.evaluate(
         penguins_df_default_index.dropna()
-    ).compute()
+    ).to_pandas()
     expected = pd.DataFrame(
         {
             "mean_absolute_error": [225.817334],
@@ -77,7 +77,7 @@ def test_model_eval_with_data(penguins_bqml_linear_model, penguins_df_default_in
 def test_model_predict(
     penguins_bqml_linear_model: bigframes.ml.core.BqmlModel, new_penguins_df
 ):
-    predictions = penguins_bqml_linear_model.predict(new_penguins_df).compute()
+    predictions = penguins_bqml_linear_model.predict(new_penguins_df).to_pandas()
     expected = pd.DataFrame(
         {"predicted_body_mass_g": [4030.1, 3280.8, 3177.9]},
         dtype="Float64",
@@ -105,7 +105,7 @@ def test_model_predict_with_unnamed_index(
         new_penguins_df[new_penguins_df.tag_number != 1672],
     )
 
-    predictions = penguins_bqml_linear_model.predict(new_penguins_df).compute()
+    predictions = penguins_bqml_linear_model.predict(new_penguins_df).to_pandas()
 
     expected = pd.DataFrame(
         {"predicted_body_mass_g": [4030.1, 3177.9]},
@@ -132,7 +132,7 @@ def test_model_generate_text(
     }
     df = bqml_palm2_text_generator_model.generate_text(
         llm_text_df, options=options
-    ).compute()
+    ).to_pandas()
 
     TestCase().assertSequenceEqual(df.shape, (3, 4))
     TestCase().assertSequenceEqual(
@@ -150,7 +150,7 @@ def test_model_generate_text(
 
 def test_model_forecast(time_series_bqml_arima_plus_model: bigframes.ml.core.BqmlModel):
     utc = pytz.utc
-    forecast = time_series_bqml_arima_plus_model.forecast().compute()[
+    forecast = time_series_bqml_arima_plus_model.forecast().to_pandas()[
         ["forecast_timestamp", "forecast_value"]
     ]
     expected = pd.DataFrame(

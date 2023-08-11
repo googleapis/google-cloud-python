@@ -21,7 +21,7 @@ class IndexingMixin:
         - A slice object with ints, e.g. ``1:7``.
         - **Not supported yet** A boolean array.
         - **Not supported yet** A ``callable`` function with one argument (the
-          calling Series or DataFrame) and that returns valid output for
+          calling Series or DataFrame) that returns valid output for
           indexing (one of the above). This is useful in method chains, when you
           don't have a reference to the calling object, but would like to base
           your selection on some value.
@@ -43,30 +43,24 @@ class IndexingMixin:
 
         Allowed inputs are:
 
-        - **Not supported yet** A single label, e.g. ``5`` or ``'a'``, (note
+        - A single label, e.g. ``5`` or ``'a'``, (note
           that ``5`` is interpreted as a *label* of the index, and **never** as
           an integer position along the index).
-        - **Not supported yet** A list or array of labels, e.g. ``['a', 'b', 'c']``.
-        - **Not supported yet** A slice object with labels, e.g. ``'a':'f'``.
-
-          .. warning:: Note that contrary to usual python slices, **both** the
-              start and the stop are included
-
-        - **Not supported yet** A boolean array of the same length as the axis being sliced,
+        - A list of labels, e.g. ``['a', 'b', 'c']``.
+        - A boolean series of the same length as the axis being sliced,
           e.g. ``[True, False, True]``.
-        - An alignable boolean Series. The index of the key will be aligned before
-          masking.
-        - **Not supported yet** An alignable Index. The Index of the returned
+        - An alignable Index. The index of the returned
           selection will be the input.
+        - **Not supported yet** An alignable boolean Series. The index of the key will be aligned before
+          masking.
+        - **Not supported yet** A slice object with labels, e.g. ``'a':'f'``.
+          Note: contrary to usual python slices, **both** the start and the stop are included.
         - **Not supported yet** A ``callable`` function with one argument (the
-          calling Series or DataFrame)
-          and that returns valid output for indexing (one of the above)
+          calling Series or DataFrame) that returns valid output for indexing
+          (one of the above).
 
         Raises:
-            KeyError: If any items are not found.
-            IndexingError:
-                If an indexed key is passed and its index is unalignable to the
-                frame index.
+            NotImplementError: if the inputs are not supported.
 
         """
         raise NotImplementedError("abstract methdod")

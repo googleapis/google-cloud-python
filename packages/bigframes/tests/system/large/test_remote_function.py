@@ -295,7 +295,7 @@ def test_remote_function_decorator_with_bigframes_series(
         bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
         bf_result_col = bf_int64_col_filtered.apply(square)
         bf_result = (
-            bf_int64_col_filtered.to_frame().assign(result=bf_result_col).compute()
+            bf_int64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
         )
 
         pd_int64_col = scalars_pandas_df["int64_col"]
@@ -339,7 +339,7 @@ def test_remote_function_explicit_with_bigframes_series(
         bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
         bf_result_col = bf_int64_col_filtered.apply(remote_add_one)
         bf_result = (
-            bf_int64_col_filtered.to_frame().assign(result=bf_result_col).compute()
+            bf_int64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
         )
 
         pd_int64_col = scalars_pandas_df["int64_col"]
@@ -392,7 +392,7 @@ def test_remote_udf_referring_outside_var(
         bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
         bf_result_col = bf_int64_col_filtered.apply(remote_sign)
         bf_result = (
-            bf_int64_col_filtered.to_frame().assign(result=bf_result_col).compute()
+            bf_int64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
         )
 
         pd_int64_col = scalars_pandas_df["int64_col"]
@@ -437,7 +437,7 @@ def test_remote_udf_referring_outside_import(
         bf_float64_col_filtered = bf_float64_col[bf_float64_col_filter]
         bf_result_col = bf_float64_col_filtered.apply(remote_circumference)
         bf_result = (
-            bf_float64_col_filtered.to_frame().assign(result=bf_result_col).compute()
+            bf_float64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
         )
 
         pd_float64_col = scalars_pandas_df["float64_col"]
@@ -486,7 +486,7 @@ def test_remote_udf_referring_global_var_and_import(
         bf_float64_col_filtered = bf_float64_col[bf_float64_col_filter]
         bf_result_col = bf_float64_col_filtered.apply(remote_find_team)
         bf_result = (
-            bf_float64_col_filtered.to_frame().assign(result=bf_result_col).compute()
+            bf_float64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
         )
 
         pd_float64_col = scalars_pandas_df["float64_col"]
@@ -577,7 +577,9 @@ def test_remote_function_restore_with_bigframes_series(
             bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
             bf_result_col = bf_int64_col_filtered.apply(remote_add_one)
             bf_result = (
-                bf_int64_col_filtered.to_frame().assign(result=bf_result_col).compute()
+                bf_int64_col_filtered.to_frame()
+                .assign(result=bf_result_col)
+                .to_pandas()
             )
 
             pd_int64_col = scalars_pandas_df["int64_col"]
@@ -675,7 +677,7 @@ def test_remote_udf_mask_default_value(
 
         bf_int64_col = scalars_df["int64_col"]
         bf_result_col = bf_int64_col.mask(is_odd_remote)
-        bf_result = bf_int64_col.to_frame().assign(result=bf_result_col).compute()
+        bf_result = bf_int64_col.to_frame().assign(result=bf_result_col).to_pandas()
 
         pd_int64_col = scalars_pandas_df["int64_col"]
         pd_result_col = pd_int64_col.mask(is_odd)
@@ -718,7 +720,7 @@ def test_remote_udf_mask_custom_value(
         # for now filter out the nulls and test the rest
         bf_int64_col = scalars_df["int64_col"]
         bf_result_col = bf_int64_col[bf_int64_col.notnull()].mask(is_odd_remote, -1)
-        bf_result = bf_int64_col.to_frame().assign(result=bf_result_col).compute()
+        bf_result = bf_int64_col.to_frame().assign(result=bf_result_col).to_pandas()
 
         pd_int64_col = scalars_pandas_df["int64_col"]
         pd_result_col = pd_int64_col[pd_int64_col.notnull()].mask(is_odd, -1)
@@ -754,7 +756,7 @@ def test_remote_udf_lambda(
         bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
         bf_result_col = bf_int64_col_filtered.apply(add_one_lambda_remote)
         bf_result = (
-            bf_int64_col_filtered.to_frame().assign(result=bf_result_col).compute()
+            bf_int64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
         )
 
         pd_int64_col = scalars_pandas_df["int64_col"]

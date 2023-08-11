@@ -18,13 +18,13 @@ class Pipeline(BaseEstimator, metaclass=ABCMeta):
     """Pipeline of transforms with a final estimator.
 
     Sequentially apply a list of transforms and a final estimator.
-    Intermediate steps of the pipeline must be 'transforms', that is, they
+    Intermediate steps of the pipeline must be `transforms`, that is, they
     must implement `fit` and `transform` methods.
     The final estimator only needs to implement `fit`.
 
     The purpose of the pipeline is to assemble several steps that can be
     cross-validated together while setting different parameters. This simplifies code, and allows deploying an estimator
-    and peprocessing together, e.g. with Pipeline.to_gbq(...)
+    and peprocessing together, e.g. with `Pipeline.to_gbq(...).`
     """
 
     def fit(
@@ -38,14 +38,14 @@ class Pipeline(BaseEstimator, metaclass=ABCMeta):
         data. Finally, fit the transformed data using the final estimator.
 
         Args:
-            X:
-                A BigQuery DataFrames representing training data. Must match the
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                A DataFrame or Series representing training data. Must match the
                 input requirements of the first step of the pipeline.
-            y:
-                A BigQuery DataFrames representing training targets, if applicable.
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                A DataFrame or Series representing training targets, if applicable.
 
         Returns:
-            Pipeline with fitted steps.
+            Pipeline: Pipeline with fitted steps.
         """
         raise NotImplementedError("abstract method")
 
@@ -58,14 +58,14 @@ def score(self, X, y):
     `score` method. Only valid if the final estimator implements `score`.
 
     Args:
-        X:
-            A BigQuery DataFrames as evaluation data.
-        y:
-            A BigQuery DataFrames as evaluation labels.
+        X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            A DataFrame or Series as evaluation data.
+        y (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            A DataFrame or Series as evaluation labels.
 
-    Returns:
-        A BigQuery DataFrames representing the result of calling
-        `score` on the final estimator.
+    Returns:;
+        DataFrame: A DataFrame representing the result
+            of calling `score` on the final estimator.
     """
     raise NotImplementedError("abstract method")
 
@@ -74,10 +74,11 @@ def predict(self, X):
     """Predict the pipeline result for each sample in X.
 
     Args:
-        X:
-            A BigQuery DataFrames to predict.
+        X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            A DataFrame or Series to predict.
 
     Returns:
-        A BigQuery DataFrames Dataframe representing predicted result.
+        bigframes.dataframe.DataFrame: A Dataframe representing
+            predicted result.
     """
     raise NotImplementedError("abstract method")

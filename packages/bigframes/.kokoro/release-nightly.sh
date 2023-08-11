@@ -211,3 +211,8 @@ gcs_docs () {
 }
 
 gcs_docs
+
+if ! [ ${DRY_RUN} ]; then
+    # Copy docs and wheels to Google Drive
+    python3.10 scripts/upload_to_google_drive.py
+fi

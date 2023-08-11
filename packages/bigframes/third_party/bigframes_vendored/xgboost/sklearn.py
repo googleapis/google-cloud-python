@@ -12,11 +12,11 @@ class XGBModel(XGBModelBase):
         """Predict using the XGB model.
 
         Args:
-            X:
-                DataFrame of shape (n_samples, n_features). Samples.
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                Series or DataFrame of shape (n_samples, n_features). Samples.
 
         Returns:
-            DataFrame of shape (n_samples,). Returns predicted values.
+            DataFrame of shape (n_samples,): Returns predicted values.
         """
         raise NotImplementedError("abstract method")
 
@@ -28,15 +28,19 @@ class XGBModel(XGBModelBase):
         pass ``xgb_model`` argument.
 
         Args:
-            X:
-                DataFrame of shape (n_samples, n_features). Training data.
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                Series or DataFrame of shape (n_samples, n_features). Training data.
 
-            y:
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series):
                 DataFrame of shape (n_samples,) or (n_samples, n_targets).
                 Target values. Will be cast to X's dtype if necessary.
 
+            transforms (Optional[List[str]], default None):
+                Do not use. Internal param to be deprecated.
+                Use bigframes.ml.pipeline instead.
+
         Returns:
-            Fitted Estimator.
+            XGBModel: Fitted Estimator.
         """
         raise NotImplementedError("abstract method")
 
@@ -53,46 +57,47 @@ class XGBRegressor(XGBModel, XGBRegressorBase):
     XGBoost regression model.
 
     Args:
-        num_parallel_tree: Optional[int]
+        num_parallel_tree (Optional[int]):
             Number of parallel trees constructed during each iteration. Default to 1.
-        booster: Optional[str]
+        booster (Optional[str]):
             Specify which booster to use: gbtree or dart. Default to "gbtree".
-        dart_normalized_type": Optional[str]
+        dart_normalized_type (Optional[str]):
             Type of normalization algorithm for DART booster. Possible values: "TREE", "FOREST". Default to "TREE".
-        tree_method: Optional[str]
+        tree_method (Optional[str]):
             Specify which tree method to use.  Default to "auto". If this parameter is set to
-            default, XGBoost will choose the most conservative option available.
-        min_child_weight : Optional[float]
+            default, XGBoost will choose the most conservative option available. Possible values: ""exact", "approx",
+            "hist".
+        min_child_weight (Optional[float]):
             Minimum sum of instance weight(hessian) needed in a child. Default to 1.
-        colsample_bytree : Optional[float]
+        colsample_bytree (Optional[float]):
             Subsample ratio of columns when constructing each tree. Default to 1.0.
-        colsample_bylevel : Optional[float]
+        colsample_bylevel (Optional[float]):
             Subsample ratio of columns for each level. Default to 1.0.
-        colsample_bynode : Optional[float]
+        colsample_bynode (Optional[float]):
             Subsample ratio of columns for each split. Default to 1.0.
-        gamma : Optional[float]
+        gamma (Optional[float]):
             (min_split_loss) Minimum loss reduction required to make a further partition on a
             leaf node of the tree. Default to 0.0.
-        max_depth :  Optional[int]
+        max_depth (Optional[int]):
             Maximum tree depth for base learners. Default to 6.
-        subsample : Optional[float]
+        subsample (Optional[float]):
             Subsample ratio of the training instance. Default to 1.0.
-        reg_alpha : Optional[float]
+        reg_alpha (Optional[float]):
             L1 regularization term on weights (xgb's alpha). Default to 0.0.
-        reg_lambda : Optional[float]
+        reg_lambda (Optional[float]):
             L2 regularization term on weights (xgb's lambda). Default to 1.0.
-        early_stop: Optional[bool]
+        early_stop (Optional[bool]):
             Whether training should stop after the first iteration. Default to True.
-        learning_rate: Optional[float]
+        learning_rate (Optional[float]):
             Boosting learning rate (xgb's "eta"). Default to 0.3.
-        max_iterations: Optional[int]
+        max_iterations (Optional[int]):
             Maximum number of rounds for boosting. Default to 20.
-        min_rel_progress: Optional[float]
+        min_rel_progress (Optional[float]):
             Minimum relative loss improvement necessary to continue training when early_stop is set to True. Default to 0.01.
-        enable_global_explain: Optional[bool]
+        enable_global_explain (Optional[bool]):
             Whether to compute global explanations using explainable AI to evaluate global feature importance to the model. Default to False.
-        xgboost_version: Optional[str]
-            Specifies the Xgboost version for model training. Default to "0.9".
+        xgboost_version (Optional[str]):
+            Specifies the Xgboost version for model training. Default to "0.9". Possible values: "0.9", "1.1".
     """
 
 
@@ -101,45 +106,45 @@ class XGBClassifier(XGBModel, XGBClassifierMixIn, XGBClassifierBase):
     XGBoost classifier model.
 
     Args:
-        num_parallel_tree: Optional[int]
+        num_parallel_tree (Optional[int]):
             Number of parallel trees constructed during each iteration. Default to 1.
-        booster: Optional[str]
+        booster (Optional[str]):
             Specify which booster to use: gbtree or dart. Default to "gbtree".
-        dart_normalized_type": Optional[str]
+        dart_normalized_type (Optional[str]):
             Type of normalization algorithm for DART booster. Possible values: "TREE", "FOREST". Default to "TREE".
-        tree_method: Optional[str]
+        tree_method (Optional[str]):
             Specify which tree method to use.  Default to "auto". If this parameter is set to
             default, XGBoost will choose the most conservative option available. Possible values: ""exact", "approx",
             "hist".
-        min_child_weight : Optional[float]
+        min_child_weight (Optional[float]):
             Minimum sum of instance weight(hessian) needed in a child. Default to 1.
-        colsample_bytree : Optional[float]
+        colsample_bytree (Optional[float]):
             Subsample ratio of columns when constructing each tree. Default to 1.0.
-        colsample_bylevel : Optional[float]
+        colsample_bylevel (Optional[float]):
             Subsample ratio of columns for each level. Default to 1.0.
-        colsample_bynode : Optional[float]
+        colsample_bynode (Optional[float]):
             Subsample ratio of columns for each split. Default to 1.0.
-        gamma : Optional[float]
+        gamma (Optional[float]):
             (min_split_loss) Minimum loss reduction required to make a further partition on a
             leaf node of the tree. Default to 0.0.
-        max_depth :  Optional[int]
+        max_depth (Optional[int]):
             Maximum tree depth for base learners. Default to 6.
-        subsample : Optional[float]
+        subsample (Optional[float]):
             Subsample ratio of the training instance. Default to 1.0.
-        reg_alpha : Optional[float]
+        reg_alpha (Optional[float]):
             L1 regularization term on weights (xgb's alpha). Default to 0.0.
-        reg_lambda : Optional[float]
+        reg_lambda (Optional[float]):
             L2 regularization term on weights (xgb's lambda). Default to 1.0.
-        early_stop: Optional[bool]
+        early_stop (Optional[bool]):
             Whether training should stop after the first iteration. Default to True.
-        learning_rate: Optional[float]
+        learning_rate (Optional[float]):
             Boosting learning rate (xgb's "eta"). Default to 0.3.
-        max_iterations: Optional[int]
+        max_iterations (Optional[int]):
             Maximum number of rounds for boosting. Default to 20.
-        min_rel_progress: Optional[float]
+        min_rel_progress (Optional[float]):
             Minimum relative loss improvement necessary to continue training when early_stop is set to True. Default to 0.01.
-        enable_global_explain: Optional[bool]
+        enable_global_explain (Optional[bool]):
             Whether to compute global explanations using explainable AI to evaluate global feature importance to the model. Default to False.
-        xgboost_version: Optional[str]
+        xgboost_version (Optional[str]):
             Specifies the Xgboost version for model training. Default to "0.9". Possible values: "0.9", "1.1".
     """

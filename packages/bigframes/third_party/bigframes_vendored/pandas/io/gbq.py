@@ -15,23 +15,23 @@ class GBQIOMixin:
         col_order: Iterable[str] = (),
         max_results: Optional[int] = None,
     ):
-        """Loads DataFrame from Google BigQuery.
+        """Loads DataFrame from BigQuery.
 
         Args:
-            query:
+            query (str):
                 A SQL string to be executed or a BigQuery table to be read. The
                 table must be specified in the format of
                 `project.dataset.tablename` or `dataset.tablename`.
-            index_col:
+            index_col (Iterable[str] or str):
                 Name of result column(s) to use for index in results DataFrame.
-            col_order:
+            col_order (Iterable[str]):
                 List of BigQuery column names in the desired order for results
                 DataFrame.
-            max_results:
+            max_results (Optional[int], default None):
                 If set, limit the maximum number of rows to fetch from the
                 query results.
 
         Returns:
-            A DataFrame representing results of the query or table.
+            bigframes.dataframe.DataFrame: A DataFrame representing results of the query or table.
         """
         raise NotImplementedError("abstract method")

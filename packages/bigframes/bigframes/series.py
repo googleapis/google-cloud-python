@@ -16,9 +16,10 @@
 
 from __future__ import annotations
 
+import numbers
 import textwrap
 import typing
-from typing import Any, Optional, Union
+from typing import Any, Mapping, Optional, Tuple, Union
 
 import google.cloud.bigquery as bigquery
 import ibis.expr.types as ibis_types
@@ -27,6 +28,7 @@ import pandas
 import pandas.core.dtypes.common
 import typing_extensions
 
+import bigframes.constants as constants
 import bigframes.core
 from bigframes.core import WindowSpec
 import bigframes.core.block_transforms as block_ops
@@ -34,11 +36,16 @@ import bigframes.core.blocks as blocks
 import bigframes.core.groupby as groupby
 import bigframes.core.indexers
 import bigframes.core.indexes as indexes
-from bigframes.core.ordering import OrderingColumnReference, OrderingDirection
+from bigframes.core.ordering import (
+    OrderingColumnReference,
+    OrderingDirection,
+    STABLE_SORTS,
+)
 import bigframes.core.scalar as scalars
 import bigframes.core.window
 import bigframes.dataframe
 import bigframes.dtypes
+import bigframes.formatting_helpers as formatter
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.operations.base
@@ -46,7 +53,8 @@ import bigframes.operations.datetimes as dt
 import bigframes.operations.strings as strings
 import third_party.bigframes_vendored.pandas.core.series as vendored_pandas_series
 
-LevelsType = typing.Union[str, int, typing.Sequence[typing.Union[str, int]]]
+LevelType = typing.Union[str, int]
+LevelsType = typing.Union[LevelType, typing.Sequence[LevelType]]
 
 
 class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Series):
@@ -100,7 +108,18 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     @property
     def query_job(self) -> Optional[bigquery.QueryJob]:
+        """BigQuery job metadata for the most recent query.
+
+        Returns:
+            The most recent `QueryJob
+            <https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.QueryJob>`_.
+        """
+        if self._query_job is None:
+            self._set_internal_query_job(self._compute_dry_run())
         return self._query_job
+
+    def _set_internal_query_job(self, query_job: bigquery.QueryJob):
+        self._query_job = query_job
 
     def __len__(self):
         return self.shape[0]
@@ -108,13 +127,49 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def copy(self) -> Series:
         return Series(self._block)
 
-    def rename(self, index: Optional[str], **kwargs) -> Series:
+    def rename(
+        self, index: Union[blocks.Label, Mapping[Any, Any]] = None, **kwargs
+    ) -> Series:
         if len(kwargs) != 0:
             raise NotImplementedError(
-                "rename does not currently support any keyword arguments."
+                f"rename does not currently support any keyword arguments. {constants.FEEDBACK_LINK}"
             )
-        block = self._block.with_column_labels([index])
-        return Series(block)
+
+        # rename the Series name
+        if index is None or isinstance(
+            index, str
+        ):  # Python 3.9 doesn't allow isinstance of Optional
+            index = typing.cast(Optional[str], index)
+            block = self._block.with_column_labels([index])
+            return Series(block)
+
+        # rename the index
+        if isinstance(index, Mapping):
+            index = typing.cast(Mapping[Any, Any], index)
+            block = self._block
+            for k, v in index.items():
+                new_idx_ids = []
+                for idx_id, idx_dtype in zip(block.index_columns, block.index_dtypes):
+                    # Will throw if key type isn't compatible with index type, which leads to invalid SQL.
+                    block.create_constant(k, dtype=idx_dtype)
+
+                    # Will throw if value type isn't compatible with index type.
+                    block, const_id = block.create_constant(v, dtype=idx_dtype)
+                    block, cond_id = block.apply_unary_op(
+                        idx_id, ops.BinopPartialRight(ops.ne_op, k)
+                    )
+                    block, new_idx_id = block.apply_ternary_op(
+                        idx_id, cond_id, const_id, ops.where_op
+                    )
+
+                    new_idx_ids.append(new_idx_id)
+                    block = block.drop_columns([const_id, cond_id])
+
+                block = block.set_index(new_idx_ids, index_labels=block.index_labels)
+
+            return Series(block)
+
+        raise ValueError(f"Unsupported type of parameter index: {type(index)}")
 
     def rename_axis(
         self,
@@ -123,7 +178,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     ) -> Series:
         if len(kwargs) != 0:
             raise NotImplementedError(
-                "rename_axis does not currently support any keyword arguments."
+                f"rename_axis does not currently support any keyword arguments. {constants.FEEDBACK_LINK}"
             )
         # limited implementation: the new index name is simply the 'mapper' parameter
         if _is_list_like(mapper):
@@ -151,8 +206,15 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         # maybe we just print the job metadata that we have so far?
         # TODO(swast): Avoid downloading the whole series by using job
         # metadata, like we do with DataFrame.
-        preview = self.compute()
-        return repr(preview)
+        opts = bigframes.options.display
+        max_results = opts.max_rows
+        if opts.repr_mode == "deferred":
+            return formatter.repr_query_job(self.query_job)
+
+        pandas_df, _, query_job = self._block.retrieve_repr_request_results(max_results)
+        self._set_internal_query_job(query_job)
+
+        return repr(pandas_df.iloc[:, 0])
 
     def _to_ibis_expr(self):
         """Creates an Ibis table expression representing the Series."""
@@ -168,31 +230,77 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     ) -> Series:
         return self._apply_unary_op(bigframes.operations.AsTypeOp(dtype))
 
-    def compute(self) -> pandas.Series:
-        """Executes deferred operations and downloads the results."""
-        df, query_job = self._block.compute((self._value_column,))
-        self._query_job = query_job
+    def to_pandas(
+        self,
+        max_download_size: Optional[int] = None,
+        sampling_method: Optional[str] = None,
+        random_state: Optional[int] = None,
+    ) -> pandas.Series:
+        """Writes Series to pandas Series.
+
+        Args:
+            max_download_size (int, default None):
+                Download size threshold in MB. If max_download_size is exceeded when downloading data
+                (e.g., to_pandas()), the data will be downsampled if
+                bigframes.options.sampling.enable_downsampling is True, otherwise, an error will be
+                raised. If set to a value other than None, this will supersede the global config.
+            sampling_method (str, default None):
+                Downsampling algorithms to be chosen from, the choices are: "head": This algorithm
+                returns a portion of the data from the beginning. It is fast and requires minimal
+                computations to perform the downsampling; "uniform": This algorithm returns uniform
+                random samples of the data. If set to a value other than None, this will supersede
+                the global config.
+            random_state (int, default None):
+                The seed for the uniform downsampling algorithm. If provided, the uniform method may
+                take longer to execute and require more computation. If set to a value other than
+                None, this will supersede the global config.
+
+        Returns:
+            pandas.Series: A pandas Series with all rows of this Series if the data_sampling_threshold_mb
+                is not exceeded; otherwise, a pandas Series with downsampled rows of the DataFrame.
+        """
+        df, query_job = self._block.to_pandas(
+            (self._value_column,),
+            max_download_size=max_download_size,
+            sampling_method=sampling_method,
+            random_state=random_state,
+        )
+        self._set_internal_query_job(query_job)
         series = df[self._value_column]
         series.name = self._name
         return series
 
-    def drop(self, labels: blocks.Label | typing.Sequence[blocks.Label] = None):
-        block = self._block
-        index_column = block.index_columns[0]
+    def _compute_dry_run(self) -> bigquery.QueryJob:
+        return self._block._compute_dry_run((self._value_column,))
 
+    def drop(
+        self,
+        labels: typing.Any = None,
+        *,
+        axis: typing.Union[int, str] = 0,
+        index: typing.Any = None,
+        columns: Union[blocks.Label, typing.Iterable[blocks.Label]] = None,
+        level: typing.Optional[LevelType] = None,
+    ) -> Series:
+        if labels and index:
+            raise ValueError("Must specify exacly one of 'labels' or 'index'")
+        index = labels or index
+
+        # ignore axis, columns params
+        block = self._block
+        level_id = self._resolve_levels(level or 0)[0]
         if _is_list_like(labels):
             block, inverse_condition_id = block.apply_unary_op(
-                index_column, ops.partial_right(ops.isin_op, labels)
+                level_id, ops.IsInOp(index, match_nulls=True)
             )
             block, condition_id = block.apply_unary_op(
                 inverse_condition_id, ops.invert_op
             )
-
         else:
             block, condition_id = block.apply_unary_op(
-                index_column, ops.partial_right(ops.ne_op, labels)
+                level_id, ops.partial_right(ops.ne_op, labels)
             )
-        block = block.filter(condition_id)
+        block = block.filter(condition_id, keep_null=True)
         block = block.drop_columns([condition_id])
         return Series(block.select_column(self._value_column))
 
@@ -248,6 +356,11 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             agg_ops.min_op, bigframes.core.WindowSpec(following=0)
         )
 
+    def cumprod(self) -> Series:
+        return self._apply_window_op(
+            agg_ops.product_op, bigframes.core.WindowSpec(following=0)
+        )
+
     def shift(self, periods: int = 1) -> Series:
         window = bigframes.core.WindowSpec(
             preceding=periods if periods > 0 else None,
@@ -255,8 +368,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
         return self._apply_window_op(agg_ops.ShiftOp(periods), window)
 
-    def diff(self) -> Series:
-        return self - self.shift(1)
+    def diff(self, periods: int = 1) -> Series:
+        return self - self.shift(periods=periods)
 
     def rank(
         self,
@@ -337,64 +450,66 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     notnull = notna
 
-    def __and__(self, other: bool | int | Series | pandas.Series) -> Series:
+    def __and__(self, other: bool | int | Series) -> Series:
         return self._apply_binary_op(other, ops.and_op)
 
     __rand__ = __and__
 
-    def __or__(self, other: bool | int | Series | pandas.Series) -> Series:
+    def __or__(self, other: bool | int | Series) -> Series:
         return self._apply_binary_op(other, ops.or_op)
 
     __ror__ = __or__
 
-    def __add__(self, other: float | int | Series | pandas.Series) -> Series:
+    def __add__(self, other: float | int | Series) -> Series:
         return self.add(other)
 
-    def __radd__(self, other: float | int | Series | pandas.Series) -> Series:
+    def __radd__(self, other: float | int | Series) -> Series:
         return self.radd(other)
 
-    def add(self, other: float | int | Series | pandas.Series) -> Series:
+    def add(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.add_op)
 
-    def radd(self, other: float | int | Series | pandas.Series) -> Series:
+    def radd(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.reverse(ops.add_op))
 
-    def __sub__(self, other: float | int | Series | pandas.Series) -> Series:
+    def __sub__(self, other: float | int | Series) -> Series:
         return self.sub(other)
 
-    def __rsub__(self, other: float | int | Series | pandas.Series) -> Series:
+    def __rsub__(self, other: float | int | Series) -> Series:
         return self.rsub(other)
 
-    def sub(self, other: float | int | Series | pandas.Series) -> Series:
+    def sub(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.sub_op)
 
-    def rsub(self, other: float | int | Series | pandas.Series) -> Series:
+    def rsub(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.reverse(ops.sub_op))
 
-    def __mul__(self, other: float | int | Series | pandas.Series) -> Series:
+    subtract = sub
+
+    def __mul__(self, other: float | int | Series) -> Series:
         return self.mul(other)
 
-    def __rmul__(self, other: float | int | Series | pandas.Series) -> Series:
+    def __rmul__(self, other: float | int | Series) -> Series:
         return self.rmul(other)
 
-    def mul(self, other: float | int | Series | pandas.Series) -> Series:
+    def mul(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.mul_op)
 
-    def rmul(self, other: float | int | Series | pandas.Series) -> Series:
+    def rmul(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.reverse(ops.mul_op))
 
     multiply = mul
 
-    def __truediv__(self, other: float | int | Series | pandas.Series) -> Series:
+    def __truediv__(self, other: float | int | Series) -> Series:
         return self.truediv(other)
 
-    def __rtruediv__(self, other: float | int | Series | pandas.Series) -> Series:
+    def __rtruediv__(self, other: float | int | Series) -> Series:
         return self.rtruediv(other)
 
-    def truediv(self, other: float | int | Series | pandas.Series) -> Series:
+    def truediv(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.div_op)
 
-    def rtruediv(self, other: float | int | Series | pandas.Series) -> Series:
+    def rtruediv(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.reverse(ops.div_op))
 
     div = truediv
@@ -403,22 +518,22 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     rdiv = rtruediv
 
-    def __floordiv__(self, other: float | int | Series | pandas.Series) -> Series:
+    def __floordiv__(self, other: float | int | Series) -> Series:
         return self.floordiv(other)
 
-    def __rfloordiv__(self, other: float | int | Series | pandas.Series) -> Series:
+    def __rfloordiv__(self, other: float | int | Series) -> Series:
         return self.rfloordiv(other)
 
-    def floordiv(self, other: float | int | Series | pandas.Series) -> Series:
+    def floordiv(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.floordiv_op)
 
-    def rfloordiv(self, other: float | int | Series | pandas.Series) -> Series:
+    def rfloordiv(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.reverse(ops.floordiv_op))
 
-    def __lt__(self, other: float | int | Series | pandas.Series) -> Series:  # type: ignore
+    def __lt__(self, other: float | int | Series) -> Series:  # type: ignore
         return self.lt(other)
 
-    def __le__(self, other: float | int | Series | pandas.Series) -> Series:  # type: ignore
+    def __le__(self, other: float | int | Series) -> Series:  # type: ignore
         return self.le(other)
 
     def lt(self, other) -> Series:
@@ -427,10 +542,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def le(self, other) -> Series:
         return self._apply_binary_op(other, ops.le_op)
 
-    def __gt__(self, other: float | int | Series | pandas.Series) -> Series:  # type: ignore
+    def __gt__(self, other: float | int | Series) -> Series:  # type: ignore
         return self.gt(other)
 
-    def __ge__(self, other: float | int | Series | pandas.Series) -> Series:  # type: ignore
+    def __ge__(self, other: float | int | Series) -> Series:  # type: ignore
         return self.ge(other)
 
     def gt(self, other) -> Series:
@@ -450,6 +565,16 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def rmod(self, other) -> Series:  # type: ignore
         return self._apply_binary_op(other, ops.reverse(ops.mod_op))
+
+    def divmod(self, other) -> Tuple[Series, Series]:  # type: ignore
+        # TODO(huanc): when self and other both has dtype int and other contains zeros,
+        # the output should be dtype float, both floordiv and mod returns dtype int in this case.
+        return (self.floordiv(other), self.mod(other))
+
+    def rdivmod(self, other) -> Tuple[Series, Series]:  # type: ignore
+        # TODO(huanc): when self and other both has dtype int and self contains zeros,
+        # the output should be dtype float, both floordiv and mod returns dtype int in this case.
+        return (self.rfloordiv(other), self.rmod(other))
 
     def __matmul__(self, other):
         return (self * other).sum()
@@ -503,11 +628,48 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             delta_power = delta_power * mean_deltas
         return delta_power.mean()
 
-    def kurt(self) -> float:
-        # TODO(tbergeron): Cache intermediate count/moment/etc. statistics at block level
+    def agg(self, func: str | typing.Sequence[str]) -> scalars.Scalar | Series:
+        if _is_list_like(func):
+            if self.dtype not in bigframes.dtypes.NUMERIC_BIGFRAMES_TYPES:
+                raise NotImplementedError(
+                    f"Multiple aggregations only supported on numeric series. {constants.FEEDBACK_LINK}"
+                )
+            aggregations = [agg_ops.AGGREGATIONS_LOOKUP[f] for f in func]
+            return Series(
+                self._block.summarize(
+                    [self._value_column],
+                    aggregations,
+                )
+            )
+        else:
+
+            return self._apply_aggregation(
+                agg_ops.AGGREGATIONS_LOOKUP[typing.cast(str, func)]
+            )
+
+    def skew(self):
         count = self.count()
+        if count < 3:
+            return pandas.NA
+
+        moment3 = self._central_moment(3)
+        moment2 = self.var() * (count - 1) / count  # Convert sample var to pop var
+
+        # See G1 estimator:
+        # https://en.wikipedia.org/wiki/Skewness#Sample_skewness
+        numerator = moment3
+        denominator = moment2 ** (3 / 2)
+        adjustment = (count * (count - 1)) ** 0.5 / (count - 2)
+
+        return (numerator / denominator) * adjustment
+
+    def kurt(self):
+        count = self.count()
+        if count < 4:
+            return pandas.NA
+
         moment4 = self._central_moment(4)
-        moment2 = self._central_moment(2)  # AKA: Population Variance
+        moment2 = self.var() * (count - 1) / count  # Convert sample var to pop var
 
         # Kurtosis is often defined as the second standardize moment: moment(4)/moment(2)**2
         # Pandas however uses Fisher’s estimator, implemented below
@@ -523,8 +685,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         block = self._block
         # Approach: Count each value, return each value for which count(x) == max(counts))
         block, agg_ids = block.aggregate(
-            [self._value_column],
-            ((self._value_column, agg_ops.count_op),),
+            by_column_ids=[self._value_column],
+            aggregations=((self._value_column, agg_ops.count_op),),
             as_index=False,
         )
         value_count_col_id = agg_ids[0]
@@ -550,6 +712,13 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def mean(self) -> float:
         return typing.cast(float, self._apply_aggregation(agg_ops.mean_op))
+
+    def median(self, *, exact: bool = False) -> float:
+        if exact:
+            raise NotImplementedError(
+                f"Only approximate median is supported. {constants.FEEDBACK_LINK}"
+            )
+        return typing.cast(float, self._apply_aggregation(agg_ops.median_op))
 
     def sum(self) -> float:
         return typing.cast(float, self._apply_aggregation(agg_ops.sum_op))
@@ -622,12 +791,26 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             scalars.Scalar, Series(block.select_column(row_nums)).iloc[0]
         )
 
-    def __getitem__(self, indexer: Series):
+    def __getitem__(self, indexer):
         # TODO: enforce stricter alignment, should fail if indexer is missing any keys.
-        (left, right, block) = self._align(indexer, "left")
-        block = block.filter(right)
-        block = block.select_column(left)
-        return Series(block)
+        use_iloc = (
+            isinstance(indexer, slice)
+            and all(
+                isinstance(x, numbers.Integral) or (x is None)
+                for x in [indexer.start, indexer.stop, indexer.step]
+            )
+        ) or (
+            isinstance(indexer, numbers.Integral)
+            and not isinstance(self._block.index.dtypes[0], pandas.Int64Dtype)
+        )
+        if use_iloc:
+            return self.iloc[indexer]
+        if isinstance(indexer, Series):
+            (left, right, block) = self._align(indexer, "left")
+            block = block.filter(right)
+            block = block.select_column(left)
+            return Series(block)
+        return self.loc[indexer]
 
     def __getattr__(self, key: str):
         if hasattr(pandas.Series, key):
@@ -635,11 +818,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                 textwrap.dedent(
                     f"""
                     BigQuery DataFrames has not yet implemented an equivalent to
-                    'pandas.Series.{key}'. Please check
-                    https://github.com/googleapis/python-bigquery-dataframes/issues for
-                    existing feature requests, or file your own.
-                    Please include information about your use case, as well as
-                    relevant code snippets.
+                    'pandas.Series.{key}'. {constants.FEEDBACK_LINK}
                     """
                 )
             )
@@ -652,12 +831,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return (values[0], values[1], values[2], index)
 
     def _apply_aggregation(self, op: agg_ops.AggregateOp) -> Any:
-        aggregation_result = typing.cast(
-            ibis_types.Scalar, op._as_ibis(self[self.notnull()]._to_ibis_expr())
-        )
-        return bigframes.core.scalar.DeferredScalar(
-            aggregation_result, self._block._expr._session
-        ).compute()
+        return self._block.get_stat(self._value_column, op)
 
     def _apply_window_op(
         self,
@@ -687,7 +861,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
         return Series(block)
 
-    def sort_values(self, *, axis=0, ascending=True, na_position="last") -> Series:
+    def sort_values(
+        self, *, axis=0, ascending=True, kind: str = "quicksort", na_position="last"
+    ) -> Series:
         if na_position not in ["first", "last"]:
             raise ValueError("Param na_position must be one of 'first' or 'last'")
         direction = OrderingDirection.ASC if ascending else OrderingDirection.DESC
@@ -698,7 +874,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                     direction=direction,
                     na_last=(na_position == "last"),
                 )
-            ]
+            ],
+            stable=kind in STABLE_SORTS,
         )
         return Series(block)
 
@@ -750,6 +927,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             raise ValueError("as_index=False only valid with DataFrame")
         if axis:
             raise ValueError("No axis named {} for object type Series".format(level))
+        if not as_index:
+            raise ValueError("'as_index'=False only applies to DataFrame")
         if by is not None:
             return self._groupby_values(by, dropna)
         if level is not None:
@@ -765,7 +944,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return groupby.SeriesGroupBy(
             self._block,
             self._value_column,
-            self._resolve_levels(level),
+            by_col_ids=self._resolve_levels(level),
             value_name=self.name,
             dropna=dropna,
         )
@@ -805,14 +984,14 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                 matches = block.index_name_to_col_id.get(key, [])
                 if len(matches) != 1:
                     raise ValueError(
-                        f"GroupBy key {key} does not map to unambiguous index level"
+                        f"GroupBy key {key} does not match a unique index level. BigQuery DataFrames only interprets lists of strings as index level names, not directly as per-row group assignments."
                     )
                 grouping_cols = [*grouping_cols, matches[0]]
 
         return groupby.SeriesGroupBy(
             block,
             value_col,
-            grouping_cols,
+            by_col_ids=grouping_cols,
             value_name=self.name,
             dropna=dropna,
         )
@@ -851,7 +1030,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
         if not isinstance(cond, Series):
             raise TypeError(
-                f"Only bigframes series condition is supported, received {type(cond).__name__}"
+                f"Only bigframes series condition is supported, received {type(cond).__name__}. "
+                f"{constants.FEEDBACK_LINK}"
             )
         return self.where(~cond, other)
 
@@ -862,13 +1042,13 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def to_csv(self, path_or_buf=None, **kwargs) -> typing.Optional[str]:
         # TODO(b/280651142): Implement version that leverages bq export native csv support to bypass local pandas step.
-        return self.compute().to_csv(path_or_buf, **kwargs)
+        return self.to_pandas().to_csv(path_or_buf, **kwargs)
 
     def to_dict(self, into: type[dict] = dict) -> typing.Mapping:
-        return typing.cast(dict, self.compute().to_dict(into))
+        return typing.cast(dict, self.to_pandas().to_dict(into))
 
     def to_excel(self, excel_writer, sheet_name="Sheet1", **kwargs) -> None:
-        return self.compute().to_excel(excel_writer, sheet_name, **kwargs)
+        return self.to_pandas().to_excel(excel_writer, sheet_name, **kwargs)
 
     def to_json(
         self,
@@ -879,17 +1059,17 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         **kwargs,
     ) -> typing.Optional[str]:
         # TODO(b/280651142): Implement version that leverages bq export native csv support to bypass local pandas step.
-        return self.compute().to_json(path_or_buf, **kwargs)
+        return self.to_pandas().to_json(path_or_buf, **kwargs)
 
     def to_latex(
         self, buf=None, columns=None, header=True, index=True, **kwargs
     ) -> typing.Optional[str]:
-        return self.compute().to_latex(
+        return self.to_pandas().to_latex(
             buf, columns=columns, header=header, index=index, **kwargs
         )
 
     def tolist(self) -> list:
-        return self.compute().to_list()
+        return self.to_pandas().to_list()
 
     to_list = tolist
 
@@ -900,17 +1080,17 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         index: bool = True,
         **kwargs,
     ) -> typing.Optional[str]:
-        return self.compute().to_markdown(buf, mode=mode, index=index, **kwargs)  # type: ignore
+        return self.to_pandas().to_markdown(buf, mode=mode, index=index, **kwargs)  # type: ignore
 
     def to_numpy(
         self, dtype=None, copy=False, na_value=None, **kwargs
     ) -> numpy.ndarray:
-        return self.compute().to_numpy(dtype, copy, na_value, **kwargs)
+        return self.to_pandas().to_numpy(dtype, copy, na_value, **kwargs)
 
     __array__ = to_numpy
 
     def to_pickle(self, path, **kwargs) -> None:
-        return self.compute().to_pickle(path, **kwargs)
+        return self.to_pandas().to_pickle(path, **kwargs)
 
     def to_string(
         self,
@@ -925,7 +1105,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         max_rows=None,
         min_rows=None,
     ) -> typing.Optional[str]:
-        return self.compute().to_string(
+        return self.to_pandas().to_string(
             buf,
             na_rep,
             float_format,
@@ -939,7 +1119,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
 
     def to_xarray(self):
-        return self.compute().to_xarray()
+        return self.to_pandas().to_xarray()
 
     # Keep this at the bottom of the Series class to avoid
     # confusing type checker by overriding str

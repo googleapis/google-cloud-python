@@ -46,6 +46,7 @@ import google.auth.credentials
 import google.cloud.bigquery as bigquery
 import google.cloud.bigquery_connection_v1
 import google.cloud.bigquery_storage_v1
+import google.cloud.functions_v2
 import google.cloud.storage as storage  # type: ignore
 import ibis
 import ibis.backends.bigquery as ibis_bigquery
@@ -56,15 +57,21 @@ import pandas
 import pydata_google_auth
 
 import bigframes._config.bigquery_options as bigquery_options
+import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.guid as guid
-from bigframes.core.ordering import OrderingColumnReference
+import bigframes.core.io as bigframes_io
+from bigframes.core.ordering import IntegerEncoding, OrderingColumnReference
 import bigframes.dataframe as dataframe
 import bigframes.formatting_helpers as formatting_helpers
-import bigframes.ml.loader
+from bigframes.remote_function import read_gbq_function as bigframes_rgf
 from bigframes.remote_function import remote_function as bigframes_rf
 import bigframes.version
+
+# Even though the ibis.backends.bigquery.registry import is unused, it's needed
+# to register new and replacement ops with the Ibis BigQuery backend.
+import third_party.bigframes_vendored.ibis.backends.bigquery.registry  # noqa
 import third_party.bigframes_vendored.pandas.io.gbq as third_party_pandas_gbq
 import third_party.bigframes_vendored.pandas.io.parquet as third_party_pandas_parquet
 import third_party.bigframes_vendored.pandas.io.parsers.readers as third_party_pandas_readers
@@ -81,13 +88,10 @@ _BIGQUERY_REGIONAL_ENDPOINT = "https://{location}-bigquery.googleapis.com"
 _BIGQUERYCONNECTION_REGIONAL_ENDPOINT = "{location}-bigqueryconnection.googleapis.com"
 _BIGQUERYSTORAGE_REGIONAL_ENDPOINT = "{location}-bigquerystorage.googleapis.com"
 
-# TODO(swast): Need to connect to regional endpoints when performing remote
-# functions operations (BQ Connection API, Cloud Run / Cloud Functions).
+_MAX_CLUSTER_COLUMNS = 4
 
-# pydata-google-auth credentials in case auth credentials are not available
-# otherwise
-_pydata_google_auth_credentials: Optional[google.auth.credentials.Credentials] = None
-_pydata_google_auth_project: Optional[str] = None
+# TODO(swast): Need to connect to regional endpoints when performing remote
+# functions operations (BQ Connection IAM, Cloud Run / Cloud Functions).
 
 logger = logging.getLogger(__name__)
 
@@ -97,53 +101,11 @@ def _is_query(query_or_table: str) -> bool:
     return re.search(r"\s", query_or_table.strip(), re.MULTILINE) is not None
 
 
-# TODO(shobs): Remove it after the same is available via pydata-google-auth
-# after https://github.com/pydata/pydata-google-auth/pull/71 is merged, released
-# and upgraded in the google colab image.
-def _ensure_application_default_credentials_in_colab_environment():
-    # This is a special handling for google colab environment where we want to
-    # use the colab specific authentication flow
-    # https://github.com/googlecolab/colabtools/blob/3c8772efd332289e1c6d1204826b0915d22b5b95/google/colab/auth.py#L209
-    try:
-        from google.colab import auth
-
-        auth.authenticate_user()
-    except Exception:
-        # We are catching a broad exception class here because we want to be
-        # agnostic to anything that could internally go wrong in the google
-        # colab auth. Some of the known exception we want to pass on are:
-        #
-        # ModuleNotFoundError: No module named 'google.colab'
-        # ImportError: cannot import name 'auth' from 'google.cloud'
-        # MessageError: Error: credential propagation was unsuccessful
-        #
-        # The MessageError happens on Vertex Colab when it fails to resolve auth
-        # from the Compute Engine Metadata server.
-        pass
-
-
-pydata_google_auth.auth._ensure_application_default_credentials_in_colab_environment = (
-    _ensure_application_default_credentials_in_colab_environment
-)
-
-
 def _get_default_credentials_with_project():
-    global _pydata_google_auth_credentials, _pydata_google_auth_project
-    if not _pydata_google_auth_credentials or not _pydata_google_auth_credentials.valid:
-        # We want to initiate auth via a non-local web server which
-        # particularly helps in a cloud notebook environment where the
-        # machine running the notebook UI and the VM running the notebook
-        # runtime are not the same.
-        # TODO(shobs, b/278903498): Use BigQuery DataFrames's own client id
-        # and secret
-        (
-            _pydata_google_auth_credentials,
-            _pydata_google_auth_project,
-        ) = pydata_google_auth.default(_SCOPES, use_local_webserver=False)
-    return _pydata_google_auth_credentials, _pydata_google_auth_project
+    return pydata_google_auth.default(scopes=_SCOPES, use_local_webserver=False)
 
 
-def _create_bq_clients(
+def _create_cloud_clients(
     project: Optional[str],
     location: Optional[str],
     use_regional_endpoints: Optional[bool],
@@ -152,6 +114,7 @@ def _create_bq_clients(
     bigquery.Client,
     google.cloud.bigquery_connection_v1.ConnectionServiceClient,
     google.cloud.bigquery_storage_v1.BigQueryReadClient,
+    google.cloud.functions_v2.FunctionServiceClient,
 ]:
     """Create and initialize BigQuery client objects."""
 
@@ -170,7 +133,10 @@ def _create_bq_clients(
     )
 
     if not project:
-        raise ValueError("Project must be set to initialize BigQuery client.")
+        raise ValueError(
+            "Project must be set to initialize BigQuery client. "
+            "Try setting `bigframes.options.bigquery.project` first."
+        )
 
     if use_regional_endpoints:
         bq_options = google.api_core.client_options.ClientOptions(
@@ -193,6 +159,7 @@ def _create_bq_clients(
         client_options=bq_options,
         credentials=credentials,
         project=project,
+        location=location,
     )
 
     bqconnection_info = google.api_core.gapic_v1.client_info.ClientInfo(
@@ -213,7 +180,15 @@ def _create_bq_clients(
         credentials=credentials,
     )
 
-    return bqclient, bqconnectionclient, bqstorageclient
+    functions_info = google.api_core.gapic_v1.client_info.ClientInfo(
+        user_agent=_APPLICATION_NAME
+    )
+    cloudfunctionsclient = google.cloud.functions_v2.FunctionServiceClient(
+        client_info=functions_info,
+        credentials=credentials,
+    )
+
+    return bqclient, bqconnectionclient, bqstorageclient, cloudfunctionsclient
 
 
 class Session(
@@ -242,7 +217,8 @@ class Session(
             self.bqclient,
             self.bqconnectionclient,
             self.bqstorageclient,
-        ) = _create_bq_clients(
+            self.cloudfunctionsclient,
+        ) = _create_cloud_clients(
             project=context.project,
             location=self._location,
             use_regional_endpoints=context.use_regional_endpoints,
@@ -310,8 +286,23 @@ class Session(
         24 hours of inactivity or after 7 days."""
         if self._session_id is not None and self.bqclient is not None:
             abort_session_query = "CALL BQ.ABORT_SESSION('{}')".format(self._session_id)
-            query_job = self.bqclient.query(abort_session_query)
-            query_job.result()  # blocks until finished
+            try:
+                query_job = self.bqclient.query(abort_session_query)
+                query_job.result()  # blocks until finished
+            except google.api_core.exceptions.BadRequest as e:
+                # Ignore the exception when the BQ session itself has expired
+                # https://cloud.google.com/bigquery/docs/sessions-terminating#auto-terminate_a_session
+                if not e.message.startswith(
+                    f"Session {self._session_id} has expired and is no longer available."
+                ):
+                    raise
+            except google.auth.exceptions.RefreshError:
+                # The refresh token may itself have been invalidated or expired
+                # https://developers.google.com/identity/protocols/oauth2#expiration
+                # Don't raise the exception in this case while closing the
+                # BigFrames session, so that the end user has a path for getting
+                # out of a bad session due to unusable credentials.
+                pass
             self._session_id = None
 
     def read_gbq(
@@ -367,16 +358,10 @@ class Session(
         else:
             index_cols = list(index_col)
 
-        # Make sure we cluster by the index column so that subsequent
-        # operations are as speedy as they can be.
-        if index_cols:
-            destination: bigquery.Table | bigquery.TableReference = (
-                self._query_to_session_table(query, index_cols)
-            )
-        else:
-            _, query_job = self._start_query(query)
-            query_job.result()  # Wait for job to finish.
-            destination = query_job.destination
+        # Can't cluster since don't know if index_cols are clusterable data types
+        # TODO(tbergeron): Maybe use dryrun to determine types of index_cols to see if can cluster
+        _, query_job = self._start_query(query)
+        destination = query_job.destination
 
         # If there was no destination table, that means the query must have
         # been DDL or DML. Return some job metadata, instead.
@@ -411,6 +396,9 @@ class Session(
 
         See also: :meth:`Session.read_gbq`.
         """
+        if max_results and max_results <= 0:
+            raise ValueError("`max_results` should be a positive number.")
+
         # NOTE: This method doesn't (yet) exist in pandas or pandas-gbq, so
         # these docstrings are inline.
         # TODO(swast): Can we re-use the temp table from other reads in the
@@ -425,7 +413,6 @@ class Session(
                 f"SELECT * FROM `_SESSION`.`{table_ref.table_id}`"
             )
         else:
-            # TODO(swast): Read from a table snapshot so that reads are consistent.
             table_expression = self.ibis_client.table(
                 table_ref.table_id,
                 database=f"{table_ref.project}.{table_ref.dataset_id}",
@@ -441,6 +428,8 @@ class Session(
             index_cols: List[str] = [index_col]
         else:
             index_cols = list(index_col)
+
+        hidden_cols: typing.Sequence[str] = ()
 
         for key in index_cols:
             if key not in table_expression.columns:
@@ -466,7 +455,7 @@ class Session(
             SELECT (SELECT COUNT(*) FROM full_table) AS total_count,
             (SELECT COUNT(*) FROM distinct_table) AS distinct_count
             """
-            results, _ = self._start_query(is_unique_sql)
+            results, query_job = self._start_query(is_unique_sql)
             row = next(iter(results))
 
             total_count = row["total_count"]
@@ -476,9 +465,24 @@ class Session(
                 ordering_value_columns=[
                     core.OrderingColumnReference(column_id) for column_id in index_cols
                 ],
+                total_ordering_columns=frozenset(index_cols),
             )
 
-            if not is_total_ordering:
+            # We have a total ordering, so query via "time travel" so that
+            # the underlying data doesn't mutate.
+            if is_total_ordering:
+
+                # Get the timestamp from the job metadata rather than the query
+                # text so that the query for determining uniqueness of the ID
+                # columns can be cached.
+                current_timestamp = query_job.started
+
+                # The job finished, so we should have a start time.
+                assert current_timestamp is not None
+                table_expression = self.ibis_client.sql(
+                    bigframes_io.create_snapshot_sql(table_ref, current_timestamp)
+                )
+            else:
                 # Make sure when we generate an ordering, the row_number()
                 # coresponds to the index columns.
                 table_expression = table_expression.order_by(index_cols)
@@ -491,26 +495,37 @@ class Session(
                         """,
                     )
                 )
+
+            # When ordering by index columns, apply limit after ordering to
+            # make limit more predictable.
+            if max_results is not None:
+                table_expression = table_expression.limit(max_results)
         else:
+            if max_results is not None:
+                # Apply limit before generating rownums and creating temp table
+                # This makes sure the offsets are valid and limits the number of
+                # rows for which row numbers must be generated
+                table_expression = table_expression.limit(max_results)
             table_expression, ordering = self._create_sequential_ordering(
                 table_expression
             )
-            ordering_id_column = ordering.ordering_id
-            assert ordering_id_column is not None
+            hidden_cols = (
+                (ordering.total_order_col.column_id,)
+                if ordering.total_order_col
+                else ()
+            )
+            assert len(ordering.ordering_value_columns) > 0
             is_total_ordering = True
-            index_cols = [ordering_id_column]
-            index_labels = [None]
-
-        if max_results is not None:
-            if max_results <= 0:
-                raise ValueError("`max_results` should be a positive number.")
-            table_expression = table_expression.limit(max_results)
+            # Block constructor will generate default index if passed empty
+            index_cols = []
+            index_labels = []
 
         return self._read_gbq_with_ordering(
             table_expression=table_expression,
             col_order=col_order,
             index_cols=index_cols,
             index_labels=index_labels,
+            hidden_cols=hidden_cols,
             ordering=ordering,
             is_total_ordering=is_total_ordering,
         )
@@ -522,16 +537,23 @@ class Session(
         col_order: Iterable[str] = (),
         index_cols: Sequence[str] = (),
         index_labels: Sequence[Optional[str]] = (),
+        hidden_cols: Sequence[str] = (),
         ordering: core.ExpressionOrdering,
         is_total_ordering: bool = False,
     ) -> dataframe.DataFrame:
         """Internal helper method that loads DataFrame from Google BigQuery given an ordering column.
 
         Args:
-            table_expression: an ibis table expression to be executed in BigQuery.
-            col_order: List of BigQuery column names in the desired order for results DataFrame.
-            index_cols: List of column names to use as the index or multi-index.
-            ordering: Column name to be used for ordering. If not supplied, a default ordering is generated.
+            table_expression:
+                an ibis table expression to be executed in BigQuery.
+            col_order:
+                List of BigQuery column names in the desired order for results DataFrame.
+            index_cols:
+                List of column names to use as the index or multi-index.
+            hidden_cols:
+                Columns that should be hidden. Ordering columns may (not always) be hidden
+            ordering:
+                Column name to be used for ordering. If not supplied, a default ordering is generated.
 
         Returns:
             A DataFrame representing results of the query or table.
@@ -542,30 +564,23 @@ class Session(
                 f"Got {len(index_labels)}, expected {len(index_cols)}."
             )
 
-        if not index_cols:
-            raise ValueError("Need at least 1 index column.")
-
         # Logic:
         # no total ordering, index -> create sequential order, ordered by index, use for both ordering and index
         # total ordering, index -> use ordering as ordering, index as index
 
         # This code block ensures the existence of a total ordering.
+        column_keys = list(col_order)
+        if len(column_keys) == 0:
+            non_value_columns = set([*index_cols, *hidden_cols])
+            column_keys = [
+                key for key in table_expression.columns if key not in non_value_columns
+            ]
         if not is_total_ordering:
             # Rows are not ordered, we need to generate a default ordering and materialize it
             table_expression, ordering = self._create_sequential_ordering(
                 table_expression, index_cols
             )
-
         index_col_values = [table_expression[index_id] for index_id in index_cols]
-
-        column_keys = list(col_order)
-        if len(column_keys) == 0:
-            non_columns = set(index_cols)
-            if ordering.ordering_id is not None:
-                non_columns.add(ordering.ordering_id)
-            column_keys = [
-                key for key in table_expression.columns if key not in non_columns
-            ]
         return self._read_ibis(
             table_expression,
             index_col_values,
@@ -589,7 +604,7 @@ class Session(
             index_cols = list(index_col)
 
         if not job_config.clustering_fields and index_cols:
-            job_config.clustering_fields = index_cols
+            job_config.clustering_fields = index_cols[:_MAX_CLUSTER_COLUMNS]
 
         if isinstance(filepath_or_buffer, str):
             if filepath_or_buffer.startswith("gs://"):
@@ -606,7 +621,7 @@ class Session(
                 filepath_or_buffer, table, job_config=job_config
             )
 
-        load_job.result()  # Wait for the job to complete
+        self._start_generic_job(load_job)
 
         # The BigQuery REST API for tables.get doesn't take a session ID, so we
         # can't get the schema for a temp table that way.
@@ -622,18 +637,21 @@ class Session(
         index_cols: Sequence[ibis_types.Value],
         index_labels: Sequence[Optional[str]],
         column_keys: Sequence[str],
-        ordering: Optional[core.ExpressionOrdering] = None,
-    ):
+        ordering: core.ExpressionOrdering,
+    ) -> dataframe.DataFrame:
         """Turns a table expression (plus index column) into a DataFrame."""
-        hidden_ordering_columns = None
-        if ordering is not None and ordering.ordering_id is not None:
-            hidden_ordering_columns = (table_expression[ordering.ordering_id],)
 
         columns = list(index_cols)
         for key in column_keys:
             if key not in table_expression.columns:
                 raise ValueError(f"Column '{key}' not found in this table.")
             columns.append(table_expression[key])
+
+        non_hidden_ids = [col.get_name() for col in columns]
+        hidden_ordering_columns = []
+        for ref in ordering.all_ordering_columns:
+            if ref.column_id not in non_hidden_ids:
+                hidden_ordering_columns.append(table_expression[ref.column_id])
 
         block = blocks.Block(
             core.ArrayValue(
@@ -646,16 +664,19 @@ class Session(
         return dataframe.DataFrame(block)
 
     def read_gbq_model(self, model_name: str):
-        """Loads a BQML model from Google BigQuery.
+        """Loads a BigQuery ML model from BigQuery.
 
         Args:
-            model_name : the model's name in BigQuery in the format
-            `project_id.dataset_id.model_id`, or just `dataset_id.model_id`
-            to load from the default project.
+            model_name (str):
+                the model's name in BigQuery in the format
+                `project_id.dataset_id.model_id`, or just `dataset_id.model_id`
+                to load from the default project.
 
         Returns:
             A bigframes.ml Model wrapping the model.
         """
+        import bigframes.ml.loader
+
         model_ref = bigquery.ModelReference.from_string(
             model_name, default_project=self.bqclient.project
         )
@@ -663,16 +684,17 @@ class Session(
         return bigframes.ml.loader.from_bq(self, model)
 
     def read_pandas(self, pandas_dataframe: pandas.DataFrame) -> dataframe.DataFrame:
-        """Loads DataFrame from a Pandas DataFrame.
+        """Loads DataFrame from a pandas DataFrame.
 
-        The Pandas DataFrame will be persisted as a temporary BigQuery table, which can be
+        The pandas DataFrame will be persisted as a temporary BigQuery table, which can be
         automatically recycled after the Session is closed.
 
         Args:
-            pandas_dataframe: a Pandas DataFrame object to be loaded.
+            pandas_dataframe (pandas.DataFrame):
+                a pandas DataFrame object to be loaded.
 
         Returns:
-            A BigQuery DataFrames.
+            bigframes.dataframe.DataFrame: The BigQuery DataFrame.
         """
         # Add order column to pandas DataFrame to preserve order in BigQuery
         ordering_col = "rowid"
@@ -686,7 +708,7 @@ class Session(
         pandas_dataframe_copy[ordering_col] = np.arange(pandas_dataframe_copy.shape[0])
 
         # Specify the datetime dtypes, which is auto-detected as timestamp types.
-        schema = []
+        schema: list[bigquery.SchemaField] = []
         for column, dtype in zip(pandas_dataframe.columns, pandas_dataframe.dtypes):
             if dtype == "timestamp[us][pyarrow]":
                 schema.append(
@@ -699,11 +721,13 @@ class Session(
             filter(lambda name: name is not None, pandas_dataframe_copy.index.names)
         )
         index_labels = typing.cast(List[Optional[str]], index_cols)
-        cluster_cols = index_cols + [ordering_col]
+
+        # Clustering probably not needed anyways as pandas tables are small
+        cluster_cols = [ordering_col]
 
         if len(index_cols) == 0:
-            index_cols = [ordering_col]
-            index_labels = [None]
+            # Block constructor will implicitly build default index
+            pass
 
         job_config = bigquery.LoadJobConfig(schema=schema)
         job_config.clustering_fields = cluster_cols
@@ -718,10 +742,12 @@ class Session(
             load_table_destination,
             job_config=job_config,
         )
-        load_job.result()  # Wait for the job to complete
+        self._start_generic_job(load_job)
 
         ordering = core.ExpressionOrdering(
-            ordering_id_column=OrderingColumnReference(ordering_col), is_sequential=True
+            ordering_value_columns=[OrderingColumnReference(ordering_col)],
+            total_ordering_columns=frozenset([ordering_col]),
+            integer_encoding=IntegerEncoding(True, is_sequential=True),
         )
         table_expression = self.ibis_client.sql(
             f"SELECT * FROM `{load_table_destination.table_id}`"
@@ -731,6 +757,7 @@ class Session(
             table_expression=table_expression,
             index_cols=index_cols,
             index_labels=index_labels,
+            hidden_cols=(ordering_col,),
             ordering=ordering,
             is_total_ordering=True,
         )
@@ -771,14 +798,16 @@ class Session(
             if any(param is not None for param in (dtype, names)):
                 not_supported = ("dtype", "names")
                 raise NotImplementedError(
-                    f"BigQuery engine does not support these arguments: {not_supported}"
+                    f"BigQuery engine does not support these arguments: {not_supported}. "
+                    f"{constants.FEEDBACK_LINK}"
                 )
 
             if index_col is not None and (
                 not index_col or not isinstance(index_col, str)
             ):
                 raise NotImplementedError(
-                    "BigQuery engine only supports a single column name for `index_col`."
+                    "BigQuery engine only supports a single column name for `index_col`. "
+                    f"{constants.FEEDBACK_LINK}"
                 )
 
             # None value for index_col cannot be passed to read_gbq
@@ -794,13 +823,15 @@ class Session(
                     col_order = tuple(col for col in usecols)
                 else:
                     raise NotImplementedError(
-                        "BigQuery engine only supports an iterable of strings for `usecols`."
+                        "BigQuery engine only supports an iterable of strings for `usecols`. "
+                        f"{constants.FEEDBACK_LINK}"
                     )
 
             valid_encodings = {"UTF-8", "ISO-8859-1"}
             if encoding is not None and encoding not in valid_encodings:
                 raise NotImplementedError(
-                    f"BigQuery engine only supports the following encodings: {valid_encodings}"
+                    f"BigQuery engine only supports the following encodings: {valid_encodings}. "
+                    f"{constants.FEEDBACK_LINK}"
                 )
 
             job_config = bigquery.LoadJobConfig()
@@ -830,7 +861,8 @@ class Session(
         else:
             if any(arg in kwargs for arg in ("chunksize", "iterator")):
                 raise NotImplementedError(
-                    "'chunksize' and 'iterator' arguments are not supported."
+                    "'chunksize' and 'iterator' arguments are not supported. "
+                    f"{constants.FEEDBACK_LINK}"
                 )
 
             if isinstance(filepath_or_buffer, str):
@@ -904,20 +936,32 @@ class Session(
             ibis.row_number().cast(ibis_dtypes.int64).name(default_ordering_name)
         )
         table = table.mutate(**{default_ordering_name: default_ordering_col})
+        clusterable_index_cols = [
+            col for col in index_cols if _can_cluster(table[col].type())
+        ]
+        cluster_cols = (clusterable_index_cols + [default_ordering_name])[
+            :_MAX_CLUSTER_COLUMNS
+        ]
         table_ref = self._query_to_session_table(
             self.ibis_client.compile(table),
-            cluster_cols=list(index_cols) + [default_ordering_name],
+            cluster_cols=cluster_cols,
         )
         table = self.ibis_client.sql(f"SELECT * FROM `{table_ref.table_id}`")
         ordering_reference = core.OrderingColumnReference(default_ordering_name)
         ordering = core.ExpressionOrdering(
-            ordering_id_column=ordering_reference, is_sequential=True
+            ordering_value_columns=[ordering_reference],
+            total_ordering_columns=frozenset([default_ordering_name]),
+            integer_encoding=IntegerEncoding(is_encoded=True, is_sequential=True),
         )
         return table, ordering
 
     def _query_to_session_table(
         self, query_text: str, cluster_cols: Iterable[str]
     ) -> bigquery.TableReference:
+        if len(list(cluster_cols)) > _MAX_CLUSTER_COLUMNS:
+            raise ValueError(
+                f"Too many cluster columns: {list(cluster_cols)}, max {_MAX_CLUSTER_COLUMNS} allowed."
+            )
         # Can't set a table in _SESSION as destination via query job API, so we
         # run DDL, instead.
         table = self._create_session_table()
@@ -929,9 +973,8 @@ class Session(
         CLUSTER BY {cluster_cols_sql}
         AS {query_text}
         """
-        query_job = self.bqclient.query(ddl_text)
         try:
-            query_job.result()  # Wait for the job to complete
+            self._start_query(ddl_text)  # Wait for the job to complete
         except google.api_core.exceptions.Conflict:
             # Allow query retry to succeed.
             pass
@@ -947,21 +990,58 @@ class Session(
     ):
         """Decorator to turn a user defined function into a BigQuery remote function.
 
+        .. note::
+            Please make sure following is setup before using this API:
+
+        1. Have the below APIs enabled for your project:
+
+            * BigQuery Connection API
+            * Cloud Functions API
+            * Cloud Run API
+            * Cloud Build API
+            * Artifact Registry API
+            * Cloud Resource Manager API
+
+           This can be done from the cloud console (change `PROJECT_ID` to yours):
+           https://console.cloud.google.com/apis/enableflow?apiid=bigqueryconnection.googleapis.com,cloudfunctions.googleapis.com,run.googleapis.com,cloudbuild.googleapis.com,artifactregistry.googleapis.com,cloudresourcemanager.googleapis.com&project=PROJECT_ID
+
+           Or from the gcloud CLI:
+
+           `$ gcloud services enable bigqueryconnection.googleapis.com cloudfunctions.googleapis.com run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com cloudresourcemanager.googleapis.com`
+
+        2. Have following IAM roles enabled for you:
+
+            * BigQuery Data Editor (roles/bigquery.dataEditor)
+            * BigQuery Connection Admin (roles/bigquery.connectionAdmin)
+            * Cloud Functions Developer (roles/cloudfunctions.developer)
+            * Service Account User (roles/iam.serviceAccountUser)
+            * Storage Object Viewer (roles/storage.objectViewer)
+            * Project IAM Admin (roles/resourcemanager.projectIamAdmin) (Only required if the bigquery connection being used is not pre-created and is created dynamically with user credentials.)
+
+        3. Either the user has setIamPolicy privilege on the project, or a BigQuery connection is pre-created with necessary IAM role set:
+
+            1. To create a connection, follow https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#create_a_connection
+            2. To set up IAM, follow https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#grant_permission_on_function
+
+               Alternatively, the IAM could also be setup via the gcloud CLI:
+
+               `$ gcloud projects add-iam-policy-binding PROJECT_ID --member="serviceAccount:CONNECTION_SERVICE_ACCOUNT_ID" --role="roles/run.invoker"`.
+
         Args:
             input_types (list(type)):
                 List of input data types in the user defined function.
             output_type (type):
                 Data type of the output in the user defined function.
             dataset (str, Optional):
-                Dataset to use to create a BigQuery function. It should be in
+                Dataset in which to create a BigQuery remote function. It should be in
                 `<project_id>.<dataset_name>` or `<dataset_name>` format. If this
-                param is not provided then session dataset id would be used.
+                parameter is not provided then session dataset id is used.
             bigquery_connection (str, Optional):
-                Name of the BigQuery connection. If it is pre created in the same
-                location as the `bigquery_client.location` then it would be used,
-                otherwise it would be created dynamically assuming the user has
-                necessary priviliges. If this param is not provided then the
-                bigquery connection from the session would be used.
+                Name of the BigQuery connection. You should either have the
+                connection already created in the `location` you have chosen, or
+                you should have the Project IAM Admin role to enable the service
+                to create the connection for you if you need it.If this parameter is
+                not provided then the BigQuery connection from the session is used.
             reuse (bool, Optional):
                 Reuse the remote function if already exists.
                 `True` by default, which will result in reusing an existing remote
@@ -969,38 +1049,14 @@ class Session(
                 Setting it to false would force creating a unique remote function.
                 If the required remote function does not exist then it would be
                 created irrespective of this param.
+        Returns:
+            callable: A remote function object pointing to the cloud assets created
+            in the background to support the remote execution. The cloud assets can be
+            located through the following properties set in the object:
 
-        Notes:
-            Please make sure following is setup before using this API:
+            `bigframes_cloud_function` - The google cloud function deployed for the user defined code.
 
-            1. Have the below APIs enabled for your project:
-                  a. BigQuery Connection API
-                  b. Cloud Functions API
-                  c. Cloud Run API
-                  d. Cloud Build API
-                  e. Artifact Registry API
-                  f. Cloud Resource Manager API
-
-              This can be done from the cloud console (change PROJECT_ID to yours):
-                  https://console.cloud.google.com/apis/enableflow?apiid=bigqueryconnection.googleapis.com,cloudfunctions.googleapis.com,run.googleapis.com,cloudbuild.googleapis.com,artifactregistry.googleapis.com,cloudresourcemanager.googleapis.com&project=PROJECT_ID
-              Or from the gcloud CLI:
-                  $ gcloud services enable bigqueryconnection.googleapis.com cloudfunctions.googleapis.com run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com cloudresourcemanager.googleapis.com
-
-            2. Have following IAM roles enabled for you:
-                  a. BigQuery Data Editor (roles/bigquery.dataEditor)
-                  b. BigQuery Connection Admin (roles/bigquery.connectionAdmin)
-                  c. Cloud Functions Developer (roles/cloudfunctions.developer)
-                  d. Service Account User (roles/iam.serviceAccountUser)
-                  e. Storage Object Viewer (roles/storage.objectViewer)
-                  f. Project IAM Admin (roles/resourcemanager.projectIamAdmin)
-                     (Only required if the bigquery connection being used is not pre-created and is created dynamically with user credentials.)
-
-            3. Either the user has setIamPolicy privilege on the project, or a BigQuery connection is pre-created with necessary IAM role set:
-                  a. To create a connection, follow https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#create_a_connection
-                  b. To set up IAM, follow https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#grant_permission_on_function
-               Alternatively, the IAM could also be setup via the gcloud CLI:
-                  $ gcloud projects add-iam-policy-binding PROJECT_ID --member="serviceAccount:CONNECTION_SERVICE_ACCOUNT_ID" --role="roles/run.invoker"
-
+            `bigframes_remote_function` - The bigquery remote function capable of calling into `bigframes_cloud_function`.
         """
         return bigframes_rf(
             input_types,
@@ -1011,34 +1067,62 @@ class Session(
             reuse=reuse,
         )
 
+    def read_gbq_function(
+        self,
+        function_name: str,
+    ):
+        """Loads a BigQuery function from BigQuery.
+
+        Then it can be applied to a DataFrame or Series.
+
+        Args:
+            function_name (str):
+                the function's name in BigQuery in the format
+                `project_id.dataset_id.function_name`, or
+                `dataset_id.function_name` to load from the default project, or
+                `function_name` to load from the default project and the dataset
+                associated with the current session.
+
+        Returns:
+            callable: A function object pointing to the BigQuery function read
+            from BigQuery.
+
+            The object is similar to the one created by the `remote_function`
+            decorator, including the `bigframes_remote_function` property, but
+            not including the `bigframes_cloud_function` property.
+        """
+
+        return bigframes_rgf(
+            function_name=function_name,
+            session=self,
+        )
+
     def _start_query(
         self,
         sql: str,
         job_config: Optional[bigquery.job.QueryJobConfig] = None,
         max_results: Optional[int] = None,
     ) -> Tuple[bigquery.table.RowIterator, bigquery.QueryJob]:
+        """
+        Starts query job and waits for results
+        """
         if job_config is not None:
             query_job = self.bqclient.query(sql, job_config=job_config)
         else:
             query_job = self.bqclient.query(sql)
 
         opts = bigframes.options.display
-        if opts.progress_bar is not None:
-            results_iterator = formatting_helpers.wait_for_job(
+        if opts.progress_bar is not None and not query_job.configuration.dry_run:
+            results_iterator = formatting_helpers.wait_for_query_job(
                 query_job, max_results, opts.progress_bar
             )
         else:
             results_iterator = query_job.result(max_results=max_results)
         return results_iterator, query_job
 
-    def _extract_table(self, source_table, destination_uris, job_config):
-        extract_job = self.bqclient.extract_table(
-            source=source_table,
-            destination_uris=destination_uris,
-            job_config=job_config,
-        )
-        extract_job.result()
-        return extract_job
+    def _get_table_size(self, destination_table):
+        table = self.bqclient.get_table(destination_table)
+        return table.num_bytes
 
     def _rows_to_dataframe(
         self, row_iterator: bigquery.table.RowIterator
@@ -1050,6 +1134,27 @@ class Session(
             string_dtype=pandas.StringDtype(storage="pyarrow"),
         )
 
+    def _start_generic_job(self, job: formatting_helpers.GenericJob):
+        if bigframes.options.display.progress_bar is not None:
+            formatting_helpers.wait_for_job(
+                job, bigframes.options.display.progress_bar
+            )  # Wait for the job to complete
+        else:
+            job.result()
+
 
 def connect(context: Optional[bigquery_options.BigQueryOptions] = None) -> Session:
     return Session(context)
+
+
+def _can_cluster(ibis_type: ibis_dtypes.DataType):
+    # https://cloud.google.com/bigquery/docs/clustered-tables
+    # Notably, float is excluded
+    return (
+        ibis_type.is_integer()
+        or ibis_type.is_string()
+        or ibis_type.is_decimal()
+        or ibis_type.is_date()
+        or ibis_type.is_timestamp()
+        or ibis_type.is_boolean()
+    )

@@ -20,6 +20,7 @@ from typing import Tuple
 import ibis
 import pandas as pd
 
+import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.guid as guid
 import bigframes.core.indexes as indexes
@@ -47,10 +48,14 @@ class LocSeriesIndexer:
         # TODO(swast): support MultiIndex
         if isinstance(key, slice):
             # TODO(swast): Implement loc with slices.
-            raise NotImplementedError("loc does not yet support slices")
+            raise NotImplementedError(
+                f"loc does not yet support slices. {constants.FEEDBACK_LINK}"
+            )
         elif isinstance(key, list):
             # TODO(tbergeron): Implement loc for index label list.
-            raise NotImplementedError("loc does not yet support index label lists")
+            raise NotImplementedError(
+                f"loc does not yet support index label lists. {constants.FEEDBACK_LINK}"
+            )
 
         # Assume the key is for the index label.
         block = self._series._block
@@ -149,6 +154,7 @@ class LocDataFrameIndexer:
         ):
             raise NotImplementedError(
                 "Only setting a column by DataFrame.loc[:, 'column'] is supported."
+                f"{constants.FEEDBACK_LINK}"
             )
 
         # TODO(swast): Support setting multiple columns with key[1] as a list
@@ -213,19 +219,45 @@ def _loc_getitem_series_or_dataframe(
                 typing.Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
                 series_or_dataframe.iloc[0:0],
             )
+
+        # We can't upload a DataFrame with None as the column name, so set it
+        # an arbitrary string.
         index_name = series_or_dataframe.index.name
+        index_name_is_none = index_name is None
+        if index_name_is_none:
+            index_name = "unnamed_col"
+
         keys_df = bigframes.dataframe.DataFrame(
             {index_name: key}, session=series_or_dataframe._get_block().expr._session
         )
         keys_df = keys_df.set_index(index_name, drop=True)
+
+        if index_name_is_none:
+            keys_df.index.name = None
         return _perform_loc_list_join(series_or_dataframe, keys_df)
     elif isinstance(key, slice):
-        return series_or_dataframe._slice(key.start, key.stop, key.step)
+        if (key.start is None) and (key.stop is None) and (key.step is None):
+            return series_or_dataframe.copy()
+        raise NotImplementedError(
+            f"loc does not yet support indexing with a slice. {constants.FEEDBACK_LINK}"
+        )
     elif callable(key):
-        raise NotImplementedError("loc does not yet support indexing with a callable")
+        raise NotImplementedError(
+            f"loc does not yet support indexing with a callable. {constants.FEEDBACK_LINK}"
+        )
+    elif pd.api.types.is_scalar(key):
+        index_name = "unnamed_col"
+        keys_df = bigframes.dataframe.DataFrame(
+            {index_name: [key]}, session=series_or_dataframe._get_block().expr._session
+        )
+        keys_df = keys_df.set_index(index_name, drop=True)
+        keys_df.index.name = None
+        return _perform_loc_list_join(series_or_dataframe, keys_df)
     else:
         raise TypeError(
-            "Invalid argument type. loc currently only supports indexing with a boolean bigframes Series or a list of index entries."
+            "Invalid argument type. loc currently only supports indexing with a "
+            "boolean bigframes Series, a list of index entries or a single index entry. "
+            f"{constants.FEEDBACK_LINK}"
         )
 
 
@@ -257,11 +289,13 @@ def _perform_loc_list_join(
         name = series_or_dataframe.name if series_or_dataframe.name is not None else "0"
         result = typing.cast(
             bigframes.series.Series,
-            series_or_dataframe.to_frame().join(keys_df, how="right")[name],
+            series_or_dataframe.to_frame()._perform_join_by_index(keys_df, how="right")[
+                name
+            ],
         )
         result = result.rename(original_name)
     else:
-        result = series_or_dataframe.join(keys_df, how="right")  # type: ignore
+        result = series_or_dataframe._perform_join_by_index(keys_df, how="right")  # type: ignore
     result = result.rename_axis(original_index_names)
     return result
 
@@ -284,12 +318,8 @@ def _iloc_getitem_series_or_dataframe(
     series_or_dataframe: bigframes.dataframe.DataFrame | bigframes.series.Series, key
 ) -> bigframes.dataframe.DataFrame | bigframes.series.Series | bigframes.core.scalar.Scalar | pd.Series:
     if isinstance(key, int):
-        if key < 0:
-            raise NotImplementedError(
-                "iloc does not yet support negative single positional index"
-            )
         internal_slice_result = series_or_dataframe._slice(key, key + 1, 1)
-        result_pd_df = internal_slice_result.compute()
+        result_pd_df = internal_slice_result.to_pandas()
         if result_pd_df.empty:
             raise IndexError("single positional indexer is out-of-bounds")
         return result_pd_df.iloc[0]
@@ -329,9 +359,11 @@ def _iloc_getitem_series_or_dataframe(
 
     elif isinstance(key, tuple):
         raise NotImplementedError(
-            "iloc does not yet support indexing with a (row, column) tuple"
+            f"iloc does not yet support indexing with a (row, column) tuple. {constants.FEEDBACK_LINK}"
         )
     elif callable(key):
-        raise NotImplementedError("iloc does not yet support indexing with a callable")
+        raise NotImplementedError(
+            f"iloc does not yet support indexing with a callable. {constants.FEEDBACK_LINK}"
+        )
     else:
-        raise TypeError("Invalid argument type.")
+        raise TypeError(f"Invalid argument type. {constants.FEEDBACK_LINK}")

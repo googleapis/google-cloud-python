@@ -12,8 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import google.api_core.exceptions
 import numpy as np
 import pandas as pd
+import pytest
+
+from bigframes.ml import imported
 
 
 def test_tensorflow_create_model(imported_tensorflow_model):
@@ -23,7 +27,7 @@ def test_tensorflow_create_model(imported_tensorflow_model):
 
 def test_tensorflow_model_predict(imported_tensorflow_model, llm_text_df):
     df = llm_text_df.rename(columns={"prompt": "input"})
-    result = imported_tensorflow_model.predict(df).compute()
+    result = imported_tensorflow_model.predict(df).to_pandas()
     # The values are non-human-readable. As they are a dense layer of Neural Network.
     # And since it is pretrained and imported, the model is a opaque-box.
     # We may want to switch to better test model and cases.
@@ -44,13 +48,21 @@ def test_tensorflow_model_predict(imported_tensorflow_model, llm_text_df):
     )
 
 
+def test_tensorflow_model_to_gbq(
+    imported_tensorflow_model: imported.TensorFlowModel, dataset_id: str
+):
+    imported_tensorflow_model.to_gbq(f"{dataset_id}.test_tf_model", replace=True)
+    with pytest.raises(google.api_core.exceptions.Conflict):
+        imported_tensorflow_model.to_gbq(f"{dataset_id}.test_tf_model")
+
+
 def test_onnx_create_model(imported_onnx_model):
     # Model creation doesn't return error
     assert imported_onnx_model is not None
 
 
 def test_onnx_model_predict(imported_onnx_model, onnx_iris_df):
-    result = imported_onnx_model.predict(onnx_iris_df).compute()
+    result = imported_onnx_model.predict(onnx_iris_df).to_pandas()
     value1 = np.array([0.9999993443489075, 0.0, 0.0])
     value2 = np.array([0.0, 0.0, 0.9999993443489075])
     expected = pd.DataFrame(
@@ -66,3 +78,9 @@ def test_onnx_model_predict(imported_onnx_model, onnx_iris_df):
         check_exact=False,
         atol=0.1,
     )
+
+
+def test_onnx_model_to_gbq(imported_onnx_model: imported.ONNXModel, dataset_id: str):
+    imported_onnx_model.to_gbq(f"{dataset_id}.test_onnx_model", replace=True)
+    with pytest.raises(google.api_core.exceptions.Conflict):
+        imported_onnx_model.to_gbq(f"{dataset_id}.test_onnx_model")

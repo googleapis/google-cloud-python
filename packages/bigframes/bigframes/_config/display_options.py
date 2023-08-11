@@ -16,7 +16,7 @@
 
 import contextlib
 import dataclasses
-from typing import Optional
+from typing import Literal, Optional
 
 import pandas as pd
 
@@ -30,6 +30,7 @@ class DisplayOptions:
     max_columns: int = 20
     max_rows: int = 25
     progress_bar: Optional[str] = "auto"
+    repr_mode: Literal["head", "deferred"] = "head"
 
 
 @contextlib.contextmanager

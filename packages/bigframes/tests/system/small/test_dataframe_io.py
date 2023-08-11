@@ -72,15 +72,17 @@ def test_to_csv_index(
     gcs_folder: str,
     index: bool,
 ):
+    if pd.__version__.startswith("1."):
+        pytest.skip("date_format parameter not supported in pandas 1.x.")
     """Test the `to_csv` API with the `index` parameter."""
     scalars_df, scalars_pandas_df = scalars_dfs
     index_col = None
     if scalars_df.index.name is not None:
-        path = gcs_folder + f"test_index_df_to_csv_index_{index}"
+        path = gcs_folder + f"test_index_df_to_csv_index_{index}*.csv"
         if index:
             index_col = scalars_df.index.name
     else:
-        path = gcs_folder + f"test_default_index_df_to_csv_index_{index}"
+        path = gcs_folder + f"test_default_index_df_to_csv_index_{index}*.csv"
 
     # TODO(swast): Support "date_format" parameter and make sure our
     # DATETIME/TIMESTAMP column export is the same format as pandas by default.
@@ -90,14 +92,60 @@ def test_to_csv_index(
     # BigQuery-backed dataframes, so manually convert the dtypes specifically
     # here.
     dtype = scalars_df.reset_index().dtypes.to_dict()
-    dtype.pop("timestamp_col")
     dtype.pop("geography_col")
+    dtype.pop("rowindex")
     gcs_df = pd.read_csv(
-        path, dtype=dtype, parse_dates=["timestamp_col"], index_col=index_col
+        path,
+        dtype=dtype,
+        date_format={"timestamp_col": "YYYY-MM-DD HH:MM:SS Z"},
+        index_col=index_col,
     )
     convert_pandas_dtypes(gcs_df, bytes_col=True)
+    gcs_df.index.name = scalars_df.index.name
 
-    assert_pandas_df_equal_ignore_ordering(gcs_df, scalars_pandas_df)
+    scalars_pandas_df = scalars_pandas_df.copy()
+    scalars_pandas_df.index = scalars_pandas_df.index.astype("int64")
+
+    # Ordering should be maintained for tables smaller than 1 GB.
+    pd.testing.assert_frame_equal(gcs_df, scalars_pandas_df)
+
+
+def test_to_csv_tabs(
+    scalars_dfs: Tuple[bigframes.dataframe.DataFrame, pd.DataFrame],
+    gcs_folder: str,
+):
+    if pd.__version__.startswith("1."):
+        pytest.skip("date_format parameter not supported in pandas 1.x.")
+    """Test the `to_csv` API with the `sep` parameter."""
+    scalars_df, scalars_pandas_df = scalars_dfs
+    index_col = scalars_df.index.name
+    path = gcs_folder + "test_to_csv_tabs*.csv"
+
+    # TODO(swast): Support "date_format" parameter and make sure our
+    # DATETIME/TIMESTAMP column export is the same format as pandas by default.
+    scalars_df.to_csv(path, sep="\t", index=True)
+
+    # Pandas dataframes dtypes from read_csv are not fully compatible with
+    # BigQuery-backed dataframes, so manually convert the dtypes specifically
+    # here.
+    dtype = scalars_df.reset_index().dtypes.to_dict()
+    dtype.pop("geography_col")
+    dtype.pop("rowindex")
+    gcs_df = pd.read_csv(
+        path,
+        sep="\t",
+        dtype=dtype,
+        date_format={"timestamp_col": "YYYY-MM-DD HH:MM:SS Z"},
+        index_col=index_col,
+    )
+    convert_pandas_dtypes(gcs_df, bytes_col=True)
+    gcs_df.index.name = scalars_df.index.name
+
+    scalars_pandas_df = scalars_pandas_df.copy()
+    scalars_pandas_df.index = scalars_pandas_df.index.astype("int64")
+
+    # Ordering should be maintained for tables smaller than 1 GB.
+    pd.testing.assert_frame_equal(gcs_df, scalars_pandas_df)
 
 
 @pytest.mark.parametrize(
@@ -190,9 +238,9 @@ def test_to_json_index_invalid_orient(
 ):
     scalars_df, scalars_pandas_df = scalars_dfs
     if scalars_df.index.name is not None:
-        path = gcs_folder + f"test_index_df_to_json_index_{index}"
+        path = gcs_folder + f"test_index_df_to_json_index_{index}*.jsonl"
     else:
-        path = gcs_folder + f"test_default_index_df_to_json_index_{index}"
+        path = gcs_folder + f"test_default_index_df_to_json_index_{index}*.jsonl"
     with pytest.raises(ValueError):
         scalars_df.to_json(path, index=index, lines=True)
 
@@ -208,9 +256,9 @@ def test_to_json_index_invalid_lines(
 ):
     scalars_df, scalars_pandas_df = scalars_dfs
     if scalars_df.index.name is not None:
-        path = gcs_folder + f"test_index_df_to_json_index_{index}"
+        path = gcs_folder + f"test_index_df_to_json_index_{index}.jsonl"
     else:
-        path = gcs_folder + f"test_default_index_df_to_json_index_{index}"
+        path = gcs_folder + f"test_default_index_df_to_json_index_{index}.jsonl"
     with pytest.raises(NotImplementedError):
         scalars_df.to_json(path, index=index)
 
@@ -227,9 +275,9 @@ def test_to_json_index_records_orient(
     """Test the `to_json` API with the `index` parameter."""
     scalars_df, scalars_pandas_df = scalars_dfs
     if scalars_df.index.name is not None:
-        path = gcs_folder + f"test_index_df_to_json_index_{index}"
+        path = gcs_folder + f"test_index_df_to_json_index_{index}*.jsonl"
     else:
-        path = gcs_folder + f"test_default_index_df_to_json_index_{index}"
+        path = gcs_folder + f"test_default_index_df_to_json_index_{index}*.jsonl"
 
     """ Test the `to_json` API with `orient` is `records` and `lines` is True"""
     scalars_df.to_json(path, index=index, orient="records", lines=True)
@@ -241,7 +289,13 @@ def test_to_json_index_records_orient(
 
     assert len(gcs_df.index) == len(scalars_pandas_df.index)
     pd.testing.assert_index_equal(gcs_df.columns, scalars_pandas_df.columns)
-    assert_pandas_df_equal_ignore_ordering(gcs_df, scalars_pandas_df)
+
+    gcs_df.index.name = scalars_df.index.name
+    gcs_df.index = gcs_df.index.astype("Int64")
+    scalars_pandas_df.index = scalars_pandas_df.index.astype("Int64")
+
+    # Ordering should be maintained for tables smaller than 1 GB.
+    pd.testing.assert_frame_equal(gcs_df, scalars_pandas_df)
 
 
 @pytest.mark.parametrize(
@@ -251,10 +305,12 @@ def test_to_json_index_records_orient(
 def test_to_parquet_index(scalars_dfs, gcs_folder, index):
     """Test the `to_parquet` API with the `index` parameter."""
     scalars_df, scalars_pandas_df = scalars_dfs
+    scalars_pandas_df = scalars_pandas_df.copy()
+
     if scalars_df.index.name is not None:
-        path = gcs_folder + f"test_index_df_to_parquet_{index}"
+        path = gcs_folder + f"test_index_df_to_parquet_{index}*.parquet"
     else:
-        path = gcs_folder + f"test_default_index_df_to_parquet_{index}"
+        path = gcs_folder + f"test_default_index_df_to_parquet_{index}*.parquet"
 
     # TODO(b/268693993): Type GEOGRAPHY is not currently supported for parquet.
     scalars_df = scalars_df.drop(columns="geography_col")
@@ -265,20 +321,26 @@ def test_to_parquet_index(scalars_dfs, gcs_folder, index):
     # table.
     scalars_df.to_parquet(path, index=index)
 
-    gcs_df = pd.read_parquet(path)
+    gcs_df = pd.read_parquet(path.replace("*", "000000000000"))
     convert_pandas_dtypes(gcs_df, bytes_col=False)
     if index and scalars_df.index.name is not None:
         gcs_df = gcs_df.set_index(scalars_df.index.name)
 
     assert len(gcs_df.index) == len(scalars_pandas_df.index)
     pd.testing.assert_index_equal(gcs_df.columns, scalars_pandas_df.columns)
-    assert_pandas_df_equal_ignore_ordering(gcs_df, scalars_pandas_df)
+
+    gcs_df.index.name = scalars_df.index.name
+    gcs_df.index = gcs_df.index.astype("Int64")
+    scalars_pandas_df.index = scalars_pandas_df.index.astype("Int64")
+
+    # Ordering should be maintained for tables smaller than 1 GB.
+    pd.testing.assert_frame_equal(gcs_df, scalars_pandas_df)
 
 
 def test_to_sql_query_named_index_included(
     session, scalars_df_index, scalars_pandas_df_index
 ):
-    sql, index_columns = scalars_df_index.to_sql_query(always_include_index=True)
+    sql, index_columns = scalars_df_index._to_sql_query(always_include_index=True)
     assert len(index_columns) == 1
     index_column, is_named = index_columns[0]
     assert index_column == "rowindex"
@@ -294,7 +356,7 @@ def test_to_sql_query_unnamed_index_excluded(
     session, scalars_df_default_index, scalars_pandas_df_default_index
 ):
     # The .sql property should return SQL without the unnamed indexes
-    sql, index_columns = scalars_df_default_index.to_sql_query(
+    sql, index_columns = scalars_df_default_index._to_sql_query(
         always_include_index=False
     )
     assert len(index_columns) == 0
@@ -310,7 +372,7 @@ def test_to_sql_query_unnamed_index_always_include(
     scalars_df_default_index: bigframes.dataframe.DataFrame,
     scalars_pandas_df_default_index,
 ):
-    sql, index_columns = scalars_df_default_index.to_sql_query(
+    sql, index_columns = scalars_df_default_index._to_sql_query(
         always_include_index=True
     )
     assert len(index_columns) == 1

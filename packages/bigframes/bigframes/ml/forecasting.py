@@ -12,35 +12,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Forcasting models."""
+
 from __future__ import annotations
 
-from typing import cast, Dict, List, Optional, TYPE_CHECKING
+from typing import cast, Dict, List, Optional, Union
 
 from google.cloud import bigquery
 
-if TYPE_CHECKING:
-    import bigframes
-
-import bigframes.ml.base
-import bigframes.ml.core
+import bigframes
+from bigframes.ml import base, core, utils
+import bigframes.pandas as bpd
 
 _PREDICT_OUTPUT_COLUMNS = ["forecast_timestamp", "forecast_value"]
 
 
-class ARIMAPlus(bigframes.ml.base.TrainablePredictor):
+class ARIMAPlus(base.TrainablePredictor):
     """Time Series ARIMA Plus model."""
 
     def __init__(self):
-        self._bqml_model: Optional[bigframes.ml.core.BqmlModel] = None
+        self._bqml_model: Optional[core.BqmlModel] = None
 
-    @staticmethod
-    def _from_bq(session: bigframes.Session, model: bigquery.Model) -> ARIMAPlus:
+    @classmethod
+    def _from_bq(cls, session: bigframes.Session, model: bigquery.Model) -> ARIMAPlus:
         assert model.model_type == "ARIMA_PLUS"
 
         kwargs: Dict[str, str | int | bool | float | List[str]] = {}
 
-        new_arima_plus = ARIMAPlus(**kwargs)
-        new_arima_plus._bqml_model = bigframes.ml.core.BqmlModel(session, model)
+        new_arima_plus = cls(**kwargs)
+        new_arima_plus._bqml_model = core.BqmlModel(session, model)
         return new_arima_plus
 
     @property
@@ -50,74 +50,90 @@ class ARIMAPlus(bigframes.ml.base.TrainablePredictor):
 
     def fit(
         self,
-        X: bigframes.dataframe.DataFrame,
-        y: bigframes.dataframe.DataFrame,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series],
         transforms: Optional[List[str]] = None,
     ):
-        """Fit the model to training data
+        """Fit the model to training data.
 
         Args:
-            X: A dataframe of training timestamp.
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                A dataframe of training timestamp.
 
-            y: Target values for training."""
-        self._bqml_model = bigframes.ml.core.create_bqml_time_series_model(
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                Target values for training.
+            transforms (Optional[List[str]], default None):
+                Do not use. Internal param to be deprecated.
+                Use bigframes.ml.pipeline instead.
+
+        Returns:
+            ARIMAPlus: Fitted estimator.
+        """
+        X, y = utils.convert_to_dataframe(X, y)
+
+        self._bqml_model = core.create_bqml_time_series_model(
             X,
             y,
             transforms=transforms,
             options=self._bqml_options,
         )
 
-    def predict(self, X=None) -> bigframes.dataframe.DataFrame:
+    def predict(self, X=None) -> bpd.DataFrame:
         """Predict the closest cluster for each sample in X.
 
         Args:
-            X: ignored, to be compatible with other APIs.
+            X (default None):
+                ignored, to be compatible with other APIs.
+
         Returns:
-            The predicted BigQuery DataFrames. Which contains 2 columns
-            "forecast_timestamp" and "forecast_value".
+            bigframes.dataframe.DataFrame: The predicted DataFrames. Which
+                contains 2 columns "forecast_timestamp" and "forecast_value".
         """
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
 
         return cast(
-            bigframes.dataframe.DataFrame,
+            bpd.DataFrame,
             self._bqml_model.forecast()[_PREDICT_OUTPUT_COLUMNS],
         )
 
-    # Unlike regression models, time series forcasting can only evaluate with unseen data. X and y must be providee.
     def score(
         self,
-        X: bigframes.dataframe.DataFrame,
-        y: bigframes.dataframe.DataFrame,
-    ) -> bigframes.dataframe.DataFrame:
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series],
+    ) -> bpd.DataFrame:
         """Calculate evaluation metrics of the model.
 
         Args:
-            X:
-                A BigQuery DataFrames only contains 1 column as
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                A BigQuery DataFrame only contains 1 column as
                 evaluation timestamp. The timestamp must be within the horizon
                 of the model, which by default is 1000 data points.
-            y:
-                A BigQuery DataFrames only contains 1 column as
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                A BigQuery DataFrame only contains 1 column as
                 evaluation numeric values.
 
         Returns:
-            A BigQuery DataFrames as evaluation result.
+            bigframes.dataframe.DataFrame: A DataFrame as evaluation result.
         """
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
+        X, y = utils.convert_to_dataframe(X, y)
 
         input_data = X.join(y, how="outer")
         return self._bqml_model.evaluate(input_data)
 
     def to_gbq(self, model_name: str, replace: bool = False) -> ARIMAPlus:
-        """Save the model to Google Cloud BigQuey.
+        """Save the model to BigQuery.
 
         Args:
-            model_name: the name of the model.
-            replace: whether to replace if the model already exists. Default to False.
+            model_name (str):
+                the name of the model.
+            replace (bool, default False):
+                whether to replace if the model already exists. Default to False.
 
-        Returns: saved model."""
+        Returns:
+            ARIMAPlus: saved model."""
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before it can be saved")
 

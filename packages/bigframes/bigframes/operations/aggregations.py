@@ -20,6 +20,9 @@ import ibis
 import ibis.expr.datatypes as ibis_dtypes
 import ibis.expr.types as ibis_types
 
+import bigframes.constants as constants
+import third_party.bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
+
 
 class WindowOp:
     def _as_ibis(self, value: ibis_types.Column, window=None):
@@ -37,6 +40,8 @@ class WindowOp:
 
 
 class AggregateOp(WindowOp):
+    name = "abstract_aggregate"
+
     def _as_ibis(self, value: ibis_types.Column, window=None):
         raise NotImplementedError("Base class AggregateOp has no implementaiton.")
 
@@ -51,13 +56,15 @@ def numeric_op(operation):
             return operation(op, column, window)
         else:
             raise ValueError(
-                f"Numeric operation cannot be applied to type {column.type()}"
+                f"Numeric operation cannot be applied to type {column.type()}. {constants.FEEDBACK_LINK}"
             )
 
     return constrained_op
 
 
 class SumOp(AggregateOp):
+    name = "sum"
+
     @numeric_op
     def _as_ibis(
         self, column: ibis_types.NumericColumn, window=None
@@ -69,7 +76,50 @@ class SumOp(AggregateOp):
         )
 
 
+class MedianOp(AggregateOp):
+    name = "median"
+
+    @numeric_op
+    def _as_ibis(
+        self, column: ibis_types.NumericColumn, window=None
+    ) -> ibis_types.NumericValue:
+        # PERCENTILE_CONT has very few allowed windows. For example, "window
+        # framing clause is not allowed for analytic function percentile_cont".
+        if window is not None:
+            raise NotImplementedError(
+                f"Median with windowing is not supported. {constants.FEEDBACK_LINK}"
+            )
+
+        # TODO(swast): Allow switching between exact and approximate median.
+        # For now, the best we can do is an approximate median when we're doing
+        # an aggregation, as PERCENTILE_CONT is only an analytic function.
+        return typing.cast(ibis_types.NumericValue, column.approx_median())
+
+
+class ApproxQuartilesOp(AggregateOp):
+    def __init__(self, quartile: int):
+        self.name = f"{quartile*25}%"
+        self._quartile = quartile
+
+    @numeric_op
+    def _as_ibis(
+        self, column: ibis_types.NumericColumn, window=None
+    ) -> ibis_types.NumericValue:
+        # PERCENTILE_CONT has very few allowed windows. For example, "window
+        # framing clause is not allowed for analytic function percentile_cont".
+        if window is not None:
+            raise NotImplementedError(
+                f"Approx Quartiles with windowing is not supported. {constants.FEEDBACK_LINK}"
+            )
+        value = vendored_ibis_ops.ApproximateMultiQuantile(
+            column, num_bins=4  # type: ignore
+        ).to_expr()[self._quartile]
+        return typing.cast(ibis_types.NumericValue, value)
+
+
 class MeanOp(AggregateOp):
+    name = "mean"
+
     @numeric_op
     def _as_ibis(
         self, column: ibis_types.NumericColumn, window=None
@@ -78,6 +128,8 @@ class MeanOp(AggregateOp):
 
 
 class ProductOp(AggregateOp):
+    name = "product"
+
     @numeric_op
     def _as_ibis(
         self, column: ibis_types.NumericColumn, window=None
@@ -117,16 +169,22 @@ class ProductOp(AggregateOp):
 
 
 class MaxOp(AggregateOp):
+    name = "max"
+
     def _as_ibis(self, column: ibis_types.Column, window=None) -> ibis_types.Value:
         return _apply_window_if_present(column.max(), window)
 
 
 class MinOp(AggregateOp):
+    name = "min"
+
     def _as_ibis(self, column: ibis_types.Column, window=None) -> ibis_types.Value:
         return _apply_window_if_present(column.min(), window)
 
 
 class StdOp(AggregateOp):
+    name = "std"
+
     @numeric_op
     def _as_ibis(self, x: ibis_types.Column, window=None) -> ibis_types.Value:
         return _apply_window_if_present(
@@ -135,6 +193,8 @@ class StdOp(AggregateOp):
 
 
 class VarOp(AggregateOp):
+    name = "var"
+
     @numeric_op
     def _as_ibis(self, x: ibis_types.Column, window=None) -> ibis_types.Value:
         return _apply_window_if_present(
@@ -143,6 +203,8 @@ class VarOp(AggregateOp):
 
 
 class CountOp(AggregateOp):
+    name = "count"
+
     def _as_ibis(
         self, column: ibis_types.Column, window=None
     ) -> ibis_types.IntegerValue:
@@ -153,7 +215,32 @@ class CountOp(AggregateOp):
         return False
 
 
+class CutOp(WindowOp):
+    def __init__(self, bins: int):
+        self._bins = bins
+
+    def _as_ibis(self, x: ibis_types.Column, window=None):
+        col_min = _apply_window_if_present(x.min(), window)
+        col_max = _apply_window_if_present(x.max(), window)
+        bin_width = (col_max - col_min) / self._bins
+        out = ibis.case()
+        for bin in range(self._bins - 1):
+            out = out.when(x <= (col_min + (bin + 1) * bin_width), bin)
+        out = out.when(x.notnull(), self._bins - 1)
+        return out.end()
+
+    @property
+    def skips_nulls(self):
+        return False
+
+    @property
+    def handles_ties(self):
+        return True
+
+
 class NuniqueOp(AggregateOp):
+    name = "nunique"
+
     def _as_ibis(
         self, column: ibis_types.Column, window=None
     ) -> ibis_types.IntegerValue:
@@ -165,6 +252,8 @@ class NuniqueOp(AggregateOp):
 
 
 class RankOp(WindowOp):
+    name = "rank"
+
     def _as_ibis(
         self, column: ibis_types.Column, window=None
     ) -> ibis_types.IntegerValue:
@@ -230,6 +319,8 @@ class AllOp(AggregateOp):
 
 
 class AnyOp(AggregateOp):
+    name = "any"
+
     def _as_ibis(
         self, column: ibis_types.Column, window=None
     ) -> ibis_types.BooleanValue:
@@ -274,6 +365,7 @@ def _map_to_literal(
 
 sum_op = SumOp()
 mean_op = MeanOp()
+median_op = MedianOp()
 product_op = ProductOp()
 max_op = MaxOp()
 min_op = MinOp()
@@ -286,3 +378,26 @@ dense_rank_op = DenseRankOp()
 all_op = AllOp()
 any_op = AnyOp()
 first_op = FirstOp()
+
+
+# TODO: Alternative names and lookup from numpy function objects
+AGGREGATIONS_LOOKUP: dict[str, AggregateOp] = {
+    op.name: op
+    for op in [
+        sum_op,
+        mean_op,
+        median_op,
+        product_op,
+        max_op,
+        min_op,
+        std_op,
+        var_op,
+        count_op,
+        all_op,
+        any_op,
+        nunique_op,
+        ApproxQuartilesOp(1),
+        ApproxQuartilesOp(2),
+        ApproxQuartilesOp(3),
+    ]
+}

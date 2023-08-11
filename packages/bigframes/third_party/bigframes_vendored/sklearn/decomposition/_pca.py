@@ -30,24 +30,54 @@ class PCA(BaseEstimator, metaclass=ABCMeta):
     truncated SVD.
 
     Args:
-         n_components: Optional[int]
-            Number of components to keep. if n_components is not set all components are kept.
+         n_components (Optional[int], default 3):
+            Number of components to keep. if n_components is not set all components
+            are kept.
 
     """
 
-    def fit(
-        self,
-        X,
-    ):
+    def fit(self, X, y=None):
         """Fit the model according to the given training data.
 
         Args:
-            X:
-                DataFrame of shape (n_samples, n_features). Training vector,
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                Series or DataFrame of shape (n_samples, n_features). Training vector,
                 where `n_samples` is the number of samples and `n_features` is
                 the number of features.
 
+            y (default None):
+                Ignored.
+
+            transforms (Optional[List[str]], default None):
+                Do not use. Internal param to be deprecated.
+                Use bigframes.ml.pipeline instead.
+
         Returns:
-            Fitted estimator.
+            PCA: Fitted estimator.
         """
+        raise NotImplementedError("abstract method")
+
+    def score(self, X=None, y=None):
+        """Return the metrics of the model.
+
+        Args:
+            X (default None):
+                Ignored.
+
+            y (default None):
+                Ignored.
+        Returns:
+            bigframes.dataframe.DataFrame: DataFrame that represents model metrics.
+        """
+        raise NotImplementedError("abstract method")
+
+    def predict(self, X):
+        """Predict the closest cluster for each sample in X.
+
+        Args:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                Series or a DataFrame to predict.
+
+        Returns:
+            bigframes.dataframe.DataFrame: predicted DataFrames."""
         raise NotImplementedError("abstract method")

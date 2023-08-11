@@ -36,7 +36,44 @@ def test_xgbregressor_model_score(
         ]
     ]
     test_y = df[["sex"]]
-    result = penguins_xgbregressor_model.score(test_X, test_y).compute()
+    result = penguins_xgbregressor_model.score(test_X, test_y).to_pandas()
+    expected = pandas.DataFrame(
+        {
+            "mean_absolute_error": [108.77582],
+            "mean_squared_error": [20943.272738],
+            "mean_squared_log_error": [0.00135],
+            "median_absolute_error": [86.313477],
+            "r2_score": [0.967571],
+            "explained_variance": [0.967609],
+        },
+        dtype="Float64",
+    )
+    pandas.testing.assert_frame_equal(
+        result,
+        expected,
+        check_exact=False,
+        rtol=0.1,
+        # int64 Index by default in pandas versus Int64 (nullable) Index in BigQuery DataFrame
+        check_index_type=False,
+    )
+
+
+def test_xgbregressor_model_score_series(
+    penguins_xgbregressor_model, penguins_df_default_index
+):
+    df = penguins_df_default_index.dropna()
+    test_X = df[
+        [
+            "species",
+            "island",
+            "culmen_length_mm",
+            "culmen_depth_mm",
+            "flipper_length_mm",
+            "body_mass_g",
+        ]
+    ]
+    test_y = df["sex"]
+    result = penguins_xgbregressor_model.score(test_X, test_y).to_pandas()
     expected = pandas.DataFrame(
         {
             "mean_absolute_error": [108.77582],
@@ -61,7 +98,7 @@ def test_xgbregressor_model_score(
 def test_xgbregressor_model_predict(
     penguins_xgbregressor_model: bigframes.ml.ensemble.XGBRegressor, new_penguins_df
 ):
-    result = penguins_xgbregressor_model.predict(new_penguins_df).compute()
+    result = penguins_xgbregressor_model.predict(new_penguins_df).to_pandas()
     expected = pandas.DataFrame(
         {"predicted_body_mass_g": ["4293.1538089", "3410.0271", "3357.944"]},
         dtype="Float64",
@@ -94,7 +131,7 @@ def test_to_gbq_saved_xgbregressor_model_scores(
         ]
     ]
     test_y = df[["sex"]]
-    result = saved_model.score(test_X, test_y).compute()
+    result = saved_model.score(test_X, test_y).to_pandas()
     expected = pandas.DataFrame(
         {
             "mean_absolute_error": [109.016973],
@@ -139,7 +176,35 @@ def test_xgbclassifier_model_score(
         ]
     ]
     test_y = df[["sex"]]
-    result = penguins_xgbclassifier_model.score(test_X, test_y).compute()
+    result = penguins_xgbclassifier_model.score(test_X, test_y).to_pandas()
+    TestCase().assertSequenceEqual(result.shape, (1, 6))
+    for col_name in [
+        "precision",
+        "recall",
+        "accuracy",
+        "f1_score",
+        "log_loss",
+        "roc_auc",
+    ]:
+        assert col_name in result.columns
+
+
+def test_xgbclassifier_model_score_series(
+    penguins_xgbclassifier_model, penguins_df_default_index
+):
+    df = penguins_df_default_index.dropna()
+    test_X = df[
+        [
+            "species",
+            "island",
+            "culmen_length_mm",
+            "culmen_depth_mm",
+            "flipper_length_mm",
+            "body_mass_g",
+        ]
+    ]
+    test_y = df["sex"]
+    result = penguins_xgbclassifier_model.score(test_X, test_y).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "precision",
@@ -155,7 +220,7 @@ def test_xgbclassifier_model_score(
 def test_xgbclassifier_model_predict(
     penguins_xgbclassifier_model: bigframes.ml.ensemble.XGBClassifier, new_penguins_df
 ):
-    result = penguins_xgbclassifier_model.predict(new_penguins_df).compute()
+    result = penguins_xgbclassifier_model.predict(new_penguins_df).to_pandas()
     expected = pandas.DataFrame(
         {"predicted_sex": ["MALE", "MALE", "FEMALE"]},
         dtype="string[pyarrow]",
@@ -188,7 +253,7 @@ def test_to_gbq_saved_xgbclassifier_model_scores(
         ]
     ]
     test_y = df[["sex"]]
-    result = saved_model.score(test_X, test_y).compute()
+    result = saved_model.score(test_X, test_y).to_pandas()
     expected = pandas.DataFrame(
         {
             "precision": [1.0],
@@ -235,7 +300,44 @@ def test_randomforestregressor_model_score(
         ]
     ]
     test_y = df[["sex"]]
-    result = penguins_randomforest_regressor_model.score(test_X, test_y).compute()
+    result = penguins_randomforest_regressor_model.score(test_X, test_y).to_pandas()
+    expected = pandas.DataFrame(
+        {
+            "mean_absolute_error": [317.031042],
+            "mean_squared_error": [159713.053504],
+            "mean_squared_log_error": [0.008449],
+            "median_absolute_error": [258.385742],
+            "r2_score": [0.752698],
+            "explained_variance": [0.756173],
+        },
+        dtype="Float64",
+    )
+    pandas.testing.assert_frame_equal(
+        result,
+        expected,
+        check_exact=False,
+        rtol=0.1,
+        # int64 Index by default in pandas versus Int64 (nullable) Index in BigFramese
+        check_index_type=False,
+    )
+
+
+def test_randomforestregressor_model_score_series(
+    penguins_randomforest_regressor_model, penguins_df_default_index
+):
+    df = penguins_df_default_index.dropna()
+    test_X = df[
+        [
+            "species",
+            "island",
+            "culmen_length_mm",
+            "culmen_depth_mm",
+            "flipper_length_mm",
+            "body_mass_g",
+        ]
+    ]
+    test_y = df["sex"]
+    result = penguins_randomforest_regressor_model.score(test_X, test_y).to_pandas()
     expected = pandas.DataFrame(
         {
             "mean_absolute_error": [317.031042],
@@ -261,7 +363,7 @@ def test_randomforestregressor_model_predict(
     penguins_randomforest_regressor_model: bigframes.ml.ensemble.RandomForestRegressor,
     new_penguins_df,
 ):
-    result = penguins_randomforest_regressor_model.predict(new_penguins_df).compute()
+    result = penguins_randomforest_regressor_model.predict(new_penguins_df).to_pandas()
     expected = pandas.DataFrame(
         {"predicted_body_mass_g": ["3897.341797", "3458.385742", "3458.385742"]},
         dtype="Float64",
@@ -294,7 +396,7 @@ def test_to_gbq_saved_randomforestregressor_model_scores(
         ]
     ]
     test_y = df[["sex"]]
-    result = saved_model.score(test_X, test_y).compute()
+    result = saved_model.score(test_X, test_y).to_pandas()
     expected = pandas.DataFrame(
         {
             "mean_absolute_error": [319.239235],
@@ -343,7 +445,35 @@ def test_randomforestclassifier_model_score(
         ]
     ]
     test_y = df[["sex"]]
-    result = penguins_randomforest_classifier_model.score(test_X, test_y).compute()
+    result = penguins_randomforest_classifier_model.score(test_X, test_y).to_pandas()
+    TestCase().assertSequenceEqual(result.shape, (1, 6))
+    for col_name in [
+        "precision",
+        "recall",
+        "accuracy",
+        "f1_score",
+        "log_loss",
+        "roc_auc",
+    ]:
+        assert col_name in result.columns
+
+
+def test_randomforestclassifier_model_score_series(
+    penguins_randomforest_classifier_model, penguins_df_default_index
+):
+    df = penguins_df_default_index.dropna()
+    test_X = df[
+        [
+            "species",
+            "island",
+            "culmen_length_mm",
+            "culmen_depth_mm",
+            "flipper_length_mm",
+            "body_mass_g",
+        ]
+    ]
+    test_y = df["sex"]
+    result = penguins_randomforest_classifier_model.score(test_X, test_y).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "precision",
@@ -360,7 +490,7 @@ def test_randomforestclassifier_model_predict(
     penguins_randomforest_classifier_model: bigframes.ml.ensemble.RandomForestClassifier,
     new_penguins_df,
 ):
-    result = penguins_randomforest_classifier_model.predict(new_penguins_df).compute()
+    result = penguins_randomforest_classifier_model.predict(new_penguins_df).to_pandas()
     expected = pandas.DataFrame(
         {"predicted_sex": ["MALE", "MALE", "FEMALE"]},
         dtype="string[pyarrow]",
@@ -393,7 +523,7 @@ def test_to_gbq_saved_randomforestclassifier_model_scores(
         ]
     ]
     test_y = df[["sex"]]
-    result = saved_model.score(test_X, test_y).compute()
+    result = saved_model.score(test_X, test_y).to_pandas()
     expected = pandas.DataFrame(
         {
             "precision": [0.636746],

@@ -41,9 +41,25 @@ def test_dataframe_groupby_numeric_aggregate(
     col_names = ["int64_too", "float64_col", "int64_col", "bool_col", "string_col"]
     bf_result = operator(scalars_df_index[col_names].groupby("string_col"))
     pd_result = operator(scalars_pandas_df_index[col_names].groupby("string_col"))
-    bf_result_computed = bf_result.compute()
+    bf_result_computed = bf_result.to_pandas()
     # Pandas std function produces float64, not matching Float64 from bigframes
     pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
+
+
+def test_dataframe_groupby_median(scalars_df_index, scalars_pandas_df_index):
+    col_names = ["int64_too", "float64_col", "int64_col", "bool_col", "string_col"]
+    bf_result = (
+        scalars_df_index[col_names].groupby("string_col").median(numeric_only=True)
+    )
+    pd_min = (
+        scalars_pandas_df_index[col_names].groupby("string_col").min(numeric_only=True)
+    )
+    pd_max = (
+        scalars_pandas_df_index[col_names].groupby("string_col").max(numeric_only=True)
+    )
+    bf_result_computed = bf_result.to_pandas()
+    # Median is approximate. Just check for plausibility.
+    assert ((pd_min <= bf_result_computed) & (bf_result_computed <= pd_max)).all().all()
 
 
 @pytest.mark.parametrize(
@@ -65,7 +81,7 @@ def test_dataframe_groupby_aggregate(
     col_names = ["int64_too", "float64_col", "int64_col", "bool_col", "string_col"]
     bf_result = operator(scalars_df_index[col_names].groupby("string_col"))
     pd_result = operator(scalars_pandas_df_index[col_names].groupby("string_col"))
-    bf_result_computed = bf_result.compute()
+    bf_result_computed = bf_result.to_pandas()
 
     pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
 
@@ -91,7 +107,7 @@ def test_dataframe_groupby_multi_sum(
         .groupby(["bool_col", "int64_col"], as_index=as_index)
         .sum(numeric_only=True)
     )
-    bf_result = bf_series.compute()
+    bf_result = bf_series.to_pandas()
 
     if not as_index:
         # BigQuery DataFrames default indices use nullable Int64 always
@@ -124,6 +140,36 @@ def test_dataframe_groupby_analytic(
     col_names = ["float64_col", "int64_col", "bool_col", "string_col"]
     bf_result = operator(scalars_df_index[col_names].groupby("string_col"))
     pd_result = operator(scalars_pandas_df_index[col_names].groupby("string_col"))
-    bf_result_computed = bf_result.compute()
+    bf_result_computed = bf_result.to_pandas()
 
     pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
+
+
+def test_dataframe_groupby_getitem(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    col_names = ["float64_col", "int64_col", "bool_col", "string_col"]
+    bf_result = (
+        scalars_df_index[col_names].groupby("string_col")["int64_col"].min().to_pandas()
+    )
+    pd_result = (
+        scalars_pandas_df_index[col_names].groupby("string_col")["int64_col"].min()
+    )
+
+    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+
+def test_dataframe_groupby_getitem_list(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    col_names = ["float64_col", "int64_col", "bool_col", "string_col"]
+    bf_result = (
+        scalars_df_index[col_names].groupby("string_col")[col_names].min().to_pandas()
+    )
+    pd_result = (
+        scalars_pandas_df_index[col_names].groupby("string_col")[col_names].min()
+    )
+
+    pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)

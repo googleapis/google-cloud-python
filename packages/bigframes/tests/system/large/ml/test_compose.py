@@ -56,8 +56,12 @@ def test_columntransformer_standalone_fit_transform(
                 [{"index": 1, "value": 1.0}],
                 [{"index": 2, "value": 1.0}],
             ],
-            "scaled_culmen_length_mm": [-0.8099, -0.9931, -1.103],
-            "scaled_flipper_length_mm": [-0.3495, -1.416, -0.9185],
+            "scaled_culmen_length_mm": [
+                -0.811119671289163,
+                -0.9945520581113803,
+                -1.104611490204711,
+            ],
+            "scaled_flipper_length_mm": [-0.350044, -1.418336, -0.9198],
         },
         index=pandas.Index([1633, 1672, 1690], dtype="Int64", name="tag_number"),
     )

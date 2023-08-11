@@ -13,6 +13,8 @@ API Reference
 
     decomposition
 
+    ensemble
+
     forecasting
 
     imported

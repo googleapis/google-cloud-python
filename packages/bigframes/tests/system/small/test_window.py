@@ -19,42 +19,31 @@ import pytest
 @pytest.mark.parametrize(
     ("windowing"),
     [
-        (lambda x: x.expanding()),
-        (lambda x: x.rolling(3, min_periods=3)),
-        (lambda x: x.groupby(x % 2).rolling(3, min_periods=3)),
-        (lambda x: x.groupby(x % 3).expanding(min_periods=2)),
-    ],
-    ids=[
-        "expanding",
-        "rolling",
-        "rollinggroupby",
-        "expandinggroupby",
+        pytest.param(lambda x: x.expanding(), id="expanding"),
+        pytest.param(lambda x: x.rolling(3, min_periods=3), id="rolling"),
+        pytest.param(
+            lambda x: x.groupby(x % 2).rolling(3, min_periods=3), id="rollinggroupby"
+        ),
+        pytest.param(
+            lambda x: x.groupby(x % 3).expanding(min_periods=2), id="expandinggroupby"
+        ),
     ],
 )
 @pytest.mark.parametrize(
     ("agg_op"),
     [
-        (lambda x: x.sum()),
-        (lambda x: x.min()),
-        (lambda x: x.max()),
-        (lambda x: x.mean()),
-        (lambda x: x.count()),
-        (lambda x: x.std()),
-        (lambda x: x.var()),
-    ],
-    ids=[
-        "sum",
-        "min",
-        "max",
-        "mean",
-        "count",
-        "std",
-        "var",
+        pytest.param(lambda x: x.sum(), id="sum"),
+        pytest.param(lambda x: x.min(), id="min"),
+        pytest.param(lambda x: x.max(), id="max"),
+        pytest.param(lambda x: x.mean(), id="mean"),
+        pytest.param(lambda x: x.count(), id="count"),
+        pytest.param(lambda x: x.std(), id="std"),
+        pytest.param(lambda x: x.var(), id="var"),
     ],
 )
 def test_window_agg_ops(scalars_df_index, scalars_pandas_df_index, windowing, agg_op):
     col_name = "int64_too"
-    bf_series = agg_op(windowing(scalars_df_index[col_name])).compute()
+    bf_series = agg_op(windowing(scalars_df_index[col_name])).to_pandas()
     pd_series = agg_op(windowing(scalars_pandas_df_index[col_name]))
 
     # Pandas always converts to float64, even for min/max/count, which is not desired

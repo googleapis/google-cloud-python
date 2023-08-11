@@ -30,7 +30,7 @@ def test_day(scalars_dfs, col_name):
         pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.dt.day.compute()
+    bf_result = bf_series.dt.day.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.day
 
     assert_series_equal_ignoring_order(
@@ -48,7 +48,7 @@ def test_date(scalars_dfs, col_name):
         pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.dt.date.compute()
+    bf_result = bf_series.dt.date.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.date
 
     assert_series_equal_ignoring_order(
@@ -66,7 +66,7 @@ def test_dayofweek(scalars_dfs, col_name):
         pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.dt.dayofweek.compute()
+    bf_result = bf_series.dt.dayofweek.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.dayofweek
 
     assert_series_equal_ignoring_order(pd_result, bf_result, check_dtype=False)
@@ -81,7 +81,7 @@ def test_hour(scalars_dfs, col_name):
         pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.dt.hour.compute()
+    bf_result = bf_series.dt.hour.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.hour
 
     assert_series_equal_ignoring_order(
@@ -99,7 +99,7 @@ def test_minute(scalars_dfs, col_name):
         pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.dt.minute.compute()
+    bf_result = bf_series.dt.minute.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.minute
 
     assert_series_equal_ignoring_order(
@@ -117,7 +117,7 @@ def test_month(scalars_dfs, col_name):
         pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.dt.month.compute()
+    bf_result = bf_series.dt.month.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.month
 
     assert_series_equal_ignoring_order(
@@ -135,7 +135,7 @@ def test_quarter(scalars_dfs, col_name):
         pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.dt.quarter.compute()
+    bf_result = bf_series.dt.quarter.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.quarter
 
     assert_series_equal_ignoring_order(
@@ -153,7 +153,7 @@ def test_second(scalars_dfs, col_name):
         pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.dt.second.compute()
+    bf_result = bf_series.dt.second.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.second
 
     assert_series_equal_ignoring_order(
@@ -171,7 +171,7 @@ def test_time(scalars_dfs, col_name):
         pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.dt.time.compute()
+    bf_result = bf_series.dt.time.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.time
 
     assert_series_equal_ignoring_order(
@@ -189,7 +189,7 @@ def test_year(scalars_dfs, col_name):
         pytest.skip("Pyarrow datetime objects not support in pandas 1.x.")
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.dt.year.compute()
+    bf_result = bf_series.dt.year.to_pandas()
     pd_result = scalars_pandas_df[col_name].dt.year
 
     assert_series_equal_ignoring_order(

@@ -30,7 +30,44 @@ def test_linear_reg_model_score(penguins_linear_model, penguins_df_default_index
         ]
     ]
     test_y = df[["body_mass_g"]]
-    result = penguins_linear_model.score(test_X, test_y).compute()
+    result = penguins_linear_model.score(test_X, test_y).to_pandas()
+    expected = pandas.DataFrame(
+        {
+            "mean_absolute_error": [225.817334],
+            "mean_squared_error": [80540.705944],
+            "mean_squared_log_error": [0.004972],
+            "median_absolute_error": [173.080816],
+            "r2_score": [0.87529],
+            "explained_variance": [0.87529],
+        },
+        dtype="Float64",
+    )
+    pandas.testing.assert_frame_equal(
+        result,
+        expected,
+        check_exact=False,
+        rtol=0.1,
+        # int64 Index by default in pandas versus Int64 (nullable) Index in BigQuery DataFrame
+        check_index_type=False,
+    )
+
+
+def test_linear_reg_model_score_series(
+    penguins_linear_model, penguins_df_default_index
+):
+    df = penguins_df_default_index.dropna()
+    test_X = df[
+        [
+            "species",
+            "island",
+            "culmen_length_mm",
+            "culmen_depth_mm",
+            "flipper_length_mm",
+            "sex",
+        ]
+    ]
+    test_y = df["body_mass_g"]
+    result = penguins_linear_model.score(test_X, test_y).to_pandas()
     expected = pandas.DataFrame(
         {
             "mean_absolute_error": [225.817334],
@@ -53,7 +90,7 @@ def test_linear_reg_model_score(penguins_linear_model, penguins_df_default_index
 
 
 def test_linear_reg_model_predict(penguins_linear_model, new_penguins_df):
-    predictions = penguins_linear_model.predict(new_penguins_df).compute()
+    predictions = penguins_linear_model.predict(new_penguins_df).to_pandas()
     expected = pandas.DataFrame(
         {"predicted_body_mass_g": [4030.1, 3280.8, 3177.9]},
         dtype="Float64",
@@ -85,7 +122,7 @@ def test_to_gbq_saved_linear_reg_model_scores(
         ]
     ]
     test_y = df[["body_mass_g"]]
-    result = saved_model.score(test_X, test_y).compute()
+    result = saved_model.score(test_X, test_y).to_pandas()
     expected = pandas.DataFrame(
         {
             "mean_absolute_error": [227.01223],
@@ -126,7 +163,44 @@ def test_logistic_model_score(penguins_logistic_model, penguins_df_default_index
         ]
     ]
     test_y = df[["sex"]]
-    result = penguins_logistic_model.score(test_X, test_y).compute()
+    result = penguins_logistic_model.score(test_X, test_y).to_pandas()
+    expected = pandas.DataFrame(
+        {
+            "precision": [0.616753],
+            "recall": [0.618615],
+            "accuracy": [0.92515],
+            "f1_score": [0.617681],
+            "log_loss": [1.498832],
+            "roc_auc": [0.975807],
+        },
+        dtype="Float64",
+    )
+    pandas.testing.assert_frame_equal(
+        result,
+        expected,
+        check_exact=False,
+        rtol=0.1,
+        # int64 Index by default in pandas versus Int64 (nullable) Index in BigQuery DataFrame
+        check_index_type=False,
+    )
+
+
+def test_logistic_model_score_series(
+    penguins_logistic_model, penguins_df_default_index
+):
+    df = penguins_df_default_index.dropna()
+    test_X = df[
+        [
+            "species",
+            "island",
+            "culmen_length_mm",
+            "culmen_depth_mm",
+            "flipper_length_mm",
+            "body_mass_g",
+        ]
+    ]
+    test_y = df["sex"]
+    result = penguins_logistic_model.score(test_X, test_y).to_pandas()
     expected = pandas.DataFrame(
         {
             "precision": [0.616753],
@@ -149,7 +223,7 @@ def test_logistic_model_score(penguins_logistic_model, penguins_df_default_index
 
 
 def test_logsitic_model_predict(penguins_logistic_model, new_penguins_df):
-    predictions = penguins_logistic_model.predict(new_penguins_df).compute()
+    predictions = penguins_logistic_model.predict(new_penguins_df).to_pandas()
     expected = pandas.DataFrame(
         {"predicted_sex": ["MALE", "MALE", "FEMALE"]},
         dtype="string[pyarrow]",
@@ -163,7 +237,7 @@ def test_logsitic_model_predict(penguins_logistic_model, new_penguins_df):
     )
 
 
-def test_to_gbq_saved_logsitic_model_score(
+def test_logsitic_model_to_gbq_saved_score(
     penguins_logistic_model, dataset_id, penguins_df_default_index
 ):
     saved_model = penguins_logistic_model.to_gbq(
@@ -181,7 +255,7 @@ def test_to_gbq_saved_logsitic_model_score(
         ]
     ]
     test_y = df[["sex"]]
-    result = saved_model.score(test_X, test_y).compute()
+    result = saved_model.score(test_X, test_y).to_pandas()
     expected = pandas.DataFrame(
         {
             "precision": [0.616753],
@@ -203,7 +277,7 @@ def test_to_gbq_saved_logsitic_model_score(
     )
 
 
-def test_to_logistic_model_gbq_replace(penguins_logistic_model, dataset_id):
+def test_logistic_model_to_gbq_replace(penguins_logistic_model, dataset_id):
     penguins_logistic_model.to_gbq(f"{dataset_id}.test_penguins_model", replace=True)
     with pytest.raises(google.api_core.exceptions.Conflict):
         penguins_logistic_model.to_gbq(f"{dataset_id}.test_penguins_model")

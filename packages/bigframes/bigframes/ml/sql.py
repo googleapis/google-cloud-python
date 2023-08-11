@@ -18,6 +18,8 @@ Generates SQL queries needed for BigQuery DataFrames ML
 
 from typing import Iterable, Optional, Union
 
+import bigframes.constants as constants
+
 
 def _encode_value(v: Union[str, int, float, Iterable[str]]) -> str:
     """Encode a parameter value for SQL"""
@@ -29,7 +31,7 @@ def _encode_value(v: Union[str, int, float, Iterable[str]]) -> str:
         inner = ", ".join([_encode_value(x) for x in v])
         return f"[{inner}]"
     else:
-        raise ValueError("Unexpected value type")
+        raise ValueError(f"Unexpected value type. {constants.FEEDBACK_LINK}")
 
 
 def _build_param_Iterable(**kwargs: Union[str, int, float, Iterable[str]]) -> str:
@@ -77,9 +79,12 @@ def ml_standard_scaler(numeric_expr_sql: str, name: str) -> str:
     return f"""ML.STANDARD_SCALER({numeric_expr_sql}) OVER() AS {name}"""
 
 
-def ml_one_hot_encoder(numeric_expr_sql: str, name: str) -> str:
-    """Encode ML.ONE_HOT_ENCODER for BQML"""
-    return f"""ML.ONE_HOT_ENCODER({numeric_expr_sql}) OVER() AS {name}"""
+def ml_one_hot_encoder(
+    numeric_expr_sql: str, drop: str, top_k: int, frequency_threshold: int, name: str
+) -> str:
+    """Encode ML.ONE_HOT_ENCODER for BQML.
+    https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-one-hot-encoder for params."""
+    return f"""ML.ONE_HOT_ENCODER({numeric_expr_sql}, '{drop}', {top_k}, {frequency_threshold}) OVER() AS {name}"""
 
 
 def create_model(
@@ -88,9 +93,8 @@ def create_model(
     transform_sql: Optional[str] = None,
     options_sql: Optional[str] = None,
 ) -> str:
-    """Encode the CREATE MODEL statement for BQML"""
-    # TODO(garrettwu): This should be CREATE TEMP MODEL after b/145824779 is fixed
-    parts = [f"CREATE MODEL `{model_name}`"]
+    """Encode the CREATE TEMP MODEL statement for BQML"""
+    parts = [f"CREATE TEMP MODEL `{model_name}`"]
     if transform_sql:
         parts.append(transform_sql)
     if options_sql:
@@ -104,9 +108,8 @@ def create_remote_model(
     connection_name: str,
     options_sql: Optional[str] = None,
 ) -> str:
-    """Encode the CREATE MODEL statement for BQML"""
-    # TODO(garrettwu): This should be CREATE TEMP MODEL after b/145824779 is fixed
-    parts = [f"CREATE MODEL `{model_name}`"]
+    """Encode the CREATE TEMP MODEL statement for BQML remote model."""
+    parts = [f"CREATE TEMP MODEL `{model_name}`"]
     parts.append(connection(connection_name))
     if options_sql:
         parts.append(options_sql)
@@ -117,9 +120,8 @@ def create_imported_model(
     model_name: str,
     options_sql: Optional[str] = None,
 ) -> str:
-    """Encode the CREATE MODEL statement for BQML"""
-    # TODO(garrettwu): This should be CREATE TEMP MODEL after b/145824779 is fixed
-    parts = [f"CREATE MODEL `{model_name}`"]
+    """Encode the CREATE TEMP MODEL statement for BQML remote model."""
+    parts = [f"CREATE TEMP MODEL `{model_name}`"]
     if options_sql:
         parts.append(options_sql)
     return "\n".join(parts)
@@ -162,9 +164,11 @@ def ml_generate_text(model_name: str, source_sql: str, struct_options: str) -> s
   ({source_sql}), {struct_options})"""
 
 
-def ml_embed_text(model_name: str, source_sql: str, struct_options: str) -> str:
-    """Encode ML.EMBED_TEXT for BQML"""
-    return f"""SELECT * FROM ML.EMBED_TEXT(MODEL `{model_name}`,
+def ml_generate_text_embedding(
+    model_name: str, source_sql: str, struct_options: str
+) -> str:
+    """Encode ML.GENERATE_TEXT_EMBEDDING for BQML"""
+    return f"""SELECT * FROM ML.GENERATE_TEXT_EMBEDDING(MODEL `{model_name}`,
   ({source_sql}), {struct_options})"""
 
 

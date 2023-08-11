@@ -37,7 +37,7 @@ def test_bqml_e2e(session, dataset_id, penguins_df_default_index, new_penguins_d
     )
 
     # no data - report evaluation from the automatic data split
-    evaluate_result = model.evaluate().compute()
+    evaluate_result = model.evaluate().to_pandas()
     evaluate_expected = pandas.DataFrame(
         {
             "mean_absolute_error": [225.817334],
@@ -57,13 +57,13 @@ def test_bqml_e2e(session, dataset_id, penguins_df_default_index, new_penguins_d
     )
 
     # evaluate on all training data
-    evaluate_result = model.evaluate(df).compute()
+    evaluate_result = model.evaluate(df).to_pandas()
     pandas.testing.assert_frame_equal(
         evaluate_result, evaluate_expected, check_exact=False, rtol=0.1
     )
 
     # predict new labels
-    predictions = model.predict(new_penguins_df).compute()
+    predictions = model.predict(new_penguins_df).to_pandas()
     expected = pandas.DataFrame(
         {"predicted_body_mass_g": [4030.1, 3280.8, 3177.9]},
         dtype="Float64",
@@ -104,7 +104,7 @@ def test_bqml_manual_preprocessing_e2e(
     )
 
     # no data - report evaluation from the automatic data split
-    evaluate_result = model.evaluate().compute()
+    evaluate_result = model.evaluate().to_pandas()
     evaluate_expected = pandas.DataFrame(
         {
             "mean_absolute_error": [309.477334],
@@ -125,13 +125,13 @@ def test_bqml_manual_preprocessing_e2e(
     )
 
     # evaluate on all training data
-    evaluate_result = model.evaluate(df).compute()
+    evaluate_result = model.evaluate(df).to_pandas()
     pandas.testing.assert_frame_equal(
         evaluate_result, evaluate_expected, check_exact=False, rtol=0.1
     )
 
     # predict new labels
-    predictions = model.predict(new_penguins_df).compute()
+    predictions = model.predict(new_penguins_df).to_pandas()
     expected = pandas.DataFrame(
         {"predicted_body_mass_g": [3968.8, 3176.3, 3545.2]},
         dtype="Float64",
@@ -156,11 +156,11 @@ def test_bqml_standalone_transform(penguins_df_default_index, new_penguins_df):
         options={"model_type": "transform_only"},
         transforms=[
             "ML.STANDARD_SCALER(culmen_length_mm) OVER() AS scaled_culmen_length_mm",
-            "ML.ONE_HOT_ENCODER(species) OVER() AS onehotencoded_species",
+            "ML.ONE_HOT_ENCODER(species, 'none', 1000000, 0) OVER() AS onehotencoded_species",
         ],
     )
 
-    transformed = model.transform(new_penguins_df).compute()
+    transformed = model.transform(new_penguins_df).to_pandas()
     expected = pandas.DataFrame(
         {
             "scaled_culmen_length_mm": [-0.8099, -0.9931, -1.103],

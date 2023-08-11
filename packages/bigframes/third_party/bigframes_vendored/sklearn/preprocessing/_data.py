@@ -32,12 +32,32 @@ class StandardScaler(BaseEstimator):
     def fit(self, X):
         """Compute the mean and std to be used for later scaling.
 
+        Examples:
+
+        .. code-block::
+
+            from bigframes.ml.preprocessing import StandardScaler
+
+            enc = StandardScaler()
+            X = [['Male', 1], ['Female', 3], ['Female', 2]]
+            enc.fit(X)
+
+        Examples:
+
+        .. code-block::
+
+            from bigframes.ml import StandardScaler
+
+            enc = StandardScaler()
+            X = [['Male', 1], ['Female', 3], ['Female', 2]]
+            enc.fit(X)
+
         Args:
-            X:
-                A dataframe with training data.
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                The Dataframe or Series with training data.
 
         Returns:
-            Fitted scaler.
+            StandardScaler: Fitted scaler.
         """
         raise NotImplementedError("abstract method")
 
@@ -45,9 +65,10 @@ class StandardScaler(BaseEstimator):
         """Perform standardization by centering and scaling.
 
         Args:
-            X:
-                The DataFrame to be transformed.
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                The DataFrame or Series to be transformed.
 
         Returns:
-            Transformed result."""
+           bigframes.dataframe.DataFrame: Transformed result.
+        """
         raise NotImplementedError("abstract method")

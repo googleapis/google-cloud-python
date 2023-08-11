@@ -24,13 +24,13 @@ class _BaseKMeans(BaseEstimator, ABC):
         """Predict the closest cluster each sample in X belongs to.
 
         Args:
-            X:
-                DataFrame of shape (n_samples, n_features). The data matrix for
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                Series or DataFrame of shape (n_samples, n_features). The data matrix for
                 which we want to get the predictions.
 
         Returns:
-            DataFrame of shape (n_samples,), containing the class labels for
-            each sample.
+            bigframes.dataframe.DataFrame: DataFrame of shape (n_samples,), containing the
+                class labels for each sample.
         """
         raise NotImplementedError("abstract method")
 
@@ -39,7 +39,7 @@ class KMeans(_BaseKMeans):
     """K-Means clustering.
 
     Args:
-        n_clusters: int, default=8
+        n_clusters (int, default 8):
             The number of clusters to form as well as the number of centroids to generate.
             Default to 8.
     """
@@ -53,19 +53,51 @@ class KMeans(_BaseKMeans):
         """Compute k-means clustering.
 
         Args:
-            X:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
                 DataFrame of shape (n_samples, n_features). Training data.
-            y:  Ignored
+            y (default None):
                 Not used, present here for API consistency by convention.
+            transforms (Optional[List[str]], default None):
+                Do not use. Internal param to be deprecated.
+                Use bigframes.ml.pipeline instead.
 
-            transforms:
-                An optional list of SQL expressions to apply over top of the
-                model inputs as preprocessing. This preprocessing will be
-                automatically reapplied to new input data (e.g. in .predict),
-                and may contain steps (like ML.STANDARD_SCALER) that fit to the
-                training data.
 
         Returns:
-            Fitted Estimator.
+            KMeans: Fitted Estimator.
+        """
+        raise NotImplementedError("abstract method")
+
+    def predict(
+        self,
+        X,
+    ):
+        """Predict the closest cluster each sample in X belongs to.
+
+        Args:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                DataFrame of shape (n_samples, n_features). New data to predict.
+            y: (default None)
+                Not used, present here for API consistency by convention.
+
+        Returns:
+            bigframes.dataframe.DataFrame: DataFrame of the cluster each sample belongs to.
+        """
+        raise NotImplementedError("abstract method")
+
+    def score(
+        self,
+        X,
+        y=None,
+    ):
+        """Metrics of the model.
+
+        Args:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                DataFrame of shape (n_samples, n_features). New Data.
+            y (default None)
+                Not used, present here for API consistency by convention.
+
+        Returns:
+            bigframes.dataframe.DataFrame: DataFrame of the metrics.
         """
         raise NotImplementedError("abstract method")

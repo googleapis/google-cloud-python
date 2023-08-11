@@ -15,10 +15,12 @@
 import inspect
 import re
 import sys
+import unittest.mock as mock
 
+import pandas as pd
 import pytest
 
-import bigframes.pandas
+import bigframes.pandas as bpd
 import bigframes.session
 
 leading_whitespace = re.compile(r"^\s+", flags=re.MULTILINE)
@@ -79,3 +81,31 @@ def test_method_matches_session(method_name: str):
         1:
     ]
     assert pandas_signature.return_annotation == session_signature.return_annotation
+
+
+def test_cut_raises_with_labels():
+    with pytest.raises(NotImplementedError, match="Only labels=False"):
+        mock_series = mock.create_autospec(bigframes.pandas.Series, instance=True)
+        bigframes.pandas.cut(mock_series, 4, labels=["a", "b", "c", "d"])
+
+
+@pytest.mark.parametrize(
+    ("bins",),
+    (
+        (0,),
+        (-1,),
+    ),
+)
+def test_cut_raises_with_invalid_bins(bins: int):
+    with pytest.raises(ValueError, match="`bins` should be a positive integer."):
+        mock_series = mock.create_autospec(bigframes.pandas.Series, instance=True)
+        bigframes.pandas.cut(mock_series, bins, labels=False)
+
+
+def test_pandas_attribute():
+    assert bpd.NA is pd.NA
+    assert bpd.BooleanDtype is pd.BooleanDtype
+    assert bpd.Float64Dtype is pd.Float64Dtype
+    assert bpd.Int64Dtype is pd.Int64Dtype
+    assert bpd.StringDtype is pd.StringDtype
+    assert bpd.ArrowDtype is pd.ArrowDtype

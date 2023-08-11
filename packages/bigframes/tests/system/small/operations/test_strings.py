@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import re
+
 import pandas as pd
 import pytest
 
@@ -24,7 +26,7 @@ def test_find(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "string_col"
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.str.find("W").compute()
+    bf_result = bf_series.str.find("W").to_pandas()
     pd_result = scalars_pandas_df[col_name].str.find("W")
 
     # One of type mismatches to be documented. Here, the `bf_result.dtype` is `Int64` but
@@ -35,11 +37,138 @@ def test_find(scalars_dfs):
     )
 
 
+@pytest.mark.parametrize(
+    ("pat", "case", "flags", "regex"),
+    [
+        ("hEllo", True, 0, False),
+        ("hEllo", False, 0, False),
+        ("hEllo", False, re.I, True),
+        (".*", True, 0, True),
+        (".*", True, 0, False),
+    ],
+)
+def test_str_contains(scalars_dfs, pat, case, flags, regex):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_name = "string_col"
+    bf_series: bigframes.series.Series = scalars_df[col_name]
+
+    bf_result = bf_series.str.contains(
+        pat, case=case, flags=flags, regex=regex
+    ).to_pandas()
+    pd_result = scalars_pandas_df[col_name].str.contains(
+        pat, case=case, flags=flags, regex=regex
+    )
+
+    pd.testing.assert_series_equal(
+        pd_result,
+        bf_result,
+    )
+
+
+@pytest.mark.parametrize(
+    ("pat"),
+    [(r"(ell)(lo)"), (r"(?P<somename>h..)"), (r"(?P<somename>e.*o)([g-l]+)")],
+)
+def test_str_extract(scalars_dfs, pat):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_name = "string_col"
+    bf_series: bigframes.series.Series = scalars_df[col_name]
+
+    bf_result = bf_series.str.extract(pat).to_pandas()
+    pd_result = scalars_pandas_df[col_name].str.extract(pat)
+
+    # Pandas produces int col labels, while bq df only supports str labels at present
+    pd_result = pd_result.set_axis(pd_result.columns.astype(str), axis=1)
+    pd.testing.assert_frame_equal(
+        pd_result,
+        bf_result,
+    )
+
+
+@pytest.mark.parametrize(
+    ("pat", "repl", "case", "flags", "regex"),
+    [
+        ("hEllo", "blah", True, 0, False),
+        ("hEllo", "blah", False, 0, False),
+        ("hEllo", "blah", False, re.I, True),
+        (".*", "blah", True, 0, True),
+        ("h.l", "blah", False, 0, True),
+        (re.compile("(?i).e.."), "blah", None, 0, True),
+    ],
+)
+def test_str_replace(scalars_dfs, pat, repl, case, flags, regex):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_name = "string_col"
+    bf_series: bigframes.series.Series = scalars_df[col_name]
+
+    bf_result = bf_series.str.replace(
+        pat, repl=repl, case=case, flags=flags, regex=regex
+    ).to_pandas()
+    pd_result = scalars_pandas_df[col_name].str.replace(
+        pat, repl=repl, case=case, flags=flags, regex=regex
+    )
+
+    pd.testing.assert_series_equal(
+        pd_result,
+        bf_result,
+    )
+
+
+@pytest.mark.parametrize(
+    ("pat",),
+    [
+        ("こん",),
+        ("Tag!",),
+        (
+            (
+                "Tag!",
+                "Hel",
+            ),
+        ),
+    ],
+)
+def test_str_startswith(scalars_dfs, pat):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_name = "string_col"
+    bf_series: bigframes.series.Series = scalars_df[col_name]
+    pd_series = scalars_pandas_df[col_name].astype("object")
+
+    bf_result = bf_series.str.startswith(pat).to_pandas()
+    pd_result = pd_series.str.startswith(pat)
+
+    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+
+@pytest.mark.parametrize(
+    ("pat",),
+    [
+        ("こん",),
+        ("Tag!",),
+        (
+            (
+                "Tag!",
+                "Hel",
+            ),
+        ),
+    ],
+)
+def test_str_endswith(scalars_dfs, pat):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_name = "string_col"
+    bf_series: bigframes.series.Series = scalars_df[col_name]
+    pd_series = scalars_pandas_df[col_name].astype("object")
+
+    bf_result = bf_series.str.endswith(pat).to_pandas()
+    pd_result = pd_series.str.endswith(pat)
+
+    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+
 def test_len(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "string_col"
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.str.len().compute()
+    bf_result = bf_series.str.len().to_pandas()
     pd_result = scalars_pandas_df[col_name].str.len()
 
     # One of dtype mismatches to be documented. Here, the `bf_result.dtype` is `Int64` but
@@ -54,7 +183,7 @@ def test_lower(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "string_col"
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.str.lower().compute()
+    bf_result = bf_series.str.lower().to_pandas()
     pd_result = scalars_pandas_df[col_name].str.lower()
 
     assert_series_equal_ignoring_order(
@@ -67,7 +196,7 @@ def test_reverse(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "string_col"
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.str.reverse().compute()
+    bf_result = bf_series.str.reverse().to_pandas()
     pd_result = scalars_pandas_df[col_name].copy()
     for i in pd_result.index:
         cell = pd_result.loc[i]
@@ -89,7 +218,7 @@ def test_slice(scalars_dfs, start, stop):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "string_col"
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.str.slice(start, stop).compute()
+    bf_result = bf_series.str.slice(start, stop).to_pandas()
     pd_series = scalars_pandas_df[col_name]
     pd_result = pd_series.str.slice(start, stop)
 
@@ -103,7 +232,7 @@ def test_strip(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "string_col"
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.str.strip().compute()
+    bf_result = bf_series.str.strip().to_pandas()
     pd_result = scalars_pandas_df[col_name].str.strip()
 
     assert_series_equal_ignoring_order(
@@ -116,7 +245,7 @@ def test_upper(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "string_col"
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.str.upper().compute()
+    bf_result = bf_series.str.upper().to_pandas()
     pd_result = scalars_pandas_df[col_name].str.upper()
 
     assert_series_equal_ignoring_order(
@@ -149,7 +278,7 @@ def test_isnumeric(session):
     df = session.read_pandas(pandas_df)
 
     pd_result = pandas_df.numeric_string_col.str.isnumeric()
-    bf_result = df.numeric_string_col.str.isnumeric().compute()
+    bf_result = df.numeric_string_col.str.isnumeric().to_pandas()
 
     assert_series_equal_ignoring_order(
         bf_result,
@@ -163,7 +292,7 @@ def test_rstrip(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "string_col"
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.str.rstrip().compute()
+    bf_result = bf_series.str.rstrip().to_pandas()
     pd_result = scalars_pandas_df[col_name].str.rstrip()
 
     assert_series_equal_ignoring_order(
@@ -176,7 +305,7 @@ def test_lstrip(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "string_col"
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.str.lstrip().compute()
+    bf_result = bf_series.str.lstrip().to_pandas()
     pd_result = scalars_pandas_df[col_name].str.lstrip()
 
     assert_series_equal_ignoring_order(
@@ -190,7 +319,7 @@ def test_repeat(scalars_dfs, repeats):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "string_col"
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.str.repeat(repeats).compute()
+    bf_result = bf_series.str.repeat(repeats).to_pandas()
     pd_result = scalars_pandas_df[col_name].str.repeat(repeats)
 
     assert_series_equal_ignoring_order(
@@ -203,7 +332,7 @@ def test_capitalize(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "string_col"
     bf_series: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_series.str.capitalize().compute()
+    bf_result = bf_series.str.capitalize().to_pandas()
     pd_result = scalars_pandas_df[col_name].str.capitalize()
 
     assert_series_equal_ignoring_order(
@@ -218,7 +347,7 @@ def test_cat_with_series(scalars_dfs):
     bf_filter: bigframes.series.Series = scalars_df["bool_col"]
     bf_left: bigframes.series.Series = scalars_df[col_name][bf_filter]
     bf_right: bigframes.series.Series = scalars_df[col_name]
-    bf_result = bf_left.str.cat(others=bf_right).compute()
+    bf_result = bf_left.str.cat(others=bf_right).to_pandas()
     pd_filter = scalars_pandas_df["bool_col"]
     pd_left = scalars_pandas_df[col_name][pd_filter]
     pd_right = scalars_pandas_df[col_name]

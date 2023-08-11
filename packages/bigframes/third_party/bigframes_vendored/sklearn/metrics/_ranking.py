@@ -26,15 +26,14 @@ def auc(x, y) -> float:
     :func:`average_precision_score`.
 
     Args:
-        x : DataFrame of shape (n_samples,)
+        x (Series or DataFrame of shape (n_samples,)):
             X coordinates. These must be either monotonic increasing or monotonic
             decreasing.
-        y : DataFrame of shape (n_samples,)
+        y (Series or DataFrame of shape (n_samples,)):
             Y coordinates.
 
     Returns:
-        auc : float
-            Area Under the Curve.
+        float: Area Under the Curve.
     """
     raise NotImplementedError("abstract method")
 
@@ -44,11 +43,11 @@ def roc_auc_score(y_true, y_score) -> float:
     from prediction scores.
 
     Args:
-        y_true: DataFrame of shape (n_samples,)
+        y_true (Series or DataFrame of shape (n_samples,)):
             True labels or binary label indicators. The binary and multiclass cases
             expect labels with shape (n_samples,) while the multilabel case expects
             binary label indicators with shape (n_samples, n_classes).
-        y_score: DataFrame of shape (n_samples,)
+        y_score (Series or DataFrame of shape (n_samples,)):
             Target scores.
             * In the binary case, it corresponds to an array of shape
             `(n_samples,)`. Both probability estimates and non-thresholded
@@ -59,8 +58,7 @@ def roc_auc_score(y_true, y_score) -> float:
             corresponds to the output of `estimator.decision_function(X, y)`.
 
     Returns:
-        auc: float.
-            Area Under the Curve score.
+        float: Area Under the Curve score.
     """
     raise NotImplementedError("abstract method")
 
@@ -73,10 +71,10 @@ def roc_curve(
     """Compute Receiver operating characteristic (ROC).
 
     Args:
-        y_true: DataFrame of shape (n_samples,)
+        y_true: Series or DataFrame of shape (n_samples,)
             True binary labels. If labels are not either {-1, 1} or {0, 1}, then
             pos_label should be explicitly given.
-        y_score: DataFrame of shape (n_samples,)
+        y_score: Series or DataFrame of shape (n_samples,)
             Target scores, can either be probability estimates of the positive
             class, confidence values, or non-thresholded measure of decisions
             (as returned by "decision_function" on some classifiers).

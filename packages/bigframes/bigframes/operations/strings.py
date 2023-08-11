@@ -14,12 +14,22 @@
 
 from __future__ import annotations
 
-from typing import Literal, Optional, Union
+import re
+from typing import cast, Literal, Optional, Union
 
+import bigframes.constants as constants
+import bigframes.dataframe as df
 import bigframes.operations as ops
 import bigframes.operations.base
 import bigframes.series as series
 import third_party.bigframes_vendored.pandas.core.strings.accessor as vendorstr
+
+# Maps from python to re2
+REGEXP_FLAGS = {
+    re.IGNORECASE: "i",
+    re.MULTILINE: "m",
+    re.DOTALL: "s",
+}
 
 
 class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMethods):
@@ -72,6 +82,84 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
     def capitalize(self) -> series.Series:
         return self._apply_unary_op(ops.capitalize_op)
 
+    def contains(
+        self, pat, case: bool = True, flags: int = 0, *, regex: bool = True
+    ) -> series.Series:
+        if not case:
+            return self.contains(pat, flags=flags | re.IGNORECASE, regex=True)
+        if regex:
+            re2flags = _parse_flags(flags)
+            if re2flags:
+                pat = re2flags + pat
+            return self._apply_unary_op(ops.ContainsRegexOp(pat))
+        else:
+            return self._apply_unary_op(ops.ContainsStringOp(pat))
+
+    def extract(self, pat: str, flags: int = 0):
+        re2flags = _parse_flags(flags)
+        if re2flags:
+            pat = re2flags + pat
+        compiled = re.compile(pat)
+        if compiled.groups == 0:
+            raise ValueError("No capture groups in 'pat'")
+
+        results: list[str] = []
+        block = self._block
+        for i in range(compiled.groups):
+            labels = [
+                label
+                for label, groupn in compiled.groupindex.items()
+                if i + 1 == groupn
+            ]
+            label = labels[0] if labels else str(i)
+            block, id = block.apply_unary_op(
+                self._value_column, ops.ExtractOp(pat, i + 1), result_label=label
+            )
+            results.append(id)
+        block = block.select_columns(results)
+        return df.DataFrame(block)
+
+    def replace(
+        self,
+        pat: Union[str, re.Pattern],
+        repl: str,
+        *,
+        case: Optional[bool] = None,
+        flags: int = 0,
+        regex: bool = False,
+    ) -> series.Series:
+        is_compiled = isinstance(pat, re.Pattern)
+        patstr = cast(str, pat.pattern if is_compiled else pat)  # type: ignore
+        if case is False:
+            return self.replace(pat, repl, flags=flags | re.IGNORECASE, regex=True)
+        if regex:
+            re2flags = _parse_flags(flags)
+            if re2flags:
+                patstr = re2flags + patstr
+            return self._apply_unary_op(ops.ReplaceRegexOp(patstr, repl))
+        else:
+            if is_compiled:
+                raise ValueError(
+                    "Must set 'regex'=True if using compiled regex pattern."
+                )
+            return self._apply_unary_op(ops.ReplaceStringOp(patstr, repl))
+
+    def startswith(
+        self,
+        pat: Union[str, tuple[str, ...]],
+    ) -> series.Series:
+        if not isinstance(pat, tuple):
+            pat = (pat,)
+        return self._apply_unary_op(ops.StartsWithOp(pat))
+
+    def endswith(
+        self,
+        pat: Union[str, tuple[str, ...]],
+    ) -> series.Series:
+        if not isinstance(pat, tuple):
+            pat = (pat,)
+        return self._apply_unary_op(ops.EndsWithOp(pat))
+
     def cat(
         self,
         others: Union[str, series.Series],
@@ -79,3 +167,22 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
         join: Literal["outer", "left"] = "left",
     ) -> series.Series:
         return self._apply_binary_op(others, ops.concat_op, alignment=join)
+
+
+def _parse_flags(flags: int) -> Optional[str]:
+    re2flags = []
+    for reflag, re2flag in REGEXP_FLAGS.items():
+        if flags & flags:
+            re2flags.append(re2flag)
+            flags = flags ^ reflag
+
+    # Remaining flags couldn't be mapped to re2 engine
+    if flags:
+        raise NotImplementedError(
+            f"Could not handle RegexFlag: {flags}. {constants.FEEDBACK_LINK}"
+        )
+
+    if re2flags:
+        return "(?" + "".join(re2flags) + ")"
+    else:
+        return None

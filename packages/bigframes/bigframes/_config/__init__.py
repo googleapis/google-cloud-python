@@ -19,6 +19,7 @@ DataFrames from this package.
 
 import bigframes._config.bigquery_options as bigquery_options
 import bigframes._config.display_options as display_options
+import bigframes._config.sampling_options as sampling_options
 
 
 class Options:
@@ -27,6 +28,7 @@ class Options:
     def __init__(self):
         self._bigquery_options = bigquery_options.BigQueryOptions()
         self._display_options = display_options.DisplayOptions()
+        self._sampling_options = sampling_options.SamplingOptions()
 
     @property
     def bigquery(self) -> bigquery_options.BigQueryOptions:
@@ -37,6 +39,15 @@ class Options:
     def display(self) -> display_options.DisplayOptions:
         """Options controlling object representation."""
         return self._display_options
+
+    @property
+    def sampling(self) -> sampling_options.SamplingOptions:
+        """Options controlling downsampling when downloading data
+        to memory. The data will be downloaded into memory explicitly
+        (e.g., to_pandas, to_numpy, values) or implicitly (e.g.,
+        matplotlib plotting). This option can be overriden by
+        parameters in specific functions."""
+        return self._sampling_options
 
 
 options = Options()

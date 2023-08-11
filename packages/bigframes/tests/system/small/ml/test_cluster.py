@@ -12,67 +12,80 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pandas
+import pandas as pd
 
-import bigframes.ml.cluster
+from bigframes.ml import cluster
 from tests.system.utils import assert_pandas_df_equal_ignore_ordering
 
-
-def test_model_predict(session, penguins_kmeans_model: bigframes.ml.cluster.KMeans):
-    pd_new_penguins = pandas.DataFrame.from_dict(
-        {
-            "test1": {
-                "species": "Adelie Penguin (Pygoscelis adeliae)",
-                "island": "Dream",
-                "culmen_length_mm": 37.5,
-                "culmen_depth_mm": 18.5,
-                "flipper_length_mm": 199,
-                "body_mass_g": 4475,
-                "sex": "MALE",
-            },
-            "test2": {
-                "species": "Chinstrap penguin (Pygoscelis antarctica)",
-                "island": "Dream",
-                "culmen_length_mm": 55.8,
-                "culmen_depth_mm": 19.8,
-                "flipper_length_mm": 207,
-                "body_mass_g": 4000,
-                "sex": "MALE",
-            },
-            "test3": {
-                "species": "Adelie Penguin (Pygoscelis adeliae)",
-                "island": "Biscoe",
-                "culmen_length_mm": 39.7,
-                "culmen_depth_mm": 18.9,
-                "flipper_length_mm": 184,
-                "body_mass_g": 3550,
-                "sex": "MALE",
-            },
-            "test4": {
-                "species": "Gentoo penguin (Pygoscelis papua)",
-                "island": "Biscoe",
-                "culmen_length_mm": 43.8,
-                "culmen_depth_mm": 13.9,
-                "flipper_length_mm": 208,
-                "body_mass_g": 4300,
-                "sex": "FEMALE",
-            },
+_PD_NEW_PENGUINS = pd.DataFrame.from_dict(
+    {
+        "test1": {
+            "species": "Adelie Penguin (Pygoscelis adeliae)",
+            "island": "Dream",
+            "culmen_length_mm": 37.5,
+            "culmen_depth_mm": 18.5,
+            "flipper_length_mm": 199,
+            "body_mass_g": 4475,
+            "sex": "MALE",
         },
-        orient="index",
-    )
-    pd_new_penguins.index.name = "observation"
+        "test2": {
+            "species": "Chinstrap penguin (Pygoscelis antarctica)",
+            "island": "Dream",
+            "culmen_length_mm": 55.8,
+            "culmen_depth_mm": 19.8,
+            "flipper_length_mm": 207,
+            "body_mass_g": 4000,
+            "sex": "MALE",
+        },
+        "test3": {
+            "species": "Adelie Penguin (Pygoscelis adeliae)",
+            "island": "Biscoe",
+            "culmen_length_mm": 39.7,
+            "culmen_depth_mm": 18.9,
+            "flipper_length_mm": 184,
+            "body_mass_g": 3550,
+            "sex": "MALE",
+        },
+        "test4": {
+            "species": "Gentoo penguin (Pygoscelis papua)",
+            "island": "Biscoe",
+            "culmen_length_mm": 43.8,
+            "culmen_depth_mm": 13.9,
+            "flipper_length_mm": 208,
+            "body_mass_g": 4300,
+            "sex": "FEMALE",
+        },
+    },
+    orient="index",
+)
 
-    new_penguins = session.read_pandas(pd_new_penguins)
-    result = penguins_kmeans_model.predict(new_penguins).compute()
-    expected = pandas.DataFrame(
+
+def test_kmeans_predict(session, penguins_kmeans_model: cluster.KMeans):
+    new_penguins = session.read_pandas(_PD_NEW_PENGUINS)
+    result = penguins_kmeans_model.predict(new_penguins).to_pandas()
+    expected = pd.DataFrame(
         {"CENTROID_ID": [2, 3, 1, 2]},
         dtype="Int64",
-        index=pandas.Index(
-            ["test1", "test2", "test3", "test4"], dtype="string[pyarrow]"
-        ),
+        index=pd.Index(["test1", "test2", "test3", "test4"], dtype="string[pyarrow]"),
     )
-    expected.index.name = "observation"
     assert_pandas_df_equal_ignore_ordering(result, expected)
+
+
+def test_kmeans_score(session, penguins_kmeans_model: cluster.KMeans):
+    new_penguins = session.read_pandas(_PD_NEW_PENGUINS)
+    result = penguins_kmeans_model.score(new_penguins).to_pandas()
+    expected = pd.DataFrame(
+        {"davies_bouldin_index": [1.523606], "mean_squared_distance": [1.965944]},
+        dtype="Float64",
+    )
+    pd.testing.assert_frame_equal(
+        result,
+        expected,
+        check_exact=False,
+        rtol=0.1,
+        # int64 Index by default in pandas versus Int64 (nullable) Index in BigQuery DataFrame
+        check_index_type=False,
+    )
 
 
 def test_loaded_config(penguins_kmeans_model):

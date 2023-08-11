@@ -13,35 +13,33 @@
 # limitations under the License.
 
 """Clustering models. This module is styled after Scikit-Learn's cluster module:
-https://scikit-learn.org/stable/modules/clustering.html"""
+https://scikit-learn.org/stable/modules/clustering.html."""
 
 from __future__ import annotations
 
-from typing import cast, Dict, List, Optional, TYPE_CHECKING
+from typing import cast, Dict, List, Optional, Union
 
 from google.cloud import bigquery
 
-if TYPE_CHECKING:
-    import bigframes
-
-import bigframes.ml.base
-import bigframes.ml.core
+import bigframes
+from bigframes.ml import base, core, utils
+import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.cluster._kmeans
 
 
 class KMeans(
     third_party.bigframes_vendored.sklearn.cluster._kmeans.KMeans,
-    bigframes.ml.base.TrainablePredictor,
+    base.TrainablePredictor,
 ):
 
     __doc__ = third_party.bigframes_vendored.sklearn.cluster._kmeans.KMeans.__doc__
 
     def __init__(self, n_clusters=8):
         self.n_clusters = n_clusters
-        self._bqml_model: Optional[bigframes.ml.core.BqmlModel] = None
+        self._bqml_model: Optional[core.BqmlModel] = None
 
-    @staticmethod
-    def _from_bq(session: bigframes.Session, model: bigquery.Model) -> KMeans:
+    @classmethod
+    def _from_bq(cls, session: bigframes.Session, model: bigquery.Model) -> KMeans:
         assert model.model_type == "KMEANS"
 
         kwargs = {}
@@ -51,8 +49,8 @@ class KMeans(
         if "numClusters" in last_fitting:
             kwargs["n_clusters"] = int(last_fitting["numClusters"])
 
-        new_kmeans = KMeans(**kwargs)
-        new_kmeans._bqml_model = bigframes.ml.core.BqmlModel(session, model)
+        new_kmeans = cls(**kwargs)
+        new_kmeans._bqml_model = core.BqmlModel(session, model)
         return new_kmeans
 
     @property
@@ -62,36 +60,55 @@ class KMeans(
 
     def fit(
         self,
-        X: bigframes.dataframe.DataFrame,
-        y=None,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y=None,  # ignored
         transforms: Optional[List[str]] = None,
-    ):
-        self._bqml_model = bigframes.ml.core.create_bqml_model(
+    ) -> KMeans:
+        (X,) = utils.convert_to_dataframe(X)
+
+        self._bqml_model = core.create_bqml_model(
             train_X=X,
             transforms=transforms,
             options=self._bqml_options,
         )
+        return self
 
     def predict(
-        self, X: bigframes.dataframe.DataFrame
-    ) -> bigframes.dataframe.DataFrame:
+        self,
+        X: Union[bpd.DataFrame, bpd.Series],
+    ) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
 
-        return cast(
-            bigframes.dataframe.DataFrame, self._bqml_model.predict(X)[["CENTROID_ID"]]
-        )
+        (X,) = utils.convert_to_dataframe(X)
+
+        return cast(bpd.DataFrame, self._bqml_model.predict(X)[["CENTROID_ID"]])
 
     def to_gbq(self, model_name: str, replace: bool = False) -> KMeans:
-        """Save the model to Google Cloud BigQuey.
+        """Save the model to BigQuery.
 
         Args:
-            model_name: the name of the model.
-            replace: whether to replace if the model already exists. Default to False.
+            model_name (str):
+                the name of the model.
+            replace (bool, default False):
+                whether to replace if the model already exists. Default to False.
 
-        Returns: saved model."""
+        Returns:
+            KMeans: saved model."""
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before it can be saved")
 
         new_model = self._bqml_model.copy(model_name, replace)
         return new_model.session.read_gbq_model(model_name)
+
+    def score(
+        self,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y=None,  # ignored
+    ) -> bpd.DataFrame:
+        if not self._bqml_model:
+            raise RuntimeError("A model must be fitted before score")
+
+        (X,) = utils.convert_to_dataframe(X)
+
+        return self._bqml_model.evaluate(X)

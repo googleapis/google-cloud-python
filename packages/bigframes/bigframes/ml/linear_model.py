@@ -12,27 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Linear models. This module is styled after Scikit-Learn's linear_model module:
-https://scikit-learn.org/stable/modules/linear_model.html"""
+"""Linear models. This module is styled after scikit-learn's linear_model module:
+https://scikit-learn.org/stable/modules/linear_model.html."""
 
 from __future__ import annotations
 
-from typing import cast, Dict, List, Optional, TYPE_CHECKING
+from typing import cast, Dict, List, Optional, Union
 
 from google.cloud import bigquery
 
-if TYPE_CHECKING:
-    import bigframes
-
-import bigframes.ml.base
-import bigframes.ml.core
+import bigframes
+import bigframes.constants as constants
+from bigframes.ml import base, core, utils
+import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.linear_model._base
 import third_party.bigframes_vendored.sklearn.linear_model._logistic
 
 
 class LinearRegression(
     third_party.bigframes_vendored.sklearn.linear_model._base.LinearRegression,
-    bigframes.ml.base.TrainablePredictor,
+    base.TrainablePredictor,
 ):
     __doc__ = (
         third_party.bigframes_vendored.sklearn.linear_model._base.LinearRegression.__doc__
@@ -43,10 +42,12 @@ class LinearRegression(
         fit_intercept=True,
     ):
         self.fit_intercept = fit_intercept
-        self._bqml_model: Optional[bigframes.ml.core.BqmlModel] = None
+        self._bqml_model: Optional[core.BqmlModel] = None
 
-    @staticmethod
-    def _from_bq(session: bigframes.Session, model: bigquery.Model) -> LinearRegression:
+    @classmethod
+    def _from_bq(
+        cls, session: bigframes.Session, model: bigquery.Model
+    ) -> LinearRegression:
         assert model.model_type == "LINEAR_REGRESSION"
 
         # TODO(bmil): construct a standard way to extract these properties
@@ -57,8 +58,8 @@ class LinearRegression(
         if "fitIntercept" in last_fitting:
             kwargs["fit_intercept"] = last_fitting["fitIntercept"]
 
-        new_linear_regression = LinearRegression(**kwargs)
-        new_linear_regression._bqml_model = bigframes.ml.core.BqmlModel(session, model)
+        new_linear_regression = cls(**kwargs)
+        new_linear_regression._bqml_model = core.BqmlModel(session, model)
         return new_linear_regression
 
     @property
@@ -72,26 +73,29 @@ class LinearRegression(
 
     def fit(
         self,
-        X: bigframes.dataframe.DataFrame,
-        y: bigframes.dataframe.DataFrame,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series],
         transforms: Optional[List[str]] = None,
-    ):
-        self._bqml_model = bigframes.ml.core.create_bqml_model(
+    ) -> LinearRegression:
+        X, y = utils.convert_to_dataframe(X, y)
+
+        self._bqml_model = core.create_bqml_model(
             X,
             y,
             transforms=transforms,
             options=self._bqml_options,
         )
+        return self
 
-    def predict(
-        self, X: bigframes.dataframe.DataFrame
-    ) -> bigframes.dataframe.DataFrame:
+    def predict(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
 
+        (X,) = utils.convert_to_dataframe(X)
+
         df = self._bqml_model.predict(X)
         return cast(
-            bigframes.dataframe.DataFrame,
+            bpd.DataFrame,
             df[
                 [
                     cast(str, field.name)
@@ -102,25 +106,28 @@ class LinearRegression(
 
     def score(
         self,
-        X: bigframes.dataframe.DataFrame,
-        y: bigframes.dataframe.DataFrame,
-    ) -> bigframes.dataframe.DataFrame:
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series],
+    ) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
 
-        input_data = (
-            X.join(y, how="outer") if (X is not None) and (y is not None) else None
-        )
+        X, y = utils.convert_to_dataframe(X, y)
+
+        input_data = X.join(y, how="outer")
         return self._bqml_model.evaluate(input_data)
 
     def to_gbq(self, model_name: str, replace: bool = False) -> LinearRegression:
-        """Save the model to Google Cloud BigQuey.
+        """Save the model to BigQuery.
 
         Args:
-            model_name: the name of the model.
-            replace: whether to replace if the model already exists. Default to False.
+            model_name (str):
+                the name of the model.
+            replace (bool, default False):
+                whether to replace if the model already exists. Default to False.
 
-        Returns: saved model."""
+        Returns:
+            LinearRegression: saved model."""
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before it can be saved")
 
@@ -130,7 +137,7 @@ class LinearRegression(
 
 class LogisticRegression(
     third_party.bigframes_vendored.sklearn.linear_model._logistic.LogisticRegression,
-    bigframes.ml.base.TrainablePredictor,
+    base.TrainablePredictor,
 ):
     __doc__ = (
         third_party.bigframes_vendored.sklearn.linear_model._logistic.LogisticRegression.__doc__
@@ -144,11 +151,11 @@ class LogisticRegression(
     ):
         self.fit_intercept = fit_intercept
         self.auto_class_weights = auto_class_weights
-        self._bqml_model: Optional[bigframes.ml.core.BqmlModel] = None
+        self._bqml_model: Optional[core.BqmlModel] = None
 
-    @staticmethod
+    @classmethod
     def _from_bq(
-        session: bigframes.Session, model: bigquery.Model
+        cls, session: bigframes.Session, model: bigquery.Model
     ) -> LogisticRegression:
         assert model.model_type == "LOGISTIC_REGRESSION"
 
@@ -166,10 +173,8 @@ class LogisticRegression(
         # if "labelClassWeights" in last_fitting:
         #     kwargs["class_weights"] = last_fitting["labelClassWeights"]
 
-        new_logistic_regression = LogisticRegression(**kwargs)
-        new_logistic_regression._bqml_model = bigframes.ml.core.BqmlModel(
-            session, model
-        )
+        new_logistic_regression = cls(**kwargs)
+        new_logistic_regression._bqml_model = core.BqmlModel(session, model)
         return new_logistic_regression
 
     @property
@@ -186,26 +191,32 @@ class LogisticRegression(
 
     def fit(
         self,
-        X: bigframes.dataframe.DataFrame,
-        y: bigframes.dataframe.DataFrame,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series],
         transforms: Optional[List[str]] = None,
-    ):
-        self._bqml_model = bigframes.ml.core.create_bqml_model(
+    ) -> LogisticRegression:
+        X, y = utils.convert_to_dataframe(X, y)
+
+        self._bqml_model = core.create_bqml_model(
             X,
             y,
             transforms=transforms,
             options=self._bqml_options,
         )
+        return self
 
     def predict(
-        self, X: bigframes.dataframe.DataFrame
-    ) -> bigframes.dataframe.DataFrame:
+        self,
+        X: Union[bpd.DataFrame, bpd.Series],
+    ) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")
 
+        (X,) = utils.convert_to_dataframe(X)
+
         df = self._bqml_model.predict(X)
         return cast(
-            bigframes.dataframe.DataFrame,
+            bpd.DataFrame,
             df[
                 [
                     cast(str, field.name)
@@ -216,32 +227,37 @@ class LogisticRegression(
 
     def score(
         self,
-        X: bigframes.dataframe.DataFrame,
-        y: bigframes.dataframe.DataFrame,
-    ) -> bigframes.dataframe.DataFrame:
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series],
+    ) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before score")
 
-        input_data = (
-            X.join(y, how="outer") if (X is not None) and (y is not None) else None
-        )
+        X, y = utils.convert_to_dataframe(X, y)
+
+        input_data = X.join(y, how="outer")
         return self._bqml_model.evaluate(input_data)
 
     def to_gbq(self, model_name: str, replace: bool = False) -> LogisticRegression:
-        """Save the model to Google Cloud BigQuey.
+        """Save the model to BigQuery.
 
         Args:
-            model_name: the name of the model.
-            replace: whether to replace if the model already exists. Default to False.
+            model_name (str):
+                the name of the model.
+            replace (bool, default False):
+                whether to replace if the model already exists. Default to False.
 
-        Returns: saved model."""
+        Returns:
+            LogisticRegression: saved model."""
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before it can be saved")
 
         # TODO(ashleyxu): b/285162045 support auto_class_weights once the API is
         # fixed and enable the tests.
         if self.auto_class_weights is True:
-            raise NotImplementedError("auto_class_weight is not supported yet.")
+            raise NotImplementedError(
+                f"auto_class_weight is not supported yet. {constants.FEEDBACK_LINK}"
+            )
 
         new_model = self._bqml_model.copy(model_name, replace)
         return new_model.session.read_gbq_model(model_name)

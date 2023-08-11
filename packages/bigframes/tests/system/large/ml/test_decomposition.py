@@ -12,19 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pandas
+import pandas as pd
 
-import bigframes.ml.decomposition
+from bigframes.ml import decomposition
 
 
-def test_decomposition_configure_fit_predict(
+def test_decomposition_configure_fit_score_predict(
     session, penguins_df_default_index, dataset_id
 ):
-    model = bigframes.ml.decomposition.PCA(n_components=3)
+    model = decomposition.PCA(n_components=3)
     model.fit(penguins_df_default_index)
 
-    pd_new_penguins = session.read_pandas(
-        pandas.DataFrame(
+    new_penguins = session.read_pandas(
+        pd.DataFrame(
             {
                 "tag_number": [1633, 1672, 1690],
                 "species": [
@@ -42,17 +42,31 @@ def test_decomposition_configure_fit_predict(
         ).set_index("tag_number")
     )
 
-    result = model.predict(pd_new_penguins).compute()
-    expected = pandas.DataFrame(
+    # Check score to ensure the model was fitted
+    score_result = model.score(new_penguins).to_pandas()
+    score_expected = pd.DataFrame(
+        {
+            "total_explained_variance_ratio": [0.812383],
+        },
+        dtype="Float64",
+    )
+    score_expected = score_expected.reindex(index=score_expected.index.astype("Int64"))
+
+    pd.testing.assert_frame_equal(
+        score_result, score_expected, check_exact=False, rtol=0.1
+    )
+
+    result = model.predict(new_penguins).to_pandas()
+    expected = pd.DataFrame(
         {
             "principal_component_1": [-1.459, 2.258, -1.685],
             "principal_component_2": [-1.120, -1.351, -0.874],
             "principal_component_3": [-0.646, 0.443, -0.704],
         },
         dtype="Float64",
-        index=pandas.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
     )
-    pandas.testing.assert_frame_equal(
+    pd.testing.assert_frame_equal(
         result.sort_index(),
         expected,
         check_exact=False,

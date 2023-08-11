@@ -14,48 +14,107 @@
 from __future__ import annotations
 
 import typing
-from typing import Iterable, Literal, Union
+from typing import Iterable, Literal, Optional, Union
 
+import bigframes.constants as constants
+import bigframes.core as core
+import bigframes.core.utils as utils
 import bigframes.dataframe
+import bigframes.operations.aggregations as agg_ops
 import bigframes.series
 
 
 @typing.overload
 def concat(
-    objs: Iterable[bigframes.dataframe.DataFrame], *, join, ignore_index
+    objs: Iterable[bigframes.series.Series],
+    *,
+    axis: typing.Literal["index", 0] = ...,
+    join=...,
+    ignore_index=...,
+) -> bigframes.series.Series:
+    ...
+
+
+@typing.overload
+def concat(
+    objs: Iterable[bigframes.dataframe.DataFrame],
+    *,
+    axis: typing.Literal["index", 0] = ...,
+    join=...,
+    ignore_index=...,
 ) -> bigframes.dataframe.DataFrame:
     ...
 
 
 @typing.overload
 def concat(
-    objs: Iterable[bigframes.series.Series], *, join, ignore_index
-) -> bigframes.series.Series:
+    objs: Iterable[Union[bigframes.dataframe.DataFrame, bigframes.series.Series]],
+    *,
+    axis: typing.Literal["columns", 1],
+    join=...,
+    ignore_index=...,
+) -> bigframes.dataframe.DataFrame:
+    ...
+
+
+@typing.overload
+def concat(
+    objs: Iterable[Union[bigframes.dataframe.DataFrame, bigframes.series.Series]],
+    *,
+    axis=...,
+    join=...,
+    ignore_index=...,
+) -> Union[bigframes.dataframe.DataFrame, bigframes.series.Series]:
     ...
 
 
 def concat(
-    objs: Union[
-        Iterable[bigframes.dataframe.DataFrame], Iterable[bigframes.series.Series]
-    ],
+    objs: Iterable[Union[bigframes.dataframe.DataFrame, bigframes.series.Series]],
     *,
+    axis: typing.Union[str, int] = 0,
     join: Literal["inner", "outer"] = "outer",
     ignore_index: bool = False,
 ) -> Union[bigframes.dataframe.DataFrame, bigframes.series.Series]:
-    contains_dataframes = any(
-        isinstance(x, bigframes.dataframe.DataFrame) for x in objs
-    )
-    if not contains_dataframes:
-        # Special case, all series, so align everything into single column even if labels don't match
-        series = typing.cast(typing.Iterable[bigframes.series.Series], objs)
-        names = {s.name for s in series}
-        # For series case, labels are stripped if they don't all match
-        if len(names) > 1:
-            blocks = [s._block.with_column_labels([None]) for s in series]
-        else:
-            blocks = [s._block for s in series]
+    axis_n = utils.get_axis_number(axis)
+    if axis_n == 0:
+        contains_dataframes = any(
+            isinstance(x, bigframes.dataframe.DataFrame) for x in objs
+        )
+        if not contains_dataframes:
+            # Special case, all series, so align everything into single column even if labels don't match
+            series = typing.cast(typing.Iterable[bigframes.series.Series], objs)
+            names = {s.name for s in series}
+            # For series case, labels are stripped if they don't all match
+            if len(names) > 1:
+                blocks = [s._block.with_column_labels([None]) for s in series]
+            else:
+                blocks = [s._block for s in series]
+            block = blocks[0].concat(blocks[1:], how=join, ignore_index=ignore_index)
+            return bigframes.series.Series(block)
+        blocks = [obj._block for obj in objs]
         block = blocks[0].concat(blocks[1:], how=join, ignore_index=ignore_index)
-        return bigframes.series.Series(block)
-    blocks = [obj._block for obj in objs]
-    block = blocks[0].concat(blocks[1:], how=join, ignore_index=ignore_index)
-    return bigframes.dataframe.DataFrame(block)
+        return bigframes.dataframe.DataFrame(block)
+    else:
+        # Note: does not validate inputs
+        block_list = [obj._block for obj in objs]
+        block = block_list[0]
+        for rblock in block_list[1:]:
+            combined_index, _ = block.index.join(rblock.index, how=join)
+            block = combined_index._block
+        return bigframes.dataframe.DataFrame(block)
+
+
+def cut(
+    x: bigframes.series.Series,
+    bins: int,
+    *,
+    labels: Optional[bool] = None,
+) -> bigframes.series.Series:
+    if bins <= 0:
+        raise ValueError("`bins` should be a positive integer.")
+
+    if labels is not False:
+        raise NotImplementedError(
+            f"Only labels=False is supported in BigQuery DataFrames so far. {constants.FEEDBACK_LINK}"
+        )
+    return x._apply_window_op(agg_ops.CutOp(bins), window_spec=core.WindowSpec())

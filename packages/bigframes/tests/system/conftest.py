@@ -22,6 +22,7 @@ from typing import Dict, Optional
 import google.cloud.bigquery as bigquery
 import google.cloud.bigquery_connection_v1 as bigquery_connection_v1
 import google.cloud.exceptions
+import google.cloud.functions_v2 as functions_v2
 import google.cloud.storage as storage  # type: ignore
 import ibis.backends.base
 import pandas as pd
@@ -91,6 +92,13 @@ def bigqueryconnection_client(
     session: bigframes.Session,
 ) -> bigquery_connection_v1.ConnectionServiceClient:
     return session.bqconnectionclient
+
+
+@pytest.fixture(scope="session")
+def cloudfunctions_client(
+    session: bigframes.Session,
+) -> functions_v2.FunctionServiceClient:
+    return session.cloudfunctionsclient
 
 
 @pytest.fixture(scope="session")
@@ -665,3 +673,19 @@ WHERE
         session.bqclient.query(sql).result()
     finally:
         return model_name
+
+
+@pytest.fixture()
+def deferred_repr():
+    bigframes.options.display.repr_mode = "deferred"
+    yield
+    bigframes.options.display.repr_mode = "head"
+
+
+@pytest.fixture()
+def restore_sampling_settings():
+    enable_downsampling = bigframes.options.sampling.enable_downsampling
+    max_download_size = bigframes.options.sampling.max_download_size
+    yield
+    bigframes.options.sampling.enable_downsampling = enable_downsampling
+    bigframes.options.sampling.max_download_size = max_download_size
