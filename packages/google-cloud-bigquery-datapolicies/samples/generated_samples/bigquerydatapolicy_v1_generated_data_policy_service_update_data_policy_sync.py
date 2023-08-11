@@ -41,7 +41,7 @@ def sample_update_data_policy():
     # Initialize request argument(s)
     data_policy = bigquery_datapolicies_v1.DataPolicy()
     data_policy.policy_tag = "policy_tag_value"
-    data_policy.data_masking_policy.predefined_expression = "DEFAULT_MASKING_VALUE"
+    data_policy.data_masking_policy.predefined_expression = "DATE_YEAR_MASK"
 
     request = bigquery_datapolicies_v1.UpdateDataPolicyRequest(
         data_policy=data_policy,
