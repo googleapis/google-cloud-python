@@ -15,15 +15,15 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateDataPolicy
+# Snippet for ClassifyText
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
 # To install the latest published package dependency, execute the following:
-#   python3 -m pip install google-cloud-bigquery-datapolicies
+#   python3 -m pip install google-cloud-language
 
 
-# [START bigquerydatapolicy_v1_generated_DataPolicyService_CreateDataPolicy_sync]
+# [START language_v2_generated_LanguageService_ClassifyText_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -31,27 +31,25 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.cloud import bigquery_datapolicies_v1
+from google.cloud import language_v2
 
 
-def sample_create_data_policy():
+def sample_classify_text():
     # Create a client
-    client = bigquery_datapolicies_v1.DataPolicyServiceClient()
+    client = language_v2.LanguageServiceClient()
 
     # Initialize request argument(s)
-    data_policy = bigquery_datapolicies_v1.DataPolicy()
-    data_policy.policy_tag = "policy_tag_value"
-    data_policy.data_masking_policy.predefined_expression = "DATE_YEAR_MASK"
+    document = language_v2.Document()
+    document.content = "content_value"
 
-    request = bigquery_datapolicies_v1.CreateDataPolicyRequest(
-        parent="parent_value",
-        data_policy=data_policy,
+    request = language_v2.ClassifyTextRequest(
+        document=document,
     )
 
     # Make the request
-    response = client.create_data_policy(request=request)
+    response = client.classify_text(request=request)
 
     # Handle the response
     print(response)
 
-# [END bigquerydatapolicy_v1_generated_DataPolicyService_CreateDataPolicy_sync]
+# [END language_v2_generated_LanguageService_ClassifyText_sync]
