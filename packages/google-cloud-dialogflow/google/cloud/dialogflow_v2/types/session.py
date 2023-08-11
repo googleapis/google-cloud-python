@@ -245,6 +245,12 @@ class QueryParameters(proto.Message):
             "User-Agent", "Accept-Encoding",
             "If-Modified-Since", "If-None-Match",
             "X-Forwarded-For", etc.
+        platform (str):
+            The platform of the virtual agent response messages.
+
+            If not empty, only emits messages from this platform in the
+            response. Valid values are the enum names of
+            [platform][google.cloud.dialogflow.v2.Intent.Message.platform].
     """
 
     time_zone: str = proto.Field(
@@ -286,6 +292,10 @@ class QueryParameters(proto.Message):
         proto.STRING,
         proto.STRING,
         number=14,
+    )
+    platform: str = proto.Field(
+        proto.STRING,
+        number=18,
     )
 
 
