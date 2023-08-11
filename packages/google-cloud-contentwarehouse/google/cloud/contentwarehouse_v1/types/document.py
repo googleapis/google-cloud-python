@@ -180,6 +180,13 @@ class Document(proto.Message):
             The user who creates the document.
         updater (str):
             The user who lastly updates the document.
+        disposition_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. If linked to a Collection with
+            RetentionPolicy, the date when the document
+            becomes mutable.
+        legal_hold (bool):
+            Output only. Indicates if the document has a
+            legal hold on it.
     """
 
     name: str = proto.Field(
@@ -276,6 +283,15 @@ class Document(proto.Message):
         proto.STRING,
         number=14,
     )
+    disposition_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        message=timestamp_pb2.Timestamp,
+    )
+    legal_hold: bool = proto.Field(
+        proto.BOOL,
+        number=23,
+    )
 
 
 class DocumentReference(proto.Message):
@@ -304,6 +320,10 @@ class DocumentReference(proto.Message):
         delete_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the document is
             deleted.
+        document_is_retention_folder (bool):
+            Document is a folder with retention policy.
+        document_is_legal_hold_folder (bool):
+            Document is a folder with legal hold.
     """
 
     document_name: str = proto.Field(
@@ -336,6 +356,14 @@ class DocumentReference(proto.Message):
         proto.MESSAGE,
         number=7,
         message=timestamp_pb2.Timestamp,
+    )
+    document_is_retention_folder: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    document_is_legal_hold_folder: bool = proto.Field(
+        proto.BOOL,
+        number=9,
     )
 
 
