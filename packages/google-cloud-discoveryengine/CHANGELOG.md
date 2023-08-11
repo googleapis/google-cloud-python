@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.9.1...google-cloud-discoveryengine-v0.10.0) (2023-08-03)
+
+
+### Features
+
+* add skip reason for search summarization ([2058c1f](https://github.com/googleapis/google-cloud-python/commit/2058c1f5ea631c943df19243472eb9a26c08dede))
+* support conversational / multi-turn search ([2058c1f](https://github.com/googleapis/google-cloud-python/commit/2058c1f5ea631c943df19243472eb9a26c08dede))
+* support image search ([2058c1f](https://github.com/googleapis/google-cloud-python/commit/2058c1f5ea631c943df19243472eb9a26c08dede))
+* support tail suggestions in completion API ([2058c1f](https://github.com/googleapis/google-cloud-python/commit/2058c1f5ea631c943df19243472eb9a26c08dede))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([2058c1f](https://github.com/googleapis/google-cloud-python/commit/2058c1f5ea631c943df19243472eb9a26c08dede))
+
 ## [0.9.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.9.0...google-cloud-discoveryengine-v0.9.1) (2023-07-05)
 
 

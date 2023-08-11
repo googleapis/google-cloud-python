@@ -27,6 +27,9 @@ from google.cloud.network_management_v1.services.reachability_service.client imp
 from google.cloud.network_management_v1.types.connectivity_test import (
     ConnectivityTest,
     Endpoint,
+    LatencyDistribution,
+    LatencyPercentile,
+    ProbingDetails,
     ReachabilityDetails,
 )
 from google.cloud.network_management_v1.types.reachability import (
@@ -41,6 +44,9 @@ from google.cloud.network_management_v1.types.reachability import (
 )
 from google.cloud.network_management_v1.types.trace import (
     AbortInfo,
+    AppEngineVersionInfo,
+    CloudFunctionInfo,
+    CloudRunRevisionInfo,
     CloudSQLInstanceInfo,
     DeliverInfo,
     DropInfo,
@@ -49,13 +55,16 @@ from google.cloud.network_management_v1.types.trace import (
     ForwardInfo,
     ForwardingRuleInfo,
     GKEMasterInfo,
+    GoogleServiceInfo,
     InstanceInfo,
     LoadBalancerBackend,
     LoadBalancerInfo,
+    LoadBalancerType,
     NetworkInfo,
     RouteInfo,
     Step,
     Trace,
+    VpcConnectorInfo,
     VpnGatewayInfo,
     VpnTunnelInfo,
 )
@@ -65,6 +74,9 @@ __all__ = (
     "ReachabilityServiceAsyncClient",
     "ConnectivityTest",
     "Endpoint",
+    "LatencyDistribution",
+    "LatencyPercentile",
+    "ProbingDetails",
     "ReachabilityDetails",
     "CreateConnectivityTestRequest",
     "DeleteConnectivityTestRequest",
@@ -75,6 +87,9 @@ __all__ = (
     "RerunConnectivityTestRequest",
     "UpdateConnectivityTestRequest",
     "AbortInfo",
+    "AppEngineVersionInfo",
+    "CloudFunctionInfo",
+    "CloudRunRevisionInfo",
     "CloudSQLInstanceInfo",
     "DeliverInfo",
     "DropInfo",
@@ -83,6 +98,7 @@ __all__ = (
     "ForwardInfo",
     "ForwardingRuleInfo",
     "GKEMasterInfo",
+    "GoogleServiceInfo",
     "InstanceInfo",
     "LoadBalancerBackend",
     "LoadBalancerInfo",
@@ -90,6 +106,8 @@ __all__ = (
     "RouteInfo",
     "Step",
     "Trace",
+    "VpcConnectorInfo",
     "VpnGatewayInfo",
     "VpnTunnelInfo",
+    "LoadBalancerType",
 )

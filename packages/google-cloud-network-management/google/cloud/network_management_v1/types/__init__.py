@@ -13,7 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .connectivity_test import ConnectivityTest, Endpoint, ReachabilityDetails
+from .connectivity_test import (
+    ConnectivityTest,
+    Endpoint,
+    LatencyDistribution,
+    LatencyPercentile,
+    ProbingDetails,
+    ReachabilityDetails,
+)
 from .reachability import (
     CreateConnectivityTestRequest,
     DeleteConnectivityTestRequest,
@@ -26,6 +33,9 @@ from .reachability import (
 )
 from .trace import (
     AbortInfo,
+    AppEngineVersionInfo,
+    CloudFunctionInfo,
+    CloudRunRevisionInfo,
     CloudSQLInstanceInfo,
     DeliverInfo,
     DropInfo,
@@ -34,13 +44,16 @@ from .trace import (
     ForwardInfo,
     ForwardingRuleInfo,
     GKEMasterInfo,
+    GoogleServiceInfo,
     InstanceInfo,
     LoadBalancerBackend,
     LoadBalancerInfo,
+    LoadBalancerType,
     NetworkInfo,
     RouteInfo,
     Step,
     Trace,
+    VpcConnectorInfo,
     VpnGatewayInfo,
     VpnTunnelInfo,
 )
@@ -48,6 +61,9 @@ from .trace import (
 __all__ = (
     "ConnectivityTest",
     "Endpoint",
+    "LatencyDistribution",
+    "LatencyPercentile",
+    "ProbingDetails",
     "ReachabilityDetails",
     "CreateConnectivityTestRequest",
     "DeleteConnectivityTestRequest",
@@ -58,6 +74,9 @@ __all__ = (
     "RerunConnectivityTestRequest",
     "UpdateConnectivityTestRequest",
     "AbortInfo",
+    "AppEngineVersionInfo",
+    "CloudFunctionInfo",
+    "CloudRunRevisionInfo",
     "CloudSQLInstanceInfo",
     "DeliverInfo",
     "DropInfo",
@@ -66,6 +85,7 @@ __all__ = (
     "ForwardInfo",
     "ForwardingRuleInfo",
     "GKEMasterInfo",
+    "GoogleServiceInfo",
     "InstanceInfo",
     "LoadBalancerBackend",
     "LoadBalancerInfo",
@@ -73,6 +93,8 @@ __all__ = (
     "RouteInfo",
     "Step",
     "Trace",
+    "VpcConnectorInfo",
     "VpnGatewayInfo",
     "VpnTunnelInfo",
+    "LoadBalancerType",
 )

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-directory-v1.9.0...google-cloud-service-directory-v1.9.1) (2023-08-03)
+
+
+### Documentation
+
+* Minor formatting ([#11543](https://github.com/googleapis/google-cloud-python/issues/11543)) ([8cc031e](https://github.com/googleapis/google-cloud-python/commit/8cc031e723350890b4ceb6e813f24c4bcde3d65f))
+
 ## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-directory-v1.8.2...google-cloud-service-directory-v1.9.0) (2023-07-24)
 
 

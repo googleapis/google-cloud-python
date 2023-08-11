@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.15.0...google-cloud-batch-v0.16.0) (2023-08-09)
+
+
+### Features
+
+* Add Batch Managed Container support for v1alpha ([0e7f0b0](https://github.com/googleapis/google-cloud-python/commit/0e7f0b07e4b6149c8e573cab6f82667f1fe50cf6))
+* Clarify Batch API proto doc about pubsub notifications ([0e7f0b0](https://github.com/googleapis/google-cloud-python/commit/0e7f0b07e4b6149c8e573cab6f82667f1fe50cf6))
+
+
+### Documentation
+
+* Clarify Batch API proto doc about pubsub notifications ([#11550](https://github.com/googleapis/google-cloud-python/issues/11550)) ([4a8107a](https://github.com/googleapis/google-cloud-python/commit/4a8107a7dd492249807702cdc406c9d9c294c663))
+
+## [0.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.14.0...google-cloud-batch-v0.15.0) (2023-08-03)
+
+
+### Features
+
+* allow order_by for v1 ListJobs ([f5f6d35](https://github.com/googleapis/google-cloud-python/commit/f5f6d359cc90beb9752ac91203aeb92f9559b06d))
+* Enable gpu driver version field on v1 ([f5f6d35](https://github.com/googleapis/google-cloud-python/commit/f5f6d359cc90beb9752ac91203aeb92f9559b06d))
+
+
+### Documentation
+
+* Add comment to the unsupported order_by field of ListTasksRequest ([f5f6d35](https://github.com/googleapis/google-cloud-python/commit/f5f6d359cc90beb9752ac91203aeb92f9559b06d))
+* Improve url examples formats on Batch API comments ([f5f6d35](https://github.com/googleapis/google-cloud-python/commit/f5f6d359cc90beb9752ac91203aeb92f9559b06d))
+
 ## [0.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.13.0...google-cloud-batch-v0.14.0) (2023-07-25)
 
 

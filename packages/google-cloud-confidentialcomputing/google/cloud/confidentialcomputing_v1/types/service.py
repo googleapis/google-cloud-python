@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -192,11 +193,20 @@ class VerifyAttestationResponse(proto.Message):
     Attributes:
         oidc_claims_token (str):
             Output only. Same as claims_token, but as a string.
+        partial_errors (MutableSequence[google.rpc.status_pb2.Status]):
+            Output only. A list of messages that carry
+            the partial error details related to
+            VerifyAttestation.
     """
 
     oidc_claims_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    partial_errors: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=status_pb2.Status,
     )
 
 
@@ -372,12 +382,12 @@ class ContainerImageSignature(proto.Message):
 
     Attributes:
         payload (bytes):
-            Required. The binary signature payload following the
+            Optional. The binary signature payload following the
             SimpleSigning format
             https://github.com/sigstore/cosign/blob/main/specs/SIGNATURE_SPEC.md#simple-signing.
             This payload includes the container image digest.
         signature (bytes):
-            Required. A signature over the payload. The container image
+            Optional. A signature over the payload. The container image
             digest is incorporated into the signature as follows:
 
             1. Generate a SimpleSigning format payload that includes the
@@ -387,11 +397,9 @@ class ContainerImageSignature(proto.Message):
                follows:
                ``Sign(sha256(SimpleSigningPayload(sha256(Image Manifest))))``
         public_key (bytes):
-            Required. An associated public key used to
-            verify the signature.
+            Optional. Reserved for future use.
         sig_alg (google.cloud.confidentialcomputing_v1.types.SigningAlgorithm):
-            Required. The algorithm used to produce the
-            container image signature.
+            Optional. Reserved for future use.
     """
 
     payload: bytes = proto.Field(

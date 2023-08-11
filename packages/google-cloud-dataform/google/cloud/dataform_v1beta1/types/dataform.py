@@ -1197,6 +1197,7 @@ class CompilationResult(proto.Message):
                 Optional. The default BigQuery location to
                 use. Defaults to "US". See the BigQuery docs for
                 a full list of locations:
+
                 https://cloud.google.com/bigquery/docs/locations.
             assertion_schema (str):
                 Optional. The default schema (BigQuery

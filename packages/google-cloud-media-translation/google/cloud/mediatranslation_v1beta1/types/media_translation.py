@@ -88,11 +88,13 @@ class TranslateSpeechConfig(proto.Message):
             the output.
         sample_rate_hertz (int):
             Optional. Sample rate in Hertz of the audio
-            data. Valid values are: 8000-48000. 16000 is
-            optimal. For best results, set the sampling rate
-            of the audio source to 16000 Hz. If that's not
-            possible, use the native sample rate of the
-            audio source (instead of re-sampling).
+            data. Valid values are:
+
+            8000-48000. 16000 is optimal. For best results,
+            set the sampling rate of the audio source to
+            16000 Hz. If that's not possible, use the native
+            sample rate of the audio source (instead of
+            re-sampling).
         model (str):
             Optional. ``google-provided-model/video`` and
             ``google-provided-model/enhanced-phone-call`` are premium

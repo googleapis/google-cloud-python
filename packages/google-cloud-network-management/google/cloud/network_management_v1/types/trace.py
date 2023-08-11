@@ -22,12 +22,14 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.networkmanagement.v1",
     manifest={
+        "LoadBalancerType",
         "Trace",
         "Step",
         "InstanceInfo",
         "NetworkInfo",
         "FirewallInfo",
         "RouteInfo",
+        "GoogleServiceInfo",
         "ForwardingRuleInfo",
         "LoadBalancerInfo",
         "LoadBalancerBackend",
@@ -40,8 +42,58 @@ __protobuf__ = proto.module(
         "DropInfo",
         "GKEMasterInfo",
         "CloudSQLInstanceInfo",
+        "CloudFunctionInfo",
+        "CloudRunRevisionInfo",
+        "AppEngineVersionInfo",
+        "VpcConnectorInfo",
     },
 )
+
+
+class LoadBalancerType(proto.Enum):
+    r"""Type of a load balancer. For more information, see `Summary of
+    Google Cloud load
+    balancers <https://cloud.google.com/load-balancing/docs/load-balancing-overview#summary-of-google-cloud-load-balancers>`__.
+
+    Values:
+        LOAD_BALANCER_TYPE_UNSPECIFIED (0):
+            Forwarding rule points to a different target
+            than a load balancer or a load balancer type is
+            unknown.
+        HTTPS_ADVANCED_LOAD_BALANCER (1):
+            Global external HTTP(S) load balancer.
+        HTTPS_LOAD_BALANCER (2):
+            Global external HTTP(S) load balancer
+            (classic)
+        REGIONAL_HTTPS_LOAD_BALANCER (3):
+            Regional external HTTP(S) load balancer.
+        INTERNAL_HTTPS_LOAD_BALANCER (4):
+            Internal HTTP(S) load balancer.
+        SSL_PROXY_LOAD_BALANCER (5):
+            External SSL proxy load balancer.
+        TCP_PROXY_LOAD_BALANCER (6):
+            External TCP proxy load balancer.
+        INTERNAL_TCP_PROXY_LOAD_BALANCER (7):
+            Internal regional TCP proxy load balancer.
+        NETWORK_LOAD_BALANCER (8):
+            External TCP/UDP Network load balancer.
+        LEGACY_NETWORK_LOAD_BALANCER (9):
+            Target-pool based external TCP/UDP Network
+            load balancer.
+        TCP_UDP_INTERNAL_LOAD_BALANCER (10):
+            Internal TCP/UDP load balancer.
+    """
+    LOAD_BALANCER_TYPE_UNSPECIFIED = 0
+    HTTPS_ADVANCED_LOAD_BALANCER = 1
+    HTTPS_LOAD_BALANCER = 2
+    REGIONAL_HTTPS_LOAD_BALANCER = 3
+    INTERNAL_HTTPS_LOAD_BALANCER = 4
+    SSL_PROXY_LOAD_BALANCER = 5
+    TCP_PROXY_LOAD_BALANCER = 6
+    INTERNAL_TCP_PROXY_LOAD_BALANCER = 7
+    NETWORK_LOAD_BALANCER = 8
+    LEGACY_NETWORK_LOAD_BALANCER = 9
+    TCP_UDP_INTERNAL_LOAD_BALANCER = 10
 
 
 class Trace(proto.Message):
@@ -135,6 +187,10 @@ class Step(proto.Message):
             by state like NAT, or Connection Proxy.
 
             This field is a member of `oneof`_ ``step_info``.
+        google_service (google.cloud.network_management_v1.types.GoogleServiceInfo):
+            Display information of a Google service
+
+            This field is a member of `oneof`_ ``step_info``.
         forwarding_rule (google.cloud.network_management_v1.types.ForwardingRuleInfo):
             Display information of a Compute Engine
             forwarding rule.
@@ -148,6 +204,10 @@ class Step(proto.Message):
         vpn_tunnel (google.cloud.network_management_v1.types.VpnTunnelInfo):
             Display information of a Compute Engine VPN
             tunnel.
+
+            This field is a member of `oneof`_ ``step_info``.
+        vpc_connector (google.cloud.network_management_v1.types.VpcConnectorInfo):
+            Display information of a VPC connector.
 
             This field is a member of `oneof`_ ``step_info``.
         deliver (google.cloud.network_management_v1.types.DeliverInfo):
@@ -188,6 +248,19 @@ class Step(proto.Message):
             Display information of a Cloud SQL instance.
 
             This field is a member of `oneof`_ ``step_info``.
+        cloud_function (google.cloud.network_management_v1.types.CloudFunctionInfo):
+            Display information of a Cloud Function.
+
+            This field is a member of `oneof`_ ``step_info``.
+        app_engine_version (google.cloud.network_management_v1.types.AppEngineVersionInfo):
+            Display information of an App Engine service
+            version.
+
+            This field is a member of `oneof`_ ``step_info``.
+        cloud_run_revision (google.cloud.network_management_v1.types.CloudRunRevisionInfo):
+            Display information of a Cloud Run revision.
+
+            This field is a member of `oneof`_ ``step_info``.
     """
 
     class State(proto.Enum):
@@ -199,26 +272,52 @@ class Step(proto.Message):
                 Unspecified state.
             START_FROM_INSTANCE (1):
                 Initial state: packet originating from a
-                Compute Engine instance. An InstanceInfo is
-                populated with starting instance information.
+                Compute Engine instance.
+                An InstanceInfo is populated with starting
+                instance information.
             START_FROM_INTERNET (2):
                 Initial state: packet originating from the
-                internet. The endpoint information is populated.
+                internet.
+                The endpoint information is populated.
+            START_FROM_GOOGLE_SERVICE (27):
+                Initial state: packet originating from a
+                Google service. Some Google
+                services, such as health check probers or
+                Identity Aware Proxy use special routes, outside
+                VPC routing configuration to reach Compute
+                Engine Instances.
             START_FROM_PRIVATE_NETWORK (3):
                 Initial state: packet originating from a VPC
-                or on-premises network with internal source IP.
+                or on-premises network
+                with internal source IP.
                 If the source is a VPC network visible to the
                 user, a NetworkInfo is populated with details of
                 the network.
             START_FROM_GKE_MASTER (21):
                 Initial state: packet originating from a
-                Google Kubernetes Engine cluster master. A
-                GKEMasterInfo is populated with starting
-                instance information.
+                Google Kubernetes Engine cluster
+                master. A GKEMasterInfo is populated with
+                starting instance information.
             START_FROM_CLOUD_SQL_INSTANCE (22):
                 Initial state: packet originating from a
-                Cloud SQL instance. A CloudSQLInstanceInfo is
-                populated with starting instance information.
+                Cloud SQL instance.
+                A CloudSQLInstanceInfo is populated with
+                starting instance information.
+            START_FROM_CLOUD_FUNCTION (23):
+                Initial state: packet originating from a
+                Cloud Function.
+                A CloudFunctionInfo is populated with starting
+                function information.
+            START_FROM_APP_ENGINE_VERSION (25):
+                Initial state: packet originating from an App
+                Engine service version.
+                An AppEngineVersionInfo is populated with
+                starting version information.
+            START_FROM_CLOUD_RUN_REVISION (26):
+                Initial state: packet originating from a
+                Cloud Run revision.
+                A CloudRunRevisionInfo is populated with
+                starting revision information.
             APPLY_INGRESS_FIREWALL_RULE (4):
                 Config checking state: verify ingress
                 firewall rule.
@@ -231,7 +330,8 @@ class Step(proto.Message):
                 Config checking state: match forwarding rule.
             SPOOFING_APPROVED (8):
                 Config checking state: packet sent or
-                received under foreign IP address and allowed.
+                received under foreign IP
+                address and allowed.
             ARRIVE_AT_INSTANCE (9):
                 Forwarding state: arriving at a Compute
                 Engine instance.
@@ -247,32 +347,40 @@ class Step(proto.Message):
             ARRIVE_AT_VPN_TUNNEL (13):
                 Forwarding state: arriving at a Cloud VPN
                 tunnel.
+            ARRIVE_AT_VPC_CONNECTOR (24):
+                Forwarding state: arriving at a VPC
+                connector.
             NAT (14):
                 Transition state: packet header translated.
             PROXY_CONNECTION (15):
                 Transition state: original connection is
-                terminated and a new proxied connection is
-                initiated.
+                terminated and a new proxied
+                connection is initiated.
             DELIVER (16):
                 Final state: packet could be delivered.
             DROP (17):
                 Final state: packet could be dropped.
             FORWARD (18):
                 Final state: packet could be forwarded to a
-                network with an unknown configuration.
+                network with an unknown
+                configuration.
             ABORT (19):
                 Final state: analysis is aborted.
             VIEWER_PERMISSION_MISSING (20):
                 Special state: viewer of the test result does
-                not have permission to see the configuration in
-                this step.
+                not have permission to
+                see the configuration in this step.
         """
         STATE_UNSPECIFIED = 0
         START_FROM_INSTANCE = 1
         START_FROM_INTERNET = 2
+        START_FROM_GOOGLE_SERVICE = 27
         START_FROM_PRIVATE_NETWORK = 3
         START_FROM_GKE_MASTER = 21
         START_FROM_CLOUD_SQL_INSTANCE = 22
+        START_FROM_CLOUD_FUNCTION = 23
+        START_FROM_APP_ENGINE_VERSION = 25
+        START_FROM_CLOUD_RUN_REVISION = 26
         APPLY_INGRESS_FIREWALL_RULE = 4
         APPLY_EGRESS_FIREWALL_RULE = 5
         APPLY_ROUTE = 6
@@ -283,6 +391,7 @@ class Step(proto.Message):
         ARRIVE_AT_EXTERNAL_LOAD_BALANCER = 11
         ARRIVE_AT_VPN_GATEWAY = 12
         ARRIVE_AT_VPN_TUNNEL = 13
+        ARRIVE_AT_VPC_CONNECTOR = 24
         NAT = 14
         PROXY_CONNECTION = 15
         DELIVER = 16
@@ -332,6 +441,12 @@ class Step(proto.Message):
         oneof="step_info",
         message="EndpointInfo",
     )
+    google_service: "GoogleServiceInfo" = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        oneof="step_info",
+        message="GoogleServiceInfo",
+    )
     forwarding_rule: "ForwardingRuleInfo" = proto.Field(
         proto.MESSAGE,
         number=9,
@@ -349,6 +464,12 @@ class Step(proto.Message):
         number=11,
         oneof="step_info",
         message="VpnTunnelInfo",
+    )
+    vpc_connector: "VpcConnectorInfo" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        oneof="step_info",
+        message="VpcConnectorInfo",
     )
     deliver: "DeliverInfo" = proto.Field(
         proto.MESSAGE,
@@ -397,6 +518,24 @@ class Step(proto.Message):
         number=19,
         oneof="step_info",
         message="CloudSQLInstanceInfo",
+    )
+    cloud_function: "CloudFunctionInfo" = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        oneof="step_info",
+        message="CloudFunctionInfo",
+    )
+    app_engine_version: "AppEngineVersionInfo" = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        oneof="step_info",
+        message="AppEngineVersionInfo",
+    )
+    cloud_run_revision: "CloudRunRevisionInfo" = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        oneof="step_info",
+        message="CloudRunRevisionInfo",
     )
 
 
@@ -541,11 +680,28 @@ class FirewallInfo(proto.Message):
             IMPLIED_VPC_FIREWALL_RULE (3):
                 Implied VPC firewall rule. For details, see `Implied
                 rules <https://cloud.google.com/vpc/docs/firewalls#default_firewall_rules>`__.
+            SERVERLESS_VPC_ACCESS_MANAGED_FIREWALL_RULE (4):
+                Implicit firewall rules that are managed by serverless VPC
+                access to allow ingress access. They are not visible in the
+                Google Cloud console. For details, see `VPC connector's
+                implicit
+                rules <https://cloud.google.com/functions/docs/networking/connecting-vpc#restrict-access>`__.
+            NETWORK_FIREWALL_POLICY_RULE (5):
+                Global network firewall policy rule. For details, see
+                `Network firewall
+                policies <https://cloud.google.com/vpc/docs/network-firewall-policies>`__.
+            NETWORK_REGIONAL_FIREWALL_POLICY_RULE (6):
+                Regional network firewall policy rule. For details, see
+                `Regional network firewall
+                policies <https://cloud.google.com/firewall/docs/regional-firewall-policies>`__.
         """
         FIREWALL_RULE_TYPE_UNSPECIFIED = 0
         HIERARCHICAL_FIREWALL_POLICY_RULE = 1
         VPC_FIREWALL_RULE = 2
         IMPLIED_VPC_FIREWALL_RULE = 3
+        SERVERLESS_VPC_ACCESS_MANAGED_FIREWALL_RULE = 4
+        NETWORK_FIREWALL_POLICY_RULE = 5
+        NETWORK_REGIONAL_FIREWALL_POLICY_RULE = 6
 
     display_name: str = proto.Field(
         proto.STRING,
@@ -594,28 +750,55 @@ class RouteInfo(proto.Message):
     r"""For display only. Metadata associated with a Compute Engine
     route.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         route_type (google.cloud.network_management_v1.types.RouteInfo.RouteType):
             Type of route.
         next_hop_type (google.cloud.network_management_v1.types.RouteInfo.NextHopType):
             Type of next hop.
+        route_scope (google.cloud.network_management_v1.types.RouteInfo.RouteScope):
+            Indicates where route is applicable.
         display_name (str):
-            Name of a Compute Engine route.
+            Name of a route.
         uri (str):
-            URI of a Compute Engine route.
-            Dynamic route from cloud router does not have a
-            URI. Advertised route from Google Cloud VPC to
-            on-premises network also does not have a URI.
+            URI of a route.
+            Dynamic, peering static and peering dynamic
+            routes do not have an URI. Advertised route from
+            Google Cloud VPC to on-premises network also
+            does not have an URI.
         dest_ip_range (str):
             Destination IP range of the route.
         next_hop (str):
             Next hop of the route.
         network_uri (str):
-            URI of a Compute Engine network.
+            URI of a Compute Engine network. NETWORK
+            routes only.
         priority (int):
             Priority of the route.
         instance_tags (MutableSequence[str]):
             Instance tags of the route.
+        src_ip_range (str):
+            Source IP address range of the route. Policy
+            based routes only.
+        dest_port_ranges (MutableSequence[str]):
+            Destination port ranges of the route. Policy
+            based routes only.
+        src_port_ranges (MutableSequence[str]):
+            Source port ranges of the route. Policy based
+            routes only.
+        protocols (MutableSequence[str]):
+            Protocols of the route. Policy based routes
+            only.
+        ncc_hub_uri (str):
+            URI of a NCC Hub. NCC_HUB routes only.
+
+            This field is a member of `oneof`_ ``_ncc_hub_uri``.
+        ncc_spoke_uri (str):
+            URI of a NCC Spoke. NCC_HUB routes only.
+
+            This field is a member of `oneof`_ ``_ncc_spoke_uri``.
     """
 
     class RouteType(proto.Enum):
@@ -639,6 +822,8 @@ class RouteInfo(proto.Message):
             PEERING_DYNAMIC (6):
                 A dynamic route received from peering
                 network.
+            POLICY_BASED (7):
+                Policy based route.
         """
         ROUTE_TYPE_UNSPECIFIED = 0
         SUBNET = 1
@@ -647,6 +832,7 @@ class RouteInfo(proto.Message):
         PEERING_SUBNET = 4
         PEERING_STATIC = 5
         PEERING_DYNAMIC = 6
+        POLICY_BASED = 7
 
     class NextHopType(proto.Enum):
         r"""Type of next hop:
@@ -684,6 +870,8 @@ class RouteInfo(proto.Message):
             NEXT_HOP_ROUTER_APPLIANCE (11):
                 Next hop is a `router appliance
                 instance <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/ra-overview>`__.
+            NEXT_HOP_NCC_HUB (12):
+                Next hop is an NCC hub.
         """
         NEXT_HOP_TYPE_UNSPECIFIED = 0
         NEXT_HOP_IP = 1
@@ -697,6 +885,23 @@ class RouteInfo(proto.Message):
         NEXT_HOP_BLACKHOLE = 9
         NEXT_HOP_ILB = 10
         NEXT_HOP_ROUTER_APPLIANCE = 11
+        NEXT_HOP_NCC_HUB = 12
+
+    class RouteScope(proto.Enum):
+        r"""Indicates where routes are applicable.
+
+        Values:
+            ROUTE_SCOPE_UNSPECIFIED (0):
+                Unspecified scope. Default value.
+            NETWORK (1):
+                Route is applicable to packets in Network.
+            NCC_HUB (2):
+                Route is applicable to packets using NCC
+                Hub's routing table.
+        """
+        ROUTE_SCOPE_UNSPECIFIED = 0
+        NETWORK = 1
+        NCC_HUB = 2
 
     route_type: RouteType = proto.Field(
         proto.ENUM,
@@ -707,6 +912,11 @@ class RouteInfo(proto.Message):
         proto.ENUM,
         number=9,
         enum=NextHopType,
+    )
+    route_scope: RouteScope = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum=RouteScope,
     )
     display_name: str = proto.Field(
         proto.STRING,
@@ -735,6 +945,85 @@ class RouteInfo(proto.Message):
     instance_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
+    )
+    src_ip_range: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    dest_port_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=11,
+    )
+    src_port_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=12,
+    )
+    protocols: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=13,
+    )
+    ncc_hub_uri: str = proto.Field(
+        proto.STRING,
+        number=15,
+        optional=True,
+    )
+    ncc_spoke_uri: str = proto.Field(
+        proto.STRING,
+        number=16,
+        optional=True,
+    )
+
+
+class GoogleServiceInfo(proto.Message):
+    r"""For display only. Details of a Google Service sending packets to a
+    VPC network. Although the source IP might be a publicly routable
+    address, some Google Services use special routes within Google
+    production infrastructure to reach Compute Engine Instances.
+    https://cloud.google.com/vpc/docs/routes#special_return_paths
+
+    Attributes:
+        source_ip (str):
+            Source IP address.
+        google_service_type (google.cloud.network_management_v1.types.GoogleServiceInfo.GoogleServiceType):
+            Recognized type of a Google Service.
+    """
+
+    class GoogleServiceType(proto.Enum):
+        r"""Recognized type of a Google Service.
+
+        Values:
+            GOOGLE_SERVICE_TYPE_UNSPECIFIED (0):
+                Unspecified Google Service. Includes most of
+                Google APIs and services.
+            IAP (1):
+                Identity aware proxy.
+                https://cloud.google.com/iap/docs/using-tcp-forwarding
+            GFE_PROXY_OR_HEALTH_CHECK_PROBER (2):
+                One of two services sharing IP ranges:
+
+                -  Load Balancer proxy
+                -  Centralized Health Check prober
+                   https://cloud.google.com/load-balancing/docs/firewall-rules
+            CLOUD_DNS (3):
+                Connectivity from Cloud DNS to forwarding
+                targets or alternate name servers that use
+                private routing.
+                https://cloud.google.com/dns/docs/zones/forwarding-zones#firewall-rules
+                https://cloud.google.com/dns/docs/policies#firewall-rules
+        """
+        GOOGLE_SERVICE_TYPE_UNSPECIFIED = 0
+        IAP = 1
+        GFE_PROXY_OR_HEALTH_CHECK_PROBER = 2
+        CLOUD_DNS = 3
+
+    source_ip: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    google_service_type: GoogleServiceType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=GoogleServiceType,
     )
 
 
@@ -846,10 +1135,14 @@ class LoadBalancerInfo(proto.Message):
                 backend.
             TARGET_POOL (2):
                 Target Pool as the load balancer's backend.
+            TARGET_INSTANCE (3):
+                Target Instance as the load balancer's
+                backend.
         """
         BACKEND_TYPE_UNSPECIFIED = 0
         BACKEND_SERVICE = 1
         TARGET_POOL = 2
+        TARGET_INSTANCE = 3
 
     load_balancer_type: LoadBalancerType = proto.Field(
         proto.ENUM,
@@ -1107,6 +1400,9 @@ class EndpointInfo(proto.Message):
         destination_network_uri (str):
             URI of the network where this packet is sent
             to.
+        source_agent_uri (str):
+            URI of the source telemetry agent this packet
+            originates from.
     """
 
     source_ip: str = proto.Field(
@@ -1136,6 +1432,10 @@ class EndpointInfo(proto.Message):
     destination_network_uri: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    source_agent_uri: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 
@@ -1167,6 +1467,18 @@ class DeliverInfo(proto.Message):
                 master.
             CLOUD_SQL_INSTANCE (5):
                 Target is a Cloud SQL instance.
+            PSC_PUBLISHED_SERVICE (6):
+                Target is a published service that uses `Private Service
+                Connect <https://cloud.google.com/vpc/docs/configure-private-service-connect-services>`__.
+            PSC_GOOGLE_API (7):
+                Target is all Google APIs that use `Private Service
+                Connect <https://cloud.google.com/vpc/docs/configure-private-service-connect-apis>`__.
+            PSC_VPC_SC (8):
+                Target is a VPC-SC that uses `Private Service
+                Connect <https://cloud.google.com/vpc/docs/configure-private-service-connect-apis>`__.
+            SERVERLESS_NEG (9):
+                Target is a serverless network endpoint
+                group.
         """
         TARGET_UNSPECIFIED = 0
         INSTANCE = 1
@@ -1174,6 +1486,10 @@ class DeliverInfo(proto.Message):
         GOOGLE_API = 3
         GKE_MASTER = 4
         CLOUD_SQL_INSTANCE = 5
+        PSC_PUBLISHED_SERVICE = 6
+        PSC_GOOGLE_API = 7
+        PSC_VPC_SC = 8
+        SERVERLESS_NEG = 9
 
     target: Target = proto.Field(
         proto.ENUM,
@@ -1218,6 +1534,11 @@ class ForwardInfo(proto.Message):
                 imported from a peering VPC.
             CLOUD_SQL_INSTANCE (6):
                 Forwarded to a Cloud SQL instance.
+            ANOTHER_PROJECT (7):
+                Forwarded to a VPC network in another
+                project.
+            NCC_HUB (8):
+                Forwarded to an NCC Hub.
         """
         TARGET_UNSPECIFIED = 0
         PEERING_VPC = 1
@@ -1226,6 +1547,8 @@ class ForwardInfo(proto.Message):
         GKE_MASTER = 4
         IMPORTED_CUSTOM_ROUTE_NEXT_HOP = 5
         CLOUD_SQL_INSTANCE = 6
+        ANOTHER_PROJECT = 7
+        NCC_HUB = 8
 
     target: Target = proto.Field(
         proto.ENUM,
@@ -1317,6 +1640,27 @@ class AbortInfo(proto.Message):
             UNSUPPORTED (15):
                 Aborted because the test scenario is not
                 supported.
+            MISMATCHED_IP_VERSION (16):
+                Aborted because the source and destination
+                resources have no common IP version.
+            GKE_KONNECTIVITY_PROXY_UNSUPPORTED (17):
+                Aborted because the connection between the
+                control plane and the node of the source cluster
+                is initiated by the node and managed by the
+                Konnectivity proxy.
+            RESOURCE_CONFIG_NOT_FOUND (18):
+                Aborted because expected resource
+                configuration was missing.
+            GOOGLE_MANAGED_SERVICE_AMBIGUOUS_PSC_ENDPOINT (19):
+                Aborted because a PSC endpoint selection for
+                the Google-managed service is ambiguous (several
+                PSC endpoints satisfy test input).
+            SOURCE_PSC_CLOUD_SQL_UNSUPPORTED (20):
+                Aborted because tests with a PSC-based Cloud
+                SQL instance as a source are not supported.
+            SOURCE_FORWARDING_RULE_UNSUPPORTED (21):
+                Aborted because tests with a forwarding rule
+                as a source are not supported.
         """
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_NETWORK = 1
@@ -1334,6 +1678,12 @@ class AbortInfo(proto.Message):
         DESTINATION_ENDPOINT_NOT_FOUND = 13
         MISMATCHED_DESTINATION_NETWORK = 14
         UNSUPPORTED = 15
+        MISMATCHED_IP_VERSION = 16
+        GKE_KONNECTIVITY_PROXY_UNSUPPORTED = 17
+        RESOURCE_CONFIG_NOT_FOUND = 18
+        GOOGLE_MANAGED_SERVICE_AMBIGUOUS_PSC_ENDPOINT = 19
+        SOURCE_PSC_CLOUD_SQL_UNSUPPORTED = 20
+        SOURCE_FORWARDING_RULE_UNSUPPORTED = 21
 
     cause: Cause = proto.Field(
         proto.ENUM,
@@ -1384,10 +1734,11 @@ class DropInfo(proto.Message):
                 hop is a blackhole.
             ROUTE_WRONG_NETWORK (6):
                 Packet is sent to a wrong (unintended)
-                network. Example: you trace a packet from
-                VM1:Network1 to VM2:Network2, however, the route
-                configured in Network1 sends the packet destined
-                for VM2's IP addresss to Network3.
+                network. Example: you trace a
+                packet from VM1:Network1 to VM2:Network2,
+                however, the route configured in Network1 sends
+                the packet destined for VM2's IP addresss to
+                Network3.
             PRIVATE_TRAFFIC_TO_INTERNET (7):
                 Packet with internal destination address sent
                 to the internet gateway.
@@ -1409,6 +1760,10 @@ class DropInfo(proto.Message):
             FORWARDING_RULE_MISMATCH (11):
                 Forwarding rule's protocol and ports do not
                 match the packet header.
+            FORWARDING_RULE_REGION_MISMATCH (25):
+                Packet could be dropped because it was sent
+                from a different region to a regional forwarding
+                without global access.
             FORWARDING_RULE_NO_INSTANCES (12):
                 Forwarding rule does not have backends
                 configured.
@@ -1420,6 +1775,12 @@ class DropInfo(proto.Message):
             INSTANCE_NOT_RUNNING (14):
                 Packet is sent from or to a Compute Engine
                 instance that is not in a running state.
+            GKE_CLUSTER_NOT_RUNNING (27):
+                Packet sent from or to a GKE cluster that is
+                not in running state.
+            CLOUD_SQL_INSTANCE_NOT_RUNNING (28):
+                Packet sent from or to a Cloud SQL instance
+                that is not in running state.
             TRAFFIC_TYPE_BLOCKED (15):
                 The type of traffic is blocked and the user cannot configure
                 a firewall rule to enable it. See `Always blocked
@@ -1444,10 +1805,65 @@ class DropInfo(proto.Message):
                 Packet was dropped because there is no
                 peering between the originating network and the
                 Google Managed Services Network.
+            GOOGLE_MANAGED_SERVICE_NO_PSC_ENDPOINT (38):
+                Packet was dropped because the Google-managed
+                service uses Private Service Connect (PSC), but
+                the PSC endpoint is not found in the project.
+            GKE_PSC_ENDPOINT_MISSING (36):
+                Packet was dropped because the GKE cluster
+                uses Private Service Connect (PSC), but the PSC
+                endpoint is not found in the project.
             CLOUD_SQL_INSTANCE_NO_IP_ADDRESS (21):
                 Packet was dropped because the Cloud SQL
                 instance has neither a private nor a public IP
                 address.
+            GKE_CONTROL_PLANE_REGION_MISMATCH (30):
+                Packet was dropped because a GKE cluster
+                private endpoint is unreachable from a region
+                different from the cluster's region.
+            PUBLIC_GKE_CONTROL_PLANE_TO_PRIVATE_DESTINATION (31):
+                Packet sent from a public GKE cluster control
+                plane to a private IP address.
+            GKE_CONTROL_PLANE_NO_ROUTE (32):
+                Packet was dropped because there is no route
+                from a GKE cluster control plane to a
+                destination network.
+            CLOUD_SQL_INSTANCE_NOT_CONFIGURED_FOR_EXTERNAL_TRAFFIC (33):
+                Packet sent from a Cloud SQL instance to an
+                external IP address is not allowed. The Cloud
+                SQL instance is not configured to send packets
+                to external IP addresses.
+            PUBLIC_CLOUD_SQL_INSTANCE_TO_PRIVATE_DESTINATION (34):
+                Packet sent from a Cloud SQL instance with
+                only a public IP address to a private IP
+                address.
+            CLOUD_SQL_INSTANCE_NO_ROUTE (35):
+                Packet was dropped because there is no route
+                from a Cloud SQL instance to a destination
+                network.
+            CLOUD_FUNCTION_NOT_ACTIVE (22):
+                Packet could be dropped because the Cloud
+                Function is not in an active status.
+            VPC_CONNECTOR_NOT_SET (23):
+                Packet could be dropped because no VPC
+                connector is set.
+            VPC_CONNECTOR_NOT_RUNNING (24):
+                Packet could be dropped because the VPC
+                connector is not in a running state.
+            PSC_CONNECTION_NOT_ACCEPTED (26):
+                The Private Service Connect endpoint is in a
+                project that is not approved to connect to the
+                service.
+            CLOUD_RUN_REVISION_NOT_READY (29):
+                Packet sent from a Cloud Run revision that is
+                not ready.
+            DROPPED_INSIDE_PSC_SERVICE_PRODUCER (37):
+                Packet was dropped inside Private Service
+                Connect service producer.
+            LOAD_BALANCER_HAS_NO_PROXY_SUBNET (39):
+                Packet sent to a load balancer, which
+                requires a proxy-only subnet and the subnet is
+                not found.
         """
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_EXTERNAL_ADDRESS = 1
@@ -1461,16 +1877,34 @@ class DropInfo(proto.Message):
         NO_EXTERNAL_ADDRESS = 9
         UNKNOWN_INTERNAL_ADDRESS = 10
         FORWARDING_RULE_MISMATCH = 11
+        FORWARDING_RULE_REGION_MISMATCH = 25
         FORWARDING_RULE_NO_INSTANCES = 12
         FIREWALL_BLOCKING_LOAD_BALANCER_BACKEND_HEALTH_CHECK = 13
         INSTANCE_NOT_RUNNING = 14
+        GKE_CLUSTER_NOT_RUNNING = 27
+        CLOUD_SQL_INSTANCE_NOT_RUNNING = 28
         TRAFFIC_TYPE_BLOCKED = 15
         GKE_MASTER_UNAUTHORIZED_ACCESS = 16
         CLOUD_SQL_INSTANCE_UNAUTHORIZED_ACCESS = 17
         DROPPED_INSIDE_GKE_SERVICE = 18
         DROPPED_INSIDE_CLOUD_SQL_SERVICE = 19
         GOOGLE_MANAGED_SERVICE_NO_PEERING = 20
+        GOOGLE_MANAGED_SERVICE_NO_PSC_ENDPOINT = 38
+        GKE_PSC_ENDPOINT_MISSING = 36
         CLOUD_SQL_INSTANCE_NO_IP_ADDRESS = 21
+        GKE_CONTROL_PLANE_REGION_MISMATCH = 30
+        PUBLIC_GKE_CONTROL_PLANE_TO_PRIVATE_DESTINATION = 31
+        GKE_CONTROL_PLANE_NO_ROUTE = 32
+        CLOUD_SQL_INSTANCE_NOT_CONFIGURED_FOR_EXTERNAL_TRAFFIC = 33
+        PUBLIC_CLOUD_SQL_INSTANCE_TO_PRIVATE_DESTINATION = 34
+        CLOUD_SQL_INSTANCE_NO_ROUTE = 35
+        CLOUD_FUNCTION_NOT_ACTIVE = 22
+        VPC_CONNECTOR_NOT_SET = 23
+        VPC_CONNECTOR_NOT_RUNNING = 24
+        PSC_CONNECTION_NOT_ACCEPTED = 26
+        CLOUD_RUN_REVISION_NOT_READY = 29
+        DROPPED_INSIDE_PSC_SERVICE_PRODUCER = 37
+        LOAD_BALANCER_HAS_NO_PROXY_SUBNET = 39
 
     cause: Cause = proto.Field(
         proto.ENUM,
@@ -1560,6 +1994,135 @@ class CloudSQLInstanceInfo(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+
+
+class CloudFunctionInfo(proto.Message):
+    r"""For display only. Metadata associated with a Cloud Function.
+
+    Attributes:
+        display_name (str):
+            Name of a Cloud Function.
+        uri (str):
+            URI of a Cloud Function.
+        location (str):
+            Location in which the Cloud Function is
+            deployed.
+        version_id (int):
+            Latest successfully deployed version id of
+            the Cloud Function.
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    version_id: int = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+
+
+class CloudRunRevisionInfo(proto.Message):
+    r"""For display only. Metadata associated with a Cloud Run
+    revision.
+
+    Attributes:
+        display_name (str):
+            Name of a Cloud Run revision.
+        uri (str):
+            URI of a Cloud Run revision.
+        location (str):
+            Location in which this revision is deployed.
+        service_uri (str):
+            URI of Cloud Run service this revision
+            belongs to.
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    service_uri: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class AppEngineVersionInfo(proto.Message):
+    r"""For display only. Metadata associated with an App Engine
+    version.
+
+    Attributes:
+        display_name (str):
+            Name of an App Engine version.
+        uri (str):
+            URI of an App Engine version.
+        runtime (str):
+            Runtime of the App Engine version.
+        environment (str):
+            App Engine execution environment for a
+            version.
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    runtime: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    environment: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class VpcConnectorInfo(proto.Message):
+    r"""For display only. Metadata associated with a VPC connector.
+
+    Attributes:
+        display_name (str):
+            Name of a VPC connector.
+        uri (str):
+            URI of a VPC connector.
+        location (str):
+            Location in which the VPC connector is
+            deployed.
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
