@@ -2558,6 +2558,9 @@ class BinaryAuthorization(proto.Message):
             Mode of operation for binauthz policy
             evaluation. If unspecified, defaults to
             DISABLED.
+        policy_bindings (MutableSequence[google.cloud.container_v1beta1.types.BinaryAuthorization.PolicyBinding]):
+            Optional. Binauthz policies that apply to
+            this cluster.
     """
 
     class EvaluationMode(proto.Enum):
@@ -2573,10 +2576,39 @@ class BinaryAuthorization(proto.Message):
                 BinaryAuthorization using the project's
                 singleton policy. This is equivalent to setting
                 the enabled boolean to true.
+            POLICY_BINDINGS (5):
+                Use Binary Authorization with the policies specified in
+                policy_bindings.
+            POLICY_BINDINGS_AND_PROJECT_SINGLETON_POLICY_ENFORCE (6):
+                Use Binary Authorization with the policies specified in
+                policy_bindings, and also with the project's singleton
+                policy in enforcement mode.
         """
         EVALUATION_MODE_UNSPECIFIED = 0
         DISABLED = 1
         PROJECT_SINGLETON_POLICY_ENFORCE = 2
+        POLICY_BINDINGS = 5
+        POLICY_BINDINGS_AND_PROJECT_SINGLETON_POLICY_ENFORCE = 6
+
+    class PolicyBinding(proto.Message):
+        r"""Binauthz policy that applies to this cluster.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            name (str):
+                The relative resource name of the binauthz platform policy
+                to audit. GKE platform policies have the following format:
+                ``projects/{project_number}/platforms/gke/policies/{policy_id}``.
+
+                This field is a member of `oneof`_ ``_name``.
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+            optional=True,
+        )
 
     enabled: bool = proto.Field(
         proto.BOOL,
@@ -2586,6 +2618,11 @@ class BinaryAuthorization(proto.Message):
         proto.ENUM,
         number=2,
         enum=EvaluationMode,
+    )
+    policy_bindings: MutableSequence[PolicyBinding] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=PolicyBinding,
     )
 
 
