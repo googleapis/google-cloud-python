@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.10.0...google-cloud-network-management-v1.11.0) (2023-08-11)
+
+
+### Features
+
+* Add fields related to Google services ([8df7fab](https://github.com/googleapis/google-cloud-python/commit/8df7fab9c771ef9c3a4bb22cb7d1057a4c1e9fd8))
+* Add new enum values for network firewall policies ([8df7fab](https://github.com/googleapis/google-cloud-python/commit/8df7fab9c771ef9c3a4bb22cb7d1057a4c1e9fd8))
+
 ## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.9.1...google-cloud-network-management-v1.10.0) (2023-08-10)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storageinsights-v0.1.1...google-cloud-storageinsights-v0.1.2) (2023-08-11)
+
+
+### Documentation
+
+* Add link to documentation for ReportConfig proto fields ([#11562](https://github.com/googleapis/google-cloud-python/issues/11562)) ([d2a5659](https://github.com/googleapis/google-cloud-python/commit/d2a5659400567067d9ecd2eeca15211e9e2cbbe0))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storageinsights-v0.1.0...google-cloud-storageinsights-v0.1.1) (2023-07-05)
 
 
