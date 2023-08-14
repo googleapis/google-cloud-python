@@ -41,7 +41,7 @@ class workflowsCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_workflow': ('parent', 'workflow', 'workflow_id', ),
         'delete_workflow': ('name', ),
-        'get_workflow': ('name', ),
+        'get_workflow': ('name', 'revision_id', ),
         'list_workflows': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'update_workflow': ('workflow', 'update_mask', ),
     }

@@ -63,24 +63,25 @@ class Workflow(proto.Message):
             -  [Workflow code to be
                executed][google.cloud.workflows.v1.Workflow.source_contents]
 
-            The format is "000001-a4d", where the first 6 characters
+            The format is "000001-a4d", where the first six characters
             define the zero-padded revision ordinal number. They are
-            followed by a hyphen and 3 hexadecimal random characters.
+            followed by a hyphen and three hexadecimal random
+            characters.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The timestamp of when the
+            Output only. The timestamp for when the
             workflow was created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The last update timestamp of the
-            workflow.
+            Output only. The timestamp for when the
+            workflow was last updated.
         revision_create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The timestamp that the latest
-            revision of the workflow was created.
+            Output only. The timestamp for the latest
+            revision of the workflow's creation.
         labels (MutableMapping[str, str]):
             Labels associated with this workflow.
             Labels can contain at most 64 entries. Keys and
             values can be no longer than 63 characters and
             can only contain lowercase letters, numeric
-            characters, underscores and dashes. Label keys
+            characters, underscores, and dashes. Label keys
             must start with a letter. International
             characters are allowed.
         service_account (str):
@@ -103,11 +104,40 @@ class Workflow(proto.Message):
             is 128KB.
 
             This field is a member of `oneof`_ ``source_code``.
+        crypto_key_name (str):
+            Optional. The resource name of a KMS crypto key used to
+            encrypt or decrypt the data associated with the workflow.
+
+            Format:
+            projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}
+
+            Using ``-`` as a wildcard for the ``{project}`` or not
+            providing one at all will infer the project from the
+            account.
+
+            If not provided, data associated with the workflow will not
+            be CMEK-encrypted.
+        state_error (google.cloud.workflows_v1.types.Workflow.StateError):
+            Output only. Error regarding the state of the
+            workflow. For example, this field will have
+            error details if the execution data is
+            unavailable due to revoked KMS key permissions.
+        call_log_level (google.cloud.workflows_v1.types.Workflow.CallLogLevel):
+            Optional. Describes the level of platform
+            logging to apply to calls and call responses
+            during executions of this workflow. If both the
+            workflow and the execution specify a logging
+            level, the execution level takes precedence.
+        user_env_vars (MutableMapping[str, str]):
+            Optional. User-defined environment variables
+            associated with this workflow revision. This map
+            has a maximum length of 20. Each string can take
+            up to 40KiB. Keys cannot be empty strings and
+            cannot start with “GOOGLE” or “WORKFLOWS".
     """
 
     class State(proto.Enum):
-        r"""Describes the current state of workflow deployment. More
-        states may be added in the future.
+        r"""Describes the current state of workflow deployment.
 
         Values:
             STATE_UNSPECIFIED (0):
@@ -115,9 +145,66 @@ class Workflow(proto.Message):
             ACTIVE (1):
                 The workflow has been deployed successfully
                 and is serving.
+            UNAVAILABLE (2):
+                Workflow data is unavailable. See the ``state_error`` field.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
+        UNAVAILABLE = 2
+
+    class CallLogLevel(proto.Enum):
+        r"""Describes the level of platform logging to apply to calls and
+        call responses during workflow executions.
+
+        Values:
+            CALL_LOG_LEVEL_UNSPECIFIED (0):
+                No call logging level specified.
+            LOG_ALL_CALLS (1):
+                Log all call steps within workflows, all call
+                returns, and all exceptions raised.
+            LOG_ERRORS_ONLY (2):
+                Log only exceptions that are raised from call
+                steps within workflows.
+            LOG_NONE (3):
+                Explicitly log nothing.
+        """
+        CALL_LOG_LEVEL_UNSPECIFIED = 0
+        LOG_ALL_CALLS = 1
+        LOG_ERRORS_ONLY = 2
+        LOG_NONE = 3
+
+    class StateError(proto.Message):
+        r"""Describes an error related to the current state of the
+        workflow.
+
+        Attributes:
+            details (str):
+                Provides specifics about the error.
+            type_ (google.cloud.workflows_v1.types.Workflow.StateError.Type):
+                The type of this state error.
+        """
+
+        class Type(proto.Enum):
+            r"""Describes the possibled types of a state error.
+
+            Values:
+                TYPE_UNSPECIFIED (0):
+                    No type specified.
+                KMS_ERROR (1):
+                    Caused by an issue with KMS.
+            """
+            TYPE_UNSPECIFIED = 0
+            KMS_ERROR = 1
+
+        details: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        type_: "Workflow.StateError.Type" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="Workflow.StateError.Type",
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -165,6 +252,25 @@ class Workflow(proto.Message):
         number=10,
         oneof="source_code",
     )
+    crypto_key_name: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    state_error: StateError = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=StateError,
+    )
+    call_log_level: CallLogLevel = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=CallLogLevel,
+    )
+    user_env_vars: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=14,
+    )
 
 
 class ListWorkflowsRequest(proto.Message):
@@ -179,11 +285,12 @@ class ListWorkflowsRequest(proto.Message):
             projects/{project}/locations/{location}
         page_size (int):
             Maximum number of workflows to return per
-            call. The service may return fewer than this
-            value. If the value is not specified, a default
-            value of 500 will be used. The maximum permitted
-            value is 1000 and values greater than 1000 will
-            be coerced down to 1000.
+            call. The service might return fewer than this
+            value even if not at the end of the collection.
+            If a value is not specified, a default value of
+            500 is used. The maximum permitted value is 1000
+            and values greater than 1000 are coerced down to
+            1000.
         page_token (str):
             A page token, received from a previous ``ListWorkflows``
             call. Provide this to retrieve the subsequent page.
@@ -195,13 +302,12 @@ class ListWorkflowsRequest(proto.Message):
             Filter to restrict results to specific
             workflows.
         order_by (str):
-            Comma-separated list of fields that that
-            specify the order of the results. Default
-            sorting order for a field is ascending. To
-            specify descending order for a field, append a "
-            desc" suffix.
-            If not specified, the results will be returned
-            in an unspecified order.
+            Comma-separated list of fields that specify
+            the order of the results. Default sorting order
+            for a field is ascending. To specify descending
+            order for a field, append a "desc" suffix.
+            If not specified, the results are returned in an
+            unspecified order.
     """
 
     parent: str = proto.Field(
@@ -233,7 +339,7 @@ class ListWorkflowsResponse(proto.Message):
 
     Attributes:
         workflows (MutableSequence[google.cloud.workflows_v1.types.Workflow]):
-            The workflows which match the request.
+            The workflows that match the request.
         next_page_token (str):
             A token, which can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent
@@ -268,14 +374,24 @@ class GetWorkflowRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the workflow which
+            Required. Name of the workflow for which
             information should be retrieved. Format:
             projects/{project}/locations/{location}/workflows/{workflow}
+        revision_id (str):
+            Optional. The revision of the workflow to retrieve. If the
+            revision_id is empty, the latest revision is retrieved. The
+            format is "000001-a4d", where the first six characters
+            define the zero-padded decimal revision number. They are
+            followed by a hyphen and three hexadecimal characters.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    revision_id: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
