@@ -378,6 +378,7 @@ class InstalledAppFlow(Flow):
         open_browser=True,
         redirect_uri_trailing_slash=True,
         timeout_seconds=None,
+        token_audience=None,
         **kwargs
     ):
         """Run the flow using the server strategy.
@@ -412,6 +413,9 @@ class InstalledAppFlow(Flow):
                 if there are no credentials response. The value is in seconds.
                 When set to None there is no timeout.
                 Default value is None.
+            token_audience (str): Passed along with the request for an access
+                token. Determines the endpoints with which the token can be
+                used. Optional.
             kwargs: Additional keyword arguments passed through to
                 :meth:`authorization_url`.
 
@@ -444,7 +448,9 @@ class InstalledAppFlow(Flow):
         # Note: using https here because oauthlib is very picky that
         # OAuth 2.0 should only occur over https.
         authorization_response = wsgi_app.last_request_uri.replace("http", "https")
-        self.fetch_token(authorization_response=authorization_response)
+        self.fetch_token(
+            authorization_response=authorization_response, audience=token_audience
+        )
 
         # This closes the socket
         local_server.server_close()

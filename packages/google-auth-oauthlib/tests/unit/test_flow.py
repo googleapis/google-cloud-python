@@ -242,6 +242,7 @@ class TestFlow(object):
 class TestInstalledAppFlow(object):
     SCOPES = ["email", "profile"]
     REDIRECT_REQUEST_PATH = "/?code=code&state=state"
+    AUDIENCE = "dummy-audience"
 
     @pytest.fixture
     def instance(self):
@@ -312,6 +313,46 @@ class TestInstalledAppFlow(object):
             client_secret=CLIENT_SECRETS_INFO["web"]["client_secret"],
             authorization_response=expected_auth_response,
             code_verifier=None,
+            audience=None,
+        )
+
+    @pytest.mark.webtest
+    @mock.patch("google_auth_oauthlib.flow.webbrowser", autospec=True)
+    def test_run_local_server_audience(
+        self, webbrowser_mock, instance, mock_fetch_token, port
+    ):
+        auth_redirect_url = urllib.parse.urljoin(
+            f"http://localhost:{port}", self.REDIRECT_REQUEST_PATH
+        )
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
+            future = pool.submit(
+                partial(
+                    instance.run_local_server, port=port, token_audience=self.AUDIENCE
+                )
+            )
+
+            while not future.done():
+                try:
+                    requests.get(auth_redirect_url)
+                except requests.ConnectionError:  # pragma: NO COVER
+                    pass
+
+            credentials = future.result()
+
+        assert credentials.token == mock.sentinel.access_token
+        assert credentials._refresh_token == mock.sentinel.refresh_token
+        assert credentials.id_token == mock.sentinel.id_token
+        assert webbrowser_mock.open.called
+        assert instance.redirect_uri == f"http://localhost:{port}/"
+
+        expected_auth_response = auth_redirect_url.replace("http", "https")
+        mock_fetch_token.assert_called_with(
+            CLIENT_SECRETS_INFO["web"]["token_uri"],
+            client_secret=CLIENT_SECRETS_INFO["web"]["client_secret"],
+            authorization_response=expected_auth_response,
+            code_verifier=None,
+            audience=self.AUDIENCE,
         )
 
     @pytest.mark.webtest
@@ -353,6 +394,7 @@ class TestInstalledAppFlow(object):
             client_secret=CLIENT_SECRETS_INFO["web"]["client_secret"],
             authorization_response=expected_auth_response,
             code_verifier="amanaplanacanalpanama",
+            audience=None,
         )
 
     @mock.patch("google_auth_oauthlib.flow.webbrowser", autospec=True)
