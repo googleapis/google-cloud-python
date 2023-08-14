@@ -257,10 +257,10 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         line represents a
         [google.cloud.asset.v1.Asset][google.cloud.asset.v1.Asset] in
         the JSON format; for BigQuery table destinations, the output
-        table stores the fields in asset proto as columns. This API
+        table stores the fields in asset Protobuf as columns. This API
         implements the
-        [google.longrunning.Operation][google.longrunning.Operation] API
-        , which allows you to keep track of the export. We recommend
+        [google.longrunning.Operation][google.longrunning.Operation]
+        API, which allows you to keep track of the export. We recommend
         intervals of at least 2 seconds with exponential retry to poll
         the export operation result. For regular-size resource parent,
         the export operation usually finishes within 5 minutes.
@@ -481,10 +481,10 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
             asset_service.SearchAllResourcesResponse]:
         r"""Return a callable for the search all resources method over gRPC.
 
-        Searches all Cloud resources within the specified scope, such as
-        a project, folder, or organization. The caller must be granted
-        the ``cloudasset.assets.searchAllResources`` permission on the
-        desired scope, otherwise the request will be rejected.
+        Searches all Google Cloud resources within the specified scope,
+        such as a project, folder, or organization. The caller must be
+        granted the ``cloudasset.assets.searchAllResources`` permission
+        on the desired scope, otherwise the request will be rejected.
 
         Returns:
             Callable[[~.SearchAllResourcesRequest],
@@ -576,8 +576,8 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         [google.longrunning.Operation][google.longrunning.Operation],
         which allows you to track the operation status. We recommend
         intervals of at least 2 seconds with exponential backoff retry
-        to poll the operation result. The metadata contains the request
-        to help callers to map responses to requests.
+        to poll the operation result. The metadata contains the metadata
+        for the long-running operation.
 
         Returns:
             Callable[[~.AnalyzeIamPolicyLongrunningRequest],
@@ -596,6 +596,337 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs['analyze_iam_policy_longrunning']
+
+    @property
+    def analyze_move(self) -> Callable[
+            [asset_service.AnalyzeMoveRequest],
+            asset_service.AnalyzeMoveResponse]:
+        r"""Return a callable for the analyze move method over gRPC.
+
+        Analyze moving a resource to a specified destination
+        without kicking off the actual move. The analysis is
+        best effort depending on the user's permissions of
+        viewing different hierarchical policies and
+        configurations. The policies and configuration are
+        subject to change before the actual resource migration
+        takes place.
+
+        Returns:
+            Callable[[~.AnalyzeMoveRequest],
+                    ~.AnalyzeMoveResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if 'analyze_move' not in self._stubs:
+            self._stubs['analyze_move'] = self.grpc_channel.unary_unary(
+                '/google.cloud.asset.v1.AssetService/AnalyzeMove',
+                request_serializer=asset_service.AnalyzeMoveRequest.serialize,
+                response_deserializer=asset_service.AnalyzeMoveResponse.deserialize,
+            )
+        return self._stubs['analyze_move']
+
+    @property
+    def query_assets(self) -> Callable[
+            [asset_service.QueryAssetsRequest],
+            asset_service.QueryAssetsResponse]:
+        r"""Return a callable for the query assets method over gRPC.
+
+        Issue a job that queries assets using a SQL statement compatible
+        with `BigQuery Standard
+        SQL <http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql>`__.
+
+        If the query execution finishes within timeout and there's no
+        pagination, the full query results will be returned in the
+        ``QueryAssetsResponse``.
+
+        Otherwise, full query results can be obtained by issuing extra
+        requests with the ``job_reference`` from the a previous
+        ``QueryAssets`` call.
+
+        Note, the query result has approximately 10 GB limitation
+        enforced by BigQuery
+        https://cloud.google.com/bigquery/docs/best-practices-performance-output,
+        queries return larger results will result in errors.
+
+        Returns:
+            Callable[[~.QueryAssetsRequest],
+                    ~.QueryAssetsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if 'query_assets' not in self._stubs:
+            self._stubs['query_assets'] = self.grpc_channel.unary_unary(
+                '/google.cloud.asset.v1.AssetService/QueryAssets',
+                request_serializer=asset_service.QueryAssetsRequest.serialize,
+                response_deserializer=asset_service.QueryAssetsResponse.deserialize,
+            )
+        return self._stubs['query_assets']
+
+    @property
+    def create_saved_query(self) -> Callable[
+            [asset_service.CreateSavedQueryRequest],
+            asset_service.SavedQuery]:
+        r"""Return a callable for the create saved query method over gRPC.
+
+        Creates a saved query in a parent
+        project/folder/organization.
+
+        Returns:
+            Callable[[~.CreateSavedQueryRequest],
+                    ~.SavedQuery]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if 'create_saved_query' not in self._stubs:
+            self._stubs['create_saved_query'] = self.grpc_channel.unary_unary(
+                '/google.cloud.asset.v1.AssetService/CreateSavedQuery',
+                request_serializer=asset_service.CreateSavedQueryRequest.serialize,
+                response_deserializer=asset_service.SavedQuery.deserialize,
+            )
+        return self._stubs['create_saved_query']
+
+    @property
+    def get_saved_query(self) -> Callable[
+            [asset_service.GetSavedQueryRequest],
+            asset_service.SavedQuery]:
+        r"""Return a callable for the get saved query method over gRPC.
+
+        Gets details about a saved query.
+
+        Returns:
+            Callable[[~.GetSavedQueryRequest],
+                    ~.SavedQuery]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if 'get_saved_query' not in self._stubs:
+            self._stubs['get_saved_query'] = self.grpc_channel.unary_unary(
+                '/google.cloud.asset.v1.AssetService/GetSavedQuery',
+                request_serializer=asset_service.GetSavedQueryRequest.serialize,
+                response_deserializer=asset_service.SavedQuery.deserialize,
+            )
+        return self._stubs['get_saved_query']
+
+    @property
+    def list_saved_queries(self) -> Callable[
+            [asset_service.ListSavedQueriesRequest],
+            asset_service.ListSavedQueriesResponse]:
+        r"""Return a callable for the list saved queries method over gRPC.
+
+        Lists all saved queries in a parent
+        project/folder/organization.
+
+        Returns:
+            Callable[[~.ListSavedQueriesRequest],
+                    ~.ListSavedQueriesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if 'list_saved_queries' not in self._stubs:
+            self._stubs['list_saved_queries'] = self.grpc_channel.unary_unary(
+                '/google.cloud.asset.v1.AssetService/ListSavedQueries',
+                request_serializer=asset_service.ListSavedQueriesRequest.serialize,
+                response_deserializer=asset_service.ListSavedQueriesResponse.deserialize,
+            )
+        return self._stubs['list_saved_queries']
+
+    @property
+    def update_saved_query(self) -> Callable[
+            [asset_service.UpdateSavedQueryRequest],
+            asset_service.SavedQuery]:
+        r"""Return a callable for the update saved query method over gRPC.
+
+        Updates a saved query.
+
+        Returns:
+            Callable[[~.UpdateSavedQueryRequest],
+                    ~.SavedQuery]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if 'update_saved_query' not in self._stubs:
+            self._stubs['update_saved_query'] = self.grpc_channel.unary_unary(
+                '/google.cloud.asset.v1.AssetService/UpdateSavedQuery',
+                request_serializer=asset_service.UpdateSavedQueryRequest.serialize,
+                response_deserializer=asset_service.SavedQuery.deserialize,
+            )
+        return self._stubs['update_saved_query']
+
+    @property
+    def delete_saved_query(self) -> Callable[
+            [asset_service.DeleteSavedQueryRequest],
+            empty_pb2.Empty]:
+        r"""Return a callable for the delete saved query method over gRPC.
+
+        Deletes a saved query.
+
+        Returns:
+            Callable[[~.DeleteSavedQueryRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if 'delete_saved_query' not in self._stubs:
+            self._stubs['delete_saved_query'] = self.grpc_channel.unary_unary(
+                '/google.cloud.asset.v1.AssetService/DeleteSavedQuery',
+                request_serializer=asset_service.DeleteSavedQueryRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs['delete_saved_query']
+
+    @property
+    def batch_get_effective_iam_policies(self) -> Callable[
+            [asset_service.BatchGetEffectiveIamPoliciesRequest],
+            asset_service.BatchGetEffectiveIamPoliciesResponse]:
+        r"""Return a callable for the batch get effective iam
+        policies method over gRPC.
+
+        Gets effective IAM policies for a batch of resources.
+
+        Returns:
+            Callable[[~.BatchGetEffectiveIamPoliciesRequest],
+                    ~.BatchGetEffectiveIamPoliciesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if 'batch_get_effective_iam_policies' not in self._stubs:
+            self._stubs['batch_get_effective_iam_policies'] = self.grpc_channel.unary_unary(
+                '/google.cloud.asset.v1.AssetService/BatchGetEffectiveIamPolicies',
+                request_serializer=asset_service.BatchGetEffectiveIamPoliciesRequest.serialize,
+                response_deserializer=asset_service.BatchGetEffectiveIamPoliciesResponse.deserialize,
+            )
+        return self._stubs['batch_get_effective_iam_policies']
+
+    @property
+    def analyze_org_policies(self) -> Callable[
+            [asset_service.AnalyzeOrgPoliciesRequest],
+            asset_service.AnalyzeOrgPoliciesResponse]:
+        r"""Return a callable for the analyze org policies method over gRPC.
+
+        Analyzes organization policies under a scope.
+
+        Returns:
+            Callable[[~.AnalyzeOrgPoliciesRequest],
+                    ~.AnalyzeOrgPoliciesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if 'analyze_org_policies' not in self._stubs:
+            self._stubs['analyze_org_policies'] = self.grpc_channel.unary_unary(
+                '/google.cloud.asset.v1.AssetService/AnalyzeOrgPolicies',
+                request_serializer=asset_service.AnalyzeOrgPoliciesRequest.serialize,
+                response_deserializer=asset_service.AnalyzeOrgPoliciesResponse.deserialize,
+            )
+        return self._stubs['analyze_org_policies']
+
+    @property
+    def analyze_org_policy_governed_containers(self) -> Callable[
+            [asset_service.AnalyzeOrgPolicyGovernedContainersRequest],
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse]:
+        r"""Return a callable for the analyze org policy governed
+        containers method over gRPC.
+
+        Analyzes organization policies governed containers
+        (projects, folders or organization) under a scope.
+
+        Returns:
+            Callable[[~.AnalyzeOrgPolicyGovernedContainersRequest],
+                    ~.AnalyzeOrgPolicyGovernedContainersResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if 'analyze_org_policy_governed_containers' not in self._stubs:
+            self._stubs['analyze_org_policy_governed_containers'] = self.grpc_channel.unary_unary(
+                '/google.cloud.asset.v1.AssetService/AnalyzeOrgPolicyGovernedContainers',
+                request_serializer=asset_service.AnalyzeOrgPolicyGovernedContainersRequest.serialize,
+                response_deserializer=asset_service.AnalyzeOrgPolicyGovernedContainersResponse.deserialize,
+            )
+        return self._stubs['analyze_org_policy_governed_containers']
+
+    @property
+    def analyze_org_policy_governed_assets(self) -> Callable[
+            [asset_service.AnalyzeOrgPolicyGovernedAssetsRequest],
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse]:
+        r"""Return a callable for the analyze org policy governed
+        assets method over gRPC.
+
+        Analyzes organization policies governed assets (Google Cloud
+        resources or policies) under a scope. This RPC supports custom
+        constraints and the following 10 canned constraints:
+
+        -  storage.uniformBucketLevelAccess
+        -  iam.disableServiceAccountKeyCreation
+        -  iam.allowedPolicyMemberDomains
+        -  compute.vmExternalIpAccess
+        -  appengine.enforceServiceAccountActAsCheck
+        -  gcp.resourceLocations
+        -  compute.trustedImageProjects
+        -  compute.skipDefaultNetworkCreation
+        -  compute.requireOsLogin
+        -  compute.disableNestedVirtualization
+
+        This RPC only returns either resources of types supported by
+        `searchable asset
+        types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__,
+        or IAM policies.
+
+        Returns:
+            Callable[[~.AnalyzeOrgPolicyGovernedAssetsRequest],
+                    ~.AnalyzeOrgPolicyGovernedAssetsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if 'analyze_org_policy_governed_assets' not in self._stubs:
+            self._stubs['analyze_org_policy_governed_assets'] = self.grpc_channel.unary_unary(
+                '/google.cloud.asset.v1.AssetService/AnalyzeOrgPolicyGovernedAssets',
+                request_serializer=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest.serialize,
+                response_deserializer=asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.deserialize,
+            )
+        return self._stubs['analyze_org_policy_governed_assets']
 
     def close(self):
         self.grpc_channel.close()

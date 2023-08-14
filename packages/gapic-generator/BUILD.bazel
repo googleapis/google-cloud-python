@@ -65,6 +65,5 @@ py_binary(
         requirement("pypandoc"),
         requirement("PyYAML"),
         requirement("grpc-google-iam-v1"),
-    ]
+    ],
 )
-

@@ -27,7 +27,12 @@ from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account # type: ignore
 
+from google.cloud.eventarc_v1.types import channel
+from google.cloud.eventarc_v1.types import channel_connection
+from google.cloud.eventarc_v1.types import discovery
 from google.cloud.eventarc_v1.types import eventarc
+from google.cloud.eventarc_v1.types import google_channel_config
+from google.cloud.eventarc_v1.types import google_channel_config as gce_google_channel_config
 from google.cloud.eventarc_v1.types import trigger
 from google.cloud.location import locations_pb2 # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
@@ -144,6 +149,71 @@ class EventarcTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_channel: gapic_v1.method.wrap_method(
+                self.get_channel,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_channels: gapic_v1.method.wrap_method(
+                self.list_channels,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_channel_: gapic_v1.method.wrap_method(
+                self.create_channel_,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_channel: gapic_v1.method.wrap_method(
+                self.update_channel,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_channel: gapic_v1.method.wrap_method(
+                self.delete_channel,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_provider: gapic_v1.method.wrap_method(
+                self.get_provider,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_providers: gapic_v1.method.wrap_method(
+                self.list_providers,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_channel_connection: gapic_v1.method.wrap_method(
+                self.get_channel_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_channel_connections: gapic_v1.method.wrap_method(
+                self.list_channel_connections,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_channel_connection: gapic_v1.method.wrap_method(
+                self.create_channel_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_channel_connection: gapic_v1.method.wrap_method(
+                self.delete_channel_connection,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_google_channel_config: gapic_v1.method.wrap_method(
+                self.get_google_channel_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_google_channel_config: gapic_v1.method.wrap_method(
+                self.update_google_channel_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
          }
 
     def close(self):
@@ -202,6 +272,123 @@ class EventarcTransport(abc.ABC):
             Union[
                 operations_pb2.Operation,
                 Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def get_channel(self) -> Callable[
+            [eventarc.GetChannelRequest],
+            Union[
+                channel.Channel,
+                Awaitable[channel.Channel]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def list_channels(self) -> Callable[
+            [eventarc.ListChannelsRequest],
+            Union[
+                eventarc.ListChannelsResponse,
+                Awaitable[eventarc.ListChannelsResponse]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def create_channel_(self) -> Callable[
+            [eventarc.CreateChannelRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def update_channel(self) -> Callable[
+            [eventarc.UpdateChannelRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def delete_channel(self) -> Callable[
+            [eventarc.DeleteChannelRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def get_provider(self) -> Callable[
+            [eventarc.GetProviderRequest],
+            Union[
+                discovery.Provider,
+                Awaitable[discovery.Provider]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def list_providers(self) -> Callable[
+            [eventarc.ListProvidersRequest],
+            Union[
+                eventarc.ListProvidersResponse,
+                Awaitable[eventarc.ListProvidersResponse]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def get_channel_connection(self) -> Callable[
+            [eventarc.GetChannelConnectionRequest],
+            Union[
+                channel_connection.ChannelConnection,
+                Awaitable[channel_connection.ChannelConnection]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def list_channel_connections(self) -> Callable[
+            [eventarc.ListChannelConnectionsRequest],
+            Union[
+                eventarc.ListChannelConnectionsResponse,
+                Awaitable[eventarc.ListChannelConnectionsResponse]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def create_channel_connection(self) -> Callable[
+            [eventarc.CreateChannelConnectionRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def delete_channel_connection(self) -> Callable[
+            [eventarc.DeleteChannelConnectionRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def get_google_channel_config(self) -> Callable[
+            [eventarc.GetGoogleChannelConfigRequest],
+            Union[
+                google_channel_config.GoogleChannelConfig,
+                Awaitable[google_channel_config.GoogleChannelConfig]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def update_google_channel_config(self) -> Callable[
+            [eventarc.UpdateGoogleChannelConfigRequest],
+            Union[
+                gce_google_channel_config.GoogleChannelConfig,
+                Awaitable[gce_google_channel_config.GoogleChannelConfig]
             ]]:
         raise NotImplementedError()
 

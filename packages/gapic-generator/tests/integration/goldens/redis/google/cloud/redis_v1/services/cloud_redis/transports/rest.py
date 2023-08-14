@@ -108,6 +108,14 @@ class CloudRedisRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_instance_auth_string(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_instance_auth_string(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_import_instance(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -121,6 +129,14 @@ class CloudRedisRestInterceptor:
                 return request, metadata
 
             def post_list_instances(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_reschedule_maintenance(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_reschedule_maintenance(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -225,6 +241,22 @@ class CloudRedisRestInterceptor:
         it is returned to user code.
         """
         return response
+    def pre_get_instance_auth_string(self, request: cloud_redis.GetInstanceAuthStringRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.GetInstanceAuthStringRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_instance_auth_string
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedis server.
+        """
+        return request, metadata
+
+    def post_get_instance_auth_string(self, response: cloud_redis.InstanceAuthString) -> cloud_redis.InstanceAuthString:
+        """Post-rpc interceptor for get_instance_auth_string
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedis server but before
+        it is returned to user code.
+        """
+        return response
     def pre_import_instance(self, request: cloud_redis.ImportInstanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.ImportInstanceRequest, Sequence[Tuple[str, str]]]:
         """Pre-rpc interceptor for import_instance
 
@@ -251,6 +283,22 @@ class CloudRedisRestInterceptor:
 
     def post_list_instances(self, response: cloud_redis.ListInstancesResponse) -> cloud_redis.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CloudRedis server but before
+        it is returned to user code.
+        """
+        return response
+    def pre_reschedule_maintenance(self, request: cloud_redis.RescheduleMaintenanceRequest, metadata: Sequence[Tuple[str, str]]) -> Tuple[cloud_redis.RescheduleMaintenanceRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for reschedule_maintenance
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CloudRedis server.
+        """
+        return request, metadata
+
+    def post_reschedule_maintenance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
+        """Post-rpc interceptor for reschedule_maintenance
 
         Override in a subclass to manipulate the response
         after it is returned by the CloudRedis server but before
@@ -806,7 +854,7 @@ class CloudRedisRestTransport(CloudRedisTransport):
 
             Returns:
                 ~.cloud_redis.Instance:
-                    A Google Cloud Redis instance.
+                    A Memorystore for Redis instance.
             """
 
             http_options: List[Dict[str, str]] = [{
@@ -850,6 +898,83 @@ class CloudRedisRestTransport(CloudRedisTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_instance(resp)
+            return resp
+
+    class _GetInstanceAuthString(CloudRedisRestStub):
+        def __hash__(self):
+            return hash("GetInstanceAuthString")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
+        def __call__(self,
+                request: cloud_redis.GetInstanceAuthStringRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, str]]=(),
+                ) -> cloud_redis.InstanceAuthString:
+            r"""Call the get instance auth string method over HTTP.
+
+            Args:
+                request (~.cloud_redis.GetInstanceAuthStringRequest):
+                    The request object. Request for
+                [GetInstanceAuthString][google.cloud.redis.v1.CloudRedis.GetInstanceAuthString].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.cloud_redis.InstanceAuthString:
+                    Instance AUTH string details.
+            """
+
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1/{name=projects/*/locations/*/instances/*}/authString',
+            },
+            ]
+            request, metadata = self._interceptor.pre_get_instance_auth_string(request, metadata)
+            pb_request = cloud_redis.GetInstanceAuthStringRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+
+            # Jsonify the query params
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            ))
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = cloud_redis.InstanceAuthString()
+            pb_resp = cloud_redis.InstanceAuthString.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_instance_auth_string(resp)
             return resp
 
     class _ImportInstance(CloudRedisRestStub):
@@ -1016,6 +1141,93 @@ class CloudRedisRestTransport(CloudRedisTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_instances(resp)
+            return resp
+
+    class _RescheduleMaintenance(CloudRedisRestStub):
+        def __hash__(self):
+            return hash("RescheduleMaintenance")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
+
+        def __call__(self,
+                request: cloud_redis.RescheduleMaintenanceRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, str]]=(),
+                ) -> operations_pb2.Operation:
+            r"""Call the reschedule maintenance method over HTTP.
+
+            Args:
+                request (~.cloud_redis.RescheduleMaintenanceRequest):
+                    The request object. Request for
+                [RescheduleMaintenance][google.cloud.redis.v1.CloudRedis.RescheduleMaintenance].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1/{name=projects/*/locations/*/instances/*}:rescheduleMaintenance',
+                'body': '*',
+            },
+            ]
+            request, metadata = self._interceptor.pre_reschedule_maintenance(request, metadata)
+            pb_request = cloud_redis.RescheduleMaintenanceRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request['body'],
+                including_default_value_fields=False,
+                use_integers_for_enums=False
+            )
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+
+            # Jsonify the query params
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                including_default_value_fields=False,
+                use_integers_for_enums=False,
+            ))
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            # Send the request
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+                )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_reschedule_maintenance(resp)
             return resp
 
     class _UpdateInstance(CloudRedisRestStub):
@@ -1233,6 +1445,14 @@ class CloudRedisRestTransport(CloudRedisTransport):
         return self._GetInstance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
+    def get_instance_auth_string(self) -> Callable[
+            [cloud_redis.GetInstanceAuthStringRequest],
+            cloud_redis.InstanceAuthString]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetInstanceAuthString(self._session, self._host, self._interceptor) # type: ignore
+
+    @property
     def import_instance(self) -> Callable[
             [cloud_redis.ImportInstanceRequest],
             operations_pb2.Operation]:
@@ -1247,6 +1467,14 @@ class CloudRedisRestTransport(CloudRedisTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInstances(self._session, self._host, self._interceptor) # type: ignore
+
+    @property
+    def reschedule_maintenance(self) -> Callable[
+            [cloud_redis.RescheduleMaintenanceRequest],
+            operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RescheduleMaintenance(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def update_instance(self) -> Callable[

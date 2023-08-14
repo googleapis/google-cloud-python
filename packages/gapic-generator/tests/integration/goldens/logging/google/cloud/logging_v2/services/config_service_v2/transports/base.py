@@ -23,10 +23,12 @@ import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account # type: ignore
 
 from google.cloud.logging_v2.types import logging_config
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
@@ -124,6 +126,16 @@ class ConfigServiceV2Transport(abc.ABC):
             ),
             self.get_bucket: gapic_v1.method.wrap_method(
                 self.get_bucket,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_bucket_async: gapic_v1.method.wrap_method(
+                self.create_bucket_async,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_bucket_async: gapic_v1.method.wrap_method(
+                self.update_bucket_async,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -229,6 +241,26 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.create_link: gapic_v1.method.wrap_method(
+                self.create_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_link: gapic_v1.method.wrap_method(
+                self.delete_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_links: gapic_v1.method.wrap_method(
+                self.list_links,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_link: gapic_v1.method.wrap_method(
+                self.get_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_exclusions: gapic_v1.method.wrap_method(
                 self.list_exclusions,
                 default_retry=retries.Retry(
@@ -288,6 +320,21 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_settings: gapic_v1.method.wrap_method(
+                self.get_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_settings: gapic_v1.method.wrap_method(
+                self.update_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.copy_log_entries: gapic_v1.method.wrap_method(
+                self.copy_log_entries,
+                default_timeout=None,
+                client_info=client_info,
+            ),
          }
 
     def close(self):
@@ -297,6 +344,11 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             Only call this method if the transport is NOT shared
             with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
         raise NotImplementedError()
 
     @property
@@ -314,6 +366,24 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             Union[
                 logging_config.LogBucket,
                 Awaitable[logging_config.LogBucket]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def create_bucket_async(self) -> Callable[
+            [logging_config.CreateBucketRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def update_bucket_async(self) -> Callable[
+            [logging_config.UpdateBucketRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
             ]]:
         raise NotImplementedError()
 
@@ -444,6 +514,42 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
         raise NotImplementedError()
 
     @property
+    def create_link(self) -> Callable[
+            [logging_config.CreateLinkRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def delete_link(self) -> Callable[
+            [logging_config.DeleteLinkRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def list_links(self) -> Callable[
+            [logging_config.ListLinksRequest],
+            Union[
+                logging_config.ListLinksResponse,
+                Awaitable[logging_config.ListLinksResponse]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def get_link(self) -> Callable[
+            [logging_config.GetLinkRequest],
+            Union[
+                logging_config.Link,
+                Awaitable[logging_config.Link]
+            ]]:
+        raise NotImplementedError()
+
+    @property
     def list_exclusions(self) -> Callable[
             [logging_config.ListExclusionsRequest],
             Union[
@@ -503,6 +609,33 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
             Union[
                 logging_config.CmekSettings,
                 Awaitable[logging_config.CmekSettings]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def get_settings(self) -> Callable[
+            [logging_config.GetSettingsRequest],
+            Union[
+                logging_config.Settings,
+                Awaitable[logging_config.Settings]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def update_settings(self) -> Callable[
+            [logging_config.UpdateSettingsRequest],
+            Union[
+                logging_config.Settings,
+                Awaitable[logging_config.Settings]
+            ]]:
+        raise NotImplementedError()
+
+    @property
+    def copy_log_entries(self) -> Callable[
+            [logging_config.CopyLogEntriesRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
             ]]:
         raise NotImplementedError()
 

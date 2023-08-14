@@ -23,17 +23,10 @@ except ImportError:  # pragma: NO COVER
 
 import grpc
 from grpc.experimental import aio
-from collections.abc import Iterable
-from google.protobuf import json_format
-import json
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
-from requests import Response
-from requests import Request, PreparedRequest
-from requests.sessions import Session
-from google.protobuf import json_format
 
 from google.api import distribution_pb2  # type: ignore
 from google.api import label_pb2  # type: ignore
@@ -87,7 +80,6 @@ def test__get_default_mtls_endpoint():
 @pytest.mark.parametrize("client_class,transport_name", [
     (MetricsServiceV2Client, "grpc"),
     (MetricsServiceV2AsyncClient, "grpc_asyncio"),
-    (MetricsServiceV2Client, "rest"),
 ])
 def test_metrics_service_v2_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
@@ -100,16 +92,12 @@ def test_metrics_service_v2_client_from_service_account_info(client_class, trans
 
         assert client.transport._host == (
             'logging.googleapis.com:443'
-            if transport_name in ['grpc', 'grpc_asyncio']
-            else
-            'https://logging.googleapis.com'
         )
 
 
 @pytest.mark.parametrize("transport_class,transport_name", [
     (transports.MetricsServiceV2GrpcTransport, "grpc"),
     (transports.MetricsServiceV2GrpcAsyncIOTransport, "grpc_asyncio"),
-    (transports.MetricsServiceV2RestTransport, "rest"),
 ])
 def test_metrics_service_v2_client_service_account_always_use_jwt(transport_class, transport_name):
     with mock.patch.object(service_account.Credentials, 'with_always_use_jwt_access', create=True) as use_jwt:
@@ -126,7 +114,6 @@ def test_metrics_service_v2_client_service_account_always_use_jwt(transport_clas
 @pytest.mark.parametrize("client_class,transport_name", [
     (MetricsServiceV2Client, "grpc"),
     (MetricsServiceV2AsyncClient, "grpc_asyncio"),
-    (MetricsServiceV2Client, "rest"),
 ])
 def test_metrics_service_v2_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
@@ -142,9 +129,6 @@ def test_metrics_service_v2_client_from_service_account_file(client_class, trans
 
         assert client.transport._host == (
             'logging.googleapis.com:443'
-            if transport_name in ['grpc', 'grpc_asyncio']
-            else
-            'https://logging.googleapis.com'
         )
 
 
@@ -152,7 +136,6 @@ def test_metrics_service_v2_client_get_transport_class():
     transport = MetricsServiceV2Client.get_transport_class()
     available_transports = [
         transports.MetricsServiceV2GrpcTransport,
-        transports.MetricsServiceV2RestTransport,
     ]
     assert transport in available_transports
 
@@ -163,7 +146,6 @@ def test_metrics_service_v2_client_get_transport_class():
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (MetricsServiceV2Client, transports.MetricsServiceV2GrpcTransport, "grpc"),
     (MetricsServiceV2AsyncClient, transports.MetricsServiceV2GrpcAsyncIOTransport, "grpc_asyncio"),
-    (MetricsServiceV2Client, transports.MetricsServiceV2RestTransport, "rest"),
 ])
 @mock.patch.object(MetricsServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2Client))
 @mock.patch.object(MetricsServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2AsyncClient))
@@ -283,8 +265,6 @@ def test_metrics_service_v2_client_client_options(client_class, transport_class,
     (MetricsServiceV2AsyncClient, transports.MetricsServiceV2GrpcAsyncIOTransport, "grpc_asyncio", "true"),
     (MetricsServiceV2Client, transports.MetricsServiceV2GrpcTransport, "grpc", "false"),
     (MetricsServiceV2AsyncClient, transports.MetricsServiceV2GrpcAsyncIOTransport, "grpc_asyncio", "false"),
-    (MetricsServiceV2Client, transports.MetricsServiceV2RestTransport, "rest", "true"),
-    (MetricsServiceV2Client, transports.MetricsServiceV2RestTransport, "rest", "false"),
 ])
 @mock.patch.object(MetricsServiceV2Client, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2Client))
 @mock.patch.object(MetricsServiceV2AsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(MetricsServiceV2AsyncClient))
@@ -422,7 +402,6 @@ def test_metrics_service_v2_client_get_mtls_endpoint_and_cert_source(client_clas
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
     (MetricsServiceV2Client, transports.MetricsServiceV2GrpcTransport, "grpc"),
     (MetricsServiceV2AsyncClient, transports.MetricsServiceV2GrpcAsyncIOTransport, "grpc_asyncio"),
-    (MetricsServiceV2Client, transports.MetricsServiceV2RestTransport, "rest"),
 ])
 def test_metrics_service_v2_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
@@ -447,7 +426,6 @@ def test_metrics_service_v2_client_client_options_scopes(client_class, transport
 @pytest.mark.parametrize("client_class,transport_class,transport_name,grpc_helpers", [
     (MetricsServiceV2Client, transports.MetricsServiceV2GrpcTransport, "grpc", grpc_helpers),
     (MetricsServiceV2AsyncClient, transports.MetricsServiceV2GrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
-    (MetricsServiceV2Client, transports.MetricsServiceV2RestTransport, "rest", None),
 ])
 def test_metrics_service_v2_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
@@ -996,6 +974,8 @@ def test_get_log_metric(request_type, transport: str = 'grpc'):
             name='name_value',
             description='description_value',
             filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         )
@@ -1011,6 +991,8 @@ def test_get_log_metric(request_type, transport: str = 'grpc'):
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+    assert response.bucket_name == 'bucket_name_value'
+    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1052,6 +1034,8 @@ async def test_get_log_metric_async(transport: str = 'grpc_asyncio', request_typ
             name='name_value',
             description='description_value',
             filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
@@ -1067,6 +1051,8 @@ async def test_get_log_metric_async(transport: str = 'grpc_asyncio', request_typ
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+    assert response.bucket_name == 'bucket_name_value'
+    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1244,6 +1230,8 @@ def test_create_log_metric(request_type, transport: str = 'grpc'):
             name='name_value',
             description='description_value',
             filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         )
@@ -1259,6 +1247,8 @@ def test_create_log_metric(request_type, transport: str = 'grpc'):
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+    assert response.bucket_name == 'bucket_name_value'
+    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1300,6 +1290,8 @@ async def test_create_log_metric_async(transport: str = 'grpc_asyncio', request_
             name='name_value',
             description='description_value',
             filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
@@ -1315,6 +1307,8 @@ async def test_create_log_metric_async(transport: str = 'grpc_asyncio', request_
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+    assert response.bucket_name == 'bucket_name_value'
+    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1502,6 +1496,8 @@ def test_update_log_metric(request_type, transport: str = 'grpc'):
             name='name_value',
             description='description_value',
             filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         )
@@ -1517,6 +1513,8 @@ def test_update_log_metric(request_type, transport: str = 'grpc'):
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+    assert response.bucket_name == 'bucket_name_value'
+    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1558,6 +1556,8 @@ async def test_update_log_metric_async(transport: str = 'grpc_asyncio', request_
             name='name_value',
             description='description_value',
             filter='filter_value',
+            bucket_name='bucket_name_value',
+            disabled=True,
             value_extractor='value_extractor_value',
             version=logging_metrics.LogMetric.ApiVersion.V1,
         ))
@@ -1573,6 +1573,8 @@ async def test_update_log_metric_async(transport: str = 'grpc_asyncio', request_
     assert response.name == 'name_value'
     assert response.description == 'description_value'
     assert response.filter == 'filter_value'
+    assert response.bucket_name == 'bucket_name_value'
+    assert response.disabled is True
     assert response.value_extractor == 'value_extractor_value'
     assert response.version == logging_metrics.LogMetric.ApiVersion.V1
 
@@ -1963,1245 +1965,6 @@ async def test_delete_log_metric_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [
-    logging_metrics.ListLogMetricsRequest,
-    dict,
-])
-def test_list_log_metrics_rest(request_type):
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = logging_metrics.ListLogMetricsResponse(
-              next_page_token='next_page_token_value',
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = logging_metrics.ListLogMetricsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.list_log_metrics(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListLogMetricsPager)
-    assert response.next_page_token == 'next_page_token_value'
-
-
-def test_list_log_metrics_rest_required_fields(request_type=logging_metrics.ListLogMetricsRequest):
-    transport_class = transports.MetricsServiceV2RestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(json_format.MessageToJson(
-        pb_request,
-        including_default_value_fields=False,
-        use_integers_for_enums=False
-    ))
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_log_metrics._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = 'parent_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_log_metrics._get_unset_required_fields(jsonified_request)
-    # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("page_size", "page_token", ))
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
-
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest',
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = logging_metrics.ListLogMetricsResponse()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, 'request') as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, 'transcode') as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                'uri': 'v1/sample_method',
-                'method': "get",
-                'query_params': pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            pb_return_value = logging_metrics.ListLogMetricsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
-
-            response_value._content = json_return_value.encode('UTF-8')
-            req.return_value = response_value
-
-            response = client.list_log_metrics(request)
-
-            expected_params = [
-            ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
-
-
-def test_list_log_metrics_rest_unset_required_fields():
-    transport = transports.MetricsServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.list_log_metrics._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("pageSize", "pageToken", )) & set(("parent", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_log_metrics_rest_interceptors(null_interceptor):
-    transport = transports.MetricsServiceV2RestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.MetricsServiceV2RestInterceptor(),
-        )
-    client = MetricsServiceV2Client(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.MetricsServiceV2RestInterceptor, "post_list_log_metrics") as post, \
-         mock.patch.object(transports.MetricsServiceV2RestInterceptor, "pre_list_log_metrics") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = logging_metrics.ListLogMetricsRequest.pb(logging_metrics.ListLogMetricsRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = logging_metrics.ListLogMetricsResponse.to_json(logging_metrics.ListLogMetricsResponse())
-
-        request = logging_metrics.ListLogMetricsRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = logging_metrics.ListLogMetricsResponse()
-
-        client.list_log_metrics(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_list_log_metrics_rest_bad_request(transport: str = 'rest', request_type=logging_metrics.ListLogMetricsRequest):
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.list_log_metrics(request)
-
-
-def test_list_log_metrics_rest_flattened():
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = logging_metrics.ListLogMetricsResponse()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {'parent': 'projects/sample1'}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent='parent_value',
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = logging_metrics.ListLogMetricsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        client.list_log_metrics(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate("%s/v2/{parent=projects/*}/metrics" % client.transport._host, args[1])
-
-
-def test_list_log_metrics_rest_flattened_error(transport: str = 'rest'):
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_log_metrics(
-            logging_metrics.ListLogMetricsRequest(),
-            parent='parent_value',
-        )
-
-
-def test_list_log_metrics_rest_pager(transport: str = 'rest'):
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, 'request') as req:
-        # TODO(kbandes): remove this mock unless there's a good reason for it.
-        #with mock.patch.object(path_template, 'transcode') as transcode:
-        # Set the response as a series of pages
-        response = (
-            logging_metrics.ListLogMetricsResponse(
-                metrics=[
-                    logging_metrics.LogMetric(),
-                    logging_metrics.LogMetric(),
-                    logging_metrics.LogMetric(),
-                ],
-                next_page_token='abc',
-            ),
-            logging_metrics.ListLogMetricsResponse(
-                metrics=[],
-                next_page_token='def',
-            ),
-            logging_metrics.ListLogMetricsResponse(
-                metrics=[
-                    logging_metrics.LogMetric(),
-                ],
-                next_page_token='ghi',
-            ),
-            logging_metrics.ListLogMetricsResponse(
-                metrics=[
-                    logging_metrics.LogMetric(),
-                    logging_metrics.LogMetric(),
-                ],
-            ),
-        )
-        # Two responses for two calls
-        response = response + response
-
-        # Wrap the values into proper Response objs
-        response = tuple(logging_metrics.ListLogMetricsResponse.to_json(x) for x in response)
-        return_values = tuple(Response() for i in response)
-        for return_val, response_val in zip(return_values, response):
-            return_val._content = response_val.encode('UTF-8')
-            return_val.status_code = 200
-        req.side_effect = return_values
-
-        sample_request = {'parent': 'projects/sample1'}
-
-        pager = client.list_log_metrics(request=sample_request)
-
-        results = list(pager)
-        assert len(results) == 6
-        assert all(isinstance(i, logging_metrics.LogMetric)
-                for i in results)
-
-        pages = list(client.list_log_metrics(request=sample_request).pages)
-        for page_, token in zip(pages, ['abc','def','ghi', '']):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.parametrize("request_type", [
-    logging_metrics.GetLogMetricRequest,
-    dict,
-])
-def test_get_log_metric_rest(request_type):
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'metric_name': 'projects/sample1/metrics/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = logging_metrics.LogMetric(
-              name='name_value',
-              description='description_value',
-              filter='filter_value',
-              value_extractor='value_extractor_value',
-              version=logging_metrics.LogMetric.ApiVersion.V1,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = logging_metrics.LogMetric.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.get_log_metric(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, logging_metrics.LogMetric)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
-    assert response.value_extractor == 'value_extractor_value'
-    assert response.version == logging_metrics.LogMetric.ApiVersion.V1
-
-
-def test_get_log_metric_rest_required_fields(request_type=logging_metrics.GetLogMetricRequest):
-    transport_class = transports.MetricsServiceV2RestTransport
-
-    request_init = {}
-    request_init["metric_name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(json_format.MessageToJson(
-        pb_request,
-        including_default_value_fields=False,
-        use_integers_for_enums=False
-    ))
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_log_metric._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["metricName"] = 'metric_name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_log_metric._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "metricName" in jsonified_request
-    assert jsonified_request["metricName"] == 'metric_name_value'
-
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest',
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = logging_metrics.LogMetric()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, 'request') as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, 'transcode') as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                'uri': 'v1/sample_method',
-                'method': "get",
-                'query_params': pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            pb_return_value = logging_metrics.LogMetric.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
-
-            response_value._content = json_return_value.encode('UTF-8')
-            req.return_value = response_value
-
-            response = client.get_log_metric(request)
-
-            expected_params = [
-            ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
-
-
-def test_get_log_metric_rest_unset_required_fields():
-    transport = transports.MetricsServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.get_log_metric._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("metricName", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_log_metric_rest_interceptors(null_interceptor):
-    transport = transports.MetricsServiceV2RestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.MetricsServiceV2RestInterceptor(),
-        )
-    client = MetricsServiceV2Client(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.MetricsServiceV2RestInterceptor, "post_get_log_metric") as post, \
-         mock.patch.object(transports.MetricsServiceV2RestInterceptor, "pre_get_log_metric") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = logging_metrics.GetLogMetricRequest.pb(logging_metrics.GetLogMetricRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = logging_metrics.LogMetric.to_json(logging_metrics.LogMetric())
-
-        request = logging_metrics.GetLogMetricRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = logging_metrics.LogMetric()
-
-        client.get_log_metric(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_get_log_metric_rest_bad_request(transport: str = 'rest', request_type=logging_metrics.GetLogMetricRequest):
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'metric_name': 'projects/sample1/metrics/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.get_log_metric(request)
-
-
-def test_get_log_metric_rest_flattened():
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = logging_metrics.LogMetric()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {'metric_name': 'projects/sample1/metrics/sample2'}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            metric_name='metric_name_value',
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = logging_metrics.LogMetric.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        client.get_log_metric(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate("%s/v2/{metric_name=projects/*/metrics/*}" % client.transport._host, args[1])
-
-
-def test_get_log_metric_rest_flattened_error(transport: str = 'rest'):
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.get_log_metric(
-            logging_metrics.GetLogMetricRequest(),
-            metric_name='metric_name_value',
-        )
-
-
-def test_get_log_metric_rest_error():
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    logging_metrics.CreateLogMetricRequest,
-    dict,
-])
-def test_create_log_metric_rest(request_type):
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1'}
-    request_init["metric"] = {'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'metric_descriptor': {'name': 'name_value', 'type': 'type_value', 'labels': [{'key': 'key_value', 'value_type': 1, 'description': 'description_value'}], 'metric_kind': 1, 'value_type': 1, 'unit': 'unit_value', 'description': 'description_value', 'display_name': 'display_name_value', 'metadata': {'launch_stage': 6, 'sample_period': {'seconds': 751, 'nanos': 543}, 'ingest_delay': {}}, 'launch_stage': 6, 'monitored_resource_types': ['monitored_resource_types_value1', 'monitored_resource_types_value2']}, 'value_extractor': 'value_extractor_value', 'label_extractors': {}, 'bucket_options': {'linear_buckets': {'num_finite_buckets': 1918, 'width': 0.544, 'offset': 0.647}, 'exponential_buckets': {'num_finite_buckets': 1918, 'growth_factor': 0.1401, 'scale': 0.52}, 'explicit_buckets': {'bounds': [0.652, 0.653]}}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'version': 1}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = logging_metrics.LogMetric(
-              name='name_value',
-              description='description_value',
-              filter='filter_value',
-              value_extractor='value_extractor_value',
-              version=logging_metrics.LogMetric.ApiVersion.V1,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = logging_metrics.LogMetric.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.create_log_metric(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, logging_metrics.LogMetric)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
-    assert response.value_extractor == 'value_extractor_value'
-    assert response.version == logging_metrics.LogMetric.ApiVersion.V1
-
-
-def test_create_log_metric_rest_required_fields(request_type=logging_metrics.CreateLogMetricRequest):
-    transport_class = transports.MetricsServiceV2RestTransport
-
-    request_init = {}
-    request_init["parent"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(json_format.MessageToJson(
-        pb_request,
-        including_default_value_fields=False,
-        use_integers_for_enums=False
-    ))
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_log_metric._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["parent"] = 'parent_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_log_metric._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "parent" in jsonified_request
-    assert jsonified_request["parent"] == 'parent_value'
-
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest',
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = logging_metrics.LogMetric()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, 'request') as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, 'transcode') as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                'uri': 'v1/sample_method',
-                'method': "post",
-                'query_params': pb_request,
-            }
-            transcode_result['body'] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            pb_return_value = logging_metrics.LogMetric.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
-
-            response_value._content = json_return_value.encode('UTF-8')
-            req.return_value = response_value
-
-            response = client.create_log_metric(request)
-
-            expected_params = [
-            ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
-
-
-def test_create_log_metric_rest_unset_required_fields():
-    transport = transports.MetricsServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.create_log_metric._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("parent", "metric", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_log_metric_rest_interceptors(null_interceptor):
-    transport = transports.MetricsServiceV2RestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.MetricsServiceV2RestInterceptor(),
-        )
-    client = MetricsServiceV2Client(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.MetricsServiceV2RestInterceptor, "post_create_log_metric") as post, \
-         mock.patch.object(transports.MetricsServiceV2RestInterceptor, "pre_create_log_metric") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = logging_metrics.CreateLogMetricRequest.pb(logging_metrics.CreateLogMetricRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = logging_metrics.LogMetric.to_json(logging_metrics.LogMetric())
-
-        request = logging_metrics.CreateLogMetricRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = logging_metrics.LogMetric()
-
-        client.create_log_metric(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_create_log_metric_rest_bad_request(transport: str = 'rest', request_type=logging_metrics.CreateLogMetricRequest):
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'parent': 'projects/sample1'}
-    request_init["metric"] = {'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'metric_descriptor': {'name': 'name_value', 'type': 'type_value', 'labels': [{'key': 'key_value', 'value_type': 1, 'description': 'description_value'}], 'metric_kind': 1, 'value_type': 1, 'unit': 'unit_value', 'description': 'description_value', 'display_name': 'display_name_value', 'metadata': {'launch_stage': 6, 'sample_period': {'seconds': 751, 'nanos': 543}, 'ingest_delay': {}}, 'launch_stage': 6, 'monitored_resource_types': ['monitored_resource_types_value1', 'monitored_resource_types_value2']}, 'value_extractor': 'value_extractor_value', 'label_extractors': {}, 'bucket_options': {'linear_buckets': {'num_finite_buckets': 1918, 'width': 0.544, 'offset': 0.647}, 'exponential_buckets': {'num_finite_buckets': 1918, 'growth_factor': 0.1401, 'scale': 0.52}, 'explicit_buckets': {'bounds': [0.652, 0.653]}}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'version': 1}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.create_log_metric(request)
-
-
-def test_create_log_metric_rest_flattened():
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = logging_metrics.LogMetric()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {'parent': 'projects/sample1'}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            parent='parent_value',
-            metric=logging_metrics.LogMetric(name='name_value'),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = logging_metrics.LogMetric.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        client.create_log_metric(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate("%s/v2/{parent=projects/*}/metrics" % client.transport._host, args[1])
-
-
-def test_create_log_metric_rest_flattened_error(transport: str = 'rest'):
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.create_log_metric(
-            logging_metrics.CreateLogMetricRequest(),
-            parent='parent_value',
-            metric=logging_metrics.LogMetric(name='name_value'),
-        )
-
-
-def test_create_log_metric_rest_error():
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    logging_metrics.UpdateLogMetricRequest,
-    dict,
-])
-def test_update_log_metric_rest(request_type):
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'metric_name': 'projects/sample1/metrics/sample2'}
-    request_init["metric"] = {'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'metric_descriptor': {'name': 'name_value', 'type': 'type_value', 'labels': [{'key': 'key_value', 'value_type': 1, 'description': 'description_value'}], 'metric_kind': 1, 'value_type': 1, 'unit': 'unit_value', 'description': 'description_value', 'display_name': 'display_name_value', 'metadata': {'launch_stage': 6, 'sample_period': {'seconds': 751, 'nanos': 543}, 'ingest_delay': {}}, 'launch_stage': 6, 'monitored_resource_types': ['monitored_resource_types_value1', 'monitored_resource_types_value2']}, 'value_extractor': 'value_extractor_value', 'label_extractors': {}, 'bucket_options': {'linear_buckets': {'num_finite_buckets': 1918, 'width': 0.544, 'offset': 0.647}, 'exponential_buckets': {'num_finite_buckets': 1918, 'growth_factor': 0.1401, 'scale': 0.52}, 'explicit_buckets': {'bounds': [0.652, 0.653]}}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'version': 1}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = logging_metrics.LogMetric(
-              name='name_value',
-              description='description_value',
-              filter='filter_value',
-              value_extractor='value_extractor_value',
-              version=logging_metrics.LogMetric.ApiVersion.V1,
-        )
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = logging_metrics.LogMetric.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.update_log_metric(request)
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, logging_metrics.LogMetric)
-    assert response.name == 'name_value'
-    assert response.description == 'description_value'
-    assert response.filter == 'filter_value'
-    assert response.value_extractor == 'value_extractor_value'
-    assert response.version == logging_metrics.LogMetric.ApiVersion.V1
-
-
-def test_update_log_metric_rest_required_fields(request_type=logging_metrics.UpdateLogMetricRequest):
-    transport_class = transports.MetricsServiceV2RestTransport
-
-    request_init = {}
-    request_init["metric_name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(json_format.MessageToJson(
-        pb_request,
-        including_default_value_fields=False,
-        use_integers_for_enums=False
-    ))
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_log_metric._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["metricName"] = 'metric_name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_log_metric._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "metricName" in jsonified_request
-    assert jsonified_request["metricName"] == 'metric_name_value'
-
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest',
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = logging_metrics.LogMetric()
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, 'request') as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, 'transcode') as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                'uri': 'v1/sample_method',
-                'method': "put",
-                'query_params': pb_request,
-            }
-            transcode_result['body'] = pb_request
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-
-            pb_return_value = logging_metrics.LogMetric.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
-
-            response_value._content = json_return_value.encode('UTF-8')
-            req.return_value = response_value
-
-            response = client.update_log_metric(request)
-
-            expected_params = [
-            ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
-
-
-def test_update_log_metric_rest_unset_required_fields():
-    transport = transports.MetricsServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.update_log_metric._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("metricName", "metric", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_update_log_metric_rest_interceptors(null_interceptor):
-    transport = transports.MetricsServiceV2RestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.MetricsServiceV2RestInterceptor(),
-        )
-    client = MetricsServiceV2Client(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.MetricsServiceV2RestInterceptor, "post_update_log_metric") as post, \
-         mock.patch.object(transports.MetricsServiceV2RestInterceptor, "pre_update_log_metric") as pre:
-        pre.assert_not_called()
-        post.assert_not_called()
-        pb_message = logging_metrics.UpdateLogMetricRequest.pb(logging_metrics.UpdateLogMetricRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-        req.return_value._content = logging_metrics.LogMetric.to_json(logging_metrics.LogMetric())
-
-        request = logging_metrics.UpdateLogMetricRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-        post.return_value = logging_metrics.LogMetric()
-
-        client.update_log_metric(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-        post.assert_called_once()
-
-
-def test_update_log_metric_rest_bad_request(transport: str = 'rest', request_type=logging_metrics.UpdateLogMetricRequest):
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'metric_name': 'projects/sample1/metrics/sample2'}
-    request_init["metric"] = {'name': 'name_value', 'description': 'description_value', 'filter': 'filter_value', 'metric_descriptor': {'name': 'name_value', 'type': 'type_value', 'labels': [{'key': 'key_value', 'value_type': 1, 'description': 'description_value'}], 'metric_kind': 1, 'value_type': 1, 'unit': 'unit_value', 'description': 'description_value', 'display_name': 'display_name_value', 'metadata': {'launch_stage': 6, 'sample_period': {'seconds': 751, 'nanos': 543}, 'ingest_delay': {}}, 'launch_stage': 6, 'monitored_resource_types': ['monitored_resource_types_value1', 'monitored_resource_types_value2']}, 'value_extractor': 'value_extractor_value', 'label_extractors': {}, 'bucket_options': {'linear_buckets': {'num_finite_buckets': 1918, 'width': 0.544, 'offset': 0.647}, 'exponential_buckets': {'num_finite_buckets': 1918, 'growth_factor': 0.1401, 'scale': 0.52}, 'explicit_buckets': {'bounds': [0.652, 0.653]}}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'version': 1}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.update_log_metric(request)
-
-
-def test_update_log_metric_rest_flattened():
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = logging_metrics.LogMetric()
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {'metric_name': 'projects/sample1/metrics/sample2'}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            metric_name='metric_name_value',
-            metric=logging_metrics.LogMetric(name='name_value'),
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        pb_return_value = logging_metrics.LogMetric.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        client.update_log_metric(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate("%s/v2/{metric_name=projects/*/metrics/*}" % client.transport._host, args[1])
-
-
-def test_update_log_metric_rest_flattened_error(transport: str = 'rest'):
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.update_log_metric(
-            logging_metrics.UpdateLogMetricRequest(),
-            metric_name='metric_name_value',
-            metric=logging_metrics.LogMetric(name='name_value'),
-        )
-
-
-def test_update_log_metric_rest_error():
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
-@pytest.mark.parametrize("request_type", [
-    logging_metrics.DeleteLogMetricRequest,
-    dict,
-])
-def test_delete_log_metric_rest(request_type):
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'metric_name': 'projects/sample1/metrics/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ''
-
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-        response = client.delete_log_metric(request)
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_log_metric_rest_required_fields(request_type=logging_metrics.DeleteLogMetricRequest):
-    transport_class = transports.MetricsServiceV2RestTransport
-
-    request_init = {}
-    request_init["metric_name"] = ""
-    request = request_type(**request_init)
-    pb_request = request_type.pb(request)
-    jsonified_request = json.loads(json_format.MessageToJson(
-        pb_request,
-        including_default_value_fields=False,
-        use_integers_for_enums=False
-    ))
-
-    # verify fields with default values are dropped
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_log_metric._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with default values are now present
-
-    jsonified_request["metricName"] = 'metric_name_value'
-
-    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_log_metric._get_unset_required_fields(jsonified_request)
-    jsonified_request.update(unset_fields)
-
-    # verify required fields with non-default values are left alone
-    assert "metricName" in jsonified_request
-    assert jsonified_request["metricName"] == 'metric_name_value'
-
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest',
-    )
-    request = request_type(**request_init)
-
-    # Designate an appropriate value for the returned response.
-    return_value = None
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(Session, 'request') as req:
-        # We need to mock transcode() because providing default values
-        # for required fields will fail the real version if the http_options
-        # expect actual values for those fields.
-        with mock.patch.object(path_template, 'transcode') as transcode:
-            # A uri without fields and an empty body will force all the
-            # request fields to show up in the query_params.
-            pb_request = request_type.pb(request)
-            transcode_result = {
-                'uri': 'v1/sample_method',
-                'method': "delete",
-                'query_params': pb_request,
-            }
-            transcode.return_value = transcode_result
-
-            response_value = Response()
-            response_value.status_code = 200
-            json_return_value = ''
-
-            response_value._content = json_return_value.encode('UTF-8')
-            req.return_value = response_value
-
-            response = client.delete_log_metric(request)
-
-            expected_params = [
-            ]
-            actual_params = req.call_args.kwargs['params']
-            assert expected_params == actual_params
-
-
-def test_delete_log_metric_rest_unset_required_fields():
-    transport = transports.MetricsServiceV2RestTransport(credentials=ga_credentials.AnonymousCredentials)
-
-    unset_fields = transport.delete_log_metric._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("metricName", )))
-
-
-@pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_log_metric_rest_interceptors(null_interceptor):
-    transport = transports.MetricsServiceV2RestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None if null_interceptor else transports.MetricsServiceV2RestInterceptor(),
-        )
-    client = MetricsServiceV2Client(transport=transport)
-    with mock.patch.object(type(client.transport._session), "request") as req, \
-         mock.patch.object(path_template, "transcode")  as transcode, \
-         mock.patch.object(transports.MetricsServiceV2RestInterceptor, "pre_delete_log_metric") as pre:
-        pre.assert_not_called()
-        pb_message = logging_metrics.DeleteLogMetricRequest.pb(logging_metrics.DeleteLogMetricRequest())
-        transcode.return_value = {
-            "method": "post",
-            "uri": "my_uri",
-            "body": pb_message,
-            "query_params": pb_message,
-        }
-
-        req.return_value = Response()
-        req.return_value.status_code = 200
-        req.return_value.request = PreparedRequest()
-
-        request = logging_metrics.DeleteLogMetricRequest()
-        metadata =[
-            ("key", "val"),
-            ("cephalopod", "squid"),
-        ]
-        pre.return_value = request, metadata
-
-        client.delete_log_metric(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
-
-        pre.assert_called_once()
-
-
-def test_delete_log_metric_rest_bad_request(transport: str = 'rest', request_type=logging_metrics.DeleteLogMetricRequest):
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # send a request that will satisfy transcoding
-    request_init = {'metric_name': 'projects/sample1/metrics/sample2'}
-    request = request_type(**request_init)
-
-    # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 400
-        response_value.request = Request()
-        req.return_value = response_value
-        client.delete_log_metric(request)
-
-
-def test_delete_log_metric_rest_flattened():
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport="rest",
-    )
-
-    # Mock the http request call within the method and fake a response.
-    with mock.patch.object(type(client.transport._session), 'request') as req:
-        # Designate an appropriate value for the returned response.
-        return_value = None
-
-        # get arguments that satisfy an http rule for this method
-        sample_request = {'metric_name': 'projects/sample1/metrics/sample2'}
-
-        # get truthy value for each flattened field
-        mock_args = dict(
-            metric_name='metric_name_value',
-        )
-        mock_args.update(sample_request)
-
-        # Wrap the value into a proper Response obj
-        response_value = Response()
-        response_value.status_code = 200
-        json_return_value = ''
-        response_value._content = json_return_value.encode('UTF-8')
-        req.return_value = response_value
-
-        client.delete_log_metric(**mock_args)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(req.mock_calls) == 1
-        _, args, _ = req.mock_calls[0]
-        assert path_template.validate("%s/v2/{metric_name=projects/*/metrics/*}" % client.transport._host, args[1])
-
-
-def test_delete_log_metric_rest_flattened_error(transport: str = 'rest'):
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport=transport,
-    )
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_log_metric(
-            logging_metrics.DeleteLogMetricRequest(),
-            metric_name='metric_name_value',
-        )
-
-
-def test_delete_log_metric_rest_error():
-    client = MetricsServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(),
-        transport='rest'
-    )
-
-
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.MetricsServiceV2GrpcTransport(
@@ -3280,7 +2043,6 @@ def test_transport_get_channel():
 @pytest.mark.parametrize("transport_class", [
     transports.MetricsServiceV2GrpcTransport,
     transports.MetricsServiceV2GrpcAsyncIOTransport,
-    transports.MetricsServiceV2RestTransport,
 ])
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -3291,7 +2053,6 @@ def test_transport_adc(transport_class):
 
 @pytest.mark.parametrize("transport_name", [
     "grpc",
-    "rest",
 ])
 def test_transport_kind(transport_name):
     transport = MetricsServiceV2Client.get_transport_class(transport_name)(
@@ -3425,7 +2186,6 @@ def test_metrics_service_v2_transport_auth_adc(transport_class):
     [
         transports.MetricsServiceV2GrpcTransport,
         transports.MetricsServiceV2GrpcAsyncIOTransport,
-        transports.MetricsServiceV2RestTransport,
     ],
 )
 def test_metrics_service_v2_transport_auth_gdch_credentials(transport_class):
@@ -3526,20 +2286,10 @@ def test_metrics_service_v2_grpc_transport_client_cert_source_for_mtls(
                 private_key=expected_key
             )
 
-def test_metrics_service_v2_http_transport_client_cert_source_for_mtls():
-    cred = ga_credentials.AnonymousCredentials()
-    with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
-        transports.MetricsServiceV2RestTransport (
-            credentials=cred,
-            client_cert_source_for_mtls=client_cert_source_callback
-        )
-        mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
-
 
 @pytest.mark.parametrize("transport_name", [
     "grpc",
     "grpc_asyncio",
-    "rest",
 ])
 def test_metrics_service_v2_host_no_port(transport_name):
     client = MetricsServiceV2Client(
@@ -3549,14 +2299,11 @@ def test_metrics_service_v2_host_no_port(transport_name):
     )
     assert client.transport._host == (
         'logging.googleapis.com:443'
-        if transport_name in ['grpc', 'grpc_asyncio']
-        else 'https://logging.googleapis.com'
     )
 
 @pytest.mark.parametrize("transport_name", [
     "grpc",
     "grpc_asyncio",
-    "rest",
 ])
 def test_metrics_service_v2_host_with_port(transport_name):
     client = MetricsServiceV2Client(
@@ -3566,39 +2313,8 @@ def test_metrics_service_v2_host_with_port(transport_name):
     )
     assert client.transport._host == (
         'logging.googleapis.com:8000'
-        if transport_name in ['grpc', 'grpc_asyncio']
-        else 'https://logging.googleapis.com:8000'
     )
 
-@pytest.mark.parametrize("transport_name", [
-    "rest",
-])
-def test_metrics_service_v2_client_transport_session_collision(transport_name):
-    creds1 = ga_credentials.AnonymousCredentials()
-    creds2 = ga_credentials.AnonymousCredentials()
-    client1 = MetricsServiceV2Client(
-        credentials=creds1,
-        transport=transport_name,
-    )
-    client2 = MetricsServiceV2Client(
-        credentials=creds2,
-        transport=transport_name,
-    )
-    session1 = client1.transport.list_log_metrics._session
-    session2 = client2.transport.list_log_metrics._session
-    assert session1 != session2
-    session1 = client1.transport.get_log_metric._session
-    session2 = client2.transport.get_log_metric._session
-    assert session1 != session2
-    session1 = client1.transport.create_log_metric._session
-    session2 = client2.transport.create_log_metric._session
-    assert session1 != session2
-    session1 = client1.transport.update_log_metric._session
-    session2 = client2.transport.update_log_metric._session
-    assert session1 != session2
-    session1 = client1.transport.delete_log_metric._session
-    session2 = client2.transport.delete_log_metric._session
-    assert session1 != session2
 def test_metrics_service_v2_grpc_transport_channel():
     channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
 
@@ -3848,7 +2564,6 @@ async def test_transport_close_async():
 
 def test_transport_close():
     transports = {
-        "rest": "_session",
         "grpc": "_grpc_channel",
     }
 
@@ -3864,7 +2579,6 @@ def test_transport_close():
 
 def test_client_ctx():
     transports = [
-        'rest',
         'grpc',
     ]
     for transport in transports:

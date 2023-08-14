@@ -235,11 +235,11 @@ class LoggingServiceV2GrpcAsyncIOTransport(LoggingServiceV2Transport):
             Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete log method over gRPC.
 
-        Deletes all the log entries in a log. The log
-        reappears if it receives new entries. Log entries
-        written shortly before the delete operation might not be
-        deleted. Entries received after the delete operation
-        with a timestamp before the operation will be deleted.
+        Deletes all the log entries in a log for the \_Default Log
+        Bucket. The log reappears if it receives new entries. Log
+        entries written shortly before the delete operation might not be
+        deleted. Entries received after the delete operation with a
+        timestamp before the operation will be deleted.
 
         Returns:
             Callable[[~.DeleteLogRequest],

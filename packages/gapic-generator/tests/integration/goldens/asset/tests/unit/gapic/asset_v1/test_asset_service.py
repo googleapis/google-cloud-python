@@ -58,6 +58,7 @@ from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 import google.auth
 
@@ -1289,6 +1290,7 @@ def test_create_feed(request_type, transport: str = 'grpc'):
             asset_names=['asset_names_value'],
             asset_types=['asset_types_value'],
             content_type=asset_service.ContentType.RESOURCE,
+            relationship_types=['relationship_types_value'],
         )
         response = client.create_feed(request)
 
@@ -1303,6 +1305,7 @@ def test_create_feed(request_type, transport: str = 'grpc'):
     assert response.asset_names == ['asset_names_value']
     assert response.asset_types == ['asset_types_value']
     assert response.content_type == asset_service.ContentType.RESOURCE
+    assert response.relationship_types == ['relationship_types_value']
 
 
 def test_create_feed_empty_call():
@@ -1343,6 +1346,7 @@ async def test_create_feed_async(transport: str = 'grpc_asyncio', request_type=a
             asset_names=['asset_names_value'],
             asset_types=['asset_types_value'],
             content_type=asset_service.ContentType.RESOURCE,
+            relationship_types=['relationship_types_value'],
         ))
         response = await client.create_feed(request)
 
@@ -1357,6 +1361,7 @@ async def test_create_feed_async(transport: str = 'grpc_asyncio', request_type=a
     assert response.asset_names == ['asset_names_value']
     assert response.asset_types == ['asset_types_value']
     assert response.content_type == asset_service.ContentType.RESOURCE
+    assert response.relationship_types == ['relationship_types_value']
 
 
 @pytest.mark.asyncio
@@ -1533,6 +1538,7 @@ def test_get_feed(request_type, transport: str = 'grpc'):
             asset_names=['asset_names_value'],
             asset_types=['asset_types_value'],
             content_type=asset_service.ContentType.RESOURCE,
+            relationship_types=['relationship_types_value'],
         )
         response = client.get_feed(request)
 
@@ -1547,6 +1553,7 @@ def test_get_feed(request_type, transport: str = 'grpc'):
     assert response.asset_names == ['asset_names_value']
     assert response.asset_types == ['asset_types_value']
     assert response.content_type == asset_service.ContentType.RESOURCE
+    assert response.relationship_types == ['relationship_types_value']
 
 
 def test_get_feed_empty_call():
@@ -1587,6 +1594,7 @@ async def test_get_feed_async(transport: str = 'grpc_asyncio', request_type=asse
             asset_names=['asset_names_value'],
             asset_types=['asset_types_value'],
             content_type=asset_service.ContentType.RESOURCE,
+            relationship_types=['relationship_types_value'],
         ))
         response = await client.get_feed(request)
 
@@ -1601,6 +1609,7 @@ async def test_get_feed_async(transport: str = 'grpc_asyncio', request_type=asse
     assert response.asset_names == ['asset_names_value']
     assert response.asset_types == ['asset_types_value']
     assert response.content_type == asset_service.ContentType.RESOURCE
+    assert response.relationship_types == ['relationship_types_value']
 
 
 @pytest.mark.asyncio
@@ -2005,6 +2014,7 @@ def test_update_feed(request_type, transport: str = 'grpc'):
             asset_names=['asset_names_value'],
             asset_types=['asset_types_value'],
             content_type=asset_service.ContentType.RESOURCE,
+            relationship_types=['relationship_types_value'],
         )
         response = client.update_feed(request)
 
@@ -2019,6 +2029,7 @@ def test_update_feed(request_type, transport: str = 'grpc'):
     assert response.asset_names == ['asset_names_value']
     assert response.asset_types == ['asset_types_value']
     assert response.content_type == asset_service.ContentType.RESOURCE
+    assert response.relationship_types == ['relationship_types_value']
 
 
 def test_update_feed_empty_call():
@@ -2059,6 +2070,7 @@ async def test_update_feed_async(transport: str = 'grpc_asyncio', request_type=a
             asset_names=['asset_names_value'],
             asset_types=['asset_types_value'],
             content_type=asset_service.ContentType.RESOURCE,
+            relationship_types=['relationship_types_value'],
         ))
         response = await client.update_feed(request)
 
@@ -2073,6 +2085,7 @@ async def test_update_feed_async(transport: str = 'grpc_asyncio', request_type=a
     assert response.asset_names == ['asset_names_value']
     assert response.asset_types == ['asset_types_value']
     assert response.content_type == asset_service.ContentType.RESOURCE
+    assert response.relationship_types == ['relationship_types_value']
 
 
 @pytest.mark.asyncio
@@ -3626,6 +3639,3197 @@ async def test_analyze_iam_policy_longrunning_field_headers_async():
 
 
 @pytest.mark.parametrize("request_type", [
+  asset_service.AnalyzeMoveRequest,
+  dict,
+])
+def test_analyze_move(request_type, transport: str = 'grpc'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_move),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeMoveResponse(
+        )
+        response = client.analyze_move(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeMoveRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.AnalyzeMoveResponse)
+
+
+def test_analyze_move_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_move),
+            '__call__') as call:
+        client.analyze_move()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeMoveRequest()
+
+@pytest.mark.asyncio
+async def test_analyze_move_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeMoveRequest):
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_move),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeMoveResponse(
+        ))
+        response = await client.analyze_move(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeMoveRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.AnalyzeMoveResponse)
+
+
+@pytest.mark.asyncio
+async def test_analyze_move_async_from_dict():
+    await test_analyze_move_async(request_type=dict)
+
+
+def test_analyze_move_field_headers():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeMoveRequest()
+
+    request.resource = 'resource_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_move),
+            '__call__') as call:
+        call.return_value = asset_service.AnalyzeMoveResponse()
+        client.analyze_move(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'resource=resource_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_analyze_move_field_headers_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeMoveRequest()
+
+    request.resource = 'resource_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_move),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeMoveResponse())
+        await client.analyze_move(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'resource=resource_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.QueryAssetsRequest,
+  dict,
+])
+def test_query_assets(request_type, transport: str = 'grpc'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.query_assets),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.QueryAssetsResponse(
+            job_reference='job_reference_value',
+            done=True,
+        )
+        response = client.query_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.QueryAssetsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.QueryAssetsResponse)
+    assert response.job_reference == 'job_reference_value'
+    assert response.done is True
+
+
+def test_query_assets_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.query_assets),
+            '__call__') as call:
+        client.query_assets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.QueryAssetsRequest()
+
+@pytest.mark.asyncio
+async def test_query_assets_async(transport: str = 'grpc_asyncio', request_type=asset_service.QueryAssetsRequest):
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.query_assets),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.QueryAssetsResponse(
+            job_reference='job_reference_value',
+            done=True,
+        ))
+        response = await client.query_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.QueryAssetsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.QueryAssetsResponse)
+    assert response.job_reference == 'job_reference_value'
+    assert response.done is True
+
+
+@pytest.mark.asyncio
+async def test_query_assets_async_from_dict():
+    await test_query_assets_async(request_type=dict)
+
+
+def test_query_assets_field_headers():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.QueryAssetsRequest()
+
+    request.parent = 'parent_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.query_assets),
+            '__call__') as call:
+        call.return_value = asset_service.QueryAssetsResponse()
+        client.query_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'parent=parent_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_query_assets_field_headers_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.QueryAssetsRequest()
+
+    request.parent = 'parent_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.query_assets),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.QueryAssetsResponse())
+        await client.query_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'parent=parent_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.CreateSavedQueryRequest,
+  dict,
+])
+def test_create_saved_query(request_type, transport: str = 'grpc'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_saved_query),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.SavedQuery(
+            name='name_value',
+            description='description_value',
+            creator='creator_value',
+            last_updater='last_updater_value',
+        )
+        response = client.create_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.CreateSavedQueryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.SavedQuery)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.creator == 'creator_value'
+    assert response.last_updater == 'last_updater_value'
+
+
+def test_create_saved_query_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_saved_query),
+            '__call__') as call:
+        client.create_saved_query()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.CreateSavedQueryRequest()
+
+@pytest.mark.asyncio
+async def test_create_saved_query_async(transport: str = 'grpc_asyncio', request_type=asset_service.CreateSavedQueryRequest):
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_saved_query),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery(
+            name='name_value',
+            description='description_value',
+            creator='creator_value',
+            last_updater='last_updater_value',
+        ))
+        response = await client.create_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.CreateSavedQueryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.SavedQuery)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.creator == 'creator_value'
+    assert response.last_updater == 'last_updater_value'
+
+
+@pytest.mark.asyncio
+async def test_create_saved_query_async_from_dict():
+    await test_create_saved_query_async(request_type=dict)
+
+
+def test_create_saved_query_field_headers():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.CreateSavedQueryRequest()
+
+    request.parent = 'parent_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_saved_query),
+            '__call__') as call:
+        call.return_value = asset_service.SavedQuery()
+        client.create_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'parent=parent_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_create_saved_query_field_headers_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.CreateSavedQueryRequest()
+
+    request.parent = 'parent_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_saved_query),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery())
+        await client.create_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'parent=parent_value',
+    ) in kw['metadata']
+
+
+def test_create_saved_query_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_saved_query),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.SavedQuery()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_saved_query(
+            parent='parent_value',
+            saved_query=asset_service.SavedQuery(name='name_value'),
+            saved_query_id='saved_query_id_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+        arg = args[0].saved_query
+        mock_val = asset_service.SavedQuery(name='name_value')
+        assert arg == mock_val
+        arg = args[0].saved_query_id
+        mock_val = 'saved_query_id_value'
+        assert arg == mock_val
+
+
+def test_create_saved_query_flattened_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_saved_query(
+            asset_service.CreateSavedQueryRequest(),
+            parent='parent_value',
+            saved_query=asset_service.SavedQuery(name='name_value'),
+            saved_query_id='saved_query_id_value',
+        )
+
+@pytest.mark.asyncio
+async def test_create_saved_query_flattened_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.create_saved_query),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.SavedQuery()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_saved_query(
+            parent='parent_value',
+            saved_query=asset_service.SavedQuery(name='name_value'),
+            saved_query_id='saved_query_id_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+        arg = args[0].saved_query
+        mock_val = asset_service.SavedQuery(name='name_value')
+        assert arg == mock_val
+        arg = args[0].saved_query_id
+        mock_val = 'saved_query_id_value'
+        assert arg == mock_val
+
+@pytest.mark.asyncio
+async def test_create_saved_query_flattened_error_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_saved_query(
+            asset_service.CreateSavedQueryRequest(),
+            parent='parent_value',
+            saved_query=asset_service.SavedQuery(name='name_value'),
+            saved_query_id='saved_query_id_value',
+        )
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.GetSavedQueryRequest,
+  dict,
+])
+def test_get_saved_query(request_type, transport: str = 'grpc'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_saved_query),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.SavedQuery(
+            name='name_value',
+            description='description_value',
+            creator='creator_value',
+            last_updater='last_updater_value',
+        )
+        response = client.get_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.GetSavedQueryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.SavedQuery)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.creator == 'creator_value'
+    assert response.last_updater == 'last_updater_value'
+
+
+def test_get_saved_query_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_saved_query),
+            '__call__') as call:
+        client.get_saved_query()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.GetSavedQueryRequest()
+
+@pytest.mark.asyncio
+async def test_get_saved_query_async(transport: str = 'grpc_asyncio', request_type=asset_service.GetSavedQueryRequest):
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_saved_query),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery(
+            name='name_value',
+            description='description_value',
+            creator='creator_value',
+            last_updater='last_updater_value',
+        ))
+        response = await client.get_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.GetSavedQueryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.SavedQuery)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.creator == 'creator_value'
+    assert response.last_updater == 'last_updater_value'
+
+
+@pytest.mark.asyncio
+async def test_get_saved_query_async_from_dict():
+    await test_get_saved_query_async(request_type=dict)
+
+
+def test_get_saved_query_field_headers():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.GetSavedQueryRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_saved_query),
+            '__call__') as call:
+        call.return_value = asset_service.SavedQuery()
+        client.get_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_get_saved_query_field_headers_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.GetSavedQueryRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_saved_query),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery())
+        await client.get_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+def test_get_saved_query_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_saved_query),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.SavedQuery()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_saved_query(
+            name='name_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+
+
+def test_get_saved_query_flattened_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_saved_query(
+            asset_service.GetSavedQueryRequest(),
+            name='name_value',
+        )
+
+@pytest.mark.asyncio
+async def test_get_saved_query_flattened_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_saved_query),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.SavedQuery()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_saved_query(
+            name='name_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+
+@pytest.mark.asyncio
+async def test_get_saved_query_flattened_error_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_saved_query(
+            asset_service.GetSavedQueryRequest(),
+            name='name_value',
+        )
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.ListSavedQueriesRequest,
+  dict,
+])
+def test_list_saved_queries(request_type, transport: str = 'grpc'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_saved_queries),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.ListSavedQueriesResponse(
+            next_page_token='next_page_token_value',
+        )
+        response = client.list_saved_queries(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ListSavedQueriesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSavedQueriesPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+def test_list_saved_queries_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_saved_queries),
+            '__call__') as call:
+        client.list_saved_queries()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ListSavedQueriesRequest()
+
+@pytest.mark.asyncio
+async def test_list_saved_queries_async(transport: str = 'grpc_asyncio', request_type=asset_service.ListSavedQueriesRequest):
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_saved_queries),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListSavedQueriesResponse(
+            next_page_token='next_page_token_value',
+        ))
+        response = await client.list_saved_queries(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ListSavedQueriesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSavedQueriesAsyncPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+@pytest.mark.asyncio
+async def test_list_saved_queries_async_from_dict():
+    await test_list_saved_queries_async(request_type=dict)
+
+
+def test_list_saved_queries_field_headers():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.ListSavedQueriesRequest()
+
+    request.parent = 'parent_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_saved_queries),
+            '__call__') as call:
+        call.return_value = asset_service.ListSavedQueriesResponse()
+        client.list_saved_queries(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'parent=parent_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_list_saved_queries_field_headers_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.ListSavedQueriesRequest()
+
+    request.parent = 'parent_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_saved_queries),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListSavedQueriesResponse())
+        await client.list_saved_queries(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'parent=parent_value',
+    ) in kw['metadata']
+
+
+def test_list_saved_queries_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_saved_queries),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.ListSavedQueriesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_saved_queries(
+            parent='parent_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+
+
+def test_list_saved_queries_flattened_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_saved_queries(
+            asset_service.ListSavedQueriesRequest(),
+            parent='parent_value',
+        )
+
+@pytest.mark.asyncio
+async def test_list_saved_queries_flattened_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_saved_queries),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.ListSavedQueriesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.ListSavedQueriesResponse())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_saved_queries(
+            parent='parent_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = 'parent_value'
+        assert arg == mock_val
+
+@pytest.mark.asyncio
+async def test_list_saved_queries_flattened_error_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_saved_queries(
+            asset_service.ListSavedQueriesRequest(),
+            parent='parent_value',
+        )
+
+
+def test_list_saved_queries_pager(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_saved_queries),
+            '__call__') as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[
+                    asset_service.SavedQuery(),
+                    asset_service.SavedQuery(),
+                    asset_service.SavedQuery(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[],
+                next_page_token='def',
+            ),
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[
+                    asset_service.SavedQuery(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[
+                    asset_service.SavedQuery(),
+                    asset_service.SavedQuery(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('parent', ''),
+            )),
+        )
+        pager = client.list_saved_queries(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, asset_service.SavedQuery)
+                   for i in results)
+def test_list_saved_queries_pages(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_saved_queries),
+            '__call__') as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[
+                    asset_service.SavedQuery(),
+                    asset_service.SavedQuery(),
+                    asset_service.SavedQuery(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[],
+                next_page_token='def',
+            ),
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[
+                    asset_service.SavedQuery(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[
+                    asset_service.SavedQuery(),
+                    asset_service.SavedQuery(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_saved_queries(request={}).pages)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+@pytest.mark.asyncio
+async def test_list_saved_queries_async_pager():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_saved_queries),
+            '__call__', new_callable=mock.AsyncMock) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[
+                    asset_service.SavedQuery(),
+                    asset_service.SavedQuery(),
+                    asset_service.SavedQuery(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[],
+                next_page_token='def',
+            ),
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[
+                    asset_service.SavedQuery(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[
+                    asset_service.SavedQuery(),
+                    asset_service.SavedQuery(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_saved_queries(request={},)
+        assert async_pager.next_page_token == 'abc'
+        responses = []
+        async for response in async_pager: # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, asset_service.SavedQuery)
+                for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_saved_queries_async_pages():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.list_saved_queries),
+            '__call__', new_callable=mock.AsyncMock) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[
+                    asset_service.SavedQuery(),
+                    asset_service.SavedQuery(),
+                    asset_service.SavedQuery(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[],
+                next_page_token='def',
+            ),
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[
+                    asset_service.SavedQuery(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[
+                    asset_service.SavedQuery(),
+                    asset_service.SavedQuery(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in ( # pragma: no branch
+            await client.list_saved_queries(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.UpdateSavedQueryRequest,
+  dict,
+])
+def test_update_saved_query(request_type, transport: str = 'grpc'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_saved_query),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.SavedQuery(
+            name='name_value',
+            description='description_value',
+            creator='creator_value',
+            last_updater='last_updater_value',
+        )
+        response = client.update_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.UpdateSavedQueryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.SavedQuery)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.creator == 'creator_value'
+    assert response.last_updater == 'last_updater_value'
+
+
+def test_update_saved_query_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_saved_query),
+            '__call__') as call:
+        client.update_saved_query()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.UpdateSavedQueryRequest()
+
+@pytest.mark.asyncio
+async def test_update_saved_query_async(transport: str = 'grpc_asyncio', request_type=asset_service.UpdateSavedQueryRequest):
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_saved_query),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery(
+            name='name_value',
+            description='description_value',
+            creator='creator_value',
+            last_updater='last_updater_value',
+        ))
+        response = await client.update_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.UpdateSavedQueryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.SavedQuery)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.creator == 'creator_value'
+    assert response.last_updater == 'last_updater_value'
+
+
+@pytest.mark.asyncio
+async def test_update_saved_query_async_from_dict():
+    await test_update_saved_query_async(request_type=dict)
+
+
+def test_update_saved_query_field_headers():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.UpdateSavedQueryRequest()
+
+    request.saved_query.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_saved_query),
+            '__call__') as call:
+        call.return_value = asset_service.SavedQuery()
+        client.update_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'saved_query.name=name_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_update_saved_query_field_headers_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.UpdateSavedQueryRequest()
+
+    request.saved_query.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_saved_query),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery())
+        await client.update_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'saved_query.name=name_value',
+    ) in kw['metadata']
+
+
+def test_update_saved_query_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_saved_query),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.SavedQuery()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_saved_query(
+            saved_query=asset_service.SavedQuery(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].saved_query
+        mock_val = asset_service.SavedQuery(name='name_value')
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        assert arg == mock_val
+
+
+def test_update_saved_query_flattened_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_saved_query(
+            asset_service.UpdateSavedQueryRequest(),
+            saved_query=asset_service.SavedQuery(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+        )
+
+@pytest.mark.asyncio
+async def test_update_saved_query_flattened_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.update_saved_query),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.SavedQuery()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.SavedQuery())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_saved_query(
+            saved_query=asset_service.SavedQuery(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].saved_query
+        mock_val = asset_service.SavedQuery(name='name_value')
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
+        assert arg == mock_val
+
+@pytest.mark.asyncio
+async def test_update_saved_query_flattened_error_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_saved_query(
+            asset_service.UpdateSavedQueryRequest(),
+            saved_query=asset_service.SavedQuery(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+        )
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.DeleteSavedQueryRequest,
+  dict,
+])
+def test_delete_saved_query(request_type, transport: str = 'grpc'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_saved_query),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.DeleteSavedQueryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_saved_query_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_saved_query),
+            '__call__') as call:
+        client.delete_saved_query()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.DeleteSavedQueryRequest()
+
+@pytest.mark.asyncio
+async def test_delete_saved_query_async(transport: str = 'grpc_asyncio', request_type=asset_service.DeleteSavedQueryRequest):
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_saved_query),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.DeleteSavedQueryRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_saved_query_async_from_dict():
+    await test_delete_saved_query_async(request_type=dict)
+
+
+def test_delete_saved_query_field_headers():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.DeleteSavedQueryRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_saved_query),
+            '__call__') as call:
+        call.return_value = None
+        client.delete_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_delete_saved_query_field_headers_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.DeleteSavedQueryRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_saved_query),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_saved_query(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+def test_delete_saved_query_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_saved_query),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_saved_query(
+            name='name_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+
+
+def test_delete_saved_query_flattened_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_saved_query(
+            asset_service.DeleteSavedQueryRequest(),
+            name='name_value',
+        )
+
+@pytest.mark.asyncio
+async def test_delete_saved_query_flattened_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.delete_saved_query),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_saved_query(
+            name='name_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+
+@pytest.mark.asyncio
+async def test_delete_saved_query_flattened_error_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_saved_query(
+            asset_service.DeleteSavedQueryRequest(),
+            name='name_value',
+        )
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.BatchGetEffectiveIamPoliciesRequest,
+  dict,
+])
+def test_batch_get_effective_iam_policies(request_type, transport: str = 'grpc'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.batch_get_effective_iam_policies),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.BatchGetEffectiveIamPoliciesResponse(
+        )
+        response = client.batch_get_effective_iam_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.BatchGetEffectiveIamPoliciesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
+
+
+def test_batch_get_effective_iam_policies_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.batch_get_effective_iam_policies),
+            '__call__') as call:
+        client.batch_get_effective_iam_policies()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.BatchGetEffectiveIamPoliciesRequest()
+
+@pytest.mark.asyncio
+async def test_batch_get_effective_iam_policies_async(transport: str = 'grpc_asyncio', request_type=asset_service.BatchGetEffectiveIamPoliciesRequest):
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.batch_get_effective_iam_policies),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.BatchGetEffectiveIamPoliciesResponse(
+        ))
+        response = await client.batch_get_effective_iam_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.BatchGetEffectiveIamPoliciesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
+
+
+@pytest.mark.asyncio
+async def test_batch_get_effective_iam_policies_async_from_dict():
+    await test_batch_get_effective_iam_policies_async(request_type=dict)
+
+
+def test_batch_get_effective_iam_policies_field_headers():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.BatchGetEffectiveIamPoliciesRequest()
+
+    request.scope = 'scope_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.batch_get_effective_iam_policies),
+            '__call__') as call:
+        call.return_value = asset_service.BatchGetEffectiveIamPoliciesResponse()
+        client.batch_get_effective_iam_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'scope=scope_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_batch_get_effective_iam_policies_field_headers_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.BatchGetEffectiveIamPoliciesRequest()
+
+    request.scope = 'scope_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.batch_get_effective_iam_policies),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.BatchGetEffectiveIamPoliciesResponse())
+        await client.batch_get_effective_iam_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'scope=scope_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.AnalyzeOrgPoliciesRequest,
+  dict,
+])
+def test_analyze_org_policies(request_type, transport: str = 'grpc'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policies),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPoliciesResponse(
+            next_page_token='next_page_token_value',
+        )
+        response = client.analyze_org_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPoliciesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPoliciesPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+def test_analyze_org_policies_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policies),
+            '__call__') as call:
+        client.analyze_org_policies()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPoliciesRequest()
+
+@pytest.mark.asyncio
+async def test_analyze_org_policies_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeOrgPoliciesRequest):
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policies),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPoliciesResponse(
+            next_page_token='next_page_token_value',
+        ))
+        response = await client.analyze_org_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPoliciesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPoliciesAsyncPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policies_async_from_dict():
+    await test_analyze_org_policies_async(request_type=dict)
+
+
+def test_analyze_org_policies_field_headers():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeOrgPoliciesRequest()
+
+    request.scope = 'scope_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policies),
+            '__call__') as call:
+        call.return_value = asset_service.AnalyzeOrgPoliciesResponse()
+        client.analyze_org_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'scope=scope_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policies_field_headers_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeOrgPoliciesRequest()
+
+    request.scope = 'scope_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policies),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPoliciesResponse())
+        await client.analyze_org_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'scope=scope_value',
+    ) in kw['metadata']
+
+
+def test_analyze_org_policies_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policies),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPoliciesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.analyze_org_policies(
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].scope
+        mock_val = 'scope_value'
+        assert arg == mock_val
+        arg = args[0].constraint
+        mock_val = 'constraint_value'
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = 'filter_value'
+        assert arg == mock_val
+
+
+def test_analyze_org_policies_flattened_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.analyze_org_policies(
+            asset_service.AnalyzeOrgPoliciesRequest(),
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+
+@pytest.mark.asyncio
+async def test_analyze_org_policies_flattened_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policies),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPoliciesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPoliciesResponse())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.analyze_org_policies(
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].scope
+        mock_val = 'scope_value'
+        assert arg == mock_val
+        arg = args[0].constraint
+        mock_val = 'constraint_value'
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = 'filter_value'
+        assert arg == mock_val
+
+@pytest.mark.asyncio
+async def test_analyze_org_policies_flattened_error_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.analyze_org_policies(
+            asset_service.AnalyzeOrgPoliciesRequest(),
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+
+
+def test_analyze_org_policies_pager(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policies),
+            '__call__') as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[],
+                next_page_token='def',
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('scope', ''),
+            )),
+        )
+        pager = client.analyze_org_policies(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult)
+                   for i in results)
+def test_analyze_org_policies_pages(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policies),
+            '__call__') as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[],
+                next_page_token='def',
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.analyze_org_policies(request={}).pages)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+@pytest.mark.asyncio
+async def test_analyze_org_policies_async_pager():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policies),
+            '__call__', new_callable=mock.AsyncMock) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[],
+                next_page_token='def',
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.analyze_org_policies(request={},)
+        assert async_pager.next_page_token == 'abc'
+        responses = []
+        async for response in async_pager: # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult)
+                for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policies_async_pages():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policies),
+            '__call__', new_callable=mock.AsyncMock) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[],
+                next_page_token='def',
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in ( # pragma: no branch
+            await client.analyze_org_policies(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
+  dict,
+])
+def test_analyze_org_policy_governed_containers(request_type, transport: str = 'grpc'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_containers),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+            next_page_token='next_page_token_value',
+        )
+        response = client.analyze_org_policy_governed_containers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+def test_analyze_org_policy_governed_containers_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_containers),
+            '__call__') as call:
+        client.analyze_org_policy_governed_containers()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_containers_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeOrgPolicyGovernedContainersRequest):
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_containers),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+            next_page_token='next_page_token_value',
+        ))
+        response = await client.analyze_org_policy_governed_containers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersAsyncPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_containers_async_from_dict():
+    await test_analyze_org_policy_governed_containers_async(request_type=dict)
+
+
+def test_analyze_org_policy_governed_containers_field_headers():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
+
+    request.scope = 'scope_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_containers),
+            '__call__') as call:
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+        client.analyze_org_policy_governed_containers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'scope=scope_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_containers_field_headers_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
+
+    request.scope = 'scope_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_containers),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedContainersResponse())
+        await client.analyze_org_policy_governed_containers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'scope=scope_value',
+    ) in kw['metadata']
+
+
+def test_analyze_org_policy_governed_containers_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_containers),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.analyze_org_policy_governed_containers(
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].scope
+        mock_val = 'scope_value'
+        assert arg == mock_val
+        arg = args[0].constraint
+        mock_val = 'constraint_value'
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = 'filter_value'
+        assert arg == mock_val
+
+
+def test_analyze_org_policy_governed_containers_flattened_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.analyze_org_policy_governed_containers(
+            asset_service.AnalyzeOrgPolicyGovernedContainersRequest(),
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_containers_flattened_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_containers),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedContainersResponse())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.analyze_org_policy_governed_containers(
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].scope
+        mock_val = 'scope_value'
+        assert arg == mock_val
+        arg = args[0].constraint
+        mock_val = 'constraint_value'
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = 'filter_value'
+        assert arg == mock_val
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_containers_flattened_error_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.analyze_org_policy_governed_containers(
+            asset_service.AnalyzeOrgPolicyGovernedContainersRequest(),
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+
+
+def test_analyze_org_policy_governed_containers_pager(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_containers),
+            '__call__') as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[],
+                next_page_token='def',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('scope', ''),
+            )),
+        )
+        pager = client.analyze_org_policy_governed_containers(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer)
+                   for i in results)
+def test_analyze_org_policy_governed_containers_pages(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_containers),
+            '__call__') as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[],
+                next_page_token='def',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.analyze_org_policy_governed_containers(request={}).pages)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_containers_async_pager():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_containers),
+            '__call__', new_callable=mock.AsyncMock) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[],
+                next_page_token='def',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.analyze_org_policy_governed_containers(request={},)
+        assert async_pager.next_page_token == 'abc'
+        responses = []
+        async for response in async_pager: # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer)
+                for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_containers_async_pages():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_containers),
+            '__call__', new_callable=mock.AsyncMock) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[],
+                next_page_token='def',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in ( # pragma: no branch
+            await client.analyze_org_policy_governed_containers(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+@pytest.mark.parametrize("request_type", [
+  asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
+  dict,
+])
+def test_analyze_org_policy_governed_assets(request_type, transport: str = 'grpc'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_assets),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+            next_page_token='next_page_token_value',
+        )
+        response = client.analyze_org_policy_governed_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+def test_analyze_org_policy_governed_assets_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_assets),
+            '__call__') as call:
+        client.analyze_org_policy_governed_assets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_assets_async(transport: str = 'grpc_asyncio', request_type=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest):
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_assets),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+            next_page_token='next_page_token_value',
+        ))
+        response = await client.analyze_org_policy_governed_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsAsyncPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_assets_async_from_dict():
+    await test_analyze_org_policy_governed_assets_async(request_type=dict)
+
+
+def test_analyze_org_policy_governed_assets_field_headers():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
+
+    request.scope = 'scope_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_assets),
+            '__call__') as call:
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+        client.analyze_org_policy_governed_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'scope=scope_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_assets_field_headers_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
+
+    request.scope = 'scope_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_assets),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse())
+        await client.analyze_org_policy_governed_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'scope=scope_value',
+    ) in kw['metadata']
+
+
+def test_analyze_org_policy_governed_assets_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_assets),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.analyze_org_policy_governed_assets(
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].scope
+        mock_val = 'scope_value'
+        assert arg == mock_val
+        arg = args[0].constraint
+        mock_val = 'constraint_value'
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = 'filter_value'
+        assert arg == mock_val
+
+
+def test_analyze_org_policy_governed_assets_flattened_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.analyze_org_policy_governed_assets(
+            asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(),
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_assets_flattened_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_assets),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.analyze_org_policy_governed_assets(
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].scope
+        mock_val = 'scope_value'
+        assert arg == mock_val
+        arg = args[0].constraint
+        mock_val = 'constraint_value'
+        assert arg == mock_val
+        arg = args[0].filter
+        mock_val = 'filter_value'
+        assert arg == mock_val
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_assets_flattened_error_async():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.analyze_org_policy_governed_assets(
+            asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(),
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+
+
+def test_analyze_org_policy_governed_assets_pager(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_assets),
+            '__call__') as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[],
+                next_page_token='def',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((
+                ('scope', ''),
+            )),
+        )
+        pager = client.analyze_org_policy_governed_assets(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset)
+                   for i in results)
+def test_analyze_org_policy_governed_assets_pages(transport_name: str = "grpc"):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_assets),
+            '__call__') as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[],
+                next_page_token='def',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.analyze_org_policy_governed_assets(request={}).pages)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_assets_async_pager():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_assets),
+            '__call__', new_callable=mock.AsyncMock) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[],
+                next_page_token='def',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.analyze_org_policy_governed_assets(request={},)
+        assert async_pager.next_page_token == 'abc'
+        responses = []
+        async for response in async_pager: # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset)
+                for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_analyze_org_policy_governed_assets_async_pages():
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.analyze_org_policy_governed_assets),
+            '__call__', new_callable=mock.AsyncMock) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[],
+                next_page_token='def',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in ( # pragma: no branch
+            await client.analyze_org_policy_governed_assets(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize("request_type", [
     asset_service.ExportAssetsRequest,
     dict,
 ])
@@ -3861,7 +7065,7 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_assets._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("asset_types", "content_type", "page_size", "page_token", "read_time", ))
+    assert not set(unset_fields) - set(("asset_types", "content_type", "page_size", "page_token", "read_time", "relationship_types", ))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3913,7 +7117,7 @@ def test_list_assets_rest_unset_required_fields():
     transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_assets._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("assetTypes", "contentType", "pageSize", "pageToken", "readTime", )) & set(("parent", )))
+    assert set(unset_fields) == (set(("assetTypes", "contentType", "pageSize", "pageToken", "readTime", "relationshipTypes", )) & set(("parent", )))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4148,7 +7352,7 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_get_assets_history._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("asset_names", "content_type", "read_time_window", ))
+    assert not set(unset_fields) - set(("asset_names", "content_type", "read_time_window", "relationship_types", ))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4200,7 +7404,7 @@ def test_batch_get_assets_history_rest_unset_required_fields():
     transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.batch_get_assets_history._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("assetNames", "contentType", "readTimeWindow", )) & set(("parent", )))
+    assert set(unset_fields) == (set(("assetNames", "contentType", "readTimeWindow", "relationshipTypes", )) & set(("parent", )))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4292,6 +7496,7 @@ def test_create_feed_rest(request_type):
               asset_names=['asset_names_value'],
               asset_types=['asset_types_value'],
               content_type=asset_service.ContentType.RESOURCE,
+              relationship_types=['relationship_types_value'],
         )
 
         # Wrap the value into a proper Response obj
@@ -4310,6 +7515,7 @@ def test_create_feed_rest(request_type):
     assert response.asset_names == ['asset_names_value']
     assert response.asset_types == ['asset_types_value']
     assert response.content_type == asset_service.ContentType.RESOURCE
+    assert response.relationship_types == ['relationship_types_value']
 
 
 def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedRequest):
@@ -4535,6 +7741,7 @@ def test_get_feed_rest(request_type):
               asset_names=['asset_names_value'],
               asset_types=['asset_types_value'],
               content_type=asset_service.ContentType.RESOURCE,
+              relationship_types=['relationship_types_value'],
         )
 
         # Wrap the value into a proper Response obj
@@ -4553,6 +7760,7 @@ def test_get_feed_rest(request_type):
     assert response.asset_names == ['asset_names_value']
     assert response.asset_types == ['asset_types_value']
     assert response.content_type == asset_service.ContentType.RESOURCE
+    assert response.relationship_types == ['relationship_types_value']
 
 
 def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest):
@@ -5003,6 +8211,7 @@ def test_update_feed_rest(request_type):
               asset_names=['asset_names_value'],
               asset_types=['asset_types_value'],
               content_type=asset_service.ContentType.RESOURCE,
+              relationship_types=['relationship_types_value'],
         )
 
         # Wrap the value into a proper Response obj
@@ -5021,6 +8230,7 @@ def test_update_feed_rest(request_type):
     assert response.asset_names == ['asset_names_value']
     assert response.asset_types == ['asset_types_value']
     assert response.content_type == asset_service.ContentType.RESOURCE
+    assert response.relationship_types == ['relationship_types_value']
 
 
 def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedRequest):
@@ -5495,7 +8705,7 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).search_all_resources._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("asset_types", "order_by", "page_size", "page_token", "query", ))
+    assert not set(unset_fields) - set(("asset_types", "order_by", "page_size", "page_token", "query", "read_mask", ))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5547,7 +8757,7 @@ def test_search_all_resources_rest_unset_required_fields():
     transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.search_all_resources._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", )) & set(("scope", )))
+    assert set(unset_fields) == (set(("assetTypes", "orderBy", "pageSize", "pageToken", "query", "readMask", )) & set(("scope", )))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -6076,7 +9286,7 @@ def test_analyze_iam_policy_rest_required_fields(request_type=asset_service.Anal
 
     unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_iam_policy._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("analysis_query", "execution_timeout", ))
+    assert not set(unset_fields) - set(("analysis_query", "execution_timeout", "saved_analysis_query", ))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -6126,7 +9336,7 @@ def test_analyze_iam_policy_rest_unset_required_fields():
     transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.analyze_iam_policy._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("analysisQuery", "executionTimeout", )) & set(("analysisQuery", )))
+    assert set(unset_fields) == (set(("analysisQuery", "executionTimeout", "savedAnalysisQuery", )) & set(("analysisQuery", )))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -6367,6 +9577,2728 @@ def test_analyze_iam_policy_longrunning_rest_error():
     )
 
 
+@pytest.mark.parametrize("request_type", [
+    asset_service.AnalyzeMoveRequest,
+    dict,
+])
+def test_analyze_move_rest(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'resource': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.AnalyzeMoveResponse(
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = asset_service.AnalyzeMoveResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.analyze_move(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.AnalyzeMoveResponse)
+
+
+def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMoveRequest):
+    transport_class = transports.AssetServiceRestTransport
+
+    request_init = {}
+    request_init["resource"] = ""
+    request_init["destination_parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+    assert "destinationParent" not in jsonified_request
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_move._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "destinationParent" in jsonified_request
+    assert jsonified_request["destinationParent"] == request_init["destination_parent"]
+
+    jsonified_request["resource"] = 'resource_value'
+    jsonified_request["destinationParent"] = 'destination_parent_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_move._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("destination_parent", "view", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "resource" in jsonified_request
+    assert jsonified_request["resource"] == 'resource_value'
+    assert "destinationParent" in jsonified_request
+    assert jsonified_request["destinationParent"] == 'destination_parent_value'
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = asset_service.AnalyzeMoveResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = asset_service.AnalyzeMoveResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.analyze_move(request)
+
+            expected_params = [
+                (
+                    "destinationParent",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_analyze_move_rest_unset_required_fields():
+    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.analyze_move._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("destinationParent", "view", )) & set(("resource", "destinationParent", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_analyze_move_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_move") as post, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_move") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.AnalyzeMoveRequest.pb(asset_service.AnalyzeMoveRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = asset_service.AnalyzeMoveResponse.to_json(asset_service.AnalyzeMoveResponse())
+
+        request = asset_service.AnalyzeMoveRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.AnalyzeMoveResponse()
+
+        client.analyze_move(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_analyze_move_rest_bad_request(transport: str = 'rest', request_type=asset_service.AnalyzeMoveRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'resource': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.analyze_move(request)
+
+
+def test_analyze_move_rest_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    asset_service.QueryAssetsRequest,
+    dict,
+])
+def test_query_assets_rest(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.QueryAssetsResponse(
+              job_reference='job_reference_value',
+              done=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = asset_service.QueryAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.query_assets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.QueryAssetsResponse)
+    assert response.job_reference == 'job_reference_value'
+    assert response.done is True
+
+
+def test_query_assets_rest_required_fields(request_type=asset_service.QueryAssetsRequest):
+    transport_class = transports.AssetServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).query_assets._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = 'parent_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).query_assets._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == 'parent_value'
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = asset_service.QueryAssetsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "post",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = asset_service.QueryAssetsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.query_assets(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_query_assets_rest_unset_required_fields():
+    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.query_assets._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("parent", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_query_assets_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "post_query_assets") as post, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_query_assets") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.QueryAssetsRequest.pb(asset_service.QueryAssetsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = asset_service.QueryAssetsResponse.to_json(asset_service.QueryAssetsResponse())
+
+        request = asset_service.QueryAssetsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.QueryAssetsResponse()
+
+        client.query_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_query_assets_rest_bad_request(transport: str = 'rest', request_type=asset_service.QueryAssetsRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.query_assets(request)
+
+
+def test_query_assets_rest_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    asset_service.CreateSavedQueryRequest,
+    dict,
+])
+def test_create_saved_query_rest(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request_init["saved_query"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.SavedQuery(
+              name='name_value',
+              description='description_value',
+              creator='creator_value',
+              last_updater='last_updater_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.create_saved_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.SavedQuery)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.creator == 'creator_value'
+    assert response.last_updater == 'last_updater_value'
+
+
+def test_create_saved_query_rest_required_fields(request_type=asset_service.CreateSavedQueryRequest):
+    transport_class = transports.AssetServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["saved_query_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+    assert "savedQueryId" not in jsonified_request
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_saved_query._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "savedQueryId" in jsonified_request
+    assert jsonified_request["savedQueryId"] == request_init["saved_query_id"]
+
+    jsonified_request["parent"] = 'parent_value'
+    jsonified_request["savedQueryId"] = 'saved_query_id_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_saved_query._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("saved_query_id", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == 'parent_value'
+    assert "savedQueryId" in jsonified_request
+    assert jsonified_request["savedQueryId"] == 'saved_query_id_value'
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = asset_service.SavedQuery()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "post",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = asset_service.SavedQuery.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.create_saved_query(request)
+
+            expected_params = [
+                (
+                    "savedQueryId",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_create_saved_query_rest_unset_required_fields():
+    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.create_saved_query._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("savedQueryId", )) & set(("parent", "savedQuery", "savedQueryId", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_saved_query_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "post_create_saved_query") as post, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_create_saved_query") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.CreateSavedQueryRequest.pb(asset_service.CreateSavedQueryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
+
+        request = asset_service.CreateSavedQueryRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.SavedQuery()
+
+        client.create_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_saved_query_rest_bad_request(transport: str = 'rest', request_type=asset_service.CreateSavedQueryRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request_init["saved_query"] = {'name': 'name_value', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_saved_query(request)
+
+
+def test_create_saved_query_rest_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.SavedQuery()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'parent': 'sample1/sample2'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent='parent_value',
+            saved_query=asset_service.SavedQuery(name='name_value'),
+            saved_query_id='saved_query_id_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.create_saved_query(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v1/{parent=*/*}/savedQueries" % client.transport._host, args[1])
+
+
+def test_create_saved_query_rest_flattened_error(transport: str = 'rest'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_saved_query(
+            asset_service.CreateSavedQueryRequest(),
+            parent='parent_value',
+            saved_query=asset_service.SavedQuery(name='name_value'),
+            saved_query_id='saved_query_id_value',
+        )
+
+
+def test_create_saved_query_rest_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    asset_service.GetSavedQueryRequest,
+    dict,
+])
+def test_get_saved_query_rest(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/savedQueries/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.SavedQuery(
+              name='name_value',
+              description='description_value',
+              creator='creator_value',
+              last_updater='last_updater_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_saved_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.SavedQuery)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.creator == 'creator_value'
+    assert response.last_updater == 'last_updater_value'
+
+
+def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSavedQueryRequest):
+    transport_class = transports.AssetServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_saved_query._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_saved_query._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = asset_service.SavedQuery()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = asset_service.SavedQuery.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.get_saved_query(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_get_saved_query_rest_unset_required_fields():
+    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.get_saved_query._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_saved_query_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "post_get_saved_query") as post, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_get_saved_query") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.GetSavedQueryRequest.pb(asset_service.GetSavedQueryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
+
+        request = asset_service.GetSavedQueryRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.SavedQuery()
+
+        client.get_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_saved_query_rest_bad_request(transport: str = 'rest', request_type=asset_service.GetSavedQueryRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/savedQueries/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_saved_query(request)
+
+
+def test_get_saved_query_rest_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.SavedQuery()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'name': 'sample1/sample2/savedQueries/sample3'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name='name_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.get_saved_query(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v1/{name=*/*/savedQueries/*}" % client.transport._host, args[1])
+
+
+def test_get_saved_query_rest_flattened_error(transport: str = 'rest'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_saved_query(
+            asset_service.GetSavedQueryRequest(),
+            name='name_value',
+        )
+
+
+def test_get_saved_query_rest_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    asset_service.ListSavedQueriesRequest,
+    dict,
+])
+def test_list_saved_queries_rest(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.ListSavedQueriesResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = asset_service.ListSavedQueriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.list_saved_queries(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSavedQueriesPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+def test_list_saved_queries_rest_required_fields(request_type=asset_service.ListSavedQueriesRequest):
+    transport_class = transports.AssetServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_saved_queries._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = 'parent_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_saved_queries._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("filter", "page_size", "page_token", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == 'parent_value'
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = asset_service.ListSavedQueriesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = asset_service.ListSavedQueriesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.list_saved_queries(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_list_saved_queries_rest_unset_required_fields():
+    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.list_saved_queries._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("filter", "pageSize", "pageToken", )) & set(("parent", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_saved_queries_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "post_list_saved_queries") as post, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_list_saved_queries") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.ListSavedQueriesRequest.pb(asset_service.ListSavedQueriesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = asset_service.ListSavedQueriesResponse.to_json(asset_service.ListSavedQueriesResponse())
+
+        request = asset_service.ListSavedQueriesRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.ListSavedQueriesResponse()
+
+        client.list_saved_queries(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_saved_queries_rest_bad_request(transport: str = 'rest', request_type=asset_service.ListSavedQueriesRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'parent': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_saved_queries(request)
+
+
+def test_list_saved_queries_rest_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.ListSavedQueriesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'parent': 'sample1/sample2'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent='parent_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = asset_service.ListSavedQueriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.list_saved_queries(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v1/{parent=*/*}/savedQueries" % client.transport._host, args[1])
+
+
+def test_list_saved_queries_rest_flattened_error(transport: str = 'rest'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_saved_queries(
+            asset_service.ListSavedQueriesRequest(),
+            parent='parent_value',
+        )
+
+
+def test_list_saved_queries_rest_pager(transport: str = 'rest'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        #with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[
+                    asset_service.SavedQuery(),
+                    asset_service.SavedQuery(),
+                    asset_service.SavedQuery(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[],
+                next_page_token='def',
+            ),
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[
+                    asset_service.SavedQuery(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.ListSavedQueriesResponse(
+                saved_queries=[
+                    asset_service.SavedQuery(),
+                    asset_service.SavedQuery(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(asset_service.ListSavedQueriesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode('UTF-8')
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {'parent': 'sample1/sample2'}
+
+        pager = client.list_saved_queries(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, asset_service.SavedQuery)
+                for i in results)
+
+        pages = list(client.list_saved_queries(request=sample_request).pages)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize("request_type", [
+    asset_service.UpdateSavedQueryRequest,
+    dict,
+])
+def test_update_saved_query_rest(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'saved_query': {'name': 'sample1/sample2/savedQueries/sample3'}}
+    request_init["saved_query"] = {'name': 'sample1/sample2/savedQueries/sample3', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.SavedQuery(
+              name='name_value',
+              description='description_value',
+              creator='creator_value',
+              last_updater='last_updater_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.update_saved_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.SavedQuery)
+    assert response.name == 'name_value'
+    assert response.description == 'description_value'
+    assert response.creator == 'creator_value'
+    assert response.last_updater == 'last_updater_value'
+
+
+def test_update_saved_query_rest_required_fields(request_type=asset_service.UpdateSavedQueryRequest):
+    transport_class = transports.AssetServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_saved_query._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_saved_query._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = asset_service.SavedQuery()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "patch",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = asset_service.SavedQuery.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.update_saved_query(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_update_saved_query_rest_unset_required_fields():
+    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.update_saved_query._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("updateMask", )) & set(("savedQuery", "updateMask", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_saved_query_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "post_update_saved_query") as post, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_update_saved_query") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.UpdateSavedQueryRequest.pb(asset_service.UpdateSavedQueryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = asset_service.SavedQuery.to_json(asset_service.SavedQuery())
+
+        request = asset_service.UpdateSavedQueryRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.SavedQuery()
+
+        client.update_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_saved_query_rest_bad_request(transport: str = 'rest', request_type=asset_service.UpdateSavedQueryRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'saved_query': {'name': 'sample1/sample2/savedQueries/sample3'}}
+    request_init["saved_query"] = {'name': 'sample1/sample2/savedQueries/sample3', 'description': 'description_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'creator': 'creator_value', 'last_update_time': {}, 'last_updater': 'last_updater_value', 'labels': {}, 'content': {'iam_policy_analysis_query': {'scope': 'scope_value', 'resource_selector': {'full_resource_name': 'full_resource_name_value'}, 'identity_selector': {'identity': 'identity_value'}, 'access_selector': {'roles': ['roles_value1', 'roles_value2'], 'permissions': ['permissions_value1', 'permissions_value2']}, 'options': {'expand_groups': True, 'expand_roles': True, 'expand_resources': True, 'output_resource_edges': True, 'output_group_edges': True, 'analyze_service_account_impersonation': True}, 'condition_context': {'access_time': {}}}}}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_saved_query(request)
+
+
+def test_update_saved_query_rest_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.SavedQuery()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'saved_query': {'name': 'sample1/sample2/savedQueries/sample3'}}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            saved_query=asset_service.SavedQuery(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = asset_service.SavedQuery.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.update_saved_query(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v1/{saved_query.name=*/*/savedQueries/*}" % client.transport._host, args[1])
+
+
+def test_update_saved_query_rest_flattened_error(transport: str = 'rest'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_saved_query(
+            asset_service.UpdateSavedQueryRequest(),
+            saved_query=asset_service.SavedQuery(name='name_value'),
+            update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
+        )
+
+
+def test_update_saved_query_rest_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    asset_service.DeleteSavedQueryRequest,
+    dict,
+])
+def test_delete_saved_query_rest(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/savedQueries/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ''
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.delete_saved_query(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_saved_query_rest_required_fields(request_type=asset_service.DeleteSavedQueryRequest):
+    transport_class = transports.AssetServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_saved_query._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_saved_query._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "delete",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ''
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.delete_saved_query(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_delete_saved_query_rest_unset_required_fields():
+    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.delete_saved_query._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_saved_query_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_delete_saved_query") as pre:
+        pre.assert_not_called()
+        pb_message = asset_service.DeleteSavedQueryRequest.pb(asset_service.DeleteSavedQueryRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = asset_service.DeleteSavedQueryRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_saved_query(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+
+
+def test_delete_saved_query_rest_bad_request(transport: str = 'rest', request_type=asset_service.DeleteSavedQueryRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'sample1/sample2/savedQueries/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_saved_query(request)
+
+
+def test_delete_saved_query_rest_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'name': 'sample1/sample2/savedQueries/sample3'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name='name_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ''
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.delete_saved_query(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v1/{name=*/*/savedQueries/*}" % client.transport._host, args[1])
+
+
+def test_delete_saved_query_rest_flattened_error(transport: str = 'rest'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_saved_query(
+            asset_service.DeleteSavedQueryRequest(),
+            name='name_value',
+        )
+
+
+def test_delete_saved_query_rest_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    asset_service.BatchGetEffectiveIamPoliciesRequest,
+    dict,
+])
+def test_batch_get_effective_iam_policies_rest(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.BatchGetEffectiveIamPoliciesResponse(
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.batch_get_effective_iam_policies(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, asset_service.BatchGetEffectiveIamPoliciesResponse)
+
+
+def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asset_service.BatchGetEffectiveIamPoliciesRequest):
+    transport_class = transports.AssetServiceRestTransport
+
+    request_init = {}
+    request_init["scope"] = ""
+    request_init["names"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+    assert "names" not in jsonified_request
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_get_effective_iam_policies._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "names" in jsonified_request
+    assert jsonified_request["names"] == request_init["names"]
+
+    jsonified_request["scope"] = 'scope_value'
+    jsonified_request["names"] = 'names_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).batch_get_effective_iam_policies._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("names", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "scope" in jsonified_request
+    assert jsonified_request["scope"] == 'scope_value'
+    assert "names" in jsonified_request
+    assert jsonified_request["names"] == 'names_value'
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = asset_service.BatchGetEffectiveIamPoliciesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = asset_service.BatchGetEffectiveIamPoliciesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.batch_get_effective_iam_policies(request)
+
+            expected_params = [
+                (
+                    "names",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_batch_get_effective_iam_policies_rest_unset_required_fields():
+    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.batch_get_effective_iam_policies._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("names", )) & set(("scope", "names", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_batch_get_effective_iam_policies_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "post_batch_get_effective_iam_policies") as post, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_batch_get_effective_iam_policies") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.BatchGetEffectiveIamPoliciesRequest.pb(asset_service.BatchGetEffectiveIamPoliciesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = asset_service.BatchGetEffectiveIamPoliciesResponse.to_json(asset_service.BatchGetEffectiveIamPoliciesResponse())
+
+        request = asset_service.BatchGetEffectiveIamPoliciesRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.BatchGetEffectiveIamPoliciesResponse()
+
+        client.batch_get_effective_iam_policies(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_batch_get_effective_iam_policies_rest_bad_request(transport: str = 'rest', request_type=asset_service.BatchGetEffectiveIamPoliciesRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.batch_get_effective_iam_policies(request)
+
+
+def test_batch_get_effective_iam_policies_rest_error():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
+    asset_service.AnalyzeOrgPoliciesRequest,
+    dict,
+])
+def test_analyze_org_policies_rest(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.AnalyzeOrgPoliciesResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = asset_service.AnalyzeOrgPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.analyze_org_policies(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPoliciesPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+def test_analyze_org_policies_rest_required_fields(request_type=asset_service.AnalyzeOrgPoliciesRequest):
+    transport_class = transports.AssetServiceRestTransport
+
+    request_init = {}
+    request_init["scope"] = ""
+    request_init["constraint"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+    assert "constraint" not in jsonified_request
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policies._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "constraint" in jsonified_request
+    assert jsonified_request["constraint"] == request_init["constraint"]
+
+    jsonified_request["scope"] = 'scope_value'
+    jsonified_request["constraint"] = 'constraint_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policies._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("constraint", "filter", "page_size", "page_token", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "scope" in jsonified_request
+    assert jsonified_request["scope"] == 'scope_value'
+    assert "constraint" in jsonified_request
+    assert jsonified_request["constraint"] == 'constraint_value'
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = asset_service.AnalyzeOrgPoliciesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = asset_service.AnalyzeOrgPoliciesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.analyze_org_policies(request)
+
+            expected_params = [
+                (
+                    "constraint",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_analyze_org_policies_rest_unset_required_fields():
+    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.analyze_org_policies._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_analyze_org_policies_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policies") as post, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policies") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.AnalyzeOrgPoliciesRequest.pb(asset_service.AnalyzeOrgPoliciesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = asset_service.AnalyzeOrgPoliciesResponse.to_json(asset_service.AnalyzeOrgPoliciesResponse())
+
+        request = asset_service.AnalyzeOrgPoliciesRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.AnalyzeOrgPoliciesResponse()
+
+        client.analyze_org_policies(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_analyze_org_policies_rest_bad_request(transport: str = 'rest', request_type=asset_service.AnalyzeOrgPoliciesRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.analyze_org_policies(request)
+
+
+def test_analyze_org_policies_rest_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.AnalyzeOrgPoliciesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'scope': 'sample1/sample2'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = asset_service.AnalyzeOrgPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.analyze_org_policies(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v1/{scope=*/*}:analyzeOrgPolicies" % client.transport._host, args[1])
+
+
+def test_analyze_org_policies_rest_flattened_error(transport: str = 'rest'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.analyze_org_policies(
+            asset_service.AnalyzeOrgPoliciesRequest(),
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+
+
+def test_analyze_org_policies_rest_pager(transport: str = 'rest'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        #with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[],
+                next_page_token='def',
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.AnalyzeOrgPoliciesResponse(
+                org_policy_results=[
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                    asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(asset_service.AnalyzeOrgPoliciesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode('UTF-8')
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {'scope': 'sample1/sample2'}
+
+        pager = client.analyze_org_policies(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, asset_service.AnalyzeOrgPoliciesResponse.OrgPolicyResult)
+                for i in results)
+
+        pages = list(client.analyze_org_policies(request=sample_request).pages)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize("request_type", [
+    asset_service.AnalyzeOrgPolicyGovernedContainersRequest,
+    dict,
+])
+def test_analyze_org_policy_governed_containers_rest(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.analyze_org_policy_governed_containers(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedContainersPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+def test_analyze_org_policy_governed_containers_rest_required_fields(request_type=asset_service.AnalyzeOrgPolicyGovernedContainersRequest):
+    transport_class = transports.AssetServiceRestTransport
+
+    request_init = {}
+    request_init["scope"] = ""
+    request_init["constraint"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+    assert "constraint" not in jsonified_request
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_containers._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "constraint" in jsonified_request
+    assert jsonified_request["constraint"] == request_init["constraint"]
+
+    jsonified_request["scope"] = 'scope_value'
+    jsonified_request["constraint"] = 'constraint_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_containers._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("constraint", "filter", "page_size", "page_token", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "scope" in jsonified_request
+    assert jsonified_request["scope"] == 'scope_value'
+    assert "constraint" in jsonified_request
+    assert jsonified_request["constraint"] == 'constraint_value'
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.analyze_org_policy_governed_containers(request)
+
+            expected_params = [
+                (
+                    "constraint",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_analyze_org_policy_governed_containers_rest_unset_required_fields():
+    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.analyze_org_policy_governed_containers._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_analyze_org_policy_governed_containers_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policy_governed_containers") as post, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policy_governed_containers") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.AnalyzeOrgPolicyGovernedContainersRequest.pb(asset_service.AnalyzeOrgPolicyGovernedContainersRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(asset_service.AnalyzeOrgPolicyGovernedContainersResponse())
+
+        request = asset_service.AnalyzeOrgPolicyGovernedContainersRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+
+        client.analyze_org_policy_governed_containers(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_analyze_org_policy_governed_containers_rest_bad_request(transport: str = 'rest', request_type=asset_service.AnalyzeOrgPolicyGovernedContainersRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.analyze_org_policy_governed_containers(request)
+
+
+def test_analyze_org_policy_governed_containers_rest_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'scope': 'sample1/sample2'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = asset_service.AnalyzeOrgPolicyGovernedContainersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.analyze_org_policy_governed_containers(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v1/{scope=*/*}:analyzeOrgPolicyGovernedContainers" % client.transport._host, args[1])
+
+
+def test_analyze_org_policy_governed_containers_rest_flattened_error(transport: str = 'rest'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.analyze_org_policy_governed_containers(
+            asset_service.AnalyzeOrgPolicyGovernedContainersRequest(),
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+
+
+def test_analyze_org_policy_governed_containers_rest_pager(transport: str = 'rest'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        #with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[],
+                next_page_token='def',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedContainersResponse(
+                governed_containers=[
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                    asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(asset_service.AnalyzeOrgPolicyGovernedContainersResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode('UTF-8')
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {'scope': 'sample1/sample2'}
+
+        pager = client.analyze_org_policy_governed_containers(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, asset_service.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer)
+                for i in results)
+
+        pages = list(client.analyze_org_policy_governed_containers(request=sample_request).pages)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize("request_type", [
+    asset_service.AnalyzeOrgPolicyGovernedAssetsRequest,
+    dict,
+])
+def test_analyze_org_policy_governed_assets_rest(request_type):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+              next_page_token='next_page_token_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.analyze_org_policy_governed_assets(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AnalyzeOrgPolicyGovernedAssetsPager)
+    assert response.next_page_token == 'next_page_token_value'
+
+
+def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest):
+    transport_class = transports.AssetServiceRestTransport
+
+    request_init = {}
+    request_init["scope"] = ""
+    request_init["constraint"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+    assert "constraint" not in jsonified_request
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_assets._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "constraint" in jsonified_request
+    assert jsonified_request["constraint"] == request_init["constraint"]
+
+    jsonified_request["scope"] = 'scope_value'
+    jsonified_request["constraint"] = 'constraint_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).analyze_org_policy_governed_assets._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("constraint", "filter", "page_size", "page_token", ))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "scope" in jsonified_request
+    assert jsonified_request["scope"] == 'scope_value'
+    assert "constraint" in jsonified_request
+    assert jsonified_request["constraint"] == 'constraint_value'
+
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.analyze_org_policy_governed_assets(request)
+
+            expected_params = [
+                (
+                    "constraint",
+                    "",
+                ),
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_analyze_org_policy_governed_assets_rest_unset_required_fields():
+    transport = transports.AssetServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.analyze_org_policy_governed_assets._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("constraint", "filter", "pageSize", "pageToken", )) & set(("scope", "constraint", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_analyze_org_policy_governed_assets_rest_interceptors(null_interceptor):
+    transport = transports.AssetServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.AssetServiceRestInterceptor(),
+        )
+    client = AssetServiceClient(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "post_analyze_org_policy_governed_assets") as post, \
+         mock.patch.object(transports.AssetServiceRestInterceptor, "pre_analyze_org_policy_governed_assets") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest.pb(asset_service.AnalyzeOrgPolicyGovernedAssetsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse())
+
+        request = asset_service.AnalyzeOrgPolicyGovernedAssetsRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+
+        client.analyze_org_policy_governed_assets(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_analyze_org_policy_governed_assets_rest_bad_request(transport: str = 'rest', request_type=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'scope': 'sample1/sample2'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.analyze_org_policy_governed_assets(request)
+
+
+def test_analyze_org_policy_governed_assets_rest_flattened():
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'scope': 'sample1/sample2'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.analyze_org_policy_governed_assets(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v1/{scope=*/*}:analyzeOrgPolicyGovernedAssets" % client.transport._host, args[1])
+
+
+def test_analyze_org_policy_governed_assets_rest_flattened_error(transport: str = 'rest'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.analyze_org_policy_governed_assets(
+            asset_service.AnalyzeOrgPolicyGovernedAssetsRequest(),
+            scope='scope_value',
+            constraint='constraint_value',
+            filter='filter_value',
+        )
+
+
+def test_analyze_org_policy_governed_assets_rest_pager(transport: str = 'rest'):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        #with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token='abc',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[],
+                next_page_token='def',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+                next_page_token='ghi',
+            ),
+            asset_service.AnalyzeOrgPolicyGovernedAssetsResponse(
+                governed_assets=[
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                    asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode('UTF-8')
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {'scope': 'sample1/sample2'}
+
+        pager = client.analyze_org_policy_governed_assets(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset)
+                for i in results)
+
+        pages = list(client.analyze_org_policy_governed_assets(request=sample_request).pages)
+        for page_, token in zip(pages, ['abc','def','ghi', '']):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AssetServiceGrpcTransport(
@@ -6506,6 +12438,17 @@ def test_asset_service_base_transport():
         'search_all_iam_policies',
         'analyze_iam_policy',
         'analyze_iam_policy_longrunning',
+        'analyze_move',
+        'query_assets',
+        'create_saved_query',
+        'get_saved_query',
+        'list_saved_queries',
+        'update_saved_query',
+        'delete_saved_query',
+        'batch_get_effective_iam_policies',
+        'analyze_org_policies',
+        'analyze_org_policy_governed_containers',
+        'analyze_org_policy_governed_assets',
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -6802,6 +12745,39 @@ def test_asset_service_client_transport_session_collision(transport_name):
     session1 = client1.transport.analyze_iam_policy_longrunning._session
     session2 = client2.transport.analyze_iam_policy_longrunning._session
     assert session1 != session2
+    session1 = client1.transport.analyze_move._session
+    session2 = client2.transport.analyze_move._session
+    assert session1 != session2
+    session1 = client1.transport.query_assets._session
+    session2 = client2.transport.query_assets._session
+    assert session1 != session2
+    session1 = client1.transport.create_saved_query._session
+    session2 = client2.transport.create_saved_query._session
+    assert session1 != session2
+    session1 = client1.transport.get_saved_query._session
+    session2 = client2.transport.get_saved_query._session
+    assert session1 != session2
+    session1 = client1.transport.list_saved_queries._session
+    session2 = client2.transport.list_saved_queries._session
+    assert session1 != session2
+    session1 = client1.transport.update_saved_query._session
+    session2 = client2.transport.update_saved_query._session
+    assert session1 != session2
+    session1 = client1.transport.delete_saved_query._session
+    session2 = client2.transport.delete_saved_query._session
+    assert session1 != session2
+    session1 = client1.transport.batch_get_effective_iam_policies._session
+    session2 = client2.transport.batch_get_effective_iam_policies._session
+    assert session1 != session2
+    session1 = client1.transport.analyze_org_policies._session
+    session2 = client2.transport.analyze_org_policies._session
+    assert session1 != session2
+    session1 = client1.transport.analyze_org_policy_governed_containers._session
+    session2 = client2.transport.analyze_org_policy_governed_containers._session
+    assert session1 != session2
+    session1 = client1.transport.analyze_org_policy_governed_assets._session
+    session2 = client2.transport.analyze_org_policy_governed_assets._session
+    assert session1 != session2
 def test_asset_service_grpc_transport_channel():
     channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
 
@@ -6946,6 +12922,42 @@ def test_asset_service_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
+def test_access_level_path():
+    access_policy = "squid"
+    access_level = "clam"
+    expected = "accessPolicies/{access_policy}/accessLevels/{access_level}".format(access_policy=access_policy, access_level=access_level, )
+    actual = AssetServiceClient.access_level_path(access_policy, access_level)
+    assert expected == actual
+
+
+def test_parse_access_level_path():
+    expected = {
+        "access_policy": "whelk",
+        "access_level": "octopus",
+    }
+    path = AssetServiceClient.access_level_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AssetServiceClient.parse_access_level_path(path)
+    assert expected == actual
+
+def test_access_policy_path():
+    access_policy = "oyster"
+    expected = "accessPolicies/{access_policy}".format(access_policy=access_policy, )
+    actual = AssetServiceClient.access_policy_path(access_policy)
+    assert expected == actual
+
+
+def test_parse_access_policy_path():
+    expected = {
+        "access_policy": "nudibranch",
+    }
+    path = AssetServiceClient.access_policy_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AssetServiceClient.parse_access_policy_path(path)
+    assert expected == actual
+
 def test_asset_path():
     expected = "*".format()
     actual = AssetServiceClient.asset_path()
@@ -6962,8 +12974,8 @@ def test_parse_asset_path():
     assert expected == actual
 
 def test_feed_path():
-    project = "squid"
-    feed = "clam"
+    project = "cuttlefish"
+    feed = "mussel"
     expected = "projects/{project}/feeds/{feed}".format(project=project, feed=feed, )
     actual = AssetServiceClient.feed_path(project, feed)
     assert expected == actual
@@ -6971,8 +12983,8 @@ def test_feed_path():
 
 def test_parse_feed_path():
     expected = {
-        "project": "whelk",
-        "feed": "octopus",
+        "project": "winkle",
+        "feed": "nautilus",
     }
     path = AssetServiceClient.feed_path(**expected)
 
@@ -6980,8 +12992,67 @@ def test_parse_feed_path():
     actual = AssetServiceClient.parse_feed_path(path)
     assert expected == actual
 
+def test_inventory_path():
+    project = "scallop"
+    location = "abalone"
+    instance = "squid"
+    expected = "projects/{project}/locations/{location}/instances/{instance}/inventory".format(project=project, location=location, instance=instance, )
+    actual = AssetServiceClient.inventory_path(project, location, instance)
+    assert expected == actual
+
+
+def test_parse_inventory_path():
+    expected = {
+        "project": "clam",
+        "location": "whelk",
+        "instance": "octopus",
+    }
+    path = AssetServiceClient.inventory_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AssetServiceClient.parse_inventory_path(path)
+    assert expected == actual
+
+def test_saved_query_path():
+    project = "oyster"
+    saved_query = "nudibranch"
+    expected = "projects/{project}/savedQueries/{saved_query}".format(project=project, saved_query=saved_query, )
+    actual = AssetServiceClient.saved_query_path(project, saved_query)
+    assert expected == actual
+
+
+def test_parse_saved_query_path():
+    expected = {
+        "project": "cuttlefish",
+        "saved_query": "mussel",
+    }
+    path = AssetServiceClient.saved_query_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AssetServiceClient.parse_saved_query_path(path)
+    assert expected == actual
+
+def test_service_perimeter_path():
+    access_policy = "winkle"
+    service_perimeter = "nautilus"
+    expected = "accessPolicies/{access_policy}/servicePerimeters/{service_perimeter}".format(access_policy=access_policy, service_perimeter=service_perimeter, )
+    actual = AssetServiceClient.service_perimeter_path(access_policy, service_perimeter)
+    assert expected == actual
+
+
+def test_parse_service_perimeter_path():
+    expected = {
+        "access_policy": "scallop",
+        "service_perimeter": "abalone",
+    }
+    path = AssetServiceClient.service_perimeter_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AssetServiceClient.parse_service_perimeter_path(path)
+    assert expected == actual
+
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(billing_account=billing_account, )
     actual = AssetServiceClient.common_billing_account_path(billing_account)
     assert expected == actual
@@ -6989,7 +13060,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "clam",
     }
     path = AssetServiceClient.common_billing_account_path(**expected)
 
@@ -6998,7 +13069,7 @@ def test_parse_common_billing_account_path():
     assert expected == actual
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "whelk"
     expected = "folders/{folder}".format(folder=folder, )
     actual = AssetServiceClient.common_folder_path(folder)
     assert expected == actual
@@ -7006,7 +13077,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "octopus",
     }
     path = AssetServiceClient.common_folder_path(**expected)
 
@@ -7015,7 +13086,7 @@ def test_parse_common_folder_path():
     assert expected == actual
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "oyster"
     expected = "organizations/{organization}".format(organization=organization, )
     actual = AssetServiceClient.common_organization_path(organization)
     assert expected == actual
@@ -7023,7 +13094,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "nudibranch",
     }
     path = AssetServiceClient.common_organization_path(**expected)
 
@@ -7032,7 +13103,7 @@ def test_parse_common_organization_path():
     assert expected == actual
 
 def test_common_project_path():
-    project = "scallop"
+    project = "cuttlefish"
     expected = "projects/{project}".format(project=project, )
     actual = AssetServiceClient.common_project_path(project)
     assert expected == actual
@@ -7040,7 +13111,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "mussel",
     }
     path = AssetServiceClient.common_project_path(**expected)
 
@@ -7049,8 +13120,8 @@ def test_parse_common_project_path():
     assert expected == actual
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(project=project, location=location, )
     actual = AssetServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -7058,8 +13129,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = AssetServiceClient.common_location_path(**expected)
 

@@ -585,7 +585,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         Returns:
             google.cloud.redis_v1.types.Instance:
-                A Google Cloud Redis instance.
+                A Memorystore for Redis instance.
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -609,6 +609,109 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_instance]
+
+         # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_instance_auth_string(self,
+            request: Optional[Union[cloud_redis.GetInstanceAuthStringRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> cloud_redis.InstanceAuthString:
+        r"""Gets the AUTH string for a Redis instance. If AUTH is
+        not enabled for the instance the response will be empty.
+        This information is not included in the details returned
+        to GetInstance.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import redis_v1
+
+            def sample_get_instance_auth_string():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                request = redis_v1.GetInstanceAuthStringRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_instance_auth_string(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.redis_v1.types.GetInstanceAuthStringRequest, dict]):
+                The request object. Request for
+                [GetInstanceAuthString][google.cloud.redis.v1.CloudRedis.GetInstanceAuthString].
+            name (str):
+                Required. Redis instance resource name using the form:
+                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
+                where ``location_id`` refers to a GCP region.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.redis_v1.types.InstanceAuthString:
+                Instance AUTH string details.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_redis.GetInstanceAuthStringRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_redis.GetInstanceAuthStringRequest):
+            request = cloud_redis.GetInstanceAuthStringRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_instance_auth_string]
 
          # Certain fields should be provided within the metadata header;
         # add these here.
@@ -734,8 +837,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A Google
-                Cloud Redis instance.
+                :class:`google.cloud.redis_v1.types.Instance` A
+                Memorystore for Redis instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -857,6 +960,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 -  ``labels``
                 -  ``memorySizeGb``
                 -  ``redisConfig``
+                -  ``replica_count``
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -879,8 +983,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A Google
-                Cloud Redis instance.
+                :class:`google.cloud.redis_v1.types.Instance` A
+                Memorystore for Redis instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -1008,8 +1112,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A Google
-                Cloud Redis instance.
+                :class:`google.cloud.redis_v1.types.Instance` A
+                Memorystore for Redis instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -1147,8 +1251,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A Google
-                Cloud Redis instance.
+                :class:`google.cloud.redis_v1.types.Instance` A
+                Memorystore for Redis instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -1283,8 +1387,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A Google
-                Cloud Redis instance.
+                :class:`google.cloud.redis_v1.types.Instance` A
+                Memorystore for Redis instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -1348,7 +1452,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             timeout: Union[float, object] = gapic_v1.method.DEFAULT,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> operation.Operation:
-        r"""Initiates a failover of the master node to current
+        r"""Initiates a failover of the primary node to current
         replica node for a specific STANDARD tier Cloud
         Memorystore for Redis instance.
 
@@ -1413,8 +1517,8 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.redis_v1.types.Instance` A Google
-                Cloud Redis instance.
+                :class:`google.cloud.redis_v1.types.Instance` A
+                Memorystore for Redis instance.
 
         """
         # Create or coerce a protobuf request object.
@@ -1588,6 +1692,146 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
             response,
             self._transport.operations_client,
             empty_pb2.Empty,
+            metadata_type=cloud_redis.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def reschedule_maintenance(self,
+            request: Optional[Union[cloud_redis.RescheduleMaintenanceRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            reschedule_type: Optional[cloud_redis.RescheduleMaintenanceRequest.RescheduleType] = None,
+            schedule_time: Optional[timestamp_pb2.Timestamp] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, str]] = (),
+            ) -> operation.Operation:
+        r"""Reschedule maintenance for a given instance in a
+        given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import redis_v1
+
+            def sample_reschedule_maintenance():
+                # Create a client
+                client = redis_v1.CloudRedisClient()
+
+                # Initialize request argument(s)
+                request = redis_v1.RescheduleMaintenanceRequest(
+                    name="name_value",
+                    reschedule_type="SPECIFIC_TIME",
+                )
+
+                # Make the request
+                operation = client.reschedule_maintenance(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.redis_v1.types.RescheduleMaintenanceRequest, dict]):
+                The request object. Request for
+                [RescheduleMaintenance][google.cloud.redis.v1.CloudRedis.RescheduleMaintenance].
+            name (str):
+                Required. Redis instance resource name using the form:
+                ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
+                where ``location_id`` refers to a GCP region.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            reschedule_type (google.cloud.redis_v1.types.RescheduleMaintenanceRequest.RescheduleType):
+                Required. If reschedule type is SPECIFIC_TIME, must set
+                up schedule_time as well.
+
+                This corresponds to the ``reschedule_type`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            schedule_time (google.protobuf.timestamp_pb2.Timestamp):
+                Optional. Timestamp when the maintenance shall be
+                rescheduled to if reschedule_type=SPECIFIC_TIME, in RFC
+                3339 format, for example ``2012-11-15T16:19:00.094Z``.
+
+                This corresponds to the ``schedule_time`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.redis_v1.types.Instance` A
+                Memorystore for Redis instance.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, reschedule_type, schedule_time])
+        if request is not None and has_flattened_params:
+            raise ValueError('If the `request` argument is set, then none of '
+                             'the individual field arguments should be set.')
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a cloud_redis.RescheduleMaintenanceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, cloud_redis.RescheduleMaintenanceRequest):
+            request = cloud_redis.RescheduleMaintenanceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if reschedule_type is not None:
+                request.reschedule_type = reschedule_type
+            if schedule_time is not None:
+                request.schedule_time = schedule_time
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.reschedule_maintenance]
+
+         # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            cloud_redis.Instance,
             metadata_type=cloud_redis.OperationMetadata,
         )
 

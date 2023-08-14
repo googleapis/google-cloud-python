@@ -10,14 +10,29 @@
         "grpc": {
           "libraryClient": "ConfigServiceV2Client",
           "rpcs": {
+            "CopyLogEntries": {
+              "methods": [
+                "copy_log_entries"
+              ]
+            },
             "CreateBucket": {
               "methods": [
                 "create_bucket"
               ]
             },
+            "CreateBucketAsync": {
+              "methods": [
+                "create_bucket_async"
+              ]
+            },
             "CreateExclusion": {
               "methods": [
                 "create_exclusion"
+              ]
+            },
+            "CreateLink": {
+              "methods": [
+                "create_link"
               ]
             },
             "CreateSink": {
@@ -38,6 +53,11 @@
             "DeleteExclusion": {
               "methods": [
                 "delete_exclusion"
+              ]
+            },
+            "DeleteLink": {
+              "methods": [
+                "delete_link"
               ]
             },
             "DeleteSink": {
@@ -65,6 +85,16 @@
                 "get_exclusion"
               ]
             },
+            "GetLink": {
+              "methods": [
+                "get_link"
+              ]
+            },
+            "GetSettings": {
+              "methods": [
+                "get_settings"
+              ]
+            },
             "GetSink": {
               "methods": [
                 "get_sink"
@@ -83,6 +113,11 @@
             "ListExclusions": {
               "methods": [
                 "list_exclusions"
+              ]
+            },
+            "ListLinks": {
+              "methods": [
+                "list_links"
               ]
             },
             "ListSinks": {
@@ -105,6 +140,11 @@
                 "update_bucket"
               ]
             },
+            "UpdateBucketAsync": {
+              "methods": [
+                "update_bucket_async"
+              ]
+            },
             "UpdateCmekSettings": {
               "methods": [
                 "update_cmek_settings"
@@ -113,6 +153,11 @@
             "UpdateExclusion": {
               "methods": [
                 "update_exclusion"
+              ]
+            },
+            "UpdateSettings": {
+              "methods": [
+                "update_settings"
               ]
             },
             "UpdateSink": {
@@ -130,14 +175,29 @@
         "grpc-async": {
           "libraryClient": "ConfigServiceV2AsyncClient",
           "rpcs": {
+            "CopyLogEntries": {
+              "methods": [
+                "copy_log_entries"
+              ]
+            },
             "CreateBucket": {
               "methods": [
                 "create_bucket"
               ]
             },
+            "CreateBucketAsync": {
+              "methods": [
+                "create_bucket_async"
+              ]
+            },
             "CreateExclusion": {
               "methods": [
                 "create_exclusion"
+              ]
+            },
+            "CreateLink": {
+              "methods": [
+                "create_link"
               ]
             },
             "CreateSink": {
@@ -158,6 +218,11 @@
             "DeleteExclusion": {
               "methods": [
                 "delete_exclusion"
+              ]
+            },
+            "DeleteLink": {
+              "methods": [
+                "delete_link"
               ]
             },
             "DeleteSink": {
@@ -185,124 +250,14 @@
                 "get_exclusion"
               ]
             },
-            "GetSink": {
+            "GetLink": {
               "methods": [
-                "get_sink"
+                "get_link"
               ]
             },
-            "GetView": {
+            "GetSettings": {
               "methods": [
-                "get_view"
-              ]
-            },
-            "ListBuckets": {
-              "methods": [
-                "list_buckets"
-              ]
-            },
-            "ListExclusions": {
-              "methods": [
-                "list_exclusions"
-              ]
-            },
-            "ListSinks": {
-              "methods": [
-                "list_sinks"
-              ]
-            },
-            "ListViews": {
-              "methods": [
-                "list_views"
-              ]
-            },
-            "UndeleteBucket": {
-              "methods": [
-                "undelete_bucket"
-              ]
-            },
-            "UpdateBucket": {
-              "methods": [
-                "update_bucket"
-              ]
-            },
-            "UpdateCmekSettings": {
-              "methods": [
-                "update_cmek_settings"
-              ]
-            },
-            "UpdateExclusion": {
-              "methods": [
-                "update_exclusion"
-              ]
-            },
-            "UpdateSink": {
-              "methods": [
-                "update_sink"
-              ]
-            },
-            "UpdateView": {
-              "methods": [
-                "update_view"
-              ]
-            }
-          }
-        },
-        "rest": {
-          "libraryClient": "ConfigServiceV2Client",
-          "rpcs": {
-            "CreateBucket": {
-              "methods": [
-                "create_bucket"
-              ]
-            },
-            "CreateExclusion": {
-              "methods": [
-                "create_exclusion"
-              ]
-            },
-            "CreateSink": {
-              "methods": [
-                "create_sink"
-              ]
-            },
-            "CreateView": {
-              "methods": [
-                "create_view"
-              ]
-            },
-            "DeleteBucket": {
-              "methods": [
-                "delete_bucket"
-              ]
-            },
-            "DeleteExclusion": {
-              "methods": [
-                "delete_exclusion"
-              ]
-            },
-            "DeleteSink": {
-              "methods": [
-                "delete_sink"
-              ]
-            },
-            "DeleteView": {
-              "methods": [
-                "delete_view"
-              ]
-            },
-            "GetBucket": {
-              "methods": [
-                "get_bucket"
-              ]
-            },
-            "GetCmekSettings": {
-              "methods": [
-                "get_cmek_settings"
-              ]
-            },
-            "GetExclusion": {
-              "methods": [
-                "get_exclusion"
+                "get_settings"
               ]
             },
             "GetSink": {
@@ -325,6 +280,11 @@
                 "list_exclusions"
               ]
             },
+            "ListLinks": {
+              "methods": [
+                "list_links"
+              ]
+            },
             "ListSinks": {
               "methods": [
                 "list_sinks"
@@ -345,6 +305,11 @@
                 "update_bucket"
               ]
             },
+            "UpdateBucketAsync": {
+              "methods": [
+                "update_bucket_async"
+              ]
+            },
             "UpdateCmekSettings": {
               "methods": [
                 "update_cmek_settings"
@@ -353,6 +318,11 @@
             "UpdateExclusion": {
               "methods": [
                 "update_exclusion"
+              ]
+            },
+            "UpdateSettings": {
+              "methods": [
+                "update_settings"
               ]
             },
             "UpdateSink": {
@@ -440,41 +410,6 @@
               ]
             }
           }
-        },
-        "rest": {
-          "libraryClient": "LoggingServiceV2Client",
-          "rpcs": {
-            "DeleteLog": {
-              "methods": [
-                "delete_log"
-              ]
-            },
-            "ListLogEntries": {
-              "methods": [
-                "list_log_entries"
-              ]
-            },
-            "ListLogs": {
-              "methods": [
-                "list_logs"
-              ]
-            },
-            "ListMonitoredResourceDescriptors": {
-              "methods": [
-                "list_monitored_resource_descriptors"
-              ]
-            },
-            "TailLogEntries": {
-              "methods": [
-                "tail_log_entries"
-              ]
-            },
-            "WriteLogEntries": {
-              "methods": [
-                "write_log_entries"
-              ]
-            }
-          }
         }
       }
     },
@@ -512,36 +447,6 @@
         },
         "grpc-async": {
           "libraryClient": "MetricsServiceV2AsyncClient",
-          "rpcs": {
-            "CreateLogMetric": {
-              "methods": [
-                "create_log_metric"
-              ]
-            },
-            "DeleteLogMetric": {
-              "methods": [
-                "delete_log_metric"
-              ]
-            },
-            "GetLogMetric": {
-              "methods": [
-                "get_log_metric"
-              ]
-            },
-            "ListLogMetrics": {
-              "methods": [
-                "list_log_metrics"
-              ]
-            },
-            "UpdateLogMetric": {
-              "methods": [
-                "update_log_metric"
-              ]
-            }
-          }
-        },
-        "rest": {
-          "libraryClient": "MetricsServiceV2Client",
           "rpcs": {
             "CreateLogMetric": {
               "methods": [

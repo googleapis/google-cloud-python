@@ -3,10 +3,6 @@ load(
     "py_gapic_library",
 )
 load(
-    "@gapic_generator_python//rules_python_gapic:py_gapic_pkg.bzl",
-    "py_gapic_assembly_pkg",
-)
-load(
     "@gapic_generator_python//rules_python_gapic/test:integration_test.bzl",
     "golden_update",
     "integration_test",
@@ -15,8 +11,6 @@ load(
     "@com_github_grpc_grpc//bazel:python_rules.bzl",
     "py_proto_library",
 )
-
-load("@rules_proto//proto:defs.bzl", "proto_library")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -103,7 +97,7 @@ py_gapic_library(
     ],
     service_yaml = "eventarc_v1.yaml",
     transport = "grpc+rest",
-    deps = [":iam_policy_py_proto"]
+    deps = [":iam_policy_py_proto"],
 )
 
 py_test(
@@ -128,7 +122,11 @@ py_gapic_library(
         "python-gapic-name=logging",
         "autogen-snippets",
     ],
-    transport = "grpc+rest",
+    # REST is not generated because of the following issues:
+    # - REST unit test `test_update_settings_rest_flattened` in logging_v2 fails. See #1728
+    # - REST is not generated in the public `BUILD.bazel`     
+    # https://github.com/googleapis/googleapis/blob/e85662e798a0a9495a035839f66d0c037c481e2c/google/logging/v2/BUILD.bazel#L201
+    transport = "grpc",
 )
 
 py_test(

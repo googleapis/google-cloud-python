@@ -60,12 +60,12 @@ def gapic_generator_python():
         strip_prefix = "rules_gapic-%s" % _rules_gapic_version,
         urls = ["https://github.com/googleapis/rules_gapic/archive/v%s.tar.gz" % _rules_gapic_version],
     )
-
+    _commit_sha = "fae3e6e091418d6343902debaf545cfc8f32c3ff"
     _maybe(
         http_archive,
         name = "com_google_googleapis",
-        strip_prefix = "googleapis-ffc531383747ebb702dad3db237ef5fdea796363",
-        urls = ["https://github.com/googleapis/googleapis/archive/ffc531383747ebb702dad3db237ef5fdea796363.zip"],
+        strip_prefix = "googleapis-{}".format(_commit_sha),
+        urls = ["https://github.com/googleapis/googleapis/archive/{}.zip".format(_commit_sha)],
     )
 
 def gapic_generator_register_toolchains():

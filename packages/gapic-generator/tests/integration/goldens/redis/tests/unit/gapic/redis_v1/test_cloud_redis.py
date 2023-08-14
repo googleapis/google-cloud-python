@@ -54,9 +54,12 @@ from google.cloud.redis_v1.services.cloud_redis import transports
 from google.cloud.redis_v1.types import cloud_redis
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import dayofweek_pb2  # type: ignore
+from google.type import timeofday_pb2  # type: ignore
 import google.auth
 
 
@@ -1001,6 +1004,7 @@ def test_get_instance(request_type, transport: str = 'grpc'):
             alternative_location_id='alternative_location_id_value',
             redis_version='redis_version_value',
             reserved_ip_range='reserved_ip_range_value',
+            secondary_ip_range='secondary_ip_range_value',
             host='host_value',
             port=453,
             current_location_id='current_location_id_value',
@@ -1011,6 +1015,16 @@ def test_get_instance(request_type, transport: str = 'grpc'):
             authorized_network='authorized_network_value',
             persistence_iam_identity='persistence_iam_identity_value',
             connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
+            auth_enabled=True,
+            transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
+            replica_count=1384,
+            read_endpoint='read_endpoint_value',
+            read_endpoint_port=1920,
+            read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
+            customer_managed_key='customer_managed_key_value',
+            suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
+            maintenance_version='maintenance_version_value',
+            available_maintenance_versions=['available_maintenance_versions_value'],
         )
         response = client.get_instance(request)
 
@@ -1027,6 +1041,7 @@ def test_get_instance(request_type, transport: str = 'grpc'):
     assert response.alternative_location_id == 'alternative_location_id_value'
     assert response.redis_version == 'redis_version_value'
     assert response.reserved_ip_range == 'reserved_ip_range_value'
+    assert response.secondary_ip_range == 'secondary_ip_range_value'
     assert response.host == 'host_value'
     assert response.port == 453
     assert response.current_location_id == 'current_location_id_value'
@@ -1037,6 +1052,16 @@ def test_get_instance(request_type, transport: str = 'grpc'):
     assert response.authorized_network == 'authorized_network_value'
     assert response.persistence_iam_identity == 'persistence_iam_identity_value'
     assert response.connect_mode == cloud_redis.Instance.ConnectMode.DIRECT_PEERING
+    assert response.auth_enabled is True
+    assert response.transit_encryption_mode == cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION
+    assert response.replica_count == 1384
+    assert response.read_endpoint == 'read_endpoint_value'
+    assert response.read_endpoint_port == 1920
+    assert response.read_replicas_mode == cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED
+    assert response.customer_managed_key == 'customer_managed_key_value'
+    assert response.suspension_reasons == [cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE]
+    assert response.maintenance_version == 'maintenance_version_value'
+    assert response.available_maintenance_versions == ['available_maintenance_versions_value']
 
 
 def test_get_instance_empty_call():
@@ -1079,6 +1104,7 @@ async def test_get_instance_async(transport: str = 'grpc_asyncio', request_type=
             alternative_location_id='alternative_location_id_value',
             redis_version='redis_version_value',
             reserved_ip_range='reserved_ip_range_value',
+            secondary_ip_range='secondary_ip_range_value',
             host='host_value',
             port=453,
             current_location_id='current_location_id_value',
@@ -1089,6 +1115,16 @@ async def test_get_instance_async(transport: str = 'grpc_asyncio', request_type=
             authorized_network='authorized_network_value',
             persistence_iam_identity='persistence_iam_identity_value',
             connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
+            auth_enabled=True,
+            transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
+            replica_count=1384,
+            read_endpoint='read_endpoint_value',
+            read_endpoint_port=1920,
+            read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
+            customer_managed_key='customer_managed_key_value',
+            suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
+            maintenance_version='maintenance_version_value',
+            available_maintenance_versions=['available_maintenance_versions_value'],
         ))
         response = await client.get_instance(request)
 
@@ -1105,6 +1141,7 @@ async def test_get_instance_async(transport: str = 'grpc_asyncio', request_type=
     assert response.alternative_location_id == 'alternative_location_id_value'
     assert response.redis_version == 'redis_version_value'
     assert response.reserved_ip_range == 'reserved_ip_range_value'
+    assert response.secondary_ip_range == 'secondary_ip_range_value'
     assert response.host == 'host_value'
     assert response.port == 453
     assert response.current_location_id == 'current_location_id_value'
@@ -1115,6 +1152,16 @@ async def test_get_instance_async(transport: str = 'grpc_asyncio', request_type=
     assert response.authorized_network == 'authorized_network_value'
     assert response.persistence_iam_identity == 'persistence_iam_identity_value'
     assert response.connect_mode == cloud_redis.Instance.ConnectMode.DIRECT_PEERING
+    assert response.auth_enabled is True
+    assert response.transit_encryption_mode == cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION
+    assert response.replica_count == 1384
+    assert response.read_endpoint == 'read_endpoint_value'
+    assert response.read_endpoint_port == 1920
+    assert response.read_replicas_mode == cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED
+    assert response.customer_managed_key == 'customer_managed_key_value'
+    assert response.suspension_reasons == [cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE]
+    assert response.maintenance_version == 'maintenance_version_value'
+    assert response.available_maintenance_versions == ['available_maintenance_versions_value']
 
 
 @pytest.mark.asyncio
@@ -1263,6 +1310,238 @@ async def test_get_instance_flattened_error_async():
     with pytest.raises(ValueError):
         await client.get_instance(
             cloud_redis.GetInstanceRequest(),
+            name='name_value',
+        )
+
+
+@pytest.mark.parametrize("request_type", [
+  cloud_redis.GetInstanceAuthStringRequest,
+  dict,
+])
+def test_get_instance_auth_string(request_type, transport: str = 'grpc'):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance_auth_string),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis.InstanceAuthString(
+            auth_string='auth_string_value',
+        )
+        response = client.get_instance_auth_string(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis.InstanceAuthString)
+    assert response.auth_string == 'auth_string_value'
+
+
+def test_get_instance_auth_string_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance_auth_string),
+            '__call__') as call:
+        client.get_instance_auth_string()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.GetInstanceAuthStringRequest):
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance_auth_string),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value =grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.InstanceAuthString(
+            auth_string='auth_string_value',
+        ))
+        response = await client.get_instance_auth_string(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.GetInstanceAuthStringRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis.InstanceAuthString)
+    assert response.auth_string == 'auth_string_value'
+
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_async_from_dict():
+    await test_get_instance_auth_string_async(request_type=dict)
+
+
+def test_get_instance_auth_string_field_headers():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.GetInstanceAuthStringRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance_auth_string),
+            '__call__') as call:
+        call.return_value = cloud_redis.InstanceAuthString()
+        client.get_instance_auth_string(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_field_headers_async():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.GetInstanceAuthStringRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance_auth_string),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.InstanceAuthString())
+        await client.get_instance_auth_string(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+def test_get_instance_auth_string_flattened():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance_auth_string),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis.InstanceAuthString()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_instance_auth_string(
+            name='name_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+
+
+def test_get_instance_auth_string_flattened_error():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_instance_auth_string(
+            cloud_redis.GetInstanceAuthStringRequest(),
+            name='name_value',
+        )
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_flattened_async():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.get_instance_auth_string),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cloud_redis.InstanceAuthString()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_redis.InstanceAuthString())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_instance_auth_string(
+            name='name_value',
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+
+@pytest.mark.asyncio
+async def test_get_instance_auth_string_flattened_error_async():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_instance_auth_string(
+            cloud_redis.GetInstanceAuthStringRequest(),
             name='name_value',
         )
 
@@ -2948,6 +3227,252 @@ async def test_delete_instance_flattened_error_async():
 
 
 @pytest.mark.parametrize("request_type", [
+  cloud_redis.RescheduleMaintenanceRequest,
+  dict,
+])
+def test_reschedule_maintenance(request_type, transport: str = 'grpc'):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.reschedule_maintenance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name='operations/spam')
+        response = client.reschedule_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_reschedule_maintenance_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.reschedule_maintenance),
+            '__call__') as call:
+        client.reschedule_maintenance()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
+
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_async(transport: str = 'grpc_asyncio', request_type=cloud_redis.RescheduleMaintenanceRequest):
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.reschedule_maintenance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        response = await client.reschedule_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_redis.RescheduleMaintenanceRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_async_from_dict():
+    await test_reschedule_maintenance_async(request_type=dict)
+
+
+def test_reschedule_maintenance_field_headers():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.RescheduleMaintenanceRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.reschedule_maintenance),
+            '__call__') as call:
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        client.reschedule_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_field_headers_async():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cloud_redis.RescheduleMaintenanceRequest()
+
+    request.name = 'name_value'
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.reschedule_maintenance),
+            '__call__') as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
+        await client.reschedule_maintenance(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        'x-goog-request-params',
+        'name=name_value',
+    ) in kw['metadata']
+
+
+def test_reschedule_maintenance_flattened():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.reschedule_maintenance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name='operations/op')
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.reschedule_maintenance(
+            name='name_value',
+            reschedule_type=cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE,
+            schedule_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].reschedule_type
+        mock_val = cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE
+        assert arg == mock_val
+        assert TimestampRule().to_proto(args[0].schedule_time) == timestamp_pb2.Timestamp(seconds=751)
+
+
+def test_reschedule_maintenance_flattened_error():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.reschedule_maintenance(
+            cloud_redis.RescheduleMaintenanceRequest(),
+            name='name_value',
+            reschedule_type=cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE,
+            schedule_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_flattened_async():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.reschedule_maintenance),
+            '__call__') as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name='operations/op')
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name='operations/spam')
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.reschedule_maintenance(
+            name='name_value',
+            reschedule_type=cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE,
+            schedule_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = 'name_value'
+        assert arg == mock_val
+        arg = args[0].reschedule_type
+        mock_val = cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE
+        assert arg == mock_val
+        assert TimestampRule().to_proto(args[0].schedule_time) == timestamp_pb2.Timestamp(seconds=751)
+
+@pytest.mark.asyncio
+async def test_reschedule_maintenance_flattened_error_async():
+    client = CloudRedisAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.reschedule_maintenance(
+            cloud_redis.RescheduleMaintenanceRequest(),
+            name='name_value',
+            reschedule_type=cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE,
+            schedule_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+
+@pytest.mark.parametrize("request_type", [
     cloud_redis.ListInstancesRequest,
     dict,
 ])
@@ -3262,6 +3787,7 @@ def test_get_instance_rest(request_type):
               alternative_location_id='alternative_location_id_value',
               redis_version='redis_version_value',
               reserved_ip_range='reserved_ip_range_value',
+              secondary_ip_range='secondary_ip_range_value',
               host='host_value',
               port=453,
               current_location_id='current_location_id_value',
@@ -3272,6 +3798,16 @@ def test_get_instance_rest(request_type):
               authorized_network='authorized_network_value',
               persistence_iam_identity='persistence_iam_identity_value',
               connect_mode=cloud_redis.Instance.ConnectMode.DIRECT_PEERING,
+              auth_enabled=True,
+              transit_encryption_mode=cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION,
+              replica_count=1384,
+              read_endpoint='read_endpoint_value',
+              read_endpoint_port=1920,
+              read_replicas_mode=cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED,
+              customer_managed_key='customer_managed_key_value',
+              suspension_reasons=[cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE],
+              maintenance_version='maintenance_version_value',
+              available_maintenance_versions=['available_maintenance_versions_value'],
         )
 
         # Wrap the value into a proper Response obj
@@ -3292,6 +3828,7 @@ def test_get_instance_rest(request_type):
     assert response.alternative_location_id == 'alternative_location_id_value'
     assert response.redis_version == 'redis_version_value'
     assert response.reserved_ip_range == 'reserved_ip_range_value'
+    assert response.secondary_ip_range == 'secondary_ip_range_value'
     assert response.host == 'host_value'
     assert response.port == 453
     assert response.current_location_id == 'current_location_id_value'
@@ -3302,6 +3839,16 @@ def test_get_instance_rest(request_type):
     assert response.authorized_network == 'authorized_network_value'
     assert response.persistence_iam_identity == 'persistence_iam_identity_value'
     assert response.connect_mode == cloud_redis.Instance.ConnectMode.DIRECT_PEERING
+    assert response.auth_enabled is True
+    assert response.transit_encryption_mode == cloud_redis.Instance.TransitEncryptionMode.SERVER_AUTHENTICATION
+    assert response.replica_count == 1384
+    assert response.read_endpoint == 'read_endpoint_value'
+    assert response.read_endpoint_port == 1920
+    assert response.read_replicas_mode == cloud_redis.Instance.ReadReplicasMode.READ_REPLICAS_DISABLED
+    assert response.customer_managed_key == 'customer_managed_key_value'
+    assert response.suspension_reasons == [cloud_redis.Instance.SuspensionReason.CUSTOMER_MANAGED_KEY_ISSUE]
+    assert response.maintenance_version == 'maintenance_version_value'
+    assert response.available_maintenance_versions == ['available_maintenance_versions_value']
 
 
 def test_get_instance_rest_required_fields(request_type=cloud_redis.GetInstanceRequest):
@@ -3501,6 +4048,238 @@ def test_get_instance_rest_error():
 
 
 @pytest.mark.parametrize("request_type", [
+    cloud_redis.GetInstanceAuthStringRequest,
+    dict,
+])
+def test_get_instance_auth_string_rest(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis.InstanceAuthString(
+              auth_string='auth_string_value',
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_redis.InstanceAuthString.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.get_instance_auth_string(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cloud_redis.InstanceAuthString)
+    assert response.auth_string == 'auth_string_value'
+
+
+def test_get_instance_auth_string_rest_required_fields(request_type=cloud_redis.GetInstanceAuthStringRequest):
+    transport_class = transports.CloudRedisRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_instance_auth_string._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_instance_auth_string._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = cloud_redis.InstanceAuthString()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "get",
+                'query_params': pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = cloud_redis.InstanceAuthString.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.get_instance_auth_string(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_get_instance_auth_string_rest_unset_required_fields():
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.get_instance_auth_string._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_instance_auth_string_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(transports.CloudRedisRestInterceptor, "post_get_instance_auth_string") as post, \
+         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_get_instance_auth_string") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.GetInstanceAuthStringRequest.pb(cloud_redis.GetInstanceAuthStringRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = cloud_redis.InstanceAuthString.to_json(cloud_redis.InstanceAuthString())
+
+        request = cloud_redis.GetInstanceAuthStringRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = cloud_redis.InstanceAuthString()
+
+        client.get_instance_auth_string(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_instance_auth_string_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.GetInstanceAuthStringRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_instance_auth_string(request)
+
+
+def test_get_instance_auth_string_rest_flattened():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = cloud_redis.InstanceAuthString()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name='name_value',
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = cloud_redis.InstanceAuthString.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.get_instance_auth_string(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/instances/*}/authString" % client.transport._host, args[1])
+
+
+def test_get_instance_auth_string_rest_flattened_error(transport: str = 'rest'):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_instance_auth_string(
+            cloud_redis.GetInstanceAuthStringRequest(),
+            name='name_value',
+        )
+
+
+def test_get_instance_auth_string_rest_error():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
+@pytest.mark.parametrize("request_type", [
     cloud_redis.CreateInstanceRequest,
     dict,
 ])
@@ -3512,7 +4291,7 @@ def test_create_instance_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request_init["instance"] = {'name': 'name_value', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1}
+    request_init["instance"] = {'name': 'name_value', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3671,7 +4450,7 @@ def test_create_instance_rest_bad_request(transport: str = 'rest', request_type=
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2'}
-    request_init["instance"] = {'name': 'name_value', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1}
+    request_init["instance"] = {'name': 'name_value', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3758,7 +4537,7 @@ def test_update_instance_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {'instance': {'name': 'projects/sample1/locations/sample2/instances/sample3'}}
-    request_init["instance"] = {'name': 'projects/sample1/locations/sample2/instances/sample3', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1}
+    request_init["instance"] = {'name': 'projects/sample1/locations/sample2/instances/sample3', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3901,7 +4680,7 @@ def test_update_instance_rest_bad_request(transport: str = 'rest', request_type=
 
     # send a request that will satisfy transcoding
     request_init = {'instance': {'name': 'projects/sample1/locations/sample2/instances/sample3'}}
-    request_init["instance"] = {'name': 'projects/sample1/locations/sample2/instances/sample3', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1}
+    request_init["instance"] = {'name': 'projects/sample1/locations/sample2/instances/sample3', 'display_name': 'display_name_value', 'labels': {}, 'location_id': 'location_id_value', 'alternative_location_id': 'alternative_location_id_value', 'redis_version': 'redis_version_value', 'reserved_ip_range': 'reserved_ip_range_value', 'secondary_ip_range': 'secondary_ip_range_value', 'host': 'host_value', 'port': 453, 'current_location_id': 'current_location_id_value', 'create_time': {'seconds': 751, 'nanos': 543}, 'state': 1, 'status_message': 'status_message_value', 'redis_configs': {}, 'tier': 1, 'memory_size_gb': 1499, 'authorized_network': 'authorized_network_value', 'persistence_iam_identity': 'persistence_iam_identity_value', 'connect_mode': 1, 'auth_enabled': True, 'server_ca_certs': [{'serial_number': 'serial_number_value', 'cert': 'cert_value', 'create_time': {}, 'expire_time': {}, 'sha1_fingerprint': 'sha1_fingerprint_value'}], 'transit_encryption_mode': 1, 'maintenance_policy': {'create_time': {}, 'update_time': {}, 'description': 'description_value', 'weekly_maintenance_window': [{'day': 1, 'start_time': {'hours': 561, 'minutes': 773, 'seconds': 751, 'nanos': 543}, 'duration': {'seconds': 751, 'nanos': 543}}]}, 'maintenance_schedule': {'start_time': {}, 'end_time': {}, 'can_reschedule': True, 'schedule_deadline_time': {}}, 'replica_count': 1384, 'nodes': [{'id': 'id_value', 'zone': 'zone_value'}], 'read_endpoint': 'read_endpoint_value', 'read_endpoint_port': 1920, 'read_replicas_mode': 1, 'customer_managed_key': 'customer_managed_key_value', 'persistence_config': {'persistence_mode': 1, 'rdb_snapshot_period': 3, 'rdb_next_snapshot_time': {}, 'rdb_snapshot_start_time': {}}, 'suspension_reasons': [1], 'maintenance_version': 'maintenance_version_value', 'available_maintenance_versions': ['available_maintenance_versions_value1', 'available_maintenance_versions_value2']}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5120,6 +5899,237 @@ def test_delete_instance_rest_error():
     )
 
 
+@pytest.mark.parametrize("request_type", [
+    cloud_redis.RescheduleMaintenanceRequest,
+    dict,
+])
+def test_reschedule_maintenance_rest(request_type):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+        response = client.reschedule_maintenance(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_reschedule_maintenance_rest_required_fields(request_type=cloud_redis.RescheduleMaintenanceRequest):
+    transport_class = transports.CloudRedisRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(json_format.MessageToJson(
+        pb_request,
+        including_default_value_fields=False,
+        use_integers_for_enums=False
+    ))
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).reschedule_maintenance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = 'name_value'
+
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).reschedule_maintenance._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == 'name_value'
+
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest',
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name='operations/spam')
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, 'request') as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, 'transcode') as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                'uri': 'v1/sample_method',
+                'method': "post",
+                'query_params': pb_request,
+            }
+            transcode_result['body'] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode('UTF-8')
+            req.return_value = response_value
+
+            response = client.reschedule_maintenance(request)
+
+            expected_params = [
+            ]
+            actual_params = req.call_args.kwargs['params']
+            assert expected_params == actual_params
+
+
+def test_reschedule_maintenance_rest_unset_required_fields():
+    transport = transports.CloudRedisRestTransport(credentials=ga_credentials.AnonymousCredentials)
+
+    unset_fields = transport.reschedule_maintenance._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name", "rescheduleType", )))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_reschedule_maintenance_rest_interceptors(null_interceptor):
+    transport = transports.CloudRedisRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.CloudRedisRestInterceptor(),
+        )
+    client = CloudRedisClient(transport=transport)
+    with mock.patch.object(type(client.transport._session), "request") as req, \
+         mock.patch.object(path_template, "transcode")  as transcode, \
+         mock.patch.object(operation.Operation, "_set_result_from_operation"), \
+         mock.patch.object(transports.CloudRedisRestInterceptor, "post_reschedule_maintenance") as post, \
+         mock.patch.object(transports.CloudRedisRestInterceptor, "pre_reschedule_maintenance") as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = cloud_redis.RescheduleMaintenanceRequest.pb(cloud_redis.RescheduleMaintenanceRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(operations_pb2.Operation())
+
+        request = cloud_redis.RescheduleMaintenanceRequest()
+        metadata =[
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.reschedule_maintenance(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_reschedule_maintenance_rest_bad_request(transport: str = 'rest', request_type=cloud_redis.RescheduleMaintenanceRequest):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, 'request') as req, pytest.raises(core_exceptions.BadRequest):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.reschedule_maintenance(request)
+
+
+def test_reschedule_maintenance_rest_flattened():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), 'request') as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name='operations/spam')
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {'name': 'projects/sample1/locations/sample2/instances/sample3'}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name='name_value',
+            reschedule_type=cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE,
+            schedule_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode('UTF-8')
+        req.return_value = response_value
+
+        client.reschedule_maintenance(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/instances/*}:rescheduleMaintenance" % client.transport._host, args[1])
+
+
+def test_reschedule_maintenance_rest_flattened_error(transport: str = 'rest'):
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.reschedule_maintenance(
+            cloud_redis.RescheduleMaintenanceRequest(),
+            name='name_value',
+            reschedule_type=cloud_redis.RescheduleMaintenanceRequest.RescheduleType.IMMEDIATE,
+            schedule_time=timestamp_pb2.Timestamp(seconds=751),
+        )
+
+
+def test_reschedule_maintenance_rest_error():
+    client = CloudRedisClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='rest'
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CloudRedisGrpcTransport(
@@ -5249,6 +6259,7 @@ def test_cloud_redis_base_transport():
     methods = (
         'list_instances',
         'get_instance',
+        'get_instance_auth_string',
         'create_instance',
         'update_instance',
         'upgrade_instance',
@@ -5256,6 +6267,7 @@ def test_cloud_redis_base_transport():
         'export_instance',
         'failover_instance',
         'delete_instance',
+        'reschedule_maintenance',
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -5522,6 +6534,9 @@ def test_cloud_redis_client_transport_session_collision(transport_name):
     session1 = client1.transport.get_instance._session
     session2 = client2.transport.get_instance._session
     assert session1 != session2
+    session1 = client1.transport.get_instance_auth_string._session
+    session2 = client2.transport.get_instance_auth_string._session
+    assert session1 != session2
     session1 = client1.transport.create_instance._session
     session2 = client2.transport.create_instance._session
     assert session1 != session2
@@ -5542,6 +6557,9 @@ def test_cloud_redis_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.delete_instance._session
     session2 = client2.transport.delete_instance._session
+    assert session1 != session2
+    session1 = client1.transport.reschedule_maintenance._session
+    session2 = client2.transport.reschedule_maintenance._session
     assert session1 != session2
 def test_cloud_redis_grpc_transport_channel():
     channel = grpc.secure_channel('http://localhost/', grpc.local_channel_credentials())
