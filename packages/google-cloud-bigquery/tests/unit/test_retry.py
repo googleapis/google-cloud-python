@@ -79,6 +79,12 @@ class Test_should_retry(unittest.TestCase):
         exc = TooManyRequests("testing")
         self.assertTrue(self._call_fut(exc))
 
+    def test_w_unstructured_service_unavailable(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        exc = ServiceUnavailable("testing")
+        self.assertTrue(self._call_fut(exc))
+
     def test_w_internalError(self):
         exc = mock.Mock(errors=[{"reason": "internalError"}], spec=["errors"])
         self.assertTrue(self._call_fut(exc))
