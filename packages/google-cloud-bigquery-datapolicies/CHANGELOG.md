@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.5.2...google-cloud-bigquery-datapolicies-v0.5.3) (2023-08-11)
+
+
+### Bug Fixes
+
+* sync the new PredefinedExpression types to the client library ([#11567](https://github.com/googleapis/google-cloud-python/issues/11567)) ([a971664](https://github.com/googleapis/google-cloud-python/commit/a971664e43167093a7e1925dd0bed528e3e99ee1))
+
 ## [0.5.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.5.1...google-cloud-bigquery-datapolicies-v0.5.2) (2023-08-03)
 
 

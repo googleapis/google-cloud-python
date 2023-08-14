@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.5.1...google-cloud-contentwarehouse-v0.6.0) (2023-08-11)
+
+
+### Features
+
+* Add `disposition_time`, `legal_hold`, `document_is_retention_folder`, `document_is_legal_hold_folder`, `question_answer`, `document_name_filter` fields ([d0432c7](https://github.com/googleapis/google-cloud-python/commit/d0432c7b7754f816c8d3d95f1ea6f9349b930717))
+* Add `ON_CREATE_LINK`, `ON_DELETE_LINK` fields to support new rule engine triggers ([d0432c7](https://github.com/googleapis/google-cloud-python/commit/d0432c7b7754f816c8d3d95f1ea6f9349b930717))
+
+
+### Documentation
+
+* Deprecate DB_CLOUD_SQL_POSTGRES ([d0432c7](https://github.com/googleapis/google-cloud-python/commit/d0432c7b7754f816c8d3d95f1ea6f9349b930717))
+
 ## [0.5.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.5.0...google-cloud-contentwarehouse-v0.5.1) (2023-07-05)
 
 
