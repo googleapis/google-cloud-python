@@ -14,8 +14,6 @@
 
 import json
 from pathlib import Path
-from typing import List, Optional
-
 import shutil
 
 import synthtool as s
@@ -28,58 +26,16 @@ from synthtool.languages import python
 
 clean_up_generated_samples = True
 
-# This is a customized version of the s.get_staging_dirs() function from synthtool to
-# cater for copying 2 different folders from googleapis-gen
-# which are workflows and workflows/executions
-# Source https://github.com/googleapis/synthtool/blob/master/synthtool/transforms.py#L280
-def get_staging_dirs(
-    default_version: Optional[str] = None, sub_directory: Optional[str] = None
-) -> List[Path]:
-    """Returns the list of directories, one per version, copied from
-    https://github.com/googleapis/googleapis-gen. Will return in lexical sorting
-    order with the exception of the default_version which will be last (if specified).
-    Args:
-      default_version (str): the default version of the API. The directory for this version
-        will be the last item in the returned list if specified.
-      sub_directory (str): if a `sub_directory` is provided, only the directories within the
-        specified `sub_directory` will be returned.
-    Returns: the empty list if no file were copied.
-    """
+# Load the default version defined in .repo-metadata.json.
+default_version = json.load(open(".repo-metadata.json", "rt")).get(
+    "default_version"
+)
 
-    staging = Path("owl-bot-staging")
-
-    if sub_directory:
-        staging /= sub_directory
-
-    if staging.is_dir():
-        # Collect the subdirectories of the staging directory.
-        versions = [v.name for v in staging.iterdir() if v.is_dir()]
-        # Reorder the versions so the default version always comes last.
-        versions = [v for v in versions if v != default_version]
-        versions.sort()
-        if default_version is not None:
-            versions += [default_version]
-        dirs = [staging / v for v in versions]
-        for dir in dirs:
-            s._tracked_paths.add(dir)
-        return dirs
-    else:
-        return []
-
-# This library ships clients for two different APIs,
-# IAM and IAM credentials
-iam_credentials_default_version = "v1"
-iam_default_version = "v2"
-
-for library in get_staging_dirs(iam_default_version, "iam"):
+for library in s.get_staging_dirs(default_version):
     if clean_up_generated_samples:
         shutil.rmtree("samples/generated_samples", ignore_errors=True)
         clean_up_generated_samples = False
-    s.move([library], excludes=["docs/index.rst", "**/gapic_version.py"])
-
-for library in get_staging_dirs(iam_credentials_default_version, "iamcredentials"):
-    s.move([library], excludes=["setup.py", "docs/index.rst", "**/gapic_version.py"])
-
+    s.move([library], excludes=["**/gapic_version.py"])
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
@@ -91,7 +47,7 @@ templated_files = gcp.CommonTemplates().py_library(
     microgenerator=True,
     versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
-s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml", "docs/index.rst"])
+s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml"])
 
 python.py_samples(skip_readmes=True)
 

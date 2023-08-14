@@ -24,9 +24,9 @@ deep-preserve-regex:
 
 deep-copy-regex:
   - source: /google/iam/credentials/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/iamcredentials/$1/$2
+    dest: /owl-bot-staging/$1/$2
   - source: /google/iam/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/iam/$1/$2
+    dest: /owl-bot-staging/$1/$2
 
 begin-after-commit-hash: 130ce904e5d546c312943d10f48799590f9c0f66
 
