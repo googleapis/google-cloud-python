@@ -22,7 +22,9 @@ import setuptools
 # Package metadata.
 
 name = "bigframes"
-description = "Scalable DataFrames with BigQuery"
+description = (
+    "BigQuery DataFrames -- scalable analytics and machine learning with BigQuery"
+)
 
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
@@ -85,9 +87,9 @@ setuptools.setup(
     description=description,
     long_description=readme,
     author="Google LLC",
-    author_email="googleapis-packages@google.com",
+    author_email="bigframes-feedback@google.com",
     license="Apache 2.0",
-    url="https://github.com/googleapis/python-bigquery",
+    url="https://github.com/googleapis/python-bigquery-dataframes",
     classifiers=[
         release_status,
         "Intended Audience :: Developers",

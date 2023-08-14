@@ -117,7 +117,7 @@ BigQuery connections are created in the same location as the BigQuery
 DataFrames session, using the name you provide in the custom function
 definition. To view and manage connections, do the following:
 
-1. Go to `BigQuery Studio <https://console.cloud.google.com/bigquery>`__.
+1. Go to `BigQuery in the Google Cloud Console <https://console.cloud.google.com/bigquery>`__.
 2. Select the project in which you created the remote function.
 3. In the Explorer pane, expand that project and then expand External connections.
 
@@ -127,7 +127,7 @@ the location used by the BigQuery DataFrames session. For example,
 ``bigframes_temp_us_central1``. To view and manage remote functions, do
 the following:
 
-1. Go to `BigQuery Studio <https://console.cloud.google.com/bigquery>`__.
+1. Go to `BigQuery in the Google Cloud Console <https://console.cloud.google.com/bigquery>`__.
 2. Select the project in which you created the remote function.
 3. In the Explorer pane, expand that project, expand the dataset in which you
    created the remote function, and then expand Routines.

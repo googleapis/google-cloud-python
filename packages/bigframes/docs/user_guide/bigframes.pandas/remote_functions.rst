@@ -104,8 +104,9 @@ Using Existing Functions
 ========================
 
 If you have already defined a custom function in BigQuery, either in the
-BigQuery Studio or with the `remote_function` decorator above or otherwise, you
-may use it with BigQuery DataFrames with the `read_gbq_function` method.
+BigQuery Google Cloud Console or with the `remote_function` decorator above or
+otherwise, you may use it with BigQuery DataFrames with the `read_gbq_function`
+method.
 
 More details are available via the `help` command:
 

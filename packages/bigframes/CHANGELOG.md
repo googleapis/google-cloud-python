@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## 0.1.1 (2023-08-14)
+
+### Documentation
+
+* Correct link to code repository in `setup.py` and use correct terminology for
+  `console.cloud.google.com` links.
+
 ## 0.1.0 (2023-08-11)
 
 ### Features
