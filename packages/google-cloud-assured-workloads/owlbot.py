@@ -38,22 +38,12 @@ for library in s.get_staging_dirs(default_version):
     s.move([library], excludes=["**/gapic_version.py"])
 s.remove_staging_dirs()
 
-# Work around gapic generator bug. https://github.com/googleapis/gapic-generator-python/issues/1083
-s.replace(
-    "google/cloud/**/types/assuredworkloads.py",
-    """Signed Access Approvals \(SAA\) enrollment response.\n
-        Attributes""",
-    """Signed Access Approvals (SAA) enrollment response.\n
-        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields\n
-        Attributes"""
-)
-
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 
 templated_files = gcp.CommonTemplates().py_library(
-    cov_level=99,
+    cov_level=100,
     microgenerator=True,
     versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
