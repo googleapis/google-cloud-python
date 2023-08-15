@@ -14,6 +14,13 @@ Older versions of this project were distributed as [pybigquery][0].
 [2]: https://pypi.org/project/pybigquery/#history
 
 
+## [1.8.0](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.7.0...v1.8.0) (2023-08-11)
+
+
+### Features
+
+* Remove illegal character check ([#892](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/892)) ([3328d0a](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/3328d0a69654e5c30af06359185170f7937d978b))
+
 ## [1.7.0](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.6.1...v1.7.0) (2023-07-11)
 
 
