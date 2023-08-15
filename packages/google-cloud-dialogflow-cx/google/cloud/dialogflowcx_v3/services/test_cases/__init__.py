@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import TestCasesClient
 from .async_client import TestCasesAsyncClient
+from .client import TestCasesClient
 
 __all__ = (
     "TestCasesClient",

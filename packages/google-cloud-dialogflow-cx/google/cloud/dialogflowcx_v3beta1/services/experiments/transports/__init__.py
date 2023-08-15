@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import ExperimentsTransport
 from .grpc import ExperimentsGrpcTransport
 from .grpc_asyncio import ExperimentsGrpcAsyncIOTransport
-from .rest import ExperimentsRestTransport
-from .rest import ExperimentsRestInterceptor
-
+from .rest import ExperimentsRestInterceptor, ExperimentsRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ExperimentsTransport]]

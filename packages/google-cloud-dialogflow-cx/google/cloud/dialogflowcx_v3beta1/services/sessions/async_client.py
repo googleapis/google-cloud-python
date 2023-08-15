@@ -17,42 +17,42 @@ from collections import OrderedDict
 import functools
 import re
 from typing import (
+    AsyncIterable,
+    AsyncIterator,
+    Awaitable,
     Dict,
     Mapping,
     MutableMapping,
     MutableSequence,
     Optional,
-    AsyncIterable,
-    Awaitable,
-    AsyncIterator,
     Sequence,
     Tuple,
     Type,
     Union,
 )
 
-from google.cloud.dialogflowcx_v3beta1 import gapic_version as package_version
-
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.dialogflowcx_v3beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.dialogflowcx_v3beta1.types import audio_config
-from google.cloud.dialogflowcx_v3beta1.types import page
-from google.cloud.dialogflowcx_v3beta1.types import session
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2
-from .transports.base import SessionsTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import SessionsGrpcAsyncIOTransport
+
+from google.cloud.dialogflowcx_v3beta1.types import audio_config, page, session
+
 from .client import SessionsClient
+from .transports.base import DEFAULT_CLIENT_INFO, SessionsTransport
+from .transports.grpc_asyncio import SessionsGrpcAsyncIOTransport
 
 
 class SessionsAsyncClient:

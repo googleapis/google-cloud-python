@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import DeploymentsClient
 from .async_client import DeploymentsAsyncClient
+from .client import DeploymentsClient
 
 __all__ = (
     "DeploymentsClient",

@@ -21,7 +21,6 @@ import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import gcs
 
-
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3beta1",
     manifest={

@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import SecuritySettingsServiceClient
 from .async_client import SecuritySettingsServiceAsyncClient
+from .client import SecuritySettingsServiceClient
 
 __all__ = (
     "SecuritySettingsServiceClient",

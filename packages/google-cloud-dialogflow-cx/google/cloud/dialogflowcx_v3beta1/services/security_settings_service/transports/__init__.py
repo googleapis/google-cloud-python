@@ -19,9 +19,10 @@ from typing import Dict, Type
 from .base import SecuritySettingsServiceTransport
 from .grpc import SecuritySettingsServiceGrpcTransport
 from .grpc_asyncio import SecuritySettingsServiceGrpcAsyncIOTransport
-from .rest import SecuritySettingsServiceRestTransport
-from .rest import SecuritySettingsServiceRestInterceptor
-
+from .rest import (
+    SecuritySettingsServiceRestInterceptor,
+    SecuritySettingsServiceRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (

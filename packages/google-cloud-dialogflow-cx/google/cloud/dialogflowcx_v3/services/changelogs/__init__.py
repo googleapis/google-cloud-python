@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ChangelogsClient
 from .async_client import ChangelogsAsyncClient
+from .client import ChangelogsClient
 
 __all__ = (
     "ChangelogsClient",

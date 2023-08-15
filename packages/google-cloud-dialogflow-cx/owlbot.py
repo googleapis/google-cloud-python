@@ -35,7 +35,6 @@ for library in s.get_staging_dirs(default_version):
     if clean_up_generated_samples:
         shutil.rmtree("samples/generated_samples", ignore_errors=True)
         clean_up_generated_samples = False
-
     s.move([library], excludes=["**/gapic_version.py"])
 s.remove_staging_dirs()
 
@@ -52,14 +51,6 @@ s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml"])
 
 python.py_samples(skip_readmes=True)
 
-# ignore docs warnings (only fail on errors)
-s.replace(
-    'noxfile.py',
-    '"-W",  # warnings as errors',
-    ''
-)
-
 # run format session for all directories which have a noxfile
 for noxfile in Path(".").glob("**/noxfile.py"):
-    s.shell.run(["nox", "-s", "blacken"], cwd=noxfile.parent, hide_output=False)
-
+    s.shell.run(["nox", "-s", "format"], cwd=noxfile.parent, hide_output=False)

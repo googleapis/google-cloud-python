@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import FlowsClient
 from .async_client import FlowsAsyncClient
+from .client import FlowsClient
 
 __all__ = (
     "FlowsClient",

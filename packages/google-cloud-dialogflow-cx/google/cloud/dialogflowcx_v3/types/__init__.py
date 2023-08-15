@@ -13,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .advanced_settings import (
-    AdvancedSettings,
-)
+from .advanced_settings import AdvancedSettings
 from .agent import (
     Agent,
     AgentValidationResult,
@@ -33,16 +31,16 @@ from .agent import (
     ValidateAgentRequest,
 )
 from .audio_config import (
+    AudioEncoding,
     InputAudioConfig,
     OutputAudioConfig,
+    OutputAudioEncoding,
+    SpeechModelVariant,
     SpeechWordInfo,
+    SsmlVoiceGender,
     SynthesizeSpeechConfig,
     TextToSpeechSettings,
     VoiceSelectionParams,
-    AudioEncoding,
-    OutputAudioEncoding,
-    SpeechModelVariant,
-    SsmlVoiceGender,
 )
 from .changelog import (
     Changelog,
@@ -119,21 +117,17 @@ from .flow import (
     UpdateFlowRequest,
     ValidateFlowRequest,
 )
-from .fulfillment import (
-    Fulfillment,
-)
-from .gcs import (
-    GcsDestination,
-)
+from .fulfillment import Fulfillment
+from .gcs import GcsDestination
 from .intent import (
     CreateIntentRequest,
     DeleteIntentRequest,
     GetIntentRequest,
     Intent,
+    IntentView,
     ListIntentsRequest,
     ListIntentsResponse,
     UpdateIntentRequest,
-    IntentView,
 )
 from .page import (
     CreatePageRequest,
@@ -147,9 +141,7 @@ from .page import (
     TransitionRoute,
     UpdatePageRequest,
 )
-from .response_message import (
-    ResponseMessage,
-)
+from .response_message import ResponseMessage
 from .security_settings import (
     CreateSecuritySettingsRequest,
     DeleteSecuritySettingsRequest,
@@ -220,11 +212,11 @@ from .test_case import (
     TestCaseResult,
     TestConfig,
     TestError,
+    TestResult,
     TestRunDifference,
     TransitionCoverage,
     TransitionRouteGroupCoverage,
     UpdateTestCaseRequest,
-    TestResult,
 )
 from .transition_route_group import (
     CreateTransitionRouteGroupRequest,
@@ -235,10 +227,7 @@ from .transition_route_group import (
     TransitionRouteGroup,
     UpdateTransitionRouteGroupRequest,
 )
-from .validation_message import (
-    ResourceName,
-    ValidationMessage,
-)
+from .validation_message import ResourceName, ValidationMessage
 from .version import (
     CompareVersionsRequest,
     CompareVersionsResponse,

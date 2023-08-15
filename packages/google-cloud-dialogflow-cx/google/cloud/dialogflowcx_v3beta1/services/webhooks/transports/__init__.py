@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import WebhooksTransport
 from .grpc import WebhooksGrpcTransport
 from .grpc_asyncio import WebhooksGrpcAsyncIOTransport
-from .rest import WebhooksRestTransport
-from .rest import WebhooksRestInterceptor
-
+from .rest import WebhooksRestInterceptor, WebhooksRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[WebhooksTransport]]

@@ -17,18 +17,19 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
-from google.cloud.dialogflowcx_v3.types import audio_config
-from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
-from google.cloud.dialogflowcx_v3.types import page
-from google.cloud.dialogflowcx_v3.types import response_message
-from google.cloud.dialogflowcx_v3.types import session_entity_type
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3.types import (
+    page,
+    response_message,
+    session_entity_type,
+)
+from google.cloud.dialogflowcx_v3.types import audio_config
+from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",

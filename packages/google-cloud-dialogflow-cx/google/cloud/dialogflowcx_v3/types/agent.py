@@ -17,15 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import (
     advanced_settings as gcdc_advanced_settings,
 )
-from google.cloud.dialogflowcx_v3.types import audio_config
-from google.cloud.dialogflowcx_v3.types import flow
-from google.protobuf import field_mask_pb2  # type: ignore
-
+from google.cloud.dialogflowcx_v3.types import audio_config, flow
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",

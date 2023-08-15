@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import SessionEntityTypesTransport
 from .grpc import SessionEntityTypesGrpcTransport
 from .grpc_asyncio import SessionEntityTypesGrpcAsyncIOTransport
-from .rest import SessionEntityTypesRestTransport
-from .rest import SessionEntityTypesRestInterceptor
-
+from .rest import SessionEntityTypesRestInterceptor, SessionEntityTypesRestTransport
 
 # Compile a registry of transports.
 _transport_registry = (

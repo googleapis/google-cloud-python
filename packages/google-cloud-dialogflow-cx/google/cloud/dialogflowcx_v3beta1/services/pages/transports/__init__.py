@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import PagesTransport
 from .grpc import PagesGrpcTransport
 from .grpc_asyncio import PagesGrpcAsyncIOTransport
-from .rest import PagesRestTransport
-from .rest import PagesRestInterceptor
-
+from .rest import PagesRestInterceptor, PagesRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[PagesTransport]]

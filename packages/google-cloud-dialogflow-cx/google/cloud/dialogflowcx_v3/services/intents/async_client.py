@@ -28,29 +28,31 @@ from typing import (
     Union,
 )
 
-from google.cloud.dialogflowcx_v3 import gapic_version as package_version
-
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.dialogflowcx_v3 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.dialogflowcx_v3.services.intents import pagers
-from google.cloud.dialogflowcx_v3.types import intent
-from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import field_mask_pb2  # type: ignore
-from .transports.base import IntentsTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import IntentsGrpcAsyncIOTransport
+
+from google.cloud.dialogflowcx_v3.services.intents import pagers
+from google.cloud.dialogflowcx_v3.types import intent
+from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
+
 from .client import IntentsClient
+from .transports.base import DEFAULT_CLIENT_INFO, IntentsTransport
+from .transports.grpc_asyncio import IntentsGrpcAsyncIOTransport
 
 
 class IntentsAsyncClient:

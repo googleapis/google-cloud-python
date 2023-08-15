@@ -18,12 +18,12 @@ import os
 import re
 from typing import (
     Dict,
+    Iterable,
+    Iterator,
     Mapping,
     MutableMapping,
     MutableSequence,
     Optional,
-    Iterable,
-    Iterator,
     Sequence,
     Tuple,
     Type,
@@ -31,29 +31,29 @@ from typing import (
     cast,
 )
 
-from google.cloud.dialogflowcx_v3beta1 import gapic_version as package_version
-
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.dialogflowcx_v3beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.dialogflowcx_v3beta1.types import audio_config
-from google.cloud.dialogflowcx_v3beta1.types import page
-from google.cloud.dialogflowcx_v3beta1.types import session
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2
-from .transports.base import SessionsTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.dialogflowcx_v3beta1.types import audio_config, page, session
+
+from .transports.base import DEFAULT_CLIENT_INFO, SessionsTransport
 from .transports.grpc import SessionsGrpcTransport
 from .transports.grpc_asyncio import SessionsGrpcAsyncIOTransport
 from .transports.rest import SessionsRestTransport
