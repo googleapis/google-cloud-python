@@ -572,6 +572,10 @@ class SuggestConversationSummaryResponse(proto.Message):
 
                 "projects/<Project ID>/answerRecords/<Answer
                 Record ID>".
+            baseline_model_version (str):
+                The baseline model version used to generate
+                this summary. It is empty if a baseline model
+                was not used to generate this summary.
         """
 
         text: str = proto.Field(
@@ -586,6 +590,10 @@ class SuggestConversationSummaryResponse(proto.Message):
         answer_record: str = proto.Field(
             proto.STRING,
             number=3,
+        )
+        baseline_model_version: str = proto.Field(
+            proto.STRING,
+            number=5,
         )
 
     summary: Summary = proto.Field(
@@ -709,6 +717,10 @@ class GenerateStatelessSummaryResponse(proto.Message):
                 sections. The key is the section's name and the
                 value is the section's content. There is no
                 specific format for the key or value.
+            baseline_model_version (str):
+                The baseline model version used to generate
+                this summary. It is empty if a baseline model
+                was not used to generate this summary.
         """
 
         text: str = proto.Field(
@@ -719,6 +731,10 @@ class GenerateStatelessSummaryResponse(proto.Message):
             proto.STRING,
             proto.STRING,
             number=2,
+        )
+        baseline_model_version: str = proto.Field(
+            proto.STRING,
+            number=4,
         )
 
     summary: Summary = proto.Field(
