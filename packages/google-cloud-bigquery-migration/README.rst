@@ -1,9 +1,9 @@
-Python Client for Google BigQuery Migration API
-===============================================
+Python Client for Google BigQuery Migration
+===========================================
 
 |preview| |pypi| |versions|
 
-`Google BigQuery Migration API`_: 
+`Google BigQuery Migration`_: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Google BigQuery Migration API
    :target: https://pypi.org/project/google-cloud-bigquery-migration/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bigquery-migration.svg
    :target: https://pypi.org/project/google-cloud-bigquery-migration/
-.. _Google BigQuery Migration API: https://cloud.google.com/bigquery/docs/reference/migration/
+.. _Google BigQuery Migration: https://cloud.google.com/bigquery/docs/reference/migration/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/bigquerymigration/latest
 .. _Product Documentation:  https://cloud.google.com/bigquery/docs/reference/migration/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google BigQuery Migration API.`_
+3. `Enable the Google BigQuery Migration.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google BigQuery Migration API.:  https://cloud.google.com/bigquery/docs/reference/migration/
+.. _Enable the Google BigQuery Migration.:  https://cloud.google.com/bigquery/docs/reference/migration/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/python-bigquery-migration/tree/main/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-bigquery-migration/samples
 
 
 Supported Python Versions
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google BigQuery Migration API
+-  Read the `Client Library Documentation`_ for Google BigQuery Migration
    to see other available methods on the client.
--  Read the `Google BigQuery Migration API Product documentation`_ to learn
+-  Read the `Google BigQuery Migration Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google BigQuery Migration API Product documentation:  https://cloud.google.com/bigquery/docs/reference/migration/
+.. _Google BigQuery Migration Product documentation:  https://cloud.google.com/bigquery/docs/reference/migration/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
