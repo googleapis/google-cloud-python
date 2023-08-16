@@ -338,6 +338,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-bigquery-migration": {
+            "component": "google-cloud-bigquery-migration",
+            "extra-files": [
+                "google/cloud/bigquery_migration_v2alpha/gapic_version.py",
+                "google/cloud/bigquery_migration/gapic_version.py",
+                "google/cloud/bigquery_migration_v2/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.migration.v2alpha.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.migration.v2.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-billing": {
             "component": "google-cloud-billing",
             "extra-files": [
