@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/googleapis/python-video-live-stream/compare/v1.5.0...v1.5.1) (2023-08-11)
+
+
+### Documentation
+
+* **samples:** Add samples and tests for pools and assets ([#180](https://github.com/googleapis/python-video-live-stream/issues/180)) ([95977cc](https://github.com/googleapis/python-video-live-stream/commit/95977cc61c207db463675aae969e8b28e0173c7d))
+
 ## [1.5.0](https://github.com/googleapis/python-video-live-stream/compare/v1.4.1...v1.5.0) (2023-08-09)
 
 
