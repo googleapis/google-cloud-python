@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.6.0...google-cloud-contentwarehouse-v0.7.0) (2023-08-16)
+
+
+### Features
+
+* add Pipeline Service to Document Warehouse API v1 ([#11583](https://github.com/googleapis/google-cloud-python/issues/11583)) ([974cf2e](https://github.com/googleapis/google-cloud-python/commit/974cf2ec443fb1290b86e8978e8ad88dc5700278))
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.5.1...google-cloud-contentwarehouse-v0.6.0) (2023-08-11)
 
 
