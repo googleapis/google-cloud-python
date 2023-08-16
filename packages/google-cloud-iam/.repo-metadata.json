@@ -8,7 +8,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-iam",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-iam",
     "api_id": "iam.googleapis.com",
     "default_version": "v2",
