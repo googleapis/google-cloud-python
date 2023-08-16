@@ -44,13 +44,13 @@ from google.api_core import path_template
 from google.api_core import future
 from google.api_core import operation
 from google.api_core import operations_v1
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2 # type: ignore
 {% endif %}{# lro #}
 {% if api.has_location_mixin %}
 from google.cloud.location import locations_pb2
 {% endif %}
 {% if api.has_operations_mixin %}
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2 # type: ignore
 {% endif %}
 from google.api_core import gapic_v1
 {% for method in service.methods.values() %}

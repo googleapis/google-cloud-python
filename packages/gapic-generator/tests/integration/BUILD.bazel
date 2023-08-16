@@ -54,6 +54,7 @@ py_gapic_library(
     opt_args = [
         "autogen-snippets",
     ],
+    service_yaml = "cloudasset_v1.yaml",
     transport = "grpc+rest",
 )
 
@@ -65,6 +66,7 @@ py_gapic_library(
     opt_args = [
         "autogen-snippets",
     ],
+    service_yaml = "iamcredentials_v1.yaml",
     transport = "grpc+rest",
 )
 
@@ -124,8 +126,9 @@ py_gapic_library(
     ],
     # REST is not generated because of the following issues:
     # - REST unit test `test_update_settings_rest_flattened` in logging_v2 fails. See #1728
-    # - REST is not generated in the public `BUILD.bazel`     
+    # - REST is not generated in the public `BUILD.bazel`
     # https://github.com/googleapis/googleapis/blob/e85662e798a0a9495a035839f66d0c037c481e2c/google/logging/v2/BUILD.bazel#L201
+    service_yaml = "logging_v2.yaml",
     transport = "grpc",
 )
 
@@ -148,6 +151,7 @@ py_gapic_library(
     opt_args = [
         "autogen-snippets",
     ],
+    service_yaml = "redis_v1.yaml",
     transport = "grpc+rest",
 )
 
