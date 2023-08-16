@@ -22,7 +22,8 @@ from .services.bare_metal_solution import (
     BareMetalSolutionAsyncClient,
     BareMetalSolutionClient,
 )
-from .types.common import OperationMetadata, VolumePerformanceTier, WorkloadProfile
+from .types.baremetalsolution import OperationMetadata, ResetInstanceResponse
+from .types.common import VolumePerformanceTier, WorkloadProfile
 from .types.instance import (
     DetachLunRequest,
     DisableInteractiveSerialConsoleRequest,
@@ -35,7 +36,7 @@ from .types.instance import (
     ListInstancesResponse,
     RenameInstanceRequest,
     ResetInstanceRequest,
-    ResetInstanceResponse,
+    ServerNetworkTemplate,
     StartInstanceRequest,
     StartInstanceResponse,
     StopInstanceRequest,
@@ -85,7 +86,6 @@ from .types.provisioning import (
     NetworkConfig,
     ProvisioningConfig,
     ProvisioningQuota,
-    ServerNetworkTemplate,
     SubmitProvisioningConfigRequest,
     SubmitProvisioningConfigResponse,
     UpdateProvisioningConfigRequest,

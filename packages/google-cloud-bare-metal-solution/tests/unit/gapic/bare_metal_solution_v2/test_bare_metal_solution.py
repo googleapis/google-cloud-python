@@ -69,7 +69,7 @@ from google.cloud.bare_metal_solution_v2.types import nfs_share as gcb_nfs_share
 from google.cloud.bare_metal_solution_v2.types import (
     volume_snapshot as gcb_volume_snapshot,
 )
-from google.cloud.bare_metal_solution_v2.types import common
+from google.cloud.bare_metal_solution_v2.types import baremetalsolution, common
 from google.cloud.bare_metal_solution_v2.types import instance
 from google.cloud.bare_metal_solution_v2.types import instance as gcb_instance
 from google.cloud.bare_metal_solution_v2.types import lun

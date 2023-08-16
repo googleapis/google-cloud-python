@@ -39,7 +39,6 @@ __protobuf__ = proto.module(
         "GetProvisioningConfigRequest",
         "CreateProvisioningConfigRequest",
         "UpdateProvisioningConfigRequest",
-        "ServerNetworkTemplate",
     },
 )
 
@@ -1049,85 +1048,6 @@ class UpdateProvisioningConfigRequest(proto.Message):
     email: str = proto.Field(
         proto.STRING,
         number=3,
-    )
-
-
-class ServerNetworkTemplate(proto.Message):
-    r"""Network template.
-
-    Attributes:
-        name (str):
-            Output only. Template's unique name. The full resource name
-            follows the pattern:
-            ``projects/{project}/locations/{location}/serverNetworkTemplate/{server_network_template}``
-            Generally, the {server_network_template} follows the syntax
-            of "bond<interface_type_index><bond_mode>" or
-            "nic<interface_type_index>".
-        applicable_instance_types (MutableSequence[str]):
-            Instance types this template is applicable
-            to.
-        logical_interfaces (MutableSequence[google.cloud.bare_metal_solution_v2.types.ServerNetworkTemplate.LogicalInterface]):
-            Logical interfaces.
-    """
-
-    class LogicalInterface(proto.Message):
-        r"""Logical interface.
-
-        Attributes:
-            name (str):
-                Interface name. This is not a globally unique identifier.
-                Name is unique only inside the ServerNetworkTemplate. This
-                is of syntax <interface_type_index><bond_mode> or
-                <interface_type_index> and forms part of the network
-                template name.
-            type_ (google.cloud.bare_metal_solution_v2.types.ServerNetworkTemplate.LogicalInterface.InterfaceType):
-                Interface type.
-            required (bool):
-                If true, interface must have network
-                connected.
-        """
-
-        class InterfaceType(proto.Enum):
-            r"""Interface type.
-
-            Values:
-                INTERFACE_TYPE_UNSPECIFIED (0):
-                    Unspecified value.
-                BOND (1):
-                    Bond interface type.
-                NIC (2):
-                    NIC interface type.
-            """
-            INTERFACE_TYPE_UNSPECIFIED = 0
-            BOND = 1
-            NIC = 2
-
-        name: str = proto.Field(
-            proto.STRING,
-            number=1,
-        )
-        type_: "ServerNetworkTemplate.LogicalInterface.InterfaceType" = proto.Field(
-            proto.ENUM,
-            number=2,
-            enum="ServerNetworkTemplate.LogicalInterface.InterfaceType",
-        )
-        required: bool = proto.Field(
-            proto.BOOL,
-            number=3,
-        )
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    applicable_instance_types: MutableSequence[str] = proto.RepeatedField(
-        proto.STRING,
-        number=2,
-    )
-    logical_interfaces: MutableSequence[LogicalInterface] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=LogicalInterface,
     )
 
 

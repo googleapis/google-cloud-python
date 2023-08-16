@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .common import OperationMetadata, VolumePerformanceTier, WorkloadProfile
+from .baremetalsolution import OperationMetadata, ResetInstanceResponse
 from .instance import (
     DetachLunRequest,
     DisableInteractiveSerialConsoleRequest,
@@ -26,7 +26,7 @@ from .instance import (
     ListInstancesResponse,
     RenameInstanceRequest,
     ResetInstanceRequest,
-    ResetInstanceResponse,
+    ServerNetworkTemplate,
     StartInstanceRequest,
     StartInstanceResponse,
     StopInstanceRequest,
@@ -70,7 +70,6 @@ from .provisioning import (
     NetworkConfig,
     ProvisioningConfig,
     ProvisioningQuota,
-    ServerNetworkTemplate,
     SubmitProvisioningConfigRequest,
     SubmitProvisioningConfigResponse,
     UpdateProvisioningConfigRequest,
@@ -105,6 +104,7 @@ from .volume_snapshot import (
 
 __all__ = (
     "OperationMetadata",
+    "ResetInstanceResponse",
     "VolumePerformanceTier",
     "WorkloadProfile",
     "DetachLunRequest",
@@ -118,7 +118,7 @@ __all__ = (
     "ListInstancesResponse",
     "RenameInstanceRequest",
     "ResetInstanceRequest",
-    "ResetInstanceResponse",
+    "ServerNetworkTemplate",
     "StartInstanceRequest",
     "StartInstanceResponse",
     "StopInstanceRequest",
@@ -162,7 +162,6 @@ __all__ = (
     "NetworkConfig",
     "ProvisioningConfig",
     "ProvisioningQuota",
-    "ServerNetworkTemplate",
     "SubmitProvisioningConfigRequest",
     "SubmitProvisioningConfigResponse",
     "UpdateProvisioningConfigRequest",

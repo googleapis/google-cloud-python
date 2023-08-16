@@ -24,8 +24,11 @@ from google.cloud.bare_metal_solution_v2.services.bare_metal_solution.async_clie
 from google.cloud.bare_metal_solution_v2.services.bare_metal_solution.client import (
     BareMetalSolutionClient,
 )
-from google.cloud.bare_metal_solution_v2.types.common import (
+from google.cloud.bare_metal_solution_v2.types.baremetalsolution import (
     OperationMetadata,
+    ResetInstanceResponse,
+)
+from google.cloud.bare_metal_solution_v2.types.common import (
     VolumePerformanceTier,
     WorkloadProfile,
 )
@@ -41,7 +44,7 @@ from google.cloud.bare_metal_solution_v2.types.instance import (
     ListInstancesResponse,
     RenameInstanceRequest,
     ResetInstanceRequest,
-    ResetInstanceResponse,
+    ServerNetworkTemplate,
     StartInstanceRequest,
     StartInstanceResponse,
     StopInstanceRequest,
@@ -95,7 +98,6 @@ from google.cloud.bare_metal_solution_v2.types.provisioning import (
     NetworkConfig,
     ProvisioningConfig,
     ProvisioningQuota,
-    ServerNetworkTemplate,
     SubmitProvisioningConfigRequest,
     SubmitProvisioningConfigResponse,
     UpdateProvisioningConfigRequest,
@@ -132,6 +134,7 @@ __all__ = (
     "BareMetalSolutionClient",
     "BareMetalSolutionAsyncClient",
     "OperationMetadata",
+    "ResetInstanceResponse",
     "VolumePerformanceTier",
     "WorkloadProfile",
     "DetachLunRequest",
@@ -145,7 +148,7 @@ __all__ = (
     "ListInstancesResponse",
     "RenameInstanceRequest",
     "ResetInstanceRequest",
-    "ResetInstanceResponse",
+    "ServerNetworkTemplate",
     "StartInstanceRequest",
     "StartInstanceResponse",
     "StopInstanceRequest",
@@ -189,7 +192,6 @@ __all__ = (
     "NetworkConfig",
     "ProvisioningConfig",
     "ProvisioningQuota",
-    "ServerNetworkTemplate",
     "SubmitProvisioningConfigRequest",
     "SubmitProvisioningConfigResponse",
     "UpdateProvisioningConfigRequest",

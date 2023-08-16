@@ -61,7 +61,7 @@ from google.cloud.bare_metal_solution_v2.types import nfs_share as gcb_nfs_share
 from google.cloud.bare_metal_solution_v2.types import (
     volume_snapshot as gcb_volume_snapshot,
 )
-from google.cloud.bare_metal_solution_v2.types import common
+from google.cloud.bare_metal_solution_v2.types import baremetalsolution, common
 from google.cloud.bare_metal_solution_v2.types import instance
 from google.cloud.bare_metal_solution_v2.types import instance as gcb_instance
 from google.cloud.bare_metal_solution_v2.types import lun
@@ -1151,7 +1151,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             gcb_instance.Instance,
-            metadata_type=common.OperationMetadata,
+            metadata_type=baremetalsolution.OperationMetadata,
         )
 
         # Done; return the response.
@@ -1378,8 +1378,8 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            instance.ResetInstanceResponse,
-            metadata_type=common.OperationMetadata,
+            baremetalsolution.ResetInstanceResponse,
+            metadata_type=baremetalsolution.OperationMetadata,
         )
 
         # Done; return the response.
@@ -1493,7 +1493,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             instance.StartInstanceResponse,
-            metadata_type=common.OperationMetadata,
+            metadata_type=baremetalsolution.OperationMetadata,
         )
 
         # Done; return the response.
@@ -1607,7 +1607,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             instance.StopInstanceResponse,
-            metadata_type=common.OperationMetadata,
+            metadata_type=baremetalsolution.OperationMetadata,
         )
 
         # Done; return the response.
@@ -1727,7 +1727,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             instance.EnableInteractiveSerialConsoleResponse,
-            metadata_type=common.OperationMetadata,
+            metadata_type=baremetalsolution.OperationMetadata,
         )
 
         # Done; return the response.
@@ -1847,7 +1847,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             instance.DisableInteractiveSerialConsoleResponse,
-            metadata_type=common.OperationMetadata,
+            metadata_type=baremetalsolution.OperationMetadata,
         )
 
         # Done; return the response.
@@ -1971,7 +1971,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             gcb_instance.Instance,
-            metadata_type=common.OperationMetadata,
+            metadata_type=baremetalsolution.OperationMetadata,
         )
 
         # Done; return the response.
@@ -2649,7 +2649,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             gcb_volume.Volume,
-            metadata_type=common.OperationMetadata,
+            metadata_type=baremetalsolution.OperationMetadata,
         )
 
         # Done; return the response.
@@ -2884,7 +2884,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             empty_pb2.Empty,
-            metadata_type=common.OperationMetadata,
+            metadata_type=baremetalsolution.OperationMetadata,
         )
 
         # Done; return the response.
@@ -3006,7 +3006,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             gcb_volume.Volume,
-            metadata_type=common.OperationMetadata,
+            metadata_type=baremetalsolution.OperationMetadata,
         )
 
         # Done; return the response.
@@ -3452,7 +3452,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             gcb_network.Network,
-            metadata_type=common.OperationMetadata,
+            metadata_type=baremetalsolution.OperationMetadata,
         )
 
         # Done; return the response.
@@ -3687,7 +3687,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             gcb_volume_snapshot.VolumeSnapshot,
-            metadata_type=common.OperationMetadata,
+            metadata_type=baremetalsolution.OperationMetadata,
         )
 
         # Done; return the response.
@@ -4339,7 +4339,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             empty_pb2.Empty,
-            metadata_type=common.OperationMetadata,
+            metadata_type=baremetalsolution.OperationMetadata,
         )
 
         # Done; return the response.
@@ -4683,7 +4683,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             gcb_nfs_share.NfsShare,
-            metadata_type=common.OperationMetadata,
+            metadata_type=baremetalsolution.OperationMetadata,
         )
 
         # Done; return the response.
@@ -4807,7 +4807,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             gcb_nfs_share.NfsShare,
-            metadata_type=common.OperationMetadata,
+            metadata_type=baremetalsolution.OperationMetadata,
         )
 
         # Done; return the response.
@@ -5043,7 +5043,7 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
             response,
             self._transport.operations_client,
             empty_pb2.Empty,
-            metadata_type=common.OperationMetadata,
+            metadata_type=baremetalsolution.OperationMetadata,
         )
 
         # Done; return the response.
