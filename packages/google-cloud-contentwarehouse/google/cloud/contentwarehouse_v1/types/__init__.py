@@ -107,6 +107,17 @@ from .histogram import (
     HistogramQueryPropertyNameFilter,
     HistogramQueryResult,
 )
+from .pipeline_service import RunPipelineRequest
+from .pipelines import (
+    ExportToCdwPipeline,
+    GcsIngestPipeline,
+    GcsIngestWithDocAiProcessorsPipeline,
+    IngestPipelineConfig,
+    ProcessorInfo,
+    ProcessWithDocAiPipeline,
+    RunPipelineMetadata,
+    RunPipelineResponse,
+)
 from .rule_engine import (
     AccessControlAction,
     Action,
@@ -218,6 +229,15 @@ __all__ = (
     "HistogramQuery",
     "HistogramQueryPropertyNameFilter",
     "HistogramQueryResult",
+    "RunPipelineRequest",
+    "ExportToCdwPipeline",
+    "GcsIngestPipeline",
+    "GcsIngestWithDocAiProcessorsPipeline",
+    "IngestPipelineConfig",
+    "ProcessorInfo",
+    "ProcessWithDocAiPipeline",
+    "RunPipelineMetadata",
+    "RunPipelineResponse",
     "AccessControlAction",
     "Action",
     "ActionExecutorOutput",
