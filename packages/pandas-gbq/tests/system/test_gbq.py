@@ -5,6 +5,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+import packaging.version
 import sys
 
 import numpy as np
@@ -997,6 +998,9 @@ class TestToGBQIntegration(object):
                 table_schema=test_schema,
             )
 
+    @pytest.mark.skipif(
+        packaging.version.parse(pandas.__version__).release >= (2, 0), reason=""
+    )
     def test_upload_data_with_timestamp(self, project_id):
         test_id = "21"
         test_size = 6

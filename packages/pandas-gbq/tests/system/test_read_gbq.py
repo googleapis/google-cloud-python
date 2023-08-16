@@ -5,6 +5,7 @@
 import collections
 import datetime
 import decimal
+import packaging.version
 import random
 
 import db_dtypes
@@ -38,6 +39,9 @@ def writable_table(
     bigquery_client.delete_table(full_table_id)
 
 
+@pytest.mark.skipif(
+    packaging.version.parse(pandas.__version__).release >= (2, 0), reason=""
+)
 @pytest.mark.parametrize(["use_bqstorage_api"], [(True,), (False,)])
 @pytest.mark.parametrize(
     ["query", "expected", "use_bqstorage_apis"],
@@ -545,6 +549,7 @@ ORDER BY row_num ASC
 def test_default_dtypes(
     read_gbq, query, expected, use_bqstorage_apis, use_bqstorage_api
 ):
+
     if use_bqstorage_api not in use_bqstorage_apis:
         pytest.skip(f"use_bqstorage_api={use_bqstorage_api} not supported.")
     # the parameter useQueryCache=False is used in the following function call
