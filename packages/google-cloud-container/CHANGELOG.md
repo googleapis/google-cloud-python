@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.30.0](https://github.com/googleapis/python-container/compare/v2.29.0...v2.30.0) (2023-08-11)
+
+
+### Features
+
+* **v1beta1:** Add preview support for monitoring a cluster's pods for compliance with a provided Binary Authorization platform policy via Binary Authorization Continuous Validation ([#405](https://github.com/googleapis/python-container/issues/405)) ([c5806de](https://github.com/googleapis/python-container/commit/c5806de9c61b1c9855f1c9a5c3fac1ea343e1acc))
+
 ## [2.29.0](https://github.com/googleapis/python-container/compare/v2.28.0...v2.29.0) (2023-08-09)
 
 
