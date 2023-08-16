@@ -1,0 +1,37 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    ".": {
+      "release-type": "python",
+      "extra-files": [
+        "google/cloud/iam_credentials_v1/gapic_version.py",
+        "google/cloud/iam_v2beta/gapic_version.py",
+        "google/cloud/iam_v2/gapic_version.py",
+        "google/cloud/iam/gapic_version.py",
+        "google/cloud/iam_credentials/gapic_version.py",
+        {
+          "type": "json",
+          "path": "samples/generated_samples/snippet_metadata_google.iam.credentials.v1.json",
+          "jsonpath": "$.clientLibrary.version"
+        },
+        {
+          "type": "json",
+          "path": "samples/generated_samples/snippet_metadata_google.iam.v2beta.json",
+          "jsonpath": "$.clientLibrary.version"
+        },
+        {
+          "type": "json",
+          "path": "samples/generated_samples/snippet_metadata_google.iam.v2.json",
+          "jsonpath": "$.clientLibrary.version"
+        }
+      ]
+    }
+  },
+  "release-type": "python",
+  "plugins": [
+    {
+      "type": "sentence-case"
+    }
+  ],
+  "initial-version": "0.1.0"
+}
