@@ -36,6 +36,12 @@ from google.cloud.contentwarehouse_v1.services.document_service.async_client imp
 from google.cloud.contentwarehouse_v1.services.document_service.client import (
     DocumentServiceClient,
 )
+from google.cloud.contentwarehouse_v1.services.pipeline_service.async_client import (
+    PipelineServiceAsyncClient,
+)
+from google.cloud.contentwarehouse_v1.services.pipeline_service.client import (
+    PipelineServiceClient,
+)
 from google.cloud.contentwarehouse_v1.services.rule_set_service.async_client import (
     RuleSetServiceAsyncClient,
 )
@@ -142,6 +148,17 @@ from google.cloud.contentwarehouse_v1.types.histogram import (
     HistogramQueryPropertyNameFilter,
     HistogramQueryResult,
 )
+from google.cloud.contentwarehouse_v1.types.pipeline_service import RunPipelineRequest
+from google.cloud.contentwarehouse_v1.types.pipelines import (
+    ExportToCdwPipeline,
+    GcsIngestPipeline,
+    GcsIngestWithDocAiProcessorsPipeline,
+    IngestPipelineConfig,
+    ProcessorInfo,
+    ProcessWithDocAiPipeline,
+    RunPipelineMetadata,
+    RunPipelineResponse,
+)
 from google.cloud.contentwarehouse_v1.types.rule_engine import (
     AccessControlAction,
     Action,
@@ -185,6 +202,8 @@ __all__ = (
     "DocumentSchemaServiceAsyncClient",
     "DocumentServiceClient",
     "DocumentServiceAsyncClient",
+    "PipelineServiceClient",
+    "PipelineServiceAsyncClient",
     "RuleSetServiceClient",
     "RuleSetServiceAsyncClient",
     "SynonymSetServiceClient",
@@ -263,6 +282,15 @@ __all__ = (
     "HistogramQuery",
     "HistogramQueryPropertyNameFilter",
     "HistogramQueryResult",
+    "RunPipelineRequest",
+    "ExportToCdwPipeline",
+    "GcsIngestPipeline",
+    "GcsIngestWithDocAiProcessorsPipeline",
+    "IngestPipelineConfig",
+    "ProcessorInfo",
+    "ProcessWithDocAiPipeline",
+    "RunPipelineMetadata",
+    "RunPipelineResponse",
     "AccessControlAction",
     "Action",
     "ActionExecutorOutput",
