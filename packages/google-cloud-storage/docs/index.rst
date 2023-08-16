@@ -32,6 +32,7 @@ API Reference
   storage/hmac_key
   storage/notification
   storage/retry
+  storage/transfer_manager
 
 
 More Examples
