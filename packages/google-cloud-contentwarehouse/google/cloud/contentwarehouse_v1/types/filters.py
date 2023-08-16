@@ -150,6 +150,9 @@ class DocumentQuery(proto.Message):
             Search all the documents under this specified folder.
             Format:
             projects/{project_number}/locations/{location}/documents/{document_id}.
+        document_name_filter (MutableSequence[str]):
+            Search the documents in the list. Format:
+            projects/{project_number}/locations/{location}/documents/{document_id}.
         query_context (MutableSequence[str]):
             For custom synonyms.
             Customers provide the synonyms based on context.
@@ -214,6 +217,10 @@ class DocumentQuery(proto.Message):
         proto.STRING,
         number=9,
     )
+    document_name_filter: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=14,
+    )
     query_context: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=10,
@@ -251,10 +258,13 @@ class TimeFilter(proto.Message):
                 Earliest document create time.
             UPDATE_TIME (2):
                 Latest document update time.
+            DISPOSITION_TIME (3):
+                Time when document becomes mutable again.
         """
         TIME_FIELD_UNSPECIFIED = 0
         CREATE_TIME = 1
         UPDATE_TIME = 2
+        DISPOSITION_TIME = 3
 
     time_range: interval_pb2.Interval = proto.Field(
         proto.MESSAGE,

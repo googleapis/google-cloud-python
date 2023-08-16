@@ -1024,6 +1024,7 @@ def test_get_document(request_type, transport: str = "grpc"):
             text_extraction_enabled=True,
             creator="creator_value",
             updater="updater_value",
+            legal_hold=True,
             plain_text="plain_text_value",
             raw_document_path="raw_document_path_value",
         )
@@ -1055,6 +1056,7 @@ def test_get_document(request_type, transport: str = "grpc"):
     assert response.text_extraction_enabled is True
     assert response.creator == "creator_value"
     assert response.updater == "updater_value"
+    assert response.legal_hold is True
 
 
 def test_get_document_empty_call():
@@ -1106,6 +1108,7 @@ async def test_get_document_async(
                 text_extraction_enabled=True,
                 creator="creator_value",
                 updater="updater_value",
+                legal_hold=True,
             )
         )
         response = await client.get_document(request)
@@ -1136,6 +1139,7 @@ async def test_get_document_async(
     assert response.text_extraction_enabled is True
     assert response.creator == "creator_value"
     assert response.updater == "updater_value"
+    assert response.legal_hold is True
 
 
 @pytest.mark.asyncio
@@ -1767,6 +1771,7 @@ def test_search_documents(request_type, transport: str = "grpc"):
         call.return_value = document_service.SearchDocumentsResponse(
             next_page_token="next_page_token_value",
             total_size=1086,
+            question_answer="question_answer_value",
         )
         response = client.search_documents(request)
 
@@ -1779,6 +1784,7 @@ def test_search_documents(request_type, transport: str = "grpc"):
     assert isinstance(response, pagers.SearchDocumentsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
+    assert response.question_answer == "question_answer_value"
 
 
 def test_search_documents_empty_call():
@@ -1818,6 +1824,7 @@ async def test_search_documents_async(
             document_service.SearchDocumentsResponse(
                 next_page_token="next_page_token_value",
                 total_size=1086,
+                question_answer="question_answer_value",
             )
         )
         response = await client.search_documents(request)
@@ -1831,6 +1838,7 @@ async def test_search_documents_async(
     assert isinstance(response, pagers.SearchDocumentsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
+    assert response.question_answer == "question_answer_value"
 
 
 @pytest.mark.asyncio
@@ -2212,6 +2220,7 @@ def test_lock_document(request_type, transport: str = "grpc"):
             text_extraction_enabled=True,
             creator="creator_value",
             updater="updater_value",
+            legal_hold=True,
             plain_text="plain_text_value",
             raw_document_path="raw_document_path_value",
         )
@@ -2243,6 +2252,7 @@ def test_lock_document(request_type, transport: str = "grpc"):
     assert response.text_extraction_enabled is True
     assert response.creator == "creator_value"
     assert response.updater == "updater_value"
+    assert response.legal_hold is True
 
 
 def test_lock_document_empty_call():
@@ -2294,6 +2304,7 @@ async def test_lock_document_async(
                 text_extraction_enabled=True,
                 creator="creator_value",
                 updater="updater_value",
+                legal_hold=True,
             )
         )
         response = await client.lock_document(request)
@@ -2324,6 +2335,7 @@ async def test_lock_document_async(
     assert response.text_extraction_enabled is True
     assert response.creator == "creator_value"
     assert response.updater == "updater_value"
+    assert response.legal_hold is True
 
 
 @pytest.mark.asyncio
@@ -3247,6 +3259,7 @@ def test_get_document_rest(request_type):
             text_extraction_enabled=True,
             creator="creator_value",
             updater="updater_value",
+            legal_hold=True,
             plain_text="plain_text_value",
             raw_document_path="raw_document_path_value",
         )
@@ -3282,6 +3295,7 @@ def test_get_document_rest(request_type):
     assert response.text_extraction_enabled is True
     assert response.creator == "creator_value"
     assert response.updater == "updater_value"
+    assert response.legal_hold is True
 
 
 def test_get_document_rest_required_fields(
@@ -4072,6 +4086,7 @@ def test_search_documents_rest(request_type):
         return_value = document_service.SearchDocumentsResponse(
             next_page_token="next_page_token_value",
             total_size=1086,
+            question_answer="question_answer_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -4088,6 +4103,7 @@ def test_search_documents_rest(request_type):
     assert isinstance(response, pagers.SearchDocumentsPager)
     assert response.next_page_token == "next_page_token_value"
     assert response.total_size == 1086
+    assert response.question_answer == "question_answer_value"
 
 
 def test_search_documents_rest_required_fields(
@@ -4416,6 +4432,7 @@ def test_lock_document_rest(request_type):
             text_extraction_enabled=True,
             creator="creator_value",
             updater="updater_value",
+            legal_hold=True,
             plain_text="plain_text_value",
             raw_document_path="raw_document_path_value",
         )
@@ -4451,6 +4468,7 @@ def test_lock_document_rest(request_type):
     assert response.text_extraction_enabled is True
     assert response.creator == "creator_value"
     assert response.updater == "updater_value"
+    assert response.legal_hold is True
 
 
 def test_lock_document_rest_required_fields(

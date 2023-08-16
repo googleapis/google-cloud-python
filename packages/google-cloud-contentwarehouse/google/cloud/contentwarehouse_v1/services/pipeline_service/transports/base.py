@@ -22,24 +22,23 @@ from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.workflows_v1 import gapic_version as package_version
-from google.cloud.workflows_v1.types import workflows
+from google.cloud.contentwarehouse_v1 import gapic_version as package_version
+from google.cloud.contentwarehouse_v1.types import pipeline_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
 
 
-class WorkflowsTransport(abc.ABC):
-    """Abstract transport class for Workflows."""
+class PipelineServiceTransport(abc.ABC):
+    """Abstract transport class for PipelineService."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
-    DEFAULT_HOST: str = "workflows.googleapis.com"
+    DEFAULT_HOST: str = "contentwarehouse.googleapis.com"
 
     def __init__(
         self,
@@ -124,29 +123,19 @@ class WorkflowsTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.list_workflows: gapic_v1.method.wrap_method(
-                self.list_workflows,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.get_workflow: gapic_v1.method.wrap_method(
-                self.get_workflow,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.create_workflow: gapic_v1.method.wrap_method(
-                self.create_workflow,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.delete_workflow: gapic_v1.method.wrap_method(
-                self.delete_workflow,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.update_workflow: gapic_v1.method.wrap_method(
-                self.update_workflow,
-                default_timeout=None,
+            self.run_pipeline: gapic_v1.method.wrap_method(
+                self.run_pipeline,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
                 client_info=client_info,
             ),
         }
@@ -166,61 +155,11 @@ class WorkflowsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_workflows(
+    def run_pipeline(
         self,
     ) -> Callable[
-        [workflows.ListWorkflowsRequest],
-        Union[
-            workflows.ListWorkflowsResponse, Awaitable[workflows.ListWorkflowsResponse]
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def get_workflow(
-        self,
-    ) -> Callable[
-        [workflows.GetWorkflowRequest],
-        Union[workflows.Workflow, Awaitable[workflows.Workflow]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def create_workflow(
-        self,
-    ) -> Callable[
-        [workflows.CreateWorkflowRequest],
+        [pipeline_service.RunPipelineRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def delete_workflow(
-        self,
-    ) -> Callable[
-        [workflows.DeleteWorkflowRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def update_workflow(
-        self,
-    ) -> Callable[
-        [workflows.UpdateWorkflowRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_operations(
-        self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
     ]:
         raise NotImplementedError()
 
@@ -234,35 +173,8 @@ class WorkflowsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def delete_operation(
-        self,
-    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
-        raise NotImplementedError()
-
-    @property
-    def get_location(
-        self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def list_locations(
-        self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
     def kind(self) -> str:
         raise NotImplementedError()
 
 
-__all__ = ("WorkflowsTransport",)
+__all__ = ("PipelineServiceTransport",)

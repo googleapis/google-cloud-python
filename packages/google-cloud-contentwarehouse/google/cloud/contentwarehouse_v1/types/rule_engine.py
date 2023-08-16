@@ -113,10 +113,16 @@ class Rule(proto.Message):
                 Trigger for create document action.
             ON_UPDATE (4):
                 Trigger for update document action.
+            ON_CREATE_LINK (7):
+                Trigger for create link action.
+            ON_DELETE_LINK (8):
+                Trigger for delete link action.
         """
         UNKNOWN = 0
         ON_CREATE = 1
         ON_UPDATE = 4
+        ON_CREATE_LINK = 7
+        ON_DELETE_LINK = 8
 
     description: str = proto.Field(
         proto.STRING,

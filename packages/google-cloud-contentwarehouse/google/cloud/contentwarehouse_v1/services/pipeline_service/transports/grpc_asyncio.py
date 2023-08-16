@@ -19,23 +19,20 @@ import warnings
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.workflows_v1.types import workflows
+from google.cloud.contentwarehouse_v1.types import pipeline_service
 
-from .base import DEFAULT_CLIENT_INFO, WorkflowsTransport
-from .grpc import WorkflowsGrpcTransport
+from .base import DEFAULT_CLIENT_INFO, PipelineServiceTransport
+from .grpc import PipelineServiceGrpcTransport
 
 
-class WorkflowsGrpcAsyncIOTransport(WorkflowsTransport):
-    """gRPC AsyncIO backend transport for Workflows.
+class PipelineServiceGrpcAsyncIOTransport(PipelineServiceTransport):
+    """gRPC AsyncIO backend transport for PipelineService.
 
-    Workflows is used to deploy and execute workflow programs.
-    Workflows makes sure the program executes reliably, despite
-    hardware and networking interruptions.
+    This service lets you manage pipelines.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -51,7 +48,7 @@ class WorkflowsGrpcAsyncIOTransport(WorkflowsTransport):
     @classmethod
     def create_channel(
         cls,
-        host: str = "workflows.googleapis.com",
+        host: str = "contentwarehouse.googleapis.com",
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
@@ -94,7 +91,7 @@ class WorkflowsGrpcAsyncIOTransport(WorkflowsTransport):
     def __init__(
         self,
         *,
-        host: str = "workflows.googleapis.com",
+        host: str = "contentwarehouse.googleapis.com",
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
@@ -253,75 +250,17 @@ class WorkflowsGrpcAsyncIOTransport(WorkflowsTransport):
         return self._operations_client
 
     @property
-    def list_workflows(
+    def run_pipeline(
         self,
     ) -> Callable[
-        [workflows.ListWorkflowsRequest], Awaitable[workflows.ListWorkflowsResponse]
+        [pipeline_service.RunPipelineRequest], Awaitable[operations_pb2.Operation]
     ]:
-        r"""Return a callable for the list workflows method over gRPC.
+        r"""Return a callable for the run pipeline method over gRPC.
 
-        Lists workflows in a given project and location.
-        The default order is not specified.
-
-        Returns:
-            Callable[[~.ListWorkflowsRequest],
-                    Awaitable[~.ListWorkflowsResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_workflows" not in self._stubs:
-            self._stubs["list_workflows"] = self.grpc_channel.unary_unary(
-                "/google.cloud.workflows.v1.Workflows/ListWorkflows",
-                request_serializer=workflows.ListWorkflowsRequest.serialize,
-                response_deserializer=workflows.ListWorkflowsResponse.deserialize,
-            )
-        return self._stubs["list_workflows"]
-
-    @property
-    def get_workflow(
-        self,
-    ) -> Callable[[workflows.GetWorkflowRequest], Awaitable[workflows.Workflow]]:
-        r"""Return a callable for the get workflow method over gRPC.
-
-        Gets details of a single workflow.
+        Run a predefined pipeline.
 
         Returns:
-            Callable[[~.GetWorkflowRequest],
-                    Awaitable[~.Workflow]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_workflow" not in self._stubs:
-            self._stubs["get_workflow"] = self.grpc_channel.unary_unary(
-                "/google.cloud.workflows.v1.Workflows/GetWorkflow",
-                request_serializer=workflows.GetWorkflowRequest.serialize,
-                response_deserializer=workflows.Workflow.deserialize,
-            )
-        return self._stubs["get_workflow"]
-
-    @property
-    def create_workflow(
-        self,
-    ) -> Callable[
-        [workflows.CreateWorkflowRequest], Awaitable[operations_pb2.Operation]
-    ]:
-        r"""Return a callable for the create workflow method over gRPC.
-
-        Creates a new workflow. If a workflow with the specified name
-        already exists in the specified project and location, the long
-        running operation returns a
-        [ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS] error.
-
-        Returns:
-            Callable[[~.CreateWorkflowRequest],
+            Callable[[~.RunPipelineRequest],
                     Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
@@ -330,96 +269,16 @@ class WorkflowsGrpcAsyncIOTransport(WorkflowsTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_workflow" not in self._stubs:
-            self._stubs["create_workflow"] = self.grpc_channel.unary_unary(
-                "/google.cloud.workflows.v1.Workflows/CreateWorkflow",
-                request_serializer=workflows.CreateWorkflowRequest.serialize,
+        if "run_pipeline" not in self._stubs:
+            self._stubs["run_pipeline"] = self.grpc_channel.unary_unary(
+                "/google.cloud.contentwarehouse.v1.PipelineService/RunPipeline",
+                request_serializer=pipeline_service.RunPipelineRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["create_workflow"]
-
-    @property
-    def delete_workflow(
-        self,
-    ) -> Callable[
-        [workflows.DeleteWorkflowRequest], Awaitable[operations_pb2.Operation]
-    ]:
-        r"""Return a callable for the delete workflow method over gRPC.
-
-        Deletes a workflow with the specified name.
-        This method also cancels and deletes all running
-        executions of the workflow.
-
-        Returns:
-            Callable[[~.DeleteWorkflowRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_workflow" not in self._stubs:
-            self._stubs["delete_workflow"] = self.grpc_channel.unary_unary(
-                "/google.cloud.workflows.v1.Workflows/DeleteWorkflow",
-                request_serializer=workflows.DeleteWorkflowRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["delete_workflow"]
-
-    @property
-    def update_workflow(
-        self,
-    ) -> Callable[
-        [workflows.UpdateWorkflowRequest], Awaitable[operations_pb2.Operation]
-    ]:
-        r"""Return a callable for the update workflow method over gRPC.
-
-        Updates an existing workflow.
-        Running this method has no impact on already running
-        executions of the workflow. A new revision of the
-        workflow might be created as a result of a successful
-        update operation. In that case, the new revision is used
-        in new workflow executions.
-
-        Returns:
-            Callable[[~.UpdateWorkflowRequest],
-                    Awaitable[~.Operation]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_workflow" not in self._stubs:
-            self._stubs["update_workflow"] = self.grpc_channel.unary_unary(
-                "/google.cloud.workflows.v1.Workflows/UpdateWorkflow",
-                request_serializer=workflows.UpdateWorkflowRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["update_workflow"]
+        return self._stubs["run_pipeline"]
 
     def close(self):
         return self.grpc_channel.close()
-
-    @property
-    def delete_operation(
-        self,
-    ) -> Callable[[operations_pb2.DeleteOperationRequest], None]:
-        r"""Return a callable for the delete_operation method over gRPC."""
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_operation" not in self._stubs:
-            self._stubs["delete_operation"] = self.grpc_channel.unary_unary(
-                "/google.longrunning.Operations/DeleteOperation",
-                request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
-                response_deserializer=None,
-            )
-        return self._stubs["delete_operation"]
 
     @property
     def get_operation(
@@ -438,60 +297,5 @@ class WorkflowsGrpcAsyncIOTransport(WorkflowsTransport):
             )
         return self._stubs["get_operation"]
 
-    @property
-    def list_operations(
-        self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
-        r"""Return a callable for the list_operations method over gRPC."""
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_operations" not in self._stubs:
-            self._stubs["list_operations"] = self.grpc_channel.unary_unary(
-                "/google.longrunning.Operations/ListOperations",
-                request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
-                response_deserializer=operations_pb2.ListOperationsResponse.FromString,
-            )
-        return self._stubs["list_operations"]
 
-    @property
-    def list_locations(
-        self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
-        r"""Return a callable for the list locations method over gRPC."""
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_locations" not in self._stubs:
-            self._stubs["list_locations"] = self.grpc_channel.unary_unary(
-                "/google.cloud.location.Locations/ListLocations",
-                request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
-                response_deserializer=locations_pb2.ListLocationsResponse.FromString,
-            )
-        return self._stubs["list_locations"]
-
-    @property
-    def get_location(
-        self,
-    ) -> Callable[[locations_pb2.GetLocationRequest], locations_pb2.Location]:
-        r"""Return a callable for the list locations method over gRPC."""
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_location" not in self._stubs:
-            self._stubs["get_location"] = self.grpc_channel.unary_unary(
-                "/google.cloud.location.Locations/GetLocation",
-                request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
-                response_deserializer=locations_pb2.Location.FromString,
-            )
-        return self._stubs["get_location"]
-
-
-__all__ = ("WorkflowsGrpcAsyncIOTransport",)
+__all__ = ("PipelineServiceGrpcAsyncIOTransport",)

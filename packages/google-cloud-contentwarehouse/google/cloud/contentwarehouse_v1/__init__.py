@@ -27,6 +27,7 @@ from .services.document_schema_service import (
     DocumentSchemaServiceClient,
 )
 from .services.document_service import DocumentServiceAsyncClient, DocumentServiceClient
+from .services.pipeline_service import PipelineServiceAsyncClient, PipelineServiceClient
 from .services.rule_set_service import RuleSetServiceAsyncClient, RuleSetServiceClient
 from .services.synonym_set_service import (
     SynonymSetServiceAsyncClient,
@@ -126,6 +127,17 @@ from .types.histogram import (
     HistogramQueryPropertyNameFilter,
     HistogramQueryResult,
 )
+from .types.pipeline_service import RunPipelineRequest
+from .types.pipelines import (
+    ExportToCdwPipeline,
+    GcsIngestPipeline,
+    GcsIngestWithDocAiProcessorsPipeline,
+    IngestPipelineConfig,
+    ProcessorInfo,
+    ProcessWithDocAiPipeline,
+    RunPipelineMetadata,
+    RunPipelineResponse,
+)
 from .types.rule_engine import (
     AccessControlAction,
     Action,
@@ -166,6 +178,7 @@ __all__ = (
     "DocumentLinkServiceAsyncClient",
     "DocumentSchemaServiceAsyncClient",
     "DocumentServiceAsyncClient",
+    "PipelineServiceAsyncClient",
     "RuleSetServiceAsyncClient",
     "SynonymSetServiceAsyncClient",
     "AccessControlAction",
@@ -207,11 +220,14 @@ __all__ = (
     "EnumArray",
     "EnumTypeOptions",
     "EnumValue",
+    "ExportToCdwPipeline",
     "FetchAclRequest",
     "FetchAclResponse",
     "FileTypeFilter",
     "FloatArray",
     "FloatTypeOptions",
+    "GcsIngestPipeline",
+    "GcsIngestWithDocAiProcessorsPipeline",
     "GetDocumentRequest",
     "GetDocumentSchemaRequest",
     "GetRuleSetRequest",
@@ -219,6 +235,7 @@ __all__ = (
     "HistogramQuery",
     "HistogramQueryPropertyNameFilter",
     "HistogramQueryResult",
+    "IngestPipelineConfig",
     "IntegerArray",
     "IntegerTypeOptions",
     "InvalidRule",
@@ -236,6 +253,9 @@ __all__ = (
     "MapProperty",
     "MapTypeOptions",
     "MergeFieldsOptions",
+    "PipelineServiceClient",
+    "ProcessWithDocAiPipeline",
+    "ProcessorInfo",
     "Property",
     "PropertyArray",
     "PropertyDefinition",
@@ -253,6 +273,9 @@ __all__ = (
     "RuleEvaluatorOutput",
     "RuleSet",
     "RuleSetServiceClient",
+    "RunPipelineMetadata",
+    "RunPipelineRequest",
+    "RunPipelineResponse",
     "SearchDocumentsRequest",
     "SearchDocumentsResponse",
     "SetAclRequest",

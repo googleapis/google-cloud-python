@@ -60,6 +60,7 @@ class contentwarehouseCallTransformer(cst.CSTTransformer):
         'list_rule_sets': ('parent', 'page_size', 'page_token', ),
         'list_synonym_sets': ('parent', 'page_size', 'page_token', ),
         'lock_document': ('name', 'collection_id', 'locking_user', ),
+        'run_pipeline': ('name', 'gcs_ingest_pipeline', 'gcs_ingest_with_doc_ai_processors_pipeline', 'export_cdw_pipeline', 'process_with_doc_ai_pipeline', 'request_metadata', ),
         'search_documents': ('parent', 'request_metadata', 'document_query', 'offset', 'page_size', 'page_token', 'order_by', 'histogram_queries', 'require_total_size', 'total_result_size', 'qa_size_limit', ),
         'set_acl': ('resource', 'policy', 'request_metadata', 'project_owner', ),
         'update_document': ('name', 'document', 'request_metadata', 'cloud_ai_document_option', 'update_options', ),
