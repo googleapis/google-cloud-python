@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workflows-v1.10.2...google-cloud-workflows-v1.11.0) (2023-08-16)
+
+
+### Features
+
+* add call_log_level field to Workflow ([9372c15](https://github.com/googleapis/google-cloud-python/commit/9372c15f6cad7b8fe4285b638966ce53224d6c82))
+* add revision_id to GetWorkflowRequest ([9372c15](https://github.com/googleapis/google-cloud-python/commit/9372c15f6cad7b8fe4285b638966ce53224d6c82))
+* add state_error field to Workflow ([9372c15](https://github.com/googleapis/google-cloud-python/commit/9372c15f6cad7b8fe4285b638966ce53224d6c82))
+* add UNAVAILABLE to state enum of workflow deployment ([9372c15](https://github.com/googleapis/google-cloud-python/commit/9372c15f6cad7b8fe4285b638966ce53224d6c82))
+* add user_env_vars field to Workflow ([9372c15](https://github.com/googleapis/google-cloud-python/commit/9372c15f6cad7b8fe4285b638966ce53224d6c82))
+
 ## [1.10.2](https://github.com/googleapis/python-workflows/compare/v1.10.1...v1.10.2) (2023-07-04)
 
 

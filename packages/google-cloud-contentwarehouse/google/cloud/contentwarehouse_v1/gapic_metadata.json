@@ -317,6 +317,40 @@
         }
       }
     },
+    "PipelineService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "PipelineServiceClient",
+          "rpcs": {
+            "RunPipeline": {
+              "methods": [
+                "run_pipeline"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "PipelineServiceAsyncClient",
+          "rpcs": {
+            "RunPipeline": {
+              "methods": [
+                "run_pipeline"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "PipelineServiceClient",
+          "rpcs": {
+            "RunPipeline": {
+              "methods": [
+                "run_pipeline"
+              ]
+            }
+          }
+        }
+      }
+    },
     "RuleSetService": {
       "clients": {
         "grpc": {
