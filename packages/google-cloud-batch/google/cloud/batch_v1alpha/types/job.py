@@ -784,7 +784,10 @@ class AllocationPolicy(proto.Message):
             disks (MutableSequence[google.cloud.batch_v1alpha.types.AllocationPolicy.AttachedDisk]):
                 Non-boot disks to be attached for each VM
                 created by this InstancePolicy. New disks will
-                be deleted when the VM is deleted.
+                be deleted when the VM is deleted. A non
+                bootable disk is a disk that can be of a device
+                with a file system or a raw storage drive that
+                is not ready for data storage and accessing.
             reservation (str):
                 If specified, VMs will consume only the
                 specified reservation. If not specified
@@ -832,7 +835,11 @@ class AllocationPolicy(proto.Message):
         )
 
     class InstancePolicyOrTemplate(proto.Message):
-        r"""Either an InstancePolicy or an instance template.
+        r"""InstancePolicyOrTemplate lets you define the type of
+        resources to use for this job either with an InstancePolicy or
+        an instance template. If undefined, Batch picks the type of VM
+        to use and doesn't include optional VM resources such as GPUs
+        and extra disks.
 
         This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.
