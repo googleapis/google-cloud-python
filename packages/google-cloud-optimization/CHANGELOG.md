@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.3](https://github.com/googleapis/python-optimization/compare/v1.4.2...v1.4.3) (2023-08-16)
+
+
+### Documentation
+
+* Minor formatting ([#146](https://github.com/googleapis/python-optimization/issues/146)) ([7b892c4](https://github.com/googleapis/python-optimization/commit/7b892c4e4814a3229d07e9c5bb4e8377f7d550d7))
+
 ## [1.4.2](https://github.com/googleapis/python-optimization/compare/v1.4.1...v1.4.2) (2023-07-04)
 
 
