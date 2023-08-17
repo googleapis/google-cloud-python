@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.40.1](https://github.com/googleapis/python-spanner/compare/v3.40.0...v3.40.1) (2023-08-17)
+
+
+### Bug Fixes
+
+* Fix to reload table when checking if table exists ([#1002](https://github.com/googleapis/python-spanner/issues/1002)) ([53bda62](https://github.com/googleapis/python-spanner/commit/53bda62c4996d622b7a11e860841c16e4097bded))
+
 ## [3.40.0](https://github.com/googleapis/python-spanner/compare/v3.39.0...v3.40.0) (2023-08-04)
 
 
