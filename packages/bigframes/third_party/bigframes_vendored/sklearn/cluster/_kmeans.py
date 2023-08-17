@@ -101,3 +101,24 @@ class KMeans(_BaseKMeans):
             bigframes.dataframe.DataFrame: DataFrame of the metrics.
         """
         raise NotImplementedError("abstract method")
+
+    @property
+    def cluster_centers_(self):
+        """Information of cluster centers.
+
+        Returns:
+            bigframes.dataframe.DataFrame: DataFrame of cluster centers, containing following columns:
+                centroid_id: An integer that identifies the centroid.
+
+                feature: The column name that contains the feature.
+
+                numerical_value: If feature is numeric, the value of feature for the centroid that centroid_id identifies. If feature is not numeric, the value is NULL.
+
+                categorical_value: An list of mappings containing information about categorical features. Each mapping contains the following fields:
+                    categorical_value.category: The name of each category.
+
+                    categorical_value.value: The value of categorical_value.category for the centroid that centroid_id identifies.
+
+            The output contains one row per feature per centroid.
+        """
+        raise NotImplementedError("abstract method")

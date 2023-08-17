@@ -27,7 +27,9 @@ import ipywidgets as widgets
 
 import bigframes.constants as constants
 
-GenericJob = Union[bigquery.LoadJob, bigquery.ExtractJob, bigquery.QueryJob]
+GenericJob = Union[
+    bigquery.LoadJob, bigquery.ExtractJob, bigquery.QueryJob, bigquery.CopyJob
+]
 
 query_job_prop_pairs = {
     "Job Id": "job_id",
@@ -49,7 +51,7 @@ def add_feedback_link(
 def repr_query_job_html(query_job: Optional[bigquery.QueryJob]):
     """Return query job in html format.
     Args:
-        query_job:
+        query_job (bigquery.QueryJob, Optional):
             The job representing the execution of the query on the server.
     Returns:
         Pywidget html table.
@@ -114,10 +116,12 @@ def wait_for_query_job(
 ) -> bigquery.table.RowIterator:
     """Return query results. Displays a progress bar while the query is running
     Args:
-        query_job:
+        query_job (bigquery.QueryJob, Optional):
             The job representing the execution of the query on the server.
-        max_results:
+        max_results (int, Optional):
             The maximum number of rows the row iterator should return.
+        progress_bar (str, Optional):
+            Which progress bar to show.
     Returns:
         A row iterator over the query results.
     """
@@ -154,8 +158,10 @@ def wait_for_query_job(
 def wait_for_job(job: GenericJob, progress_bar: Optional[str] = None):
     """Waits for job results. Displays a progress bar while the job is running
     Args:
-        job:
-            The bigquery job to be executed
+        job (GenericJob):
+            The bigquery job to be executed.
+        progress_bar (str, Optional):
+            Which progress bar to show.
     """
     loading_bar = widgets.HTML(get_base_job_loading_html(job))
     if progress_bar == "auto":
@@ -189,7 +195,7 @@ def wait_for_job(job: GenericJob, progress_bar: Optional[str] = None):
 def get_job_url(query_job: GenericJob):
     """Return url to the query job in cloud console.
     Args:
-        query_job:
+        query_job (GenericJob):
             The job representing the execution of the query on the server.
     Returns:
         String url.
@@ -206,7 +212,7 @@ def get_job_url(query_job: GenericJob):
 def get_query_job_loading_html(query_job: bigquery.QueryJob):
     """Return progress bar html string
     Args:
-        query_job:
+        query_job (bigquery.QueryJob):
             The job representing the execution of the query on the server.
     Returns:
         Html string.
@@ -217,7 +223,7 @@ def get_query_job_loading_html(query_job: bigquery.QueryJob):
 def get_query_job_loading_string(query_job: bigquery.QueryJob):
     """Return progress bar string
     Args:
-        query_job:
+        query_job (bigquery.QueryJob):
             The job representing the execution of the query on the server.
     Returns:
         String
@@ -228,7 +234,7 @@ def get_query_job_loading_string(query_job: bigquery.QueryJob):
 def get_base_job_loading_html(job: GenericJob):
     """Return progress bar html string
     Args:
-        job:
+        job (GenericJob):
             The job representing the execution of the query on the server.
     Returns:
         Html string.
@@ -239,7 +245,7 @@ def get_base_job_loading_html(job: GenericJob):
 def get_base_job_loading_string(job: GenericJob):
     """Return progress bar string
     Args:
-        job:
+        job (GenericJob):
             The job representing the execution of the query on the server.
     Returns:
         String
@@ -250,8 +256,8 @@ def get_base_job_loading_string(job: GenericJob):
 def get_formatted_time(val):
     """Try to format time
     Args:
-        val:
-            Time in ms
+        val (Any):
+            Time in ms.
     Returns:
         Duration string
     """

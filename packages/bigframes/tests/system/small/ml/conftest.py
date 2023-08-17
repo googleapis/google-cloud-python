@@ -48,11 +48,17 @@ def penguins_bqml_linear_model(session, penguins_linear_model_name) -> core.Bqml
 @pytest.fixture(scope="function")
 def ephemera_penguins_bqml_linear_model(
     penguins_bqml_linear_model,
-) -> linear_model.LinearRegression:
+) -> core.BqmlModel:
     model = penguins_bqml_linear_model
     return model.copy(
         f"{model._model.project}.{model._model.dataset_id}.{uuid.uuid4().hex}"
     )
+
+
+@pytest.fixture(scope="session")
+def penguins_bqml_kmeans_model(session, penguins_kmeans_model_name) -> core.BqmlModel:
+    model = session.bqclient.get_model(penguins_kmeans_model_name)
+    return core.BqmlModel(session, model)
 
 
 @pytest.fixture(scope="session")
@@ -125,34 +131,11 @@ def penguins_randomforest_classifier_model(
 
 
 @pytest.fixture(scope="session")
-def penguins_kmeans_model(
-    session: bigframes.Session, dataset_id_permanent, penguins_table_id
-) -> cluster.KMeans:
-    """Provides a pretrained model as a test fixture that is cached across test runs.
-    This lets us run system tests without having to wait for a model.fit(...)"""
-    sql = f"""
-CREATE OR REPLACE MODEL `$model_name`
-OPTIONS (
-    model_type='kmeans',
-    num_clusters=3
-) AS SELECT
-    culmen_length_mm,
-    culmen_depth_mm,
-    flipper_length_mm,
-    sex
-FROM `{penguins_table_id}`"""
-    # We use the SQL hash as the name to ensure the model is regenerated if this fixture is edited
-    model_name = f"{dataset_id_permanent}.penguins_cluster_{hashlib.md5(sql.encode()).hexdigest()}"
-    sql = sql.replace("$model_name", model_name)
-
-    try:
-        return session.read_gbq_model(model_name)
-    except google.cloud.exceptions.NotFound:
-        logging.info(
-            "penguins_kmeans_model fixture was not found in the permanent dataset, regenerating it..."
-        )
-        session.bqclient.query(sql).result()
-        return session.read_gbq_model(model_name)
+def penguins_kmeans_model(session, penguins_kmeans_model_name: str) -> cluster.KMeans:
+    return cast(
+        cluster.KMeans,
+        session.read_gbq_model(penguins_kmeans_model_name),
+    )
 
 
 @pytest.fixture(scope="session")

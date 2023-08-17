@@ -63,9 +63,9 @@ class SeriesMethods:
 
         if block:
             if name:
-                if not isinstance(name, str):
-                    raise NotImplementedError(
-                        f"BigQuery DataFrames only supports string series names. {constants.FEEDBACK_LINK}"
+                if not isinstance(name, typing.Hashable):
+                    raise ValueError(
+                        f"BigQuery DataFrames only supports hashable series names. {constants.FEEDBACK_LINK}"
                     )
                 block = block.with_column_labels([name])
             if index:

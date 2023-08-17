@@ -34,7 +34,6 @@ from typing import (
 import google.cloud.bigquery as bigquery
 import numpy
 import pandas
-import typing_extensions
 
 import bigframes
 import bigframes._config.display_options as display_options
@@ -114,7 +113,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         # Dict of Series
         elif (
-            _is_dict_like(data)
+            utils.is_dict_like(data)
             and len(data) >= 1
             and any(isinstance(data[key], bf_series.Series) for key in data.keys())
         ):
@@ -178,7 +177,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return dir(type(self)) + self._block.column_labels
 
     def _ipython_key_completions_(self) -> List[str]:
-        return list([label for label in self._block.column_labels if label])
+        return list(
+            [
+                label
+                for label in self._block.column_labels
+                if label and isinstance(label, str)
+            ]
+        )
 
     def _find_indices(
         self,
@@ -210,7 +215,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         tolerance: bool = False,
     ) -> Sequence[str]:
         """Retrieve sql name (column name in BQ schema) of column(s)."""
-        labels = columns if _is_list_like(columns) else [columns]  # type:ignore
+        labels = columns if utils.is_list_like(columns) else [columns]  # type:ignore
         results: Sequence[str] = []
         for label in labels:
             col_ids = self._block.label_to_col_id.get(label, [])
@@ -303,13 +308,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             index_labels = []
             unnamed_index_count = 0
             for index_label in self._block.index_labels:
-                if index_label is None:
+                if isinstance(index_label, str):
+                    index_labels.append(index_label)
+                else:
                     index_labels.append(
                         indexes.INDEX_COLUMN_ID.format(unnamed_index_count),
                     )
                     unnamed_index_count += 1
-                else:
-                    index_labels.append(index_label)
 
             column_labels = column_labels + typing.cast(
                 List[Optional[str]], index_labels
@@ -365,22 +370,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def _set_internal_query_job(self, query_job: bigquery.QueryJob):
         self._query_job = query_job
 
-    @typing.overload
-    def __getitem__(self, key: bigframes.series.Series) -> DataFrame:
-        ...
-
-    @typing.overload
-    def __getitem__(self, key: Sequence[blocks.Label]) -> DataFrame:  # type:ignore
-        ...
-
-    @typing.overload
-    def __getitem__(self, key: pandas.Index) -> DataFrame:  # type:ignore
-        ...
-
-    @typing.overload
-    def __getitem__(self, key: blocks.Label) -> bigframes.series.Series:  # type:ignore
-        ...
-
     def __getitem__(
         self,
         key: Union[
@@ -390,7 +379,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             pandas.Index,
             bigframes.series.Series,
         ],
-    ) -> Union[bigframes.series.Series, "DataFrame"]:
+    ):  # No return type annotations (like pandas) as type cannot always be determined statically
         """Gets the specified column(s) from the DataFrame."""
         # NOTE: This implements the operations described in
         # https://pandas.pydata.org/docs/getting_started/intro_tutorials/03_subset_data.html
@@ -399,8 +388,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             return self._getitem_bool_series(key)
 
         sql_names = self._sql_names(key)
-        # Only input is a str and only find one column, returns a Series
-        if isinstance(key, str) and len(sql_names) == 1:
+        # Only input is a single key and only find one column, returns a Series
+        if (not utils.is_list_like(key)) and len(sql_names) == 1:
             return bigframes.series.Series(self._block.select_column(sql_names[0]))
 
         # Select a subset of columns or re-order columns.
@@ -417,7 +406,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         # projection?
 
         # Select a number of columns as DF.
-        key = key if _is_list_like(key) else [key]  # type:ignore
+        key = key if utils.is_list_like(key) else [key]  # type:ignore
 
         selected_ids: Tuple[str, ...] = ()
         for label in key:
@@ -763,7 +752,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if index:
             level_id = self._resolve_levels(level or 0)[0]
 
-            if _is_list_like(index):
+            if utils.is_list_like(index):
                 block, inverse_condition_id = block.apply_unary_op(
                     level_id, ops.IsInOp(index, match_nulls=True)
                 )
@@ -778,7 +767,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 self._block.value_columns
             )
         if columns:
-            if not _is_list_like(columns):
+            if not utils.is_list_like(columns):
                 columns = [columns]  # type:ignore
             columns = list(columns)
 
@@ -796,7 +785,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return DataFrame(self._block.reorder_levels(resolved_level_ids))
 
     def _resolve_levels(self, level: LevelsType) -> typing.Sequence[str]:
-        if _is_list_like(level):
+        if utils.is_list_like(level):
             levels = list(level)
         else:
             levels = [level]
@@ -804,7 +793,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         for level_ref in levels:
             if isinstance(level_ref, int):
                 resolved_level_ids.append(self._block.index_columns[level_ref])
-            elif isinstance(level_ref, str):
+            elif isinstance(level_ref, typing.Hashable):
                 matching_ids = self._block.index_name_to_col_id.get(level_ref, [])
                 if len(matching_ids) != 1:
                     raise ValueError("level name cannot be found or is ambiguous")
@@ -827,7 +816,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 f"rename_axis does not currently support any keyword arguments. {constants.FEEDBACK_LINK}"
             )
         # limited implementation: the new index name is simply the 'mapper' parameter
-        if _is_list_like(mapper):
+        if utils.is_list_like(mapper):
             labels = mapper
         else:
             labels = [mapper]
@@ -909,7 +898,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         append: bool = False,
         drop: bool = True,
     ) -> DataFrame:
-        if not _is_list_like(keys):
+        if not utils.is_list_like(keys):
             keys = typing.cast(typing.Sequence[blocks.Label], (keys,))
         else:
             keys = typing.cast(typing.Sequence[blocks.Label], tuple(keys))
@@ -943,7 +932,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if na_position not in {"first", "last"}:
             raise ValueError("Param na_position must be one of 'first' or 'last'")
 
-        sort_labels = (by,) if isinstance(by, str) else tuple(by)
+        sort_labels = tuple(by) if utils.is_list_like(by) else (by,)
         sort_column_ids = self._sql_names(sort_labels)
 
         len_by = len(sort_labels)
@@ -1118,7 +1107,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def agg(
         self, func: str | typing.Sequence[str]
     ) -> DataFrame | bigframes.series.Series:
-        if _is_list_like(func):
+        if utils.is_list_like(func):
             if any(
                 dtype not in bigframes.dtypes.NUMERIC_BIGFRAMES_TYPES
                 for dtype in self.dtypes
@@ -1410,7 +1399,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         as_index: bool = True,
         dropna: bool = True,
     ):
-        if not isinstance(by, bigframes.series.Series) and _is_list_like(by):
+        if not isinstance(by, bigframes.series.Series) and utils.is_list_like(by):
             by = list(by)
         else:
             by = [typing.cast(typing.Union[blocks.Label, bigframes.series.Series], by)]
@@ -1704,7 +1693,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         id_overrides = {
             col_id: col_label
             for col_id, col_label in zip(columns, column_labels)
-            if col_label
+            if col_label and isinstance(col_label, str)
         }
 
         if ordering_id is not None:
@@ -1766,7 +1755,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         if subset is None:
             column_ids = self._block.value_columns
-        elif _is_list_like(subset):
+        elif utils.is_list_like(subset):
             column_ids = [
                 id for label in subset for id in self._block.label_to_col_id[label]
             ]
@@ -1817,11 +1806,3 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     def _get_block(self) -> blocks.Block:
         return self._block
-
-
-def _is_list_like(obj: typing.Any) -> typing_extensions.TypeGuard[typing.Sequence]:
-    return pandas.api.types.is_list_like(obj)
-
-
-def _is_dict_like(obj: typing.Any) -> typing_extensions.TypeGuard[typing.Mapping]:
-    return pandas.api.types.is_dict_like(obj)

@@ -37,11 +37,11 @@ def bq_cf_connection_location() -> str:
 
 
 @pytest.fixture(scope="module")
-def bq_cf_connection_location_mistached() -> str:
+def bq_cf_connection_location_mismatched() -> str:
     """Pre-created BQ connection to invoke cloud function for bigframes-dev
-    $ bq show --connection --location=us-east1 --project_id=bigframes-dev bigframes-rf-conn
+    $ bq show --connection --location=eu --project_id=bigframes-dev bigframes-rf-conn
     """
-    return "us-east1.bigframes-rf-conn"
+    return "eu.bigframes-rf-conn"
 
 
 @pytest.fixture(scope="module")
@@ -53,11 +53,11 @@ def bq_cf_connection_location_project() -> str:
 
 
 @pytest.fixture(scope="module")
-def bq_cf_connection_location_project_mistached() -> str:
+def bq_cf_connection_location_project_mismatched() -> str:
     """Pre-created BQ connection to invoke cloud function for bigframes-dev
-    $ bq show --connection --location=us-east1 --project_id=bigframes-metrics bigframes-rf-conn
+    $ bq show --connection --location=eu --project_id=bigframes-metrics bigframes-rf-conn
     """
-    return "bigframes-metrics.us-east1.bigframes-rf-conn"
+    return "bigframes-metrics.eu.bigframes-rf-conn"
 
 
 @pytest.fixture(scope="module")
@@ -196,50 +196,28 @@ def test_remote_function_direct_no_session_param_location_specified(
 
 
 @pytest.mark.flaky(retries=2, delay=120)
-def test_remote_function_direct_no_session_param_location_mistached(
+def test_remote_function_direct_no_session_param_location_mismatched(
     bigquery_client,
     bigqueryconnection_client,
     cloudfunctions_client,
-    scalars_dfs,
     dataset_id_permanent,
-    bq_cf_connection_location_mistached,
+    bq_cf_connection_location_mismatched,
 ):
-    @remote_function(
-        [int],
-        int,
-        bigquery_client=bigquery_client,
-        bigquery_connection_client=bigqueryconnection_client,
-        cloud_functions_client=cloudfunctions_client,
-        dataset=dataset_id_permanent,
-        bigquery_connection=bq_cf_connection_location_mistached,
-        # See e2e tests for tests that actually deploy the Cloud Function.
-        reuse=True,
-    )
-    def square(x):
-        return x * x
+    with pytest.raises(ValueError):
 
-    scalars_df, scalars_pandas_df = scalars_dfs
-
-    bf_int64_col = scalars_df["int64_col"]
-    bf_int64_col_filter = bf_int64_col.notnull()
-    bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
-    bf_result_col = bf_int64_col_filtered.apply(square)
-    bf_result = (
-        bf_int64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
-    )
-
-    pd_int64_col = scalars_pandas_df["int64_col"]
-    pd_int64_col_filter = pd_int64_col.notnull()
-    pd_int64_col_filtered = pd_int64_col[pd_int64_col_filter]
-    pd_result_col = pd_int64_col_filtered.apply(lambda x: x * x)
-    # TODO(shobs): Figure why pandas .apply() changes the dtype, i.e.
-    # pd_int64_col_filtered.dtype is Int64Dtype()
-    # pd_int64_col_filtered.apply(lambda x: x * x).dtype is int64.
-    # For this test let's force the pandas dtype to be same as bigframes' dtype.
-    pd_result_col = pd_result_col.astype(pd.Int64Dtype())
-    pd_result = pd_int64_col_filtered.to_frame().assign(result=pd_result_col)
-
-    assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+        @remote_function(
+            [int],
+            int,
+            bigquery_client=bigquery_client,
+            bigquery_connection_client=bigqueryconnection_client,
+            cloud_functions_client=cloudfunctions_client,
+            dataset=dataset_id_permanent,
+            bigquery_connection=bq_cf_connection_location_mismatched,
+            # See e2e tests for tests that actually deploy the Cloud Function.
+            reuse=True,
+        )
+        def square(x):
+            return x * x
 
 
 @pytest.mark.flaky(retries=2, delay=120)
@@ -295,7 +273,7 @@ def test_remote_function_direct_no_session_param_project_mismatched(
     bigqueryconnection_client,
     cloudfunctions_client,
     dataset_id_permanent,
-    bq_cf_connection_location_project_mistached,
+    bq_cf_connection_location_project_mismatched,
 ):
     with pytest.raises(ValueError):
 
@@ -306,7 +284,7 @@ def test_remote_function_direct_no_session_param_project_mismatched(
             bigquery_connection_client=bigqueryconnection_client,
             cloud_functions_client=cloudfunctions_client,
             dataset=dataset_id_permanent,
-            bigquery_connection=bq_cf_connection_location_project_mistached,
+            bigquery_connection=bq_cf_connection_location_project_mismatched,
             # See e2e tests for tests that actually deploy the Cloud Function.
             reuse=True,
         )

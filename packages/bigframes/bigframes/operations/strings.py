@@ -82,6 +82,29 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
     def capitalize(self) -> series.Series:
         return self._apply_unary_op(ops.capitalize_op)
 
+    def match(self, pat, case=True, flags=0) -> series.Series:
+        # \A anchors start of entire string rather than start of any line in multiline mode
+        adj_pat = rf"\A{pat}"
+        return self.contains(adj_pat, case=case, flags=flags)
+
+    def fullmatch(self, pat, case=True, flags=0) -> series.Series:
+        # \A anchors start of entire string rather than start of any line in multiline mode
+        # \z likewise anchors to the end of the entire multiline string
+        adj_pat = rf"\A{pat}\z"
+        return self.contains(adj_pat, case=case, flags=flags)
+
+    def get(self, i: int) -> series.Series:
+        return self._apply_unary_op(ops.StrGetOp(i))
+
+    def pad(self, width, side="left", fillchar=" ") -> series.Series:
+        return self._apply_unary_op(ops.StrPadOp(width, fillchar, side))
+
+    def ljust(self, width, fillchar=" ") -> series.Series:
+        return self._apply_unary_op(ops.StrPadOp(width, fillchar, "right"))
+
+    def rjust(self, width, fillchar=" ") -> series.Series:
+        return self._apply_unary_op(ops.StrPadOp(width, fillchar, "left"))
+
     def contains(
         self, pat, case: bool = True, flags: int = 0, *, regex: bool = True
     ) -> series.Series:
@@ -95,7 +118,7 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
         else:
             return self._apply_unary_op(ops.ContainsStringOp(pat))
 
-    def extract(self, pat: str, flags: int = 0):
+    def extract(self, pat: str, flags: int = 0) -> df.DataFrame:
         re2flags = _parse_flags(flags)
         if re2flags:
             pat = re2flags + pat

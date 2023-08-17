@@ -47,7 +47,7 @@ import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 
 # Type constraint for wherever column labels are used
-Label = typing.Optional[str]
+Label = typing.Hashable
 
 # Bytes to Megabyte Conversion
 _BYTES_TO_KILOBYTES = 1024
@@ -585,8 +585,8 @@ class Block:
     def with_index_labels(self, value: typing.Sequence[Label]) -> Block:
         if len(value) != len(self.index_columns):
             raise ValueError(
-                f"The index labels size `{len(value)} ` should equal to the index"
-                + f"columns size: {len(self.value_columns)}."
+                f"The index labels size `{len(value)} ` should equal to the index "
+                + f"columns size: {len(self.index_columns)}."
             )
         return Block(
             self._expr,
@@ -1126,10 +1126,6 @@ def block_from_local(data, session=None, use_index=True) -> Block:
                 f"multi-indices not supported. {constants.FEEDBACK_LINK}"
             )
         index_label = pd_data.index.name
-        if (index_label is not None) and (not isinstance(index_label, str)):
-            raise NotImplementedError(
-                f"Only string index names supported. {constants.FEEDBACK_LINK}"
-            )
 
         index_id = guid.generate_guid()
         pd_data = pd_data.reset_index(names=index_id)

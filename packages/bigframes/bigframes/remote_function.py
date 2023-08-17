@@ -256,34 +256,6 @@ class RemoteFunctionClient:
     def check_bq_connection_exists(self):
         """Check if the BigQuery Connection exists."""
         client = self._bq_connection_client
-        if self._bq_connection_id.count(".") == 1:
-            bq_location, bq_connection_id = self._bq_connection_id.split(".")
-            if bq_location != self._bq_location:
-                logger.info(
-                    f"Reset location {self._bq_location} to match the"
-                    + f"location in connection name: {bq_location}"
-                )
-            self._bq_location = bq_location
-            self._bq_connection_id = bq_connection_id
-        elif self._bq_connection_id.count(".") == 2:
-            (
-                gcp_project_id,
-                bq_location,
-                bq_connection_id,
-            ) = self._bq_connection_id.split(".")
-            if gcp_project_id != self._gcp_project_id:
-                raise ValueError(
-                    "The project_id does not match BigQuery connection gcp_project_id: "
-                    f"{self._gcp_project_id}."
-                )
-            if bq_location != self._bq_location:
-                logger.info(
-                    f"Reset location {self._bq_location} to match the"
-                    + f"location in connection name: {bq_location}"
-                )
-            self._gcp_project_id = gcp_project_id
-            self._bq_location = bq_location
-            self._bq_connection_id = bq_connection_id
         request = bigquery_connection_v1.GetConnectionRequest(
             name=client.connection_path(
                 self._gcp_project_id, self._bq_location, self._bq_connection_id
@@ -796,6 +768,33 @@ def remote_function(
         uniq_suffix = "".join(
             random.choices(string.ascii_lowercase + string.digits, k=8)
         )
+
+    # Check connection_id with `LOCATION.CONNECTION_ID` or `PROJECT_ID.LOCATION.CONNECTION_ID` format.
+    if bigquery_connection.count(".") == 1:
+        bq_connection_location, bq_connection_id = bigquery_connection.split(".")
+        if bq_connection_location.casefold() != bq_location.casefold():
+            raise ValueError(
+                "The location does not match BigQuery connection location: "
+                f"{bq_location}."
+            )
+        bigquery_connection = bq_connection_id
+    elif bigquery_connection.count(".") == 2:
+        (
+            gcp_project_id,
+            bq_connection_location,
+            bq_connection_id,
+        ) = bigquery_connection.split(".")
+        if gcp_project_id.casefold() != dataset_ref.project.casefold():
+            raise ValueError(
+                "The project_id does not match BigQuery connection gcp_project_id: "
+                f"{dataset_ref.project}."
+            )
+        if bq_connection_location.casefold() != bq_location.casefold():
+            raise ValueError(
+                "The location does not match BigQuery connection location: "
+                f"{bq_location}."
+            )
+        bigquery_connection = bq_connection_id
 
     def wrapper(f):
         if not callable(f):

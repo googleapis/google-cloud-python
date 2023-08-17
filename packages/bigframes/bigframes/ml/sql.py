@@ -146,6 +146,13 @@ def ml_evaluate(model_name: str, source_sql: Union[str, None] = None) -> str:
   ({source_sql}))"""
 
 
+def ml_centroids(
+    model_name: str,
+) -> str:
+    """Encode ML.CENTROIDS for BQML"""
+    return f"""SELECT * FROM ML.CENTROIDS(MODEL `{model_name}`)"""
+
+
 def ml_predict(model_name: str, source_sql: str) -> str:
     """Encode ML.PREDICT for BQML"""
     return f"""SELECT * FROM ML.PREDICT(MODEL `{model_name}`,

@@ -88,5 +88,71 @@ def test_kmeans_score(session, penguins_kmeans_model: cluster.KMeans):
     )
 
 
+def test_kmeans_cluster_centers(penguins_kmeans_model: cluster.KMeans):
+    result = penguins_kmeans_model.cluster_centers_.to_pandas()
+    expected = pd.DataFrame(
+        {
+            "centroid_id": [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3],
+            "feature": [
+                "culmen_length_mm",
+                "culmen_depth_mm",
+                "flipper_length_mm",
+                "sex",
+            ]
+            * 3,
+            "numerical_value": [
+                47.509677,
+                14.993548,
+                217.040123,
+                pd.NA,
+                38.207813,
+                18.03125,
+                187.992188,
+                pd.NA,
+                47.036346,
+                18.834808,
+                197.1612,
+                pd.NA,
+            ],
+            "categorical_value": [
+                [],
+                [],
+                [],
+                [
+                    {"category": ".", "value": 0.008064516129032258},
+                    {"category": "MALE", "value": 0.49193548387096775},
+                    {"category": "FEMALE", "value": 0.47580645161290325},
+                    {"category": "_null_filler", "value": 0.024193548387096774},
+                ],
+                [],
+                [],
+                [],
+                [
+                    {"category": "MALE", "value": 0.34375},
+                    {"category": "FEMALE", "value": 0.625},
+                    {"category": "_null_filler", "value": 0.03125},
+                ],
+                [],
+                [],
+                [],
+                [
+                    {"category": "MALE", "value": 0.6847826086956522},
+                    {"category": "FEMALE", "value": 0.2826086956521739},
+                    {"category": "_null_filler", "value": 0.03260869565217391},
+                ],
+            ],
+        },
+    )
+    pd.testing.assert_frame_equal(
+        result,
+        expected,
+        check_exact=False,
+        rtol=0.1,
+        # int64 Index by default in pandas versus Int64 (nullable) Index in BigQuery DataFrame
+        check_index_type=False,
+        check_dtype=False,
+    )
+
+
 def test_loaded_config(penguins_kmeans_model):
     assert penguins_kmeans_model.n_clusters == 3

@@ -28,6 +28,8 @@ try:
 except ImportError:
     pandas_gbq = None
 
+import typing
+
 import bigframes
 import bigframes.dataframe
 
@@ -80,7 +82,7 @@ def test_to_csv_index(
     if scalars_df.index.name is not None:
         path = gcs_folder + f"test_index_df_to_csv_index_{index}*.csv"
         if index:
-            index_col = scalars_df.index.name
+            index_col = typing.cast(str, scalars_df.index.name)
     else:
         path = gcs_folder + f"test_default_index_df_to_csv_index_{index}*.csv"
 
@@ -118,7 +120,7 @@ def test_to_csv_tabs(
         pytest.skip("date_format parameter not supported in pandas 1.x.")
     """Test the `to_csv` API with the `sep` parameter."""
     scalars_df, scalars_pandas_df = scalars_dfs
-    index_col = scalars_df.index.name
+    index_col = typing.cast(str, scalars_df.index.name)
     path = gcs_folder + "test_to_csv_tabs*.csv"
 
     # TODO(swast): Support "date_format" parameter and make sure our

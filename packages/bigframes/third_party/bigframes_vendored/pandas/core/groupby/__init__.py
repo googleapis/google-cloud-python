@@ -302,8 +302,49 @@ class GroupBy:
 
 
 class SeriesGroupBy(GroupBy):
-    pass
+    def agg(self, func):
+        """
+        Aggregate using one or more operations.
+
+        Args:
+            func : function, str, list, dict or None
+                Function to use for aggregating the data.
+
+                Accepted combinations are:
+
+                - string function name
+                - list of function names, e.g. ``['sum', 'mean']``
+
+        Returns:
+            Series or DataFrame
+        """
+        raise NotImplementedError("abstract property")
 
 
 class DataFrameGroupBy(GroupBy):
-    pass
+    def agg(self, func, **kwargs):
+        """
+        Aggregate using one or more operations.
+
+        Args:
+            func (function, str, list, dict or None):
+                Function to use for aggregating the data.
+
+                Accepted combinations are:
+
+                - string function name
+                - list of function names, e.g. ``['sum', 'mean']``
+                - dict of axis labels -> function names or list of such.
+                - None, in which case ``**kwargs`` are used with Named Aggregation. Here the
+                  output has one column for each element in ``**kwargs``. The name of the
+                  column is keyword, whereas the value determines the aggregation used to compute
+                  the values in the column.
+
+            kwargs
+                If ``func`` is None, ``**kwargs`` are used to define the output names and
+                aggregations via Named Aggregation. See ``func`` entry.
+
+        Returns:
+            DataFrame
+        """
+        raise NotImplementedError("abstract property")

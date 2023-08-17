@@ -75,6 +75,11 @@ def create_snapshot_sql(
     if table_ref.dataset_id.upper() == "_SESSION":
         return f"SELECT * FROM `_SESSION`.`{table_ref.table_id}`"
 
+    # If we have an anonymous query results table, it can't be modified and
+    # there isn't any BigQuery time travel.
+    if table_ref.dataset_id.startswith("_"):
+        return f"SELECT * FROM `{table_ref.project}`.`{table_ref.dataset_id}`.`{table_ref.table_id}`"
+
     return textwrap.dedent(
         f"""
         SELECT *

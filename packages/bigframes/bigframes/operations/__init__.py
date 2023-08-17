@@ -134,6 +134,42 @@ class ContainsRegexOp(UnaryOp):
         return typing.cast(ibis_types.StringValue, x).re_search(self._pat)
 
 
+class StrGetOp(UnaryOp):
+    def __init__(self, i: int):
+        self._i = i
+
+    def _as_ibis(self, x: ibis_types.Value):
+        substr = typing.cast(
+            ibis_types.StringValue, typing.cast(ibis_types.StringValue, x)[self._i]
+        )
+        return substr.nullif(ibis_types.literal(""))
+
+
+class StrPadOp(UnaryOp):
+    def __init__(
+        self, length: int, fillchar: str, side: typing.Literal["both", "left", "right"]
+    ):
+        self._length = length
+        self._fillchar = fillchar
+        self._side = side
+
+    def _as_ibis(self, x: ibis_types.Value):
+        str_val = typing.cast(ibis_types.StringValue, x)
+
+        # SQL pad operations will truncate, we do not want to truncate though.
+        pad_length = ibis.greatest(str_val.length(), self._length)
+        if self._side == "left":
+            return str_val.lpad(pad_length, self._fillchar)
+        elif self._side == "right":
+            return str_val.rpad(pad_length, self._fillchar)
+        else:  # side == both
+            # Pad more on right side if can't pad both sides equally
+            lpad_amount = ((pad_length - str_val.length()) // 2) + str_val.length()
+            return str_val.lpad(lpad_amount, self._fillchar).rpad(
+                pad_length, self._fillchar
+            )
+
+
 class ReplaceStringOp(UnaryOp):
     def __init__(self, pat: str, repl: str):
         self._pat = pat

@@ -504,6 +504,38 @@ WHERE
 
 
 @pytest.fixture(scope="session")
+def penguins_kmeans_model_name(
+    session: bigframes.Session, dataset_id_permanent, penguins_table_id
+) -> str:
+    """Provides a pretrained model as a test fixture that is cached across test runs.
+    This lets us run system tests without having to wait for a model.fit(...)"""
+    sql = f"""
+CREATE OR REPLACE MODEL `$model_name`
+OPTIONS (
+    model_type='kmeans',
+    num_clusters=3
+) AS SELECT
+    culmen_length_mm,
+    culmen_depth_mm,
+    flipper_length_mm,
+    sex
+FROM `{penguins_table_id}`"""
+    # We use the SQL hash as the name to ensure the model is regenerated if this fixture is edited
+    model_name = f"{dataset_id_permanent}.penguins_logistic_reg_{hashlib.md5(sql.encode()).hexdigest()}"
+    sql = sql.replace("$model_name", model_name)
+
+    try:
+        session.bqclient.get_model(model_name)
+    except google.cloud.exceptions.NotFound:
+        logging.info(
+            "penguins_logistic_model fixture was not found in the permanent dataset, regenerating it..."
+        )
+        session.bqclient.query(sql).result()
+    finally:
+        return model_name
+
+
+@pytest.fixture(scope="session")
 def penguins_xgbregressor_model_name(
     session: bigframes.Session, dataset_id_permanent, penguins_table_id
 ) -> str:

@@ -314,3 +314,116 @@ class StringMethods:
                 pattern matches the end of each string element.
         """
         raise NotImplementedError("abstract method")
+
+    def match(self, pat: str, case: bool = True, flags: int = 0):
+        """
+        Determine if each string starts with a match of a regular expression.
+
+        Args:
+            pat (str):
+                Character sequence or regular expression.
+            case (bool):
+                If True, case sensitive.
+            flags (int, default 0):
+                Regex module flags, e.g. re.IGNORECASE.
+
+        Returns:
+            bigframes.series.Series: Series of boolean values
+        """
+        raise NotImplementedError("abstract method")
+
+    def fullmatch(self, pat: str, case: bool = True, flags: int = 0):
+        """
+        Determine if each string entirely matches a regular expression.
+
+        Args:
+            pat (str):
+                Character sequence or regular expression.
+            case (bool):
+                If True, case sensitive.
+            flags (int, default 0):
+                Regex module flags, e.g. re.IGNORECASE.
+
+        Returns:
+            bigframes.series.Series: Series of boolean values
+        """
+        raise NotImplementedError("abstract method")
+
+    def get(self, i: int):
+        """
+        Extract element from each component at specified position or with specified key.
+
+        Extract element from lists, tuples, dict, or strings in each element in the
+        Series/Index.
+
+        Args:
+            i (int):
+                Position or key of element to extract.
+
+        Returns:
+            bigframes.series.Series: Series
+        """
+        raise NotImplementedError("abstract method")
+
+    def pad(
+        self,
+        width: int,
+        side: typing.Literal["left", "right", "both"] = "left",
+        fillchar: str = " ",
+    ):
+        """
+        Pad strings in the Series/Index up to width.
+
+        Args:
+            width (int):
+                Minimum width of resulting string; additional characters will be filled
+                with character defined in `fillchar`.
+            side ({'left', 'right', 'both'}, default 'left'):
+                Side from which to fill resulting string.
+            fillchar (str, default ' '):
+                Additional character for filling, default is whitespace.
+
+        Returns:
+            bigframes.series.Series: Returns Series or Index with minimum number of char in object.
+        """
+        raise NotImplementedError("abstract method")
+
+    def ljust(
+        self,
+        width: int,
+        fillchar: str = " ",
+    ):
+        """
+        Pad right side of strings in the Series/Index up to width.
+
+        Args:
+            width (int):
+                Minimum width of resulting string; additional characters will be filled
+                with character defined in `fillchar`.
+            fillchar (str, default ' '):
+                Additional character for filling, default is whitespace.
+
+        Returns:
+            bigframes.series.Series: Returns Series or Index with minimum number of char in object.
+        """
+        raise NotImplementedError("abstract method")
+
+    def rjust(
+        self,
+        width: int,
+        fillchar: str = " ",
+    ):
+        """
+        Pad left side of strings in the Series/Index up to width.
+
+        Args:
+            width (int):
+                Minimum width of resulting string; additional characters will be filled
+                with character defined in `fillchar`.
+            fillchar (str, default ' '):
+                Additional character for filling, default is whitespace.
+
+        Returns:
+            bigframes.series.Series: Returns Series or Index with minimum number of char in object.
+        """
+        raise NotImplementedError("abstract method")

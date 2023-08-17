@@ -25,6 +25,7 @@ from typing import Dict, List
 import warnings
 
 import nox
+import nox.sessions
 
 BLACK_VERSION = "black==22.3.0"
 ISORT_VERSION = "isort==5.12.0"
@@ -272,7 +273,7 @@ def install_systemtest_dependencies(session, install_test_extra, *constraints):
 
 
 def run_system(
-    session,
+    session: nox.sessions.Session,
     prefix_name,
     test_folder,
     *,
@@ -299,8 +300,8 @@ def run_system(
     pytest_cmd = [
         "py.test",
         "--quiet",
-        "-n 20",
-        # Any indivisual test taking longer than 10 mins will be terminated.
+        "-n=20",
+        # Any individual test taking longer than 10 mins will be terminated.
         "--timeout=900",
         f"--junitxml={prefix_name}_{session.python}_sponge_log.xml",
     ]
@@ -331,7 +332,7 @@ def run_system(
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
-def system(session):
+def system(session: nox.sessions.Session):
     """Run the system test suite."""
     run_system(
         session=session,
@@ -342,7 +343,7 @@ def system(session):
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS[-1])
-def system_noextras(session):
+def system_noextras(session: nox.sessions.Session):
     """Run the system test suite."""
     run_system(
         session=session,
@@ -353,7 +354,7 @@ def system_noextras(session):
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS[-1])
-def doctest(session):
+def doctest(session: nox.sessions.Session):
     """Run the system test suite."""
     run_system(
         session=session,
@@ -365,7 +366,7 @@ def doctest(session):
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS[-1])
-def e2e(session):
+def e2e(session: nox.sessions.Session):
     """Run the large tests in system test suite."""
     run_system(
         session=session,
@@ -484,7 +485,7 @@ def docfx(session):
     )
 
 
-def prerelease(session, tests_path):
+def prerelease(session: nox.sessions.Session, tests_path):
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
@@ -559,8 +560,8 @@ def prerelease(session, tests_path):
     session.run(
         "py.test",
         "--quiet",
-        "-n 20",
-        # Any indivisual test taking longer than 10 mins will be terminated.
+        "-n=20",
+        # Any individual test taking longer than 10 mins will be terminated.
         "--timeout=600",
         f"--junitxml={os.path.split(tests_path)[-1]}_prerelease_{session.python}_sponge_log.xml",
         "--cov=bigframes",
@@ -575,13 +576,13 @@ def prerelease(session, tests_path):
 
 
 @nox.session(python=UNIT_TEST_PYTHON_VERSIONS[-1])
-def unit_prerelease(session):
+def unit_prerelease(session: nox.sessions.Session):
     """Run the unit test suite with prerelease dependencies."""
     prerelease(session, os.path.join("tests", "unit"))
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS[-1])
-def system_prerelease(session):
+def system_prerelease(session: nox.sessions.Session):
     """Run the system test suite with prerelease dependencies."""
     prerelease(session, os.path.join("tests", "system", "small"))
 

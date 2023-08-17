@@ -15,14 +15,13 @@
 from __future__ import annotations
 
 import typing
-
-import pandas as pd
-import typing_extensions
+import warnings
 
 import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.ordering as order
+import bigframes.core.utils as utils
 import bigframes.core.window as windows
 import bigframes.dataframe as df
 import bigframes.dtypes as dtypes
@@ -75,7 +74,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             typing.Sequence[blocks.Label],
         ],
     ):
-        if _is_list_like(key):
+        if utils.is_list_like(key):
             keys = list(key)
         else:
             keys = [key]
@@ -168,6 +167,76 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
     def cumprod(self, *args, **kwargs) -> df.DataFrame:
         return self._apply_window_op(agg_ops.product_op, numeric_only=True)
 
+    def agg(self, func=None, **kwargs) -> df.DataFrame:
+        column_labels = []
+        if func:
+            warnings.warn(
+                "DataFrameGroupby aggregate produces single-level column labels only currently. Subject to change in future versions."
+            )
+            if isinstance(func, str):
+                aggregations = [
+                    (col_id, agg_ops.AGGREGATIONS_LOOKUP[func])
+                    for col_id in self._aggregated_columns()
+                ]
+            elif utils.is_dict_like(func):
+                aggregations = []
+                for label, funcs_for_id in func.items():
+                    col_id = self._resolve_label(label)
+                    func_list = (
+                        funcs_for_id
+                        if utils.is_list_like(funcs_for_id)
+                        else [funcs_for_id]
+                    )
+                    for f in func_list:
+                        aggregations.append((col_id, agg_ops.AGGREGATIONS_LOOKUP[f]))
+                        # Pandas creates multi-index here instead
+                        column_labels.append(f"{label}_{f}")
+            elif utils.is_list_like(func):
+                aggregations = [
+                    (col_id, agg_ops.AGGREGATIONS_LOOKUP[f])
+                    for col_id in self._aggregated_columns()
+                    for f in func
+                ]
+                column_labels = [
+                    f"{self._block.col_id_to_label[col_id]}_{f}"
+                    for col_id in self._aggregated_columns()
+                    for f in func
+                ]
+            else:
+                raise NotImplementedError(
+                    f"Aggregate with {func} not supported. {constants.FEEDBACK_LINK}"
+                )
+        else:
+            aggregations = []
+            for k, v in kwargs.items():
+                if not isinstance(k, str):
+                    raise NotImplementedError(
+                        f"Only string aggregate names supported. {constants.FEEDBACK_LINK}"
+                    )
+                if not hasattr(v, "column") or not hasattr(v, "aggfunc"):
+                    import bigframes.pandas as bpd
+
+                    raise NotImplementedError(
+                        f"kwargs values must be {bpd.NamedAgg.__qualname__}"
+                    )
+                col_id = self._resolve_label(v.column)
+                aggregations.append((col_id, agg_ops.AGGREGATIONS_LOOKUP[v.aggfunc]))
+                column_labels.append(k)
+
+        agg_block, _ = self._block.aggregate(
+            by_column_ids=self._by_col_ids,
+            aggregations=aggregations,
+            as_index=self._as_index,
+            dropna=self._dropna,
+        )
+
+        if column_labels:
+            agg_block = agg_block.with_column_labels(column_labels)
+
+        return df.DataFrame(agg_block)
+
+    aggregate = agg
+
     def _raise_on_non_numeric(self, op: str):
         if not all(
             dtype in dtypes.NUMERIC_BIGFRAMES_TYPES for dtype in self._block.dtypes
@@ -222,6 +291,15 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         block = block.select_columns(columns)
         return df.DataFrame(block)
 
+    def _resolve_label(self, label: blocks.Label) -> str:
+        """Resolve label to column id."""
+        col_ids = self._block.label_to_col_id.get(label, ())
+        if len(col_ids) > 1:
+            raise ValueError(f"Label {label} is ambiguous")
+        if len(col_ids) == 0:
+            raise ValueError(f"Label {label} does not match any columns")
+        return col_ids[0]
+
 
 class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
     __doc__ = vendored_pandas_groupby.GroupBy.__doc__
@@ -231,7 +309,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         block: blocks.Block,
         value_column: str,
         by_col_ids: typing.Sequence[str],
-        value_name: typing.Optional[str] = None,
+        value_name: blocks.Label = None,
         dropna=True,
     ):
         # TODO(tbergeron): Support more group-by expression types
@@ -277,6 +355,36 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
 
     def prod(self, *args) -> series.Series:
         return self._aggregate(agg_ops.product_op)
+
+    def agg(self, func=None) -> typing.Union[df.DataFrame, series.Series]:
+        column_names: list[str] = []
+        if isinstance(func, str):
+            aggregations = [(self._value_column, agg_ops.AGGREGATIONS_LOOKUP[func])]
+            column_names = [func]
+        elif utils.is_list_like(func):
+            aggregations = [
+                (self._value_column, agg_ops.AGGREGATIONS_LOOKUP[f]) for f in func
+            ]
+            column_names = list(func)
+        else:
+            raise NotImplementedError(
+                f"Aggregate with {func} not supported. {constants.FEEDBACK_LINK}"
+            )
+
+        agg_block, _ = self._block.aggregate(
+            by_column_ids=self._by_col_ids,
+            aggregations=aggregations,
+            dropna=self._dropna,
+        )
+
+        if column_names:
+            agg_block = agg_block.with_column_labels(column_names)
+
+        if len(aggregations) > 1:
+            return df.DataFrame(agg_block)
+        return series.Series(agg_block)
+
+    aggregate = agg
 
     def cumsum(self, *args, **kwargs) -> series.Series:
         return self._apply_window_op(
@@ -374,7 +482,3 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
             skip_null_groups=self._dropna,
         )
         return series.Series(block.select_column(result_id))
-
-
-def _is_list_like(obj: typing.Any) -> typing_extensions.TypeGuard[typing.Sequence]:
-    return pd.api.types.is_list_like(obj)

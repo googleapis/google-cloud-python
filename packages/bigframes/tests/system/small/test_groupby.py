@@ -15,6 +15,8 @@
 import pandas as pd
 import pytest
 
+import bigframes.pandas as bpd
+
 
 @pytest.mark.parametrize(
     ("operator"),
@@ -81,6 +83,73 @@ def test_dataframe_groupby_aggregate(
     col_names = ["int64_too", "float64_col", "int64_col", "bool_col", "string_col"]
     bf_result = operator(scalars_df_index[col_names].groupby("string_col"))
     pd_result = operator(scalars_pandas_df_index[col_names].groupby("string_col"))
+    bf_result_computed = bf_result.to_pandas()
+
+    pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
+
+
+def test_dataframe_groupby_agg_string(scalars_df_index, scalars_pandas_df_index):
+    col_names = ["int64_too", "float64_col", "int64_col", "bool_col", "string_col"]
+    bf_result = scalars_df_index[col_names].groupby("string_col").agg("count")
+    pd_result = scalars_pandas_df_index[col_names].groupby("string_col").agg("count")
+    bf_result_computed = bf_result.to_pandas()
+
+    pd.testing.assert_frame_equal(
+        pd_result,
+        bf_result_computed,
+        check_dtype=False,
+    )
+
+
+def test_dataframe_groupby_agg_list(scalars_df_index, scalars_pandas_df_index):
+    col_names = ["int64_too", "float64_col", "int64_col", "bool_col", "string_col"]
+    bf_result = scalars_df_index[col_names].groupby("string_col").agg(["count", "min"])
+    pd_result = (
+        scalars_pandas_df_index[col_names].groupby("string_col").agg(["count", "min"])
+    )
+    bf_result_computed = bf_result.to_pandas()
+
+    # Pandas produces multi-index which isn't supported in bq df yet
+    pd_result = pd_result.set_axis(bf_result.columns, axis=1)
+    pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
+
+
+def test_dataframe_groupby_agg_dict(scalars_df_index, scalars_pandas_df_index):
+    col_names = ["int64_too", "float64_col", "int64_col", "bool_col", "string_col"]
+    bf_result = (
+        scalars_df_index[col_names]
+        .groupby("string_col")
+        .agg({"int64_too": ["mean", "max"], "string_col": "count"})
+    )
+    pd_result = (
+        scalars_pandas_df_index[col_names]
+        .groupby("string_col")
+        .agg({"int64_too": ["mean", "max"], "string_col": "count"})
+    )
+    bf_result_computed = bf_result.to_pandas()
+
+    # Pandas produces multi-index which isn't supported in bq df yet
+    pd_result = pd_result.set_axis(bf_result.columns, axis=1)
+    pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
+
+
+def test_dataframe_groupby_agg_named(scalars_df_index, scalars_pandas_df_index):
+    col_names = ["int64_too", "float64_col", "int64_col", "bool_col", "string_col"]
+    bf_result = (
+        scalars_df_index[col_names]
+        .groupby("string_col")
+        .agg(
+            agg1=bpd.NamedAgg("int64_too", "sum"),
+            agg2=bpd.NamedAgg("float64_col", "max"),
+        )
+    )
+    pd_result = (
+        scalars_pandas_df_index[col_names]
+        .groupby("string_col")
+        .agg(
+            agg1=pd.NamedAgg("int64_too", "sum"), agg2=pd.NamedAgg("float64_col", "max")
+        )
+    )
     bf_result_computed = bf_result.to_pandas()
 
     pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
@@ -173,3 +242,39 @@ def test_dataframe_groupby_getitem_list(
     )
 
     pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+
+
+def test_series_groupby_agg_string(scalars_df_index, scalars_pandas_df_index):
+    bf_result = (
+        scalars_df_index["int64_col"]
+        .groupby(scalars_df_index["string_col"])
+        .agg("count")
+    )
+    pd_result = (
+        scalars_pandas_df_index["int64_col"]
+        .groupby(scalars_pandas_df_index["string_col"])
+        .agg("count")
+    )
+    bf_result_computed = bf_result.to_pandas()
+
+    pd.testing.assert_series_equal(
+        pd_result, bf_result_computed, check_dtype=False, check_names=False
+    )
+
+
+def test_series_groupby_agg_list(scalars_df_index, scalars_pandas_df_index):
+    bf_result = (
+        scalars_df_index["int64_col"]
+        .groupby(scalars_df_index["string_col"])
+        .agg(["sum", "mean"])
+    )
+    pd_result = (
+        scalars_pandas_df_index["int64_col"]
+        .groupby(scalars_pandas_df_index["string_col"])
+        .agg(["sum", "mean"])
+    )
+    bf_result_computed = bf_result.to_pandas()
+
+    pd.testing.assert_frame_equal(
+        pd_result, bf_result_computed, check_dtype=False, check_names=False
+    )

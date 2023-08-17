@@ -37,7 +37,7 @@ class Index(vendored_pandas_index.Index):
         self._data = data
 
     @property
-    def name(self) -> typing.Optional[str]:
+    def name(self) -> blocks.Label:
         return self.names[0]
 
     @name.setter
@@ -105,11 +105,11 @@ class IndexValue:
         return self._block.expr
 
     @property
-    def name(self) -> typing.Optional[str]:
+    def name(self) -> blocks.Label:
         return self._block._index_labels[0]
 
     @property
-    def names(self) -> typing.Sequence[typing.Optional[str]]:
+    def names(self) -> typing.Sequence[blocks.Label]:
         return self._block._index_labels
 
     @property

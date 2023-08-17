@@ -86,6 +86,14 @@ def test_get_column(scalars_dfs):
     assert_series_equal_ignoring_order(bf_result, pd_result)
 
 
+def test_get_column_nonstring(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    series = scalars_df.rename(columns={"int64_col": 123.1})[123.1]
+    bf_result = series.to_pandas()
+    pd_result = scalars_pandas_df.rename(columns={"int64_col": 123.1})[123.1]
+    assert_series_equal_ignoring_order(bf_result, pd_result)
+
+
 def test_hasattr(scalars_dfs):
     scalars_df, _ = scalars_dfs
     assert hasattr(scalars_df, "int64_col")
@@ -215,7 +223,7 @@ def test_drop_index_and_columns(scalars_dfs):
 
 def test_rename(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
-    col_name_dict = {"bool_col": "boolean_col"}
+    col_name_dict = {"bool_col": 1.2345}
     df_pandas = scalars_df.rename(columns=col_name_dict).to_pandas()
     pd.testing.assert_index_equal(
         df_pandas.columns, scalars_pandas_df.rename(columns=col_name_dict).columns
@@ -1744,6 +1752,16 @@ def test_iloc_empty_list(scalars_df_index, scalars_pandas_df_index):
 def test_rename_axis(scalars_df_index, scalars_pandas_df_index):
     bf_result = scalars_df_index.rename_axis("newindexname")
     pd_result = scalars_pandas_df_index.rename_axis("newindexname")
+
+    pd.testing.assert_frame_equal(
+        bf_result.to_pandas(),
+        pd_result,
+    )
+
+
+def test_rename_axis_nonstring(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index.rename_axis((4,))
+    pd_result = scalars_pandas_df_index.rename_axis((4,))
 
     pd.testing.assert_frame_equal(
         bf_result.to_pandas(),

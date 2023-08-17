@@ -21,7 +21,7 @@ import pyarrow as pa
 import pytz
 
 import bigframes
-import bigframes.ml.core
+from bigframes.ml import core
 
 
 def test_model_eval(
@@ -74,9 +74,73 @@ def test_model_eval_with_data(penguins_bqml_linear_model, penguins_df_default_in
     )
 
 
-def test_model_predict(
-    penguins_bqml_linear_model: bigframes.ml.core.BqmlModel, new_penguins_df
-):
+def test_model_centroids(penguins_bqml_kmeans_model: core.BqmlModel):
+    result = penguins_bqml_kmeans_model.centroids().to_pandas()
+    expected = pd.DataFrame(
+        {
+            "centroid_id": [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3],
+            "feature": [
+                "culmen_length_mm",
+                "culmen_depth_mm",
+                "flipper_length_mm",
+                "sex",
+            ]
+            * 3,
+            "numerical_value": [
+                47.509677,
+                14.993548,
+                217.040123,
+                pd.NA,
+                38.207813,
+                18.03125,
+                187.992188,
+                pd.NA,
+                47.036346,
+                18.834808,
+                197.1612,
+                pd.NA,
+            ],
+            "categorical_value": [
+                [],
+                [],
+                [],
+                [
+                    {"category": ".", "value": 0.008064516129032258},
+                    {"category": "MALE", "value": 0.49193548387096775},
+                    {"category": "FEMALE", "value": 0.47580645161290325},
+                    {"category": "_null_filler", "value": 0.024193548387096774},
+                ],
+                [],
+                [],
+                [],
+                [
+                    {"category": "MALE", "value": 0.34375},
+                    {"category": "FEMALE", "value": 0.625},
+                    {"category": "_null_filler", "value": 0.03125},
+                ],
+                [],
+                [],
+                [],
+                [
+                    {"category": "MALE", "value": 0.6847826086956522},
+                    {"category": "FEMALE", "value": 0.2826086956521739},
+                    {"category": "_null_filler", "value": 0.03260869565217391},
+                ],
+            ],
+        },
+    )
+    pd.testing.assert_frame_equal(
+        result,
+        expected,
+        check_exact=False,
+        rtol=0.1,
+        # int64 Index by default in pandas versus Int64 (nullable) Index in BigQuery DataFrame
+        check_index_type=False,
+        check_dtype=False,
+    )
+
+
+def test_model_predict(penguins_bqml_linear_model: core.BqmlModel, new_penguins_df):
     predictions = penguins_bqml_linear_model.predict(new_penguins_df).to_pandas()
     expected = pd.DataFrame(
         {"predicted_body_mass_g": [4030.1, 3280.8, 3177.9]},
@@ -92,7 +156,7 @@ def test_model_predict(
 
 
 def test_model_predict_with_unnamed_index(
-    penguins_bqml_linear_model: bigframes.ml.core.BqmlModel, new_penguins_df
+    penguins_bqml_linear_model: core.BqmlModel, new_penguins_df
 ):
 
     # This will result in an index that lacks a name, which the ML library will
@@ -121,7 +185,7 @@ def test_model_predict_with_unnamed_index(
 
 
 def test_model_generate_text(
-    bqml_palm2_text_generator_model: bigframes.ml.core.BqmlModel, llm_text_df
+    bqml_palm2_text_generator_model: core.BqmlModel, llm_text_df
 ):
     options = {
         "temperature": 0.5,
@@ -148,7 +212,7 @@ def test_model_generate_text(
     assert all(series.str.len() > 20)
 
 
-def test_model_forecast(time_series_bqml_arima_plus_model: bigframes.ml.core.BqmlModel):
+def test_model_forecast(time_series_bqml_arima_plus_model: core.BqmlModel):
     utc = pytz.utc
     forecast = time_series_bqml_arima_plus_model.forecast().to_pandas()[
         ["forecast_timestamp", "forecast_value"]

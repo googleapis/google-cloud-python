@@ -357,3 +357,86 @@ def test_cat_with_series(scalars_dfs):
         pd_result,
         bf_result,
     )
+
+
+def test_str_match(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_name = "string_col"
+    pattern = "[A-Z].*"
+    bf_series: bigframes.series.Series = scalars_df[col_name]
+    bf_result = bf_series.str.match(pattern).to_pandas()
+    pd_result = scalars_pandas_df[col_name].str.match(pattern)
+
+    assert_series_equal_ignoring_order(
+        pd_result,
+        bf_result,
+    )
+
+
+def test_str_fullmatch(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_name = "string_col"
+    pattern = "[A-Z].*!"
+    bf_series: bigframes.series.Series = scalars_df[col_name]
+    bf_result = bf_series.str.fullmatch(pattern).to_pandas()
+    pd_result = scalars_pandas_df[col_name].str.fullmatch(pattern)
+
+    assert_series_equal_ignoring_order(
+        pd_result,
+        bf_result,
+    )
+
+
+def test_str_get(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_name = "string_col"
+    bf_series: bigframes.series.Series = scalars_df[col_name]
+    bf_result = bf_series.str.get(8).to_pandas()
+    pd_result = scalars_pandas_df[col_name].str.get(8)
+
+    print(pd_result)
+    print(bf_result)
+
+    assert_series_equal_ignoring_order(
+        pd_result,
+        bf_result,
+    )
+
+
+def test_str_pad(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_name = "string_col"
+    bf_series: bigframes.series.Series = scalars_df[col_name]
+    bf_result = bf_series.str.pad(8, side="both", fillchar="%").to_pandas()
+    pd_result = scalars_pandas_df[col_name].str.pad(8, side="both", fillchar="%")
+
+    assert_series_equal_ignoring_order(
+        pd_result,
+        bf_result,
+    )
+
+
+def test_str_ljust(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_name = "string_col"
+    bf_series: bigframes.series.Series = scalars_df[col_name]
+    bf_result = bf_series.str.ljust(7, fillchar="%").to_pandas()
+    pd_result = scalars_pandas_df[col_name].str.ljust(7, fillchar="%")
+
+    assert_series_equal_ignoring_order(
+        pd_result,
+        bf_result,
+    )
+
+
+def test_str_rjust(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_name = "string_col"
+    bf_series: bigframes.series.Series = scalars_df[col_name]
+    bf_result = bf_series.str.rjust(9, fillchar="%").to_pandas()
+    pd_result = scalars_pandas_df[col_name].str.rjust(9, fillchar="%")
+
+    assert_series_equal_ignoring_order(
+        pd_result,
+        bf_result,
+    )

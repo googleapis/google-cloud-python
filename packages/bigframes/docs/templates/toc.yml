@@ -1,0 +1,130 @@
+- items:
+  - href: index.md
+    name: Overview
+  - href: changelog.md
+    name: Changelog
+  - items:
+    - items:
+      - name: Options
+        uid: bigframes._config.Options
+      - name: BigQueryOptions
+        uid: bigframes._config.bigquery_options.BigQueryOptions
+      - name: DisplayOptions
+        uid: bigframes._config.display_options.DisplayOptions
+      - name: SamplingOptions
+        uid: bigframes._config.sampling_options.SamplingOptions
+      name: Options and settings
+    - items:
+      - name: Session
+        uid: bigframes.session.Session
+      name: Session
+    name: Core Objects
+  - items:
+    - name: DataFrame
+      uid: bigframes.dataframe.DataFrame
+    - items:
+      - name: DataFrameGroupBy
+        uid: bigframes.core.groupby.DataFrameGroupBy
+      - name: SeriesGroupBy
+        uid: bigframes.core.groupby.SeriesGroupBy
+      name: Groupby
+    - name: Indexes
+      uid: bigframes.core.indexes.index.Index
+    - name: pandas
+      uid: bigframes.pandas
+    - items:
+      - name: Series
+        uid: bigframes.series.Series
+      - name: DatetimeMethods
+        uid: bigframes.operations.datetimes.DatetimeMethods
+      - name: StringMethods
+        uid: bigframes.operations.strings.StringMethods
+      name: Series
+    - name: Window
+      uid: bigframes.core.window.Window
+    name: bigframes.pandas
+  - items:
+    - items:
+      - name: Overview
+        uid: bigframes.ml.cluster
+      - name: KMeans
+        uid: bigframes.ml.cluster.KMeans
+      name: cluster
+    - items:
+      - name: Overview
+        uid: bigframes.ml.compose
+      - name: ColumnTransformer
+        uid: bigframes.ml.compose.ColumnTransformer
+      name: compose
+    - items:
+      - name: Overview
+        uid: bigframes.ml.decomposition
+      - name: PCA
+        uid: bigframes.ml.decomposition.PCA
+      name: decomposition
+    - items:
+      - name: Overview
+        uid: bigframes.ml.ensemble
+      - name: RandomForestClassifier
+        uid: bigframes.ml.ensemble.RandomForestClassifier
+      - name: RandomForestRegressor
+        uid: bigframes.ml.ensemble.RandomForestRegressor
+      - name: XGBClassifier
+        uid: bigframes.ml.ensemble.XGBClassifier
+      - name: XGBRegressor
+        uid: bigframes.ml.ensemble.XGBRegressor
+      name: ensemble
+    - items:
+      - name: Overview
+        uid: bigframes.ml.forecasting
+      - name: ARIMAPlus
+        uid: bigframes.ml.forecasting.ARIMAPlus
+      name: forecasting
+    - items:
+      - name: Overview
+        uid: bigframes.ml.imported
+      - name: ONNXModel
+        uid: bigframes.ml.imported.ONNXModel
+      - name: TensorFlowModel
+        uid: bigframes.ml.imported.TensorFlowModel
+      name: imported
+    - items:
+      - name: Overview
+        uid: bigframes.ml.linear_model
+      - name: LinearRegression
+        uid: bigframes.ml.linear_model.LinearRegression
+      - name: LogisticRegression
+        uid: bigframes.ml.linear_model.LogisticRegression
+      name: linear_model
+    - items:
+      - name: Overview
+        uid: bigframes.ml.llm
+      - name: PaLM2TextGenerator
+        uid: bigframes.ml.llm.PaLM2TextGenerator
+      - name: PaLM2TextEmbeddingGenerator
+        uid: bigframes.ml.llm.PaLM2TextEmbeddingGenerator
+      name: llm
+    - items:
+      - name: metrics
+        uid: bigframes.ml.metrics
+      name: metrics
+    - items:
+      - name: model_selection
+        uid: bigframes.ml.model_selection
+      name: model_selection
+    - items:
+      - name: Overview
+        uid: bigframes.ml.pipeline
+      - name: Pipeline
+        uid: bigframes.ml.pipeline.Pipeline
+      name: pipeline
+    - items:
+      - name: Overview
+        uid: bigframes.ml.preprocessing
+      - name: OneHotEncoder
+        uid: bigframes.ml.preprocessing.OneHotEncoder
+      - name: StandardScaler
+        uid: bigframes.ml.preprocessing.StandardScaler
+      name: preprocessing
+    name: bigframes.ml
+  name: BigQuery DataFrames

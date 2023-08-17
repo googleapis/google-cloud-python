@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## 0.2.0 (2023-08-17)
+
+### Features
+* Add KMeans.cluster_centers_.
+* Allow column labels to be any type handled by bq df, column labels can be integers now.
+* Add dataframegroupby.agg().
+* Add Series Property is_monotonic_increasing and is_monotonic_decreasing.
+* Add match, fullmatch, get, pad str methods.
+* Add series isin function.
+
+### Bug Fixes
+* Update ML package to use sessions for queries.
+* Optimize `read_gbq` with `index_col` set to cluster by `index_col`.
+* Raise ValueError if the location mismatched.
+* `read_gbq` no longer uses 'time travel' with query inputs.
+
+### Documentation
+* Add docstring to _uniform_sampling to avoid user using it.
+
 ## 0.1.1 (2023-08-14)
 
 ### Documentation

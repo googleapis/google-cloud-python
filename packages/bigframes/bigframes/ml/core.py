@@ -159,14 +159,22 @@ class BqmlModel:
 
         return self._session.read_gbq(sql)
 
+    def centroids(self):
+        assert self._model.model_type == "KMEANS"
+
+        sql = ml_sql.ml_centroids(self.model_name)
+
+        return self._session.read_gbq(sql)
+
     def copy(self, new_model_name: str, replace: bool = False) -> BqmlModel:
         job_config = bigquery.job.CopyJobConfig()
         if replace:
             job_config.write_disposition = "WRITE_TRUNCATE"
 
-        self._session.bqclient.copy_table(
+        copy_job = self._session.bqclient.copy_table(
             self.model_name, new_model_name, job_config=job_config
-        ).result()
+        )
+        self._session._start_generic_job(copy_job)
 
         new_model = self._session.bqclient.get_model(new_model_name)
         return BqmlModel(self._session, new_model)
@@ -182,7 +190,7 @@ class BqmlModel:
         options_sql = ml_sql.options(**{"vertex_ai_model_id": vertex_ai_model_id})
         sql = ml_sql.alter_model(self.model_name, options_sql=options_sql)
         # Register the model and wait it to finish
-        self._session.bqclient.query(sql).result()
+        self._session._start_query(sql)
 
         self._model = self._session.bqclient.get_model(self.model_name)
         return self
@@ -322,8 +330,7 @@ def _create_temp_model_name() -> str:
 
 def _create_bqml_model_with_sql(session: bigframes.Session, sql: str) -> BqmlModel:
     # fit the model, synchronously
-    job = session.bqclient.query(sql)
-    job.result()
+    _, job = session._start_query(sql)
 
     # real model path in the session specific hidden dataset and table prefix
     model_name_full = f"{job.destination.dataset_id}.{job.destination.table_id}"

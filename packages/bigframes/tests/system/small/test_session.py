@@ -11,8 +11,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 import random
 import tempfile
+import textwrap
 import typing
 from typing import List
 
@@ -158,6 +160,25 @@ def test_read_gbq_w_index_col(
     bf_shape = df.shape
     result = df.to_pandas()
     assert bf_shape == result.shape
+
+
+def test_read_gbq_w_anonymous_query_results_table(session: bigframes.Session):
+    """Ensure BigQuery DataFrames can be used to inspect the results of a query job."""
+    query = textwrap.dedent(
+        """
+        SELECT SUM(`number`) AS total_people, name
+        FROM `bigquery-public-data.usa_names.usa_1910_2013`
+        GROUP BY name
+        HAVING name < "B"
+        """
+    )
+    job = session.bqclient.query(query)
+    expected = job.to_dataframe().set_index("name").sort_index()
+    destination = f"{job.destination.project}.{job.destination.dataset_id}.{job.destination.table_id}"
+    df = session.read_gbq(destination, index_col="name")
+    result = df.to_pandas()
+    expected.index = expected.index.astype(result.index.dtype)
+    pd.testing.assert_frame_equal(result, expected, check_dtype=False)
 
 
 @pytest.mark.parametrize(

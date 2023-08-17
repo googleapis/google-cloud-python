@@ -87,7 +87,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return bigframes.core.indexers.IlocSeriesIndexer(self)
 
     @property
-    def name(self) -> Optional[str]:
+    def name(self) -> blocks.Label:
         return self._name
 
     @property
@@ -167,6 +167,12 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
                 block = block.set_index(new_idx_ids, index_labels=block.index_labels)
 
+            return Series(block)
+
+        # rename the Series name
+        if isinstance(index, typing.Hashable):
+            index = typing.cast(Optional[str], index)
+            block = self._block.with_column_labels([index])
             return Series(block)
 
         raise ValueError(f"Unsupported type of parameter index: {type(index)}")
@@ -321,7 +327,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         for level_ref in levels:
             if isinstance(level_ref, int):
                 resolved_level_ids.append(self._block.index_columns[level_ref])
-            elif isinstance(level_ref, str):
+            elif isinstance(level_ref, typing.Hashable):
                 matching_ids = self._block.index_name_to_col_id.get(level_ref, [])
                 if len(matching_ids) != 1:
                     raise ValueError("level name cannot be found or is ambiguous")
@@ -439,6 +445,17 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             block = block.filter(condition)
             block = block.select_column(self._value_column)
             return Series(block)
+
+    def isin(self, values) -> "Series" | None:
+        if not _is_list_like(values):
+            raise TypeError(
+                "only list-like objects are allowed to be passed to "
+                f"isin(), you passed a [{type(values).__name__}]"
+            )
+
+        return self._apply_unary_op(ops.IsInOp(values, match_nulls=True)).fillna(
+            value=False
+        )
 
     def isna(self) -> "Series":
         return self._apply_unary_op(ops.isnull_op)
@@ -790,6 +807,26 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return typing.cast(
             scalars.Scalar, Series(block.select_column(row_nums)).iloc[0]
         )
+
+    @property
+    def is_monotonic_increasing(self) -> bool:
+        period = 1
+        window = bigframes.core.WindowSpec(
+            preceding=period,
+            following=None,
+        )
+        shifted_series = self._apply_window_op(agg_ops.ShiftOp(period), window)
+        return self.notna().__and__(self >= shifted_series).all()
+
+    @property
+    def is_monotonic_decreasing(self) -> bool:
+        period = 1
+        window = bigframes.core.WindowSpec(
+            preceding=period,
+            following=None,
+        )
+        shifted_series = self._apply_window_op(agg_ops.ShiftOp(period), window)
+        return self.notna().__and__(self <= shifted_series).all()
 
     def __getitem__(self, indexer):
         # TODO: enforce stricter alignment, should fail if indexer is missing any keys.

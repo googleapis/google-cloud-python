@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+from collections import namedtuple
 import inspect
 import threading
 import typing
@@ -399,6 +400,9 @@ DataFrame = bigframes.dataframe.DataFrame
 Index = bigframes.core.indexes.Index
 Series = bigframes.series.Series
 
+# Used by DataFrameGroupby.agg
+NamedAgg = namedtuple("NamedAgg", ["column", "aggfunc"])
+
 # Use __all__ to let type checkers know what is part of the public API.
 __all___ = [
     "concat",
@@ -411,4 +415,5 @@ __all___ = [
     "read_pandas",
     "remote_function",
     "Series",
+    "NamedAgg",
 ]

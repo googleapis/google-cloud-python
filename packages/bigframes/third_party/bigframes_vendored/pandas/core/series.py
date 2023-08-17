@@ -1572,3 +1572,48 @@ class Series(NDFrame):  # type: ignore[misc]
         after Python’s string methods, with some inspiration from R’s stringr package.
         """
         raise NotImplementedError("abstract property")
+
+    def isin(self, values):
+        """
+        Whether elements in Series are contained in values.
+
+        Return a boolean Series showing whether each element in the Series matches an
+        element in the passed sequence of values exactly.
+
+        .. note::
+            This function treats all NaN-like values(e.g., pd.NA, numpy.nan, None) as
+            the same. That is, if any form of NaN is present in values, all forms
+            of NaN in the series will be considered a match. (though pandas may not)
+
+        Args:
+            values (list-like):
+                The sequence of values to test. Passing in a single string will raise a
+                TypeError. Instead, turn a single string into a list of one element.
+
+        Returns:
+             bigframes.series.Series: Series of booleans indicating if each element is in values.
+
+        Raises:
+            TypeError: If input is not list-like.
+        """
+        raise NotImplementedError("abstract method")
+
+    @property
+    def is_monotonic_increasing(self) -> bool:
+        """
+        Return boolean if values in the object are monotonically increasing.
+
+        Returns:
+            bool
+        """
+        raise NotImplementedError("abstract property")
+
+    @property
+    def is_monotonic_decreasing(self) -> bool:
+        """
+        Return boolean if values in the object are monotonically decreasing.
+
+        Returns:
+            bool
+        """
+        raise NotImplementedError("abstract property")

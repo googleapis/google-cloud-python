@@ -304,6 +304,11 @@ class ArrayValue:
         return expr_builder.build()
 
     def _uniform_sampling(self, fraction: float) -> ArrayValue:
+        """Sampling the table on given fraction.
+
+        .. warning::
+            The row numbers of result is non-deterministic, avoid to use.
+        """
         table = self.to_ibis_expr(
             ordering_mode="order_by", expose_hidden_cols=True, fraction=fraction
         )
@@ -849,7 +854,7 @@ class ArrayValue:
 
     def unpivot_single_row(
         self,
-        row_labels: typing.Sequence[typing.Optional[str]],
+        row_labels: typing.Sequence[typing.Hashable],
         unpivot_columns: typing.Sequence[typing.Tuple[str, typing.Sequence[str]]],
         *,
         index_col_id: str = "index",

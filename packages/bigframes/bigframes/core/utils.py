@@ -13,6 +13,9 @@
 # limitations under the License.
 import typing
 
+import pandas as pd
+import typing_extensions
+
 
 def get_axis_number(axis: typing.Union[str, int, None]) -> typing.Literal[0, 1]:
     if axis in {0, "index", "rows", None}:
@@ -20,3 +23,11 @@ def get_axis_number(axis: typing.Union[str, int, None]) -> typing.Literal[0, 1]:
     elif axis in {1, "columns"}:
         return 1
     raise ValueError(f"Not a valid axis: {axis}")
+
+
+def is_list_like(obj: typing.Any) -> typing_extensions.TypeGuard[typing.Sequence]:
+    return pd.api.types.is_list_like(obj)
+
+
+def is_dict_like(obj: typing.Any) -> typing_extensions.TypeGuard[typing.Mapping]:
+    return pd.api.types.is_dict_like(obj)

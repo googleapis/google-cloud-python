@@ -358,10 +358,16 @@ class Session(
         else:
             index_cols = list(index_col)
 
-        # Can't cluster since don't know if index_cols are clusterable data types
-        # TODO(tbergeron): Maybe use dryrun to determine types of index_cols to see if can cluster
-        _, query_job = self._start_query(query)
-        destination = query_job.destination
+        # Make sure we cluster by the index column so that subsequent
+        # operations are as speedy as they can be.
+        if index_cols:
+            # Since index_cols are specified, assume that we have a normal SQL
+            # query. DDL or DML not supported.
+            ibis_expr = self.ibis_client.sql(query)
+            destination = self._ibis_to_session_table(ibis_expr, index_cols)
+        else:
+            _, query_job = self._start_query(query)
+            destination = query_job.destination
 
         # If there was no destination table, that means the query must have
         # been DDL or DML. Return some job metadata, instead.
@@ -936,15 +942,9 @@ class Session(
             ibis.row_number().cast(ibis_dtypes.int64).name(default_ordering_name)
         )
         table = table.mutate(**{default_ordering_name: default_ordering_col})
-        clusterable_index_cols = [
-            col for col in index_cols if _can_cluster(table[col].type())
-        ]
-        cluster_cols = (clusterable_index_cols + [default_ordering_name])[
-            :_MAX_CLUSTER_COLUMNS
-        ]
-        table_ref = self._query_to_session_table(
-            self.ibis_client.compile(table),
-            cluster_cols=cluster_cols,
+        table_ref = self._ibis_to_session_table(
+            table,
+            cluster_cols=list(index_cols) + [default_ordering_name],
         )
         table = self.ibis_client.sql(f"SELECT * FROM `{table_ref.table_id}`")
         ordering_reference = core.OrderingColumnReference(default_ordering_name)
@@ -954,6 +954,17 @@ class Session(
             integer_encoding=IntegerEncoding(is_encoded=True, is_sequential=True),
         )
         return table, ordering
+
+    def _ibis_to_session_table(
+        self, table: ibis_types.Table, cluster_cols: Iterable[str]
+    ) -> bigquery.TableReference:
+        clusterable_cols = [
+            col for col in cluster_cols if _can_cluster(table[col].type())
+        ][:_MAX_CLUSTER_COLUMNS]
+        return self._query_to_session_table(
+            self.ibis_client.compile(table),
+            cluster_cols=clusterable_cols,
+        )
 
     def _query_to_session_table(
         self, query_text: str, cluster_cols: Iterable[str]

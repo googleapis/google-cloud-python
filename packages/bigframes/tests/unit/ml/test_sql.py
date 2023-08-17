@@ -146,6 +146,11 @@ def test_ml_evaluate_no_source_produces_correct_sql():
     assert sql == """SELECT * FROM ML.EVALUATE(MODEL `my_dataset.my_model`)"""
 
 
+def test_ml_centroids_produces_correct_sql():
+    sql = ml_sql.ml_centroids(model_name="my_dataset.my_model")
+    assert sql == """SELECT * FROM ML.CENTROIDS(MODEL `my_dataset.my_model`)"""
+
+
 def test_ml_generate_text_produces_correct_sql():
     sql = ml_sql.ml_generate_text(
         model_name="my_dataset.my_model",

@@ -73,6 +73,15 @@ class KMeans(
         )
         return self
 
+    @property
+    def cluster_centers_(self) -> bpd.DataFrame:
+        if not self._bqml_model:
+            raise RuntimeError(
+                "A model must be fitted before calling cluster_centers_."
+            )
+
+        return self._bqml_model.centroids()
+
     def predict(
         self,
         X: Union[bpd.DataFrame, bpd.Series],
