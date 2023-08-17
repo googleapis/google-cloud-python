@@ -77,6 +77,11 @@ class Table(object):
         :rtype: bool
         :returns: True if the table exists, else false.
         """
+        if (
+            self._database.database_dialect
+            == DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED
+        ):
+            self._database.reload()
         if self._database.database_dialect == DatabaseDialect.POSTGRESQL:
             results = snapshot.execute_sql(
                 _EXISTS_TEMPLATE.format("WHERE TABLE_NAME = $1"),

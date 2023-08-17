@@ -29,6 +29,16 @@ def test_table_exists_not_found(shared_database):
     assert not table.exists()
 
 
+def test_table_exists_reload_database_dialect(
+    shared_instance, shared_database, not_emulator
+):
+    database = shared_instance.database(shared_database.database_id)
+    assert database.database_dialect == DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED
+    table = database.table("all_types")
+    assert table.exists()
+    assert database.database_dialect != DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED
+
+
 def test_db_list_tables(shared_database):
     tables = shared_database.list_tables()
     table_ids = set(table.table_id for table in tables)
