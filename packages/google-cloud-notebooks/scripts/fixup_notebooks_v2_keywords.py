@@ -44,7 +44,7 @@ class notebooksCallTransformer(cst.CSTTransformer):
         'delete_instance': ('name', 'request_id', ),
         'diagnose_instance': ('name', 'diagnostic_config', 'timeout_minutes', ),
         'get_instance': ('name', ),
-        'list_instances': ('parent', 'page_size', 'page_token', ),
+        'list_instances': ('parent', 'page_size', 'page_token', 'order_by', 'filter', ),
         'reset_instance': ('name', ),
         'rollback_instance': ('name', 'target_snapshot', 'revision_id', ),
         'start_instance': ('name', ),

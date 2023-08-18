@@ -3371,6 +3371,8 @@ def test_list_instances_rest_required_fields(request_type=service.ListInstancesR
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "filter",
+            "order_by",
             "page_size",
             "page_token",
         )
@@ -3430,6 +3432,8 @@ def test_list_instances_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "filter",
+                "orderBy",
                 "pageSize",
                 "pageToken",
             )

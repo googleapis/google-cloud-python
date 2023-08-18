@@ -124,6 +124,11 @@ class ListInstancesRequest(proto.Message):
             Optional. A previous returned page token that
             can be used to continue listing from the last
             result.
+        order_by (str):
+            Optional. Sort results. Supported values are
+            "name", "name desc" or "" (unsorted).
+        filter (str):
+            Optional. List filter.
     """
 
     parent: str = proto.Field(
@@ -137,6 +142,14 @@ class ListInstancesRequest(proto.Message):
     page_token: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
