@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.18.3](https://github.com/googleapis/python-pubsub/compare/v2.18.2...v2.18.3) (2023-08-18)
+
+
+### Bug Fixes
+
+* Make retry policy back off more aggressively for RPCs that retry RESOURCE_EXHAUSTD ([#979](https://github.com/googleapis/python-pubsub/issues/979)) ([4073b3d](https://github.com/googleapis/python-pubsub/commit/4073b3dd6a6989e86d5e19bdb9b9c47ae2b0db87))
+
 ## [2.18.2](https://github.com/googleapis/python-pubsub/compare/v2.18.1...v2.18.2) (2023-08-07)
 
 
