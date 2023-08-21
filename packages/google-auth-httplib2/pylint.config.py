@@ -45,7 +45,7 @@ library_replacements = {
         'function-rgx': '[a-z_][a-z0-9_]{2,40}$',
     },
     'TYPECHECK': {
-        'ignored-modules': ['six', 'google.protobuf'],
+        'ignored-modules': ['google.protobuf'],
     },
     'DESIGN': {
         'min-public-methods': '0',

@@ -18,7 +18,7 @@ from setuptools import setup
 
 version = "0.1.0"
 
-DEPENDENCIES = ["google-auth", "httplib2 >= 0.15.0", "six"]
+DEPENDENCIES = ["google-auth", "httplib2 >= 0.15.0"]
 
 
 with io.open("README.rst", "r") as fh:
@@ -38,13 +38,13 @@ setup(
     license="Apache 2.0",
     keywords="google auth oauth client",
     classifiers=[
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",

@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import http.client
+
 import flask
 from google.auth import exceptions
 import pytest
 from pytest_localserver.http import WSGIServer
-from six.moves import http_client
 
 # .invalid will never resolve, see https://tools.ietf.org/html/rfc2606
 NXDOMAIN = "test.invalid"
@@ -40,11 +41,11 @@ class RequestResponseTests(object):
         def index():
             header_value = flask.request.headers.get("x-test-header", "value")
             headers = {"X-Test-Header": header_value}
-            return "Basic Content", http_client.OK, headers
+            return "Basic Content", http.client.OK, headers
 
         @app.route("/server_error")
         def server_error():
-            return "Error", http_client.INTERNAL_SERVER_ERROR
+            return "Error", http.client.INTERNAL_SERVER_ERROR
 
         # pylint: enable=unused-variable
 
@@ -57,7 +58,7 @@ class RequestResponseTests(object):
         request = self.make_request()
         response = request(url=server.url + "/basic", method="GET")
 
-        assert response.status == http_client.OK
+        assert response.status == http.client.OK
         assert response.headers["x-test-header"] == "value"
         assert response.data == b"Basic Content"
 
@@ -65,7 +66,7 @@ class RequestResponseTests(object):
         request = self.make_request()
         response = request(url=server.url + "/basic", method="GET", timeout=2)
 
-        assert response.status == http_client.OK
+        assert response.status == http.client.OK
         assert response.headers["x-test-header"] == "value"
         assert response.data == b"Basic Content"
 
@@ -77,7 +78,7 @@ class RequestResponseTests(object):
             headers={"x-test-header": "hello world"},
         )
 
-        assert response.status == http_client.OK
+        assert response.status == http.client.OK
         assert response.headers["x-test-header"] == "hello world"
         assert response.data == b"Basic Content"
 
@@ -85,7 +86,7 @@ class RequestResponseTests(object):
         request = self.make_request()
         response = request(url=server.url + "/server_error", method="GET")
 
-        assert response.status == http_client.INTERNAL_SERVER_ERROR
+        assert response.status == http.client.INTERNAL_SERVER_ERROR
         assert response.data == b"Error"
 
     def test_connection_error(self):

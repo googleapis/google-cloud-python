@@ -12,10 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import http.client
+import io
+
 import httplib2
 import mock
-import six
-from six.moves import http_client
 
 import google_auth_httplib2
 from tests import compliance
@@ -44,7 +45,7 @@ class MockHttp(object):
 
 
 class MockResponse(object):
-    def __init__(self, status=http_client.OK, data=b""):
+    def __init__(self, status=http.client.OK, data=b""):
         self.status = status
         self.data = data
 
@@ -180,10 +181,10 @@ class TestAuthorizedHttp(object):
 
     def test_request_refresh(self):
         mock_credentials = mock.Mock(wraps=MockCredentials())
-        mock_final_response = MockResponse(status=http_client.OK)
+        mock_final_response = MockResponse(status=http.client.OK)
         # First request will 401, second request will succeed.
         mock_http = MockHttp(
-            [MockResponse(status=http_client.UNAUTHORIZED), mock_final_response]
+            [MockResponse(status=http.client.UNAUTHORIZED), mock_final_response]
         )
 
         authed_http = google_auth_httplib2.AuthorizedHttp(
@@ -220,10 +221,10 @@ class TestAuthorizedHttp(object):
         mock_response = MockResponse()
         # Refresh is needed to cover the resetting of the body position.
         mock_http = MockHttp(
-            [MockResponse(status=http_client.UNAUTHORIZED), mock_response]
+            [MockResponse(status=http.client.UNAUTHORIZED), mock_response]
         )
 
-        body = six.StringIO("body")
+        body = io.StringIO("body")
         body.seek(1)
 
         authed_http = google_auth_httplib2.AuthorizedHttp(
