@@ -395,6 +395,31 @@ class TestClient(unittest.TestCase):
             timeout=google.cloud.bigquery.client._MIN_GET_QUERY_RESULTS_TIMEOUT,
         )
 
+    def test__get_query_results_miss_w_default_timeout(self):
+        import google.cloud.bigquery.client
+        from google.cloud.exceptions import NotFound
+
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = make_connection()
+        path = "/projects/other-project/queries/nothere"
+        with self.assertRaises(NotFound):
+            client._get_query_results(
+                "nothere",
+                None,
+                project="other-project",
+                location=self.LOCATION,
+                timeout_ms=500,
+                timeout=object(),  # the api core default timeout
+            )
+
+        conn.api_request.assert_called_once_with(
+            method="GET",
+            path=path,
+            query_params={"maxResults": 0, "timeoutMs": 500, "location": self.LOCATION},
+            timeout=google.cloud.bigquery.client._MIN_GET_QUERY_RESULTS_TIMEOUT,
+        )
+
     def test__get_query_results_miss_w_client_location(self):
         from google.cloud.exceptions import NotFound
 
@@ -437,6 +462,75 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(query_results.total_rows, 10)
         self.assertTrue(query_results.complete)
+
+    def test__list_rows_from_query_results_w_none_timeout(self):
+        from google.cloud.exceptions import NotFound
+        from google.cloud.bigquery.schema import SchemaField
+
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = make_connection()
+        path = "/projects/project/queries/nothere"
+        iterator = client._list_rows_from_query_results(
+            "nothere",
+            location=None,
+            project="project",
+            schema=[
+                SchemaField("f1", "STRING", mode="REQUIRED"),
+                SchemaField("f2", "INTEGER", mode="REQUIRED"),
+            ],
+            timeout=None,
+        )
+
+        # trigger the iterator to request data
+        with self.assertRaises(NotFound):
+            iterator._get_next_page_response()
+
+        conn.api_request.assert_called_once_with(
+            method="GET",
+            path=path,
+            query_params={
+                "fields": "jobReference,totalRows,pageToken,rows",
+                "location": None,
+                "formatOptions.useInt64Timestamp": True,
+            },
+            timeout=None,
+        )
+
+    def test__list_rows_from_query_results_w_default_timeout(self):
+        import google.cloud.bigquery.client
+        from google.cloud.exceptions import NotFound
+        from google.cloud.bigquery.schema import SchemaField
+
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = make_connection()
+        path = "/projects/project/queries/nothere"
+        iterator = client._list_rows_from_query_results(
+            "nothere",
+            location=None,
+            project="project",
+            schema=[
+                SchemaField("f1", "STRING", mode="REQUIRED"),
+                SchemaField("f2", "INTEGER", mode="REQUIRED"),
+            ],
+            timeout=object(),
+        )
+
+        # trigger the iterator to request data
+        with self.assertRaises(NotFound):
+            iterator._get_next_page_response()
+
+        conn.api_request.assert_called_once_with(
+            method="GET",
+            path=path,
+            query_params={
+                "fields": "jobReference,totalRows,pageToken,rows",
+                "location": None,
+                "formatOptions.useInt64Timestamp": True,
+            },
+            timeout=google.cloud.bigquery.client._MIN_GET_QUERY_RESULTS_TIMEOUT,
+        )
 
     def test_default_query_job_config(self):
         from google.cloud.bigquery import QueryJobConfig

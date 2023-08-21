@@ -1895,7 +1895,10 @@ class Client(ClientWithProject):
         extra_params: Dict[str, Any] = {"maxResults": 0}
 
         if timeout is not None:
-            timeout = max(timeout, _MIN_GET_QUERY_RESULTS_TIMEOUT)
+            if type(timeout) == object:
+                timeout = _MIN_GET_QUERY_RESULTS_TIMEOUT
+            else:
+                timeout = max(timeout, _MIN_GET_QUERY_RESULTS_TIMEOUT)
 
         if project is None:
             project = self.project
@@ -3924,7 +3927,10 @@ class Client(ClientWithProject):
         }
 
         if timeout is not None:
-            timeout = max(timeout, _MIN_GET_QUERY_RESULTS_TIMEOUT)
+            if type(timeout) == object:
+                timeout = _MIN_GET_QUERY_RESULTS_TIMEOUT
+            else:
+                timeout = max(timeout, _MIN_GET_QUERY_RESULTS_TIMEOUT)
 
         if start_index is not None:
             params["startIndex"] = start_index
