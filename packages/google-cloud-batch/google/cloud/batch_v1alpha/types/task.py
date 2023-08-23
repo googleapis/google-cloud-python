@@ -166,11 +166,20 @@ class TaskExecution(proto.Message):
             When task is completed as the status of
             FAILED or SUCCEEDED, exit code is for one task
             execution result, default is 0 as success.
+        stderr_snippet (str):
+            Optional. The tail end of any content written
+            to standard error by the task execution. This
+            field will be populated only when the execution
+            failed.
     """
 
     exit_code: int = proto.Field(
         proto.INT32,
         number=1,
+    )
+    stderr_snippet: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -271,6 +280,13 @@ class Runnable(proto.Message):
             Barrier runnable.
 
             This field is a member of `oneof`_ ``executable``.
+        display_name (str):
+            Optional. DisplayName is an optional field
+            that can be provided by the caller. If provided,
+            it will be used in logs and other outputs to
+            identify the script, making it easier for users
+            to understand the logs. If not provided the
+            index of the runnable will be used for outputs.
         ignore_exit_status (bool):
             Normally, a non-zero exit status causes the
             Task to fail. This flag allows execution of
@@ -467,6 +483,10 @@ class Runnable(proto.Message):
         number=6,
         oneof="executable",
         message=Barrier,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=10,
     )
     ignore_exit_status: bool = proto.Field(
         proto.BOOL,
