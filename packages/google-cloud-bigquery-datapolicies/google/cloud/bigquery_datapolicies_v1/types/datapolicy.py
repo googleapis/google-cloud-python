@@ -294,12 +294,22 @@ class DataMaskingPolicy(proto.Message):
     r"""The data masking policy that is used to specify data masking
     rule.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         predefined_expression (google.cloud.bigquery_datapolicies_v1.types.DataMaskingPolicy.PredefinedExpression):
             A predefined masking expression.
+
+            This field is a member of `oneof`_ ``masking_expression``.
+        routine (str):
+            The name of the BigQuery routine that contains the custom
+            masking routine, in the format of
+            ``projects/{project_number}/datasets/{dataset_id}/routines/{routine_id}``.
 
             This field is a member of `oneof`_ ``masking_expression``.
     """
@@ -392,6 +402,11 @@ class DataMaskingPolicy(proto.Message):
         number=1,
         oneof="masking_expression",
         enum=PredefinedExpression,
+    )
+    routine: str = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="masking_expression",
     )
 
 
