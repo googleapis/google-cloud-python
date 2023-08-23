@@ -20,9 +20,14 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account # type: ignore
 
 {% filter sort_lines %}
+{% set import_ns = namespace(has_operations_mixin=false) %}
 {% for method in service.methods.values() %}
 {{ method.input.ident.python_import }}
+{% if method.output.ident|string() == "operations_pb2.Operation" %}
+{% set import_ns.has_operations_mixin = True %}
+{% else %}
 {{ method.output.ident.python_import }}
+{% endif %}
 {% endfor %}
 {% if opts.add_iam_methods or api.has_iam_mixin %}
 from google.iam.v1 import iam_policy_pb2  # type: ignore
@@ -32,6 +37,9 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
 {% if api.has_operations_mixin %}
+{% set import_ns.has_operations_mixin = True %}
+{% endif %}
+{% if import_ns.has_operations_mixin %}
 from google.longrunning import operations_pb2 # type: ignore
 {% endif %}
 {% endfilter %}

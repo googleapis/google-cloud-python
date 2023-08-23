@@ -28,7 +28,6 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account # type: ignore
 
 from google.cloud.logging_v2.types import logging_config
-from google.longrunning import operations_pb2  # type: ignore
 from google.longrunning import operations_pb2 # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 

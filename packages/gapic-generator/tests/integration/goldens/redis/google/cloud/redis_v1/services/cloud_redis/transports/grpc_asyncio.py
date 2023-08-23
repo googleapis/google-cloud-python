@@ -27,7 +27,6 @@ from grpc.experimental import aio  # type: ignore
 
 from google.cloud.location import locations_pb2 # type: ignore
 from google.cloud.redis_v1.types import cloud_redis
-from google.longrunning import operations_pb2  # type: ignore
 from google.longrunning import operations_pb2 # type: ignore
 from .base import CloudRedisTransport, DEFAULT_CLIENT_INFO
 from .grpc import CloudRedisGrpcTransport
