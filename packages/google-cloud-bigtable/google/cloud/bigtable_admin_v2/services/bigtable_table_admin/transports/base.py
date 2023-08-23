@@ -322,6 +322,11 @@ class BigtableTableAdminTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.copy_backup: gapic_v1.method.wrap_method(
+                self.copy_backup,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy,
                 default_retry=retries.Retry(
@@ -573,6 +578,15 @@ class BigtableTableAdminTransport(abc.ABC):
         self,
     ) -> Callable[
         [bigtable_table_admin.RestoreTableRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def copy_backup(
+        self,
+    ) -> Callable[
+        [bigtable_table_admin.CopyBackupRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

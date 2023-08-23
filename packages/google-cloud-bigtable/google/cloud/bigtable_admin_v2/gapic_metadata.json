@@ -349,6 +349,11 @@
                 "check_consistency"
               ]
             },
+            "CopyBackup": {
+              "methods": [
+                "copy_backup"
+              ]
+            },
             "CreateBackup": {
               "methods": [
                 "create_backup"
@@ -474,6 +479,11 @@
                 "check_consistency"
               ]
             },
+            "CopyBackup": {
+              "methods": [
+                "copy_backup"
+              ]
+            },
             "CreateBackup": {
               "methods": [
                 "create_backup"
@@ -597,6 +607,11 @@
             "CheckConsistency": {
               "methods": [
                 "check_consistency"
+              ]
+            },
+            "CopyBackup": {
+              "methods": [
+                "copy_backup"
               ]
             },
             "CreateBackup": {

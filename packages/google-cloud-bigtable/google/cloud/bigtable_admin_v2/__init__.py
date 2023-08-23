@@ -51,6 +51,8 @@ from .types.bigtable_instance_admin import UpdateClusterMetadata
 from .types.bigtable_instance_admin import UpdateInstanceMetadata
 from .types.bigtable_table_admin import CheckConsistencyRequest
 from .types.bigtable_table_admin import CheckConsistencyResponse
+from .types.bigtable_table_admin import CopyBackupMetadata
+from .types.bigtable_table_admin import CopyBackupRequest
 from .types.bigtable_table_admin import CreateBackupMetadata
 from .types.bigtable_table_admin import CreateBackupRequest
 from .types.bigtable_table_admin import CreateTableFromSnapshotMetadata
@@ -116,6 +118,8 @@ __all__ = (
     "CheckConsistencyResponse",
     "Cluster",
     "ColumnFamily",
+    "CopyBackupMetadata",
+    "CopyBackupRequest",
     "CreateAppProfileRequest",
     "CreateBackupMetadata",
     "CreateBackupRequest",

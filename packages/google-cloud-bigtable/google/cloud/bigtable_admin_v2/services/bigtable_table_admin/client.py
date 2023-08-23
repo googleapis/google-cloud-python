@@ -2407,7 +2407,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         Returns:
             google.cloud.bigtable_admin_v2.services.bigtable_table_admin.pagers.ListBackupsPager:
                 The response for
-                [ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups].
+                   [ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -2472,9 +2472,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Create a new table by restoring from a completed backup. The new
-        table must be in the same project as the instance containing the
-        backup. The returned table [long-running
+        r"""Create a new table by restoring from a completed backup. The
+        returned table [long-running
         operation][google.longrunning.Operation] can be used to track
         the progress of the operation, and to cancel it. The
         [metadata][google.longrunning.Operation.metadata] field type is
@@ -2533,6 +2532,141 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
             self._transport.operations_client,
             table.Table,
             metadata_type=bigtable_table_admin.RestoreTableMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def copy_backup(
+        self,
+        request: Optional[Union[bigtable_table_admin.CopyBackupRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        backup_id: Optional[str] = None,
+        source_backup: Optional[str] = None,
+        expire_time: Optional[timestamp_pb2.Timestamp] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Copy a Cloud Bigtable backup to a new backup in the
+        destination cluster located in the destination instance
+        and project.
+
+        Args:
+            request (Union[google.cloud.bigtable_admin_v2.types.CopyBackupRequest, dict]):
+                The request object. The request for
+                [CopyBackup][google.bigtable.admin.v2.BigtableTableAdmin.CopyBackup].
+            parent (str):
+                Required. The name of the destination cluster that will
+                contain the backup copy. The cluster must already
+                exists. Values are of the form:
+                ``projects/{project}/instances/{instance}/clusters/{cluster}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            backup_id (str):
+                Required. The id of the new backup. The ``backup_id``
+                along with ``parent`` are combined as
+                {parent}/backups/{backup_id} to create the full backup
+                name, of the form:
+                ``projects/{project}/instances/{instance}/clusters/{cluster}/backups/{backup_id}``.
+                This string must be between 1 and 50 characters in
+                length and match the regex [*a-zA-Z0-9][-*.a-zA-Z0-9]*.
+
+                This corresponds to the ``backup_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            source_backup (str):
+                Required. The source backup to be copied from. The
+                source backup needs to be in READY state for it to be
+                copied. Copying a copied backup is not allowed. Once
+                CopyBackup is in progress, the source backup cannot be
+                deleted or cleaned up on expiration until CopyBackup is
+                finished. Values are of the form:
+                ``projects/<project>/instances/<instance>/clusters/<cluster>/backups/<backup>``.
+
+                This corresponds to the ``source_backup`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            expire_time (google.protobuf.timestamp_pb2.Timestamp):
+                Required. Required. The expiration time of the copied
+                backup with microsecond granularity that must be at
+                least 6 hours and at most 30 days from the time the
+                request is received. Once the ``expire_time`` has
+                passed, Cloud Bigtable will delete the backup and free
+                the resources used by the backup.
+
+                This corresponds to the ``expire_time`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.bigtable_admin_v2.types.Backup` A
+                backup of a Cloud Bigtable table.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, backup_id, source_backup, expire_time])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a bigtable_table_admin.CopyBackupRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, bigtable_table_admin.CopyBackupRequest):
+            request = bigtable_table_admin.CopyBackupRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if backup_id is not None:
+                request.backup_id = backup_id
+            if source_backup is not None:
+                request.source_backup = source_backup
+            if expire_time is not None:
+                request.expire_time = expire_time
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.copy_backup]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            table.Backup,
+            metadata_type=bigtable_table_admin.CopyBackupMetadata,
         )
 
         # Done; return the response.

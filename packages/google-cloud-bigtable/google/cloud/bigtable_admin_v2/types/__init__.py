@@ -44,6 +44,8 @@ from .bigtable_instance_admin import (
 from .bigtable_table_admin import (
     CheckConsistencyRequest,
     CheckConsistencyResponse,
+    CopyBackupMetadata,
+    CopyBackupRequest,
     CreateBackupMetadata,
     CreateBackupRequest,
     CreateTableFromSnapshotMetadata,
@@ -130,6 +132,8 @@ __all__ = (
     "UpdateInstanceMetadata",
     "CheckConsistencyRequest",
     "CheckConsistencyResponse",
+    "CopyBackupMetadata",
+    "CopyBackupRequest",
     "CreateBackupMetadata",
     "CreateBackupRequest",
     "CreateTableFromSnapshotMetadata",

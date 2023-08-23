@@ -115,6 +115,8 @@ from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
 from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
     CheckConsistencyResponse,
 )
+from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import CopyBackupMetadata
+from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import CopyBackupRequest
 from google.cloud.bigtable_admin_v2.types.bigtable_table_admin import (
     CreateBackupMetadata,
 )
@@ -242,6 +244,8 @@ __all__ = (
     "UpdateInstanceMetadata",
     "CheckConsistencyRequest",
     "CheckConsistencyResponse",
+    "CopyBackupMetadata",
+    "CopyBackupRequest",
     "CreateBackupMetadata",
     "CreateBackupRequest",
     "CreateTableFromSnapshotMetadata",

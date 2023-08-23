@@ -890,9 +890,8 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
     ]:
         r"""Return a callable for the restore table method over gRPC.
 
-        Create a new table by restoring from a completed backup. The new
-        table must be in the same project as the instance containing the
-        backup. The returned table [long-running
+        Create a new table by restoring from a completed backup. The
+        returned table [long-running
         operation][google.longrunning.Operation] can be used to track
         the progress of the operation, and to cancel it. The
         [metadata][google.longrunning.Operation.metadata] field type is
@@ -917,6 +916,36 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["restore_table"]
+
+    @property
+    def copy_backup(
+        self,
+    ) -> Callable[
+        [bigtable_table_admin.CopyBackupRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the copy backup method over gRPC.
+
+        Copy a Cloud Bigtable backup to a new backup in the
+        destination cluster located in the destination instance
+        and project.
+
+        Returns:
+            Callable[[~.CopyBackupRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "copy_backup" not in self._stubs:
+            self._stubs["copy_backup"] = self.grpc_channel.unary_unary(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/CopyBackup",
+                request_serializer=bigtable_table_admin.CopyBackupRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["copy_backup"]
 
     @property
     def get_iam_policy(

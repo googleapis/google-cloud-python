@@ -62,6 +62,8 @@ __protobuf__ = proto.module(
         "DeleteBackupRequest",
         "ListBackupsRequest",
         "ListBackupsResponse",
+        "CopyBackupRequest",
+        "CopyBackupMetadata",
     },
 )
 
@@ -76,8 +78,7 @@ class RestoreTableRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The name of the instance in which to create the
-            restored table. This instance must be in the same project as
-            the source backup. Values are of the form
+            restored table. Values are of the form
             ``projects/<project>/instances/<instance>``.
         table_id (str):
             Required. The id of the table to create and restore to. This
@@ -359,7 +360,7 @@ class ListTablesRequest(proto.Message):
             should be listed. Values are of the form
             ``projects/{project}/instances/{instance}``.
         view (google.cloud.bigtable_admin_v2.types.Table.View):
-            The view to be applied to the returned tables' fields. Only
+            The view to be applied to the returned tables' fields.
             NAME_ONLY view (default) and REPLICATION_VIEW are supported.
         page_size (int):
             Maximum number of results per page.
@@ -1192,8 +1193,15 @@ class ListBackupsRequest(proto.Message):
             fields in [Backup][google.bigtable.admin.v2.Backup]. The
             full syntax is described at https://aip.dev/132#ordering.
 
-            Fields supported are: \* name \* source_table \* expire_time
-            \* start_time \* end_time \* size_bytes \* state
+            Fields supported are:
+
+            -  name
+            -  source_table
+            -  expire_time
+            -  start_time
+            -  end_time
+            -  size_bytes
+            -  state
 
             For example, "start_time". The default sorting order is
             ascending. To specify descending order for the field, a
@@ -1263,6 +1271,92 @@ class ListBackupsResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class CopyBackupRequest(proto.Message):
+    r"""The request for
+    [CopyBackup][google.bigtable.admin.v2.BigtableTableAdmin.CopyBackup].
+
+    Attributes:
+        parent (str):
+            Required. The name of the destination cluster that will
+            contain the backup copy. The cluster must already exists.
+            Values are of the form:
+            ``projects/{project}/instances/{instance}/clusters/{cluster}``.
+        backup_id (str):
+            Required. The id of the new backup. The ``backup_id`` along
+            with ``parent`` are combined as {parent}/backups/{backup_id}
+            to create the full backup name, of the form:
+            ``projects/{project}/instances/{instance}/clusters/{cluster}/backups/{backup_id}``.
+            This string must be between 1 and 50 characters in length
+            and match the regex [*a-zA-Z0-9][-*.a-zA-Z0-9]*.
+        source_backup (str):
+            Required. The source backup to be copied from. The source
+            backup needs to be in READY state for it to be copied.
+            Copying a copied backup is not allowed. Once CopyBackup is
+            in progress, the source backup cannot be deleted or cleaned
+            up on expiration until CopyBackup is finished. Values are of
+            the form:
+            ``projects/<project>/instances/<instance>/clusters/<cluster>/backups/<backup>``.
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
+            Required. Required. The expiration time of the copied backup
+            with microsecond granularity that must be at least 6 hours
+            and at most 30 days from the time the request is received.
+            Once the ``expire_time`` has passed, Cloud Bigtable will
+            delete the backup and free the resources used by the backup.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    backup_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    source_backup: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class CopyBackupMetadata(proto.Message):
+    r"""Metadata type for the google.longrunning.Operation returned by
+    [CopyBackup][google.bigtable.admin.v2.BigtableTableAdmin.CopyBackup].
+
+    Attributes:
+        name (str):
+            The name of the backup being created through the copy
+            operation. Values are of the form
+            ``projects/<project>/instances/<instance>/clusters/<cluster>/backups/<backup>``.
+        source_backup_info (google.cloud.bigtable_admin_v2.types.BackupInfo):
+            Information about the source backup that is
+            being copied from.
+        progress (google.cloud.bigtable_admin_v2.types.OperationProgress):
+            The progress of the
+            [CopyBackup][google.bigtable.admin.v2.BigtableTableAdmin.CopyBackup]
+            operation.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    source_backup_info: gba_table.BackupInfo = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gba_table.BackupInfo,
+    )
+    progress: common.OperationProgress = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=common.OperationProgress,
     )
 
 
