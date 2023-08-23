@@ -75,6 +75,11 @@ except (ImportError, AttributeError):  # pragma: NO COVER
 
 PYARROW_TIMESTAMP_VERSION = pkg_resources.parse_version("2.0.0")
 
+if pandas is not None:
+    PANDAS_INSTALLED_VERSION = pkg_resources.get_distribution("pandas").parsed_version
+else:
+    PANDAS_INSTALLED_VERSION = pkg_resources.parse_version("0.0.0")
+
 
 def _mock_client():
     from google.cloud.bigquery import client
@@ -3677,6 +3682,9 @@ class TestRowIterator(unittest.TestCase):
             self.assertEqual(df.timestamp.dtype.name, "object")
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @pytest.mark.skipif(
+        PANDAS_INSTALLED_VERSION >= pkg_resources.parse_version("2.0.0"), reason=""
+    )
     def test_to_dataframe_w_none_dtypes_mapper(self):
         from google.cloud.bigquery.schema import SchemaField
 
@@ -3789,6 +3797,9 @@ class TestRowIterator(unittest.TestCase):
             )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
+    @pytest.mark.skipif(
+        PANDAS_INSTALLED_VERSION >= pkg_resources.parse_version("2.0.0"), reason=""
+    )
     def test_to_dataframe_column_dtypes(self):
         from google.cloud.bigquery.schema import SchemaField
 

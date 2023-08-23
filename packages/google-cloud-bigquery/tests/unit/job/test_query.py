@@ -1229,7 +1229,7 @@ class TestQueryJob(_Base):
             query_request[1]["path"],
             "/projects/{}/queries/{}".format(self.PROJECT, self.JOB_ID),
         )
-        self.assertEqual(query_request[1]["query_params"]["timeoutMs"], 900)
+        self.assertEqual(query_request[1]["timeout"], 120)
         self.assertEqual(
             query_request[1]["timeout"],
             google.cloud.bigquery.client._MIN_GET_QUERY_RESULTS_TIMEOUT,

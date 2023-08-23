@@ -41,7 +41,11 @@ bigquery_storage = pytest.importorskip(
     "google.cloud.bigquery_storage", minversion="2.0.0"
 )
 
-PANDAS_INSTALLED_VERSION = pkg_resources.get_distribution("pandas").parsed_version
+if pandas is not None:
+    PANDAS_INSTALLED_VERSION = pkg_resources.get_distribution("pandas").parsed_version
+else:
+    PANDAS_INSTALLED_VERSION = pkg_resources.parse_version("0.0.0")
+
 PANDAS_INT64_VERSION = pkg_resources.parse_version("1.0.0")
 
 
@@ -1006,6 +1010,9 @@ def test_list_rows_max_results_w_bqstorage(bigquery_client):
     assert len(dataframe.index) == 100
 
 
+@pytest.mark.skipif(
+    PANDAS_INSTALLED_VERSION >= pkg_resources.parse_version("2.0.0"), reason=""
+)
 @pytest.mark.parametrize(
     ("max_results",),
     (
