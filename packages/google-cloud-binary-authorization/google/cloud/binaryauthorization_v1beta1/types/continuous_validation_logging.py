@@ -43,8 +43,8 @@ class ContinuousValidationEvent(proto.Message):
             Pod event.
 
             This field is a member of `oneof`_ ``event_type``.
-        unsupported_policy_event (google.cloud.binaryauthorization_v1beta1.types.ContinuousValidationEvent.UnsupportedPolicyEvent):
-            Unsupported policy event.
+        config_error_event (google.cloud.binaryauthorization_v1beta1.types.ContinuousValidationEvent.ConfigErrorEvent):
+            Config error event.
 
             This field is a member of `oneof`_ ``event_type``.
     """
@@ -57,6 +57,8 @@ class ContinuousValidationEvent(proto.Message):
                 The k8s namespace of the Pod.
             pod (str):
                 The name of the Pod.
+            policy_name (str):
+                The name of the policy.
             deploy_time (google.protobuf.timestamp_pb2.Timestamp):
                 Deploy time of the Pod from k8s.
             end_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -91,6 +93,8 @@ class ContinuousValidationEvent(proto.Message):
                     The result of the audit for this image.
                 description (str):
                     Description of the above result.
+                check_results (MutableSequence[google.cloud.binaryauthorization_v1beta1.types.ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.CheckResult]):
+                    List of check results.
             """
 
             class AuditResult(proto.Enum):
@@ -108,6 +112,115 @@ class ContinuousValidationEvent(proto.Message):
                 ALLOW = 1
                 DENY = 2
 
+            class CheckResult(proto.Message):
+                r"""
+
+                Attributes:
+                    check_set_index (str):
+                        The index of the check set.
+                    check_set_name (str):
+                        The name of the check set.
+                    check_set_scope (google.cloud.binaryauthorization_v1beta1.types.ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.CheckResult.CheckSetScope):
+                        The scope of the check set.
+                    check_index (str):
+                        The index of the check.
+                    check_name (str):
+                        The name of the check.
+                    check_type (str):
+                        The type of the check.
+                    verdict (google.cloud.binaryauthorization_v1beta1.types.ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.CheckResult.CheckVerdict):
+                        The verdict of this check.
+                    explanation (str):
+                        User-friendly explanation of this check
+                        result.
+                """
+
+                class CheckVerdict(proto.Enum):
+                    r"""Result of evaluating one check.
+
+                    Values:
+                        CHECK_VERDICT_UNSPECIFIED (0):
+                            We should always have a verdict. This is an
+                            error.
+                        NON_CONFORMANT (1):
+                            The check was successfully evaluated and the
+                            image did not satisfy the check.
+                    """
+                    CHECK_VERDICT_UNSPECIFIED = 0
+                    NON_CONFORMANT = 1
+
+                class CheckSetScope(proto.Message):
+                    r"""A scope specifier for check sets.
+
+                    This message has `oneof`_ fields (mutually exclusive fields).
+                    For each oneof, at most one member field can be set at the same time.
+                    Setting any member of the oneof automatically clears all other
+                    members.
+
+                    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+                    Attributes:
+                        kubernetes_service_account (str):
+                            Matches a single Kubernetes service account, e.g.
+                            'my-namespace:my-service-account'.
+                            ``kubernetes_service_account`` scope is always more specific
+                            than ``kubernetes_namespace`` scope for the same namespace.
+
+                            This field is a member of `oneof`_ ``scope``.
+                        kubernetes_namespace (str):
+                            Matches all Kubernetes service accounts in the provided
+                            namespace, unless a more specific
+                            ``kubernetes_service_account`` scope already matched.
+
+                            This field is a member of `oneof`_ ``scope``.
+                    """
+
+                    kubernetes_service_account: str = proto.Field(
+                        proto.STRING,
+                        number=1,
+                        oneof="scope",
+                    )
+                    kubernetes_namespace: str = proto.Field(
+                        proto.STRING,
+                        number=2,
+                        oneof="scope",
+                    )
+
+                check_set_index: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+                check_set_name: str = proto.Field(
+                    proto.STRING,
+                    number=2,
+                )
+                check_set_scope: "ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.CheckResult.CheckSetScope" = proto.Field(
+                    proto.MESSAGE,
+                    number=3,
+                    message="ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.CheckResult.CheckSetScope",
+                )
+                check_index: str = proto.Field(
+                    proto.STRING,
+                    number=4,
+                )
+                check_name: str = proto.Field(
+                    proto.STRING,
+                    number=5,
+                )
+                check_type: str = proto.Field(
+                    proto.STRING,
+                    number=6,
+                )
+                verdict: "ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.CheckResult.CheckVerdict" = proto.Field(
+                    proto.ENUM,
+                    number=7,
+                    enum="ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.CheckResult.CheckVerdict",
+                )
+                explanation: str = proto.Field(
+                    proto.STRING,
+                    number=8,
+                )
+
             image: str = proto.Field(
                 proto.STRING,
                 number=1,
@@ -121,6 +234,13 @@ class ContinuousValidationEvent(proto.Message):
                 proto.STRING,
                 number=3,
             )
+            check_results: MutableSequence[
+                "ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.CheckResult"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=4,
+                message="ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.CheckResult",
+            )
 
         pod_namespace: str = proto.Field(
             proto.STRING,
@@ -129,6 +249,10 @@ class ContinuousValidationEvent(proto.Message):
         pod: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        policy_name: str = proto.Field(
+            proto.STRING,
+            number=8,
         )
         deploy_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
@@ -153,13 +277,13 @@ class ContinuousValidationEvent(proto.Message):
             message="ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails",
         )
 
-    class UnsupportedPolicyEvent(proto.Message):
-        r"""An event describing that the project policy is unsupported by
-        CV.
+    class ConfigErrorEvent(proto.Message):
+        r"""An event describing a user-actionable configuration issue
+        that prevents CV from auditing.
 
         Attributes:
             description (str):
-                A description of the unsupported policy.
+                A description of the issue.
         """
 
         description: str = proto.Field(
@@ -173,11 +297,11 @@ class ContinuousValidationEvent(proto.Message):
         oneof="event_type",
         message=ContinuousValidationPodEvent,
     )
-    unsupported_policy_event: UnsupportedPolicyEvent = proto.Field(
+    config_error_event: ConfigErrorEvent = proto.Field(
         proto.MESSAGE,
-        number=2,
+        number=4,
         oneof="event_type",
-        message=UnsupportedPolicyEvent,
+        message=ConfigErrorEvent,
     )
 
 
