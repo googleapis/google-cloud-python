@@ -438,6 +438,20 @@ class AppendRowsRequest(proto.Message):
 
             Currently, field name can only be top-level column name,
             can't be a struct field path like 'foo.bar'.
+        default_missing_value_interpretation (google.cloud.bigquery_storage_v1.types.AppendRowsRequest.MissingValueInterpretation):
+            Optional. Default missing value interpretation for all
+            columns in the table. When a value is specified on an
+            ``AppendRowsRequest``, it is applied to all requests on the
+            connection from that point forward, until a subsequent
+            ``AppendRowsRequest`` sets it to a different value.
+            ``missing_value_interpretation`` can override
+            ``default_missing_value_interpretation``. For example, if
+            you want to write ``NULL`` instead of using default values
+            for some columns, you can set
+            ``default_missing_value_interpretation`` to
+            ``DEFAULT_VALUE`` and at the same time, set
+            ``missing_value_interpretations`` to ``NULL_VALUE`` on those
+            columns.
     """
 
     class MissingValueInterpretation(proto.Enum):
@@ -519,6 +533,11 @@ class AppendRowsRequest(proto.Message):
         proto.STRING,
         proto.ENUM,
         number=7,
+        enum=MissingValueInterpretation,
+    )
+    default_missing_value_interpretation: MissingValueInterpretation = proto.Field(
+        proto.ENUM,
+        number=8,
         enum=MissingValueInterpretation,
     )
 
@@ -825,7 +844,7 @@ class StorageError(proto.Message):
                 customer-managed encryption key.
             KMS_SERVICE_ERROR (13):
                 Key Management Service (KMS) service returned
-                an error.
+                an error, which can be retried.
             KMS_PERMISSION_DENIED (14):
                 Permission denied while using
                 customer-managed encryption key.

@@ -33,7 +33,13 @@ class BigQueryWriteGrpcTransport(BigQueryWriteTransport):
     """gRPC backend transport for BigQueryWrite.
 
     BigQuery Write API.
+
     The Write API can be used to write data to BigQuery.
+
+    The `google.cloud.bigquery.storage.v1
+    API </bigquery/docs/reference/storage/rpc/google.cloud.bigquery.storage.v1>`__
+    should be used instead of the v1beta2 API for BigQueryWrite
+    operations.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
