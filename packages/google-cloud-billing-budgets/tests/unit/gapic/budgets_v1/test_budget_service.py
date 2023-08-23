@@ -2131,6 +2131,7 @@ def test_create_budget_rest(request_type):
                 "monitoring_notification_channels_value2",
             ],
             "disable_default_iam_recipients": True,
+            "enable_project_level_recipients": True,
         },
         "etag": "etag_value",
     }
@@ -2359,6 +2360,7 @@ def test_create_budget_rest_bad_request(
                 "monitoring_notification_channels_value2",
             ],
             "disable_default_iam_recipients": True,
+            "enable_project_level_recipients": True,
         },
         "etag": "etag_value",
     }
@@ -2490,6 +2492,7 @@ def test_update_budget_rest(request_type):
                 "monitoring_notification_channels_value2",
             ],
             "disable_default_iam_recipients": True,
+            "enable_project_level_recipients": True,
         },
         "etag": "etag_value",
     }
@@ -2707,6 +2710,7 @@ def test_update_budget_rest_bad_request(
                 "monitoring_notification_channels_value2",
             ],
             "disable_default_iam_recipients": True,
+            "enable_project_level_recipients": True,
         },
         "etag": "etag_value",
     }
@@ -3128,6 +3132,7 @@ def test_list_budgets_rest_required_fields(
         (
             "page_size",
             "page_token",
+            "scope",
         )
     )
     jsonified_request.update(unset_fields)
@@ -3187,6 +3192,7 @@ def test_list_budgets_rest_unset_required_fields():
             (
                 "pageSize",
                 "pageToken",
+                "scope",
             )
         )
         & set(("parent",))

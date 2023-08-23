@@ -305,6 +305,14 @@ class AllUpdatesRule(proto.Message):
             Default notifications are sent to those with
             Billing Account Administrator and Billing
             Account User IAM roles for the target account.
+        enable_project_level_recipients (bool):
+            Optional. When set to true, and when the budget has a single
+            project configured, notifications will be sent to project
+            level recipients of that project. This field will be ignored
+            if the budget has multiple or no project configured.
+
+            Currently, project level recipients are the users with
+            ``Owner`` role on a cloud project.
     """
 
     pubsub_topic: str = proto.Field(
@@ -322,6 +330,10 @@ class AllUpdatesRule(proto.Message):
     disable_default_iam_recipients: bool = proto.Field(
         proto.BOOL,
         number=4,
+    )
+    enable_project_level_recipients: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
 
 
@@ -348,9 +360,11 @@ class Filter(proto.Message):
             ``folders/{folderId}`` or
             ``organizations/{organizationId}``, specifying that usage
             from only this set of folders and organizations should be
-            included in the budget. If omitted, the report includes all
-            usage for all organizations, regardless of which
-            organization the usage occurred on.
+            included in the budget. If omitted, the budget includes all
+            usage that the billing account pays for. If the folder or
+            organization contains projects that are paid for by a
+            different Cloud Billing account, the budget *doesn't* apply
+            to those projects.
         credit_types (MutableSequence[str]):
             Optional. If
             [Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment]
