@@ -111,7 +111,9 @@ from google.cloud.dataproc_v1.types.clusters import EndpointConfig
 from google.cloud.dataproc_v1.types.clusters import GceClusterConfig
 from google.cloud.dataproc_v1.types.clusters import GetClusterRequest
 from google.cloud.dataproc_v1.types.clusters import IdentityConfig
+from google.cloud.dataproc_v1.types.clusters import InstanceFlexibilityPolicy
 from google.cloud.dataproc_v1.types.clusters import InstanceGroupConfig
+from google.cloud.dataproc_v1.types.clusters import InstanceReference
 from google.cloud.dataproc_v1.types.clusters import KerberosConfig
 from google.cloud.dataproc_v1.types.clusters import LifecycleConfig
 from google.cloud.dataproc_v1.types.clusters import ListClustersRequest
@@ -266,7 +268,9 @@ __all__ = (
     "GceClusterConfig",
     "GetClusterRequest",
     "IdentityConfig",
+    "InstanceFlexibilityPolicy",
     "InstanceGroupConfig",
+    "InstanceReference",
     "KerberosConfig",
     "LifecycleConfig",
     "ListClustersRequest",

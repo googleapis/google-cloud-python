@@ -40,7 +40,9 @@ __protobuf__ = proto.module(
         "ShieldedInstanceConfig",
         "ConfidentialInstanceConfig",
         "InstanceGroupConfig",
+        "InstanceReference",
         "ManagedGroupConfig",
+        "InstanceFlexibilityPolicy",
         "AcceleratorConfig",
         "DiskConfig",
         "AuxiliaryNodeGroup",
@@ -561,8 +563,8 @@ class GceClusterConfig(proto.Message):
             `Tagging
             instances <https://cloud.google.com/compute/docs/label-or-tag-resources#tags>`__).
         metadata (MutableMapping[str, str]):
-            The Compute Engine metadata entries to add to all instances
-            (see `Project and instance
+            Optional. The Compute Engine metadata entries to add to all
+            instances (see `Project and instance
             metadata <https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata>`__).
         reservation_affinity (google.cloud.dataproc_v1.types.ReservationAffinity):
             Optional. Reservation Affinity for consuming
@@ -771,6 +773,9 @@ class InstanceGroupConfig(proto.Message):
             Output only. The list of instance names. Dataproc derives
             the names from ``cluster_name``, ``num_instances``, and the
             instance group.
+        instance_references (MutableSequence[google.cloud.dataproc_v1.types.InstanceReference]):
+            Output only. List of references to Compute
+            Engine instances.
         image_uri (str):
             Optional. The Compute Engine image resource used for cluster
             instances.
@@ -832,6 +837,31 @@ class InstanceGroupConfig(proto.Message):
             Optional. Specifies the minimum cpu platform for the
             Instance Group. See `Dataproc -> Minimum CPU
             Platform <https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu>`__.
+        min_num_instances (int):
+            Optional. The minimum number of instances to create. If
+            min_num_instances is set, min_num_instances is used for a
+            criteria to decide the cluster. Cluster creation will be
+            failed by being an error state if the total number of
+            instances created is less than the min_num_instances. For
+            example, given that num_instances = 5 and min_num_instances
+            = 3,
+
+            -  if 4 instances are created and then registered
+               successfully but one instance is failed, the failed VM
+               will be deleted and the cluster will be resized to 4
+               instances in running state.
+            -  if 2 instances are created successfully and 3 instances
+               are failed, the cluster will be in an error state and
+               does not delete failed VMs for debugging.
+            -  if 2 instance are created and then registered
+               successfully but 3 instances are failed to initialize,
+               the cluster will be in an error state and does not delete
+               failed VMs for debugging. NB: This can only be set for
+               primary workers now.
+        instance_flexibility_policy (google.cloud.dataproc_v1.types.InstanceFlexibilityPolicy):
+            Optional. Instance flexibility Policy
+            allowing a mixture of VM shapes and provisioning
+            models.
     """
 
     class Preemptibility(proto.Enum):
@@ -877,6 +907,11 @@ class InstanceGroupConfig(proto.Message):
         proto.STRING,
         number=2,
     )
+    instance_references: MutableSequence["InstanceReference"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message="InstanceReference",
+    )
     image_uri: str = proto.Field(
         proto.STRING,
         number=3,
@@ -913,6 +948,51 @@ class InstanceGroupConfig(proto.Message):
         proto.STRING,
         number=9,
     )
+    min_num_instances: int = proto.Field(
+        proto.INT32,
+        number=12,
+    )
+    instance_flexibility_policy: "InstanceFlexibilityPolicy" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message="InstanceFlexibilityPolicy",
+    )
+
+
+class InstanceReference(proto.Message):
+    r"""A reference to a Compute Engine instance.
+
+    Attributes:
+        instance_name (str):
+            The user-friendly name of the Compute Engine
+            instance.
+        instance_id (str):
+            The unique identifier of the Compute Engine
+            instance.
+        public_key (str):
+            The public RSA key used for sharing data with
+            this instance.
+        public_ecies_key (str):
+            The public ECIES key used for sharing data
+            with this instance.
+    """
+
+    instance_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    public_key: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    public_ecies_key: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ManagedGroupConfig(proto.Message):
@@ -926,6 +1006,10 @@ class ManagedGroupConfig(proto.Message):
         instance_group_manager_name (str):
             Output only. The name of the Instance Group
             Manager for this group.
+        instance_group_manager_uri (str):
+            Output only. The partial URI to the instance
+            group manager for this group. E.g.
+            projects/my-project/regions/us-central1/instanceGroupManagers/my-igm.
     """
 
     instance_template_name: str = proto.Field(
@@ -935,6 +1019,94 @@ class ManagedGroupConfig(proto.Message):
     instance_group_manager_name: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    instance_group_manager_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class InstanceFlexibilityPolicy(proto.Message):
+    r"""Instance flexibility Policy allowing a mixture of VM shapes
+    and provisioning models.
+
+    Attributes:
+        instance_selection_list (MutableSequence[google.cloud.dataproc_v1.types.InstanceFlexibilityPolicy.InstanceSelection]):
+            Optional. List of instance selection options
+            that the group will use when creating new VMs.
+        instance_selection_results (MutableSequence[google.cloud.dataproc_v1.types.InstanceFlexibilityPolicy.InstanceSelectionResult]):
+            Output only. A list of instance selection
+            results in the group.
+    """
+
+    class InstanceSelection(proto.Message):
+        r"""Defines machines types and a rank to which the machines types
+        belong.
+
+        Attributes:
+            machine_types (MutableSequence[str]):
+                Optional. Full machine-type names, e.g.
+                "n1-standard-16".
+            rank (int):
+                Optional. Preference of this instance
+                selection. Lower number means higher preference.
+                Dataproc will first try to create a VM based on
+                the machine-type with priority rank and fallback
+                to next rank based on availability. Machine
+                types and instance selections with the same
+                priority have the same preference.
+        """
+
+        machine_types: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        rank: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+
+    class InstanceSelectionResult(proto.Message):
+        r"""Defines a mapping from machine types to the number of VMs
+        that are created with each machine type.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            machine_type (str):
+                Output only. Full machine-type names, e.g.
+                "n1-standard-16".
+
+                This field is a member of `oneof`_ ``_machine_type``.
+            vm_count (int):
+                Output only. Number of VM provisioned with the machine_type.
+
+                This field is a member of `oneof`_ ``_vm_count``.
+        """
+
+        machine_type: str = proto.Field(
+            proto.STRING,
+            number=1,
+            optional=True,
+        )
+        vm_count: int = proto.Field(
+            proto.INT32,
+            number=2,
+            optional=True,
+        )
+
+    instance_selection_list: MutableSequence[InstanceSelection] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=InstanceSelection,
+    )
+    instance_selection_results: MutableSequence[
+        InstanceSelectionResult
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=InstanceSelectionResult,
     )
 
 
@@ -1198,6 +1370,9 @@ class ClusterStatus(proto.Message):
             STARTING (8):
                 The cluster is being started. It is not ready
                 for use.
+            REPAIRING (10):
+                The cluster is being repaired. It is not
+                ready for use.
         """
         UNKNOWN = 0
         CREATING = 1
@@ -1209,6 +1384,7 @@ class ClusterStatus(proto.Message):
         STOPPING = 6
         STOPPED = 7
         STARTING = 8
+        REPAIRING = 10
 
     class Substate(proto.Enum):
         r"""The cluster substate.
@@ -1602,18 +1778,18 @@ class DataprocMetricConfig(proto.Message):
     """
 
     class MetricSource(proto.Enum):
-        r"""A source for the collection of Dataproc OSS metrics (see [available
-        OSS metrics]
-        (https://cloud.google.com//dataproc/docs/guides/monitoring#available_oss_metrics)).
+        r"""A source for the collection of Dataproc custom metrics (see [Custom
+        metrics]
+        (https://cloud.google.com//dataproc/docs/guides/dataproc-metrics#custom_metrics)).
 
         Values:
             METRIC_SOURCE_UNSPECIFIED (0):
                 Required unspecified metric source.
             MONITORING_AGENT_DEFAULTS (1):
-                Default monitoring agent metrics. If this source is enabled,
+                Monitoring agent metrics. If this source is enabled,
                 Dataproc enables the monitoring agent in Compute Engine, and
-                collects default monitoring agent metrics, which are
-                published with an ``agent.googleapis.com`` prefix.
+                collects monitoring agent metrics, which are published with
+                an ``agent.googleapis.com`` prefix.
             HDFS (2):
                 HDFS metric source.
             SPARK (3):
@@ -1637,20 +1813,20 @@ class DataprocMetricConfig(proto.Message):
         HIVEMETASTORE = 7
 
     class Metric(proto.Message):
-        r"""A Dataproc OSS metric.
+        r"""A Dataproc custom metric.
 
         Attributes:
             metric_source (google.cloud.dataproc_v1.types.DataprocMetricConfig.MetricSource):
-                Required. Default metrics are collected unless
+                Required. A standard set of metrics is collected unless
                 ``metricOverrides`` are specified for the metric source (see
-                [Available OSS metrics]
-                (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics)
+                [Custom metrics]
+                (https://cloud.google.com/dataproc/docs/guides/dataproc-metrics#custom_metrics)
                 for more information).
             metric_overrides (MutableSequence[str]):
-                Optional. Specify one or more [available OSS metrics]
-                (https://cloud.google.com/dataproc/docs/guides/monitoring#available_oss_metrics)
+                Optional. Specify one or more [Custom metrics]
+                (https://cloud.google.com/dataproc/docs/guides/dataproc-metrics#custom_metrics)
                 to collect for the metric course (for the ``SPARK`` metric
-                source, any [Spark metric]
+                source (any [Spark metric]
                 (https://spark.apache.org/docs/latest/monitoring.html#metrics)
                 can be specified).
 
@@ -1669,15 +1845,15 @@ class DataprocMetricConfig(proto.Message):
 
                 Notes:
 
-                -  Only the specified overridden metrics will be collected
-                   for the metric source. For example, if one or more
+                -  Only the specified overridden metrics are collected for
+                   the metric source. For example, if one or more
                    ``spark:executive`` metrics are listed as metric
-                   overrides, other ``SPARK`` metrics will not be collected.
-                   The collection of the default metrics for other OSS
-                   metric sources is unaffected. For example, if both
-                   ``SPARK`` andd ``YARN`` metric sources are enabled, and
-                   overrides are provided for Spark metrics only, all
-                   default YARN metrics will be collected.
+                   overrides, other ``SPARK`` metrics are not collected. The
+                   collection of the metrics for other enabled custom metric
+                   sources is unaffected. For example, if both ``SPARK``
+                   andd ``YARN`` metric sources are enabled, and overrides
+                   are provided for Spark metrics only, all YARN metrics are
+                   collected.
         """
 
         metric_source: "DataprocMetricConfig.MetricSource" = proto.Field(

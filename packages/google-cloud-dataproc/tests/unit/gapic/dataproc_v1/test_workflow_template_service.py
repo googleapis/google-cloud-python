@@ -2793,6 +2793,14 @@ def test_create_workflow_template_rest(request_type):
                             "instance_names_value1",
                             "instance_names_value2",
                         ],
+                        "instance_references": [
+                            {
+                                "instance_name": "instance_name_value",
+                                "instance_id": "instance_id_value",
+                                "public_key": "public_key_value",
+                                "public_ecies_key": "public_ecies_key_value",
+                            }
+                        ],
                         "image_uri": "image_uri_value",
                         "machine_type_uri": "machine_type_uri_value",
                         "disk_config": {
@@ -2806,6 +2814,7 @@ def test_create_workflow_template_rest(request_type):
                         "managed_group_config": {
                             "instance_template_name": "instance_template_name_value",
                             "instance_group_manager_name": "instance_group_manager_name_value",
+                            "instance_group_manager_uri": "instance_group_manager_uri_value",
                         },
                         "accelerators": [
                             {
@@ -2814,6 +2823,21 @@ def test_create_workflow_template_rest(request_type):
                             }
                         ],
                         "min_cpu_platform": "min_cpu_platform_value",
+                        "min_num_instances": 1818,
+                        "instance_flexibility_policy": {
+                            "instance_selection_list": [
+                                {
+                                    "machine_types": [
+                                        "machine_types_value1",
+                                        "machine_types_value2",
+                                    ],
+                                    "rank": 428,
+                                }
+                            ],
+                            "instance_selection_results": [
+                                {"machine_type": "machine_type_value", "vm_count": 875}
+                            ],
+                        },
                     },
                     "worker_config": {},
                     "secondary_worker_config": {},
@@ -3236,6 +3260,14 @@ def test_create_workflow_template_rest_bad_request(
                             "instance_names_value1",
                             "instance_names_value2",
                         ],
+                        "instance_references": [
+                            {
+                                "instance_name": "instance_name_value",
+                                "instance_id": "instance_id_value",
+                                "public_key": "public_key_value",
+                                "public_ecies_key": "public_ecies_key_value",
+                            }
+                        ],
                         "image_uri": "image_uri_value",
                         "machine_type_uri": "machine_type_uri_value",
                         "disk_config": {
@@ -3249,6 +3281,7 @@ def test_create_workflow_template_rest_bad_request(
                         "managed_group_config": {
                             "instance_template_name": "instance_template_name_value",
                             "instance_group_manager_name": "instance_group_manager_name_value",
+                            "instance_group_manager_uri": "instance_group_manager_uri_value",
                         },
                         "accelerators": [
                             {
@@ -3257,6 +3290,21 @@ def test_create_workflow_template_rest_bad_request(
                             }
                         ],
                         "min_cpu_platform": "min_cpu_platform_value",
+                        "min_num_instances": 1818,
+                        "instance_flexibility_policy": {
+                            "instance_selection_list": [
+                                {
+                                    "machine_types": [
+                                        "machine_types_value1",
+                                        "machine_types_value2",
+                                    ],
+                                    "rank": 428,
+                                }
+                            ],
+                            "instance_selection_results": [
+                                {"machine_type": "machine_type_value", "vm_count": 875}
+                            ],
+                        },
                     },
                     "worker_config": {},
                     "secondary_worker_config": {},
@@ -4136,6 +4184,14 @@ def test_instantiate_inline_workflow_template_rest(request_type):
                             "instance_names_value1",
                             "instance_names_value2",
                         ],
+                        "instance_references": [
+                            {
+                                "instance_name": "instance_name_value",
+                                "instance_id": "instance_id_value",
+                                "public_key": "public_key_value",
+                                "public_ecies_key": "public_ecies_key_value",
+                            }
+                        ],
                         "image_uri": "image_uri_value",
                         "machine_type_uri": "machine_type_uri_value",
                         "disk_config": {
@@ -4149,6 +4205,7 @@ def test_instantiate_inline_workflow_template_rest(request_type):
                         "managed_group_config": {
                             "instance_template_name": "instance_template_name_value",
                             "instance_group_manager_name": "instance_group_manager_name_value",
+                            "instance_group_manager_uri": "instance_group_manager_uri_value",
                         },
                         "accelerators": [
                             {
@@ -4157,6 +4214,21 @@ def test_instantiate_inline_workflow_template_rest(request_type):
                             }
                         ],
                         "min_cpu_platform": "min_cpu_platform_value",
+                        "min_num_instances": 1818,
+                        "instance_flexibility_policy": {
+                            "instance_selection_list": [
+                                {
+                                    "machine_types": [
+                                        "machine_types_value1",
+                                        "machine_types_value2",
+                                    ],
+                                    "rank": 428,
+                                }
+                            ],
+                            "instance_selection_results": [
+                                {"machine_type": "machine_type_value", "vm_count": 875}
+                            ],
+                        },
                     },
                     "worker_config": {},
                     "secondary_worker_config": {},
@@ -4575,6 +4647,14 @@ def test_instantiate_inline_workflow_template_rest_bad_request(
                             "instance_names_value1",
                             "instance_names_value2",
                         ],
+                        "instance_references": [
+                            {
+                                "instance_name": "instance_name_value",
+                                "instance_id": "instance_id_value",
+                                "public_key": "public_key_value",
+                                "public_ecies_key": "public_ecies_key_value",
+                            }
+                        ],
                         "image_uri": "image_uri_value",
                         "machine_type_uri": "machine_type_uri_value",
                         "disk_config": {
@@ -4588,6 +4668,7 @@ def test_instantiate_inline_workflow_template_rest_bad_request(
                         "managed_group_config": {
                             "instance_template_name": "instance_template_name_value",
                             "instance_group_manager_name": "instance_group_manager_name_value",
+                            "instance_group_manager_uri": "instance_group_manager_uri_value",
                         },
                         "accelerators": [
                             {
@@ -4596,6 +4677,21 @@ def test_instantiate_inline_workflow_template_rest_bad_request(
                             }
                         ],
                         "min_cpu_platform": "min_cpu_platform_value",
+                        "min_num_instances": 1818,
+                        "instance_flexibility_policy": {
+                            "instance_selection_list": [
+                                {
+                                    "machine_types": [
+                                        "machine_types_value1",
+                                        "machine_types_value2",
+                                    ],
+                                    "rank": 428,
+                                }
+                            ],
+                            "instance_selection_results": [
+                                {"machine_type": "machine_type_value", "vm_count": 875}
+                            ],
+                        },
                     },
                     "worker_config": {},
                     "secondary_worker_config": {},
@@ -4923,6 +5019,14 @@ def test_update_workflow_template_rest(request_type):
                             "instance_names_value1",
                             "instance_names_value2",
                         ],
+                        "instance_references": [
+                            {
+                                "instance_name": "instance_name_value",
+                                "instance_id": "instance_id_value",
+                                "public_key": "public_key_value",
+                                "public_ecies_key": "public_ecies_key_value",
+                            }
+                        ],
                         "image_uri": "image_uri_value",
                         "machine_type_uri": "machine_type_uri_value",
                         "disk_config": {
@@ -4936,6 +5040,7 @@ def test_update_workflow_template_rest(request_type):
                         "managed_group_config": {
                             "instance_template_name": "instance_template_name_value",
                             "instance_group_manager_name": "instance_group_manager_name_value",
+                            "instance_group_manager_uri": "instance_group_manager_uri_value",
                         },
                         "accelerators": [
                             {
@@ -4944,6 +5049,21 @@ def test_update_workflow_template_rest(request_type):
                             }
                         ],
                         "min_cpu_platform": "min_cpu_platform_value",
+                        "min_num_instances": 1818,
+                        "instance_flexibility_policy": {
+                            "instance_selection_list": [
+                                {
+                                    "machine_types": [
+                                        "machine_types_value1",
+                                        "machine_types_value2",
+                                    ],
+                                    "rank": 428,
+                                }
+                            ],
+                            "instance_selection_results": [
+                                {"machine_type": "machine_type_value", "vm_count": 875}
+                            ],
+                        },
                     },
                     "worker_config": {},
                     "secondary_worker_config": {},
@@ -5357,6 +5477,14 @@ def test_update_workflow_template_rest_bad_request(
                             "instance_names_value1",
                             "instance_names_value2",
                         ],
+                        "instance_references": [
+                            {
+                                "instance_name": "instance_name_value",
+                                "instance_id": "instance_id_value",
+                                "public_key": "public_key_value",
+                                "public_ecies_key": "public_ecies_key_value",
+                            }
+                        ],
                         "image_uri": "image_uri_value",
                         "machine_type_uri": "machine_type_uri_value",
                         "disk_config": {
@@ -5370,6 +5498,7 @@ def test_update_workflow_template_rest_bad_request(
                         "managed_group_config": {
                             "instance_template_name": "instance_template_name_value",
                             "instance_group_manager_name": "instance_group_manager_name_value",
+                            "instance_group_manager_uri": "instance_group_manager_uri_value",
                         },
                         "accelerators": [
                             {
@@ -5378,6 +5507,21 @@ def test_update_workflow_template_rest_bad_request(
                             }
                         ],
                         "min_cpu_platform": "min_cpu_platform_value",
+                        "min_num_instances": 1818,
+                        "instance_flexibility_policy": {
+                            "instance_selection_list": [
+                                {
+                                    "machine_types": [
+                                        "machine_types_value1",
+                                        "machine_types_value2",
+                                    ],
+                                    "rank": 428,
+                                }
+                            ],
+                            "instance_selection_results": [
+                                {"machine_type": "machine_type_value", "vm_count": 875}
+                            ],
+                        },
                     },
                     "worker_config": {},
                     "secondary_worker_config": {},

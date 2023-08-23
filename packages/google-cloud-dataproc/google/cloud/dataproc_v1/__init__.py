@@ -71,7 +71,9 @@ from .types.clusters import EndpointConfig
 from .types.clusters import GceClusterConfig
 from .types.clusters import GetClusterRequest
 from .types.clusters import IdentityConfig
+from .types.clusters import InstanceFlexibilityPolicy
 from .types.clusters import InstanceGroupConfig
+from .types.clusters import InstanceReference
 from .types.clusters import KerberosConfig
 from .types.clusters import LifecycleConfig
 from .types.clusters import ListClustersRequest
@@ -222,8 +224,10 @@ __all__ = (
     "HadoopJob",
     "HiveJob",
     "IdentityConfig",
+    "InstanceFlexibilityPolicy",
     "InstanceGroupAutoscalingPolicyConfig",
     "InstanceGroupConfig",
+    "InstanceReference",
     "InstantiateInlineWorkflowTemplateRequest",
     "InstantiateWorkflowTemplateRequest",
     "Job",
