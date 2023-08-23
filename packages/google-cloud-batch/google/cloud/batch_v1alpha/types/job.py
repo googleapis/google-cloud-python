@@ -594,24 +594,13 @@ class AllocationPolicy(proto.Message):
 
         Attributes:
             image (str):
-                Name of an image used as the data source. For example, the
-                following are all valid URLs:
+                URL for a VM image to use as the data source for this disk.
+                For example, the following are all valid URLs:
 
                 -  Specify the image by its family name:
-
-                .. raw:: html
-
-                    <pre><code>projects/<var
-                    class="apiparam">project</var>/global/images/family/<var
-                    class="apiparam">image_family</var></code></pre>
-
+                   projects/{project}/global/images/family/{image_family}
                 -  Specify the image version:
-
-                .. raw:: html
-
-                    <pre>projects/<var
-                    class="apiparam">project</var>/global/images/<var
-                    class="apiparam">image_version</var></code></pre>
+                   projects/{project}/global/images/{image_version}
 
                 You can also use Batch customized image in short names. The
                 following image values are supported for a boot disk:
@@ -784,10 +773,10 @@ class AllocationPolicy(proto.Message):
             disks (MutableSequence[google.cloud.batch_v1alpha.types.AllocationPolicy.AttachedDisk]):
                 Non-boot disks to be attached for each VM
                 created by this InstancePolicy. New disks will
-                be deleted when the VM is deleted. A non
-                bootable disk is a disk that can be of a device
-                with a file system or a raw storage drive that
-                is not ready for data storage and accessing.
+                be deleted when the VM is deleted. A non-boot
+                disk is a disk that can be of a device with a
+                file system or a raw storage drive that is not
+                ready for data storage and accessing.
             reservation (str):
                 If specified, VMs will consume only the
                 specified reservation. If not specified
@@ -893,36 +882,23 @@ class AllocationPolicy(proto.Message):
 
         Attributes:
             network (str):
-                The URL of an existing network resource.
-                You can specify the network as a full or partial
-                URL.
+                The URL of an existing network resource. You can specify the
+                network as a full or partial URL.
+
                 For example, the following are all valid URLs:
 
-                <pre><code>https://www.googleapis.com/compute/v1/projects/<var
-                class="apiparam">project</var>/global/networks/<var
-                class="apiparam">network</var></code></pre>
-                <pre><code>projects/<var
-                class="apiparam">project</var>/global/networks/<var
-                class="apiparam">network</var></code></pre>
-                <pre><code>global/networks/<var
-                class="apiparam">network</var></code></pre>
+                -  https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}
+                -  projects/{project}/global/networks/{network}
+                -  global/networks/{network}
             subnetwork (str):
-                The URL of an existing subnetwork resource in
-                the network. You can specify the subnetwork as a
-                full or partial URL.
+                The URL of an existing subnetwork resource in the network.
+                You can specify the subnetwork as a full or partial URL.
+
                 For example, the following are all valid URLs:
 
-                <pre><code>https://www.googleapis.com/compute/v1/projects/<var
-                class="apiparam">project</var>/regions/<var
-                class="apiparam">region</var>/subnetworks/<var
-                class="apiparam">subnetwork</var></code></pre>
-                <pre><code>projects/<var
-                class="apiparam">project</var>/regions/<var
-                class="apiparam">region</var>/subnetworks/<var
-                class="apiparam">subnetwork</var></code></pre>
-                <pre><code>regions/<var
-                class="apiparam">region</var>/subnetworks/<var
-                class="apiparam">subnetwork</var></code></pre>
+                -  https://www.googleapis.com/compute/v1/projects/{project}/regions/{region}/subnetworks/{subnetwork}
+                -  projects/{project}/regions/{region}/subnetworks/{subnetwork}
+                -  regions/{region}/subnetworks/{subnetwork}
             no_external_ip_address (bool):
                 Default is false (with an external IP
                 address). Required if no external public IP
