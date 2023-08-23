@@ -35,7 +35,7 @@ Note that the extras pyopenssl and enterprise_cert should not be used together b
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.6
+Python >= 3.7
 
 Unsupported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -44,6 +44,9 @@ Unsupported Python Versions
 
 - Python 3.5:   The last version of this library with support for Python 3.5
   was `google.auth == 1.23.0`.
+
+- Python 3.6:   The last version of this library with support for Python 3.6
+  was `google.auth == 2.22.0`.
 
 Documentation
 -------------

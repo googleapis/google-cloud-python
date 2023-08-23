@@ -62,12 +62,11 @@ setup(
     ),
     install_requires=DEPENDENCIES,
     extras_require=extras,
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     license="Apache 2.0",
     keywords="google auth oauth client",
     classifiers=[
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",

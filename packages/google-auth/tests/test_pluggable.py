@@ -1233,7 +1233,7 @@ class TestCredentials(object):
             with pytest.raises(exceptions.RefreshError) as excinfo:
                 _ = credentials.retrieve_subject_token(None)
 
-            assert excinfo.match(r"Pluggable auth is only supported for python 3.6+")
+            assert excinfo.match(r"Pluggable auth is only supported for python 3.7+")
 
     @mock.patch.dict(os.environ, {"GOOGLE_EXTERNAL_ACCOUNT_ALLOW_EXECUTABLES": "1"})
     def test_revoke_subject_token_python_2(self):
@@ -1247,4 +1247,4 @@ class TestCredentials(object):
             with pytest.raises(exceptions.RefreshError) as excinfo:
                 _ = credentials.revoke(None)
 
-            assert excinfo.match(r"Pluggable auth is only supported for python 3.6+")
+            assert excinfo.match(r"Pluggable auth is only supported for python 3.7+")

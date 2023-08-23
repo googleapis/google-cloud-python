@@ -193,7 +193,7 @@ class Credentials(external_account.Credentials):
 
         if not _helpers.is_python_3():
             raise exceptions.RefreshError(
-                "Pluggable auth is only supported for python 3.6+"
+                "Pluggable auth is only supported for python 3.7+"
             )
 
         # Inject env vars.
@@ -255,7 +255,7 @@ class Credentials(external_account.Credentials):
 
         if not _helpers.is_python_3():
             raise exceptions.RefreshError(
-                "Pluggable auth is only supported for python 3.6+"
+                "Pluggable auth is only supported for python 3.7+"
             )
 
         # Inject variables
