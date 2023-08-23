@@ -56,7 +56,9 @@ class LiveAdTagDetail(proto.Message):
 
 
 class VodAdTagDetail(proto.Message):
-    r"""Information related to the details for one ad tag.
+    r"""Information related to the details for one ad tag. This
+    resource is only available for VOD sessions that do not
+    implement Google Ad Manager ad insertion.
 
     Attributes:
         name (str):

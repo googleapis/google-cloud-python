@@ -1666,7 +1666,10 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         Returns:
             google.cloud.video.stitcher_v1.types.VodStitchDetail:
                 Detailed information related to the
-                interstitial of a VOD session.
+                interstitial of a VOD session. This
+                resource is only available for VOD
+                sessions that do not implement Google Ad
+                Manager ad insertion.
 
         """
         # Create or coerce a protobuf request object.
@@ -1891,7 +1894,10 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         Returns:
             google.cloud.video.stitcher_v1.types.VodAdTagDetail:
                 Information related to the details
-                for one ad tag.
+                for one ad tag. This resource is only
+                available for VOD sessions that do not
+                implement Google Ad Manager ad
+                insertion.
 
         """
         # Create or coerce a protobuf request object.

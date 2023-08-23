@@ -76,10 +76,8 @@ class VodSession(proto.Message):
             Output only. The generated ID of the
             VodSession's source media.
         ad_tracking (google.cloud.video.stitcher_v1.types.AdTracking):
-            Required. Determines how the ad should be tracked. If
-            [gam_vod_config][google.cloud.video.stitcher.v1.VodSession.gam_vod_config]
-            is set, the value must be ``CLIENT`` because the IMA SDK
-            handles ad tracking.
+            Required. Determines how the ad should be
+            tracked.
         gam_settings (google.cloud.video.stitcher_v1.types.VodSession.GamSettings):
             This field should be set with appropriate
             values if GAM is being used for ads.
@@ -307,8 +305,7 @@ class LiveSession(proto.Message):
 
     class GamSettings(proto.Message):
         r"""Defines fields related to Google Ad Manager (GAM). This
-        should be set if GAM
-        is being used for ads.
+        should be set if GAM is being used for ads.
 
         Attributes:
             stream_id (str):

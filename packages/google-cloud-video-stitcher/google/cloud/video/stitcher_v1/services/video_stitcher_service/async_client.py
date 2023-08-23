@@ -1308,7 +1308,10 @@ class VideoStitcherServiceAsyncClient:
         Returns:
             google.cloud.video.stitcher_v1.types.VodStitchDetail:
                 Detailed information related to the
-                interstitial of a VOD session.
+                interstitial of a VOD session. This
+                resource is only available for VOD
+                sessions that do not implement Google Ad
+                Manager ad insertion.
 
         """
         # Create or coerce a protobuf request object.
@@ -1533,7 +1536,10 @@ class VideoStitcherServiceAsyncClient:
         Returns:
             google.cloud.video.stitcher_v1.types.VodAdTagDetail:
                 Information related to the details
-                for one ad tag.
+                for one ad tag. This resource is only
+                available for VOD sessions that do not
+                implement Google Ad Manager ad
+                insertion.
 
         """
         # Create or coerce a protobuf request object.
@@ -2765,7 +2771,7 @@ class VideoStitcherServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_live_config,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2883,7 +2889,7 @@ class VideoStitcherServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_live_configs,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -2998,7 +3004,7 @@ class VideoStitcherServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_live_config,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -3117,7 +3123,7 @@ class VideoStitcherServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_live_config,
-            default_timeout=None,
+            default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 

@@ -233,22 +233,22 @@ class VideoStitcherServiceTransport(abc.ABC):
             ),
             self.create_live_config: gapic_v1.method.wrap_method(
                 self.create_live_config,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.list_live_configs: gapic_v1.method.wrap_method(
                 self.list_live_configs,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.get_live_config: gapic_v1.method.wrap_method(
                 self.get_live_config,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_live_config: gapic_v1.method.wrap_method(
                 self.delete_live_config,
-                default_timeout=None,
+                default_timeout=60.0,
                 client_info=client_info,
             ),
         }

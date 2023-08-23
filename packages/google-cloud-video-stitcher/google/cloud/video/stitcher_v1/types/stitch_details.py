@@ -32,7 +32,8 @@ __protobuf__ = proto.module(
 
 class VodStitchDetail(proto.Message):
     r"""Detailed information related to the interstitial of a VOD
-    session.
+    session. This resource is only available for VOD sessions that
+    do not implement Google Ad Manager ad insertion.
 
     Attributes:
         name (str):
