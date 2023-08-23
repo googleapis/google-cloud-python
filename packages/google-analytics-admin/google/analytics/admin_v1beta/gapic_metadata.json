@@ -215,6 +215,11 @@
                 "update_account"
               ]
             },
+            "UpdateConversionEvent": {
+              "methods": [
+                "update_conversion_event"
+              ]
+            },
             "UpdateCustomDimension": {
               "methods": [
                 "update_custom_dimension"
@@ -460,6 +465,11 @@
                 "update_account"
               ]
             },
+            "UpdateConversionEvent": {
+              "methods": [
+                "update_conversion_event"
+              ]
+            },
             "UpdateCustomDimension": {
               "methods": [
                 "update_custom_dimension"
@@ -703,6 +713,11 @@
             "UpdateAccount": {
               "methods": [
                 "update_account"
+              ]
+            },
+            "UpdateConversionEvent": {
+              "methods": [
+                "update_conversion_event"
               ]
             },
             "UpdateCustomDimension": {

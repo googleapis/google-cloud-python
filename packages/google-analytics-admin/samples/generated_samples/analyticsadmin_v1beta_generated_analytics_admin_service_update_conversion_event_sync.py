@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateCustomDimension
+# Snippet for UpdateConversionEvent
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-analytics-admin
 
 
-# [START analyticsadmin_v1beta_generated_AnalyticsAdminService_CreateCustomDimension_sync]
+# [START analyticsadmin_v1beta_generated_AnalyticsAdminService_UpdateConversionEvent_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,25 +34,18 @@
 from google.analytics import admin_v1beta
 
 
-def sample_create_custom_dimension():
+def sample_update_conversion_event():
     # Create a client
     client = admin_v1beta.AnalyticsAdminServiceClient()
 
     # Initialize request argument(s)
-    custom_dimension = admin_v1beta.CustomDimension()
-    custom_dimension.parameter_name = "parameter_name_value"
-    custom_dimension.display_name = "display_name_value"
-    custom_dimension.scope = "ITEM"
-
-    request = admin_v1beta.CreateCustomDimensionRequest(
-        parent="parent_value",
-        custom_dimension=custom_dimension,
+    request = admin_v1beta.UpdateConversionEventRequest(
     )
 
     # Make the request
-    response = client.create_custom_dimension(request=request)
+    response = client.update_conversion_event(request=request)
 
     # Handle the response
     print(response)
 
-# [END analyticsadmin_v1beta_generated_AnalyticsAdminService_CreateCustomDimension_sync]
+# [END analyticsadmin_v1beta_generated_AnalyticsAdminService_UpdateConversionEvent_sync]

@@ -261,6 +261,11 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.update_conversion_event: gapic_v1.method.wrap_method(
+                self.update_conversion_event,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_conversion_event: gapic_v1.method.wrap_method(
                 self.get_conversion_event,
                 default_timeout=None,
@@ -652,6 +657,15 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analytics_admin.CreateConversionEventRequest],
+        Union[resources.ConversionEvent, Awaitable[resources.ConversionEvent]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_conversion_event(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateConversionEventRequest],
         Union[resources.ConversionEvent, Awaitable[resources.ConversionEvent]],
     ]:
         raise NotImplementedError()

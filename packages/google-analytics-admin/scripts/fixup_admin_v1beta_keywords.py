@@ -80,6 +80,7 @@ class adminCallTransformer(cst.CSTTransformer):
         'run_access_report': ('entity', 'dimensions', 'metrics', 'date_ranges', 'dimension_filter', 'metric_filter', 'offset', 'limit', 'time_zone', 'order_bys', 'return_entity_quota', ),
         'search_change_history_events': ('account', 'property', 'resource_type', 'action', 'actor_email', 'earliest_change_time', 'latest_change_time', 'page_size', 'page_token', ),
         'update_account': ('account', 'update_mask', ),
+        'update_conversion_event': ('conversion_event', 'update_mask', ),
         'update_custom_dimension': ('update_mask', 'custom_dimension', ),
         'update_custom_metric': ('update_mask', 'custom_metric', ),
         'update_data_retention_settings': ('data_retention_settings', 'update_mask', ),

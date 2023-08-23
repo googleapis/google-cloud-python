@@ -517,17 +517,15 @@ class DataStream(proto.Message):
 
         Attributes:
             measurement_id (str):
-                Output only. Analytics "Measurement ID",
-                without the "G-" prefix. Example: "G-1A2BCD345E"
-                would just be "1A2BCD345E".
+                Output only. Analytics Measurement ID.
+                Example: "G-1A2BCD345E".
             firebase_app_id (str):
                 Output only. ID of the corresponding web app
                 in Firebase, if any. This ID can change if the
                 web app is deleted and recreated.
             default_uri (str):
-                Immutable. Domain name of the web app being
-                measured, or empty. Example:
-                "http://www.google.com",
+                Domain name of the web app being measured, or
+                empty. Example: "http://www.google.com",
                 "https://www.google.com".
         """
 
@@ -1138,7 +1136,29 @@ class ConversionEvent(proto.Message):
             Custom events count towards the maximum number
             of custom conversion events that may be created
             per property.
+        counting_method (google.analytics.admin_v1beta.types.ConversionEvent.ConversionCountingMethod):
+            Optional. The method by which conversions will be counted
+            across multiple events within a session. If this value is
+            not provided, it will be set to ``ONCE_PER_EVENT``.
     """
+
+    class ConversionCountingMethod(proto.Enum):
+        r"""The method by which conversions will be counted across
+        multiple events within a session.
+
+        Values:
+            CONVERSION_COUNTING_METHOD_UNSPECIFIED (0):
+                Counting method not specified.
+            ONCE_PER_EVENT (1):
+                Each Event instance is considered a
+                Conversion.
+            ONCE_PER_SESSION (2):
+                An Event instance is considered a Conversion
+                at most once per session per user.
+        """
+        CONVERSION_COUNTING_METHOD_UNSPECIFIED = 0
+        ONCE_PER_EVENT = 1
+        ONCE_PER_SESSION = 2
 
     name: str = proto.Field(
         proto.STRING,
@@ -1161,6 +1181,11 @@ class ConversionEvent(proto.Message):
         proto.BOOL,
         number=5,
     )
+    counting_method: ConversionCountingMethod = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=ConversionCountingMethod,
+    )
 
 
 class CustomDimension(proto.Message):
@@ -1178,6 +1203,10 @@ class CustomDimension(proto.Message):
             the user property name. If this is an
             event-scoped dimension, then this is the event
             parameter name.
+
+            If this is an item-scoped dimension, then this
+            is the parameter name found in the eCommerce
+            items array.
 
             May only contain alphanumeric and underscore
             characters, starting with a letter. Max length
@@ -1214,10 +1243,13 @@ class CustomDimension(proto.Message):
                 Dimension scoped to an event.
             USER (2):
                 Dimension scoped to a user.
+            ITEM (3):
+                Dimension scoped to eCommerce items
         """
         DIMENSION_SCOPE_UNSPECIFIED = 0
         EVENT = 1
         USER = 2
+        ITEM = 3
 
     name: str = proto.Field(
         proto.STRING,
