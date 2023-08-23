@@ -1,0 +1,2 @@
+recursive-include google/cloud/bigquery_datapolicies *.py
+recursive-include google/cloud/bigquery_datapolicies_v1beta1 *.py
