@@ -211,6 +211,7 @@ def load_test_data_tables(
         ("scalars_too", "scalars_schema.json", "scalars.jsonl"),
         ("penguins", "penguins_schema.json", "penguins.jsonl"),
         ("time_series", "time_series_schema.json", "time_series.jsonl"),
+        ("hockey_players", "hockey_players.json", "hockey_players.jsonl"),
     ]:
         test_data_hash = hashlib.md5()
         _hash_digest_file(test_data_hash, DATA_DIR / schema_filename)
@@ -253,6 +254,11 @@ def test_data_tables_tokyo(
 @pytest.fixture(scope="session")
 def scalars_table_id(test_data_tables) -> str:
     return test_data_tables["scalars"]
+
+
+@pytest.fixture(scope="session")
+def hockey_table_id(test_data_tables) -> str:
+    return test_data_tables["hockey_players"]
 
 
 @pytest.fixture(scope="session")
@@ -352,6 +358,34 @@ def scalars_dfs(
     scalars_pandas_df_index,
 ):
     return scalars_df_index, scalars_pandas_df_index
+
+
+@pytest.fixture(scope="session")
+def hockey_df(
+    hockey_table_id: str, session: bigframes.Session
+) -> bigframes.dataframe.DataFrame:
+    """DataFrame pointing at test data."""
+    return session.read_gbq(hockey_table_id)
+
+
+@pytest.fixture(scope="session")
+def hockey_pandas_df() -> pd.DataFrame:
+    """pd.DataFrame pointing at test data."""
+    df = pd.read_json(
+        DATA_DIR / "hockey_players.jsonl",
+        lines=True,
+        dtype={
+            "team_name": pd.StringDtype(storage="pyarrow"),
+            "position": pd.StringDtype(storage="pyarrow"),
+            "player_name": pd.StringDtype(storage="pyarrow"),
+            "goals": pd.Int64Dtype(),
+            "assists": pd.Int64Dtype(),
+            "number": pd.Int64Dtype(),
+            "season": pd.Int64Dtype(),
+        },
+    )
+    df.index = df.index.astype("Int64")
+    return df
 
 
 @pytest.fixture(scope="session")
@@ -721,3 +755,48 @@ def restore_sampling_settings():
     yield
     bigframes.options.sampling.enable_downsampling = enable_downsampling
     bigframes.options.sampling.max_download_size = max_download_size
+
+
+@pytest.fixture()
+def weird_strings_pd():
+    df = pd.DataFrame(
+        {
+            "string_col": [
+                "٠١٢٣٤٥٦٧٨٩",
+                "",
+                "0",
+                "字",
+                "五",
+                "0123456789",
+                pd.NA,
+                "abc 123 mixed letters and numbers",
+                "no numbers here",
+                "123a",
+                "23!",
+                " 45",
+                "a45",
+                "ǅ",
+                "tT",
+                "-123",
+                "-123.4",
+                "-0",
+                "-.0",
+                ".0",
+                ".1",
+                "⅙",
+                "²",
+                "\t",
+                "a\ta",
+                "p1\np2",
+                "  ",
+            ]
+        },
+        dtype=pd.StringDtype(storage="pyarrow"),
+    )
+    df.index = df.index.astype("Int64")
+    return df.string_col
+
+
+@pytest.fixture()
+def weird_strings(session, weird_strings_pd):
+    return session.read_pandas(weird_strings_pd.to_frame()).string_col

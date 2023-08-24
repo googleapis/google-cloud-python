@@ -44,6 +44,7 @@ class DataFrame(NDFrame):
         They are returned in that order.
 
         Examples
+
         .. code-block::
 
             df = pd.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
@@ -175,8 +176,8 @@ class DataFrame(NDFrame):
                 are simply assigned to the column.
 
         Returns:
-            DataFrame: A new DataFrame with the new columns in addition to
-            all the existing columns.
+            bigframes.dataframe.DataFrame: A new DataFrame with the new columns
+                in addition to all the existing columns.
         """
         raise NotImplementedError("abstract method")
 
@@ -205,7 +206,7 @@ class DataFrame(NDFrame):
             level:
                 For MultiIndex, level from which the labels will be removed.
         Returns:
-            DataFrame: DataFrame without the removed column labels.
+            bigframes.dataframe.DataFrame: DataFrame without the removed column labels.
 
         Raises:
             KeyError: If any of the labels is not found in the selected axis.
@@ -227,7 +228,7 @@ class DataFrame(NDFrame):
                 Dict-like from old column labels to new column labels.
 
         Returns:
-            DataFrame: DataFrame with the renamed axis labels.
+            bigframes.dataframe.DataFrame: DataFrame with the renamed axis labels.
 
         Raises:
             KeyError: If any of the labels is not found.
@@ -238,7 +239,7 @@ class DataFrame(NDFrame):
         """
         Set the name of the axis for the index.
 
-        .. Note::
+        .. note::
 
             Currently only accepts a single string parameter (the new name of the index).
 
@@ -247,7 +248,7 @@ class DataFrame(NDFrame):
                 Value to set the axis name attribute.
 
         Returns:
-            DataFrame: DataFrame with the new index name
+            bigframes.dataframe.DataFrame: DataFrame with the new index name
         """
         raise NotImplementedError("abstract method")
 
@@ -317,7 +318,7 @@ class DataFrame(NDFrame):
                 the index to the default integer index.
 
         Returns:
-            DataFrame: DataFrame with the new index.
+            bigframes.dataframe.DataFrame: DataFrame with the new index.
         """
         raise NotImplementedError("abstract method")
 
@@ -344,7 +345,7 @@ class DataFrame(NDFrame):
                 - ``False`` : Drop all duplicates.
 
         Returns:
-            DataFrame: DataFrame with duplicates removed
+            bigframes.dataframe.DataFrame: DataFrame with duplicates removed
         """
         raise NotImplementedError("abstract method")
 
@@ -366,7 +367,7 @@ class DataFrame(NDFrame):
                 - False : Mark all duplicates as ``True``.
 
         Returns:
-            Boolean series for each duplicated rows.
+            bigframes.series.Series: Boolean series for each duplicated rows.
         """
         raise NotImplementedError("abstract method")
 
@@ -379,7 +380,7 @@ class DataFrame(NDFrame):
         """Remove missing values.
 
         Returns:
-            DataFrame: DataFrame with NA entries dropped from it.
+            bigframes.dataframe.DataFrame: DataFrame with NA entries dropped from it.
         """
         raise NotImplementedError("abstract method")
 
@@ -844,7 +845,7 @@ class DataFrame(NDFrame):
                 values will also be treated as the key in groups.
 
         Returns:
-            A groupby object that contains information about the groups.
+            bigframes.core.groupby.SeriesGroupBy: A groupby object that contains information about the groups.
         """
         raise NotImplementedError("abstract method")
 
@@ -871,7 +872,7 @@ class DataFrame(NDFrame):
                 values, without passing them to func.
 
         Returns:
-            DataFrame: Transformed DataFrame.
+            bigframes.dataframe.DataFrame: Transformed DataFrame.
         """
         raise NotImplementedError("abstract method")
 
@@ -899,7 +900,7 @@ class DataFrame(NDFrame):
                 index, preserving the order of the calling's one.
 
         Returns:
-            DataFrame: A dataframe containing columns from both the caller and `other`.
+            bigframes.dataframe.DataFrame: A dataframe containing columns from both the caller and `other`.
         """
         raise NotImplementedError("abstract method")
 
@@ -969,7 +970,7 @@ class DataFrame(NDFrame):
                 no suffix. At least one of the values must not be None.
 
         Returns:
-            DataFrame: A DataFrame of the two merged objects.
+            bigframes.dataframe.DataFrame: A DataFrame of the two merged objects.
         """
         raise NotImplementedError("abstract method")
 
@@ -1006,7 +1007,7 @@ class DataFrame(NDFrame):
                 Include only boolean columns.
 
         Returns:
-            Series
+            bigframes.series.Series: Series if all elements are True.
         """
         raise NotImplementedError("abstract method")
 
@@ -1019,7 +1020,7 @@ class DataFrame(NDFrame):
                 Include only float, int, boolean columns.
 
         Returns:
-            Series
+            bigframes.series.Series: Series with the product of the values.
         """
         raise NotImplementedError("abstract method")
 
@@ -1034,7 +1035,7 @@ class DataFrame(NDFrame):
                 Default False. Include only float, int, boolean columns.
 
         Returns:
-            Series
+            bigframes.series.Series: Series with the minimum of the values.
         """
         raise NotImplementedError("abstract method")
 
@@ -1049,7 +1050,7 @@ class DataFrame(NDFrame):
                 Default False. Include only float, int, boolean columns.
 
         Returns:
-            Series
+            bigframes.series.Series: Series after the maximum of values.
         """
         raise NotImplementedError("abstract method")
 
@@ -1063,7 +1064,7 @@ class DataFrame(NDFrame):
                 Default False. Include only float, int, boolean columns.
 
         Returns:
-            Series
+            bigframes.series.Series: Series with the sum of values.
         """
         raise NotImplementedError("abstract method")
 
@@ -1075,7 +1076,7 @@ class DataFrame(NDFrame):
                 Default False. Include only float, int, boolean columns.
 
         Returns:
-            Series
+            bigframes.series.Series: Series with the mean of values.
         """
         raise NotImplementedError("abstract method")
 
@@ -1090,7 +1091,7 @@ class DataFrame(NDFrame):
                 one. Note: ``exact=True`` not yet supported.
 
         Returns:
-            Series
+            bigframes.series.Series: Series with the median of values.
         """
         raise NotImplementedError("abstract method")
 
@@ -1104,7 +1105,7 @@ class DataFrame(NDFrame):
                 Default False. Include only float, int, boolean columns.
 
         Returns:
-            Series
+            bigframes.series.Series: Series with unbiased variance over requested axis.
         """
         raise NotImplementedError("abstract method")
 
@@ -1118,7 +1119,7 @@ class DataFrame(NDFrame):
                 Default False. Include only float, int, boolean columns.
 
         Returns:
-            Series
+            bigframes.series.Series: Series with sample standard deviation.
         """
         raise NotImplementedError("abstract method")
 
@@ -1134,8 +1135,8 @@ class DataFrame(NDFrame):
                 Include only `float`, `int` or `boolean` data.
 
         Returns:
-            For each column/row the number of non-NA/null entries.
-            If `level` is specified returns a `DataFrame`.
+            bigframes.series.Series: For each column/row the number of
+                non-NA/null entries. If `level` is specified returns a `DataFrame`.
         """
         raise NotImplementedError("abstract method")
 
@@ -1143,10 +1144,8 @@ class DataFrame(NDFrame):
         """
         Count number of distinct elements in specified axis.
 
-        Return Series with number of distinct elements.
-
         Returns:
-            Series
+            bigframes.series.Series: Series with number of distinct elements.
         """
         raise NotImplementedError("abstract method")
 
@@ -1156,7 +1155,7 @@ class DataFrame(NDFrame):
         Returns a DataFrame of the same size containing the cumulative minimum.
 
         Returns:
-            DataFrame: Return cumulative minimum of DataFrame.
+            bigframes.dataframe.DataFrame: Return cumulative minimum of DataFrame.
         """
         raise NotImplementedError("abstract method")
 
@@ -1166,7 +1165,7 @@ class DataFrame(NDFrame):
         Returns a DataFrame of the same size containing the cumulative maximum.
 
         Returns:
-            DataFrame: Return cumulative maximum of DataFrame.
+            bigframes.dataframe.DataFrame: Return cumulative maximum of DataFrame.
         """
         raise NotImplementedError("abstract method")
 
@@ -1176,7 +1175,7 @@ class DataFrame(NDFrame):
         Returns a DataFrame of the same size containing the cumulative sum.
 
         Returns:
-            DataFrame: Return cumulative sum of DataFrame.
+            bigframes.dataframe.DataFrame: Return cumulative sum of DataFrame.
         """
         raise NotImplementedError("abstract method")
 
@@ -1186,7 +1185,7 @@ class DataFrame(NDFrame):
         Returns a DataFrame of the same size containing the cumulative product.
 
         Returns:
-            DataFrame: Return cumulative product of DataFrame.
+            bigframes.dataframe.DataFrame: Return cumulative product of DataFrame.
         """
         raise NotImplementedError("abstract method")
 
@@ -1201,7 +1200,7 @@ class DataFrame(NDFrame):
                 function names, e.g. ``['sum', 'mean']``.
 
         Returns:
-            Series or DataFrame: Aggregated results
+            DataFrame or bigframes.series.Series: Aggregated results.
         """
         raise NotImplementedError("abstract method")
 
@@ -1218,17 +1217,51 @@ class DataFrame(NDFrame):
         .. note::
             Percentile values are approximates only.
 
+        .. note::
+            For numeric data, the result's index will include ``count``,
+            ``mean``, ``std``, ``min``, ``max`` as well as lower, ``50`` and
+            upper percentiles. By default the lower percentile is ``25`` and the
+            upper percentile is ``75``. The ``50`` percentile is the
+            same as the median.
+
         Returns:
-            Summary statistics of the Series or Dataframe provided.
+            bigframes.dataframe.DataFrame: Summary statistics of the Series or Dataframe provided.
+        """
+        raise NotImplementedError("abstract method")
 
+    def pivot(self, *, columns, index=None, values=None):
+        """
+        Return reshaped DataFrame organized by given index / column values.
 
-        Notes
-        -----
-        For numeric data, the result's index will include ``count``,
-        ``mean``, ``std``, ``min``, ``max`` as well as lower, ``50`` and
-        upper percentiles. By default the lower percentile is ``25`` and the
-        upper percentile is ``75``. The ``50`` percentile is the
-        same as the median.
+        Reshape data (produce a "pivot" table) based on column values. Uses
+        unique values from specified `index` / `columns` to form axes of the
+        resulting DataFrame. This function does not support data
+        aggregation, multiple values will result in a MultiIndex in the
+        columns.
+
+        .. note::
+            BigQuery supports up to 10000 columns. Pivot operations on columns
+            with too many unique values will fail if they would exceed this limit.
+
+        .. note::
+            The validity of the pivot operation is not checked. If columns and index
+            do not together uniquely identify input rows, the output will be
+            silently non-deterministic.
+
+        Args:
+            columns (str or object or a list of str):
+                Column to use to make new frame's columns.
+
+            index (str or object or a list of str, optional):
+                Column to use to make new frame's index. If not given, uses existing index.
+
+            values (str, object or a list of the previous, optional):
+                Column(s) to use for populating new frame's values. If not
+                specified, all remaining columns will be used and the result will
+                have hierarchically indexed columns.
+
+        Returns:
+            Returns reshaped DataFrame.
         """
         raise NotImplementedError("abstract method")
 

@@ -76,8 +76,6 @@ class KMeans(_BaseKMeans):
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series):
                 DataFrame of shape (n_samples, n_features). New data to predict.
-            y: (default None)
-                Not used, present here for API consistency by convention.
 
         Returns:
             bigframes.dataframe.DataFrame: DataFrame of the cluster each sample belongs to.

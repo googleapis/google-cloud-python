@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import random
 import tempfile
 import textwrap
@@ -681,6 +682,43 @@ def test_read_csv_local_w_encoding(session, penguins_pandas_df_default_index, en
         )
 
         assert df.shape[0] == penguins_pandas_df_default_index.shape[0]
+
+
+def test_read_pickle_local(session, penguins_pandas_df_default_index, tmp_path):
+    path = tmp_path / "test_read_csv_local_w_encoding.pkl"
+
+    penguins_pandas_df_default_index.to_pickle(path)
+    df = session.read_pickle(path)
+
+    pd.testing.assert_frame_equal(penguins_pandas_df_default_index, df.to_pandas())
+
+
+def test_read_pickle_buffer(session, penguins_pandas_df_default_index):
+    buffer = io.BytesIO()
+    penguins_pandas_df_default_index.to_pickle(buffer)
+    buffer.seek(0)
+    df = session.read_pickle(buffer)
+
+    pd.testing.assert_frame_equal(penguins_pandas_df_default_index, df.to_pandas())
+
+
+def test_read_pickle_series_buffer(session):
+    pd_series = pd.Series([1, 2, 3, 4, 5], dtype="Int64")
+    buffer = io.BytesIO()
+    pd_series.to_pickle(buffer)
+    buffer.seek(0)
+    bf_series = session.read_pickle(buffer).to_pandas()
+    pd_series.index = pd_series.index.astype("Int64")
+
+    assert (pd_series == bf_series).all()
+
+
+def test_read_pickle_gcs(session, penguins_pandas_df_default_index, gcs_folder):
+    path = gcs_folder + "test_read_pickle_gcs.pkl"
+    penguins_pandas_df_default_index.to_pickle(path)
+    df = session.read_pickle(path)
+
+    pd.testing.assert_frame_equal(penguins_pandas_df_default_index, df.to_pandas())
 
 
 def test_read_parquet_gcs(session: bigframes.Session, scalars_dfs, gcs_folder):

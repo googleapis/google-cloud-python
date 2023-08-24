@@ -20,6 +20,7 @@ import google.auth
 import google.auth.exceptions
 import pytest
 
+import bigframes.core.global_session
 import bigframes.pandas as bpd
 
 
@@ -289,7 +290,7 @@ def test_reset_session_after_bq_session_ended():
 
     # Now try to reset session and verify that it works
     bpd.reset_session()
-    assert bpd._global_session is None
+    assert bigframes.core.global_session._global_session is None
 
     # Now verify that use is able to start over
     df = bpd.read_gbq(test_query)
@@ -332,7 +333,7 @@ def test_reset_session_after_credentials_need_reauthentication(monkeypatch):
 
         # Now verify that resetting the session works
         bpd.reset_session()
-        assert bpd._global_session is None
+        assert bigframes.core.global_session._global_session is None
 
     # Now verify that use is able to start over
     df = bpd.read_gbq(test_query)

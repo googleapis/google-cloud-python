@@ -22,9 +22,10 @@ This library is an evolving attempt to
 """
 
 import abc
-from typing import cast, Optional, TypeVar
+from typing import cast, Optional, TypeVar, Union
 
 from bigframes.ml import core
+import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.base
 
 
@@ -143,3 +144,24 @@ class TrainablePredictor(Predictor):
     @abc.abstractmethod
     def to_gbq(self, model_name, replace):
         pass
+
+
+class Transformer(BaseEstimator):
+    """A BigQuery DataFrames Transformer base class that transforms data.
+
+    Also the transformers can be attached to a pipeline with a predictor."""
+
+    @abc.abstractmethod
+    def fit(self, X, y):
+        pass
+
+    @abc.abstractmethod
+    def transform(self, X):
+        pass
+
+    def fit_transform(
+        self,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Optional[Union[bpd.DataFrame, bpd.Series]] = None,
+    ) -> bpd.DataFrame:
+        return self.fit(X, y).transform(X)

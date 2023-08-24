@@ -60,19 +60,16 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* \
   && rm -f /var/cache/apt/archives/*.deb
 
-###################### Install python 3.9.13 and 3.10.5
+###################### Install python 3.9.13
 
-# Download python 3.9.13 and 3.10.5
+# Download python 3.9.13
 RUN wget https://www.python.org/ftp/python/3.9.13/Python-3.9.13.tgz
-RUN wget https://www.python.org/ftp/python/3.9.13/Python-3.10.5.tgz
 
 # Extract files
 RUN tar -xvf Python-3.9.13.tgz
-RUN tar -xvf Python-3.10.5.tgz
 
-# Install python 3.9.13 and 3.10.5
+# Install python 3.9.13
 RUN ./Python-3.9.13/configure --enable-optimizations
-RUN ./Python-3.10.5/configure --enable-optimizations
 RUN make altinstall
 
 ###################### Install pip
@@ -82,7 +79,5 @@ RUN wget -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
 
 # Test pip
 RUN python3 -m pip
-RUN python3.9 -m pip
-RUN python3.10 -m pip
 
-CMD ["python3.10"]
+CMD ["python3.9"]

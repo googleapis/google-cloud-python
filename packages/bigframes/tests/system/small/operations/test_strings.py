@@ -254,31 +254,93 @@ def test_upper(scalars_dfs):
     )
 
 
-def test_isnumeric(session):
-    pandas_df = pd.DataFrame(
-        {
-            "numeric_string_col": [
-                "٠١٢٣٤٥٦٧٨٩",
-                "",
-                "0",
-                "字",
-                "五",
-                "0123456789",
-                pd.NA,
-                "abc 123 mixed letters and numbers",
-                "no numbers here",
-                "123a",
-                "23!",
-                " 45",
-                "a45",
-            ]
-        }
+def test_isnumeric(weird_strings, weird_strings_pd):
+    pd_result = weird_strings_pd.str.isnumeric()
+    bf_result = weird_strings.str.isnumeric().to_pandas()
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result.astype(pd.BooleanDtype())
+        # the dtype here is a case of intentional diversion from pandas
+        # see go/bigframes-dtypes
     )
 
-    df = session.read_pandas(pandas_df)
 
-    pd_result = pandas_df.numeric_string_col.str.isnumeric()
-    bf_result = df.numeric_string_col.str.isnumeric().to_pandas()
+def test_isalpha(weird_strings, weird_strings_pd):
+    pd_result = weird_strings_pd.str.isalpha()
+    bf_result = weird_strings.str.isalpha().to_pandas()
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result.astype(pd.BooleanDtype())
+        # the dtype here is a case of intentional diversion from pandas
+        # see go/bigframes-dtypes
+    )
+
+
+def test_isdigit(weird_strings, weird_strings_pd):
+    pd_result = weird_strings_pd.str.isdigit()
+    bf_result = weird_strings.str.isdigit().to_pandas()
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result.astype(pd.BooleanDtype())
+        # the dtype here is a case of intentional diversion from pandas
+        # see go/bigframes-dtypes
+    )
+
+
+def test_isdecimal(weird_strings, weird_strings_pd):
+    pd_result = weird_strings_pd.str.isdecimal()
+    bf_result = weird_strings.str.isdecimal().to_pandas()
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result.astype(pd.BooleanDtype())
+        # the dtype here is a case of intentional diversion from pandas
+        # see go/bigframes-dtypes
+    )
+
+
+def test_isalnum(weird_strings, weird_strings_pd):
+    pd_result = weird_strings_pd.str.isalnum()
+    bf_result = weird_strings.str.isalnum().to_pandas()
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result.astype(pd.BooleanDtype())
+        # the dtype here is a case of intentional diversion from pandas
+        # see go/bigframes-dtypes
+    )
+
+
+def test_isspace(weird_strings, weird_strings_pd):
+    pd_result = weird_strings_pd.str.isspace()
+    bf_result = weird_strings.str.isspace().to_pandas()
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result.astype(pd.BooleanDtype())
+        # the dtype here is a case of intentional diversion from pandas
+        # see go/bigframes-dtypes
+    )
+
+
+def test_islower(weird_strings, weird_strings_pd):
+    pd_result = weird_strings_pd.str.islower()
+    bf_result = weird_strings.str.islower().to_pandas()
+
+    assert_series_equal_ignoring_order(
+        bf_result,
+        pd_result.astype(pd.BooleanDtype())
+        # the dtype here is a case of intentional diversion from pandas
+        # see go/bigframes-dtypes
+    )
+
+
+def test_isupper(weird_strings, weird_strings_pd):
+    pd_result = weird_strings_pd.str.isupper()
+    bf_result = weird_strings.str.isupper().to_pandas()
 
     assert_series_equal_ignoring_order(
         bf_result,
@@ -394,9 +456,6 @@ def test_str_get(scalars_dfs):
     bf_result = bf_series.str.get(8).to_pandas()
     pd_result = scalars_pandas_df[col_name].str.get(8)
 
-    print(pd_result)
-    print(bf_result)
-
     assert_series_equal_ignoring_order(
         pd_result,
         bf_result,
@@ -411,6 +470,16 @@ def test_str_pad(scalars_dfs):
     pd_result = scalars_pandas_df[col_name].str.pad(8, side="both", fillchar="%")
 
     assert_series_equal_ignoring_order(
+        pd_result,
+        bf_result,
+    )
+
+
+def test_str_zfill(weird_strings, weird_strings_pd):
+    bf_result = weird_strings.str.zfill(5).to_pandas()
+    pd_result = weird_strings_pd.str.zfill(5)
+
+    pd.testing.assert_series_equal(
         pd_result,
         bf_result,
     )

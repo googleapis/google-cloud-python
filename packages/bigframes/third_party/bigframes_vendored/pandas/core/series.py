@@ -211,7 +211,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Convert Series to DataFrame.
 
         Returns:
-            DataFrame: DataFrame representation of Series.
+            bigframes.dataframe.DataFrame: DataFrame representation of Series.
         """
         raise NotImplementedError("abstract method")
 
@@ -419,7 +419,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Always returns Series even if only one value is returned.
 
         Returns:
-            Series: Modes of the Series in sorted order.
+            bigframes.series.Series: Modes of the Series in sorted order.
         """
         raise NotImplementedError("abstract method")
 
@@ -440,7 +440,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 ``False`` : Drop all duplicates.
 
         Returns:
-            Series: Series with duplicates dropped or None if ``inplace=True``.
+            bigframes.series.Series: Series with duplicates dropped or None if ``inplace=True``.
         """
         raise NotImplementedError("abstract method")
 
@@ -463,8 +463,8 @@ class Series(NDFrame):  # type: ignore[misc]
                 ``False`` : Mark all duplicates as ``True``.
 
         Returns:
-            Series: Series indicating whether each value has occurred in the
-            preceding values.
+            bigframes.series.Series: Series indicating whether each value has occurred in the
+                preceding values.
         """
         raise NotImplementedError("abstract method")
 
@@ -478,7 +478,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 it specifies the number of positions to the left of the decimal point.
 
         Returns:
-            Series: Rounded values of the Series.
+            bigframes.series.Series: Rounded values of the Series.
         """
         raise NotImplementedError("abstract method")
 
@@ -569,7 +569,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 the end.
 
         Returns:
-            Series or None: Series ordered by values or None if ``inplace=True``.
+            bigframes.series.Series: Series ordered by values or None if ``inplace=True``.
         """
         raise NotImplementedError("abstract method")
 
@@ -597,7 +597,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 Not implemented for MultiIndex.
 
         Returns:
-            Series or None: The original Series sorted by the labels or None if
+            bigframes.series.Series: The original Series sorted by the labels or None if
                 ``inplace=True``.
 
         """
@@ -624,7 +624,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 size larger than `n`.
 
         Returns:
-            Series: The `n` largest values in the Series, sorted in decreasing order.
+            bigframes.series.Series: The `n` largest values in the Series, sorted in decreasing order.
         """
         raise NotImplementedError("abstract method")
 
@@ -647,7 +647,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 size larger than `n`.
 
         Returns:
-            Series: The `n` smallest values in the Series, sorted in increasing order.
+            bigframes.series.Series: The `n` smallest values in the Series, sorted in increasing order.
         """
         raise NotImplementedError("abstract method")
 
@@ -669,7 +669,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 Python function or NumPy ufunc to apply.
 
         Returns:
-            Series or DataFrame: If func returns a Series object the result
+            bigframes.series.Series: If func returns a Series object the result
                 will be a DataFrame.
         """
         raise NotImplementedError("abstract method")
@@ -723,7 +723,8 @@ class Series(NDFrame):  # type: ignore[misc]
                 If False, NA values will also be treated as the key in groups.
 
         Returns:
-            SeriesGroupBy: Returns a groupby object that contains information about the groups.
+            bigframes.core.groupby.SeriesGroupBy: Returns a groupby object that contains
+                information about the groups.
         """
         raise NotImplementedError("abstract method")
 
@@ -750,15 +751,12 @@ class Series(NDFrame):  # type: ignore[misc]
             level:
                 For MultiIndex, level for which the labels will be removed.
 
-        Returns
-        -------
-        Series or None
-            Series with specified index labels removed or None if ``inplace=True``.
+        Returns:
+            bigframes.series.Series: Series with specified index labels removed
+                or None if ``inplace=True``.
 
-        Raises
-        ------
-        KeyError
-            If none of the labels are found in the index.
+        Raises:
+            KeyError: If none of the labels are found in the index.
         """
         raise NotImplementedError("abstract method")
 
@@ -844,7 +842,7 @@ class Series(NDFrame):  # type: ignore[misc]
         product.
 
         Returns:
-            Return cumulative sum of scalar or Series.
+            bigframes.series.Series: Return cumulative sum of scalar or Series.
         """
         raise NotImplementedError("abstract method")
 
@@ -878,7 +876,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 For `Series` this parameter is unused and defaults to 0.
 
         Returns:
-            scalar or Series: Return cumulative maximum of scalar or Series.
+            bigframes.series.Series: Return cumulative maximum of scalar or Series.
         """
         raise NotImplementedError("abstract method")
 
@@ -901,7 +899,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 compatibility with NumPy.
 
         Returns:
-            scalar or Series: Return cumulative minimum of scalar or Series.
+            bigframes.series.Series: Return cumulative minimum of scalar or Series.
         """
         raise NotImplementedError("abstract method")
 
@@ -930,7 +928,7 @@ class Series(NDFrame):  # type: ignore[misc]
             other (Series, or scalar value):
 
         Returns:
-            Series: The result of the operation.
+            bigframes.series.Series: The result of the operation.
 
         """
         raise NotImplementedError("abstract method")
@@ -945,7 +943,7 @@ class Series(NDFrame):  # type: ignore[misc]
             other: Series, or scalar value
 
         Returns:
-            Series. The result of the comparison.
+            bigframes.series.Series. The result of the comparison.
 
         """
         raise NotImplementedError("abstract method")
@@ -960,7 +958,7 @@ class Series(NDFrame):  # type: ignore[misc]
              other (Series, or scalar value):
 
          Returns:
-             Series: The result of the operation.
+            bigframes.series.Series: The result of the operation.
 
         """
         raise NotImplementedError("abstract method")
@@ -975,7 +973,7 @@ class Series(NDFrame):  # type: ignore[misc]
             other (Series, or scalar value):
 
         Returns:
-            Series: The result of the operation.
+            bigframes.series.Series: The result of the operation.
 
         """
         raise NotImplementedError("abstract method")
@@ -990,7 +988,7 @@ class Series(NDFrame):  # type: ignore[misc]
             other (Series, or scalar value):
 
         Returns:
-            Series: The result of the operation.
+            bigframes.series.Series: The result of the operation.
 
         """
         raise NotImplementedError("abstract method")
@@ -1005,7 +1003,7 @@ class Series(NDFrame):  # type: ignore[misc]
             other (Series, or scalar value):
 
         Returns:
-            Series: The result of the operation.
+            bigframes.series.Series: The result of the operation.
 
         """
         raise NotImplementedError("abstract method")
@@ -1020,7 +1018,7 @@ class Series(NDFrame):  # type: ignore[misc]
             other (Series, or scalar value):
 
         Returns:
-            Series: The result of the operation.
+            bigframes.series.Series: The result of the operation.
 
         """
         raise NotImplementedError("abstract method")
@@ -1038,7 +1036,7 @@ class Series(NDFrame):  # type: ignore[misc]
             other (Series, or scalar value):
 
         Returns:
-            Series: The result of the operation.
+            bigframes.series.Series: The result of the operation.
 
         """
         raise NotImplementedError("abstract method")
@@ -1053,7 +1051,7 @@ class Series(NDFrame):  # type: ignore[misc]
             other (Series, or scalar value):
 
         Returns:
-            Series: The result of the operation.
+            bigframes.series.Series: The result of the operation.
 
         """
         raise NotImplementedError("abstract method")
@@ -1068,7 +1066,7 @@ class Series(NDFrame):  # type: ignore[misc]
             other (Series, or scalar value):
 
         Returns:
-            Series: The result of the operation.
+            bigframes.series.Series: The result of the operation.
 
         """
         raise NotImplementedError("abstract method")
@@ -1097,7 +1095,7 @@ class Series(NDFrame):  # type: ignore[misc]
             other (Series, or scalar value):
 
         Returns:
-            Series: The result of the operation.
+            bigframes.series.Series: The result of the operation.
 
         """
         raise NotImplementedError("abstract method")
@@ -1112,7 +1110,7 @@ class Series(NDFrame):  # type: ignore[misc]
             other (Series, or scalar value):
 
         Returns:
-            Series: The result of the operation.
+            bigframes.series.Series: The result of the operation.
 
         """
         raise NotImplementedError("abstract method")
@@ -1127,7 +1125,7 @@ class Series(NDFrame):  # type: ignore[misc]
             other (Series, or scalar value):
 
         Returns:
-            Series: The result of the operation.
+            bigframes.series.Series: The result of the operation.
 
         """
         raise NotImplementedError("abstract method")
@@ -1142,7 +1140,7 @@ class Series(NDFrame):  # type: ignore[misc]
             other (Series, or scalar value):
 
         Returns:
-            Series: The result of the operation.
+            bigframes.series.Series: The result of the operation.
 
         """
         raise NotImplementedError("abstract method")
@@ -1157,7 +1155,7 @@ class Series(NDFrame):  # type: ignore[misc]
             other (Series, or scalar value):
 
         Returns:
-            Series: The result of the operation.
+            bigframes.series.Series: The result of the operation.
 
         """
         raise NotImplementedError("abstract method")
@@ -1172,7 +1170,7 @@ class Series(NDFrame):  # type: ignore[misc]
             other (Series, or scalar value):
 
         Returns:
-            Series: The result of the operation.
+            bigframes.series.Series: The result of the operation.
 
         """
         raise NotImplementedError("abstract method")
@@ -1373,7 +1371,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 extension dtypes).
 
         Returns:
-            Series
+            bigframes.series.Series: Series after the replacement.
         """
         raise NotImplementedError("abstract method")
 
@@ -1397,7 +1395,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 extension dtypes).
 
         Returns:
-            Series
+            bigframes.series.Series: Series after the replacement.
         """
         raise NotImplementedError("abstract method")
 
@@ -1460,7 +1458,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 attribute.
 
         Returns:
-            Series: Series with index labels
+            bigframes.series.Series: Series with index labels.
 
         """
         raise NotImplementedError("abstract method")
@@ -1474,7 +1472,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 Value to set the axis name attribute.
 
         Returns:
-            Series: Series with the name of the axis set.
+            bigframes.series.Series: Series with the name of the axis set.
         """
         raise NotImplementedError("abstract method")
 
@@ -1514,7 +1512,8 @@ class Series(NDFrame):  # type: ignore[misc]
                 to the size of the window.
 
         Returns:
-            ``Window`` subclass if a ``win_type`` is passed.``Rolling`` subclass if ``win_type`` is not passed
+            bigframes.core.window.Window: ``Window`` subclass if a ``win_type`` is passed.
+                ``Rolling`` subclass if ``win_type`` is not passed.
         """
         raise NotImplementedError("abstract method")
 
@@ -1528,7 +1527,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 otherwise, result is ``np.nan``.
 
         Returns:
-        ``Expanding`` subclass
+            bigframes.core.window.Window: ``Expanding`` subclass.
         """
         raise NotImplementedError("abstract method")
 
@@ -1591,7 +1590,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 TypeError. Instead, turn a single string into a list of one element.
 
         Returns:
-             bigframes.series.Series: Series of booleans indicating if each element is in values.
+            bigframes.series.Series: Series of booleans indicating if each element is in values.
 
         Raises:
             TypeError: If input is not list-like.

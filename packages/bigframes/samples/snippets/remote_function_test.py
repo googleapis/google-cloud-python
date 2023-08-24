@@ -12,20 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""BigQuery DataFrames provides a DataFrame API scaled by the BigQuery engine."""
+import pytest
 
-from bigframes._config import options
-from bigframes._config.bigquery_options import BigQueryOptions
-from bigframes.core.global_session import get_global_session, reset_session
-from bigframes.session import connect, Session
-from bigframes.version import __version__
+import bigframes.pandas
 
-__all__ = [
-    "options",
-    "BigQueryOptions",
-    "get_global_session",
-    "reset_session",
-    "connect",
-    "Session",
-    "__version__",
-]
+from . import remote_function
+
+
+def test_remote_function_and_read_gbq_function(
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    # We need a fresh session since we're modifying connection options.
+    bigframes.pandas.reset_session()
+
+    # TODO(swast): Get project from environment so contributors can run tests.
+    remote_function.run_remote_function_and_read_gbq_function("bigframes-dev")
+    out, _ = capsys.readouterr()
+    assert "Created BQ remote function:" in out
+    assert "Created cloud function:" in out

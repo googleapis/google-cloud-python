@@ -15,7 +15,56 @@ class GBQIOMixin:
         col_order: Iterable[str] = (),
         max_results: Optional[int] = None,
     ):
-        """Loads DataFrame from BigQuery.
+        """Loads a DataFrame from BigQuery.
+
+        BigQuery tables are an unordered, unindexed data source. By default,
+        the DataFrame will have an arbitrary index and ordering.
+
+        Set the `index_col` argument to one or more columns to choose an
+        index. The resulting DataFrame is sorted by the index columns. For the
+        best performance, ensure the index columns don't contain duplicate
+        values.
+
+        .. note::
+            By default, even SQL query inputs with an ORDER BY clause create a
+            DataFrame with an arbitrary ordering. Use ``row_number() OVER
+            (ORDER BY ...) AS rowindex`` in your SQL query and set
+            ``index_col='rowindex'`` to preserve the desired ordering.
+
+            If your query doesn't have an ordering, select ``GENERATE_UUID() AS
+            rowindex`` in your SQL and set ``index_col='rowindex'`` for the
+            best performance.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+        Preserve ordering in a query input.
+
+            >>> bpd.read_gbq('''
+            ...    SELECT
+            ...       -- Instead of an ORDER BY clause on the query, use
+            ...       -- ROW_NUMBER() to create an ordered DataFrame.
+            ...       ROW_NUMBER() OVER (ORDER BY AVG(pitchSpeed) DESC)
+            ...         AS rowindex,
+            ...
+            ...       pitcherFirstName,
+            ...       pitcherLastName,
+            ...       AVG(pitchSpeed) AS averagePitchSpeed
+            ...     FROM `bigquery-public-data.baseball.games_wide`
+            ...     WHERE year = 2016
+            ...     GROUP BY pitcherFirstName, pitcherLastName
+            ... ''', index_col="rowindex").head(n=5)
+                     pitcherFirstName pitcherLastName  averagePitchSpeed
+            rowindex
+            1                Albertin         Chapman          96.514113
+            2                 Zachary         Britton          94.591039
+            3                  Trevor       Rosenthal          94.213953
+            4                    Jose          Torres          94.103448
+            5                  Tayron        Guerrero          93.863636
+            <BLANKLINE>
+            [5 rows x 3 columns]
 
         Args:
             query (str):

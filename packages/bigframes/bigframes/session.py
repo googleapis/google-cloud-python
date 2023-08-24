@@ -54,6 +54,12 @@ import ibis.expr.datatypes as ibis_dtypes
 import ibis.expr.types as ibis_types
 import numpy as np
 import pandas
+from pandas._typing import (
+    CompressionOptions,
+    FilePath,
+    ReadPickleBuffer,
+    StorageOptions,
+)
 import pydata_google_auth
 
 import bigframes._config.bigquery_options as bigquery_options
@@ -75,6 +81,7 @@ import third_party.bigframes_vendored.ibis.backends.bigquery.registry  # noqa
 import third_party.bigframes_vendored.pandas.io.gbq as third_party_pandas_gbq
 import third_party.bigframes_vendored.pandas.io.parquet as third_party_pandas_parquet
 import third_party.bigframes_vendored.pandas.io.parsers.readers as third_party_pandas_readers
+import third_party.bigframes_vendored.pandas.io.pickle as third_party_pandas_pickle
 
 _ENV_DEFAULT_PROJECT = "GOOGLE_CLOUD_PROJECT"
 _APPLICATION_NAME = f"bigframes/{bigframes.version.__version__}"
@@ -194,6 +201,7 @@ def _create_cloud_clients(
 class Session(
     third_party_pandas_gbq.GBQIOMixin,
     third_party_pandas_parquet.ParquetIOMixin,
+    third_party_pandas_pickle.PickleIOMixin,
     third_party_pandas_readers.ReaderIOMixin,
 ):
     """Establishes a BigQuery connection to capture a group of job activities related to
@@ -252,6 +260,8 @@ class Session(
         """Create a BQ session and bind the session id with clients to capture BQ activities:
         go/bigframes-transient-data"""
         job_config = bigquery.QueryJobConfig(create_session=True)
+        # Make sure the session is a new one, not one associated with another query.
+        job_config.use_query_cache = False
         query_job = self.bqclient.query(
             "SELECT 1", job_config=job_config, location=self._location
         )
@@ -458,8 +468,8 @@ class Session(
                 {self.ibis_client.compile(distinct_table)}
             )
 
-            SELECT (SELECT COUNT(*) FROM full_table) AS total_count,
-            (SELECT COUNT(*) FROM distinct_table) AS distinct_count
+            SELECT (SELECT COUNT(*) FROM full_table) AS `total_count`,
+            (SELECT COUNT(*) FROM distinct_table) AS `distinct_count`
             """
             results, query_job = self._start_query(is_unique_sql)
             row = next(iter(results))
@@ -467,6 +477,7 @@ class Session(
             total_count = row["total_count"]
             distinct_count = row["distinct_count"]
             is_total_ordering = total_count == distinct_count
+
             ordering = core.ExpressionOrdering(
                 ordering_value_columns=[
                     core.OrderingColumnReference(column_id) for column_id in index_cols
@@ -477,7 +488,6 @@ class Session(
             # We have a total ordering, so query via "time travel" so that
             # the underlying data doesn't mutate.
             if is_total_ordering:
-
                 # Get the timestamp from the job metadata rather than the query
                 # text so that the query for determining uniqueness of the ID
                 # columns can be cached.
@@ -663,7 +673,8 @@ class Session(
             core.ArrayValue(
                 self, table_expression, columns, hidden_ordering_columns, ordering
             ),
-            [index_col.get_name() for index_col in index_cols],
+            index_columns=[index_col.get_name() for index_col in index_cols],
+            column_labels=column_keys,
             index_labels=index_labels,
         )
 
@@ -887,6 +898,25 @@ class Session(
             )
             return self.read_pandas(pandas_df)
 
+    def read_pickle(
+        self,
+        filepath_or_buffer: FilePath | ReadPickleBuffer,
+        compression: CompressionOptions = "infer",
+        storage_options: StorageOptions = None,
+    ):
+        pandas_obj = pandas.read_pickle(
+            filepath_or_buffer,
+            compression=compression,
+            storage_options=storage_options,
+        )
+
+        if isinstance(pandas_obj, pandas.Series):
+            if pandas_obj.name is None:
+                pandas_obj.name = "0"
+            bigframes_df = self.read_pandas(pandas_obj.to_frame())
+            return bigframes_df[bigframes_df.columns[0]]
+        return self.read_pandas(pandas_obj)
+
     def read_parquet(
         self,
         path: str | IO["bytes"],
@@ -1085,6 +1115,10 @@ class Session(
         """Loads a BigQuery function from BigQuery.
 
         Then it can be applied to a DataFrame or Series.
+
+        .. note::
+            The return type of the function must be explicitly specified in the
+            function's original definition even if not otherwise required.
 
         Args:
             function_name (str):

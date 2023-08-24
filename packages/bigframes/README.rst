@@ -7,6 +7,9 @@ powered by the BigQuery engine.
 * ``bigframes.pandas`` provides a pandas-compatible API for analytics.
 * ``bigframes.ml`` provides a scikit-learn-like API for ML.
 
+BigQuery DataFrames is an open-source package. You can run
+``pip install --upgrade bigframes`` to install the latest version.
+
 Documentation
 -------------
 
@@ -63,6 +66,127 @@ specify another location.
 ``read_gbq()`` requires you to specify a location if the dataset you are
 querying is not in the US multi-region. If you try to read a table from another
 location, you get a NotFound exception.
+
+
+ML Capabilities
+---------------
+
+The ML capabilities in BigQuery DataFrames let you preprocess data, and
+then train models on that data. You can also chain these actions together to
+create data pipelines.
+
+Preprocess data
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Create transformers to prepare data for use in estimators (models) by
+using the
+`bigframes.ml.preprocessing module <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.preprocessing>`_
+and the `bigframes.ml.compose module <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.compose>`_.
+BigQuery DataFrames offers the following transformations:
+
+* Use the `OneHotEncoder class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.preprocessing.OneHotEncoder>`_
+  in the ``bigframes.ml.preprocessing`` module to transform categorical values into numeric format.
+* Use the `StandardScaler class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.preprocessing.StandardScaler>`_
+  in the ``bigframes.ml.preprocessing`` module to standardize features by removing the mean and scaling to unit variance.
+* Use the `ColumnTransformer class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.compose.ColumnTransformer>`_
+  in the ``bigframes.ml.compose`` module to apply transformers to DataFrames columns.
+
+
+Train models
+^^^^^^^^^^^^
+
+Create estimators to train models in BigQuery DataFrames.
+
+**Clustering models**
+
+Create estimators for clustering models by using the
+`bigframes.ml.cluster module <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.cluster>`_.
+
+* Use the `KMeans class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.cluster.KMeans>`_
+  to create K-means clustering models. Use these models for
+  data segmentation. For example, identifying customer segments. K-means is an
+  unsupervised learning technique, so model training doesn't require labels or split
+  data for training or evaluation.
+
+**Decomposition models**
+
+Create estimators for decomposition models by using the `bigframes.ml.decomposition module <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.decomposition>`_.
+
+* Use the `PCA class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.decomposition.PCA>`_
+  to create principal component analysis (PCA) models. Use these
+  models for computing  principal components and using them to perform a change of
+  basis on the data. This provides dimensionality reduction by projecting each data
+  point onto only the first few principal components to obtain lower-dimensional
+  data while preserving as much of the data's variation as possible.
+
+
+**Ensemble models**
+
+Create estimators for ensemble models by using the `bigframes.ml.ensemble module <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.ensemble>`_.
+
+* Use the `RandomForestClassifier class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.ensemble.RandomForestClassifier>`_
+  to create random forest classifier models. Use these models for constructing multiple
+  learning method decision trees for classification.
+* Use the `RandomForestRegressor class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.ensemble.RandomForestRegressor>`_
+  to create random forest regression models. Use
+  these models for constructing multiple learning method decision trees for regression.
+* Use the `XGBClassifier class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.ensemble.XGBClassifier>`_
+  to create gradient boosted tree classifier models. Use these models for additively
+  constructing multiple learning method decision trees for classification.
+* Use the `XGBRegressor class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.ensemble.XGBRegressor>`_
+  to create gradient boosted tree regression models. Use these models for additively
+  constructing multiple learning method decision trees for regression.
+
+
+**Forecasting models**
+
+Create estimators for forecasting models by using the `bigframes.ml.forecasting module <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.forecasting>`_.
+
+* Use the `ARIMAPlus class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.forecasting.ARIMAPlus>`_
+  to create time series forecasting models.
+
+**Imported models**
+
+Create estimators for imported models by using the `bigframes.ml.imported module <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.imported>`_.
+
+* Use the `ONNXModel class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.imported.ONNXModel>`_
+  to import Open Neural Network Exchange (ONNX) models.
+* Use the `TensorFlowModel class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.imported.TensorFlowModel>`_
+  to import TensorFlow models.
+
+**Linear models**
+
+Create estimators for linear models by using the `bigframes.ml.linear_model module <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.linear_model>`_.
+
+* Use the `LinearRegression class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.linear_model.LinearRegression>`_
+  to create linear regression models. Use these models for forecasting. For example,
+  forecasting the sales of an item on a given day.
+* Use the `LogisticRegression class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.linear_model.LogisticRegression>`_
+  to create logistic regression models. Use these models for the classification of two
+  or more possible values such as whether an input is ``low-value``, ``medium-value``,
+  or ``high-value``.
+
+**Large language models**
+
+Create estimators for LLMs by using the `bigframes.ml.llm module <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm>`_.
+
+* Use the `PaLM2TextGenerator class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.PaLM2TextGenerator>`_ to create PaLM2 text generator models. Use these models
+  for text generation tasks.
+* Use the `PaLM2TextEmbeddingGenerator class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.PaLM2TextEmbeddingGenerator>`_ to create PaLM2 text embedding generator models.
+  Use these models for text embedding generation tasks.
+
+
+Create pipelines
+^^^^^^^^^^^^^^^^
+
+Create ML pipelines by using
+`bigframes.ml.pipeline module <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.pipeline>`_.
+Pipelines let you assemble several ML steps to be cross-validated together while setting
+different parameters. This simplifies your code, and allows you to deploy data preprocessing
+steps and an estimator together.
+
+* Use the `Pipeline class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.pipeline.Pipeline>`_
+  to create a pipeline of transforms with a final estimator.
 
 
 ML locations
@@ -181,7 +305,7 @@ following IAM roles:
 
 
 Quotas and limits
------------------
+------------------
 
 `BigQuery quotas <https://cloud.google.com/bigquery/quotas>`_
 including hardware, software, and network components.

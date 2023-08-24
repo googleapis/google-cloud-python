@@ -840,6 +840,14 @@ def test_set_index(scalars_dfs, index_column, drop, append):
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
+def test_set_index_key_error(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    with pytest.raises(KeyError):
+        scalars_pandas_df.set_index(["not_a_col"])
+    with pytest.raises(KeyError):
+        scalars_df.set_index(["not_a_col"])
+
+
 @pytest.mark.parametrize(
     ("ascending",),
     ((True,), (False,)),
@@ -1321,6 +1329,41 @@ def test_df_describe(scalars_dfs):
     ).all()
 
 
+@pytest.mark.parametrize(
+    ("values", "index", "columns"),
+    [
+        ("int64_col", "int64_too", ["string_col"]),
+        (["int64_col"], "int64_too", ["string_col"]),
+        (["int64_col", "float64_col"], "int64_too", ["string_col"]),
+    ],
+)
+def test_df_pivot(scalars_dfs, values, index, columns):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = scalars_df.pivot(
+        values=values, index=index, columns=columns
+    ).to_pandas()
+    pd_result = scalars_pandas_df.pivot(values=values, index=index, columns=columns)
+
+    # Pandas produces NaN, where bq dataframes produces pd.NA
+    pd.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+
+
+@pytest.mark.parametrize(
+    ("values", "index", "columns"),
+    [
+        (["goals", "assists"], ["team_name", "season"], ["position"]),
+        (["goals", "assists"], ["season"], ["team_name", "position"]),
+    ],
+)
+def test_df_pivot_hockey(hockey_df, hockey_pandas_df, values, index, columns):
+    bf_result = hockey_df.pivot(values=values, index=index, columns=columns).to_pandas()
+    pd_result = hockey_pandas_df.pivot(values=values, index=index, columns=columns)
+
+    # Pandas produces NaN, where bq dataframes produces pd.NA
+    pd.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+
+
 def test_ipython_key_completions_with_drop(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_names = "string_col"
@@ -1621,6 +1664,7 @@ def test_sample_raises_value_error(scalars_dfs):
 @pytest.mark.parametrize(
     ("axis",),
     [
+        (None,),
         (0,),
         (1,),
     ],

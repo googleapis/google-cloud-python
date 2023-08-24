@@ -53,6 +53,10 @@ Label = typing.Hashable
 _BYTES_TO_KILOBYTES = 1024
 _BYTES_TO_MEGABYTES = _BYTES_TO_KILOBYTES * 1024
 
+# This is the max limit of physical columns in BQ
+# May choose to set smaller limit for number of block columns to allow overhead for ordering, etc.
+_BQ_MAX_COLUMNS = 10000
+
 # All sampling method
 _HEAD = "head"
 _UNIFORM = "uniform"
@@ -75,9 +79,9 @@ class Block:
     def __init__(
         self,
         expr: core.ArrayValue,
-        index_columns: Iterable[str] = (),
-        column_labels: Optional[Sequence[Label]] = None,
-        index_labels: Optional[Sequence[Label]] = None,
+        index_columns: Iterable[str],
+        column_labels: typing.Union[pd.Index, typing.Sequence[Label]],
+        index_labels: typing.Union[pd.Index, typing.Sequence[Label], None] = None,
     ):
         """Construct a block object, will create default index if no index columns specified."""
         if index_labels and (len(index_labels) != len(list(index_columns))):
@@ -88,15 +92,18 @@ class Block:
             expr, new_index_col_id = expr.promote_offsets()
             index_columns = [new_index_col_id]
         self._index_columns = tuple(index_columns)
+        # Index labels don't need complicated hierarchical access so can store as tuple
         self._index_labels = (
             tuple(index_labels)
             if index_labels
             else tuple([None for _ in index_columns])
         )
         self._expr = self._normalize_expression(expr, self._index_columns)
-        # TODO(tbergeron): Force callers to provide column labels
+        # Use pandas index to more easily replicate column indexing, especially for hierarchical column index
         self._column_labels = (
-            tuple(column_labels) if column_labels else tuple(self.value_columns)
+            column_labels.copy()
+            if isinstance(column_labels, pd.Index)
+            else pd.Index(column_labels)
         )
         if len(self.value_columns) != len(self._column_labels):
             raise ValueError(
@@ -139,8 +146,8 @@ class Block:
         ]
 
     @property
-    def column_labels(self) -> List[Label]:
-        return list(self._column_labels)
+    def column_labels(self) -> pd.Index:
+        return self._column_labels
 
     @property
     def expr(self) -> core.ArrayValue:
@@ -193,6 +200,24 @@ class Block:
             mapping[label] = (*mapping.get(label, ()), id)
         return mapping
 
+    def cols_matching_label(self, partial_label: Label) -> typing.Sequence[str]:
+        """
+        Unlike label_to_col_id, this works with partial labels for multi-index.
+
+        Only some methods, like __getitem__ can use a partial key to get columns
+        from a dataframe. These methods should use cols_matching_label, while
+        methods that require exact label matches should use label_to_col_id.
+        """
+        # TODO(tbergeron): Refactor so that all label lookups use this method
+        if partial_label not in self.column_labels:
+            return []
+        loc = self.column_labels.get_loc(partial_label)
+        if isinstance(loc, int):
+            return [self.value_columns[loc]]
+        if isinstance(loc, slice):
+            return self.value_columns[loc]
+        return [col for col, is_present in zip(self.value_columns, loc) if is_present]
+
     def order_by(
         self,
         by: typing.Sequence[ordering.OrderingColumnReference],
@@ -237,8 +262,9 @@ class Block:
                 index_labels=[None],
             )
         else:
+            # Add index names to column index
             index_labels = self.index.names
-            index_labels_rewritten = []
+            column_labels_modified = self.column_labels
             for level, label in enumerate(index_labels):
                 if label is None:
                     if "index" not in self.column_labels:
@@ -248,12 +274,17 @@ class Block:
 
                 if label in self.column_labels:
                     raise ValueError(f"cannot insert {label}, already exists")
-                index_labels_rewritten.append(label)
+                if isinstance(self.column_labels, pd.MultiIndex):
+                    nlevels = self.column_labels.nlevels
+                    label = tuple(label if i == 0 else "" for i in range(nlevels))
+                # Create index copy with label inserted
+                # See: https://pandas.pydata.org/docs/reference/api/pandas.Index.insert.html
+                column_labels_modified = column_labels_modified.insert(level, label)
 
             block = Block(
                 expr,
                 index_columns=[new_index_col_id],
-                column_labels=[*index_labels_rewritten, *self.column_labels],
+                column_labels=column_labels_modified,
                 index_labels=[None],
             )
         return block
@@ -568,8 +599,11 @@ class Block:
             expr = expr.select_columns(itertools.chain(self._index_columns, value_keys))
         return expr
 
-    def with_column_labels(self, value: typing.Iterable[Label]) -> Block:
-        label_list = tuple(value)
+    def with_column_labels(
+        self,
+        value: typing.Union[pd.Index, typing.Iterable[Label]],
+    ) -> Block:
+        label_list = value.copy() if isinstance(value, pd.Index) else pd.Index(value)
         if len(label_list) != len(self.value_columns):
             raise ValueError(
                 f"The column labels size `{len(label_list)} ` should equal to the value"
@@ -742,7 +776,9 @@ class Block:
     ) -> typing.Tuple[Block, str]:
         result_id = guid.generate_guid()
         expr = self.expr.assign_constant(result_id, scalar_constant, dtype=dtype)
-        labels = [*self.column_labels, label]
+        # Create index copy with label inserted
+        # See: https://pandas.pydata.org/docs/reference/api/pandas.Index.insert.html
+        labels = self.column_labels.insert(len(self.column_labels), label)
         return (
             Block(
                 expr,
@@ -755,8 +791,11 @@ class Block:
 
     def assign_label(self, column_id: str, new_label: Label) -> Block:
         col_index = self.value_columns.index(column_id)
-        new_labels = list(self.column_labels)
-        new_labels[col_index] = new_label
+        # Create index copy with label inserted
+        # See: https://pandas.pydata.org/docs/reference/api/pandas.Index.insert.html
+        new_labels = self.column_labels.insert(col_index, new_label).delete(
+            col_index + 1
+        )
         return self.with_column_labels(new_labels)
 
     def filter(self, column_name: str, keep_null: bool = False):
@@ -790,7 +829,7 @@ class Block:
         result_expr = self.expr.aggregate(
             aggregations, dropna=dropna
         ).unpivot_single_row(
-            row_labels=self.column_labels,
+            row_labels=self.column_labels.to_list(),
             index_col_id="index",
             unpivot_columns=[(value_col_id, self.value_columns)],
             dtype=dtype,
@@ -818,11 +857,28 @@ class Block:
         labels = self._get_labels_for_columns(remaining_value_col_ids)
         return Block(expr, self.index_columns, labels, self.index.names)
 
-    def rename(self, *, columns: typing.Mapping[Label, Label]):
-        # TODO(tbergeron) Support function(Callable) as columns parameter.
-        col_labels = [
-            (columns.get(col_label, col_label)) for col_label in self.column_labels
-        ]
+    def rename(
+        self,
+        *,
+        columns: typing.Mapping[Label, Label] | typing.Callable[[typing.Any], Label],
+    ):
+        if isinstance(columns, typing.Mapping):
+
+            def remap_f(x):
+                return columns.get(x, x)
+
+        else:
+            remap_f = columns
+        if isinstance(self.column_labels, pd.MultiIndex):
+            col_labels: list[Label] = []
+            for col_label in self.column_labels:
+                # Mapper applies to each level separately
+                modified_label = tuple(remap_f(part) for part in col_label)
+                col_labels.append(modified_label)
+        else:
+            col_labels = []
+            for col_label in self.column_labels:
+                col_labels.append(remap_f(col_label))
         return self.with_column_labels(col_labels)
 
     def aggregate(
@@ -874,10 +930,16 @@ class Block:
             ]
             by_column_labels = self._get_labels_for_columns(by_value_columns)
             labels = (*by_column_labels, *aggregate_labels)
-            result_expr_pruned = result_expr.select_columns(
+            result_expr_pruned, offsets_id = result_expr.select_columns(
                 [*by_value_columns, *output_col_ids]
+            ).promote_offsets()
+
+            return (
+                Block(
+                    result_expr_pruned, index_columns=[offsets_id], column_labels=labels
+                ),
+                output_col_ids,
             )
-            return Block(result_expr_pruned, column_labels=labels), output_col_ids
 
     def get_stat(self, column_id: str, stat: agg_ops.AggregateOp):
         """Gets aggregates immediately, and caches it"""
@@ -891,7 +953,12 @@ class Block:
 
         aggregations = [(column_id, stat, stat.name) for stat in stats_to_fetch]
         expr = self.expr.aggregate(aggregations)
-        block = Block(expr, column_labels=[s.name for s in stats_to_fetch])
+        expr, offset_index_id = expr.promote_offsets()
+        block = Block(
+            expr,
+            index_columns=[offset_index_id],
+            column_labels=[s.name for s in stats_to_fetch],
+        )
         df, _ = block.to_pandas()
 
         # Carefully extract stats such that they aren't coerced to a common type
@@ -988,6 +1055,10 @@ class Block:
         )
         return block
 
+    # Using cache to optimize for Jupyter Notebook's behavior where both '__repr__'
+    # and '__repr_html__' are called in a single display action, reducing redundant
+    # queries.
+    @functools.cache
     def retrieve_repr_request_results(
         self, max_results: int
     ) -> Tuple[pd.DataFrame, int, bigquery.QueryJob]:
@@ -1038,13 +1109,7 @@ class Block:
                 index_labels=self.index.names,
             )
         if axis_number == 1:
-            expr = self._expr
-            return Block(
-                self._expr,
-                index_columns=self.index_columns,
-                column_labels=[f"{prefix}{label}" for label in self.column_labels],
-                index_labels=self.index.names,
-            )
+            return self.rename(columns=lambda label: f"{prefix}{label}")
 
     def add_suffix(self, suffix: str, axis: str | int | None = None) -> Block:
         axis_number = bigframes.core.utils.get_axis_number(axis)
@@ -1061,13 +1126,110 @@ class Block:
                 index_labels=self.index.names,
             )
         if axis_number == 1:
-            expr = self._expr
-            return Block(
-                self._expr,
-                index_columns=self.index_columns,
-                column_labels=[f"{label}{suffix}" for label in self.column_labels],
-                index_labels=self.index.names,
+            return self.rename(columns=lambda label: f"{label}{suffix}")
+
+    def pivot(
+        self,
+        *,
+        columns: Sequence[str],
+        values: Sequence[str],
+        values_in_index: typing.Optional[bool] = None,
+    ):
+        # Columns+index should uniquely identify rows
+        # Warning: This is not validated, breaking this constraint will result in silently non-deterministic behavior.
+        # -1 to allow for ordering column in addition to pivot columns
+        max_unique_value = (_BQ_MAX_COLUMNS - 1) // len(values)
+        columns_values = self._get_unique_values(columns, max_unique_value)
+        column_index = columns_values
+
+        column_ids: list[str] = []
+        block = self
+        for value in values:
+            for uvalue in columns_values:
+                block, masked_id = self._create_pivot_col(block, columns, value, uvalue)
+                column_ids.append(masked_id)
+
+        block = block.select_columns(column_ids)
+        aggregations = [(col_id, agg_ops.AnyValueOp()) for col_id in column_ids]
+        result_block, _ = block.aggregate(
+            by_column_ids=self.index_columns,
+            aggregations=aggregations,
+            as_index=True,
+            dropna=True,
+        )
+
+        if values_in_index or len(values) > 1:
+            value_labels = self._get_labels_for_columns(values)
+            column_index = self._create_pivot_column_index(value_labels, columns_values)
+        else:
+            column_index = columns_values
+
+        return result_block.with_column_labels(column_index)
+
+    @staticmethod
+    def _create_pivot_column_index(
+        value_labels: Sequence[typing.Hashable], columns_values: pd.Index
+    ):
+        index_parts = []
+        for value in value_labels:
+            as_frame = columns_values.to_frame()
+            as_frame.insert(0, None, value)  # type: ignore
+            ipart = pd.MultiIndex.from_frame(
+                as_frame, names=(None, *columns_values.names)
             )
+            index_parts.append(ipart)
+        return functools.reduce(lambda x, y: x.append(y), index_parts)
+
+    @staticmethod
+    def _create_pivot_col(
+        block: Block, columns: typing.Sequence[str], value_col: str, value
+    ) -> typing.Tuple[Block, str]:
+        cond_id = ""
+        nlevels = len(columns)
+        for i in range(len(columns)):
+            uvalue_level = value[i] if nlevels > 1 else value
+            if pd.isna(uvalue_level):
+                block, eq_id = block.apply_unary_op(
+                    columns[i],
+                    ops.isnull_op,
+                )
+            else:
+                block, eq_id = block.apply_unary_op(
+                    columns[i], ops.partial_right(ops.eq_op, uvalue_level)
+                )
+            if cond_id:
+                block, cond_id = block.apply_binary_op(eq_id, cond_id, ops.and_op)
+            else:
+                cond_id = eq_id
+        block, masked_id = block.apply_binary_op(
+            value_col, cond_id, ops.partial_arg3(ops.where_op, None)
+        )
+
+        return block, masked_id
+
+    def _get_unique_values(
+        self, columns: Sequence[str], max_unique_values: int
+    ) -> pd.Index:
+        """Gets N unique values for a column immediately."""
+        # Importing here to avoid circular import
+        import bigframes.core.block_transforms as block_tf
+        import bigframes.dataframe as df
+
+        unique_value_block = block_tf.drop_duplicates(
+            self.select_columns(columns), columns
+        )
+        pd_values = (
+            df.DataFrame(unique_value_block).head(max_unique_values + 1).to_pandas()
+        )
+        if len(pd_values) > max_unique_values:
+            raise ValueError(f"Too many unique values: {pd_values}")
+
+        if len(columns) > 1:
+            return pd.MultiIndex.from_frame(
+                pd_values.sort_values(by=list(pd_values.columns), na_position="first")
+            )
+        else:
+            return pd.Index(pd_values.squeeze(axis=1).sort_values(na_position="first"))
 
     def concat(
         self,
@@ -1138,8 +1300,9 @@ def block_from_local(data, session=None, use_index=True) -> Block:
         )
     else:
         keys_expr = core.ArrayValue.mem_expr_from_pandas(pd_data, session)
+        keys_expr, offsets_id = keys_expr.promote_offsets()
         # Constructor will create default range index
-        return Block(keys_expr, column_labels=column_labels)
+        return Block(keys_expr, index_columns=[offsets_id], column_labels=column_labels)
 
 
 def _align_block_to_schema(

@@ -113,7 +113,7 @@ class RegressorMixin:
                 ``(n_samples, n_samples_fitted)``, where ``n_samples_fitted``
                 is the number of samples used in the fitting for the estimator.
 
-            y (bigframes.dataframe.DataFrame or bigframes.series.Series:
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series):
                 Series or DataFrame of shape (n_samples,) or (n_samples, n_outputs). True
                 values for `X`.
 
@@ -121,6 +121,27 @@ class RegressorMixin:
             bigframes.dataframe.DataFrame: A DataFrame of the evaluation result.
         """
         raise NotImplementedError("abstract method")
+
+
+class TransformerMixin:
+    """Mixin class for all transformers."""
+
+    def fit_transform(self, X, y=None):
+        """Fit to data, then transform it.
+
+        Args:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                Series or DataFrame of shape (n_samples, n_features).
+                Input samples.
+
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                Series or DataFrame of shape (n_samples,) or (n_samples, n_outputs). Default None.
+                Target values (None for unsupervised transformations).
+
+        Returns:
+            bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_features_new)
+                Transformed DataFrame.
+        """
 
 
 class MetaEstimatorMixin:

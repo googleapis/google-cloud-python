@@ -18,7 +18,6 @@ from __future__ import annotations
 
 from collections import namedtuple
 import inspect
-import threading
 import typing
 from typing import (
     Any,
@@ -32,15 +31,21 @@ from typing import (
     Optional,
     Sequence,
     Tuple,
-    TypeVar,
     Union,
 )
 
 from google.cloud import bigquery
 import numpy
 import pandas
+from pandas._typing import (
+    CompressionOptions,
+    FilePath,
+    ReadPickleBuffer,
+    StorageOptions,
+)
 
 import bigframes._config as config
+import bigframes.core.global_session as global_session
 import bigframes.core.indexes
 import bigframes.core.reshape
 import bigframes.dataframe
@@ -48,14 +53,6 @@ import bigframes.series
 import bigframes.session
 import third_party.bigframes_vendored.pandas.core.reshape.concat as vendored_pandas_concat
 import third_party.bigframes_vendored.pandas.core.reshape.tile as vendored_pandas_tile
-
-# Support pandas dtype attribute
-NA = pandas.NA
-BooleanDtype = pandas.BooleanDtype
-Float64Dtype = pandas.Float64Dtype
-Int64Dtype = pandas.Int64Dtype
-StringDtype = pandas.StringDtype
-ArrowDtype = pandas.ArrowDtype
 
 
 # Include method definition so that the method appears in our docs for
@@ -135,52 +132,6 @@ def cut(
 cut.__doc__ = vendored_pandas_tile.cut.__doc__
 
 
-options = config.options
-"""Global :class:`~bigframes._config.Options` to configure BigQuery DataFrames."""
-
-_global_session: Optional[bigframes.session.Session] = None
-_global_session_lock = threading.Lock()
-
-
-def reset_session() -> None:
-    """Start a fresh session the next time a function requires a session.
-
-    Closes the current session if it was already started.
-
-    Returns:
-        None
-    """
-    global _global_session
-
-    with _global_session_lock:
-        if _global_session is not None:
-            _global_session.close()
-            _global_session = None
-
-        options.bigquery._session_started = False
-
-
-def get_global_session():
-    """Gets the global session.
-
-    Creates the global session if it does not exist.
-    """
-    global _global_session, _global_session_lock
-
-    with _global_session_lock:
-        if _global_session is None:
-            _global_session = bigframes.session.connect(options.bigquery)
-
-    return _global_session
-
-
-_T = TypeVar("_T")
-
-
-def _with_default_session(func: Callable[..., _T], *args, **kwargs) -> _T:
-    return func(get_global_session(), *args, **kwargs)
-
-
 def _set_default_session_location_if_possible(query):
     # Set the location as per the query if this is the first query the user is
     # running and:
@@ -257,7 +208,7 @@ def read_csv(
     encoding: Optional[str] = None,
     **kwargs,
 ) -> bigframes.dataframe.DataFrame:
-    return _with_default_session(
+    return global_session.with_default_session(
         bigframes.session.Session.read_csv,
         filepath_or_buffer=filepath_or_buffer,
         sep=sep,
@@ -283,7 +234,7 @@ def read_gbq(
     max_results: Optional[int] = None,
 ) -> bigframes.dataframe.DataFrame:
     _set_default_session_location_if_possible(query)
-    return _with_default_session(
+    return global_session.with_default_session(
         bigframes.session.Session.read_gbq,
         query,
         index_col=index_col,
@@ -296,7 +247,7 @@ read_gbq.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq)
 
 
 def read_gbq_model(model_name: str):
-    return _with_default_session(
+    return global_session.with_default_session(
         bigframes.session.Session.read_gbq_model,
         model_name,
     )
@@ -313,7 +264,7 @@ def read_gbq_query(
     max_results: Optional[int] = None,
 ) -> bigframes.dataframe.DataFrame:
     _set_default_session_location_if_possible(query)
-    return _with_default_session(
+    return global_session.with_default_session(
         bigframes.session.Session.read_gbq_query,
         query,
         index_col=index_col,
@@ -333,7 +284,7 @@ def read_gbq_table(
     max_results: Optional[int] = None,
 ) -> bigframes.dataframe.DataFrame:
     _set_default_session_location_if_possible(query)
-    return _with_default_session(
+    return global_session.with_default_session(
         bigframes.session.Session.read_gbq_table,
         query,
         index_col=index_col,
@@ -346,7 +297,7 @@ read_gbq_table.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_table
 
 
 def read_pandas(pandas_dataframe: pandas.DataFrame) -> bigframes.dataframe.DataFrame:
-    return _with_default_session(
+    return global_session.with_default_session(
         bigframes.session.Session.read_pandas,
         pandas_dataframe,
     )
@@ -355,8 +306,24 @@ def read_pandas(pandas_dataframe: pandas.DataFrame) -> bigframes.dataframe.DataF
 read_pandas.__doc__ = inspect.getdoc(bigframes.session.Session.read_pandas)
 
 
+def read_pickle(
+    filepath_or_buffer: FilePath | ReadPickleBuffer,
+    compression: CompressionOptions = "infer",
+    storage_options: StorageOptions = None,
+):
+    return global_session.with_default_session(
+        bigframes.session.Session.read_pickle,
+        filepath_or_buffer=filepath_or_buffer,
+        compression=compression,
+        storage_options=storage_options,
+    )
+
+
+read_pickle.__doc__ = inspect.getdoc(bigframes.session.Session.read_pickle)
+
+
 def read_parquet(path: str | IO["bytes"]) -> bigframes.dataframe.DataFrame:
-    return _with_default_session(
+    return global_session.with_default_session(
         bigframes.session.Session.read_parquet,
         path,
     )
@@ -372,7 +339,7 @@ def remote_function(
     bigquery_connection: Optional[str] = None,
     reuse: bool = True,
 ):
-    return _with_default_session(
+    return global_session.with_default_session(
         bigframes.session.Session.remote_function,
         input_types=input_types,
         output_type=output_type,
@@ -386,7 +353,7 @@ remote_function.__doc__ = inspect.getdoc(bigframes.session.Session.remote_functi
 
 
 def read_gbq_function(function_name: str):
-    return _with_default_session(
+    return global_session.with_default_session(
         bigframes.session.Session.read_gbq_function,
         function_name=function_name,
     )
@@ -395,25 +362,58 @@ def read_gbq_function(function_name: str):
 read_gbq_function.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_function)
 
 
-# Other aliases
+# pandas dtype attributes
+NA = pandas.NA
+BooleanDtype = pandas.BooleanDtype
+Float64Dtype = pandas.Float64Dtype
+Int64Dtype = pandas.Int64Dtype
+StringDtype = pandas.StringDtype
+ArrowDtype = pandas.ArrowDtype
+
+# Class aliases
+# TODO(swast): Make these real classes so we can refer to these in type
+# checking and docstrings.
 DataFrame = bigframes.dataframe.DataFrame
 Index = bigframes.core.indexes.Index
 Series = bigframes.series.Series
 
-# Used by DataFrameGroupby.agg
+# Other public pandas attributes
 NamedAgg = namedtuple("NamedAgg", ["column", "aggfunc"])
+
+options = config.options
+"""Global :class:`~bigframes._config.Options` to configure BigQuery DataFrames."""
+
+# Session management APIs
+get_global_session = global_session.get_global_session
+reset_session = global_session.reset_session
+
 
 # Use __all__ to let type checkers know what is part of the public API.
 __all___ = [
+    # Functions
     "concat",
-    "DataFrame",
-    "options",
     "read_csv",
     "read_gbq",
     "read_gbq_function",
     "read_gbq_model",
     "read_pandas",
+    "read_pickle",
     "remote_function",
+    # pandas dtype attributes
+    "NA",
+    "BooleanDtype",
+    "Float64Dtype",
+    "Int64Dtype",
+    "StringDtype",
+    "ArrowDtype"
+    # Class aliases
+    "DataFrame",
+    "Index",
     "Series",
+    # Other public pandas attributes
     "NamedAgg",
+    "options",
+    # Session management APIs
+    "get_global_session",
+    "reset_session",
 ]

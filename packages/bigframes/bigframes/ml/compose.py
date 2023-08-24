@@ -34,7 +34,7 @@ CompilablePreprocessorType = Union[
 
 class ColumnTransformer(
     third_party.bigframes_vendored.sklearn.compose._column_transformer.ColumnTransformer,
-    base.BaseEstimator,
+    base.Transformer,
 ):
     __doc__ = (
         third_party.bigframes_vendored.sklearn.compose._column_transformer.ColumnTransformer.__doc__

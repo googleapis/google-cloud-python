@@ -128,3 +128,4 @@
       name: preprocessing
     name: bigframes.ml
   name: BigQuery DataFrames
+  status: beta

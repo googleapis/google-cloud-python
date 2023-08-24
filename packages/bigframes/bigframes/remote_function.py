@@ -35,15 +35,10 @@ if TYPE_CHECKING:
 import cloudpickle
 import google.api_core.exceptions
 from google.cloud import bigquery, bigquery_connection_v1, functions_v2
-from google.cloud.bigquery.routine import Routine
-from google.cloud.bigquery.standard_sql import StandardSqlTypeNames
 from ibis.backends.bigquery.compiler import compiles
 from ibis.backends.bigquery.datatypes import BigQueryType
-from ibis.expr.datatypes.core import boolean
 from ibis.expr.datatypes.core import DataType as IbisDataType
 from ibis.expr.datatypes.core import dtype as python_type_to_bigquery_type
-from ibis.expr.datatypes.core import float64, int64
-from ibis.expr.datatypes.core import string as ibis_string
 import ibis.expr.operations as ops
 import ibis.expr.rules as rlz
 
@@ -63,11 +58,16 @@ _pickle_protocol_version = 4
 # Input and output types supported by BigQuery DataFrames remote functions.
 # TODO(shobs): Extend the support to all types supported by BQ remote functions
 # https://cloud.google.com/bigquery/docs/remote-functions#limitations
-_supported_io_ibis_types = {boolean, float64, int64, ibis_string}
-TYPE_ERROR_MESSAGE_FORMAT = (
-    f"Type {{}} not supported, supported types are {_supported_io_ibis_types}. "
-    f"{constants.FEEDBACK_LINK}"
-)
+SUPPORTED_IO_PYTHON_TYPES = {bool, float, int, str}
+SUPPORTED_IO_BIGQUERY_TYPEKINDS = {
+    "BOOLEAN",
+    "BOOL",
+    "FLOAT",
+    "FLOAT64",
+    "INT64",
+    "INTEGER",
+    "STRING",
+}
 
 
 def get_remote_function_locations(bq_location):
@@ -116,7 +116,7 @@ def routine_ref_to_string_for_query(routine_ref: bigquery.RoutineReference) -> s
 
 class IbisSignature(NamedTuple):
     parameter_names: List[str]
-    input_types: List[IbisDataType]
+    input_types: List[Optional[IbisDataType]]
     output_type: IbisDataType
 
 
@@ -512,7 +512,7 @@ def remote_function_node(
     """Creates an Ibis node representing a remote function call."""
 
     fields = {
-        name: rlz.value(type_)
+        name: rlz.value(type_) if type_ else rlz.any
         for name, type_ in zip(
             ibis_signature.parameter_names, ibis_signature.input_types
         )
@@ -538,20 +538,22 @@ def remote_function_node(
     return f
 
 
+class UnsupportedTypeError(ValueError):
+    def __init__(self, type_, supported_types):
+        self.type = type_
+        self.supported_types = supported_types
+
+
 def ibis_type_from_python_type(t: type) -> IbisDataType:
-    ibis_type = python_type_to_bigquery_type(t)
-    assert ibis_type in _supported_io_ibis_types, TYPE_ERROR_MESSAGE_FORMAT.format(
-        ibis_type
-    )
-    return ibis_type
+    if t not in SUPPORTED_IO_PYTHON_TYPES:
+        raise UnsupportedTypeError(t, SUPPORTED_IO_PYTHON_TYPES)
+    return python_type_to_bigquery_type(t)
 
 
-def ibis_type_from_type_kind(tk: StandardSqlTypeNames) -> IbisDataType:
-    ibis_type = BigQueryType.to_ibis(tk)
-    assert ibis_type in _supported_io_ibis_types, TYPE_ERROR_MESSAGE_FORMAT.format(
-        ibis_type
-    )
-    return ibis_type
+def ibis_type_from_type_kind(tk: bigquery.StandardSqlTypeNames) -> IbisDataType:
+    if tk not in SUPPORTED_IO_BIGQUERY_TYPEKINDS:
+        raise UnsupportedTypeError(tk, SUPPORTED_IO_BIGQUERY_TYPEKINDS)
+    return BigQueryType.to_ibis(tk)
 
 
 def ibis_signature_from_python_signature(
@@ -566,13 +568,18 @@ def ibis_signature_from_python_signature(
     )
 
 
-def ibis_signature_from_routine(
-    routine: Routine,
-) -> IbisSignature:
+class ReturnTypeMissingError(ValueError):
+    pass
+
+
+def ibis_signature_from_routine(routine: bigquery.Routine) -> IbisSignature:
+    if not routine.return_type:
+        raise ReturnTypeMissingError
+
     return IbisSignature(
         parameter_names=[arg.name for arg in routine.arguments],
         input_types=[
-            ibis_type_from_type_kind(arg.data_type.type_kind)
+            ibis_type_from_type_kind(arg.data_type.type_kind) if arg.data_type else None
             for arg in routine.arguments
         ],
         output_type=ibis_type_from_type_kind(routine.return_type.type_kind),
@@ -584,9 +591,7 @@ class DatasetMissingError(ValueError):
 
 
 def get_routine_reference(
-    routine_ref_str: str,
-    bigquery_client: bigquery.Client,
-    session: Optional[Session],
+    routine_ref_str: str, bigquery_client: bigquery.Client, session: Optional[Session]
 ) -> bigquery.RoutineReference:
     try:
         # Handle cases "<project_id>.<dataset_name>.<routine_name>" and
@@ -859,7 +864,21 @@ def read_gbq_function(
         )
 
     # Find the routine and get its arguments.
-    routine = bigquery_client.get_routine(routine_ref)
-    ibis_signature = ibis_signature_from_routine(routine)
+    try:
+        routine = bigquery_client.get_routine(routine_ref)
+    except google.api_core.exceptions.NotFound:
+        raise ValueError(f"Unknown function '{routine_ref}'. {constants.FEEDBACK_LINK}")
+
+    try:
+        ibis_signature = ibis_signature_from_routine(routine)
+    except ReturnTypeMissingError:
+        raise ValueError(
+            "Function return type must be specified. {constants.FEEDBACK_LINK}"
+        )
+    except UnsupportedTypeError as e:
+        raise ValueError(
+            f"Type {e.type} not supported, supported types are {e.supported_types}. "
+            f"{constants.FEEDBACK_LINK}"
+        )
 
     return remote_function_node(routine_ref, ibis_signature)

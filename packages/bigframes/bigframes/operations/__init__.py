@@ -76,6 +76,12 @@ class NotNullOp(UnaryOp):
         return x.notnull()
 
 
+class HashOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        return typing.cast(ibis_types.IntegerValue, x).hash()
+
+
+## String Operation
 class ReverseOp(UnaryOp):
     def _as_ibis(self, x: ibis_types.Value):
         return typing.cast(ibis_types.StringValue, x).reverse()
@@ -100,7 +106,58 @@ class IsNumericOp(UnaryOp):
     def _as_ibis(self, x: ibis_types.Value):
         # catches all members of the Unicode number class, which matches pandas isnumeric
         # see https://cloud.google.com/bigquery/docs/reference/standard-sql/string_functions#regexp_contains
-        return typing.cast(ibis_types.StringValue, x).re_search(r"^(\pN*)$")
+        # TODO: Validate correctness, my miss eg ⅕ character
+        return typing.cast(ibis_types.StringValue, x).re_search(r"^(\pN+)$")
+
+
+class IsAlphaOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        return typing.cast(ibis_types.StringValue, x).re_search(
+            r"^(\p{Lm}|\p{Lt}|\p{Lu}|\p{Ll}|\p{Lo})+$"
+        )
+
+
+class IsDigitOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        # Based on docs, should include superscript/subscript-ed numbers
+        # Tests however pass only when set to Nd unicode class
+        return typing.cast(ibis_types.StringValue, x).re_search(r"^(\p{Nd})+$")
+
+
+class IsDecimalOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        return typing.cast(ibis_types.StringValue, x).re_search(r"^(\p{Nd})+$")
+
+
+class IsAlnumOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        return typing.cast(ibis_types.StringValue, x).re_search(
+            r"^(\p{N}|\p{Lm}|\p{Lt}|\p{Lu}|\p{Ll}|\p{Lo})+$"
+        )
+
+
+class IsSpaceOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        # All characters are whitespace characters, False for empty string
+        return typing.cast(ibis_types.StringValue, x).re_search(r"^\s+$")
+
+
+class IsLowerOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        # No upper case characters, min one cased character
+        # See: https://docs.python.org/3/library/stdtypes.html#str
+        return typing.cast(ibis_types.StringValue, x).re_search(
+            r"\p{Ll}"
+        ) & ~typing.cast(ibis_types.StringValue, x).re_search(r"\p{Lu}|\p{Lt}")
+
+
+class IsUpperOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        # No lower case characters, min one cased character
+        # See: https://docs.python.org/3/library/stdtypes.html#str
+        return typing.cast(ibis_types.StringValue, x).re_search(
+            r"\p{Lu}"
+        ) & ~typing.cast(ibis_types.StringValue, x).re_search(r"\p{Ll}|\p{Lt}")
 
 
 class RstripOp(UnaryOp):
@@ -227,11 +284,25 @@ class EndsWithOp(UnaryOp):
         return any_match if any_match is not None else ibis_types.literal(False)
 
 
-class HashOp(UnaryOp):
+class ZfillOp(UnaryOp):
+    def __init__(self, width: int):
+        self._width = width
+
     def _as_ibis(self, x: ibis_types.Value):
-        return typing.cast(ibis_types.IntegerValue, x).hash()
+        str_value = typing.cast(ibis_types.StringValue, x)
+        return (
+            ibis.case()
+            .when(
+                str_value[0] == "-",
+                "-"
+                + StrPadOp(self._width - 1, "0", "left")._as_ibis(str_value.substr(1)),
+            )
+            .else_(StrPadOp(self._width, "0", "left")._as_ibis(str_value))
+            .end()
+        )
 
 
+## Datetime Ops
 class DayOp(UnaryOp):
     def _as_ibis(self, x: ibis_types.Value):
         return typing.cast(ibis_types.TimestampValue, x).day()
@@ -390,7 +461,14 @@ reverse_op = ReverseOp()
 lower_op = LowerOp()
 upper_op = UpperOp()
 strip_op = StripOp()
+isalnum_op = IsAlnumOp()
+isalpha_op = IsAlphaOp()
+isdecimal_op = IsDecimalOp()
+isdigit_op = IsDigitOp()
 isnumeric_op = IsNumericOp()
+isspace_op = IsSpaceOp()
+islower_op = IsLowerOp()
+isupper_op = IsUpperOp()
 rstrip_op = RstripOp()
 lstrip_op = LstripOp()
 hash_op = HashOp()
@@ -690,6 +768,18 @@ def clip_op(
             .else_(original)
             .end()
         )
+
+
+def partial_arg1(op: TernaryOp, scalar: typing.Any) -> BinaryOp:
+    return lambda x, y: op(dtypes.literal_to_ibis_scalar(scalar, validate=False), x, y)
+
+
+def partial_arg2(op: TernaryOp, scalar: typing.Any) -> BinaryOp:
+    return lambda x, y: op(x, dtypes.literal_to_ibis_scalar(scalar, validate=False), y)
+
+
+def partial_arg3(op: TernaryOp, scalar: typing.Any) -> BinaryOp:
+    return lambda x, y: op(x, y, dtypes.literal_to_ibis_scalar(scalar, validate=False))
 
 
 def is_null(value) -> bool:

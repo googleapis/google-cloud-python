@@ -174,7 +174,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         self._query_job: Optional[bigquery.QueryJob] = None
 
     def __dir__(self):
-        return dir(type(self)) + self._block.column_labels
+        return dir(type(self)) + [
+            label
+            for label in self._block.column_labels
+            if label and isinstance(label, str)
+        ]
 
     def _ipython_key_completions_(self) -> List[str]:
         return list(
@@ -201,13 +205,16 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         col_ids = self._sql_names(columns, tolerance)
         return [self._block.value_columns.index(col_id) for col_id in col_ids]
 
-    def _resolve_label_exact(self, label) -> str:
+    def _resolve_label_exact(self, label) -> Optional[str]:
+        """Returns the column id matching the label if there is exactly
+        one such column. If there are multiple columns with the same name,
+        raises an error. If there is no such column, returns None."""
         matches = self._block.label_to_col_id.get(label, [])
-        if len(matches) != 1:
+        if len(matches) > 1:
             raise ValueError(
-                f"Index data must be 1-dimensional. {constants.FEEDBACK_LINK}"
+                f"Multiple columns matching id {label} were found. {constants.FEEDBACK_LINK}"
             )
-        return matches[0]
+        return matches[0] if len(matches) != 0 else None
 
     def _sql_names(
         self,
@@ -215,7 +222,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         tolerance: bool = False,
     ) -> Sequence[str]:
         """Retrieve sql name (column name in BQ schema) of column(s)."""
-        labels = columns if utils.is_list_like(columns) else [columns]  # type:ignore
+        labels = (
+            columns
+            if utils.is_list_like(columns) and not isinstance(columns, tuple)
+            else [columns]
+        )  # type:ignore
         results: Sequence[str] = []
         for label in labels:
             col_ids = self._block.label_to_col_id.get(label, [])
@@ -245,6 +256,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     @property
     def columns(self) -> pandas.Index:
         return self.dtypes.index
+
+    @columns.setter
+    def columns(self, labels: pandas.Index):
+        new_block = self._block.with_column_labels(labels)
+        self._set_block(new_block)
 
     @property
     def shape(self) -> Tuple[int, int]:
@@ -295,7 +311,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         # Has to be unordered as it is impossible to order the sql without
         # including metadata columns in selection with ibis.
         ibis_expr = self._block.expr.to_ibis_expr(ordering_mode="unordered")
-        column_labels = self._block.column_labels
+        column_labels = list(self._block.column_labels)
 
         # TODO(swast): Need to have a better way of controlling when to include
         # the index or not.
@@ -387,11 +403,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if isinstance(key, bigframes.series.Series):
             return self._getitem_bool_series(key)
 
-        sql_names = self._sql_names(key)
-        # Only input is a single key and only find one column, returns a Series
-        if (not utils.is_list_like(key)) and len(sql_names) == 1:
-            return bigframes.series.Series(self._block.select_column(sql_names[0]))
-
+        if isinstance(key, typing.Hashable):
+            return self._getitem_label(key)
         # Select a subset of columns or re-order columns.
         # In Ibis after you apply a projection, any column objects from the
         # table before the projection can't be combined with column objects
@@ -410,10 +423,30 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         selected_ids: Tuple[str, ...] = ()
         for label in key:
-            col_ids = self._block.label_to_col_id.get(label, [])
+            col_ids = self._block.label_to_col_id[label]
             selected_ids = (*selected_ids, *col_ids)
 
         return DataFrame(self._block.select_columns(selected_ids))
+
+    def _getitem_label(self, key: blocks.Label):
+        col_ids = self._block.cols_matching_label(key)
+        if len(col_ids) == 0:
+            raise KeyError(key)
+        block = self._block.select_columns(col_ids)
+        if isinstance(self.columns, pandas.MultiIndex):
+            # Multiindex should drop-level if not selecting entire
+            key_levels = len(key) if isinstance(key, tuple) else 1
+            index_levels = self.columns.nlevels
+            if key_levels < index_levels:
+                block = block.with_column_labels(
+                    block.column_labels.droplevel(list(range(key_levels)))
+                )
+                # Force return DataFrame in this case, even if only single column
+                return DataFrame(block)
+
+        if len(col_ids) == 1:
+            return bigframes.series.Series(block)
+        return DataFrame(block)
 
     # Bool Series selects rows
     def _getitem_bool_series(self, key: bigframes.series.Series) -> DataFrame:
@@ -736,7 +769,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         *,
         axis: typing.Union[int, str] = 0,
         index: typing.Any = None,
-        columns: Union[blocks.Label, Iterable[blocks.Label]] = None,
+        columns: Union[blocks.Label, Sequence[blocks.Label]] = None,
         level: typing.Optional[LevelType] = None,
     ) -> DataFrame:
         if labels:
@@ -767,10 +800,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 self._block.value_columns
             )
         if columns:
-            if not utils.is_list_like(columns):
-                columns = [columns]  # type:ignore
-            columns = list(columns)
-
             block = block.drop_columns(self._sql_names(columns))
         if not index and not columns:
             raise ValueError("Must specify 'labels' or 'index'/'columns")
@@ -849,7 +878,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def _assign_scalar(self, label: str, value: Union[int, float]) -> DataFrame:
         # TODO(swast): Make sure that k is the ID / SQL name, not a label,
         # which could be invalid SQL.
-        col_ids = self._sql_names(label, tolerance=True)
+        col_ids = self._block.cols_matching_label(label)
 
         block, constant_col_id = self._block.create_constant(value, label)
         for col_id in col_ids:
@@ -868,7 +897,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         )
 
         column_ids = [
-            get_column_left(col_id) for col_id in self._sql_names(label, tolerance=True)
+            get_column_left(col_id) for col_id in self._block.cols_matching_label(label)
         ]
         block = joined_index._block
         source_column = get_column_right(series._value_column)
@@ -903,7 +932,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         else:
             keys = typing.cast(typing.Sequence[blocks.Label], tuple(keys))
         col_ids = [self._resolve_label_exact(key) for key in keys]
-        return DataFrame(self._block.set_index(col_ids, append=append, drop=drop))
+        missing = [keys[i] for i in range(len(col_ids)) if col_ids[i] is None]
+        if len(missing) > 0:
+            raise KeyError(f"None of {missing} are in the columns")
+        # convert col_ids to non-optional strs since we just determined they are not None
+        col_ids_strs: List[str] = [col_id for col_id in col_ids if col_id is not None]
+        return DataFrame(self._block.set_index(col_ids_strs, append=append, drop=drop))
 
     def sort_index(
         self, ascending: bool = True, na_position: Literal["first", "last"] = "last"
@@ -932,7 +966,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if na_position not in {"first", "last"}:
             raise ValueError("Param na_position must be one of 'first' or 'last'")
 
-        sort_labels = tuple(by) if utils.is_list_like(by) else (by,)
+        sort_labels = list(by) if utils.is_list_like(by) else [by]
         sort_column_ids = self._sql_names(sort_labels)
 
         len_by = len(sort_labels)
@@ -982,9 +1016,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return bigframes.series.Series(block)
 
     def add_prefix(self, prefix: str, axis: int | str | None = None) -> DataFrame:
+        axis = 1 if axis is None else axis
         return DataFrame(self._get_block().add_prefix(prefix, axis))
 
     def add_suffix(self, suffix: str, axis: int | str | None = None) -> DataFrame:
+        axis = 1 if axis is None else axis
         return DataFrame(self._get_block().add_suffix(suffix, axis))
 
     def dropna(self) -> DataFrame:
@@ -1115,7 +1151,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 raise NotImplementedError(
                     f"Multiple aggregations only supported on numeric columns. {constants.FEEDBACK_LINK}"
                 )
-            aggregations = [agg_ops.AGGREGATIONS_LOOKUP[f] for f in func]
+            aggregations = [agg_ops.lookup_agg_func(f) for f in func]
             return DataFrame(
                 self._block.summarize(
                     self._block.value_columns,
@@ -1125,7 +1161,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         else:
             return bigframes.series.Series(
                 self._block.aggregate_all_and_pivot(
-                    agg_ops.AGGREGATIONS_LOOKUP[typing.cast(str, func)]
+                    agg_ops.lookup_agg_func(typing.cast(str, func))
                 )
             )
 
@@ -1141,6 +1177,37 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             ["count", "mean", "std", "min", "25%", "50%", "75%", "max"]
         )
         return typing.cast(DataFrame, result)
+
+    def pivot(
+        self,
+        *,
+        columns: typing.Union[blocks.Label, Sequence[blocks.Label]],
+        index: typing.Optional[
+            typing.Union[blocks.Label, Sequence[blocks.Label]]
+        ] = None,
+        values: typing.Optional[
+            typing.Union[blocks.Label, Sequence[blocks.Label]]
+        ] = None,
+    ) -> DataFrame:
+        if index:
+            block = self.set_index(index)._block
+        else:
+            block = self._block
+
+        column_ids = self._sql_names(columns)
+        if values:
+            value_col_ids = self._sql_names(values)
+        else:
+            value_col_ids = [
+                col for col in block.value_columns if col not in column_ids
+            ]
+
+        pivot_block = block.pivot(
+            columns=column_ids,
+            values=value_col_ids,
+            values_in_index=utils.is_list_like(values),
+        )
+        return DataFrame(pivot_block)
 
     def _drop_non_numeric(self, keep_bool=True) -> DataFrame:
         types_to_keep = set(bigframes.dtypes.NUMERIC_BIGFRAMES_TYPES)
@@ -1263,7 +1330,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         )
 
         # Constructs default index
-        block = blocks.Block(expr, column_labels=labels)
+        expr, offset_index_id = expr.promote_offsets()
+        block = blocks.Block(
+            expr, index_columns=[offset_index_id], column_labels=labels
+        )
         return DataFrame(block)
 
     def _get_merged_col_labels(

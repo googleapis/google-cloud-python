@@ -136,6 +136,102 @@ class StringMethods:
 
         raise NotImplementedError("abstract method")
 
+    def isalpha(self):
+        """Check whether all characters in each string are alphabetic.
+
+        This is equivalent to running the Python string method
+        :meth:`str.isalpha` for each element of the Series/Index. If a string
+        has zero characters, ``False`` is returned for that check.
+
+        Returns:
+            bigframes.series.Series: Series with the same length as the originalSeries/Index.
+        """
+
+        raise NotImplementedError("abstract method")
+
+    def isdigit(self):
+        """Check whether all characters in each string are digits.
+
+        This is equivalent to running the Python string method
+        :meth:`str.isdigit` for each element of the Series/Index. If a string
+        has zero characters, ``False`` is returned for that check.
+
+        Returns:
+            bigframes.series.Series: Series with the same length as the originalSeries/Index.
+        """
+
+        raise NotImplementedError("abstract method")
+
+    def isalnum(self):
+        """Check whether all characters in each string are alphanumeric.
+
+        This is equivalent to running the Python string method
+        :meth:`str.isalnum` for each element of the Series/Index. If a string
+        has zero characters, ``False`` is returned for that check.
+
+        Returns:
+            bigframes.series.Series: Series or Index of boolean values with the
+                same length as the original Series/Index.
+        """
+
+        raise NotImplementedError("abstract method")
+
+    def isspace(self):
+        """Check whether all characters in each string are whitespace.
+
+        This is equivalent to running the Python string method
+        :meth:`str.isspace` for each element of the Series/Index. If a string
+        has zero characters, ``False`` is returned for that check.
+
+        Returns:
+            bigframes.series.Series: Series or Index of boolean values with the
+                same length as the original Series/Index.
+        """
+
+        raise NotImplementedError("abstract method")
+
+    def islower(self):
+        """Check whether all characters in each string are lowercase.
+
+        This is equivalent to running the Python string method
+        :meth:`str.islower` for each element of the Series/Index. If a string
+        has zero characters, ``False`` is returned for that check.
+
+        Returns:
+            bigframes.series.Series: Series or Index of boolean values with the
+                same length as the original Series/Index.
+        """
+
+        raise NotImplementedError("abstract method")
+
+    def isupper(self):
+        """Check whether all characters in each string are uppercase.
+
+        This is equivalent to running the Python string method
+        :meth:`str.isupper` for each element of the Series/Index. If a string
+        has zero characters, ``False`` is returned for that check.
+
+        Returns:
+            bigframes.series.Series: Series or Index of boolean values with the
+                same length as the original Series/Index.
+        """
+
+        raise NotImplementedError("abstract method")
+
+    def isdecimal(self):
+        """Check whether all characters in each string are decimal.
+
+        This is equivalent to running the Python string method
+        :meth:`str.isdecimal` for each element of the Series/Index. If a string
+        has zero characters, ``False`` is returned for that check.
+
+        Returns:
+            bigframes.series.Series: Series or Index of boolean values with the
+                same length as the original Series/Index.
+        """
+
+        raise NotImplementedError("abstract method")
+
     def rstrip(self):
         """Remove trailing characters.
 
@@ -415,6 +511,50 @@ class StringMethods:
     ):
         """
         Pad left side of strings in the Series/Index up to width.
+
+        Args:
+            width (int):
+                Minimum width of resulting string; additional characters will be filled
+                with character defined in `fillchar`.
+            fillchar (str, default ' '):
+                Additional character for filling, default is whitespace.
+
+        Returns:
+            bigframes.series.Series: Returns Series or Index with minimum number of char in object.
+        """
+        raise NotImplementedError("abstract method")
+
+    def zfill(
+        self,
+        width: int,
+    ):
+        """
+        Pad strings in the Series/Index by prepending '0' characters.
+
+        Strings in the Series/Index are padded with '0' characters on the
+        left of the string to reach a total string length  `width`. Strings
+        in the Series/Index with length greater or equal to `width` are
+        unchanged.
+
+        Args:
+            width (int):
+                Minimum length of resulting string; strings with length less
+                than `width` be prepended with '0' characters.
+
+        Returns:
+            bigframes.series.Series: Series of objects.
+        """
+        raise NotImplementedError("abstract method")
+
+    def center(
+        self,
+        width: int,
+        fillchar: str = " ",
+    ):
+        """
+        Pad left and right side of strings in the Series/Index.
+
+        Equivalent to :meth:`str.center`.
 
         Args:
             width (int):

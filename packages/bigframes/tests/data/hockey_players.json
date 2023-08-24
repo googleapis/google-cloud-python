@@ -1,0 +1,37 @@
+[
+    {
+      "mode": "NULLABLE",
+      "name": "team_name",
+      "type": "STRING"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "position",
+      "type": "STRING"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "player_name",
+      "type": "STRING"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "goals",
+      "type": "INTEGER"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "assists",
+      "type": "INTEGER"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "number",
+      "type": "INTEGER"
+    },
+    {
+      "mode": "NULLABLE",
+      "name": "season",
+      "type": "INTEGER"
+    }
+]

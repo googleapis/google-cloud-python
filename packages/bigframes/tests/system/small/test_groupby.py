@@ -109,8 +109,6 @@ def test_dataframe_groupby_agg_list(scalars_df_index, scalars_pandas_df_index):
     )
     bf_result_computed = bf_result.to_pandas()
 
-    # Pandas produces multi-index which isn't supported in bq df yet
-    pd_result = pd_result.set_axis(bf_result.columns, axis=1)
     pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
 
 
@@ -128,8 +126,6 @@ def test_dataframe_groupby_agg_dict(scalars_df_index, scalars_pandas_df_index):
     )
     bf_result_computed = bf_result.to_pandas()
 
-    # Pandas produces multi-index which isn't supported in bq df yet
-    pd_result = pd_result.set_axis(bf_result.columns, axis=1)
     pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
 
 

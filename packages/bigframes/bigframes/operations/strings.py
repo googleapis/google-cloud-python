@@ -70,6 +70,41 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
     def isnumeric(self) -> series.Series:
         return self._apply_unary_op(ops.isnumeric_op)
 
+    def isalpha(
+        self,
+    ) -> series.Series:
+        return self._apply_unary_op(ops.isalpha_op)
+
+    def isdigit(
+        self,
+    ) -> series.Series:
+        return self._apply_unary_op(ops.isdigit_op)
+
+    def isdecimal(
+        self,
+    ) -> series.Series:
+        return self._apply_unary_op(ops.isdecimal_op)
+
+    def isalnum(
+        self,
+    ) -> series.Series:
+        return self._apply_unary_op(ops.isalnum_op)
+
+    def isspace(
+        self,
+    ) -> series.Series:
+        return self._apply_unary_op(ops.isspace_op)
+
+    def islower(
+        self,
+    ) -> series.Series:
+        return self._apply_unary_op(ops.islower_op)
+
+    def isupper(
+        self,
+    ) -> series.Series:
+        return self._apply_unary_op(ops.isupper_op)
+
     def rstrip(self) -> series.Series:
         return self._apply_unary_op(ops.rstrip_op)
 
@@ -182,6 +217,12 @@ class StringMethods(bigframes.operations.base.SeriesMethods, vendorstr.StringMet
         if not isinstance(pat, tuple):
             pat = (pat,)
         return self._apply_unary_op(ops.EndsWithOp(pat))
+
+    def zfill(self, width: int) -> series.Series:
+        return self._apply_unary_op(ops.ZfillOp(width))
+
+    def center(self, width: int, fillchar: str = " ") -> series.Series:
+        return self._apply_unary_op(ops.StrPadOp(width, fillchar, "both"))
 
     def cat(
         self,

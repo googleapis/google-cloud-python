@@ -19,6 +19,7 @@ from __future__ import absolute_import
 from multiprocessing import Process
 import os
 import pathlib
+from pathlib import Path
 import re
 import shutil
 from typing import Dict, List
@@ -30,6 +31,10 @@ import nox.sessions
 BLACK_VERSION = "black==22.3.0"
 ISORT_VERSION = "isort==5.12.0"
 SPHINX_VERSION = "sphinx==4.5.0"
+
+# pytest-retry 1.4.0 fails on Python 3.11.
+# https://github.com/str0zzapreti/pytest-retry/issues/17
+PYTEST_RETRY_VERSION = "pytest-retry<=1.3.0"
 LINT_PATHS = ["docs", "bigframes", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.10"
@@ -55,7 +60,7 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "openpyxl",
     "pytest",
     "pytest-cov",
-    "pytest-retry",
+    PYTEST_RETRY_VERSION,
     "pytest-timeout",
     "pytest-xdist",
     "google-cloud-testutils",
@@ -590,23 +595,37 @@ def system_prerelease(session: nox.sessions.Session):
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def notebook(session):
     session.install("-e", ".[all]")
-    session.install("pytest", "pytest-xdist", "pytest-retry", "nbmake")
+    session.install("pytest", "pytest-xdist", PYTEST_RETRY_VERSION, "nbmake")
 
-    notebooks = [
-        "00 - Summary.ipynb",
-        "01 - Getting Started.ipynb",
-        "02 - DataFrame.ipynb",
-        "03 - Using ML - ML fundamentals.ipynb",
-        "04 - Using ML - SKLearn linear regression.ipynb",
-        "05 - Using ML - Easy linear regression.ipynb",
-        "06 - Using ML - Large Language Models.ipynb",
-        "50 - Remote Function.ipynb",
+    notebooks_list = list(Path("notebooks/").glob("*/*.ipynb"))
+
+    denylist = [
+        # Regionalized testing is manually added later.
+        "notebooks/location/regionalized.ipynb",
+        # These notebooks contain special colab `param {type:"string"}`
+        # comments, which make it easy for customers to fill in their
+        # own information.
+        # TODO(ashleyxu): Test these notebooks by replacing parameters with
+        # appropriate values and omitting cleanup logic that may break
+        # our test infrastructure.
+        "notebooks/getting_started/getting_started_bq_dataframes.ipynb",
+        "notebooks/getting_started/bq_dataframes_llm_code_generation.ipynb",
+        "notebooks/getting_started/bq_dataframes_ml_linear_regression.ipynb",
+        "notebooks/generative_ai/bq_dataframes_ml_drug_name_generation.ipynb",
+        # The experimental notebooks imagine features that don't yet
+        # exist or only exist as temporary prototypes.
+        "notebooks/experimental/longer_ml_demo.ipynb",
     ]
-    notebooks = [os.path.join("notebooks", nb) for nb in notebooks]
+
+    # Convert each Path notebook object to a string using a list comprehension.
+    notebooks = [str(nb) for nb in notebooks_list]
+
+    # Remove tests that we choose not to test.
+    notebooks = list(filter(lambda nb: nb not in denylist, notebooks))
 
     # Regionalized notebooks
     notebooks_reg = {
-        "10 - Regionalized.ipynb": [
+        "regionalized.ipynb": [
             "asia-southeast1",
             "eu",
             "europe-west4",
@@ -616,7 +635,8 @@ def notebook(session):
         ]
     }
     notebooks_reg = {
-        os.path.join("notebooks", nb): regions for nb, regions in notebooks_reg.items()
+        os.path.join("notebooks/location", nb): regions
+        for nb, regions in notebooks_reg.items()
     }
 
     # For some reason nbmake exits silently with "no tests ran" message if

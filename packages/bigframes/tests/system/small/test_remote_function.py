@@ -12,11 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.cloud import bigquery
+from ibis.backends.bigquery import datatypes as bq_types
+from ibis.expr import datatypes as ibis_types
 import pandas as pd
 import pytest
 
 import bigframes
-from bigframes.remote_function import read_gbq_function, remote_function
+from bigframes import remote_function as rf
 from tests.system.utils import assert_pandas_df_equal_ignore_ordering
 
 
@@ -98,6 +101,16 @@ def session_with_bq_connection_location_project_specified(
     )
 
 
+def test_supported_types_correspond():
+    # The same types should be representable by the supported Python and BigQuery types.
+    ibis_types_from_python = {ibis_types.dtype(t) for t in rf.SUPPORTED_IO_PYTHON_TYPES}
+    ibis_types_from_bigquery = {
+        bq_types.BigQueryType.to_ibis(tk) for tk in rf.SUPPORTED_IO_BIGQUERY_TYPEKINDS
+    }
+
+    assert ibis_types_from_python == ibis_types_from_bigquery
+
+
 @pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_direct_no_session_param(
     bigquery_client,
@@ -107,7 +120,7 @@ def test_remote_function_direct_no_session_param(
     dataset_id_permanent,
     bq_cf_connection,
 ):
-    @remote_function(
+    @rf.remote_function(
         [int],
         int,
         bigquery_client=bigquery_client,
@@ -157,7 +170,7 @@ def test_remote_function_direct_no_session_param_location_specified(
     dataset_id_permanent,
     bq_cf_connection_location,
 ):
-    @remote_function(
+    @rf.remote_function(
         [int],
         int,
         bigquery_client=bigquery_client,
@@ -205,7 +218,7 @@ def test_remote_function_direct_no_session_param_location_mismatched(
 ):
     with pytest.raises(ValueError):
 
-        @remote_function(
+        @rf.remote_function(
             [int],
             int,
             bigquery_client=bigquery_client,
@@ -229,7 +242,7 @@ def test_remote_function_direct_no_session_param_location_project_specified(
     dataset_id_permanent,
     bq_cf_connection_location_project,
 ):
-    @remote_function(
+    @rf.remote_function(
         [int],
         int,
         bigquery_client=bigquery_client,
@@ -277,7 +290,7 @@ def test_remote_function_direct_no_session_param_project_mismatched(
 ):
     with pytest.raises(ValueError):
 
-        @remote_function(
+        @rf.remote_function(
             [int],
             int,
             bigquery_client=bigquery_client,
@@ -294,7 +307,7 @@ def test_remote_function_direct_no_session_param_project_mismatched(
 
 @pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_direct_session_param(session_with_bq_connection, scalars_dfs):
-    @remote_function(
+    @rf.remote_function(
         [int],
         int,
         session=session_with_bq_connection,
@@ -501,6 +514,18 @@ def test_dataframe_applymap_na_ignore(session_with_bq_connection, scalars_dfs):
 
 
 @pytest.mark.flaky(retries=2, delay=120)
+def test_read_gbq_function_detects_invalid_function(bigquery_client, dataset_id):
+    dataset_ref = bigquery.DatasetReference.from_string(dataset_id)
+    with pytest.raises(ValueError) as e:
+        rf.read_gbq_function(
+            str(dataset_ref.routine("not_a_function")),
+            bigquery_client=bigquery_client,
+        )
+
+    assert "Unknown function" in str(e.value)
+
+
+@pytest.mark.flaky(retries=2, delay=120)
 def test_read_gbq_function_like_original(
     bigquery_client,
     bigqueryconnection_client,
@@ -509,7 +534,7 @@ def test_read_gbq_function_like_original(
     dataset_id_permanent,
     bq_cf_connection,
 ):
-    @remote_function(
+    @rf.remote_function(
         [int],
         int,
         bigquery_client=bigquery_client,
@@ -522,7 +547,7 @@ def test_read_gbq_function_like_original(
     def square1(x):
         return x * x
 
-    square2 = read_gbq_function(
+    square2 = rf.read_gbq_function(
         function_name=square1.bigframes_remote_function,
         bigquery_client=bigquery_client,
     )
@@ -551,3 +576,111 @@ def test_read_gbq_function_like_original(
     s2_result = int64_col_filtered.to_frame().assign(result=s2_result_col)
 
     assert_pandas_df_equal_ignore_ordering(s1_result.to_pandas(), s2_result.to_pandas())
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_read_gbq_function_reads_udfs(bigquery_client, scalars_dfs, dataset_id):
+    dataset_ref = bigquery.DatasetReference.from_string(dataset_id)
+    arg = bigquery.RoutineArgument(
+        name="x",
+        data_type=bigquery.StandardSqlDataType(bigquery.StandardSqlTypeNames.INT64),
+    )
+    sql_routine = bigquery.Routine(
+        dataset_ref.routine("square_sql"),
+        body="x * x",
+        arguments=[arg],
+        return_type=bigquery.StandardSqlDataType(bigquery.StandardSqlTypeNames.INT64),
+        type_=bigquery.RoutineType.SCALAR_FUNCTION,
+    )
+    js_routine = bigquery.Routine(
+        dataset_ref.routine("square_js"),
+        body="return x * x",
+        language="JAVASCRIPT",
+        arguments=[arg],
+        return_type=bigquery.StandardSqlDataType(bigquery.StandardSqlTypeNames.INT64),
+        type_=bigquery.RoutineType.SCALAR_FUNCTION,
+    )
+
+    for routine in (sql_routine, js_routine):
+        # Create the routine in BigQuery and read it back using read_gbq_function.
+        bigquery_client.create_routine(routine, exists_ok=True)
+        square = rf.read_gbq_function(
+            str(routine.reference), bigquery_client=bigquery_client
+        )
+
+        # It should point to the named routine and yield the expected results.
+        assert square.bigframes_remote_function == str(routine.reference)
+
+        src = {"x": [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]}
+
+        routine_ref_str = rf.routine_ref_to_string_for_query(routine.reference)
+        direct_sql = " UNION ALL ".join(
+            [f"SELECT {x} AS x, {routine_ref_str}({x}) AS y" for x in src["x"]]
+        )
+        direct_df = bigquery_client.query(direct_sql).to_dataframe()
+
+        indirect_df = bigframes.dataframe.DataFrame(src)
+        indirect_df = indirect_df.assign(y=indirect_df.x.apply(square))
+        indirect_df = indirect_df.to_pandas()
+
+        assert_pandas_df_equal_ignore_ordering(direct_df, indirect_df)
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_read_gbq_function_enforces_explicit_types(bigquery_client, dataset_id):
+    dataset_ref = bigquery.DatasetReference.from_string(dataset_id)
+    typed_arg = bigquery.RoutineArgument(
+        name="x",
+        data_type=bigquery.StandardSqlDataType(bigquery.StandardSqlTypeNames.INT64),
+    )
+    untyped_arg = bigquery.RoutineArgument(
+        name="x",
+        kind="ANY_TYPE",  # With this kind, data_type not required for SQL functions.
+    )
+
+    both_types_specified = bigquery.Routine(
+        dataset_ref.routine("both_types_specified"),
+        body="x * x",
+        arguments=[typed_arg],
+        return_type=bigquery.StandardSqlDataType(bigquery.StandardSqlTypeNames.INT64),
+        type_=bigquery.RoutineType.SCALAR_FUNCTION,
+    )
+    only_return_type_specified = bigquery.Routine(
+        dataset_ref.routine("only_return_type_specified"),
+        body="x * x",
+        arguments=[untyped_arg],
+        return_type=bigquery.StandardSqlDataType(bigquery.StandardSqlTypeNames.INT64),
+        type_=bigquery.RoutineType.SCALAR_FUNCTION,
+    )
+    only_arg_type_specified = bigquery.Routine(
+        dataset_ref.routine("only_arg_type_specified"),
+        body="x * x",
+        arguments=[typed_arg],
+        type_=bigquery.RoutineType.SCALAR_FUNCTION,
+    )
+    neither_type_specified = bigquery.Routine(
+        dataset_ref.routine("neither_type_specified"),
+        body="x * x",
+        arguments=[untyped_arg],
+        type_=bigquery.RoutineType.SCALAR_FUNCTION,
+    )
+
+    bigquery_client.create_routine(both_types_specified, exists_ok=True)
+    bigquery_client.create_routine(only_return_type_specified, exists_ok=True)
+    bigquery_client.create_routine(only_arg_type_specified, exists_ok=True)
+    bigquery_client.create_routine(neither_type_specified, exists_ok=True)
+
+    rf.read_gbq_function(
+        str(both_types_specified.reference), bigquery_client=bigquery_client
+    )
+    rf.read_gbq_function(
+        str(only_return_type_specified.reference), bigquery_client=bigquery_client
+    )
+    with pytest.raises(ValueError):
+        rf.read_gbq_function(
+            str(only_arg_type_specified.reference), bigquery_client=bigquery_client
+        )
+    with pytest.raises(ValueError):
+        rf.read_gbq_function(
+            str(neither_type_specified.reference), bigquery_client=bigquery_client
+        )

@@ -29,7 +29,7 @@ import bigframes.dataframe
 import bigframes.series
 
 if typing.TYPE_CHECKING:
-    LocSingleKey = bigframes.series.Series | indexes.Index | slice
+    LocSingleKey = typing.Union[bigframes.series.Series, indexes.Index, slice]
 
 
 class LocSeriesIndexer:

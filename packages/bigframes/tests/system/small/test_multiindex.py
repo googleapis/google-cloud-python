@@ -19,6 +19,7 @@ import bigframes.pandas as bpd
 from tests.system.utils import assert_pandas_df_equal_ignore_ordering
 
 
+# Row Multi-index tests
 def test_set_multi_index(scalars_df_index, scalars_pandas_df_index):
     bf_result = scalars_df_index.set_index(["bool_col", "int64_too"]).to_pandas()
     pd_result = scalars_pandas_df_index.set_index(["bool_col", "int64_too"])
@@ -443,3 +444,179 @@ def test_multi_index_series_rename_dict_same_type(
     pandas.testing.assert_series_equal(
         bf_result, pd_result, check_dtype=False, check_index_type=False
     )
+
+
+# Column Multi-index tests
+
+
+def test_column_multi_index_getitem(scalars_df_index, scalars_pandas_df_index):
+    columns = ["int64_too", "string_col", "bool_col"]
+    multi_columns = pandas.MultiIndex.from_tuples(zip(["a", "b", "a"], columns))
+    bf_df = scalars_df_index[columns].copy()
+    bf_df.columns = multi_columns
+    pd_df = scalars_pandas_df_index[columns].copy()
+    pd_df.columns = multi_columns
+
+    bf_a = bf_df["a"].to_pandas()
+    pd_a = pd_df["a"]
+    pandas.testing.assert_frame_equal(bf_a, pd_a)
+
+    bf_b = bf_df["b"].to_pandas()
+    pd_b = pd_df["b"]
+    pandas.testing.assert_frame_equal(bf_b, pd_b)
+
+    bf_fullkey = bf_df[("a", "int64_too")].to_pandas()
+    pd_fullkey = pd_df[("a", "int64_too")]
+    pandas.testing.assert_series_equal(bf_fullkey, pd_fullkey)
+
+
+def test_column_multi_index_concat(scalars_df_index, scalars_pandas_df_index):
+    columns = ["int64_too", "string_col", "bool_col", "int64_col"]
+    multi_columns1 = pandas.MultiIndex.from_tuples(
+        zip(["a", "b", "a", "b"], [1, 1, 2, 2])
+    )
+    multi_columns2 = pandas.MultiIndex.from_tuples(
+        zip(["a", "b", "a", "c"], [3, 1, 2, 1])
+    )
+
+    bf_df1 = scalars_df_index[columns].copy()
+    bf_df1.columns = multi_columns1
+    bf_df2 = scalars_df_index[columns].copy()
+    bf_df2.columns = multi_columns2
+
+    pd_df1 = scalars_pandas_df_index[columns].copy()
+    pd_df1.columns = multi_columns1
+    pd_df2 = scalars_pandas_df_index[columns].copy()
+    pd_df2.columns = multi_columns2
+
+    bf_result = bpd.concat([bf_df1, bf_df2, bf_df1]).to_pandas()
+    pd_result = pandas.concat([pd_df1, pd_df2, pd_df1])
+
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_column_multi_index_drop(scalars_df_index, scalars_pandas_df_index):
+    columns = ["int64_too", "string_col", "bool_col"]
+    multi_columns = pandas.MultiIndex.from_tuples(zip(["a", "b", "a"], columns))
+    bf_df = scalars_df_index[columns].copy()
+    bf_df.columns = multi_columns
+    pd_df = scalars_pandas_df_index[columns].copy()
+    pd_df.columns = multi_columns
+
+    bf_a = bf_df.drop(("a", "int64_too"), axis=1).to_pandas()
+    pd_a = pd_df.drop(("a", "int64_too"), axis=1)
+    pandas.testing.assert_frame_equal(bf_a, pd_a)
+
+
+@pytest.mark.parametrize(
+    ("key",),
+    [
+        ("a",),
+        ("b",),
+        ("c",),
+    ],
+)
+def test_column_multi_index_assign(scalars_df_index, scalars_pandas_df_index, key):
+    columns = ["int64_too", "int64_col", "float64_col"]
+    multi_columns = pandas.MultiIndex.from_tuples(zip(["a", "b", "a"], columns))
+    bf_df = scalars_df_index[columns].copy()
+    bf_df.columns = multi_columns
+    pd_df = scalars_pandas_df_index[columns].copy()
+    pd_df.columns = multi_columns
+
+    kwargs = {key: 42}
+    bf_result = bf_df.assign(**kwargs).to_pandas()
+    pd_result = pd_df.assign(**kwargs)
+
+    # Pandas assign results in non-nullable dtype
+    pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_column_multi_index_rename(scalars_df_index, scalars_pandas_df_index):
+    columns = ["int64_too", "int64_col", "float64_col"]
+    multi_columns = pandas.MultiIndex.from_tuples(zip(["a", "b", "a"], ["a", "b", "b"]))
+    bf_df = scalars_df_index[columns].copy()
+    bf_df.columns = multi_columns
+    pd_df = scalars_pandas_df_index[columns].copy()
+    pd_df.columns = multi_columns
+
+    bf_result = bf_df.rename(columns={"b": "c"}).to_pandas()
+    pd_result = pd_df.rename(columns={"b": "c"})
+
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_column_multi_index_reset_index(scalars_df_index, scalars_pandas_df_index):
+    columns = ["int64_too", "int64_col", "float64_col"]
+    multi_columns = pandas.MultiIndex.from_tuples(zip(["a", "b", "a"], ["a", "b", "b"]))
+    bf_df = scalars_df_index[columns].copy()
+    bf_df.columns = multi_columns
+    pd_df = scalars_pandas_df_index[columns].copy()
+    pd_df.columns = multi_columns
+
+    bf_result = bf_df.reset_index().to_pandas()
+    pd_result = pd_df.reset_index()
+
+    # Pandas uses int64 instead of Int64 (nullable) dtype.
+    pd_result.index = pd_result.index.astype(pandas.Int64Dtype())
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_column_multi_index_binary_op(scalars_df_index, scalars_pandas_df_index):
+    columns = ["int64_too", "int64_col", "float64_col"]
+    multi_columns = pandas.MultiIndex.from_tuples(zip(["a", "b", "a"], ["a", "b", "b"]))
+    bf_df = scalars_df_index[columns].copy()
+    bf_df.columns = multi_columns
+    pd_df = scalars_pandas_df_index[columns].copy()
+    pd_df.columns = multi_columns
+
+    bf_result = (bf_df[("a", "a")] + 3).to_pandas()
+    pd_result = pd_df[("a", "a")] + 3
+
+    pandas.testing.assert_series_equal(bf_result, pd_result)
+
+
+def test_column_multi_index_agg(scalars_df_index, scalars_pandas_df_index):
+    columns = ["int64_too", "int64_col", "float64_col"]
+    multi_columns = pandas.MultiIndex.from_tuples(zip(["a", "b", "a"], ["a", "b", "b"]))
+    bf_df = scalars_df_index[columns].copy()
+    bf_df.columns = multi_columns
+    pd_df = scalars_pandas_df_index[columns].copy()
+    pd_df.columns = multi_columns
+
+    bf_result = bf_df.agg(["sum", "mean"]).to_pandas()
+    pd_result = pd_df.agg(["sum", "mean"])
+
+    # Pandas may produce narrower numeric types, but bigframes always produces Float64
+    pd_result = pd_result.astype("Float64")
+    pandas.testing.assert_frame_equal(bf_result, pd_result, check_index_type=False)
+
+
+def test_column_multi_index_prefix_suffix(scalars_df_index, scalars_pandas_df_index):
+    columns = ["int64_too", "int64_col", "float64_col"]
+    multi_columns = pandas.MultiIndex.from_tuples(zip(["a", "b", "a"], ["a", "b", "b"]))
+    bf_df = scalars_df_index[columns].copy()
+    bf_df.columns = multi_columns
+    pd_df = scalars_pandas_df_index[columns].copy()
+    pd_df.columns = multi_columns
+
+    bf_result = bf_df.add_prefix("prefixed_").add_suffix("_suffixed").to_pandas()
+    pd_result = pd_df.add_prefix("prefixed_").add_suffix("_suffixed")
+
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_column_multi_index_cumsum(scalars_df_index, scalars_pandas_df_index):
+    if pandas.__version__.startswith("1."):
+        pytest.skip("pandas 1.x. does not handle nullable ints properly in cumsum")
+    columns = ["int64_too", "int64_col", "float64_col"]
+    multi_columns = pandas.MultiIndex.from_tuples(zip(["a", "b", "a"], ["a", "b", "b"]))
+    bf_df = scalars_df_index[columns].copy()
+    bf_df.columns = multi_columns
+    pd_df = scalars_pandas_df_index[columns].copy()
+    pd_df.columns = multi_columns
+
+    bf_result = bf_df.cumsum().to_pandas()
+    pd_result = pd_df.cumsum()
+
+    pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)

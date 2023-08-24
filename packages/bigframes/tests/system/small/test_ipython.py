@@ -12,20 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""BigQuery DataFrames provides a DataFrame API scaled by the BigQuery engine."""
+import pytest
 
-from bigframes._config import options
-from bigframes._config.bigquery_options import BigQueryOptions
-from bigframes.core.global_session import get_global_session, reset_session
-from bigframes.session import connect, Session
-from bigframes.version import __version__
+IPython = pytest.importorskip("IPython")
 
-__all__ = [
-    "options",
-    "BigQueryOptions",
-    "get_global_session",
-    "reset_session",
-    "connect",
-    "Session",
-    "__version__",
-]
+
+def test_repr_cache(scalars_df_index):
+    display_formatter = IPython.core.formatters.DisplayFormatter()
+    # Make sure the df has a new block that the method return value
+    # is not already cached.
+    test_df = scalars_df_index.head()
+    results = display_formatter.format(test_df)
+    assert results[0].keys() == {"text/plain", "text/html"}
+    assert test_df._block.retrieve_repr_request_results.cache_info().misses == 1
+    assert test_df._block.retrieve_repr_request_results.cache_info().hits == 1
