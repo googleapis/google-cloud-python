@@ -3014,7 +3014,7 @@ def test_create_data_policy_rest(request_type):
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request_init["data_policy"] = {
         "policy_tag": "policy_tag_value",
-        "data_masking_policy": {"predefined_expression": 3},
+        "data_masking_policy": {"predefined_expression": 3, "routine": "routine_value"},
         "name": "name_value",
         "data_policy_type": 3,
         "data_policy_id": "data_policy_id_value",
@@ -3215,7 +3215,7 @@ def test_create_data_policy_rest_bad_request(
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request_init["data_policy"] = {
         "policy_tag": "policy_tag_value",
-        "data_masking_policy": {"predefined_expression": 3},
+        "data_masking_policy": {"predefined_expression": 3, "routine": "routine_value"},
         "name": "name_value",
         "data_policy_type": 3,
         "data_policy_id": "data_policy_id_value",
@@ -3319,7 +3319,7 @@ def test_update_data_policy_rest(request_type):
     }
     request_init["data_policy"] = {
         "policy_tag": "policy_tag_value",
-        "data_masking_policy": {"predefined_expression": 3},
+        "data_masking_policy": {"predefined_expression": 3, "routine": "routine_value"},
         "name": "projects/sample1/locations/sample2/dataPolicies/sample3",
         "data_policy_type": 3,
         "data_policy_id": "data_policy_id_value",
@@ -3513,7 +3513,7 @@ def test_update_data_policy_rest_bad_request(
     }
     request_init["data_policy"] = {
         "policy_tag": "policy_tag_value",
-        "data_masking_policy": {"predefined_expression": 3},
+        "data_masking_policy": {"predefined_expression": 3, "routine": "routine_value"},
         "name": "projects/sample1/locations/sample2/dataPolicies/sample3",
         "data_policy_type": 3,
         "data_policy_id": "data_policy_id_value",

@@ -338,6 +338,15 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-bigquery-migration": {
+            "component": "google-cloud-bigquery-migration",
+            "extra-files": [
+                "google/cloud/bigquery_migration/gapic_version.py",
+                "google/cloud/bigquery_migration_v2/gapic_version.py",
+                "google/cloud/bigquery_migration_v2alpha/gapic_version.py"
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-billing": {
             "component": "google-cloud-billing",
             "extra-files": [
@@ -589,6 +598,15 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-dialogflow-cx": {
+            "component": "google-cloud-dialogflow-cx",
+            "extra-files": [
+                "google/cloud/dialogflowcx/gapic_version.py",
+                "google/cloud/dialogflowcx_v3/gapic_version.py",
+                "google/cloud/dialogflowcx_v3beta1/gapic_version.py"
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-discoveryengine": {
             "component": "google-cloud-discoveryengine",
             "extra-files": [
@@ -772,6 +790,17 @@
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.gkemulticloud.v1.json",
                     "type": "json"
                 }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-iam": {
+            "component": "google-cloud-iam",
+            "extra-files": [
+                "google/cloud/iam/gapic_version.py",
+                "google/cloud/iam_credentials/gapic_version.py",
+                "google/cloud/iam_credentials_v1/gapic_version.py",
+                "google/cloud/iam_v2/gapic_version.py",
+                "google/cloud/iam_v2beta/gapic_version.py"
             ],
             "release-type": "python"
         },
