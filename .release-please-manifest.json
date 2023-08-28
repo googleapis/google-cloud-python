@@ -30,6 +30,7 @@
     "packages/google-cloud-channel": "1.15.1",
     "packages/google-cloud-commerce-consumer-procurement": "0.0.0",
     "packages/google-cloud-confidentialcomputing": "0.4.0",
+    "packages/google-cloud-config": "0.0.0",
     "packages/google-cloud-contact-center-insights": "1.12.0",
     "packages/google-cloud-contentwarehouse": "0.7.0",
     "packages/google-cloud-data-fusion": "1.8.2",
