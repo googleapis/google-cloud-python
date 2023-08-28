@@ -163,6 +163,11 @@ class ConversationsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.search_knowledge: gapic_v1.method.wrap_method(
+                self.search_knowledge,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -245,6 +250,18 @@ class ConversationsTransport(abc.ABC):
         Union[
             conversation.GenerateStatelessSummaryResponse,
             Awaitable[conversation.GenerateStatelessSummaryResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def search_knowledge(
+        self,
+    ) -> Callable[
+        [conversation.SearchKnowledgeRequest],
+        Union[
+            conversation.SearchKnowledgeResponse,
+            Awaitable[conversation.SearchKnowledgeResponse],
         ],
     ]:
         raise NotImplementedError()

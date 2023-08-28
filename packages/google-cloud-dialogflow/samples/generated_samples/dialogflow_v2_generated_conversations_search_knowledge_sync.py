@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ClearSuggestionFeatureConfig
+# Snippet for SearchKnowledge
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dialogflow
 
 
-# [START dialogflow_v2_generated_ConversationProfiles_ClearSuggestionFeatureConfig_sync]
+# [START dialogflow_v2_generated_Conversations_SearchKnowledge_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,25 +34,24 @@
 from google.cloud import dialogflow_v2
 
 
-def sample_clear_suggestion_feature_config():
+def sample_search_knowledge():
     # Create a client
-    client = dialogflow_v2.ConversationProfilesClient()
+    client = dialogflow_v2.ConversationsClient()
 
     # Initialize request argument(s)
-    request = dialogflow_v2.ClearSuggestionFeatureConfigRequest(
+    query = dialogflow_v2.TextInput()
+    query.text = "text_value"
+    query.language_code = "language_code_value"
+
+    request = dialogflow_v2.SearchKnowledgeRequest(
+        query=query,
         conversation_profile="conversation_profile_value",
-        participant_role="END_USER",
-        suggestion_feature_type="KNOWLEDGE_SEARCH",
     )
 
     # Make the request
-    operation = client.clear_suggestion_feature_config(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    response = client.search_knowledge(request=request)
 
     # Handle the response
     print(response)
 
-# [END dialogflow_v2_generated_ConversationProfiles_ClearSuggestionFeatureConfig_sync]
+# [END dialogflow_v2_generated_Conversations_SearchKnowledge_sync]

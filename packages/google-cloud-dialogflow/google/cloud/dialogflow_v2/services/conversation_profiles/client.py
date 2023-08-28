@@ -1366,7 +1366,7 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
                 request = dialogflow_v2.ClearSuggestionFeatureConfigRequest(
                     conversation_profile="conversation_profile_value",
                     participant_role="END_USER",
-                    suggestion_feature_type="SMART_REPLY",
+                    suggestion_feature_type="KNOWLEDGE_SEARCH",
                 )
 
                 # Make the request

@@ -423,7 +423,13 @@ class HumanAgentAssistantConfig(proto.Message):
                 suggestions.
 
                 Supported features: ARTICLE_SUGGESTION, FAQ,
-                DIALOGFLOW_ASSIST.
+                DIALOGFLOW_ASSIST, KNOWLEDGE_ASSIST.
+            disable_agent_query_logging (bool):
+                Optional. Disable the logging of search queries sent by
+                human agents. It can prevent those queries from being stored
+                at answer records.
+
+                Supported features: KNOWLEDGE_SEARCH.
             suggestion_trigger_settings (google.cloud.dialogflow_v2.types.HumanAgentAssistantConfig.SuggestionTriggerSettings):
                 Settings of suggestion trigger.
 
@@ -445,6 +451,10 @@ class HumanAgentAssistantConfig(proto.Message):
         enable_event_based_suggestion: bool = proto.Field(
             proto.BOOL,
             number=3,
+        )
+        disable_agent_query_logging: bool = proto.Field(
+            proto.BOOL,
+            number=14,
         )
         suggestion_trigger_settings: "HumanAgentAssistantConfig.SuggestionTriggerSettings" = proto.Field(
             proto.MESSAGE,
@@ -606,11 +616,36 @@ class HumanAgentAssistantConfig(proto.Message):
                     ``projects/<Project ID>/locations/<Location ID>/agent``.
                     When multiple agents are allowed in the same Dialogflow
                     project.
+                human_agent_side_config (google.cloud.dialogflow_v2.types.HumanAgentAssistantConfig.SuggestionQueryConfig.DialogflowQuerySource.HumanAgentSideConfig):
+                    Optional. The Dialogflow assist configuration
+                    for human agent.
             """
+
+            class HumanAgentSideConfig(proto.Message):
+                r"""The configuration used for human agent side Dialogflow assist
+                suggestion.
+
+                Attributes:
+                    agent (str):
+                        Optional. The name of a dialogflow virtual agent used for
+                        intent detection and suggestion triggered by human agent.
+                        Format:
+                        ``projects/<Project ID>/locations/<Location ID>/agent``.
+                """
+
+                agent: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
 
             agent: str = proto.Field(
                 proto.STRING,
                 number=1,
+            )
+            human_agent_side_config: "HumanAgentAssistantConfig.SuggestionQueryConfig.DialogflowQuerySource.HumanAgentSideConfig" = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message="HumanAgentAssistantConfig.SuggestionQueryConfig.DialogflowQuerySource.HumanAgentSideConfig",
             )
 
         class ContextFilterSettings(proto.Message):
@@ -970,11 +1005,15 @@ class SuggestionFeature(proto.Message):
                 Run FAQ model for chat.
             SMART_REPLY (3):
                 Run smart reply model for chat.
+            KNOWLEDGE_SEARCH (14):
+                Run knowledge search with text input from
+                agent or text generated query.
         """
         TYPE_UNSPECIFIED = 0
         ARTICLE_SUGGESTION = 1
         FAQ = 2
         SMART_REPLY = 3
+        KNOWLEDGE_SEARCH = 14
 
     type_: Type = proto.Field(
         proto.ENUM,

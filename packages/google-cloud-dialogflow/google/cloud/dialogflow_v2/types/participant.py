@@ -52,10 +52,13 @@ __protobuf__ = proto.module(
         "ArticleAnswer",
         "FaqAnswer",
         "SmartReplyAnswer",
+        "IntentSuggestion",
+        "DialogflowAssistAnswer",
         "SuggestionResult",
         "InputTextConfig",
         "AnnotatedMessagePart",
         "MessageAnnotation",
+        "SuggestionInput",
         "AssistQueryParameters",
     },
 )
@@ -404,6 +407,11 @@ class AnalyzeContentRequest(proto.Message):
             An input event to send to Dialogflow.
 
             This field is a member of `oneof`_ ``input``.
+        suggestion_input (google.cloud.dialogflow_v2.types.SuggestionInput):
+            An input representing the selection of a
+            suggestion.
+
+            This field is a member of `oneof`_ ``input``.
         reply_audio_config (google.cloud.dialogflow_v2.types.OutputAudioConfig):
             Speech synthesis configuration.
             The speech synthesis settings for a virtual
@@ -445,6 +453,12 @@ class AnalyzeContentRequest(proto.Message):
         number=8,
         oneof="input",
         message=session.EventInput,
+    )
+    suggestion_input: "SuggestionInput" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="input",
+        message="SuggestionInput",
     )
     reply_audio_config: gcd_audio_config.OutputAudioConfig = proto.Field(
         proto.MESSAGE,
@@ -665,7 +679,8 @@ class StreamingAnalyzeContentRequest(proto.Message):
             Must be sent if ``text_config`` is set in the first message.
             Text length must not exceed 256 bytes for virtual agent
             interactions. The ``input_text`` field can be only sent
-            once.
+            once, and would cancel the speech recognition if any
+            ongoing.
 
             This field is a member of `oneof`_ ``input``.
         input_dtmf (google.cloud.dialogflow_v2.types.TelephonyDtmfEvents):
@@ -1360,6 +1375,86 @@ class SmartReplyAnswer(proto.Message):
     )
 
 
+class IntentSuggestion(proto.Message):
+    r"""Represents an intent suggestion.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        display_name (str):
+            The display name of the intent.
+        intent_v2 (str):
+            The unique identifier of this
+            [intent][google.cloud.dialogflow.v2.Intent]. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agent/intents/<Intent ID>``.
+
+            This field is a member of `oneof`_ ``intent``.
+        description (str):
+            Human readable description for better
+            understanding an intent like its scope, content,
+            result etc. Maximum character limit: 140
+            characters.
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    intent_v2: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="intent",
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class DialogflowAssistAnswer(proto.Message):
+    r"""Represents a Dialogflow assist answer.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        query_result (google.cloud.dialogflow_v2.types.QueryResult):
+            Result from v2 agent.
+
+            This field is a member of `oneof`_ ``result``.
+        intent_suggestion (google.cloud.dialogflow_v2.types.IntentSuggestion):
+            An intent suggestion generated from
+            conversation.
+
+            This field is a member of `oneof`_ ``result``.
+        answer_record (str):
+            The name of answer record, in the format of
+            "projects/<Project ID>/locations/<Location
+            ID>/answerRecords/<Answer Record ID>".
+    """
+
+    query_result: session.QueryResult = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="result",
+        message=session.QueryResult,
+    )
+    intent_suggestion: "IntentSuggestion" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="result",
+        message="IntentSuggestion",
+    )
+    answer_record: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class SuggestionResult(proto.Message):
     r"""One response of different type of suggestion response which is used
     in the response of
@@ -1505,6 +1600,24 @@ class MessageAnnotation(proto.Message):
     contain_entities: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+
+
+class SuggestionInput(proto.Message):
+    r"""Represents the selection of a suggestion.
+
+    Attributes:
+        answer_record (str):
+            Required. The ID of a suggestion selected by the human
+            agent. The suggestion(s) were generated in a previous call
+            to request Dialogflow assist. The format is:
+            ``projects/<Project ID>/locations/<Location ID>/answerRecords/<Answer Record ID>``
+            where is an alphanumeric string.
+    """
+
+    answer_record: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

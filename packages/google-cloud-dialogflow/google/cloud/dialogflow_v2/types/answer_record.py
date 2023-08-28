@@ -321,6 +321,8 @@ class AgentAssistantFeedback(proto.Message):
         summarization_feedback (google.cloud.dialogflow_v2.types.AgentAssistantFeedback.SummarizationFeedback):
             Optional. Feedback for conversation
             summarization.
+        knowledge_search_feedback (google.cloud.dialogflow_v2.types.AgentAssistantFeedback.KnowledgeSearchFeedback):
+            Optional. Feedback for knowledge search.
     """
 
     class AnswerRelevance(proto.Enum):
@@ -396,6 +398,33 @@ class AgentAssistantFeedback(proto.Message):
             number=3,
         )
 
+    class KnowledgeSearchFeedback(proto.Message):
+        r"""Feedback for knowledge search.
+
+        Attributes:
+            answer_copied (bool):
+                Whether the answer was copied by the human agent or not. If
+                the value is set to be true,
+                [AnswerFeedback.clicked][google.cloud.dialogflow.v2.AnswerFeedback.clicked]
+                will be updated to be true.
+            clicked_uris (MutableSequence[str]):
+                The URIs clicked by the human agent. The value is appended
+                for each
+                [UpdateAnswerRecordRequest][google.cloud.dialogflow.v2.UpdateAnswerRecordRequest].
+                If the value is not empty,
+                [AnswerFeedback.clicked][google.cloud.dialogflow.v2.AnswerFeedback.clicked]
+                will be updated to be true.
+        """
+
+        answer_copied: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        clicked_uris: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+
     answer_relevance: AnswerRelevance = proto.Field(
         proto.ENUM,
         number=1,
@@ -415,6 +444,11 @@ class AgentAssistantFeedback(proto.Message):
         proto.MESSAGE,
         number=4,
         message=SummarizationFeedback,
+    )
+    knowledge_search_feedback: KnowledgeSearchFeedback = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=KnowledgeSearchFeedback,
     )
 
 
@@ -437,6 +471,10 @@ class AgentAssistantRecord(proto.Message):
             Output only. The FAQ answer.
 
             This field is a member of `oneof`_ ``answer``.
+        dialogflow_assist_answer (google.cloud.dialogflow_v2.types.DialogflowAssistAnswer):
+            Output only. Dialogflow assist answer.
+
+            This field is a member of `oneof`_ ``answer``.
     """
 
     article_suggestion_answer: participant.ArticleAnswer = proto.Field(
@@ -450,6 +488,12 @@ class AgentAssistantRecord(proto.Message):
         number=6,
         oneof="answer",
         message=participant.FaqAnswer,
+    )
+    dialogflow_assist_answer: participant.DialogflowAssistAnswer = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="answer",
+        message=participant.DialogflowAssistAnswer,
     )
 
 

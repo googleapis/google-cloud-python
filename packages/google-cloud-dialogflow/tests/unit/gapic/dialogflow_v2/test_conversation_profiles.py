@@ -3484,6 +3484,7 @@ def test_create_conversation_profile_rest(request_type):
                     {
                         "suggestion_feature": {"type_": 1},
                         "enable_event_based_suggestion": True,
+                        "disable_agent_query_logging": True,
                         "suggestion_trigger_settings": {
                             "no_smalltalk": True,
                             "only_end_user": True,
@@ -3498,7 +3499,10 @@ def test_create_conversation_profile_rest(request_type):
                             "document_query_source": {
                                 "documents": ["documents_value1", "documents_value2"]
                             },
-                            "dialogflow_query_source": {"agent": "agent_value"},
+                            "dialogflow_query_source": {
+                                "agent": "agent_value",
+                                "human_agent_side_config": {"agent": "agent_value"},
+                            },
                             "max_results": 1207,
                             "confidence_threshold": 0.2106,
                             "context_filter_settings": {
@@ -3534,7 +3538,11 @@ def test_create_conversation_profile_rest(request_type):
         "notification_config": {},
         "logging_config": {"enable_stackdriver_logging": True},
         "new_message_event_notification_config": {},
-        "stt_config": {"speech_model_variant": 1, "model": "model_value"},
+        "stt_config": {
+            "speech_model_variant": 1,
+            "model": "model_value",
+            "use_timeout_based_endpointing": True,
+        },
         "language_code": "language_code_value",
         "time_zone": "time_zone_value",
         "security_settings": "security_settings_value",
@@ -3766,6 +3774,7 @@ def test_create_conversation_profile_rest_bad_request(
                     {
                         "suggestion_feature": {"type_": 1},
                         "enable_event_based_suggestion": True,
+                        "disable_agent_query_logging": True,
                         "suggestion_trigger_settings": {
                             "no_smalltalk": True,
                             "only_end_user": True,
@@ -3780,7 +3789,10 @@ def test_create_conversation_profile_rest_bad_request(
                             "document_query_source": {
                                 "documents": ["documents_value1", "documents_value2"]
                             },
-                            "dialogflow_query_source": {"agent": "agent_value"},
+                            "dialogflow_query_source": {
+                                "agent": "agent_value",
+                                "human_agent_side_config": {"agent": "agent_value"},
+                            },
                             "max_results": 1207,
                             "confidence_threshold": 0.2106,
                             "context_filter_settings": {
@@ -3816,7 +3828,11 @@ def test_create_conversation_profile_rest_bad_request(
         "notification_config": {},
         "logging_config": {"enable_stackdriver_logging": True},
         "new_message_event_notification_config": {},
-        "stt_config": {"speech_model_variant": 1, "model": "model_value"},
+        "stt_config": {
+            "speech_model_variant": 1,
+            "model": "model_value",
+            "use_timeout_based_endpointing": True,
+        },
         "language_code": "language_code_value",
         "time_zone": "time_zone_value",
         "security_settings": "security_settings_value",
@@ -3947,6 +3963,7 @@ def test_update_conversation_profile_rest(request_type):
                     {
                         "suggestion_feature": {"type_": 1},
                         "enable_event_based_suggestion": True,
+                        "disable_agent_query_logging": True,
                         "suggestion_trigger_settings": {
                             "no_smalltalk": True,
                             "only_end_user": True,
@@ -3961,7 +3978,10 @@ def test_update_conversation_profile_rest(request_type):
                             "document_query_source": {
                                 "documents": ["documents_value1", "documents_value2"]
                             },
-                            "dialogflow_query_source": {"agent": "agent_value"},
+                            "dialogflow_query_source": {
+                                "agent": "agent_value",
+                                "human_agent_side_config": {"agent": "agent_value"},
+                            },
                             "max_results": 1207,
                             "confidence_threshold": 0.2106,
                             "context_filter_settings": {
@@ -3997,7 +4017,11 @@ def test_update_conversation_profile_rest(request_type):
         "notification_config": {},
         "logging_config": {"enable_stackdriver_logging": True},
         "new_message_event_notification_config": {},
-        "stt_config": {"speech_model_variant": 1, "model": "model_value"},
+        "stt_config": {
+            "speech_model_variant": 1,
+            "model": "model_value",
+            "use_timeout_based_endpointing": True,
+        },
         "language_code": "language_code_value",
         "time_zone": "time_zone_value",
         "security_settings": "security_settings_value",
@@ -4230,6 +4254,7 @@ def test_update_conversation_profile_rest_bad_request(
                     {
                         "suggestion_feature": {"type_": 1},
                         "enable_event_based_suggestion": True,
+                        "disable_agent_query_logging": True,
                         "suggestion_trigger_settings": {
                             "no_smalltalk": True,
                             "only_end_user": True,
@@ -4244,7 +4269,10 @@ def test_update_conversation_profile_rest_bad_request(
                             "document_query_source": {
                                 "documents": ["documents_value1", "documents_value2"]
                             },
-                            "dialogflow_query_source": {"agent": "agent_value"},
+                            "dialogflow_query_source": {
+                                "agent": "agent_value",
+                                "human_agent_side_config": {"agent": "agent_value"},
+                            },
                             "max_results": 1207,
                             "confidence_threshold": 0.2106,
                             "context_filter_settings": {
@@ -4280,7 +4308,11 @@ def test_update_conversation_profile_rest_bad_request(
         "notification_config": {},
         "logging_config": {"enable_stackdriver_logging": True},
         "new_message_event_notification_config": {},
-        "stt_config": {"speech_model_variant": 1, "model": "model_value"},
+        "stt_config": {
+            "speech_model_variant": 1,
+            "model": "model_value",
+            "use_timeout_based_endpointing": True,
+        },
         "language_code": "language_code_value",
         "time_zone": "time_zone_value",
         "security_settings": "security_settings_value",

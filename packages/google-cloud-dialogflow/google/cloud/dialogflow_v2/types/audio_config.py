@@ -669,6 +669,10 @@ class SpeechToTextConfig(proto.Message):
             `Cloud Speech API
             documentation <https://cloud.google.com/speech-to-text/docs/basics#select-model>`__
             for more details.
+        use_timeout_based_endpointing (bool):
+            Use timeout based endpointing, interpreting
+            endpointer sensitivy as seconds of timeout
+            value.
     """
 
     speech_model_variant: "SpeechModelVariant" = proto.Field(
@@ -679,6 +683,10 @@ class SpeechToTextConfig(proto.Message):
     model: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    use_timeout_based_endpointing: bool = proto.Field(
+        proto.BOOL,
+        number=11,
     )
 
 

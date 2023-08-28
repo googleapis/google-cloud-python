@@ -39,7 +39,7 @@ def partition(
 class dialogflowCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'analyze_content': ('participant', 'text_input', 'event_input', 'reply_audio_config', 'query_params', 'assist_query_params', 'cx_parameters', 'request_id', ),
+        'analyze_content': ('participant', 'text_input', 'event_input', 'suggestion_input', 'reply_audio_config', 'query_params', 'assist_query_params', 'cx_parameters', 'request_id', ),
         'batch_create_entities': ('parent', 'entities', 'language_code', ),
         'batch_delete_entities': ('parent', 'entity_values', 'language_code', ),
         'batch_delete_entity_types': ('parent', 'entity_type_names', ),
@@ -121,6 +121,7 @@ class dialogflowCallTransformer(cst.CSTTransformer):
         'reload_document': ('name', 'content_uri', 'import_gcs_custom_metadata', 'smart_messaging_partial_update', ),
         'restore_agent': ('parent', 'agent_uri', 'agent_content', ),
         'search_agents': ('parent', 'page_size', 'page_token', ),
+        'search_knowledge': ('query', 'conversation_profile', 'parent', 'session_id', 'conversation', 'latest_message', ),
         'set_agent': ('agent', 'update_mask', ),
         'set_suggestion_feature_config': ('conversation_profile', 'participant_role', 'suggestion_feature_config', ),
         'streaming_analyze_content': ('participant', 'audio_config', 'text_config', 'reply_audio_config', 'input_audio', 'input_text', 'input_dtmf', 'query_params', 'assist_query_params', 'cx_parameters', 'enable_partial_automated_agent_reply', 'enable_debugging_info', ),

@@ -740,8 +740,10 @@ class CloudConversationDebuggingInfo(proto.Message):
             Time offset of the end-of-single-utterance
             signal relative to the beginning of the stream.
         no_speech_timeout (google.protobuf.duration_pb2.Duration):
-            No speech timeout settings observed at
-            runtime.
+            No speech timeout settings for the stream.
+        endpointing_timeout (google.protobuf.duration_pb2.Duration):
+            Speech endpointing timeout settings for the
+            stream.
         is_input_text (bool):
             Whether the streaming terminates with an
             injected text query.
@@ -823,6 +825,11 @@ class CloudConversationDebuggingInfo(proto.Message):
     no_speech_timeout: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=15,
+        message=duration_pb2.Duration,
+    )
+    endpointing_timeout: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=19,
         message=duration_pb2.Duration,
     )
     is_input_text: bool = proto.Field(
