@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of Cloud Workstations API.
+This package includes clients for multiple versions of Cloud Workstations.
 By default, you will get version ``workstations_v1``.
 
 
