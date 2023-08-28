@@ -52,6 +52,7 @@ __protobuf__ = proto.module(
         "GetQueuedResourceRequest",
         "CreateQueuedResourceRequest",
         "DeleteQueuedResourceRequest",
+        "ResetQueuedResourceRequest",
         "ServiceIdentity",
         "GenerateServiceIdentityRequest",
         "GenerateServiceIdentityResponse",
@@ -678,9 +679,40 @@ class QueuedResource(proto.Message):
                     multi-node requests, multi_node_params must be populated
                     instead. It's an error to specify both node_id and
                     multi_node_params.
+                multi_node_params (google.cloud.tpu_v2alpha1.types.QueuedResource.Tpu.NodeSpec.MultiNodeParams):
+                    Optional. Fields to specify in case of
+                    multi-node request.
                 node (google.cloud.tpu_v2alpha1.types.Node):
                     Required. The node.
             """
+
+            class MultiNodeParams(proto.Message):
+                r"""Parameters to specify for multi-node QueuedResource requests. This
+                field must be populated in case of multi-node requests instead of
+                node_id. It's an error to specify both node_id and
+                multi_node_params.
+
+                Attributes:
+                    node_count (int):
+                        Required. Number of nodes with this spec. The system will
+                        attempt to provison "node_count" nodes as part of the
+                        request. This needs to be > 1.
+                    node_id_prefix (str):
+                        Prefix of node_ids in case of multi-node request Should
+                        follow the ``^[A-Za-z0-9_.~+%-]+$`` regex format. If
+                        node_count = 3 and node_id_prefix = "np", node ids of nodes
+                        created will be "np-0", "np-1", "np-2". If this field is not
+                        provided we use queued_resource_id as the node_id_prefix.
+                """
+
+                node_count: int = proto.Field(
+                    proto.INT32,
+                    number=1,
+                )
+                node_id_prefix: str = proto.Field(
+                    proto.STRING,
+                    number=2,
+                )
 
             parent: str = proto.Field(
                 proto.STRING,
@@ -689,6 +721,13 @@ class QueuedResource(proto.Message):
             node_id: str = proto.Field(
                 proto.STRING,
                 number=2,
+            )
+            multi_node_params: "QueuedResource.Tpu.NodeSpec.MultiNodeParams" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=6,
+                    message="QueuedResource.Tpu.NodeSpec.MultiNodeParams",
+                )
             )
             node: "Node" = proto.Field(
                 proto.MESSAGE,
@@ -1384,6 +1423,21 @@ class DeleteQueuedResourceRequest(proto.Message):
     force: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+
+
+class ResetQueuedResourceRequest(proto.Message):
+    r"""Request for
+    [ResetQueuedResource][google.cloud.tpu.v2alpha1.Tpu.ResetQueuedResource].
+
+    Attributes:
+        name (str):
+            Required. The name of the queued resource.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

@@ -2554,6 +2554,7 @@ def test_create_job_rest(request_type):
                             },
                             "script": {"path": "path_value", "text": "text_value"},
                             "barrier": {"name": "name_value"},
+                            "display_name": "display_name_value",
                             "ignore_exit_status": True,
                             "background": True,
                             "always_run": True,
@@ -2699,7 +2700,10 @@ def test_create_job_rest(request_type):
                     "type_": "type__value",
                     "description": "description_value",
                     "event_time": {"seconds": 751, "nanos": 543},
-                    "task_execution": {"exit_code": 948},
+                    "task_execution": {
+                        "exit_code": 948,
+                        "stderr_snippet": "stderr_snippet_value",
+                    },
                     "task_state": 1,
                 }
             ],
@@ -2939,6 +2943,7 @@ def test_create_job_rest_bad_request(
                             },
                             "script": {"path": "path_value", "text": "text_value"},
                             "barrier": {"name": "name_value"},
+                            "display_name": "display_name_value",
                             "ignore_exit_status": True,
                             "background": True,
                             "always_run": True,
@@ -3084,7 +3089,10 @@ def test_create_job_rest_bad_request(
                     "type_": "type__value",
                     "description": "description_value",
                     "event_time": {"seconds": 751, "nanos": 543},
-                    "task_execution": {"exit_code": 948},
+                    "task_execution": {
+                        "exit_code": 948,
+                        "stderr_snippet": "stderr_snippet_value",
+                    },
                     "task_state": 1,
                 }
             ],

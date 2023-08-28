@@ -10,9 +10,64 @@
         "grpc": {
           "libraryClient": "BareMetalSolutionClient",
           "rpcs": {
+            "CreateNfsShare": {
+              "methods": [
+                "create_nfs_share"
+              ]
+            },
+            "CreateProvisioningConfig": {
+              "methods": [
+                "create_provisioning_config"
+              ]
+            },
+            "CreateSSHKey": {
+              "methods": [
+                "create_ssh_key"
+              ]
+            },
+            "CreateVolumeSnapshot": {
+              "methods": [
+                "create_volume_snapshot"
+              ]
+            },
+            "DeleteNfsShare": {
+              "methods": [
+                "delete_nfs_share"
+              ]
+            },
+            "DeleteSSHKey": {
+              "methods": [
+                "delete_ssh_key"
+              ]
+            },
+            "DeleteVolumeSnapshot": {
+              "methods": [
+                "delete_volume_snapshot"
+              ]
+            },
             "DetachLun": {
               "methods": [
                 "detach_lun"
+              ]
+            },
+            "DisableInteractiveSerialConsole": {
+              "methods": [
+                "disable_interactive_serial_console"
+              ]
+            },
+            "EnableInteractiveSerialConsole": {
+              "methods": [
+                "enable_interactive_serial_console"
+              ]
+            },
+            "EvictLun": {
+              "methods": [
+                "evict_lun"
+              ]
+            },
+            "EvictVolume": {
+              "methods": [
+                "evict_volume"
               ]
             },
             "GetInstance": {
@@ -35,9 +90,19 @@
                 "get_nfs_share"
               ]
             },
+            "GetProvisioningConfig": {
+              "methods": [
+                "get_provisioning_config"
+              ]
+            },
             "GetVolume": {
               "methods": [
                 "get_volume"
+              ]
+            },
+            "GetVolumeSnapshot": {
+              "methods": [
+                "get_volume_snapshot"
               ]
             },
             "ListInstances": {
@@ -65,9 +130,49 @@
                 "list_nfs_shares"
               ]
             },
+            "ListOSImages": {
+              "methods": [
+                "list_os_images"
+              ]
+            },
+            "ListProvisioningQuotas": {
+              "methods": [
+                "list_provisioning_quotas"
+              ]
+            },
+            "ListSSHKeys": {
+              "methods": [
+                "list_ssh_keys"
+              ]
+            },
+            "ListVolumeSnapshots": {
+              "methods": [
+                "list_volume_snapshots"
+              ]
+            },
             "ListVolumes": {
               "methods": [
                 "list_volumes"
+              ]
+            },
+            "RenameInstance": {
+              "methods": [
+                "rename_instance"
+              ]
+            },
+            "RenameNetwork": {
+              "methods": [
+                "rename_network"
+              ]
+            },
+            "RenameNfsShare": {
+              "methods": [
+                "rename_nfs_share"
+              ]
+            },
+            "RenameVolume": {
+              "methods": [
+                "rename_volume"
               ]
             },
             "ResetInstance": {
@@ -80,6 +185,11 @@
                 "resize_volume"
               ]
             },
+            "RestoreVolumeSnapshot": {
+              "methods": [
+                "restore_volume_snapshot"
+              ]
+            },
             "StartInstance": {
               "methods": [
                 "start_instance"
@@ -88,6 +198,11 @@
             "StopInstance": {
               "methods": [
                 "stop_instance"
+              ]
+            },
+            "SubmitProvisioningConfig": {
+              "methods": [
+                "submit_provisioning_config"
               ]
             },
             "UpdateInstance": {
@@ -103,6 +218,11 @@
             "UpdateNfsShare": {
               "methods": [
                 "update_nfs_share"
+              ]
+            },
+            "UpdateProvisioningConfig": {
+              "methods": [
+                "update_provisioning_config"
               ]
             },
             "UpdateVolume": {
@@ -115,9 +235,64 @@
         "grpc-async": {
           "libraryClient": "BareMetalSolutionAsyncClient",
           "rpcs": {
+            "CreateNfsShare": {
+              "methods": [
+                "create_nfs_share"
+              ]
+            },
+            "CreateProvisioningConfig": {
+              "methods": [
+                "create_provisioning_config"
+              ]
+            },
+            "CreateSSHKey": {
+              "methods": [
+                "create_ssh_key"
+              ]
+            },
+            "CreateVolumeSnapshot": {
+              "methods": [
+                "create_volume_snapshot"
+              ]
+            },
+            "DeleteNfsShare": {
+              "methods": [
+                "delete_nfs_share"
+              ]
+            },
+            "DeleteSSHKey": {
+              "methods": [
+                "delete_ssh_key"
+              ]
+            },
+            "DeleteVolumeSnapshot": {
+              "methods": [
+                "delete_volume_snapshot"
+              ]
+            },
             "DetachLun": {
               "methods": [
                 "detach_lun"
+              ]
+            },
+            "DisableInteractiveSerialConsole": {
+              "methods": [
+                "disable_interactive_serial_console"
+              ]
+            },
+            "EnableInteractiveSerialConsole": {
+              "methods": [
+                "enable_interactive_serial_console"
+              ]
+            },
+            "EvictLun": {
+              "methods": [
+                "evict_lun"
+              ]
+            },
+            "EvictVolume": {
+              "methods": [
+                "evict_volume"
               ]
             },
             "GetInstance": {
@@ -140,9 +315,19 @@
                 "get_nfs_share"
               ]
             },
+            "GetProvisioningConfig": {
+              "methods": [
+                "get_provisioning_config"
+              ]
+            },
             "GetVolume": {
               "methods": [
                 "get_volume"
+              ]
+            },
+            "GetVolumeSnapshot": {
+              "methods": [
+                "get_volume_snapshot"
               ]
             },
             "ListInstances": {
@@ -170,9 +355,49 @@
                 "list_nfs_shares"
               ]
             },
+            "ListOSImages": {
+              "methods": [
+                "list_os_images"
+              ]
+            },
+            "ListProvisioningQuotas": {
+              "methods": [
+                "list_provisioning_quotas"
+              ]
+            },
+            "ListSSHKeys": {
+              "methods": [
+                "list_ssh_keys"
+              ]
+            },
+            "ListVolumeSnapshots": {
+              "methods": [
+                "list_volume_snapshots"
+              ]
+            },
             "ListVolumes": {
               "methods": [
                 "list_volumes"
+              ]
+            },
+            "RenameInstance": {
+              "methods": [
+                "rename_instance"
+              ]
+            },
+            "RenameNetwork": {
+              "methods": [
+                "rename_network"
+              ]
+            },
+            "RenameNfsShare": {
+              "methods": [
+                "rename_nfs_share"
+              ]
+            },
+            "RenameVolume": {
+              "methods": [
+                "rename_volume"
               ]
             },
             "ResetInstance": {
@@ -185,6 +410,11 @@
                 "resize_volume"
               ]
             },
+            "RestoreVolumeSnapshot": {
+              "methods": [
+                "restore_volume_snapshot"
+              ]
+            },
             "StartInstance": {
               "methods": [
                 "start_instance"
@@ -193,6 +423,11 @@
             "StopInstance": {
               "methods": [
                 "stop_instance"
+              ]
+            },
+            "SubmitProvisioningConfig": {
+              "methods": [
+                "submit_provisioning_config"
               ]
             },
             "UpdateInstance": {
@@ -208,6 +443,11 @@
             "UpdateNfsShare": {
               "methods": [
                 "update_nfs_share"
+              ]
+            },
+            "UpdateProvisioningConfig": {
+              "methods": [
+                "update_provisioning_config"
               ]
             },
             "UpdateVolume": {
@@ -220,9 +460,64 @@
         "rest": {
           "libraryClient": "BareMetalSolutionClient",
           "rpcs": {
+            "CreateNfsShare": {
+              "methods": [
+                "create_nfs_share"
+              ]
+            },
+            "CreateProvisioningConfig": {
+              "methods": [
+                "create_provisioning_config"
+              ]
+            },
+            "CreateSSHKey": {
+              "methods": [
+                "create_ssh_key"
+              ]
+            },
+            "CreateVolumeSnapshot": {
+              "methods": [
+                "create_volume_snapshot"
+              ]
+            },
+            "DeleteNfsShare": {
+              "methods": [
+                "delete_nfs_share"
+              ]
+            },
+            "DeleteSSHKey": {
+              "methods": [
+                "delete_ssh_key"
+              ]
+            },
+            "DeleteVolumeSnapshot": {
+              "methods": [
+                "delete_volume_snapshot"
+              ]
+            },
             "DetachLun": {
               "methods": [
                 "detach_lun"
+              ]
+            },
+            "DisableInteractiveSerialConsole": {
+              "methods": [
+                "disable_interactive_serial_console"
+              ]
+            },
+            "EnableInteractiveSerialConsole": {
+              "methods": [
+                "enable_interactive_serial_console"
+              ]
+            },
+            "EvictLun": {
+              "methods": [
+                "evict_lun"
+              ]
+            },
+            "EvictVolume": {
+              "methods": [
+                "evict_volume"
               ]
             },
             "GetInstance": {
@@ -245,9 +540,19 @@
                 "get_nfs_share"
               ]
             },
+            "GetProvisioningConfig": {
+              "methods": [
+                "get_provisioning_config"
+              ]
+            },
             "GetVolume": {
               "methods": [
                 "get_volume"
+              ]
+            },
+            "GetVolumeSnapshot": {
+              "methods": [
+                "get_volume_snapshot"
               ]
             },
             "ListInstances": {
@@ -275,9 +580,49 @@
                 "list_nfs_shares"
               ]
             },
+            "ListOSImages": {
+              "methods": [
+                "list_os_images"
+              ]
+            },
+            "ListProvisioningQuotas": {
+              "methods": [
+                "list_provisioning_quotas"
+              ]
+            },
+            "ListSSHKeys": {
+              "methods": [
+                "list_ssh_keys"
+              ]
+            },
+            "ListVolumeSnapshots": {
+              "methods": [
+                "list_volume_snapshots"
+              ]
+            },
             "ListVolumes": {
               "methods": [
                 "list_volumes"
+              ]
+            },
+            "RenameInstance": {
+              "methods": [
+                "rename_instance"
+              ]
+            },
+            "RenameNetwork": {
+              "methods": [
+                "rename_network"
+              ]
+            },
+            "RenameNfsShare": {
+              "methods": [
+                "rename_nfs_share"
+              ]
+            },
+            "RenameVolume": {
+              "methods": [
+                "rename_volume"
               ]
             },
             "ResetInstance": {
@@ -290,6 +635,11 @@
                 "resize_volume"
               ]
             },
+            "RestoreVolumeSnapshot": {
+              "methods": [
+                "restore_volume_snapshot"
+              ]
+            },
             "StartInstance": {
               "methods": [
                 "start_instance"
@@ -298,6 +648,11 @@
             "StopInstance": {
               "methods": [
                 "stop_instance"
+              ]
+            },
+            "SubmitProvisioningConfig": {
+              "methods": [
+                "submit_provisioning_config"
               ]
             },
             "UpdateInstance": {
@@ -313,6 +668,11 @@
             "UpdateNfsShare": {
               "methods": [
                 "update_nfs_share"
+              ]
+            },
+            "UpdateProvisioningConfig": {
+              "methods": [
+                "update_provisioning_config"
               ]
             },
             "UpdateVolume": {

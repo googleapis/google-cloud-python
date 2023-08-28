@@ -1017,7 +1017,7 @@ class CloudBillingAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             project_billing_info (:class:`google.cloud.billing_v1.types.ProjectBillingInfo`):
-                The new billing information for the project. Read-only
+                The new billing information for the project. Output-only
                 fields are ignored; thus, you can leave empty all fields
                 except ``billing_account_name``.
 

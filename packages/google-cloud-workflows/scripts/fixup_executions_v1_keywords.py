@@ -42,7 +42,7 @@ class executionsCallTransformer(cst.CSTTransformer):
         'cancel_execution': ('name', ),
         'create_execution': ('parent', 'execution', ),
         'get_execution': ('name', 'view', ),
-        'list_executions': ('parent', 'page_size', 'page_token', 'view', ),
+        'list_executions': ('parent', 'page_size', 'page_token', 'view', 'filter', 'order_by', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

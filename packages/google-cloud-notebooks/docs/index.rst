@@ -22,6 +22,14 @@ API Reference
     notebooks_v1beta1/services
     notebooks_v1beta1/types
 
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    notebooks_v2/services
+    notebooks_v2/types
+
 
 Changelog
 ---------

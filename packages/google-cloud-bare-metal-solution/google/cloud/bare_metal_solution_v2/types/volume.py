@@ -18,7 +18,10 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
+
+from google.cloud.bare_metal_solution_v2.types import common
 
 __protobuf__ = proto.module(
     package="google.cloud.baremetalsolution.v2",
@@ -28,6 +31,8 @@ __protobuf__ = proto.module(
         "ListVolumesRequest",
         "ListVolumesResponse",
         "UpdateVolumeRequest",
+        "RenameVolumeRequest",
+        "EvictVolumeRequest",
         "ResizeVolumeRequest",
     },
 )
@@ -51,6 +56,8 @@ class Volume(proto.Message):
         requested_size_gib (int):
             The requested size of this storage volume, in
             GiB.
+        originally_requested_size_gib (int):
+            Originally requested size, in GiB.
         current_size_gib (int):
             The current size of this storage volume, in
             GiB, including space reserved for snapshots.
@@ -60,6 +67,9 @@ class Volume(proto.Message):
         emergency_size_gib (int):
             Additional emergency size that was requested for this
             Volume, in GiB. current_size_gib includes this value.
+        max_size_gib (int):
+            Maximum size volume can be expanded to in
+            case of evergency, in GiB.
         auto_grown_size_gib (int):
             The size, in GiB, that this storage volume
             has expanded as a result of an auto grow policy.
@@ -80,6 +90,33 @@ class Volume(proto.Message):
             Whether snapshots are enabled.
         pod (str):
             Immutable. Pod name.
+        protocol (google.cloud.bare_metal_solution_v2.types.Volume.Protocol):
+            Output only. Storage protocol for the Volume.
+        boot_volume (bool):
+            Output only. Whether this volume is a boot
+            volume. A boot volume is one which contains a
+            boot LUN.
+        performance_tier (google.cloud.bare_metal_solution_v2.types.VolumePerformanceTier):
+            Immutable. Performance tier of the Volume.
+            Default is SHARED.
+        notes (str):
+            Input only. User-specified notes for new
+            Volume. Used to provision Volumes that require
+            manual intervention.
+        workload_profile (google.cloud.bare_metal_solution_v2.types.Volume.WorkloadProfile):
+            The workload profile for the volume.
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time after which volume will be
+            fully deleted. It is filled only for volumes in
+            COOLOFF state.
+        instances (MutableSequence[str]):
+            Output only. Instances this Volume is
+            attached to. This field is set only in Get
+            requests.
+        attached (bool):
+            Output only. Is the Volume attached at at least one
+            instance. This field is a lightweight counterpart of
+            ``instances`` field. It is filled in List responses as well.
     """
 
     class StorageType(proto.Enum):
@@ -110,11 +147,18 @@ class Volume(proto.Message):
             DELETING (3):
                 The storage volume has been requested to be
                 deleted.
+            UPDATING (4):
+                The storage volume is being updated.
+            COOL_OFF (5):
+                The storage volume is in cool off state. It will be deleted
+                after ``expire_time``.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
         DELETING = 3
+        UPDATING = 4
+        COOL_OFF = 5
 
     class SnapshotAutoDeleteBehavior(proto.Enum):
         r"""The kinds of auto delete behavior to use when snapshot
@@ -136,6 +180,38 @@ class Volume(proto.Message):
         DISABLED = 1
         OLDEST_FIRST = 2
         NEWEST_FIRST = 3
+
+    class Protocol(proto.Enum):
+        r"""Storage protocol.
+
+        Values:
+            PROTOCOL_UNSPECIFIED (0):
+                Value is not specified.
+            FIBRE_CHANNEL (1):
+                Fibre Channel protocol.
+            NFS (2):
+                NFS protocol means Volume is a NFS Share
+                volume. Such volumes cannot be manipulated via
+                Volumes API.
+        """
+        PROTOCOL_UNSPECIFIED = 0
+        FIBRE_CHANNEL = 1
+        NFS = 2
+
+    class WorkloadProfile(proto.Enum):
+        r"""The possible values for a workload profile.
+
+        Values:
+            WORKLOAD_PROFILE_UNSPECIFIED (0):
+                The workload profile is in an unknown state.
+            GENERIC (1):
+                The workload profile is generic.
+            HANA (2):
+                The workload profile is hana.
+        """
+        WORKLOAD_PROFILE_UNSPECIFIED = 0
+        GENERIC = 1
+        HANA = 2
 
     class SnapshotReservationDetail(proto.Message):
         r"""Details about snapshot space reservation and usage on the
@@ -201,6 +277,10 @@ class Volume(proto.Message):
         proto.INT64,
         number=4,
     )
+    originally_requested_size_gib: int = proto.Field(
+        proto.INT64,
+        number=16,
+    )
     current_size_gib: int = proto.Field(
         proto.INT64,
         number=5,
@@ -208,6 +288,10 @@ class Volume(proto.Message):
     emergency_size_gib: int = proto.Field(
         proto.INT64,
         number=14,
+    )
+    max_size_gib: int = proto.Field(
+        proto.INT64,
+        number=17,
     )
     auto_grown_size_gib: int = proto.Field(
         proto.INT64,
@@ -239,6 +323,42 @@ class Volume(proto.Message):
     pod: str = proto.Field(
         proto.STRING,
         number=15,
+    )
+    protocol: Protocol = proto.Field(
+        proto.ENUM,
+        number=18,
+        enum=Protocol,
+    )
+    boot_volume: bool = proto.Field(
+        proto.BOOL,
+        number=19,
+    )
+    performance_tier: common.VolumePerformanceTier = proto.Field(
+        proto.ENUM,
+        number=20,
+        enum=common.VolumePerformanceTier,
+    )
+    notes: str = proto.Field(
+        proto.STRING,
+        number=21,
+    )
+    workload_profile: WorkloadProfile = proto.Field(
+        proto.ENUM,
+        number=22,
+        enum=WorkloadProfile,
+    )
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message=timestamp_pb2.Timestamp,
+    )
+    instances: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=25,
+    )
+    attached: bool = proto.Field(
+        proto.BOOL,
+        number=26,
     )
 
 
@@ -335,11 +455,10 @@ class UpdateVolumeRequest(proto.Message):
             Format:
             projects/{project}/locations/{location}/volumes/{volume}
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The list of fields to update. The only currently supported
-            fields are: ``snapshot_auto_delete_behavior``
-            ``snapshot_schedule_policy_name`` 'labels'
-            'snapshot_enabled'
-            'snapshot_reservation_detail.reserved_space_percent'
+            The list of fields to update.
+            The only currently supported fields are:
+
+              'labels'
     """
 
     volume: "Volume" = proto.Field(
@@ -351,6 +470,42 @@ class UpdateVolumeRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
+    )
+
+
+class RenameVolumeRequest(proto.Message):
+    r"""Message requesting rename of a server.
+
+    Attributes:
+        name (str):
+            Required. The ``name`` field is used to identify the volume.
+            Format:
+            projects/{project}/locations/{location}/volumes/{volume}
+        new_volume_id (str):
+            Required. The new ``id`` of the volume.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    new_volume_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class EvictVolumeRequest(proto.Message):
+    r"""Request for skip volume cooloff and delete it.
+
+    Attributes:
+        name (str):
+            Required. The name of the Volume.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
