@@ -29,7 +29,11 @@ from google.cloud.bare_metal_solution_v2.types import (
     lun,
     network,
     nfs_share,
+    osimage,
+    provisioning,
+    ssh_key,
     volume,
+    volume_snapshot,
 )
 
 
@@ -153,6 +157,134 @@ class ListInstancesAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.instances:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListSSHKeysPager:
+    """A pager for iterating through ``list_ssh_keys`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.bare_metal_solution_v2.types.ListSSHKeysResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``ssh_keys`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListSSHKeys`` requests and continue to iterate
+    through the ``ssh_keys`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.bare_metal_solution_v2.types.ListSSHKeysResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., ssh_key.ListSSHKeysResponse],
+        request: ssh_key.ListSSHKeysRequest,
+        response: ssh_key.ListSSHKeysResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.bare_metal_solution_v2.types.ListSSHKeysRequest):
+                The initial request object.
+            response (google.cloud.bare_metal_solution_v2.types.ListSSHKeysResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = ssh_key.ListSSHKeysRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[ssh_key.ListSSHKeysResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[ssh_key.SSHKey]:
+        for page in self.pages:
+            yield from page.ssh_keys
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListSSHKeysAsyncPager:
+    """A pager for iterating through ``list_ssh_keys`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.bare_metal_solution_v2.types.ListSSHKeysResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``ssh_keys`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListSSHKeys`` requests and continue to iterate
+    through the ``ssh_keys`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.bare_metal_solution_v2.types.ListSSHKeysResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[ssh_key.ListSSHKeysResponse]],
+        request: ssh_key.ListSSHKeysRequest,
+        response: ssh_key.ListSSHKeysResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.bare_metal_solution_v2.types.ListSSHKeysRequest):
+                The initial request object.
+            response (google.cloud.bare_metal_solution_v2.types.ListSSHKeysResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = ssh_key.ListSSHKeysRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[ssh_key.ListSSHKeysResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[ssh_key.SSHKey]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.ssh_keys:
                     yield response
 
         return async_generator()
@@ -417,6 +549,134 @@ class ListNetworksAsyncPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class ListVolumeSnapshotsPager:
+    """A pager for iterating through ``list_volume_snapshots`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``volume_snapshots`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListVolumeSnapshots`` requests and continue to iterate
+    through the ``volume_snapshots`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., volume_snapshot.ListVolumeSnapshotsResponse],
+        request: volume_snapshot.ListVolumeSnapshotsRequest,
+        response: volume_snapshot.ListVolumeSnapshotsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsRequest):
+                The initial request object.
+            response (google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = volume_snapshot.ListVolumeSnapshotsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[volume_snapshot.ListVolumeSnapshotsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[volume_snapshot.VolumeSnapshot]:
+        for page in self.pages:
+            yield from page.volume_snapshots
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListVolumeSnapshotsAsyncPager:
+    """A pager for iterating through ``list_volume_snapshots`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``volume_snapshots`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListVolumeSnapshots`` requests and continue to iterate
+    through the ``volume_snapshots`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[volume_snapshot.ListVolumeSnapshotsResponse]],
+        request: volume_snapshot.ListVolumeSnapshotsRequest,
+        response: volume_snapshot.ListVolumeSnapshotsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsRequest):
+                The initial request object.
+            response (google.cloud.bare_metal_solution_v2.types.ListVolumeSnapshotsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = volume_snapshot.ListVolumeSnapshotsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[volume_snapshot.ListVolumeSnapshotsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[volume_snapshot.VolumeSnapshot]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.volume_snapshots:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListLunsPager:
     """A pager for iterating through ``list_luns`` requests.
 
@@ -665,6 +925,262 @@ class ListNfsSharesAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.nfs_shares:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListProvisioningQuotasPager:
+    """A pager for iterating through ``list_provisioning_quotas`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.bare_metal_solution_v2.types.ListProvisioningQuotasResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``provisioning_quotas`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListProvisioningQuotas`` requests and continue to iterate
+    through the ``provisioning_quotas`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.bare_metal_solution_v2.types.ListProvisioningQuotasResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., provisioning.ListProvisioningQuotasResponse],
+        request: provisioning.ListProvisioningQuotasRequest,
+        response: provisioning.ListProvisioningQuotasResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.bare_metal_solution_v2.types.ListProvisioningQuotasRequest):
+                The initial request object.
+            response (google.cloud.bare_metal_solution_v2.types.ListProvisioningQuotasResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = provisioning.ListProvisioningQuotasRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[provisioning.ListProvisioningQuotasResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[provisioning.ProvisioningQuota]:
+        for page in self.pages:
+            yield from page.provisioning_quotas
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListProvisioningQuotasAsyncPager:
+    """A pager for iterating through ``list_provisioning_quotas`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.bare_metal_solution_v2.types.ListProvisioningQuotasResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``provisioning_quotas`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListProvisioningQuotas`` requests and continue to iterate
+    through the ``provisioning_quotas`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.bare_metal_solution_v2.types.ListProvisioningQuotasResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[provisioning.ListProvisioningQuotasResponse]],
+        request: provisioning.ListProvisioningQuotasRequest,
+        response: provisioning.ListProvisioningQuotasResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.bare_metal_solution_v2.types.ListProvisioningQuotasRequest):
+                The initial request object.
+            response (google.cloud.bare_metal_solution_v2.types.ListProvisioningQuotasResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = provisioning.ListProvisioningQuotasRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[provisioning.ListProvisioningQuotasResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[provisioning.ProvisioningQuota]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.provisioning_quotas:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListOSImagesPager:
+    """A pager for iterating through ``list_os_images`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.bare_metal_solution_v2.types.ListOSImagesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``os_images`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListOSImages`` requests and continue to iterate
+    through the ``os_images`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.bare_metal_solution_v2.types.ListOSImagesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., osimage.ListOSImagesResponse],
+        request: osimage.ListOSImagesRequest,
+        response: osimage.ListOSImagesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.bare_metal_solution_v2.types.ListOSImagesRequest):
+                The initial request object.
+            response (google.cloud.bare_metal_solution_v2.types.ListOSImagesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = osimage.ListOSImagesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[osimage.ListOSImagesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[osimage.OSImage]:
+        for page in self.pages:
+            yield from page.os_images
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListOSImagesAsyncPager:
+    """A pager for iterating through ``list_os_images`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.bare_metal_solution_v2.types.ListOSImagesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``os_images`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListOSImages`` requests and continue to iterate
+    through the ``os_images`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.bare_metal_solution_v2.types.ListOSImagesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[osimage.ListOSImagesResponse]],
+        request: osimage.ListOSImagesRequest,
+        response: osimage.ListOSImagesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.bare_metal_solution_v2.types.ListOSImagesRequest):
+                The initial request object.
+            response (google.cloud.bare_metal_solution_v2.types.ListOSImagesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = osimage.ListOSImagesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[osimage.ListOSImagesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[osimage.OSImage]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.os_images:
                     yield response
 
         return async_generator()

@@ -34,6 +34,8 @@ __protobuf__ = proto.module(
         "NetworkUsage",
         "ListNetworkUsageRequest",
         "ListNetworkUsageResponse",
+        "NetworkMountPoint",
+        "RenameNetworkRequest",
     },
 )
 
@@ -74,6 +76,16 @@ class Network(proto.Message):
             be generated if a reservation conflicts with an
             IP address already allocated to a physical
             server.
+        pod (str):
+            Output only. Pod name.
+        mount_points (MutableSequence[google.cloud.bare_metal_solution_v2.types.NetworkMountPoint]):
+            Input only. List of mount points to attach
+            the network to.
+        jumbo_frames_enabled (bool):
+            Whether network uses standard frames or jumbo
+            ones.
+        gateway_ip (str):
+            Output only. Gateway ip address.
     """
 
     class Type(proto.Enum):
@@ -103,10 +115,16 @@ class Network(proto.Message):
                 The Network is provisioning.
             PROVISIONED (2):
                 The Network has been provisioned.
+            DEPROVISIONING (3):
+                The Network is being deprovisioned.
+            UPDATING (4):
+                The Network is being updated.
         """
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         PROVISIONED = 2
+        DEPROVISIONING = 3
+        UPDATING = 4
 
     name: str = proto.Field(
         proto.STRING,
@@ -161,6 +179,23 @@ class Network(proto.Message):
         number=13,
         message="NetworkAddressReservation",
     )
+    pod: str = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    mount_points: MutableSequence["NetworkMountPoint"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=15,
+        message="NetworkMountPoint",
+    )
+    jumbo_frames_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=16,
+    )
+    gateway_ip: str = proto.Field(
+        proto.STRING,
+        number=17,
+    )
 
 
 class NetworkAddressReservation(proto.Message):
@@ -205,6 +240,11 @@ class VRF(proto.Message):
             The possible state of VRF.
         qos_policy (google.cloud.bare_metal_solution_v2.types.VRF.QosPolicy):
             The QOS policy applied to this VRF.
+            The value is only meaningful when all the vlan
+            attachments have the same QoS. This field should
+            not be used for new integrations, use vlan
+            attachment level qos instead. The field is left
+            for backward-compatibility.
         vlan_attachments (MutableSequence[google.cloud.bare_metal_solution_v2.types.VRF.VlanAttachment]):
             The list of VLAN attachments for the VRF.
     """
@@ -248,6 +288,19 @@ class VRF(proto.Message):
                 The peer IP of the attachment.
             router_ip (str):
                 The router IP of the attachment.
+            pairing_key (str):
+                Input only. Pairing key.
+            qos_policy (google.cloud.bare_metal_solution_v2.types.VRF.QosPolicy):
+                The QOS policy applied to this VLAN
+                attachment. This value should be preferred to
+                using qos at vrf level.
+            id (str):
+                Immutable. The identifier of the attachment
+                within vrf.
+            interconnect_attachment (str):
+                Optional. The name of the vlan attachment within vrf. This
+                is of the form
+                projects/{project_number}/regions/{region}/interconnectAttachments/{interconnect_attachment}
         """
 
         peer_vlan_id: int = proto.Field(
@@ -261,6 +314,23 @@ class VRF(proto.Message):
         router_ip: str = proto.Field(
             proto.STRING,
             number=3,
+        )
+        pairing_key: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        qos_policy: "VRF.QosPolicy" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message="VRF.QosPolicy",
+        )
+        id: str = proto.Field(
+            proto.STRING,
+            number=6,
+        )
+        interconnect_attachment: str = proto.Field(
+            proto.STRING,
+            number=7,
         )
 
     name: str = proto.Field(
@@ -301,7 +371,8 @@ class LogicalInterface(proto.Message):
         interface_index (int):
             The index of the logical interface mapping to
             the index of the hardware bond or nic on the
-            chosen network template.
+            chosen network template. This field is
+            deprecated.
     """
 
     class LogicalNetworkInterface(proto.Message):
@@ -456,7 +527,8 @@ class UpdateNetworkRequest(proto.Message):
             projects/{project}/locations/{location}/networks/{network}
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to update. The only currently supported
-            fields are: ``labels``, ``reservations``
+            fields are: ``labels``, ``reservations``,
+            ``vrf.vlan_attachments``
     """
 
     network: "Network" = proto.Field(
@@ -519,6 +591,60 @@ class ListNetworkUsageResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message="NetworkUsage",
+    )
+
+
+class NetworkMountPoint(proto.Message):
+    r"""Mount point for a network.
+
+    Attributes:
+        instance (str):
+            Instance to attach network to.
+        logical_interface (str):
+            Logical interface to detach from.
+        default_gateway (bool):
+            Network should be a default gateway.
+        ip_address (str):
+            Ip address of the server.
+    """
+
+    instance: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    logical_interface: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    default_gateway: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    ip_address: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class RenameNetworkRequest(proto.Message):
+    r"""Message requesting rename of a server.
+
+    Attributes:
+        name (str):
+            Required. The ``name`` field is used to identify the
+            network. Format:
+            projects/{project}/locations/{location}/networks/{network}
+        new_network_id (str):
+            Required. The new ``id`` of the network.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    new_network_id: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

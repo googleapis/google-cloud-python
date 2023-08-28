@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -26,6 +27,7 @@ __protobuf__ = proto.module(
         "GetLunRequest",
         "ListLunsRequest",
         "ListLunsResponse",
+        "EvictLunRequest",
     },
 )
 
@@ -58,6 +60,12 @@ class Lun(proto.Message):
             The storage type for this LUN.
         wwid (str):
             The WWID for this LUN.
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time after which LUN will be fully deleted. It
+            is filled only for LUNs in COOL_OFF state.
+        instances (MutableSequence[str]):
+            Output only. Instances this Lun is attached
+            to.
     """
 
     class State(proto.Enum):
@@ -74,12 +82,16 @@ class Lun(proto.Message):
                 The LUN is ready for use.
             DELETING (4):
                 The LUN has been requested to be deleted.
+            COOL_OFF (5):
+                The LUN is in cool off state. It will be deleted after
+                ``expire_time``.
         """
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UPDATING = 2
         READY = 3
         DELETING = 4
+        COOL_OFF = 5
 
     class MultiprotocolType(proto.Enum):
         r"""Display the operating systems present for the LUN
@@ -151,6 +163,15 @@ class Lun(proto.Message):
     wwid: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+    expire_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=timestamp_pb2.Timestamp,
+    )
+    instances: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=12,
     )
 
 
@@ -226,6 +247,20 @@ class ListLunsResponse(proto.Message):
     unreachable: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=3,
+    )
+
+
+class EvictLunRequest(proto.Message):
+    r"""Request for skip lun cooloff and delete it.
+
+    Attributes:
+        name (str):
+            Required. The name of the lun.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

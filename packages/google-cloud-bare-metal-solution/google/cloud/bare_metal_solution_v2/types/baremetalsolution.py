@@ -34,25 +34,29 @@ class OperationMetadata(proto.Message):
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            The time the operation was created.
+            Output only. The time the operation was
+            created.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
-            The time the operation finished running.
+            Output only. The time the operation finished
+            running.
         target (str):
-            Server-defined resource path for the target
-            of the operation.
+            Output only. Server-defined resource path for
+            the target of the operation.
         verb (str):
-            Name of the action executed by the operation.
+            Output only. Name of the action executed by
+            the operation.
         status_message (str):
-            Human-readable status of the operation, if
-            any.
+            Output only. Human-readable status of the
+            operation, if any.
         requested_cancellation (bool):
-            Identifies whether the user requested the cancellation of
-            the operation. Operations that have been successfully
-            cancelled have [Operation.error][] value with a
-            [google.rpc.Status.code][] of 1, corresponding to
-            ``Code.CANCELLED``.
+            Output only. Identifies whether the user requested the
+            cancellation of the operation. Operations that have been
+            successfully cancelled have [Operation.error][] value with a
+            [google.rpc.Status.code][google.rpc.Status.code] of 1,
+            corresponding to ``Code.CANCELLED``.
         api_version (str):
-            API version used with the operation.
+            Output only. API version used with the
+            operation.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
