@@ -4904,6 +4904,21 @@ class UpdateNodePoolRequest(proto.Message):
         windows_node_config (google.cloud.container_v1beta1.types.WindowsNodeConfig):
             Parameters that can be configured on Windows
             nodes.
+        machine_type (str):
+            Optional. The desired machine type for nodes
+            in the node pool. Initiates an upgrade operation
+            that migrates the nodes in the node pool to the
+            specified machine type.
+        disk_type (str):
+            Optional. The desired disk type for nodes in
+            the node pool. Initiates an upgrade operation
+            that migrates the nodes in the node pool to the
+            specified disk type.
+        disk_size_gb (int):
+            Optional. The desired disk size for nodes in
+            the node pool. Initiates an upgrade operation
+            that migrates the nodes in the node pool to the
+            specified disk size.
     """
 
     project_id: str = proto.Field(
@@ -5016,6 +5031,18 @@ class UpdateNodePoolRequest(proto.Message):
         proto.MESSAGE,
         number=34,
         message="WindowsNodeConfig",
+    )
+    machine_type: str = proto.Field(
+        proto.STRING,
+        number=36,
+    )
+    disk_type: str = proto.Field(
+        proto.STRING,
+        number=37,
+    )
+    disk_size_gb: int = proto.Field(
+        proto.INT64,
+        number=38,
     )
 
 

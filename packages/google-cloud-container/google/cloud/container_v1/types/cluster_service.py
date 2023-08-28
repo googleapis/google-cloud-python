@@ -4286,6 +4286,24 @@ class UpdateNodePoolRequest(proto.Message):
         windows_node_config (google.cloud.container_v1.types.WindowsNodeConfig):
             Parameters that can be configured on Windows
             nodes.
+        machine_type (str):
+            Optional. The desired `Google Compute Engine machine
+            type <https://cloud.google.com/compute/docs/machine-types>`__
+            for nodes in the node pool. Initiates an upgrade operation
+            that migrates the nodes in the node pool to the specified
+            machine type.
+        disk_type (str):
+            Optional. The desired disk type (e.g.
+            'pd-standard', 'pd-ssd' or 'pd-balanced') for
+            nodes in the node pool. Initiates an upgrade
+            operation that migrates the nodes in the node
+            pool to the specified disk type.
+        disk_size_gb (int):
+            Optional. The desired disk size for nodes in
+            the node pool specified in GB. The smallest
+            allowed disk size is 10GB. Initiates an upgrade
+            operation that migrates the nodes in the node
+            pool to the specified disk size.
     """
 
     project_id: str = proto.Field(
@@ -4398,6 +4416,18 @@ class UpdateNodePoolRequest(proto.Message):
         proto.MESSAGE,
         number=34,
         message="WindowsNodeConfig",
+    )
+    machine_type: str = proto.Field(
+        proto.STRING,
+        number=36,
+    )
+    disk_type: str = proto.Field(
+        proto.STRING,
+        number=37,
+    )
+    disk_size_gb: int = proto.Field(
+        proto.INT64,
+        number=38,
     )
 
 
@@ -5787,6 +5817,9 @@ class NodePool(proto.Message):
         Attributes:
             type_ (google.cloud.container_v1.types.NodePool.PlacementPolicy.Type):
                 The type of placement.
+            tpu_topology (str):
+                Optional. TPU placement topology for pod slice node pool.
+                https://cloud.google.com/tpu/docs/types-topologies#tpu_topologies
             policy_name (str):
                 If set, refers to the name of a custom
                 resource policy supplied by the user. The
@@ -5814,6 +5847,10 @@ class NodePool(proto.Message):
             proto.ENUM,
             number=1,
             enum="NodePool.PlacementPolicy.Type",
+        )
+        tpu_topology: str = proto.Field(
+            proto.STRING,
+            number=2,
         )
         policy_name: str = proto.Field(
             proto.STRING,
