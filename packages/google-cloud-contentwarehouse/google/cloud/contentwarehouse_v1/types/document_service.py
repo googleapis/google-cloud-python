@@ -189,6 +189,10 @@ class SearchDocumentsResponse(proto.Message):
         histogram_query_results (MutableSequence[google.cloud.contentwarehouse_v1.types.HistogramQueryResult]):
             The histogram results that match with the specified
             [SearchDocumentsRequest.histogram_queries][google.cloud.contentwarehouse.v1.SearchDocumentsRequest.histogram_queries].
+        question_answer (str):
+            Experimental.
+            Question answer from the query against the
+            document.
     """
 
     class MatchingDocument(proto.Message):
@@ -261,6 +265,10 @@ class SearchDocumentsResponse(proto.Message):
         proto.MESSAGE,
         number=6,
         message=histogram.HistogramQueryResult,
+    )
+    question_answer: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 

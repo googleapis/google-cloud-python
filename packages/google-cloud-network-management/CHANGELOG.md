@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.10.0...google-cloud-network-management-v1.11.0) (2023-08-11)
+
+
+### Features
+
+* Add fields related to Google services ([8df7fab](https://github.com/googleapis/google-cloud-python/commit/8df7fab9c771ef9c3a4bb22cb7d1057a4c1e9fd8))
+* Add new enum values for network firewall policies ([8df7fab](https://github.com/googleapis/google-cloud-python/commit/8df7fab9c771ef9c3a4bb22cb7d1057a4c1e9fd8))
+
+## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.9.1...google-cloud-network-management-v1.10.0) (2023-08-10)
+
+
+### Features
+
+* add dynamic probing fields to v1 API ([62c903e](https://github.com/googleapis/google-cloud-python/commit/62c903e9688e1ade0a9aff94676e52f186f8577e))
+* add fields related to load balancers to API ([62c903e](https://github.com/googleapis/google-cloud-python/commit/62c903e9688e1ade0a9aff94676e52f186f8577e))
+* add fields related to PBR and NCC routes to API ([#11561](https://github.com/googleapis/google-cloud-python/issues/11561)) ([f794fe7](https://github.com/googleapis/google-cloud-python/commit/f794fe7585224ec167605aefd585bdfeaebecf03))
+* add new abort and drop causes to API ([62c903e](https://github.com/googleapis/google-cloud-python/commit/62c903e9688e1ade0a9aff94676e52f186f8577e))
+
 ## [1.9.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.9.0...google-cloud-network-management-v1.9.1) (2023-07-05)
 
 

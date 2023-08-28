@@ -42,7 +42,7 @@ class budgetsCallTransformer(cst.CSTTransformer):
         'create_budget': ('parent', 'budget', ),
         'delete_budget': ('name', ),
         'get_budget': ('name', ),
-        'list_budgets': ('parent', 'page_size', 'page_token', ),
+        'list_budgets': ('parent', 'scope', 'page_size', 'page_token', ),
         'update_budget': ('budget', 'update_mask', ),
     }
 

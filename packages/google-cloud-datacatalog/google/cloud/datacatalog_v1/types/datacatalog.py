@@ -239,7 +239,7 @@ class SearchCatalogRequest(proto.Message):
             If this parameter is omitted, it defaults to the descending
             ``relevance``.
         admin_search (bool):
-            Optional. If set, uses searchAll permission granted on
+            Optional. If set, use searchAll permission granted on
             organizations from ``include_org_ids`` and projects from
             ``include_project_ids`` instead of the fine grained per
             resource permissions when filtering the search results. The

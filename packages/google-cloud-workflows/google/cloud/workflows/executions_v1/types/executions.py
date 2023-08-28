@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
@@ -41,9 +42,9 @@ class ExecutionView(proto.Enum):
         EXECUTION_VIEW_UNSPECIFIED (0):
             The default / unset value.
         BASIC (1):
-            Includes only basic metadata about the execution. Following
-            fields are returned: name, start_time, end_time, state and
-            workflow_revision_id.
+            Includes only basic metadata about the execution. The
+            following fields are returned: name, start_time, end_time,
+            duration, state, and workflow_revision_id.
         FULL (2):
             Includes all data.
     """
@@ -68,6 +69,9 @@ class Execution(proto.Message):
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Marks the end of execution,
             successful or not.
+        duration (google.protobuf.duration_pb2.Duration):
+            Output only. Measures the duration of the
+            execution.
         state (google.cloud.workflows.executions_v1.types.Execution.State):
             Output only. Current state of the execution.
         argument (str):
@@ -92,6 +96,25 @@ class Execution(proto.Message):
         call_log_level (google.cloud.workflows.executions_v1.types.Execution.CallLogLevel):
             The call logging level associated to this
             execution.
+        status (google.cloud.workflows.executions_v1.types.Execution.Status):
+            Output only. Status tracks the current steps
+            and progress data of this execution.
+        labels (MutableMapping[str, str]):
+            Labels associated with this execution.
+            Labels can contain at most 64 entries. Keys and
+            values can be no longer than 63 characters and
+            can only contain lowercase letters, numeric
+            characters, underscores, and dashes. Label keys
+            must start with a letter. International
+            characters are allowed.
+            By default, labels are inherited from the
+            workflow but are overridden by any labels
+            associated with the execution.
+        state_error (google.cloud.workflows.executions_v1.types.Execution.StateError):
+            Output only. Error regarding the state of the
+            Execution resource. For example, this field will
+            have error details if the execution data is
+            unavailable due to revoked KMS key permissions.
     """
 
     class State(proto.Enum):
@@ -109,12 +132,20 @@ class Execution(proto.Message):
                 The execution failed with an error.
             CANCELLED (4):
                 The execution was stopped intentionally.
+            UNAVAILABLE (5):
+                Execution data is unavailable. See the ``state_error``
+                field.
+            QUEUED (6):
+                Request has been placed in the backlog for
+                processing at a later time.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         SUCCEEDED = 2
         FAILED = 3
         CANCELLED = 4
+        UNAVAILABLE = 5
+        QUEUED = 6
 
     class CallLogLevel(proto.Enum):
         r"""Describes the level of platform logging to apply to calls and
@@ -122,17 +153,20 @@ class Execution(proto.Message):
 
         Values:
             CALL_LOG_LEVEL_UNSPECIFIED (0):
-                No call logging specified.
+                No call logging level specified.
             LOG_ALL_CALLS (1):
                 Log all call steps within workflows, all call
                 returns, and all exceptions raised.
             LOG_ERRORS_ONLY (2):
                 Log only exceptions that are raised from call
                 steps within workflows.
+            LOG_NONE (3):
+                Explicitly log nothing.
         """
         CALL_LOG_LEVEL_UNSPECIFIED = 0
         LOG_ALL_CALLS = 1
         LOG_ERRORS_ONLY = 2
+        LOG_NONE = 3
 
     class StackTraceElement(proto.Message):
         r"""A single stack element (frame) where an error occurred.
@@ -234,6 +268,79 @@ class Execution(proto.Message):
             message="Execution.StackTrace",
         )
 
+    class Status(proto.Message):
+        r"""Represents the current status of this execution.
+
+        Attributes:
+            current_steps (MutableSequence[google.cloud.workflows.executions_v1.types.Execution.Status.Step]):
+                A list of currently executing or last executed step names
+                for the workflow execution currently running. If the
+                workflow has succeeded or failed, this is the last attempted
+                or executed step. Presently, if the current step is inside a
+                subworkflow, the list only includes that step. In the
+                future, the list will contain items for each step in the
+                call stack, starting with the outermost step in the ``main``
+                subworkflow, and ending with the most deeply nested step.
+        """
+
+        class Step(proto.Message):
+            r"""Represents a step of the workflow this execution is running.
+
+            Attributes:
+                routine (str):
+                    Name of a routine within the workflow.
+                step (str):
+                    Name of a step within the routine.
+            """
+
+            routine: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            step: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+
+        current_steps: MutableSequence["Execution.Status.Step"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Execution.Status.Step",
+        )
+
+    class StateError(proto.Message):
+        r"""Describes an error related to the current state of the
+        Execution resource.
+
+        Attributes:
+            details (str):
+                Provides specifics about the error.
+            type_ (google.cloud.workflows.executions_v1.types.Execution.StateError.Type):
+                The type of this state error.
+        """
+
+        class Type(proto.Enum):
+            r"""Describes the possible types of a state error.
+
+            Values:
+                TYPE_UNSPECIFIED (0):
+                    No type specified.
+                KMS_ERROR (1):
+                    Caused by an issue with KMS.
+            """
+            TYPE_UNSPECIFIED = 0
+            KMS_ERROR = 1
+
+        details: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        type_: "Execution.StateError.Type" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="Execution.StateError.Type",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -247,6 +354,11 @@ class Execution(proto.Message):
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
+    )
+    duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=duration_pb2.Duration,
     )
     state: State = proto.Field(
         proto.ENUM,
@@ -275,6 +387,21 @@ class Execution(proto.Message):
         number=9,
         enum=CallLogLevel,
     )
+    status: Status = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=Status,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=11,
+    )
+    state_error: StateError = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=StateError,
+    )
 
 
 class ListExecutionsRequest(proto.Message):
@@ -288,8 +415,8 @@ class ListExecutionsRequest(proto.Message):
         page_size (int):
             Maximum number of executions to return per
             call. Max supported value depends on the
-            selected Execution view: it's 10000 for BASIC
-            and 100 for FULL. The default value used if the
+            selected Execution view: it's 1000 for BASIC and
+            100 for FULL. The default value used if the
             field is not specified is 100, regardless of the
             selected view. Values greater than the max value
             will be coerced down to it.
@@ -300,10 +427,24 @@ class ListExecutionsRequest(proto.Message):
             When paginating, all other parameters provided to
             ``ListExecutions`` must match the call that provided the
             page token.
+
+            Note that pagination is applied to dynamic data. The list of
+            executions returned can change between page requests.
         view (google.cloud.workflows.executions_v1.types.ExecutionView):
             Optional. A view defining which fields should
             be filled in the returned executions. The API
             will default to the BASIC view.
+        filter (str):
+            Optional. Filters applied to the [Executions.ListExecutions]
+            results. The following fields are supported for filtering:
+            executionID, state, startTime, endTime, duration,
+            workflowRevisionID, stepName, and label.
+        order_by (str):
+            Optional. The ordering applied to the
+            [Executions.ListExecutions] results. By default the ordering
+            is based on descending start time. The following fields are
+            supported for order by: executionID, startTime, endTime,
+            duration, state, and workflowRevisionID.
     """
 
     parent: str = proto.Field(
@@ -322,6 +463,14 @@ class ListExecutionsRequest(proto.Message):
         proto.ENUM,
         number=4,
         enum="ExecutionView",
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 

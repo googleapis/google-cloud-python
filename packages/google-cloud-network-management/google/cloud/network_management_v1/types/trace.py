@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
         "NetworkInfo",
         "FirewallInfo",
         "RouteInfo",
+        "GoogleServiceInfo",
         "ForwardingRuleInfo",
         "LoadBalancerInfo",
         "LoadBalancerBackend",
@@ -186,6 +187,10 @@ class Step(proto.Message):
             by state like NAT, or Connection Proxy.
 
             This field is a member of `oneof`_ ``step_info``.
+        google_service (google.cloud.network_management_v1.types.GoogleServiceInfo):
+            Display information of a Google service
+
+            This field is a member of `oneof`_ ``step_info``.
         forwarding_rule (google.cloud.network_management_v1.types.ForwardingRuleInfo):
             Display information of a Compute Engine
             forwarding rule.
@@ -274,6 +279,13 @@ class Step(proto.Message):
                 Initial state: packet originating from the
                 internet.
                 The endpoint information is populated.
+            START_FROM_GOOGLE_SERVICE (27):
+                Initial state: packet originating from a
+                Google service. Some Google
+                services, such as health check probers or
+                Identity Aware Proxy use special routes, outside
+                VPC routing configuration to reach Compute
+                Engine Instances.
             START_FROM_PRIVATE_NETWORK (3):
                 Initial state: packet originating from a VPC
                 or on-premises network
@@ -362,6 +374,7 @@ class Step(proto.Message):
         STATE_UNSPECIFIED = 0
         START_FROM_INSTANCE = 1
         START_FROM_INTERNET = 2
+        START_FROM_GOOGLE_SERVICE = 27
         START_FROM_PRIVATE_NETWORK = 3
         START_FROM_GKE_MASTER = 21
         START_FROM_CLOUD_SQL_INSTANCE = 22
@@ -427,6 +440,12 @@ class Step(proto.Message):
         number=8,
         oneof="step_info",
         message="EndpointInfo",
+    )
+    google_service: "GoogleServiceInfo" = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        oneof="step_info",
+        message="GoogleServiceInfo",
     )
     forwarding_rule: "ForwardingRuleInfo" = proto.Field(
         proto.MESSAGE,
@@ -667,12 +686,22 @@ class FirewallInfo(proto.Message):
                 Google Cloud console. For details, see `VPC connector's
                 implicit
                 rules <https://cloud.google.com/functions/docs/networking/connecting-vpc#restrict-access>`__.
+            NETWORK_FIREWALL_POLICY_RULE (5):
+                Global network firewall policy rule. For details, see
+                `Network firewall
+                policies <https://cloud.google.com/vpc/docs/network-firewall-policies>`__.
+            NETWORK_REGIONAL_FIREWALL_POLICY_RULE (6):
+                Regional network firewall policy rule. For details, see
+                `Regional network firewall
+                policies <https://cloud.google.com/firewall/docs/regional-firewall-policies>`__.
         """
         FIREWALL_RULE_TYPE_UNSPECIFIED = 0
         HIERARCHICAL_FIREWALL_POLICY_RULE = 1
         VPC_FIREWALL_RULE = 2
         IMPLIED_VPC_FIREWALL_RULE = 3
         SERVERLESS_VPC_ACCESS_MANAGED_FIREWALL_RULE = 4
+        NETWORK_FIREWALL_POLICY_RULE = 5
+        NETWORK_REGIONAL_FIREWALL_POLICY_RULE = 6
 
     display_name: str = proto.Field(
         proto.STRING,
@@ -721,28 +750,55 @@ class RouteInfo(proto.Message):
     r"""For display only. Metadata associated with a Compute Engine
     route.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         route_type (google.cloud.network_management_v1.types.RouteInfo.RouteType):
             Type of route.
         next_hop_type (google.cloud.network_management_v1.types.RouteInfo.NextHopType):
             Type of next hop.
+        route_scope (google.cloud.network_management_v1.types.RouteInfo.RouteScope):
+            Indicates where route is applicable.
         display_name (str):
-            Name of a Compute Engine route.
+            Name of a route.
         uri (str):
-            URI of a Compute Engine route.
-            Dynamic route from cloud router does not have a
-            URI. Advertised route from Google Cloud VPC to
-            on-premises network also does not have a URI.
+            URI of a route.
+            Dynamic, peering static and peering dynamic
+            routes do not have an URI. Advertised route from
+            Google Cloud VPC to on-premises network also
+            does not have an URI.
         dest_ip_range (str):
             Destination IP range of the route.
         next_hop (str):
             Next hop of the route.
         network_uri (str):
-            URI of a Compute Engine network.
+            URI of a Compute Engine network. NETWORK
+            routes only.
         priority (int):
             Priority of the route.
         instance_tags (MutableSequence[str]):
             Instance tags of the route.
+        src_ip_range (str):
+            Source IP address range of the route. Policy
+            based routes only.
+        dest_port_ranges (MutableSequence[str]):
+            Destination port ranges of the route. Policy
+            based routes only.
+        src_port_ranges (MutableSequence[str]):
+            Source port ranges of the route. Policy based
+            routes only.
+        protocols (MutableSequence[str]):
+            Protocols of the route. Policy based routes
+            only.
+        ncc_hub_uri (str):
+            URI of a NCC Hub. NCC_HUB routes only.
+
+            This field is a member of `oneof`_ ``_ncc_hub_uri``.
+        ncc_spoke_uri (str):
+            URI of a NCC Spoke. NCC_HUB routes only.
+
+            This field is a member of `oneof`_ ``_ncc_spoke_uri``.
     """
 
     class RouteType(proto.Enum):
@@ -766,6 +822,8 @@ class RouteInfo(proto.Message):
             PEERING_DYNAMIC (6):
                 A dynamic route received from peering
                 network.
+            POLICY_BASED (7):
+                Policy based route.
         """
         ROUTE_TYPE_UNSPECIFIED = 0
         SUBNET = 1
@@ -774,6 +832,7 @@ class RouteInfo(proto.Message):
         PEERING_SUBNET = 4
         PEERING_STATIC = 5
         PEERING_DYNAMIC = 6
+        POLICY_BASED = 7
 
     class NextHopType(proto.Enum):
         r"""Type of next hop:
@@ -811,6 +870,8 @@ class RouteInfo(proto.Message):
             NEXT_HOP_ROUTER_APPLIANCE (11):
                 Next hop is a `router appliance
                 instance <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/ra-overview>`__.
+            NEXT_HOP_NCC_HUB (12):
+                Next hop is an NCC hub.
         """
         NEXT_HOP_TYPE_UNSPECIFIED = 0
         NEXT_HOP_IP = 1
@@ -824,6 +885,23 @@ class RouteInfo(proto.Message):
         NEXT_HOP_BLACKHOLE = 9
         NEXT_HOP_ILB = 10
         NEXT_HOP_ROUTER_APPLIANCE = 11
+        NEXT_HOP_NCC_HUB = 12
+
+    class RouteScope(proto.Enum):
+        r"""Indicates where routes are applicable.
+
+        Values:
+            ROUTE_SCOPE_UNSPECIFIED (0):
+                Unspecified scope. Default value.
+            NETWORK (1):
+                Route is applicable to packets in Network.
+            NCC_HUB (2):
+                Route is applicable to packets using NCC
+                Hub's routing table.
+        """
+        ROUTE_SCOPE_UNSPECIFIED = 0
+        NETWORK = 1
+        NCC_HUB = 2
 
     route_type: RouteType = proto.Field(
         proto.ENUM,
@@ -834,6 +912,11 @@ class RouteInfo(proto.Message):
         proto.ENUM,
         number=9,
         enum=NextHopType,
+    )
+    route_scope: RouteScope = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum=RouteScope,
     )
     display_name: str = proto.Field(
         proto.STRING,
@@ -862,6 +945,85 @@ class RouteInfo(proto.Message):
     instance_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=7,
+    )
+    src_ip_range: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    dest_port_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=11,
+    )
+    src_port_ranges: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=12,
+    )
+    protocols: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=13,
+    )
+    ncc_hub_uri: str = proto.Field(
+        proto.STRING,
+        number=15,
+        optional=True,
+    )
+    ncc_spoke_uri: str = proto.Field(
+        proto.STRING,
+        number=16,
+        optional=True,
+    )
+
+
+class GoogleServiceInfo(proto.Message):
+    r"""For display only. Details of a Google Service sending packets to a
+    VPC network. Although the source IP might be a publicly routable
+    address, some Google Services use special routes within Google
+    production infrastructure to reach Compute Engine Instances.
+    https://cloud.google.com/vpc/docs/routes#special_return_paths
+
+    Attributes:
+        source_ip (str):
+            Source IP address.
+        google_service_type (google.cloud.network_management_v1.types.GoogleServiceInfo.GoogleServiceType):
+            Recognized type of a Google Service.
+    """
+
+    class GoogleServiceType(proto.Enum):
+        r"""Recognized type of a Google Service.
+
+        Values:
+            GOOGLE_SERVICE_TYPE_UNSPECIFIED (0):
+                Unspecified Google Service. Includes most of
+                Google APIs and services.
+            IAP (1):
+                Identity aware proxy.
+                https://cloud.google.com/iap/docs/using-tcp-forwarding
+            GFE_PROXY_OR_HEALTH_CHECK_PROBER (2):
+                One of two services sharing IP ranges:
+
+                -  Load Balancer proxy
+                -  Centralized Health Check prober
+                   https://cloud.google.com/load-balancing/docs/firewall-rules
+            CLOUD_DNS (3):
+                Connectivity from Cloud DNS to forwarding
+                targets or alternate name servers that use
+                private routing.
+                https://cloud.google.com/dns/docs/zones/forwarding-zones#firewall-rules
+                https://cloud.google.com/dns/docs/policies#firewall-rules
+        """
+        GOOGLE_SERVICE_TYPE_UNSPECIFIED = 0
+        IAP = 1
+        GFE_PROXY_OR_HEALTH_CHECK_PROBER = 2
+        CLOUD_DNS = 3
+
+    source_ip: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    google_service_type: GoogleServiceType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=GoogleServiceType,
     )
 
 
@@ -1375,6 +1537,8 @@ class ForwardInfo(proto.Message):
             ANOTHER_PROJECT (7):
                 Forwarded to a VPC network in another
                 project.
+            NCC_HUB (8):
+                Forwarded to an NCC Hub.
         """
         TARGET_UNSPECIFIED = 0
         PEERING_VPC = 1
@@ -1384,6 +1548,7 @@ class ForwardInfo(proto.Message):
         IMPORTED_CUSTOM_ROUTE_NEXT_HOP = 5
         CLOUD_SQL_INSTANCE = 6
         ANOTHER_PROJECT = 7
+        NCC_HUB = 8
 
     target: Target = proto.Field(
         proto.ENUM,

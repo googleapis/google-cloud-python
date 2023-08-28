@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v2.10.1...google-cloud-language-v2.11.0) (2023-08-11)
+
+
+### Features
+
+* Add support for the v2 API ([#11566](https://github.com/googleapis/google-cloud-python/issues/11566)) ([e0e5ce2](https://github.com/googleapis/google-cloud-python/commit/e0e5ce2ae0b2b2b5a3023162a06fbf8c87a5a8c7))
+
 ## [2.10.1](https://github.com/googleapis/python-language/compare/v2.10.0...v2.10.1) (2023-07-04)
 
 

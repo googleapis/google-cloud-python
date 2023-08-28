@@ -1,9 +1,9 @@
-Python Client for Cloud Workstations API
-========================================
+Python Client for Cloud Workstations
+====================================
 
 |preview| |pypi| |versions|
 
-`Cloud Workstations API`_: Cloud Workstations API
+`Cloud Workstations`_: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for Cloud Workstations API
    :target: https://pypi.org/project/google-cloud-workstations/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-workstations.svg
    :target: https://pypi.org/project/google-cloud-workstations/
-.. _Cloud Workstations API: https://cloud.google.com/workstations/docs
+.. _Cloud Workstations: https://cloud.google.com/workstations/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/workstations/latest
-.. _Product Documentation:  https://cloud.google.com/workstations/docs
+.. _Product Documentation:  https://cloud.google.com/workstations/
 
 Quick Start
 -----------
@@ -25,32 +25,35 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Workstations API.`_
+3. `Enable the Cloud Workstations.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Workstations API.:  https://cloud.google.com/workstations/docs
+.. _Enable the Cloud Workstations.:  https://cloud.google.com/workstations/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
 ~~~~~~~~~~~~
 
-Install this library in a `virtualenv`_ using pip. `virtualenv`_ is a tool to
-create isolated Python environments. The basic problem it addresses is one of
-dependencies and versions, and indirectly permissions.
+Install this library in a virtual environment using `venv`_. `venv`_ is a tool that
+creates isolated Python environments. These isolated environments can have separate
+versions of Python packages, which allows you to isolate one project's dependencies
+from the dependencies of other projects.
 
-With `virtualenv`_, it's possible to install this library without needing system
+With `venv`_, it's possible to install this library without needing system
 install permissions, and without clashing with the installed system
 dependencies.
 
-.. _`virtualenv`: https://virtualenv.pypa.io/en/latest/
+.. _`venv`: https://docs.python.org/3/library/venv.html
 
 
 Code samples and snippets
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Code samples and snippets live in the `samples/` folder.
+Code samples and snippets live in the `samples/`_ folder.
+
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-workstations/samples
 
 
 Supported Python Versions
@@ -77,10 +80,9 @@ Mac/Linux
 
 .. code-block:: console
 
-    pip install virtualenv
-    virtualenv <your-env>
+    python3 -m venv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-workstations
+    pip install google-cloud-workstations
 
 
 Windows
@@ -88,20 +90,19 @@ Windows
 
 .. code-block:: console
 
-    pip install virtualenv
-    virtualenv <your-env>
-    <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-workstations
+    py -m venv <your-env>
+    .\<your-env>\Scripts\activate
+    pip install google-cloud-workstations
 
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Workstations API
+-  Read the `Client Library Documentation`_ for Cloud Workstations
    to see other available methods on the client.
--  Read the `Cloud Workstations API Product documentation`_ to learn
+-  Read the `Cloud Workstations Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Workstations API Product documentation:  https://cloud.google.com/workstations/docs
+.. _Cloud Workstations Product documentation:  https://cloud.google.com/workstations/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst

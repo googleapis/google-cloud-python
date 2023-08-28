@@ -100,14 +100,13 @@ class ProjectBillingInfo(proto.Message):
             ``projects/{project_id}/billingInfo``. For example, the
             resource name for the billing information for project
             ``tokyo-rain-123`` would be
-            ``projects/tokyo-rain-123/billingInfo``. This field is
-            read-only.
+            ``projects/tokyo-rain-123/billingInfo``.
         project_id (str):
             Output only. The ID of the project that this
             ``ProjectBillingInfo`` represents, such as
             ``tokyo-rain-123``. This is a convenience field so that you
             don't need to parse the ``name`` field to obtain a project
-            ID. This field is read-only.
+            ID.
         billing_account_name (str):
             The resource name of the billing account associated with the
             project, if any. For example,
@@ -118,8 +117,7 @@ class ProjectBillingInfo(proto.Message):
             which usage on the project is charged. False if
             the project is associated with a closed billing
             account, or no billing account at all, and
-            therefore cannot use paid services. This field
-            is read-only.
+            therefore cannot use paid services.
     """
 
     name: str = proto.Field(
@@ -356,7 +354,7 @@ class UpdateProjectBillingInfoRequest(proto.Message):
             the billing information that you want to update. For
             example, ``projects/tokyo-rain-123``.
         project_billing_info (google.cloud.billing_v1.types.ProjectBillingInfo):
-            The new billing information for the project. Read-only
+            The new billing information for the project. Output-only
             fields are ignored; thus, you can leave empty all fields
             except ``billing_account_name``.
     """
