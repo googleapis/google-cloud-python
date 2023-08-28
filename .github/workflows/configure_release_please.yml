@@ -22,9 +22,6 @@ on:
       - '**/gapic_version.py'
     branches:
       - main
-  # TODO : REMOVE THIS SECTION WHICH IS ** FOR TESTING PURPOSES **
-  pull_request:
-    branches: [ main ]
 
 permissions:
   contents: read
