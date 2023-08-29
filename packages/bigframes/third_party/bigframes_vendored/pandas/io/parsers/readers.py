@@ -6,9 +6,21 @@ GH#48849 provides a convenient way of deprecating keyword arguments
 """
 from __future__ import annotations
 
-from typing import Any, Dict, Literal, MutableSequence, Optional, Sequence, Tuple, Union
+from typing import (
+    Any,
+    Dict,
+    IO,
+    Literal,
+    MutableSequence,
+    Optional,
+    Sequence,
+    Tuple,
+    Union,
+)
 
 import numpy as np
+
+from bigframes import constants
 
 
 class ReaderIOMixin:
@@ -45,7 +57,8 @@ class ReaderIOMixin:
 
         Args:
             filepath_or_buffer (str):
-                a string path including Cloud Storage and local file.
+                A local or Google Cloud Storage (`gs://`) path with `engine="bigquery"`
+                otherwise passed to pandas.read_csv.
             sep (Optional[str], default ","):
                 the separator for fields in a CSV file. For the BigQuery engine, the separator
                 can be any ISO-8859-1 single-byte character. To use a character in the range
@@ -104,10 +117,71 @@ class ReaderIOMixin:
                 https://docs.python.org/3/library/codecs.html#standard-encodings
                 The BigQuery engine only supports `UTF-8` and `ISO-8859-1`.
             **kwargs:
-                keyword arguments.
+                keyword arguments for `pandas.read_csv` when not using the BigQuery engine.
 
 
         Returns:
             bigframes.dataframe.DataFrame: A BigQuery DataFrames.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def read_json(
+        self,
+        path_or_buf: str | IO["bytes"],
+        *,
+        orient: Literal[
+            "split", "records", "index", "columns", "values", "table"
+        ] = "columns",
+        dtype: Optional[Dict] = None,
+        encoding: Optional[str] = None,
+        lines: bool = False,
+        engine: Literal["ujson", "pyarrow", "bigquery"] = "ujson",
+        **kwargs,
+    ):
+        """
+        Convert a JSON string to DataFrame object.
+
+        .. note::
+            using `engine="bigquery"` will not guarantee the same ordering as the
+            file. Instead, set a serialized index column as the index and sort by
+            that in the resulting DataFrame.
+
+        Args:
+            path_or_buf (a valid JSON str, path object or file-like object):
+                A local or Google Cloud Storage (`gs://`) path with `engine="bigquery"`
+                otherwise passed to pandas.read_json.
+            orient (str, optional):
+                If `engine="bigquery"` orient only supports "records".
+                Indication of expected JSON string format.
+                Compatible JSON strings can be produced by ``to_json()`` with a
+                corresponding orient value.
+                The set of possible orients is:
+
+                - ``'split'`` : dict like
+                    ``{{index -> [index], columns -> [columns], data -> [values]}}``
+                - ``'records'`` : list like
+                    ``[{{column -> value}}, ... , {{column -> value}}]``
+                - ``'index'`` : dict like ``{{index -> {{column -> value}}}}``
+                - ``'columns'`` : dict like ``{{column -> {{index -> value}}}}``
+                - ``'values'`` : just the values array
+
+            dtype (bool or dict, default None):
+                If True, infer dtypes; if a dict of column to dtype, then use those;
+                if False, then don't infer dtypes at all, applies only to the data.
+
+                For all ``orient`` values except ``'table'``, default is True.
+            encoding (str, default is 'utf-8'):
+                The encoding to use to decode py3 bytes.
+            lines (bool, default False):
+                Read the file as a json object per line. If using `engine="bigquery"` lines only supports True.
+            engine ({{"ujson", "pyarrow", "bigquery"}}, default "ujson"):
+                Type of engine to use. If `engine="bigquery"` is specified, then BigQuery's load API will be used.
+                Otherwise, the engine will be passed to `pandas.read_json`.
+            **kwargs:
+                keyword arguments for `pandas.read_json` when not using the BigQuery engine.
+
+        Returns:
+            bigframes.dataframe.DataFrame:
+                The DataFrame representing JSON contents.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

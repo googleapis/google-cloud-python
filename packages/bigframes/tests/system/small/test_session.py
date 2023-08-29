@@ -112,6 +112,54 @@ def test_read_gbq_w_col_order(
             id="unique_uuid_index_query",
         ),
         pytest.param(
+            """
+            SELECT my_index, my_value
+            FROM UNNEST(
+                [
+                    STRUCT<my_index INT64, my_value INT64>(0, 12),
+                    STRUCT<my_index INT64, my_value INT64>(1, 12),
+                    STRUCT<my_index INT64, my_value INT64>(2, 24)
+                ]
+            )
+            -- Can't normally cluster tables with ORDER BY clause.
+            ORDER BY my_index DESC
+            """,
+            ["my_index"],
+            id="unique_index_query_has_order_by",
+        ),
+        pytest.param(
+            """
+            WITH my_table AS (
+                SELECT *
+                FROM UNNEST(
+                    [
+                        STRUCT<my_index INT64, my_value INT64>(0, 12),
+                        STRUCT<my_index INT64, my_value INT64>(1, 12),
+                        STRUCT<my_index INT64, my_value INT64>(2, 24)
+                    ]
+                )
+            )
+            SELECT my_index, my_value FROM my_table
+            """,
+            ["my_index"],
+            id="unique_index_query_with_named_table_expression",
+        ),
+        pytest.param(
+            """
+            CREATE TEMP TABLE test_read_gbq_w_index_col_unique_index_query_with_script
+            AS SELECT * FROM UNNEST(
+                [
+                    STRUCT<my_index INT64, my_value INT64>(0, 12),
+                    STRUCT<my_index INT64, my_value INT64>(1, 12),
+                    STRUCT<my_index INT64, my_value INT64>(2, 24)
+                ]
+            );
+            SELECT my_index, my_value FROM test_read_gbq_w_index_col_unique_index_query_with_script
+            """,
+            ["my_index"],
+            id="unique_index_query_with_script",
+        ),
+        pytest.param(
             "{scalars_table_id}",
             ["bool_col"],
             id="non_unique_index",
@@ -221,7 +269,7 @@ def test_read_gbq_w_max_results(
     assert bf_result.shape[0] == max_results
 
 
-def test_read_gbq_w_script(session, dataset_id: str):
+def test_read_gbq_w_script_no_select(session, dataset_id: str):
     ddl = f"""
     CREATE TABLE `{dataset_id}.test_read_gbq_w_ddl` (
         `col_a` INT64,
@@ -250,6 +298,20 @@ def test_read_pandas(session, scalars_dfs):
     expected = scalars_pandas_df
 
     pd.testing.assert_frame_equal(result, expected)
+
+
+def test_read_pandas_col_label_w_space(session: bigframes.Session):
+    expected = pd.DataFrame(
+        {
+            "Animal": ["Falcon", "Falcon", "Parrot", "Parrot"],
+            "Max Speed": [380.0, 370.0, 24.0, 26.0],
+        }
+    )
+    result = session.read_pandas(expected).to_pandas()
+
+    pd.testing.assert_frame_equal(
+        result, expected, check_index_type=False, check_dtype=False
+    )
 
 
 def test_read_pandas_multi_index(session, scalars_pandas_df_multi_index):
@@ -753,6 +815,67 @@ def test_read_parquet_gcs(session: bigframes.Session, scalars_dfs, gcs_folder):
     pd_df_in = df_in.to_pandas()
     pd_df_out = df_out.to_pandas()
     pd.testing.assert_frame_equal(pd_df_in, pd_df_out)
+
+
+def test_read_json_gcs_bq_engine(session, scalars_dfs, gcs_folder):
+    scalars_df, _ = scalars_dfs
+    path = gcs_folder + "test_read_json_gcs_bq_engine_w_index*.json"
+    read_path = path.replace("*", FIRST_FILE)
+    scalars_df.to_json(path, index=False, lines=True, orient="records")
+    df = session.read_json(read_path, lines=True, orient="records", engine="bigquery")
+
+    # The auto detects of BigQuery load job does not preserve any ordering of columns for json.
+    pd.testing.assert_index_equal(
+        df.columns.sort_values(), scalars_df.columns.sort_values()
+    )
+
+    # The auto detects of BigQuery load job have restrictions to detect the bytes,
+    # datetime, numeric and geometry types, so they're skipped here.
+    df = df.drop(columns=["bytes_col", "datetime_col", "numeric_col", "geography_col"])
+    scalars_df = scalars_df.drop(
+        columns=["bytes_col", "datetime_col", "numeric_col", "geography_col"]
+    )
+    assert df.shape[0] == scalars_df.shape[0]
+    pd.testing.assert_series_equal(
+        df.dtypes.sort_index(), scalars_df.dtypes.sort_index()
+    )
+
+
+def test_read_json_gcs_default_engine(session, scalars_dfs, gcs_folder):
+    scalars_df, _ = scalars_dfs
+    path = gcs_folder + "test_read_json_gcs_default_engine_w_index*.json"
+    read_path = path.replace("*", FIRST_FILE)
+    scalars_df.to_json(
+        path,
+        index=False,
+        lines=True,
+        orient="records",
+    )
+    dtype = scalars_df.dtypes.to_dict()
+    dtype.pop("geography_col")
+
+    df = session.read_json(
+        read_path,
+        # Convert default pandas dtypes to match BigQuery DataFrames dtypes.
+        dtype=dtype,
+        lines=True,
+        orient="records",
+    )
+
+    assert df._block._expr._ordering is not None
+    pd.testing.assert_index_equal(df.columns, scalars_df.columns)
+
+    # The auto detects of BigQuery load job have restrictions to detect the bytes,
+    # numeric and geometry types, so they're skipped here.
+    df = df.drop(columns=["bytes_col", "numeric_col", "geography_col"])
+    scalars_df = scalars_df.drop(columns=["bytes_col", "numeric_col", "geography_col"])
+
+    # pandas read_json does not respect the dtype overrides for these columns
+    df = df.drop(columns=["date_col", "datetime_col", "time_col"])
+    scalars_df = scalars_df.drop(columns=["date_col", "datetime_col", "time_col"])
+
+    assert df.shape[0] == scalars_df.shape[0]
+    pd.testing.assert_series_equal(df.dtypes, scalars_df.dtypes)
 
 
 def test_session_id(session):

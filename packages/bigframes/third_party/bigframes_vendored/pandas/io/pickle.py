@@ -9,6 +9,8 @@ from pandas._typing import (
     StorageOptions,
 )
 
+from bigframes import constants
+
 
 class PickleIOMixin:
     def read_pickle(
@@ -52,4 +54,4 @@ class PickleIOMixin:
             bigframes.dataframe.DataFrame or bigframes.series.Series: same type as object
                 stored in file.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

@@ -21,3 +21,5 @@ FEEDBACK_LINK = (
     "Share your usecase with the BigQuery DataFrames team at the "
     "https://bit.ly/bigframes-feedback survey."
 )
+
+ABSTRACT_METHOD_ERROR_MESSAGE = f"Abstract method. You have likely encountered a bug. Please share this stacktrace and how you reached it with the BigQuery DataFrames team. {FEEDBACK_LINK}"

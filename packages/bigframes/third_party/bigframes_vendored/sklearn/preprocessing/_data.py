@@ -7,6 +7,7 @@
 #          Eric Chang <ericchang2017@u.northwestern.edu>
 # License: BSD 3 clause
 
+from bigframes import constants
 from third_party.bigframes_vendored.sklearn.base import BaseEstimator
 
 
@@ -59,7 +60,7 @@ class StandardScaler(BaseEstimator):
         Returns:
             StandardScaler: Fitted scaler.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def transform(self, X):
         """Perform standardization by centering and scaling.
@@ -71,4 +72,4 @@ class StandardScaler(BaseEstimator):
         Returns:
            bigframes.dataframe.DataFrame: Transformed result.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

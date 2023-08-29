@@ -2,6 +2,8 @@
 
 from typing import Any
 
+from bigframes import constants
+
 from ..sklearn.base import BaseEstimator as XGBModelBase
 from ..sklearn.base import ClassifierMixin as XGBClassifierBase
 from ..sklearn.base import RegressorMixin as XGBRegressorBase
@@ -18,7 +20,7 @@ class XGBModel(XGBModelBase):
         Returns:
             DataFrame of shape (n_samples,): Returns predicted values.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def fit(self, X, y):
         """Fit gradient boosting model.
@@ -42,7 +44,7 @@ class XGBModel(XGBModelBase):
         Returns:
             XGBModel: Fitted Estimator.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 class XGBClassifierMixIn:

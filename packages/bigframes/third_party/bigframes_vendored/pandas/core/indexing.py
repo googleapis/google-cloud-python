@@ -1,5 +1,7 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/core/indexing.py
 
+from bigframes import constants
+
 
 class IndexingMixin:
     """
@@ -32,7 +34,7 @@ class IndexingMixin:
         out-of-bounds, except *slice* indexers which allow out-of-bounds
         indexing (this conforms with python/numpy *slice* semantics).
         """
-        raise NotImplementedError("abstract methdod")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def loc(self):
@@ -63,4 +65,4 @@ class IndexingMixin:
             NotImplementError: if the inputs are not supported.
 
         """
-        raise NotImplementedError("abstract methdod")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

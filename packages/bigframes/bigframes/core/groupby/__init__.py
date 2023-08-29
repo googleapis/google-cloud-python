@@ -197,8 +197,11 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         return df.DataFrame(agg_block)
 
     def _agg_dict(self, func: typing.Mapping) -> df.DataFrame:
-        aggregations = []
+        aggregations: typing.List[typing.Tuple[str, agg_ops.AggregateOp]] = []
         column_labels = []
+
+        want_aggfunc_level = any(utils.is_list_like(aggs) for aggs in func.values())
+
         for label, funcs_for_id in func.items():
             col_id = self._resolve_label(label)
             func_list = (
@@ -206,16 +209,22 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             )
             for f in func_list:
                 aggregations.append((col_id, agg_ops.lookup_agg_func(f)))
-                column_labels.append((col_id, f))
+                column_labels.append(label)
         agg_block, _ = self._block.aggregate(
             by_column_ids=self._by_col_ids,
             aggregations=aggregations,
             as_index=self._as_index,
             dropna=self._dropna,
         )
-        agg_block = agg_block.with_column_labels(
-            pd.MultiIndex.from_tuples(column_labels)
-        )
+        if want_aggfunc_level:
+            agg_block = agg_block.with_column_labels(
+                utils.combine_indices(
+                    pd.Index(column_labels),
+                    pd.Index(agg[1].name for agg in aggregations),
+                )
+            )
+        else:
+            agg_block = agg_block.with_column_labels(pd.Index(column_labels))
         return df.DataFrame(agg_block)
 
     def _agg_list(self, func: typing.Sequence) -> df.DataFrame:
@@ -234,7 +243,9 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             dropna=self._dropna,
         )
         agg_block = agg_block.with_column_labels(
-            pd.MultiIndex.from_tuples(column_labels)
+            pd.MultiIndex.from_tuples(
+                column_labels, names=[*self._block.column_labels.names, None]
+            )
         )
         return df.DataFrame(agg_block)
 

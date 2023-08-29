@@ -34,7 +34,14 @@ if TYPE_CHECKING:
 
 import cloudpickle
 import google.api_core.exceptions
-from google.cloud import bigquery, bigquery_connection_v1, functions_v2
+import google.api_core.retry
+from google.cloud import (
+    bigquery,
+    bigquery_connection_v1,
+    functions_v2,
+    resourcemanager_v3,
+)
+import google.iam.v1
 from ibis.backends.bigquery.compiler import compiles
 from ibis.backends.bigquery.datatypes import BigQueryType
 from ibis.expr.datatypes.core import DataType as IbisDataType
@@ -152,6 +159,7 @@ class RemoteFunctionClient:
         bq_client,
         bq_connection_client,
         bq_connection_id,
+        cloud_resource_manager_client,
     ):
         self._gcp_project_id = gcp_project_id
         self._cloud_function_region = cloud_function_region
@@ -161,6 +169,7 @@ class RemoteFunctionClient:
         self._bq_client = bq_client
         self._bq_connection_client = bq_connection_client
         self._bq_connection_id = bq_connection_id
+        self._cloud_resource_manager_client = cloud_resource_manager_client
 
     def create_bq_remote_function(
         self, input_args, input_types, output_type, endpoint, bq_function_name
@@ -175,7 +184,8 @@ class RemoteFunctionClient:
         #    raise ValueError("Failed to enable BigQuery Connection API")
 
         # If the intended connection does not exist then create it
-        if self.check_bq_connection_exists():
+        service_account_id = self.get_service_account_if_connection_exists()
+        if service_account_id:
             logger.info(f"Connector {self._bq_connection_id} already exists")
         else:
             connection_name, service_account_id = self.create_bq_connection()
@@ -183,21 +193,9 @@ class RemoteFunctionClient:
                 f"Created BQ connection {connection_name} with service account id: {service_account_id}"
             )
 
-            # Set up access on the newly created BQ connection
-            # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#grant_permission_on_function
-            # We would explicitly wait for 60+ seconds for the IAM binding to take effect
-            command_iam = (
-                f"gcloud projects add-iam-policy-binding {self._gcp_project_id}"
-                + f' --member="serviceAccount:{service_account_id}"'
-                + ' --role="roles/run.invoker"'
-            )
-            logger.info(f"Setting up IAM binding on the BQ connection: {command_iam}")
-            _run_system_command(command_iam)
-
-            logger.info(
-                f"Waiting {self._iam_wait_seconds} seconds for IAM to take effect.."
-            )
-            time.sleep(self._iam_wait_seconds)
+        # Ensure IAM role on the BQ connection
+        # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#grant_permission_on_function
+        self._ensure_iam_binding(service_account_id, "run.invoker")
 
         # Create BQ function
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#create_a_remote_function_2
@@ -239,6 +237,53 @@ class RemoteFunctionClient:
             pass
         return None
 
+    # Introduce retries to accommodate transient errors like etag mismatch,
+    # which can be caused by concurrent operation on the same resource, and
+    # manifests with message like:
+    # google.api_core.exceptions.Aborted: 409 There were concurrent policy
+    # changes. Please retry the whole read-modify-write with exponential
+    # backoff. The request's ETag '\007\006\003,\264\304\337\272' did not match
+    # the current policy's ETag '\007\006\003,\3750&\363'.
+    @google.api_core.retry.Retry(
+        predicate=google.api_core.retry.if_exception_type(
+            google.api_core.exceptions.Aborted
+        ),
+        initial=10,
+        maximum=20,
+        multiplier=2,
+        timeout=60,
+    )
+    def _ensure_iam_binding(self, service_account: str, role: str):
+        """Ensure necessary IAM role is configured on a service account."""
+        project = f"projects/{self._gcp_project_id}"
+        service_account = f"serviceAccount:{service_account}"
+        role = f"roles/{role}"
+        request = google.iam.v1.iam_policy_pb2.GetIamPolicyRequest(resource=project)
+        policy = self._cloud_resource_manager_client.get_iam_policy(request=request)
+
+        # Check if the binding already exists, and if does, do nothing more
+        for binding in policy.bindings:
+            if binding.role == role:
+                if service_account in binding.members:
+                    return
+
+        # Create a new binding
+        new_binding = google.iam.v1.policy_pb2.Binding(
+            role=role, members=[service_account]
+        )
+        policy.bindings.append(new_binding)
+        request = google.iam.v1.iam_policy_pb2.SetIamPolicyRequest(
+            resource=project, policy=policy
+        )
+        self._cloud_resource_manager_client.set_iam_policy(request=request)
+
+        # We would wait for the IAM policy change to take effect
+        # https://cloud.google.com/iam/docs/access-change-propagation
+        logger.info(
+            f"Waiting {self._iam_wait_seconds} seconds for IAM to take effect.."
+        )
+        time.sleep(self._iam_wait_seconds)
+
     def create_bq_connection(self):
         """Create the BigQuery Connection and returns corresponding service account id."""
         client = self._bq_connection_client
@@ -253,7 +298,7 @@ class RemoteFunctionClient:
         connection = client.create_connection(request)
         return connection.name, connection.cloud_resource.service_account_id
 
-    def check_bq_connection_exists(self):
+    def get_service_account_if_connection_exists(self) -> Optional[str]:
         """Check if the BigQuery Connection exists."""
         client = self._bq_connection_client
         request = bigquery_connection_v1.GetConnectionRequest(
@@ -262,12 +307,15 @@ class RemoteFunctionClient:
             )
         )
 
+        service_account = None
         try:
-            client.get_connection(request=request)
-            return True
+            service_account = client.get_connection(
+                request=request
+            ).cloud_resource.service_account_id
         except google.api_core.exceptions.NotFound:
             pass
-        return False
+
+        return service_account
 
     def generate_udf_code(self, def_, dir):
         """Generate serialized bytecode using cloudpickle given a udf."""
@@ -624,6 +672,7 @@ def remote_function(
         bigquery_connection_v1.ConnectionServiceClient
     ] = None,
     cloud_functions_client: Optional[functions_v2.FunctionServiceClient] = None,
+    resource_manager_client: Optional[resourcemanager_v3.ProjectsClient] = None,
     dataset: Optional[str] = None,
     bigquery_connection: Optional[str] = None,
     reuse: bool = True,
@@ -688,6 +737,11 @@ def remote_function(
             Client to use for BigQuery connection operations. If this param is
             not provided then bigquery connection client from the session would
             be used.
+        resource_manager_client (google.cloud.resourcemanager_v3.ProjectsClient, Optional):
+            Client to use for cloud resource management operations, e.g. for
+            getting and setting IAM roles on cloud resources. If this param is
+            not provided then resource manager client from the session would be
+            used.
         dataset (str, Optional.):
             Dataset in which to create a BigQuery remote function. It should be in
             `<project_id>.<dataset_name>` or `<dataset_name>` format. If this
@@ -734,7 +788,17 @@ def remote_function(
             cloud_functions_client = session.cloudfunctionsclient
     if not cloud_functions_client:
         raise ValueError(
-            "A functions connection client must be provided, either directly or via session. "
+            "A cloud functions client must be provided, either directly or via session. "
+            f"{constants.FEEDBACK_LINK}"
+        )
+
+    # A resource manager client is required to get/set IAM operations
+    if not resource_manager_client:
+        if session:
+            resource_manager_client = session.resourcemanagerclient
+    if not resource_manager_client:
+        raise ValueError(
+            "A resource manager client must be provided, either directly or via session. "
             f"{constants.FEEDBACK_LINK}"
         )
 
@@ -819,6 +883,7 @@ def remote_function(
             bigquery_client,
             bigquery_connection_client,
             bigquery_connection,
+            resource_manager_client,
         )
         rf_name, cf_name = remote_function_client.provision_bq_remote_function(
             f, ibis_signature.input_types, ibis_signature.output_type, uniq_suffix

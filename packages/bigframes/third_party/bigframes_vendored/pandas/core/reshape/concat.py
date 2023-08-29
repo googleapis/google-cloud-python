@@ -4,6 +4,8 @@ Concat routines.
 """
 from __future__ import annotations
 
+from bigframes import constants
+
 
 def concat(
     objs,
@@ -135,4 +137,4 @@ def concat(
     <BLANKLINE>
     [4 rows x 2 columns]
     """
-    raise NotImplementedError("abstract method")
+    raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

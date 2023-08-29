@@ -9,6 +9,8 @@ from __future__ import annotations
 import inspect
 from typing import Any, Dict, List
 
+from bigframes import constants
+
 
 class BaseEstimator:
     """Base class for all estimators.
@@ -94,7 +96,7 @@ class ClassifierMixin:
         Returns:
             bigframes.dataframe.DataFrame: A DataFrame of the evaluation result.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 class RegressorMixin:
@@ -120,7 +122,7 @@ class RegressorMixin:
         Returns:
             bigframes.dataframe.DataFrame: A DataFrame of the evaluation result.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 class TransformerMixin:

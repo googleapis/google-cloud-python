@@ -2,6 +2,8 @@
 """ parquet compat """
 from __future__ import annotations
 
+from bigframes import constants
+
 
 class ParquetIOMixin:
     def read_parquet(
@@ -22,4 +24,4 @@ class ParquetIOMixin:
         Returns:
             bigframes.dataframe.DataFrame: A BigQuery DataFrames.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

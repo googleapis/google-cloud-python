@@ -15,6 +15,7 @@ from typing import Iterable, Literal, Mapping, Optional, Sequence, Union
 
 import numpy
 
+from bigframes import constants
 from third_party.bigframes_vendored.pandas.core.generic import NDFrame
 
 # -----------------------------------------------------------------------
@@ -33,7 +34,7 @@ class DataFrame(NDFrame):
     @property
     def shape(self) -> tuple[int, int]:
         """Return a tuple representing the dimensionality of the DataFrame."""
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def axes(self) -> list:
@@ -67,7 +68,7 @@ class DataFrame(NDFrame):
             na_value (default None):
                 The value to use for missing values.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # IO methods (to / from other formats)
@@ -90,7 +91,7 @@ class DataFrame(NDFrame):
         Returns:
             numpy.ndarray: The converted NumPy array.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def to_gbq(
         self,
@@ -124,7 +125,7 @@ class DataFrame(NDFrame):
                 If set, write the ordering of the DataFrame as a column in the
                 result table with this name.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def to_parquet(
         self,
@@ -151,7 +152,7 @@ class DataFrame(NDFrame):
         Returns:
             None.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # Unsorted
@@ -179,7 +180,7 @@ class DataFrame(NDFrame):
             bigframes.dataframe.DataFrame: A new DataFrame with the new columns
                 in addition to all the existing columns.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # Reindexing and alignment
@@ -211,7 +212,7 @@ class DataFrame(NDFrame):
         Raises:
             KeyError: If any of the labels is not found in the selected axis.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rename(
         self,
@@ -233,7 +234,7 @@ class DataFrame(NDFrame):
         Raises:
             KeyError: If any of the labels is not found.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rename_axis(self, mapper: Optional[str], **kwargs) -> DataFrame:
         """
@@ -250,7 +251,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.dataframe.DataFrame: DataFrame with the new index name
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def set_index(
         self,
@@ -273,7 +274,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame: Changed row labels.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def reorder_levels(self, order: Sequence[int | str]) -> DataFrame:
         """
@@ -287,7 +288,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame: DataFrame of rearranged index.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def droplevel(self, level):
         """
@@ -301,7 +302,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame: DataFrame with requested index / column level(s) removed.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def reset_index(
         self,
@@ -320,7 +321,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.dataframe.DataFrame: DataFrame with the new index.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def drop_duplicates(
         self,
@@ -347,7 +348,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.dataframe.DataFrame: DataFrame with duplicates removed
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def duplicated(self, subset=None, keep="first"):
         """
@@ -369,7 +370,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.series.Series: Boolean series for each duplicated rows.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # Reindex-based selection methods
@@ -382,7 +383,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.dataframe.DataFrame: DataFrame with NA entries dropped from it.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # Sorting
@@ -415,7 +416,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame with sorted values.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def sort_index(
         self,
@@ -425,7 +426,7 @@ class DataFrame(NDFrame):
         Returns:
             The original DataFrame sorted by the labels.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # Arithmetic Methods
@@ -450,7 +451,7 @@ class DataFrame(NDFrame):
         Returns:
             Result of the comparison.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def ne(self, other, axis: str | int = "columns") -> DataFrame:
         """
@@ -471,7 +472,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame: Result of the comparison.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def le(self, other, axis: str | int = "columns") -> DataFrame:
         """Get 'less than or equal to' of dataframe and other, element-wise (binary operator `<=`).
@@ -497,7 +498,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame: DataFrame of bool. The result of the comparison.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def lt(self, other, axis: str | int = "columns") -> DataFrame:
         """Get 'less than' of DataFrame and other, element-wise (binary operator `<`).
@@ -523,7 +524,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame: DataFrame of bool. The result of the comparison.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def ge(self, other, axis: str | int = "columns") -> DataFrame:
         """Get 'greater than or equal to' of DataFrame and other, element-wise (binary operator `>=`).
@@ -549,7 +550,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame: DataFrame of bool. The result of the comparison.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def gt(self, other, axis: str | int = "columns") -> DataFrame:
         """Get 'greater than' of DataFrame and other, element-wise (binary operator `>`).
@@ -575,7 +576,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame: DataFrame of bool: The result of the comparison.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def add(self, other, axis: str | int = "columns") -> DataFrame:
         """Get addition of DataFrame and other, element-wise (binary operator `+`).
@@ -598,7 +599,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame: DataFrame result of the arithmetic operation.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def sub(self, other, axis: str | int = "columns") -> DataFrame:
         """Get subtraction of DataFrame and other, element-wise (binary operator `-`).
@@ -621,7 +622,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame: DataFrame result of the arithmetic operation.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rsub(self, other, axis: str | int = "columns") -> DataFrame:
         """Get subtraction of DataFrame and other, element-wise (binary operator `-`).
@@ -644,7 +645,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame: DataFrame result of the arithmetic operation.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def mul(self, other, axis: str | int = "columns") -> DataFrame:
         """Get multiplication of DataFrame and other, element-wise (binary operator `*`).
@@ -667,7 +668,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame: DataFrame result of the arithmetic operation.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def truediv(self, other, axis: str | int = "columns") -> DataFrame:
         """Get floating division of DataFrame and other, element-wise (binary operator `/`).
@@ -690,7 +691,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame: DataFrame result of the arithmetic operation.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rtruediv(self, other, axis: str | int = "columns") -> DataFrame:
         """Get floating division of DataFrame and other, element-wise (binary operator `/`).
@@ -713,7 +714,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame result of the arithmetic operation.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def floordiv(self, other, axis: str | int = "columns") -> DataFrame:
         """Get integer division of DataFrame and other, element-wise (binary operator `//`).
@@ -736,7 +737,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame: DataFrame result of the arithmetic operation.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rfloordiv(self, other, axis: str | int = "columns") -> DataFrame:
         """Get integer division of DataFrame and other, element-wise (binary operator `//`).
@@ -759,7 +760,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame: DataFrame result of the arithmetic operation.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def mod(self, other, axis: str | int = "columns") -> DataFrame:
         """Get modulo of DataFrame and other, element-wise (binary operator `%`).
@@ -782,7 +783,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame: DataFrame result of the arithmetic operation.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rmod(self, other, axis: str | int = "columns") -> DataFrame:
         """Get modulo of DataFrame and other, element-wise (binary operator `%`).
@@ -805,7 +806,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame: DataFrame result of the arithmetic operation.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # Data reshaping
@@ -847,7 +848,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.core.groupby.SeriesGroupBy: A groupby object that contains information about the groups.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # Function application
@@ -874,7 +875,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.dataframe.DataFrame: Transformed DataFrame.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # Merging / joining methods
@@ -902,7 +903,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.dataframe.DataFrame: A dataframe containing columns from both the caller and `other`.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def merge(
         self,
@@ -972,7 +973,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.dataframe.DataFrame: A DataFrame of the two merged objects.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # ndarray-like stats methods
@@ -992,7 +993,7 @@ class DataFrame(NDFrame):
         Returns:
             Series
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def all(self, *, bool_only: bool = False):
         """
@@ -1009,7 +1010,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.series.Series: Series if all elements are True.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def prod(self, *, numeric_only: bool = False):
         """
@@ -1022,7 +1023,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.series.Series: Series with the product of the values.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def min(self, *, numeric_only: bool = False):
         """Return the minimum of the values over the requested axis.
@@ -1037,7 +1038,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.series.Series: Series with the minimum of the values.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def max(self, *, numeric_only: bool = False):
         """Return the maximum of the values over the requested axis.
@@ -1052,7 +1053,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.series.Series: Series after the maximum of values.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def sum(self, *, numeric_only: bool = False):
         """Return the sum of the values over the requested axis.
@@ -1066,7 +1067,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.series.Series: Series with the sum of values.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def mean(self, *, numeric_only: bool = False):
         """Return the mean of the values over the requested axis.
@@ -1078,7 +1079,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.series.Series: Series with the mean of values.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def median(self, *, numeric_only: bool = False, exact: bool = False):
         """Return the median of the values over the requested axis.
@@ -1093,7 +1094,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.series.Series: Series with the median of values.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def var(self, *, numeric_only: bool = False):
         """Return unbiased variance over requested axis.
@@ -1107,7 +1108,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.series.Series: Series with unbiased variance over requested axis.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def std(self, *, numeric_only: bool = False):
         """Return sample standard deviation over requested axis.
@@ -1121,7 +1122,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.series.Series: Series with sample standard deviation.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def count(self, *, numeric_only: bool = False):
         """
@@ -1138,7 +1139,7 @@ class DataFrame(NDFrame):
             bigframes.series.Series: For each column/row the number of
                 non-NA/null entries. If `level` is specified returns a `DataFrame`.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def nunique(self):
         """
@@ -1147,7 +1148,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.series.Series: Series with number of distinct elements.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cummin(self) -> DataFrame:
         """Return cumulative minimum over a DataFrame axis.
@@ -1157,7 +1158,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.dataframe.DataFrame: Return cumulative minimum of DataFrame.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cummax(self) -> DataFrame:
         """Return cumulative maximum over a DataFrame axis.
@@ -1167,7 +1168,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.dataframe.DataFrame: Return cumulative maximum of DataFrame.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cumsum(self) -> DataFrame:
         """Return cumulative sum over a DataFrame axis.
@@ -1177,7 +1178,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.dataframe.DataFrame: Return cumulative sum of DataFrame.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cumprod(self) -> DataFrame:
         """Return cumulative product over a DataFrame axis.
@@ -1187,7 +1188,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.dataframe.DataFrame: Return cumulative product of DataFrame.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def agg(self, func):
         """
@@ -1202,7 +1203,7 @@ class DataFrame(NDFrame):
         Returns:
             DataFrame or bigframes.series.Series: Aggregated results.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def describe(self):
         """
@@ -1227,7 +1228,7 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.dataframe.DataFrame: Summary statistics of the Series or Dataframe provided.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def pivot(self, *, columns, index=None, values=None):
         """
@@ -1263,7 +1264,30 @@ class DataFrame(NDFrame):
         Returns:
             Returns reshaped DataFrame.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def stack(self):
+        """
+        Stack the prescribed level(s) from columns to index.
+
+        Return a reshaped DataFrame or Series having a multi-level
+        index with one or more new inner-most levels compared to the current
+        DataFrame. The new inner-most levels are created by pivoting the
+        columns of the current dataframe:
+
+        - if the columns have a single level, the output is a Series;
+        - if the columns have multiple levels, the new index
+            level(s) is (are) taken from the prescribed level(s) and
+            the output is a DataFrame.
+
+        .. note::
+            BigQuery DataFrames does not support stack operations that would
+            combine columns of different dtypes.
+
+        Returns:
+            DataFrame or Series: Stacked dataframe or series.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # Add index and columns
@@ -1280,12 +1304,12 @@ class DataFrame(NDFrame):
         Returns:
             The index labels of the DataFrame.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def columns(self):
         "The column labels of the DataFrame."
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def value_counts(
         self,
@@ -1313,4 +1337,4 @@ class DataFrame(NDFrame):
         Returns:
             Series: Series containing counts of unique rows in the DataFrame
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

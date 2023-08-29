@@ -197,3 +197,35 @@ def rank(
             )
 
     return block.select_columns(rownum_col_ids).with_column_labels(labels)
+
+
+def dropna(block: blocks.Block, how: typing.Literal["all", "any"] = "any"):
+    """
+    Drop na entries from block
+    """
+    if how == "any":
+        filtered_block = block
+        for column in block.value_columns:
+            filtered_block, result_id = filtered_block.apply_unary_op(
+                column, ops.notnull_op
+            )
+            filtered_block = filtered_block.filter(result_id)
+            filtered_block = filtered_block.drop_columns([result_id])
+        return filtered_block
+    else:  # "all"
+        filtered_block = block
+        predicate = None
+        for column in block.value_columns:
+            filtered_block, partial_predicate = filtered_block.apply_unary_op(
+                column, ops.notnull_op
+            )
+            if predicate:
+                filtered_block, predicate = filtered_block.apply_binary_op(
+                    partial_predicate, predicate, ops.or_op
+                )
+            else:
+                predicate = partial_predicate
+        if predicate:
+            filtered_block = filtered_block.filter(predicate)
+        filtered_block = filtered_block.select_columns(block.value_columns)
+        return filtered_block

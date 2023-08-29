@@ -4,6 +4,8 @@ Quantilization functions and related stuff
 """
 from __future__ import annotations
 
+from bigframes import constants
+
 
 def cut(
     x,
@@ -62,4 +64,4 @@ def cut(
             are whatever the type in the sequence is.
             False : returns an ndarray of integers.
     """
-    raise NotImplementedError("abstract method")
+    raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

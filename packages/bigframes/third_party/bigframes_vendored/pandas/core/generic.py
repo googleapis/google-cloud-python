@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from typing import Literal, Optional
 
+from bigframes import constants
 from third_party.bigframes_vendored.pandas.core import indexing
 
 
@@ -22,7 +23,7 @@ class NDFrame(indexing.IndexingMixin):
         Returns:
             int: Return 1 if Series. Otherwise return 2 if DataFrame.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def size(self) -> int:
@@ -32,7 +33,7 @@ class NDFrame(indexing.IndexingMixin):
             int: Return the number of rows if Series. Otherwise return the number of
                 rows times number of columns if DataFrame.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # -------------------------------------------------------------------------
     # Unary Methods
@@ -46,7 +47,7 @@ class NDFrame(indexing.IndexingMixin):
             Series/DataFrame containing the absolute value of each element.
             Returns a Series/DataFrame containing the absolute value of each element.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def astype(self, dtype):
         """
@@ -66,7 +67,7 @@ class NDFrame(indexing.IndexingMixin):
             same type as caller
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # Iteration
@@ -85,7 +86,7 @@ class NDFrame(indexing.IndexingMixin):
         Returns:
             bool: If Series/DataFrame is empty, return True, if not return False.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # I/O Methods
@@ -155,7 +156,7 @@ class NDFrame(indexing.IndexingMixin):
         Returns:
             None: String output not yet supported.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def to_csv(self, path_or_buf: str, *, index: bool = True) -> str | None:
         """Write object to a comma-separated values (csv) file on Cloud Storage.
@@ -177,7 +178,7 @@ class NDFrame(indexing.IndexingMixin):
         Returns:
             None: String output not yet supported.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # Unsorted
@@ -215,7 +216,7 @@ class NDFrame(indexing.IndexingMixin):
         Returns:
             New Series or DataFrame with updated labels.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def add_suffix(self, suffix: str, axis: int | str | None = None):
         """Suffix labels with string `suffix`.
@@ -233,7 +234,7 @@ class NDFrame(indexing.IndexingMixin):
         Returns:
             New Series or DataFrame with updated labels.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def head(self, n: int = 5):
         """Return the first `n` rows.
@@ -254,7 +255,7 @@ class NDFrame(indexing.IndexingMixin):
         Returns:
             The first `n` rows of the caller object.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def tail(self, n: int = 5):
         """Return the last `n` rows.
@@ -275,7 +276,7 @@ class NDFrame(indexing.IndexingMixin):
         Returns:
             The last `n` rows of the caller object.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def sample(
         self,
@@ -301,7 +302,7 @@ class NDFrame(indexing.IndexingMixin):
             A new object of same type as caller containing `n` items randomly
             sampled from the caller object.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # Internal Interface Methods
@@ -317,7 +318,7 @@ class NDFrame(indexing.IndexingMixin):
         Returns:
             A *pandas* Series with the data type of each column.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def copy(self):
         """Make a copy of this object's indices and data.
@@ -329,7 +330,7 @@ class NDFrame(indexing.IndexingMixin):
         Returns:
             Object type matches caller.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # Action Methods
@@ -346,7 +347,7 @@ class NDFrame(indexing.IndexingMixin):
             Mask of bool values for each element that indicates whether an
             element is an NA value.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     isnull = isna
 
@@ -362,7 +363,7 @@ class NDFrame(indexing.IndexingMixin):
             NDFrame: Mask of bool values for each element that indicates whether an
             element is not an NA value.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     notnull = notna
 
@@ -381,7 +382,7 @@ class NDFrame(indexing.IndexingMixin):
         Returns:
             NDFrame:  Copy of input object, shifted.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rank(
         self,
@@ -419,7 +420,7 @@ class NDFrame(indexing.IndexingMixin):
         Returns:
             same type as caller: Return a Series or DataFrame with data ranks as values.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def __nonzero__(self):
         raise ValueError(

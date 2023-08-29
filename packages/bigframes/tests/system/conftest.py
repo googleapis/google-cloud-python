@@ -15,6 +15,7 @@
 from datetime import datetime
 import hashlib
 import logging
+import math
 import pathlib
 import typing
 from typing import Dict, Optional
@@ -23,6 +24,7 @@ import google.cloud.bigquery as bigquery
 import google.cloud.bigquery_connection_v1 as bigquery_connection_v1
 import google.cloud.exceptions
 import google.cloud.functions_v2 as functions_v2
+import google.cloud.resourcemanager_v3 as resourcemanager_v3
 import google.cloud.storage as storage  # type: ignore
 import ibis.backends.base
 import pandas as pd
@@ -99,6 +101,13 @@ def cloudfunctions_client(
     session: bigframes.Session,
 ) -> functions_v2.FunctionServiceClient:
     return session.cloudfunctionsclient
+
+
+@pytest.fixture(scope="session")
+def resourcemanager_client(
+    session: bigframes.Session,
+) -> resourcemanager_v3.ProjectsClient:
+    return session.resourcemanagerclient
 
 
 @pytest.fixture(scope="session")
@@ -570,6 +579,38 @@ FROM `{penguins_table_id}`"""
 
 
 @pytest.fixture(scope="session")
+def penguins_pca_model_name(
+    session: bigframes.Session, dataset_id_permanent, penguins_table_id
+) -> str:
+    """Provides a pretrained model as a test fixture that is cached across test runs.
+    This lets us run system tests without having to wait for a model.fit(...)"""
+    # TODO(garrettwu): Create a shared method to get different types of pretrained models.
+    sql = f"""
+CREATE OR REPLACE MODEL `$model_name`
+OPTIONS (
+    model_type='pca',
+    num_principal_components=3
+) AS SELECT
+    *
+FROM `{penguins_table_id}`"""
+    # We use the SQL hash as the name to ensure the model is regenerated if this fixture is edited
+    model_name = (
+        f"{dataset_id_permanent}.penguins_pca_{hashlib.md5(sql.encode()).hexdigest()}"
+    )
+    sql = sql.replace("$model_name", model_name)
+
+    try:
+        return session.read_gbq_model(model_name)
+    except google.cloud.exceptions.NotFound:
+        logging.info(
+            "penguins_pca_model fixture was not found in the permanent dataset, regenerating it..."
+        )
+        session.bqclient.query(sql).result()
+    finally:
+        return model_name
+
+
+@pytest.fixture(scope="session")
 def penguins_xgbregressor_model_name(
     session: bigframes.Session, dataset_id_permanent, penguins_table_id
 ) -> str:
@@ -800,3 +841,39 @@ def weird_strings_pd():
 @pytest.fixture()
 def weird_strings(session, weird_strings_pd):
     return session.read_pandas(weird_strings_pd.to_frame()).string_col
+
+
+@pytest.fixture()
+def floats_pd():
+    df = pd.DataFrame(
+        {
+            "float64_col": [
+                float("-inf"),
+                float("-inf"),
+                float("nan"),
+                float(-234239487.4),
+                float(-1.0),
+                float(-0.000000001),
+                float(0),
+                float(0.000000001),
+                float(0.9999999999),
+                float(1.0),
+                float(1.0000001),
+                float(math.pi / 2),
+                float(math.e),
+                float(math.pi),
+                float(234239487.4),
+                pd.NA,
+            ]
+        },
+        dtype=pd.Float64Dtype(),
+    )
+    df.index = df.float64_col
+    # Upload fails if index name same as column name
+    df.index.name = None
+    return df.float64_col
+
+
+@pytest.fixture()
+def floats_bf(session, floats_pd):
+    return session.read_pandas(floats_pd.to_frame()).float64_col

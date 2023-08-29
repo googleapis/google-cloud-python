@@ -32,6 +32,12 @@ import bigframes.dtypes as dtypes
 _ZERO = typing.cast(ibis_types.NumericValue, ibis_types.literal(0))
 _NAN = typing.cast(ibis_types.NumericValue, ibis_types.literal(np.nan))
 _INF = typing.cast(ibis_types.NumericValue, ibis_types.literal(np.inf))
+_NEG_INF = typing.cast(ibis_types.NumericValue, ibis_types.literal(-np.inf))
+
+# Approx Highest number you can pass in to EXP function and get a valid FLOAT64 result
+# FLOAT64 has 11 exponent bits, so max values is about 2**(2**10)
+# ln(2**(2**10)) == (2**10)*ln(2) ~= 709.78, so EXP(x) for x>709.78 will overflow.
+_FLOAT64_EXP_BOUND = typing.cast(ibis_types.NumericValue, ibis_types.literal(709.78))
 
 BinaryOp = typing.Callable[[ibis_types.Value, ibis_types.Value], ibis_types.Value]
 TernaryOp = typing.Callable[
@@ -51,9 +57,140 @@ class UnaryOp:
         return False
 
 
+# Trig Functions
 class AbsOp(UnaryOp):
     def _as_ibis(self, x: ibis_types.Value):
         return typing.cast(ibis_types.NumericValue, x).abs()
+
+
+class SinOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        return typing.cast(ibis_types.NumericValue, x).sin()
+
+
+class CosOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        return typing.cast(ibis_types.NumericValue, x).cos()
+
+
+class TanOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        return typing.cast(ibis_types.NumericValue, x).tan()
+
+
+# Inverse trig functions
+class ArcsinOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        numeric_value = typing.cast(ibis_types.NumericValue, x)
+        domain = numeric_value.abs() <= _ibis_num(1)
+        return (~domain).ifelse(_NAN, numeric_value.asin())
+
+
+class ArccosOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        numeric_value = typing.cast(ibis_types.NumericValue, x)
+        domain = numeric_value.abs() <= _ibis_num(1)
+        return (~domain).ifelse(_NAN, numeric_value.acos())
+
+
+class ArctanOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        return typing.cast(ibis_types.NumericValue, x).atan()
+
+
+# Hyperbolic trig functions
+# BQ has these functions, but Ibis doesn't
+class SinhOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        numeric_value = typing.cast(ibis_types.NumericValue, x)
+        sinh_result = (
+            numeric_value.exp() - (numeric_value.negate()).exp()
+        ) / _ibis_num(2)
+        domain = numeric_value.abs() < _FLOAT64_EXP_BOUND
+        return (~domain).ifelse(_INF * numeric_value.sign(), sinh_result)
+
+
+class CoshOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        numeric_value = typing.cast(ibis_types.NumericValue, x)
+        cosh_result = (
+            numeric_value.exp() + (numeric_value.negate()).exp()
+        ) / _ibis_num(2)
+        domain = numeric_value.abs() < _FLOAT64_EXP_BOUND
+        return (~domain).ifelse(_INF, cosh_result)
+
+
+class TanhOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        numeric_value = typing.cast(ibis_types.NumericValue, x)
+        tanh_result = (numeric_value.exp() - (numeric_value.negate()).exp()) / (
+            numeric_value.exp() + (numeric_value.negate()).exp()
+        )
+        # Beyond +-20, is effectively just the sign function
+        domain = numeric_value.abs() < _ibis_num(20)
+        return (~domain).ifelse(numeric_value.sign(), tanh_result)
+
+
+class ArcsinhOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        numeric_value = typing.cast(ibis_types.NumericValue, x)
+        sqrt_part = ((numeric_value * numeric_value) + _ibis_num(1)).sqrt()
+        return (numeric_value.abs() + sqrt_part).ln() * numeric_value.sign()
+
+
+class ArccoshOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        numeric_value = typing.cast(ibis_types.NumericValue, x)
+        sqrt_part = ((numeric_value * numeric_value) - _ibis_num(1)).sqrt()
+        acosh_result = (numeric_value + sqrt_part).ln()
+        domain = numeric_value >= _ibis_num(1)
+        return (~domain).ifelse(_NAN, acosh_result)
+
+
+class ArctanhOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        numeric_value = typing.cast(ibis_types.NumericValue, x)
+        domain = numeric_value.abs() < _ibis_num(1)
+        numerator = numeric_value + _ibis_num(1)
+        denominator = _ibis_num(1) - numeric_value
+        ln_input = typing.cast(ibis_types.NumericValue, numerator.div(denominator))
+        atanh_result = ln_input.ln().div(2)
+
+        out_of_domain = (numeric_value.abs() == _ibis_num(1)).ifelse(
+            _INF * numeric_value, _NAN
+        )
+
+        return (~domain).ifelse(out_of_domain, atanh_result)
+
+
+class SqrtOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        numeric_value = typing.cast(ibis_types.NumericValue, x)
+        domain = numeric_value >= _ZERO
+        return (~domain).ifelse(_NAN, numeric_value.sqrt())
+
+
+class Log10Op(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        numeric_value = typing.cast(ibis_types.NumericValue, x)
+        domain = numeric_value > _ZERO
+        out_of_domain = (numeric_value == _ZERO).ifelse(_NEG_INF, _NAN)
+        return (~domain).ifelse(out_of_domain, numeric_value.log10())
+
+
+class LnOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        numeric_value = typing.cast(ibis_types.NumericValue, x)
+        domain = numeric_value > _ZERO
+        out_of_domain = (numeric_value == _ZERO).ifelse(_NEG_INF, _NAN)
+        return (~domain).ifelse(out_of_domain, numeric_value.ln())
+
+
+class ExpOp(UnaryOp):
+    def _as_ibis(self, x: ibis_types.Value):
+        numeric_value = typing.cast(ibis_types.NumericValue, x)
+        domain = numeric_value < _FLOAT64_EXP_BOUND
+        return (~domain).ifelse(_INF, numeric_value.exp())
 
 
 class InvertOp(UnaryOp):
@@ -484,6 +621,28 @@ time_op = TimeOp()
 year_op = YearOp()
 capitalize_op = CapitalizeOp()
 
+# Just parameterless unary ops for now
+# TODO: Parameter mappings
+NUMPY_TO_OP: typing.Final = {
+    np.sin: SinOp(),
+    np.cos: CosOp(),
+    np.tan: TanOp(),
+    np.arcsin: ArcsinOp(),
+    np.arccos: ArccosOp(),
+    np.arctan: ArctanOp(),
+    np.sinh: SinhOp(),
+    np.cosh: CoshOp(),
+    np.tanh: TanhOp(),
+    np.arcsinh: ArcsinhOp(),
+    np.arccosh: ArccoshOp(),
+    np.arctanh: ArctanhOp(),
+    np.exp: ExpOp(),
+    np.log: LnOp(),
+    np.log10: Log10Op(),
+    np.sqrt: SqrtOp(),
+    np.abs: AbsOp(),
+}
+
 
 ### Binary Ops
 def short_circuit_nulls(type_override: typing.Optional[ibis_dtypes.DataType] = None):
@@ -785,3 +944,7 @@ def partial_arg3(op: TernaryOp, scalar: typing.Any) -> BinaryOp:
 def is_null(value) -> bool:
     # float NaN/inf should be treated as distinct from 'true' null values
     return typing.cast(bool, pd.isna(value)) and not isinstance(value, float)
+
+
+def _ibis_num(number: float):
+    return typing.cast(ibis_types.NumericValue, ibis_types.literal(number))

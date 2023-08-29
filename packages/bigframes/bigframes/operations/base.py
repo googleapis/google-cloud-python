@@ -167,6 +167,11 @@ class SeriesMethods:
             partial_op = ops.BinopPartialRight(op, other)
             return self._apply_unary_op(partial_op)
 
+    def _apply_corr_aggregation(self, other: series.Series) -> float:
+        (left, right, block) = self._align(other, how="outer")
+
+        return block.get_corr_stat(left, right)
+
     def _align(self, other: series.Series, how="outer") -> tuple[str, str, blocks.Block]:  # type: ignore
         """Aligns the series value with another scalar or series object. Returns new left column id, right column id and joined tabled expression."""
         values, block = self._align_n(

@@ -24,6 +24,8 @@ the lower the better.
 #          Ohad Michel <ohadmich@gmail.com>
 # License: BSD 3 clause
 
+from bigframes import constants
+
 
 def r2_score(y_true, y_pred, force_finite=True) -> float:
     """:math:`R^2` (coefficient of determination) regression score function.
@@ -49,4 +51,4 @@ def r2_score(y_true, y_pred, force_finite=True) -> float:
     Returns:
         float: The :math:`R^2` score.
     """
-    raise NotImplementedError("abstract method")
+    raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

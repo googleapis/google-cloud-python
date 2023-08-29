@@ -9,6 +9,8 @@ expose these user-facing objects to provide specific functionality.
 """
 from __future__ import annotations
 
+from bigframes import constants
+
 
 class GroupBy:
     """
@@ -24,7 +26,7 @@ class GroupBy:
                 where a value is True if any element is True within its
                 respective group, False otherwise.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def all(self):
         """
@@ -35,7 +37,7 @@ class GroupBy:
                 where a value is True if all elements are True within its
                 respective group, False otherwise.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def count(self):
         """
@@ -44,7 +46,7 @@ class GroupBy:
         Returns:
             Series or DataFrame: Count of values within each group.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def mean(
         self,
@@ -60,7 +62,7 @@ class GroupBy:
         Returns:
             pandas.Series or pandas.DataFrame: Mean of groups.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def median(
         self,
@@ -81,7 +83,7 @@ class GroupBy:
         Returns:
             pandas.Series or pandas.DataFrame: Median of groups.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def std(
         self,
@@ -100,7 +102,7 @@ class GroupBy:
         Returns:
             Series or DataFrame: Standard deviation of values within each group.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def var(
         self,
@@ -120,7 +122,7 @@ class GroupBy:
             Series or DataFrame
                 Variance of values within each group.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def sum(
         self,
@@ -140,7 +142,7 @@ class GroupBy:
         Returns:
             Series or DataFrame: Computed sum of values within each group.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def prod(self, numeric_only: bool = False, min_count: int = 0):
         """
@@ -156,7 +158,7 @@ class GroupBy:
         Returns:
             Series or DataFrame: Computed prod of values within each group.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def min(
         self,
@@ -176,7 +178,7 @@ class GroupBy:
         Returns:
             Series or DataFrame: Computed min of values within each group.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def max(
         self,
@@ -196,7 +198,7 @@ class GroupBy:
         Returns:
             Series or DataFrame: Computed max of values within each group.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cumcount(self, ascending: bool = True):
         """
@@ -209,7 +211,7 @@ class GroupBy:
         Returns:
             Series: Sequence number of each element within each group.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cumprod(self, *args, **kwargs):
         """
@@ -218,7 +220,7 @@ class GroupBy:
         Returns:
             Series or DataFrame: Cumulative product for each group.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cumsum(self, *args, **kwargs):
         """
@@ -227,7 +229,7 @@ class GroupBy:
         Returns:
             Series or DataFrame: Cumulative sum for each group.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cummin(self, *args, numeric_only: bool = False, **kwargs):
         """
@@ -236,7 +238,7 @@ class GroupBy:
         Returns:
             Series or DataFrame: Cumulative min for each group.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cummax(self, *args, numeric_only: bool = False, **kwargs):
         """
@@ -245,7 +247,7 @@ class GroupBy:
         Returns:
             Series or DataFrame: Cumulative max for each group.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def diff(self):
         """
@@ -256,7 +258,7 @@ class GroupBy:
         Returns:
             Series or DataFrame: First differences.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def shift(self, periods: int = 1):
         """
@@ -269,7 +271,7 @@ class GroupBy:
         Returns:
             Series or DataFrame: Object shifted within each group.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rolling(self, *args, **kwargs):
         """
@@ -289,7 +291,7 @@ class GroupBy:
         Returns:
             Series or DataFrame: Return a new grouper with our rolling appended.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def expanding(self, *args, **kwargs):
         """
@@ -298,7 +300,7 @@ class GroupBy:
         Returns:
             Series or DataFrame: A expanding grouper, providing expanding functionality per group.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 class SeriesGroupBy(GroupBy):
@@ -318,7 +320,7 @@ class SeriesGroupBy(GroupBy):
         Returns:
             Series or DataFrame
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 class DataFrameGroupBy(GroupBy):
@@ -347,4 +349,4 @@ class DataFrameGroupBy(GroupBy):
         Returns:
             DataFrame
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

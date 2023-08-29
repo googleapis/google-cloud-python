@@ -31,10 +31,6 @@ import nox.sessions
 BLACK_VERSION = "black==22.3.0"
 ISORT_VERSION = "isort==5.12.0"
 SPHINX_VERSION = "sphinx==4.5.0"
-
-# pytest-retry 1.4.0 fails on Python 3.11.
-# https://github.com/str0zzapreti/pytest-retry/issues/17
-PYTEST_RETRY_VERSION = "pytest-retry<=1.3.0"
 LINT_PATHS = ["docs", "bigframes", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.10"
@@ -60,7 +56,7 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "openpyxl",
     "pytest",
     "pytest-cov",
-    PYTEST_RETRY_VERSION,
+    "pytest-retry",
     "pytest-timeout",
     "pytest-xdist",
     "google-cloud-testutils",
@@ -595,7 +591,7 @@ def system_prerelease(session: nox.sessions.Session):
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def notebook(session):
     session.install("-e", ".[all]")
-    session.install("pytest", "pytest-xdist", PYTEST_RETRY_VERSION, "nbmake")
+    session.install("pytest", "pytest-xdist", "pytest-retry", "nbmake")
 
     notebooks_list = list(Path("notebooks/").glob("*/*.ipynb"))
 

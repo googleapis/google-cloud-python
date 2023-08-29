@@ -14,6 +14,7 @@ Logistic Regression
 
 from typing import List, Optional
 
+from bigframes import constants
 from third_party.bigframes_vendored.sklearn.linear_model._base import (
     BaseEstimator,
     LinearClassifierMixin,
@@ -57,4 +58,4 @@ class LogisticRegression(LinearClassifierMixin, BaseEstimator):
         Returns:
             LogisticRegression: Fitted Estimator.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

@@ -459,6 +459,19 @@ def test_mods(scalars_dfs, col_x, col_y, method):
     pd.testing.assert_series_equal(pd_result, bf_result)
 
 
+# We work around a pandas bug that doesn't handle correlating nullable dtypes by doing this
+# manually with dumb self-correlation instead of parameterized as test_mods is above.
+def test_corr(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = scalars_df["int64_too"].corr(scalars_df["int64_too"])
+    pd_result = (
+        scalars_pandas_df["int64_too"]
+        .astype("int64")
+        .corr(scalars_pandas_df["int64_too"].astype("int64"))
+    )
+    assert math.isclose(pd_result, bf_result)
+
+
 @pytest.mark.parametrize(
     ("col_x",),
     [
@@ -900,7 +913,7 @@ def test_binop_repeated_application_does_row_identity_joins(scalars_dfs):
         pd_result,
     )
 
-    bf_sql, _ = bf_series.to_frame()._to_sql_query(always_include_index=True)
+    bf_sql, _, _ = bf_series.to_frame()._to_sql_query(include_index=True)
     selects = re.findall("SELECT", bf_sql.upper())
     assert 0 < len(selects) < (num_joins // 2)
 
@@ -2222,8 +2235,9 @@ def test_argmax(scalars_df_index, scalars_pandas_df_index):
     assert bf_result == pd_result
 
 
-def test_getattr_not_implemented(scalars_df_index):
-    with pytest.raises(NotImplementedError):
+def test_getattr_attribute_error_when_pandas_has(scalars_df_index):
+    # asof is implemented in pandas but not in bigframes
+    with pytest.raises(AttributeError):
         scalars_df_index.string_col.asof()
 
 

@@ -11,6 +11,7 @@ estimator, as a chain of transforms and estimators.
 
 from abc import ABCMeta
 
+from bigframes import constants
 from third_party.bigframes_vendored.sklearn.base import BaseEstimator
 
 
@@ -47,7 +48,7 @@ class Pipeline(BaseEstimator, metaclass=ABCMeta):
         Returns:
             Pipeline: Pipeline with fitted steps.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 def score(self, X, y):
@@ -67,7 +68,7 @@ def score(self, X, y):
         DataFrame: A DataFrame representing the result
             of calling `score` on the final estimator.
     """
-    raise NotImplementedError("abstract method")
+    raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 def predict(self, X):
@@ -81,4 +82,4 @@ def predict(self, X):
         bigframes.dataframe.DataFrame: A Dataframe representing
             predicted result.
     """
-    raise NotImplementedError("abstract method")
+    raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

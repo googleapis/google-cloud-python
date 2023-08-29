@@ -12,12 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import hashlib
-import logging
 from typing import cast
 import uuid
 
-import google.cloud.exceptions
 import pandas as pd
 import pytest
 
@@ -56,8 +53,18 @@ def ephemera_penguins_bqml_linear_model(
 
 
 @pytest.fixture(scope="session")
-def penguins_bqml_kmeans_model(session, penguins_kmeans_model_name) -> core.BqmlModel:
+def penguins_bqml_kmeans_model(
+    session: bigframes.Session, penguins_kmeans_model_name: str
+) -> core.BqmlModel:
     model = session.bqclient.get_model(penguins_kmeans_model_name)
+    return core.BqmlModel(session, model)
+
+
+@pytest.fixture(scope="session")
+def penguins_bqml_pca_model(
+    session: bigframes.Session, penguins_pca_model_name: str
+) -> core.BqmlModel:
+    model = session.bqclient.get_model(penguins_pca_model_name)
     return core.BqmlModel(session, model)
 
 
@@ -140,32 +147,12 @@ def penguins_kmeans_model(session, penguins_kmeans_model_name: str) -> cluster.K
 
 @pytest.fixture(scope="session")
 def penguins_pca_model(
-    session: bigframes.Session, dataset_id_permanent, penguins_table_id
+    session: bigframes.Session, penguins_pca_model_name: str
 ) -> decomposition.PCA:
-
-    # TODO(yunmengxie): Create a shared method to get different types of pretrained models.
-    sql = f"""
-CREATE OR REPLACE MODEL `$model_name`
-OPTIONS (
-    model_type='pca',
-    num_principal_components=3
-) AS SELECT
-    *
-FROM `{penguins_table_id}`"""
-    # We use the SQL hash as the name to ensure the model is regenerated if this fixture is edited
-    model_name = (
-        f"{dataset_id_permanent}.penguins_pca_{hashlib.md5(sql.encode()).hexdigest()}"
+    return cast(
+        decomposition.PCA,
+        session.read_gbq_model(penguins_pca_model_name),
     )
-    sql = sql.replace("$model_name", model_name)
-
-    try:
-        return session.read_gbq_model(model_name)
-    except google.cloud.exceptions.NotFound:
-        logging.info(
-            "penguins_pca_model fixture was not found in the permanent dataset, regenerating it..."
-        )
-        session.bqclient.query(sql).result()
-        return session.read_gbq_model(model_name)
 
 
 @pytest.fixture(scope="session")

@@ -5,6 +5,8 @@ from __future__ import annotations
 
 from typing import Iterable, Optional
 
+from bigframes import constants
+
 
 class GBQIOMixin:
     def read_gbq(
@@ -83,4 +85,4 @@ class GBQIOMixin:
         Returns:
             bigframes.dataframe.DataFrame: A DataFrame representing results of the query or table.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

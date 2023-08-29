@@ -47,6 +47,7 @@ import google.cloud.bigquery as bigquery
 import google.cloud.bigquery_connection_v1
 import google.cloud.bigquery_storage_v1
 import google.cloud.functions_v2
+import google.cloud.resourcemanager_v3
 import google.cloud.storage as storage  # type: ignore
 import ibis
 import ibis.backends.bigquery as ibis_bigquery
@@ -69,6 +70,7 @@ import bigframes.core.blocks as blocks
 import bigframes.core.guid as guid
 import bigframes.core.io as bigframes_io
 from bigframes.core.ordering import IntegerEncoding, OrderingColumnReference
+import bigframes.core.utils as utils
 import bigframes.dataframe as dataframe
 import bigframes.formatting_helpers as formatting_helpers
 from bigframes.remote_function import read_gbq_function as bigframes_rgf
@@ -99,6 +101,16 @@ _MAX_CLUSTER_COLUMNS = 4
 
 # TODO(swast): Need to connect to regional endpoints when performing remote
 # functions operations (BQ Connection IAM, Cloud Run / Cloud Functions).
+# Also see if resource manager client library supports regional endpoints.
+
+_VALID_ENCODINGS = {
+    "UTF-8",
+    "ISO-8859-1",
+    "UTF-16BE",
+    "UTF-16LE",
+    "UTF-32BE",
+    "UTF-32LE",
+}
 
 logger = logging.getLogger(__name__)
 
@@ -112,90 +124,143 @@ def _get_default_credentials_with_project():
     return pydata_google_auth.default(scopes=_SCOPES, use_local_webserver=False)
 
 
-def _create_cloud_clients(
-    project: Optional[str],
-    location: Optional[str],
-    use_regional_endpoints: Optional[bool],
-    credentials: Optional[google.auth.credentials.Credentials],
-) -> typing.Tuple[
-    bigquery.Client,
-    google.cloud.bigquery_connection_v1.ConnectionServiceClient,
-    google.cloud.bigquery_storage_v1.BigQueryReadClient,
-    google.cloud.functions_v2.FunctionServiceClient,
-]:
-    """Create and initialize BigQuery client objects."""
+class ClientsProvider:
+    """Provides client instances necessary to perform cloud operations."""
 
-    credentials_project = None
-    if credentials is None:
-        credentials, credentials_project = _get_default_credentials_with_project()
+    def __init__(
+        self,
+        project: Optional[str],
+        location: Optional[str],
+        use_regional_endpoints: Optional[bool],
+        credentials: Optional[google.auth.credentials.Credentials],
+    ):
+        credentials_project = None
+        if credentials is None:
+            credentials, credentials_project = _get_default_credentials_with_project()
 
-    # Prefer the project in this order:
-    # 1. Project explicitly specified by the user
-    # 2. Project set in the environment
-    # 3. Project associated with the default credentials
-    project = (
-        project
-        or os.getenv(_ENV_DEFAULT_PROJECT)
-        or typing.cast(Optional[str], credentials_project)
-    )
-
-    if not project:
-        raise ValueError(
-            "Project must be set to initialize BigQuery client. "
-            "Try setting `bigframes.options.bigquery.project` first."
+        # Prefer the project in this order:
+        # 1. Project explicitly specified by the user
+        # 2. Project set in the environment
+        # 3. Project associated with the default credentials
+        project = (
+            project
+            or os.getenv(_ENV_DEFAULT_PROJECT)
+            or typing.cast(Optional[str], credentials_project)
         )
 
-    if use_regional_endpoints:
-        bq_options = google.api_core.client_options.ClientOptions(
-            api_endpoint=_BIGQUERY_REGIONAL_ENDPOINT.format(location=location),
-        )
-        bqstorage_options = google.api_core.client_options.ClientOptions(
-            api_endpoint=_BIGQUERYSTORAGE_REGIONAL_ENDPOINT.format(location=location)
-        )
-        bqconnection_options = google.api_core.client_options.ClientOptions(
-            api_endpoint=_BIGQUERYCONNECTION_REGIONAL_ENDPOINT.format(location=location)
-        )
-    else:
-        bq_options = None
-        bqstorage_options = None
-        bqconnection_options = None
+        if not project:
+            raise ValueError(
+                "Project must be set to initialize BigQuery client. "
+                "Try setting `bigframes.options.bigquery.project` first."
+            )
 
-    bq_info = google.api_core.client_info.ClientInfo(user_agent=_APPLICATION_NAME)
-    bqclient = bigquery.Client(
-        client_info=bq_info,
-        client_options=bq_options,
-        credentials=credentials,
-        project=project,
-        location=location,
-    )
+        self._project = project
+        self._location = location
+        self._use_regional_endpoints = use_regional_endpoints
+        self._credentials = credentials
 
-    bqconnection_info = google.api_core.gapic_v1.client_info.ClientInfo(
-        user_agent=_APPLICATION_NAME
-    )
-    bqconnectionclient = google.cloud.bigquery_connection_v1.ConnectionServiceClient(
-        client_info=bqconnection_info,
-        client_options=bqconnection_options,
-        credentials=credentials,
-    )
+        # cloud clients initialized for lazy load
+        self._bqclient = None
+        self._bqconnectionclient = None
+        self._bqstorageclient = None
+        self._cloudfunctionsclient = None
+        self._resourcemanagerclient = None
 
-    bqstorage_info = google.api_core.gapic_v1.client_info.ClientInfo(
-        user_agent=_APPLICATION_NAME
-    )
-    bqstorageclient = google.cloud.bigquery_storage_v1.BigQueryReadClient(
-        client_info=bqstorage_info,
-        client_options=bqstorage_options,
-        credentials=credentials,
-    )
+    @property
+    def bqclient(self):
+        if not self._bqclient:
+            bq_options = None
+            if self._use_regional_endpoints:
+                bq_options = google.api_core.client_options.ClientOptions(
+                    api_endpoint=_BIGQUERY_REGIONAL_ENDPOINT.format(
+                        location=self._location
+                    ),
+                )
+            bq_info = google.api_core.client_info.ClientInfo(
+                user_agent=_APPLICATION_NAME
+            )
+            self._bqclient = bigquery.Client(
+                client_info=bq_info,
+                client_options=bq_options,
+                credentials=self._credentials,
+                project=self._project,
+                location=self._location,
+            )
 
-    functions_info = google.api_core.gapic_v1.client_info.ClientInfo(
-        user_agent=_APPLICATION_NAME
-    )
-    cloudfunctionsclient = google.cloud.functions_v2.FunctionServiceClient(
-        client_info=functions_info,
-        credentials=credentials,
-    )
+        return self._bqclient
 
-    return bqclient, bqconnectionclient, bqstorageclient, cloudfunctionsclient
+    @property
+    def bqconnectionclient(self):
+        if not self._bqconnectionclient:
+            bqconnection_options = None
+            if self._use_regional_endpoints:
+                bqconnection_options = google.api_core.client_options.ClientOptions(
+                    api_endpoint=_BIGQUERYCONNECTION_REGIONAL_ENDPOINT.format(
+                        location=self._location
+                    )
+                )
+            bqconnection_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                user_agent=_APPLICATION_NAME
+            )
+            self._bqconnectionclient = (
+                google.cloud.bigquery_connection_v1.ConnectionServiceClient(
+                    client_info=bqconnection_info,
+                    client_options=bqconnection_options,
+                    credentials=self._credentials,
+                )
+            )
+
+        return self._bqconnectionclient
+
+    @property
+    def bqstorageclient(self):
+        if not self._bqstorageclient:
+            bqstorage_options = None
+            if self._use_regional_endpoints:
+                bqstorage_options = google.api_core.client_options.ClientOptions(
+                    api_endpoint=_BIGQUERYSTORAGE_REGIONAL_ENDPOINT.format(
+                        location=self._location
+                    )
+                )
+            bqstorage_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                user_agent=_APPLICATION_NAME
+            )
+            self._bqstorageclient = google.cloud.bigquery_storage_v1.BigQueryReadClient(
+                client_info=bqstorage_info,
+                client_options=bqstorage_options,
+                credentials=self._credentials,
+            )
+
+        return self._bqstorageclient
+
+    @property
+    def cloudfunctionsclient(self):
+        if not self._cloudfunctionsclient:
+            functions_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                user_agent=_APPLICATION_NAME
+            )
+            self._cloudfunctionsclient = (
+                google.cloud.functions_v2.FunctionServiceClient(
+                    client_info=functions_info,
+                    credentials=self._credentials,
+                )
+            )
+
+        return self._cloudfunctionsclient
+
+    @property
+    def resourcemanagerclient(self):
+        if not self._resourcemanagerclient:
+            resourcemanager_info = google.api_core.gapic_v1.client_info.ClientInfo(
+                user_agent=_APPLICATION_NAME
+            )
+            self._resourcemanagerclient = (
+                google.cloud.resourcemanager_v3.ProjectsClient(
+                    credentials=self._credentials, client_info=resourcemanager_info
+                )
+            )
+
+        return self._resourcemanagerclient
 
 
 class Session(
@@ -221,12 +286,9 @@ class Session(
         else:
             self._location = context.location
 
-        (
-            self.bqclient,
-            self.bqconnectionclient,
-            self.bqstorageclient,
-            self.cloudfunctionsclient,
-        ) = _create_cloud_clients(
+        # Instantiate a clients provider to help with cloud clients that will be
+        # used in the future operations in the session
+        self._clients_provider = ClientsProvider(
             project=context.project,
             location=self._location,
             use_regional_endpoints=context.use_regional_endpoints,
@@ -248,6 +310,26 @@ class Session(
         # Now that we're starting the session, don't allow the options to be
         # changed.
         context._session_started = True
+
+    @property
+    def bqclient(self):
+        return self._clients_provider.bqclient
+
+    @property
+    def bqconnectionclient(self):
+        return self._clients_provider.bqconnectionclient
+
+    @property
+    def bqstorageclient(self):
+        return self._clients_provider.bqstorageclient
+
+    @property
+    def cloudfunctionsclient(self):
+        return self._clients_provider.cloudfunctionsclient
+
+    @property
+    def resourcemanagerclient(self):
+        return self._clients_provider.resourcemanagerclient
 
     @property
     def _session_dataset_id(self):
@@ -343,6 +425,38 @@ class Session(
                 max_results=max_results,
             )
 
+    def _query_to_destination(
+        self, query: str, index_cols: List[str]
+    ) -> Tuple[Optional[bigquery.TableReference], Optional[bigquery.QueryJob]]:
+        # If there are no index columns, then there's no reason to cache to a
+        # (clustered) session table, as we'll just have to query it again to
+        # create a default index & ordering.
+        if not index_cols:
+            _, query_job = self._start_query(query)
+            return query_job.destination, query_job
+
+        # If a dry_run indicates this is not a query type job, then don't
+        # bother trying to do a CREATE TEMP TABLE ... AS SELECT ... statement.
+        dry_run_config = bigquery.QueryJobConfig()
+        dry_run_config.dry_run = True
+        _, dry_run_job = self._start_query(query, job_config=dry_run_config)
+        if dry_run_job.statement_type != "SELECT":
+            _, query_job = self._start_query(query)
+            return query_job.destination, query_job
+
+        # Make sure we cluster by the index column(s) so that subsequent
+        # operations are as speedy as they can be.
+        try:
+            ibis_expr = self.ibis_client.sql(query)
+            return self._ibis_to_session_table(ibis_expr, index_cols), None
+        except google.api_core.exceptions.BadRequest:
+            # Some SELECT statements still aren't compatible with CREATE TEMP
+            # TABLE ... AS SELECT ... statements. For example, if the query has
+            # a top-level ORDER BY, this conflicts with our ability to cluster
+            # the table by the index column(s).
+            _, query_job = self._start_query(query)
+            return query_job.destination, query_job
+
     def read_gbq_query(
         self,
         query: str,
@@ -368,16 +482,7 @@ class Session(
         else:
             index_cols = list(index_col)
 
-        # Make sure we cluster by the index column so that subsequent
-        # operations are as speedy as they can be.
-        if index_cols:
-            # Since index_cols are specified, assume that we have a normal SQL
-            # query. DDL or DML not supported.
-            ibis_expr = self.ibis_client.sql(query)
-            destination = self._ibis_to_session_table(ibis_expr, index_cols)
-        else:
-            _, query_job = self._start_query(query)
-            destination = query_job.destination
+        destination, query_job = self._query_to_destination(query, index_cols)
 
         # If there was no destination table, that means the query must have
         # been DDL or DML. Return some job metadata, instead.
@@ -385,9 +490,11 @@ class Session(
             return dataframe.DataFrame(
                 data=pandas.DataFrame(
                     {
-                        "statement_type": [query_job.statement_type],
-                        "job_id": [query_job.job_id],
-                        "location": [query_job.location],
+                        "statement_type": [
+                            query_job.statement_type if query_job else "unknown"
+                        ],
+                        "job_id": [query_job.job_id if query_job else "unknown"],
+                        "location": [query_job.location if query_job else "unknown"],
                     }
                 ),
                 session=self,
@@ -551,9 +658,10 @@ class Session(
         table_expression: ibis_types.Table,
         *,
         col_order: Iterable[str] = (),
-        index_cols: Sequence[str] = (),
-        index_labels: Sequence[Optional[str]] = (),
-        hidden_cols: Sequence[str] = (),
+        col_labels: Iterable[Optional[str]] = (),
+        index_cols: Iterable[str] = (),
+        index_labels: Iterable[Optional[str]] = (),
+        hidden_cols: Iterable[str] = (),
         ordering: core.ExpressionOrdering,
         is_total_ordering: bool = False,
     ) -> dataframe.DataFrame:
@@ -563,9 +671,13 @@ class Session(
             table_expression:
                 an ibis table expression to be executed in BigQuery.
             col_order:
-                List of BigQuery column names in the desired order for results DataFrame.
+                List of BigQuery column ids in the desired order for results DataFrame.
+            col_labels:
+                List of column labels as the column names.
             index_cols:
-                List of column names to use as the index or multi-index.
+                List of index ids to use as the index or multi-index.
+            index_labels:
+                List of index labels as names of index.
             hidden_cols:
                 Columns that should be hidden. Ordering columns may (not always) be hidden
             ordering:
@@ -574,6 +686,7 @@ class Session(
         Returns:
             A DataFrame representing results of the query or table.
         """
+        index_cols, index_labels = list(index_cols), list(index_labels)
         if len(index_cols) != len(index_labels):
             raise ValueError(
                 "Needs same number of index labels are there are index columns. "
@@ -597,11 +710,14 @@ class Session(
                 table_expression, index_cols
             )
         index_col_values = [table_expression[index_id] for index_id in index_cols]
+        if not col_labels:
+            col_labels = column_keys
         return self._read_ibis(
             table_expression,
             index_col_values,
             index_labels,
             column_keys,
+            col_labels,
             ordering=ordering,
         )
 
@@ -650,9 +766,10 @@ class Session(
     def _read_ibis(
         self,
         table_expression: ibis_types.Table,
-        index_cols: Sequence[ibis_types.Value],
-        index_labels: Sequence[Optional[str]],
-        column_keys: Sequence[str],
+        index_cols: Iterable[ibis_types.Value],
+        index_labels: Iterable[blocks.Label],
+        column_keys: Iterable[str],
+        column_labels: Iterable[blocks.Label],
         ordering: core.ExpressionOrdering,
     ) -> dataframe.DataFrame:
         """Turns a table expression (plus index column) into a DataFrame."""
@@ -674,7 +791,7 @@ class Session(
                 self, table_expression, columns, hidden_ordering_columns, ordering
             ),
             index_columns=[index_col.get_name() for index_col in index_cols],
-            column_labels=column_keys,
+            column_labels=column_labels,
             index_labels=index_labels,
         )
 
@@ -713,15 +830,23 @@ class Session(
         Returns:
             bigframes.dataframe.DataFrame: The BigQuery DataFrame.
         """
+        col_labels, idx_labels = (
+            pandas_dataframe.columns.to_list(),
+            pandas_dataframe.index.names,
+        )
+        new_col_ids, new_idx_ids = utils.get_standardized_ids(col_labels, idx_labels)
+
         # Add order column to pandas DataFrame to preserve order in BigQuery
         ordering_col = "rowid"
-        columns = frozenset(pandas_dataframe.columns)
+        columns = frozenset(col_labels + idx_labels)
         suffix = 2
         while ordering_col in columns:
             ordering_col = f"rowid_{suffix}"
             suffix += 1
 
         pandas_dataframe_copy = pandas_dataframe.copy()
+        pandas_dataframe_copy.index.names = new_idx_ids
+        pandas_dataframe_copy.columns = pandas.Index(new_col_ids)
         pandas_dataframe_copy[ordering_col] = np.arange(pandas_dataframe_copy.shape[0])
 
         # Specify the datetime dtypes, which is auto-detected as timestamp types.
@@ -732,27 +857,12 @@ class Session(
                     bigquery.SchemaField(column, bigquery.enums.SqlTypeNames.DATETIME)
                 )
 
-        # Unnamed are not copied to BigQuery when load_table_from_dataframe
-        # executes.
-        index_cols = list(
-            filter(lambda name: name is not None, pandas_dataframe_copy.index.names)
-        )
-        index_labels = typing.cast(List[Optional[str]], index_cols)
-
         # Clustering probably not needed anyways as pandas tables are small
         cluster_cols = [ordering_col]
-
-        if len(index_cols) == 0:
-            # Block constructor will implicitly build default index
-            pass
 
         job_config = bigquery.LoadJobConfig(schema=schema)
         job_config.clustering_fields = cluster_cols
 
-        # TODO(swast): Rename the unnamed index columns and restore them after
-        # the load job completes.
-        # Column values will be loaded as null if the column name has spaces.
-        # https://github.com/googleapis/python-bigquery/issues/1566
         load_table_destination = self._create_session_table()
         load_job = self.bqclient.load_table_from_dataframe(
             pandas_dataframe_copy,
@@ -770,14 +880,22 @@ class Session(
             f"SELECT * FROM `{load_table_destination.table_id}`"
         )
 
-        return self._read_gbq_with_ordering(
+        # b/297590178 Potentially a bug in bqclient.load_table_from_dataframe(), that only when the DF is empty, the index columns disappear in table_expression.
+        if any(
+            [new_idx_id not in table_expression.columns for new_idx_id in new_idx_ids]
+        ):
+            new_idx_ids, idx_labels = [], []
+
+        df = self._read_gbq_with_ordering(
             table_expression=table_expression,
-            index_cols=index_cols,
-            index_labels=index_labels,
+            col_labels=col_labels,
+            index_cols=new_idx_ids,
+            index_labels=idx_labels,
             hidden_cols=(ordering_col,),
             ordering=ordering,
             is_total_ordering=True,
         )
+        return df
 
     def read_csv(
         self,
@@ -844,10 +962,9 @@ class Session(
                         f"{constants.FEEDBACK_LINK}"
                     )
 
-            valid_encodings = {"UTF-8", "ISO-8859-1"}
-            if encoding is not None and encoding not in valid_encodings:
+            if encoding is not None and encoding not in _VALID_ENCODINGS:
                 raise NotImplementedError(
-                    f"BigQuery engine only supports the following encodings: {valid_encodings}. "
+                    f"BigQuery engine only supports the following encodings: {_VALID_ENCODINGS}. "
                     f"{constants.FEEDBACK_LINK}"
                 )
 
@@ -933,6 +1050,86 @@ class Session(
 
         return self._read_bigquery_load_job(path, table, job_config=job_config)
 
+    def read_json(
+        self,
+        path_or_buf: str | IO["bytes"],
+        *,
+        orient: Literal[
+            "split", "records", "index", "columns", "values", "table"
+        ] = "columns",
+        dtype: Optional[Dict] = None,
+        encoding: Optional[str] = None,
+        lines: bool = False,
+        engine: Literal["ujson", "pyarrow", "bigquery"] = "ujson",
+        **kwargs,
+    ) -> dataframe.DataFrame:
+        table = bigquery.Table(self._create_session_table())
+
+        if engine == "bigquery":
+
+            if dtype is not None:
+                raise NotImplementedError(
+                    "BigQuery engine does not support the dtype arguments."
+                )
+
+            if not lines:
+                raise NotImplementedError(
+                    "Only newline delimited JSON format is supported."
+                )
+
+            if encoding is not None and encoding not in _VALID_ENCODINGS:
+                raise NotImplementedError(
+                    f"BigQuery engine only supports the following encodings: {_VALID_ENCODINGS}"
+                )
+
+            if lines and orient != "records":
+                raise ValueError(
+                    "'lines' keyword is only valid when 'orient' is 'records'."
+                )
+
+            job_config = bigquery.LoadJobConfig()
+            job_config.create_disposition = bigquery.CreateDisposition.CREATE_IF_NEEDED
+            job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
+            job_config.write_disposition = bigquery.WriteDisposition.WRITE_EMPTY
+            job_config.autodetect = True
+            job_config.encoding = encoding
+
+            return self._read_bigquery_load_job(
+                path_or_buf,
+                table,
+                job_config=job_config,
+            )
+        else:
+            if any(arg in kwargs for arg in ("chunksize", "iterator")):
+                raise NotImplementedError(
+                    "'chunksize' and 'iterator' arguments are not supported."
+                )
+
+            if isinstance(path_or_buf, str):
+                self._check_file_size(path_or_buf)
+
+            if engine == "ujson":
+                pandas_df = pandas.read_json(  # type: ignore
+                    path_or_buf,
+                    orient=orient,
+                    dtype=dtype,
+                    encoding=encoding,
+                    lines=lines,
+                    **kwargs,
+                )
+
+            else:
+                pandas_df = pandas.read_json(  # type: ignore
+                    path_or_buf,
+                    orient=orient,
+                    dtype=dtype,
+                    encoding=encoding,
+                    lines=lines,
+                    engine=engine,
+                    **kwargs,
+                )
+            return self.read_pandas(pandas_df)
+
     def _check_file_size(self, filepath: str):
         max_size = 1024 * 1024 * 1024  # 1 GB in bytes
         if filepath.startswith("gs://"):  # GCS file path
@@ -1008,14 +1205,26 @@ class Session(
         table = self._create_session_table()
         cluster_cols_sql = ", ".join(f"`{cluster_col}`" for cluster_col in cluster_cols)
 
-        # TODO(swast): This might not support multi-statement SQL queries.
+        # TODO(swast): This might not support multi-statement SQL queries (scripts).
         ddl_text = f"""
         CREATE TEMP TABLE `_SESSION`.`{table.table_id}`
         CLUSTER BY {cluster_cols_sql}
         AS {query_text}
         """
+
+        job_config = bigquery.QueryJobConfig()
+
+        # Include a label so that Dataplex Lineage can identify temporary
+        # tables that BigQuery DataFrames creates. Googlers: See internal issue
+        # 296779699. We're labeling the job instead of the table because
+        # otherwise we get `BadRequest: 400 OPTIONS on temporary tables are not
+        # supported`.
+        job_config.labels = {"source": "bigquery-dataframes-temp"}
+
         try:
-            self._start_query(ddl_text)  # Wait for the job to complete
+            self._start_query(
+                ddl_text, job_config=job_config
+            )  # Wait for the job to complete
         except google.api_core.exceptions.Conflict:
             # Allow query retry to succeed.
             pass

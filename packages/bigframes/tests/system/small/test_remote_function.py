@@ -116,6 +116,7 @@ def test_remote_function_direct_no_session_param(
     bigquery_client,
     bigqueryconnection_client,
     cloudfunctions_client,
+    resourcemanager_client,
     scalars_dfs,
     dataset_id_permanent,
     bq_cf_connection,
@@ -126,6 +127,7 @@ def test_remote_function_direct_no_session_param(
         bigquery_client=bigquery_client,
         bigquery_connection_client=bigqueryconnection_client,
         cloud_functions_client=cloudfunctions_client,
+        resource_manager_client=resourcemanager_client,
         dataset=dataset_id_permanent,
         bigquery_connection=bq_cf_connection,
         # See e2e tests for tests that actually deploy the Cloud Function.
@@ -166,6 +168,7 @@ def test_remote_function_direct_no_session_param_location_specified(
     bigquery_client,
     bigqueryconnection_client,
     cloudfunctions_client,
+    resourcemanager_client,
     scalars_dfs,
     dataset_id_permanent,
     bq_cf_connection_location,
@@ -176,6 +179,7 @@ def test_remote_function_direct_no_session_param_location_specified(
         bigquery_client=bigquery_client,
         bigquery_connection_client=bigqueryconnection_client,
         cloud_functions_client=cloudfunctions_client,
+        resource_manager_client=resourcemanager_client,
         dataset=dataset_id_permanent,
         bigquery_connection=bq_cf_connection_location,
         # See e2e tests for tests that actually deploy the Cloud Function.
@@ -213,6 +217,7 @@ def test_remote_function_direct_no_session_param_location_mismatched(
     bigquery_client,
     bigqueryconnection_client,
     cloudfunctions_client,
+    resourcemanager_client,
     dataset_id_permanent,
     bq_cf_connection_location_mismatched,
 ):
@@ -224,6 +229,7 @@ def test_remote_function_direct_no_session_param_location_mismatched(
             bigquery_client=bigquery_client,
             bigquery_connection_client=bigqueryconnection_client,
             cloud_functions_client=cloudfunctions_client,
+            resource_manager_client=resourcemanager_client,
             dataset=dataset_id_permanent,
             bigquery_connection=bq_cf_connection_location_mismatched,
             # See e2e tests for tests that actually deploy the Cloud Function.
@@ -238,6 +244,7 @@ def test_remote_function_direct_no_session_param_location_project_specified(
     bigquery_client,
     bigqueryconnection_client,
     cloudfunctions_client,
+    resourcemanager_client,
     scalars_dfs,
     dataset_id_permanent,
     bq_cf_connection_location_project,
@@ -248,6 +255,7 @@ def test_remote_function_direct_no_session_param_location_project_specified(
         bigquery_client=bigquery_client,
         bigquery_connection_client=bigqueryconnection_client,
         cloud_functions_client=cloudfunctions_client,
+        resource_manager_client=resourcemanager_client,
         dataset=dataset_id_permanent,
         bigquery_connection=bq_cf_connection_location_project,
         # See e2e tests for tests that actually deploy the Cloud Function.
@@ -285,6 +293,7 @@ def test_remote_function_direct_no_session_param_project_mismatched(
     bigquery_client,
     bigqueryconnection_client,
     cloudfunctions_client,
+    resourcemanager_client,
     dataset_id_permanent,
     bq_cf_connection_location_project_mismatched,
 ):
@@ -296,6 +305,7 @@ def test_remote_function_direct_no_session_param_project_mismatched(
             bigquery_client=bigquery_client,
             bigquery_connection_client=bigqueryconnection_client,
             cloud_functions_client=cloudfunctions_client,
+            resource_manager_client=resourcemanager_client,
             dataset=dataset_id_permanent,
             bigquery_connection=bq_cf_connection_location_project_mismatched,
             # See e2e tests for tests that actually deploy the Cloud Function.
@@ -530,6 +540,7 @@ def test_read_gbq_function_like_original(
     bigquery_client,
     bigqueryconnection_client,
     cloudfunctions_client,
+    resourcemanager_client,
     scalars_df_index,
     dataset_id_permanent,
     bq_cf_connection,
@@ -541,6 +552,7 @@ def test_read_gbq_function_like_original(
         bigquery_connection_client=bigqueryconnection_client,
         dataset=dataset_id_permanent,
         cloud_functions_client=cloudfunctions_client,
+        resource_manager_client=resourcemanager_client,
         bigquery_connection=bq_cf_connection,
         reuse=True,
     )

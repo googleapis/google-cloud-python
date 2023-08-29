@@ -33,6 +33,8 @@ Single and multi-output problems are both handled.
 
 from abc import ABCMeta
 
+from bigframes import constants
+
 from ..base import BaseEstimator, ClassifierMixin, MetaEstimatorMixin, RegressorMixin
 
 
@@ -60,7 +62,7 @@ class BaseForest(MetaEstimatorMixin, BaseEstimator, metaclass=ABCMeta):
         Returns:
             Fitted Estimator.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 class ForestRegressor(RegressorMixin, BaseForest, metaclass=ABCMeta):
@@ -82,7 +84,7 @@ class ForestRegressor(RegressorMixin, BaseForest, metaclass=ABCMeta):
         Returns:
             The predicted values.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 class RandomForestRegressor(ForestRegressor):
@@ -148,7 +150,7 @@ class ForestClassifier(ClassifierMixin, BaseForest, metaclass=ABCMeta):
         Returns:
             The predicted values.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 class RandomForestClassifier(ForestClassifier):

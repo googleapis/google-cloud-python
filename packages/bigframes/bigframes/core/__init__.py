@@ -35,6 +35,7 @@ from bigframes.core.ordering import (
     reencode_order_string,
     StringEncoding,
 )
+import bigframes.core.utils as utils
 import bigframes.dtypes
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
@@ -562,6 +563,36 @@ class ArrayValue:
                 ordering=ordering,
             )
 
+    def corr_aggregate(
+        self, corr_aggregations: typing.Sequence[typing.Tuple[str, str, str]]
+    ) -> ArrayValue:
+        """
+        Get correlations between each lef_column_id and right_column_id, stored in the respective output_column_id.
+        This uses BigQuery's CORR under the hood, and thus only Pearson's method is used.
+        Arguments:
+            corr_aggregations: left_column_id, right_column_id, output_column_id tuples
+        """
+        table = self.to_ibis_expr(ordering_mode="unordered")
+        stats = {
+            col_out: table[col_left].corr(table[col_right], how="pop")
+            for col_left, col_right, col_out in corr_aggregations
+        }
+        aggregates = {**stats, ORDER_ID_COLUMN: ibis_types.literal(0)}
+        result = table.aggregate(**aggregates)
+        # Ordering is irrelevant for single-row output, but set ordering id regardless as other ops(join etc.) expect it.
+        ordering = ExpressionOrdering(
+            ordering_value_columns=[OrderingColumnReference(ORDER_ID_COLUMN)],
+            total_ordering_columns=frozenset([ORDER_ID_COLUMN]),
+            integer_encoding=IntegerEncoding(is_encoded=True, is_sequential=True),
+        )
+        return ArrayValue(
+            self._session,
+            result,
+            columns=[result[col_id] for col_id in [*stats.keys()]],
+            hidden_ordering_columns=[result[ORDER_ID_COLUMN]],
+            ordering=ordering,
+        )
+
     def project_window_op(
         self,
         column_name: str,
@@ -852,38 +883,75 @@ class ArrayValue:
             group_by=group_by,
         )
 
-    def unpivot_single_row(
+    def unpivot(
         self,
         row_labels: typing.Sequence[typing.Hashable],
-        unpivot_columns: typing.Sequence[typing.Tuple[str, typing.Sequence[str]]],
+        unpivot_columns: typing.Sequence[
+            typing.Tuple[str, typing.Sequence[typing.Optional[str]]]
+        ],
         *,
+        passthrough_columns: typing.Sequence[str] = (),
         index_col_id: str = "index",
-        dtype=pandas.Float64Dtype(),
+        dtype: typing.Union[
+            bigframes.dtypes.Dtype, typing.Sequence[bigframes.dtypes.Dtype]
+        ] = pandas.Float64Dtype(),
     ) -> ArrayValue:
-        """Unpivot a single row."""
-        # TODO: Generalize to multiple row input
-        table = self.to_ibis_expr(ordering_mode="unordered")
+        """
+        Unpivot ArrayValue columns.
+
+        Args:
+            row_labels: Identifies the source of the row. Must be equal to length to source column list in unpivot_columns argument.
+            unpivot_columns: Mapping of column id to list of input column ids. Lists of input columns may use None.
+            passthrough_columns: Columns that will not be unpivoted. Column id will be preserved.
+            index_col_id (str): The column id to be used for the row labels.
+            dtype (dtype or list of dtype): Dtype to use for the unpivot columns. If list, must be equal in number to unpivot_columns.
+
+        Returns:
+            ArrayValue: The unpivoted ArrayValue
+        """
+        table = self.to_ibis_expr(ordering_mode="offset_col")
         sub_expressions = []
 
-        # TODO: validate all columns are equal length, as well as row labels
+        # Use ibis memtable to infer type of rowlabels (if possible)
+        # TODO: Allow caller to specify dtype
+        labels_ibis_type = ibis.memtable({"col": row_labels})["col"].type()
+        labels_dtype = bigframes.dtypes.ibis_dtype_to_bigframes_dtype(labels_ibis_type)
+
         row_n = len(row_labels)
         if not all(
             len(source_columns) == row_n for _, source_columns in unpivot_columns
         ):
             raise ValueError("Columns and row labels must all be same length.")
 
-        # Select each column
         for i in range(row_n):
             values = []
-            for result_col, source_cols in unpivot_columns:
-                values.append(
-                    ops.AsTypeOp(dtype)._as_ibis(table[source_cols[i]]).name(result_col)
-                )
-
+            for j in range(len(unpivot_columns)):
+                result_col, source_cols = unpivot_columns[j]
+                col_dtype = dtype[j] if utils.is_list_like(dtype) else dtype
+                if source_cols[i] is not None:
+                    values.append(
+                        ops.AsTypeOp(col_dtype)
+                        ._as_ibis(table[source_cols[i]])
+                        .name(result_col)
+                    )
+                else:
+                    values.append(
+                        bigframes.dtypes.literal_to_ibis_scalar(
+                            None, force_dtype=col_dtype
+                        ).name(result_col)
+                    )
+            offsets_value = (
+                ((table[ORDER_ID_COLUMN] * row_n) + i)
+                .cast(ibis_dtypes.int64)
+                .name(ORDER_ID_COLUMN),
+            )
             sub_expr = table.select(
-                ibis_types.literal(row_labels[i]).name(index_col_id),
+                passthrough_columns,
+                bigframes.dtypes.literal_to_ibis_scalar(
+                    row_labels[i], force_dtype=labels_dtype  # type:ignore
+                ).name(index_col_id),
                 *values,
-                ibis_types.literal(i).name(ORDER_ID_COLUMN),
+                offsets_value,
             )
             sub_expressions.append(sub_expr)
         rotated_table = ibis.union(*sub_expressions)
@@ -891,13 +959,15 @@ class ArrayValue:
         value_columns = [
             rotated_table[value_col_id] for value_col_id, _ in unpivot_columns
         ]
+        passthrough_values = [rotated_table[col] for col in passthrough_columns]
         return ArrayValue(
             session=self._session,
             table=rotated_table,
-            columns=[rotated_table[index_col_id], *value_columns],
+            columns=[rotated_table[index_col_id], *value_columns, *passthrough_values],
             hidden_ordering_columns=[rotated_table[ORDER_ID_COLUMN]],
             ordering=ExpressionOrdering(
                 ordering_value_columns=[OrderingColumnReference(ORDER_ID_COLUMN)],
+                integer_encoding=IntegerEncoding(is_encoded=True, is_sequential=True),
                 total_ordering_columns=frozenset([ORDER_ID_COLUMN]),
             ),
         )

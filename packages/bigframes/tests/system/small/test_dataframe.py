@@ -77,6 +77,20 @@ def test_df_construct_from_series(scalars_dfs):
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
+def test_df_construct_from_dict():
+    input_dict = {
+        "Animal": ["Falcon", "Falcon", "Parrot", "Parrot"],
+        # With a space in column name. We use standardized SQL schema ids to solve the problem that BQ schema doesn't support column names with spaces. b/296751058
+        "Max Speed": [380.0, 370.0, 24.0, 26.0],
+    }
+    bf_result = dataframe.DataFrame(input_dict).to_pandas()
+    pd_result = pd.DataFrame(input_dict)
+
+    pandas.testing.assert_frame_equal(
+        bf_result, pd_result, check_dtype=False, check_index_type=False
+    )
+
+
 def test_get_column(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "int64_col"
@@ -354,6 +368,52 @@ def test_assign_new_column_w_setitem(scalars_dfs):
     pd_result["new_col"] = pd_result["new_col"].astype("Int64")
 
     pd.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_assign_new_column_w_setitem_list(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_df = scalars_df.copy()
+    pd_df = scalars_pandas_df.copy()
+    bf_df["new_col"] = [9, 8, 7, 6, 5, 4, 3, 2, 1]
+    pd_df["new_col"] = [9, 8, 7, 6, 5, 4, 3, 2, 1]
+    bf_result = bf_df.to_pandas()
+    pd_result = pd_df
+
+    # Convert default pandas dtypes `int64` to match BigQuery DataFrames dtypes.
+    pd_result["new_col"] = pd_result["new_col"].astype("Int64")
+
+    pd.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_assign_new_column_w_setitem_list_custom_index(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_df = scalars_df.copy()
+    pd_df = scalars_pandas_df.copy()
+
+    # set the custom index
+    pd_df = pd_df.set_index("string_col")
+    bf_df = bf_df.set_index("string_col")
+
+    bf_df["new_col"] = [9, 8, 7, 6, 5, 4, 3, 2, 1]
+    pd_df["new_col"] = [9, 8, 7, 6, 5, 4, 3, 2, 1]
+    bf_result = bf_df.to_pandas()
+    pd_result = pd_df
+
+    # Convert default pandas dtypes `int64` to match BigQuery DataFrames dtypes.
+    pd_result["new_col"] = pd_result["new_col"].astype("Int64")
+
+    pd.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_assign_new_column_w_setitem_list_error(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_df = scalars_df.copy()
+    pd_df = scalars_pandas_df.copy()
+
+    with pytest.raises(ValueError):
+        pd_df["new_col"] = [1, 2, 3]  # should be len 9, is 3
+    with pytest.raises(ValueError):
+        bf_df["new_col"] = [1, 2, 3]
 
 
 def test_assign_existing_column(scalars_dfs):
@@ -1329,6 +1389,21 @@ def test_df_describe(scalars_dfs):
     ).all()
 
 
+def test_df_stack(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    # To match bigquery dataframes
+    scalars_pandas_df = scalars_pandas_df.copy()
+    scalars_pandas_df.columns = scalars_pandas_df.columns.astype("string[pyarrow]")
+    # Can only stack identically-typed columns
+    columns = ["int64_col", "int64_too", "rowindex_2"]
+
+    bf_result = scalars_df[columns].stack().to_pandas()
+    pd_result = scalars_pandas_df[columns].stack()
+
+    # Pandas produces NaN, where bq dataframes produces pd.NA
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
 @pytest.mark.parametrize(
     ("values", "index", "columns"),
     [
@@ -1734,8 +1809,9 @@ def test_df___array__(scalars_df_index, scalars_pandas_df_index):
     )
 
 
-def test_getattr_not_implemented(scalars_df_index):
-    with pytest.raises(NotImplementedError):
+def test_getattr_attribute_error_when_pandas_has(scalars_df_index):
+    # asof is implemented in pandas but not in bigframes
+    with pytest.raises(AttributeError):
         scalars_df_index.asof()
 
 

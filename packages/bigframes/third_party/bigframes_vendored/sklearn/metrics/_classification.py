@@ -20,6 +20,8 @@ the lower the better.
 #          Michal Karbownik <michakarbownik@gmail.com>
 # License: BSD 3 clause
 
+from bigframes import constants
+
 
 def accuracy_score(y_true, y_pred, normalize=True) -> float:
     """Accuracy classification score.
@@ -39,7 +41,7 @@ def accuracy_score(y_true, y_pred, normalize=True) -> float:
             classified samples (float), else returns the number of correctly
             classified samples (int).
     """
-    raise NotImplementedError("abstract method")
+    raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 def confusion_matrix(
@@ -68,7 +70,7 @@ def confusion_matrix(
             samples with true label being i-th class and predicted label
             being j-th class.
     """
-    raise NotImplementedError("abstract method")
+    raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 def recall_score(
@@ -99,7 +101,7 @@ def recall_score(
             of the positive class in binary classification or weighted
             average of the recall of each class for the multiclass task.
     """
-    raise NotImplementedError("abstract method")
+    raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 def precision_score(
@@ -132,7 +134,7 @@ def precision_score(
             Precision of the positive class in binary classification or weighted
             average of the precision of each class for the multiclass task.
     """
-    raise NotImplementedError("abstract method")
+    raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 def f1_score(
@@ -167,4 +169,4 @@ def f1_score(
             average of the F1 scores of each class for the multiclass task.
 
     """
-    raise NotImplementedError("abstract method")
+    raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

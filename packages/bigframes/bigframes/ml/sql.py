@@ -182,3 +182,13 @@ def ml_generate_text_embedding(
 def ml_forecast(model_name: str) -> str:
     """Encode ML.FORECAST for BQML"""
     return f"""SELECT * FROM ML.FORECAST(MODEL `{model_name}`)"""
+
+
+def ml_principal_components(model_name: str) -> str:
+    """Encode ML.PRINCIPAL_COMPONENTS for BQML"""
+    return f"""SELECT * FROM ML.PRINCIPAL_COMPONENTS(MODEL `{model_name}`)"""
+
+
+def ml_principal_component_info(model_name: str) -> str:
+    """Encode ML.PRINCIPAL_COMPONENT_INFO for BQML"""
+    return f"""SELECT * FROM ML.PRINCIPAL_COMPONENT_INFO(MODEL `{model_name}`)"""

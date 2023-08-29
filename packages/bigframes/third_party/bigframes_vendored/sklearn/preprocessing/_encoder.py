@@ -2,6 +2,7 @@
 #          Joris Van den Bossche <jorisvandenbossche@gmail.com>
 # License: BSD 3 clause
 
+from bigframes import constants
 from third_party.bigframes_vendored.sklearn.base import BaseEstimator
 
 
@@ -61,7 +62,7 @@ class OneHotEncoder(BaseEstimator):
         Returns:
             OneHotEncoder: Fitted encoder.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def transform(self, X):
         """Transform X using one-hot encoding.
@@ -73,4 +74,4 @@ class OneHotEncoder(BaseEstimator):
         Returns:
             bigframes.dataframe.DataFrame: The result is categorized as index: number, value: number.
                 Where index is the position of the dict that seeing the category, and value is 0 or 1."""
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

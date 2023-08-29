@@ -14,10 +14,7 @@
 
 from bigframes.core.indexes.index import Index, IndexValue
 
-INDEX_COLUMN_ID = "bigframes_index_{}"
-
 __all__ = [
     "Index",
     "IndexValue",
-    "INDEX_COLUMN_ID",
 ]

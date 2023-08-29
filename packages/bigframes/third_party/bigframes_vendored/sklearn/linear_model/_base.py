@@ -18,6 +18,7 @@ Generalized Linear Models.
 from abc import ABCMeta
 from typing import List, Optional
 
+from bigframes import constants
 from third_party.bigframes_vendored.sklearn.base import (
     BaseEstimator,
     ClassifierMixin,
@@ -36,7 +37,7 @@ class LinearModel(BaseEstimator, metaclass=ABCMeta):
         Returns:
             bigframes.dataframe.DataFrame: DataFrame of shape (n_samples,). Returns predicted values.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 class LinearClassifierMixin(ClassifierMixin):
@@ -52,7 +53,7 @@ class LinearClassifierMixin(ClassifierMixin):
             bigframes.dataframe.DataFrame:  DataFrame of shape (n_samples,), containing
                 the class labels for each sample.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 class LinearRegression(RegressorMixin, LinearModel):
@@ -92,4 +93,4 @@ class LinearRegression(RegressorMixin, LinearModel):
         Returns:
             LinearRegression: Fitted Estimator.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

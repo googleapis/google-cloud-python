@@ -609,6 +609,39 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
         return self._apply_binary_op(decimals, round_op)
 
+    def corr(self, other: Series, method="pearson", min_periods=None) -> float:
+        """
+        Compute the correlation with the other Series.  Non-number values are ignored in the
+        computation.
+
+        Uses the "Pearson" method of correlation.  Numbers are converted to float before
+        calculation, so the result may be unstable.
+
+        Args:
+            other (Series):
+                The series with which this is to be correlated.
+            method (string, default "pearson"):
+                Correlation method to use - currently only "pearson" is supported.
+            min_periods (int, default None):
+                The minimum number of observations needed to return a result.  Non-default values
+                are not yet supported, so a result will be returned for at least two observations.
+
+        Returns:
+            float;  Will return NaN if there are fewer than two numeric pairs, either series has a
+                variance or covariance of zero, or any input value is infinite.
+        """
+        # TODO(kemppeterson): Validate early that both are numeric
+        # TODO(kemppeterson): Handle partially-numeric columns
+        if method != "pearson":
+            raise NotImplementedError(
+                f"Only Pearson correlation is currently supported. {constants.FEEDBACK_LINK}"
+            )
+        if min_periods:
+            raise NotImplementedError(
+                f"min_periods not yet supported. {constants.FEEDBACK_LINK}"
+            )
+        return self._apply_corr_aggregation(other)
+
     def all(self) -> bool:
         return typing.cast(bool, self._apply_aggregation(agg_ops.all_op))
 
@@ -851,7 +884,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def __getattr__(self, key: str):
         if hasattr(pandas.Series, key):
-            raise NotImplementedError(
+            raise AttributeError(
                 textwrap.dedent(
                     f"""
                     BigQuery DataFrames has not yet implemented an equivalent to
@@ -1157,6 +1190,26 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def to_xarray(self):
         return self.to_pandas().to_xarray()
+
+    def __array_ufunc__(
+        self, ufunc: numpy.ufunc, method: str, *inputs, **kwargs
+    ) -> Series:
+        """Used to support numpy ufuncs.
+        See: https://numpy.org/doc/stable/reference/ufuncs.html
+        """
+        # Only __call__ supported with zero arguments
+        if (
+            inputs[0] is not self
+            or method != "__call__"
+            or len(inputs) > 1
+            or len(kwargs) > 0
+        ):
+            return NotImplemented
+
+        if ufunc in ops.NUMPY_TO_OP:
+            return self._apply_unary_op(ops.NUMPY_TO_OP[ufunc])
+
+        return NotImplemented
 
     # Keep this at the bottom of the Series class to avoid
     # confusing type checker by overriding str

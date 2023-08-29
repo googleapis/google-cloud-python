@@ -162,3 +162,18 @@ def test_ml_generate_text_produces_correct_sql():
         == """SELECT * FROM ML.GENERATE_TEXT(MODEL `my_dataset.my_model`,
   (SELECT * FROM my_table), STRUCT(value AS item))"""
     )
+
+
+def test_ml_principal_components_produces_correct_sql():
+    sql = ml_sql.ml_principal_components(model_name="my_dataset.my_model")
+    assert (
+        sql == """SELECT * FROM ML.PRINCIPAL_COMPONENTS(MODEL `my_dataset.my_model`)"""
+    )
+
+
+def test_ml_principal_component_info_produces_correct_sql():
+    sql = ml_sql.ml_principal_component_info(model_name="my_dataset.my_model")
+    assert (
+        sql
+        == """SELECT * FROM ML.PRINCIPAL_COMPONENT_INFO(MODEL `my_dataset.my_model`)"""
+    )

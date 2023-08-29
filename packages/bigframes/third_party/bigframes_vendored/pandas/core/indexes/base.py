@@ -1,5 +1,7 @@
 # Contains code from https://github.com/pandas-dev/pandas/blob/main/pandas/core/indexes/base.py
 
+from bigframes import constants
+
 
 class Index:
     """Immutable sequence used for indexing and alignment.
@@ -10,14 +12,14 @@ class Index:
     @property
     def name(self):
         """Returns Index name."""
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def shape(self):
         """
         Return a tuple of the shape of the underlying data.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def to_numpy(self, dtype):
         """
@@ -33,4 +35,4 @@ class Index:
         Returns:
             numpy.ndarray
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

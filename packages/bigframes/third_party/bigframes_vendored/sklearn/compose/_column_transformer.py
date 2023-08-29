@@ -6,6 +6,7 @@
 
 from abc import ABCMeta
 
+from bigframes import constants
 from third_party.bigframes_vendored.sklearn.base import BaseEstimator
 
 
@@ -43,7 +44,7 @@ class ColumnTransformer(_BaseComposition):
         Returns:
             ColumnTransformer: Fitted estimator.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def transform(
         self,
@@ -58,4 +59,4 @@ class ColumnTransformer(_BaseComposition):
         Returns:
             bigframes.dataframe.DataFrame: Transformed result.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

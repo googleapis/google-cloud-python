@@ -112,7 +112,9 @@ def test_dataframe_groupby_agg_list(scalars_df_index, scalars_pandas_df_index):
     pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
 
 
-def test_dataframe_groupby_agg_dict(scalars_df_index, scalars_pandas_df_index):
+def test_dataframe_groupby_agg_dict_with_list(
+    scalars_df_index, scalars_pandas_df_index
+):
     col_names = ["int64_too", "float64_col", "int64_col", "bool_col", "string_col"]
     bf_result = (
         scalars_df_index[col_names]
@@ -123,6 +125,23 @@ def test_dataframe_groupby_agg_dict(scalars_df_index, scalars_pandas_df_index):
         scalars_pandas_df_index[col_names]
         .groupby("string_col")
         .agg({"int64_too": ["mean", "max"], "string_col": "count"})
+    )
+    bf_result_computed = bf_result.to_pandas()
+
+    pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
+
+
+def test_dataframe_groupby_agg_dict_no_lists(scalars_df_index, scalars_pandas_df_index):
+    col_names = ["int64_too", "float64_col", "int64_col", "bool_col", "string_col"]
+    bf_result = (
+        scalars_df_index[col_names]
+        .groupby("string_col")
+        .agg({"int64_too": "mean", "string_col": "count"})
+    )
+    pd_result = (
+        scalars_pandas_df_index[col_names]
+        .groupby("string_col")
+        .agg({"int64_too": "mean", "string_col": "count"})
     )
     bf_result_computed = bf_result.to_pandas()
 

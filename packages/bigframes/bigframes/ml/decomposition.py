@@ -70,6 +70,35 @@ class PCA(
         )
         return self
 
+    @property
+    def components_(self) -> bpd.DataFrame:
+        if not self._bqml_model:
+            raise RuntimeError("A model must be fitted before calling components_.")
+
+        return self._bqml_model.principal_components()
+
+    @property
+    def explained_variance_(self) -> bpd.DataFrame:
+        if not self._bqml_model:
+            raise RuntimeError(
+                "A model must be fitted before calling explained_variance_."
+            )
+
+        return self._bqml_model.principal_component_info()[
+            ["principal_component_id", "eigenvalue"]
+        ].rename(columns={"eigenvalue": "explained_variance"})
+
+    @property
+    def explained_variance_ratio_(self) -> bpd.DataFrame:
+        if not self._bqml_model:
+            raise RuntimeError(
+                "A model must be fitted before calling explained_variance_ratio_."
+            )
+
+        return self._bqml_model.principal_component_info()[
+            ["principal_component_id", "explained_variance_ratio"]
+        ]
+
     def predict(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
         if not self._bqml_model:
             raise RuntimeError("A model must be fitted before predict")

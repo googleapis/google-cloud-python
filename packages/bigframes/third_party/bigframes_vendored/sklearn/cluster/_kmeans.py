@@ -14,6 +14,7 @@
 from abc import ABC
 from typing import List, Optional
 
+from bigframes import constants
 from third_party.bigframes_vendored.sklearn.base import BaseEstimator
 
 
@@ -32,7 +33,7 @@ class _BaseKMeans(BaseEstimator, ABC):
             bigframes.dataframe.DataFrame: DataFrame of shape (n_samples,), containing the
                 class labels for each sample.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 class KMeans(_BaseKMeans):
@@ -65,7 +66,7 @@ class KMeans(_BaseKMeans):
         Returns:
             KMeans: Fitted Estimator.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def predict(
         self,
@@ -80,7 +81,7 @@ class KMeans(_BaseKMeans):
         Returns:
             bigframes.dataframe.DataFrame: DataFrame of the cluster each sample belongs to.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def score(
         self,
@@ -98,7 +99,7 @@ class KMeans(_BaseKMeans):
         Returns:
             bigframes.dataframe.DataFrame: DataFrame of the metrics.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def cluster_centers_(self):
@@ -119,4 +120,4 @@ class KMeans(_BaseKMeans):
 
             The output contains one row per feature per centroid.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

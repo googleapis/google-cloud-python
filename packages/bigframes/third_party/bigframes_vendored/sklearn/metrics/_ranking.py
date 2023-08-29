@@ -16,6 +16,8 @@ the lower the better.
 #          Michal Karbownik <michakarbownik@gmail.com>
 # License: BSD 3 clause
 
+from bigframes import constants
+
 
 def auc(x, y) -> float:
     """Compute Area Under the Curve (AUC) using the trapezoidal rule.
@@ -35,7 +37,7 @@ def auc(x, y) -> float:
     Returns:
         float: Area Under the Curve.
     """
-    raise NotImplementedError("abstract method")
+    raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 def roc_auc_score(y_true, y_score) -> float:
@@ -60,7 +62,7 @@ def roc_auc_score(y_true, y_score) -> float:
     Returns:
         float: Area Under the Curve score.
     """
-    raise NotImplementedError("abstract method")
+    raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 def roc_curve(
@@ -95,4 +97,4 @@ def roc_curve(
             fpr and tpr. `thresholds[0]` represents no instances being predicted
             and is arbitrarily set to `max(y_score) + 1`.
     """
-    raise NotImplementedError("abstract method")
+    raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

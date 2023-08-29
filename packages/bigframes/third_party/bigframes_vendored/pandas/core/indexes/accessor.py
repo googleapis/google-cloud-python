@@ -1,3 +1,6 @@
+from bigframes import constants
+
+
 class DatetimeProperties:
     """
     Accessor object for datetime-like properties of the Series values.
@@ -7,7 +10,7 @@ class DatetimeProperties:
     def day(self):
         """The day of the datetime."""
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def dayofweek(self):
@@ -22,7 +25,7 @@ class DatetimeProperties:
             Series or Index: Containing integers indicating the day number.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def date(self):
@@ -36,31 +39,31 @@ class DatetimeProperties:
             a numpy array.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def hour(self):
         """The hours of the datetime."""
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def minute(self):
         """The minutes of the datetime."""
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def month(self):
         """The month as January=1, December=12."""
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def second(self):
         """The seconds of the datetime."""
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def time(self):
@@ -73,7 +76,7 @@ class DatetimeProperties:
             a numpy array.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def quarter(self):
@@ -84,10 +87,10 @@ class DatetimeProperties:
            a numpy array.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def year(self):
         """The year of the datetime."""
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

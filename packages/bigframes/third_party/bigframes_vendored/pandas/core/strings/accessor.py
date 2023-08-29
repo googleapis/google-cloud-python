@@ -1,6 +1,8 @@
 import re
 import typing
 
+from bigframes import constants
+
 
 class StringMethods:
     """
@@ -32,7 +34,7 @@ class StringMethods:
             expression pat will be used for column names; otherwise
             capture group numbers will be used.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def find(self, sub, start: int = 0, end=None):
         """Return lowest indexes in each strings in the Series/Index.
@@ -52,7 +54,7 @@ class StringMethods:
         Returns:
             bigframes.series.Series: Series with lowest indexes in each strings.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def len(self):
         """Compute the length of each element in the Series/Index.
@@ -65,7 +67,7 @@ class StringMethods:
                 the length of each element in the Series or Index.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def lower(self):
         """Convert strings in the Series/Index to lowercase.
@@ -76,7 +78,7 @@ class StringMethods:
             bigframes.series.Series: Series with lowercase.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def slice(self, start=None, stop=None):
         """Slice substrings from each element in the Series or Index.
@@ -94,7 +96,7 @@ class StringMethods:
                 substring from original string object.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def strip(self):
         """Remove leading and trailing characters.
@@ -109,7 +111,7 @@ class StringMethods:
                 and trailing characters.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def upper(self):
         """Convert strings in the Series/Index to uppercase.
@@ -120,7 +122,7 @@ class StringMethods:
             bigframes.series.Series: Series with uppercase strings.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def isnumeric(self):
         """Check whether all characters in each string are numeric.
@@ -134,7 +136,7 @@ class StringMethods:
                 same length as the original Series/Index.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def isalpha(self):
         """Check whether all characters in each string are alphabetic.
@@ -147,7 +149,7 @@ class StringMethods:
             bigframes.series.Series: Series with the same length as the originalSeries/Index.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def isdigit(self):
         """Check whether all characters in each string are digits.
@@ -160,7 +162,7 @@ class StringMethods:
             bigframes.series.Series: Series with the same length as the originalSeries/Index.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def isalnum(self):
         """Check whether all characters in each string are alphanumeric.
@@ -174,7 +176,7 @@ class StringMethods:
                 same length as the original Series/Index.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def isspace(self):
         """Check whether all characters in each string are whitespace.
@@ -188,7 +190,7 @@ class StringMethods:
                 same length as the original Series/Index.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def islower(self):
         """Check whether all characters in each string are lowercase.
@@ -202,7 +204,7 @@ class StringMethods:
                 same length as the original Series/Index.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def isupper(self):
         """Check whether all characters in each string are uppercase.
@@ -216,7 +218,7 @@ class StringMethods:
                 same length as the original Series/Index.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def isdecimal(self):
         """Check whether all characters in each string are decimal.
@@ -230,7 +232,7 @@ class StringMethods:
                 same length as the original Series/Index.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rstrip(self):
         """Remove trailing characters.
@@ -244,7 +246,7 @@ class StringMethods:
             bigframes.series.Series: Series without trailing characters.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def lstrip(self):
         """Remove leading characters.
@@ -258,7 +260,7 @@ class StringMethods:
             bigframes.series.Series: Series without leading characters.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def repeat(self, repeats: int):
         """Duplicate each string in the Series or Index.
@@ -272,7 +274,7 @@ class StringMethods:
                 objects specified by input parameter repeats.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def capitalize(self):
         """Convert strings in the Series/Index to be capitalized.
@@ -283,7 +285,7 @@ class StringMethods:
             bigframes.series.Series: Series with captitalized strings.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cat(self, others, *, join):
         """Concatenate strings in the Series/Index with given separator.
@@ -304,7 +306,7 @@ class StringMethods:
             bigframes.series.Series: Series with concatenated strings.
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def contains(self, pat, case: bool = True, flags: int = 0, *, regex: bool = True):
         """
@@ -329,7 +331,7 @@ class StringMethods:
                 whether the given pattern is contained within the string of each
                 element of the Series or Index.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def replace(
         self,
@@ -373,7 +375,7 @@ class StringMethods:
                 of `pat` replaced by `repl`.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def startswith(
         self,
@@ -391,7 +393,7 @@ class StringMethods:
             bigframes.series.Series: A Series of booleans indicating whether the given
                 pattern matches the start of each string element.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def endswith(
         self,
@@ -409,7 +411,7 @@ class StringMethods:
             bigframes.series.Series: A Series of booleans indicating whether the given
                 pattern matches the end of each string element.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def match(self, pat: str, case: bool = True, flags: int = 0):
         """
@@ -426,7 +428,7 @@ class StringMethods:
         Returns:
             bigframes.series.Series: Series of boolean values
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def fullmatch(self, pat: str, case: bool = True, flags: int = 0):
         """
@@ -443,7 +445,7 @@ class StringMethods:
         Returns:
             bigframes.series.Series: Series of boolean values
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def get(self, i: int):
         """
@@ -459,7 +461,7 @@ class StringMethods:
         Returns:
             bigframes.series.Series: Series
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def pad(
         self,
@@ -482,7 +484,7 @@ class StringMethods:
         Returns:
             bigframes.series.Series: Returns Series or Index with minimum number of char in object.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def ljust(
         self,
@@ -502,7 +504,7 @@ class StringMethods:
         Returns:
             bigframes.series.Series: Returns Series or Index with minimum number of char in object.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rjust(
         self,
@@ -522,7 +524,7 @@ class StringMethods:
         Returns:
             bigframes.series.Series: Returns Series or Index with minimum number of char in object.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def zfill(
         self,
@@ -544,7 +546,7 @@ class StringMethods:
         Returns:
             bigframes.series.Series: Series of objects.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def center(
         self,
@@ -566,4 +568,4 @@ class StringMethods:
         Returns:
             bigframes.series.Series: Returns Series or Index with minimum number of char in object.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

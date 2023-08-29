@@ -10,6 +10,7 @@ from pandas._libs import lib
 from pandas._typing import Axis, FilePath, NaPosition, WriteBuffer
 import pandas.io.formats.format as fmt
 
+from bigframes import constants
 from third_party.bigframes_vendored.pandas.core.generic import NDFrame
 
 if TYPE_CHECKING:
@@ -23,31 +24,31 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         Accessor object for datetime-like properties of the Series values.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def index(self):
         """The index (axis labels) of the Series."""
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def shape(self):
         """Return a tuple of the shape of the underlying data."""
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def dtype(self):
         """
         Return the dtype object of the underlying data.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def dtypes(self):
         """
         Return the dtype object of the underlying data.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def name(self) -> Hashable:
@@ -62,7 +63,7 @@ class Series(NDFrame):  # type: ignore[misc]
             hashable object: The name of the Series, also the column name
                 if part of a DataFrame.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def reset_index(
         self,
@@ -94,13 +95,13 @@ class Series(NDFrame):  # type: ignore[misc]
                 In either case, if ``inplace=True``, no value is returned.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def __repr__(self) -> str:
         """
         Return a string representation for a particular Series.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # IO methods (to / from other formats)
@@ -165,7 +166,7 @@ class Series(NDFrame):  # type: ignore[misc]
         result = formatter.to_string()
 
         # catch contract violations
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def to_markdown(
         self,
@@ -188,7 +189,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             str: {klass} in Markdown-friendly format.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def to_dict(self, into: type[dict] = dict) -> Mapping:
         """
@@ -204,7 +205,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             collections.abc.Mapping: Key-value representation of Series.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def to_frame(self) -> DataFrame:
         """
@@ -213,7 +214,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             bigframes.dataframe.DataFrame: DataFrame representation of Series.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def to_excel(self, excel_writer, sheet_name):
         """
@@ -235,7 +236,7 @@ class Series(NDFrame):  # type: ignore[misc]
             sheet_name (str, default 'Sheet1'):
                 Name of sheet to contain Series.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def to_latex(self, buf=None, columns=None, header=True, index=True, **kwargs):
         """
@@ -256,7 +257,7 @@ class Series(NDFrame):  # type: ignore[misc]
             str or None: If buf is None, returns the result as a string.
                 Otherwise returns None.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def tolist(self) -> list:
         """
@@ -269,7 +270,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             list: list of the values
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     to_list = tolist
 
@@ -296,7 +297,7 @@ class Series(NDFrame):  # type: ignore[misc]
             numpy.ndarray: A NumPy ndarray representing the values in this
                 Series or Index.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def to_pickle(self, path, **kwargs):
         """
@@ -308,7 +309,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 object implementing a binary ``write()`` function. File path where
                 the pickled object will be stored.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def to_xarray(self):
         """
@@ -319,7 +320,7 @@ class Series(NDFrame):  # type: ignore[misc]
                 converted to Dataset if the object is a DataFrame, or a DataArray if
                 the object is a Series.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def to_json(
         self,
@@ -354,7 +355,7 @@ class Series(NDFrame):  # type: ignore[misc]
             None or str: If path_or_buf is None, returns the resulting json format as a
                 string. Otherwise returns None.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def to_csv(self, path_or_buf: str, *, index: bool = True) -> str | None:
         """
@@ -372,7 +373,7 @@ class Series(NDFrame):  # type: ignore[misc]
             None or str: If path_or_buf is None, returns the resulting csv format
                 as a string. Otherwise returns None.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def agg(self, func):
         """
@@ -387,7 +388,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             scalar or Series: Aggregated results
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def count(self):
         """
@@ -397,7 +398,7 @@ class Series(NDFrame):  # type: ignore[misc]
             int or Series (if level specified): Number of non-null values in the
                 Series.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def nunique(self) -> int:
         """
@@ -408,7 +409,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             int: number of unique elements in the object.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def mode(self) -> Series:
         """
@@ -421,7 +422,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             bigframes.series.Series: Modes of the Series in sorted order.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def drop_duplicates(
         self,
@@ -442,7 +443,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             bigframes.series.Series: Series with duplicates dropped or None if ``inplace=True``.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def duplicated(self, keep="first") -> Series:
         """
@@ -466,7 +467,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: Series indicating whether each value has occurred in the
                 preceding values.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def round(self, decimals: int = 0) -> Series:
         """
@@ -479,6 +480,29 @@ class Series(NDFrame):  # type: ignore[misc]
 
         Returns:
             bigframes.series.Series: Rounded values of the Series.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def corr(self, other, method="pearson", min_periods=None) -> float:
+        """
+        Compute the correlation with the other Series.  Non-number values are ignored in the
+        computation.
+
+        Uses the "Pearson" method of correlation.  Numbers are converted to float before
+        calculation, so the result may be unstable.
+
+        Args:
+            other (Series):
+                The series with which this is to be correlated.
+            method (string, default "pearson"):
+                Correlation method to use - currently only "pearson" is supported.
+            min_periods (int, default None):
+                The minimum number of observations needed to return a result.  Non-default values
+                are not yet supported, so a result will be returned for at least two observations.
+
+        Returns:
+            float;  Will return NaN if there are fewer than two numeric pairs, either series has a
+                variance or covariance of zero, or any input value is infinite.
         """
         raise NotImplementedError("abstract method")
 
@@ -497,7 +521,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             {klass}: First differences of the Series.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def dot(self, other) -> Series | np.ndarray:
         """
@@ -527,19 +551,19 @@ class Series(NDFrame):  # type: ignore[misc]
 
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def __matmul__(self, other):
         """
         Matrix multiplication using binary `@` operator in Python>=3.5.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def __rmatmul__(self, other):
         """
         Matrix multiplication using binary `@` operator in Python>=3.5.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def sort_values(
         self,
@@ -571,7 +595,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             bigframes.series.Series: Series ordered by values or None if ``inplace=True``.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def sort_index(
         self,
@@ -602,7 +626,7 @@ class Series(NDFrame):  # type: ignore[misc]
 
         """
 
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def nlargest(
         self, n: int = 5, keep: Literal["first", "last", "all"] = "first"
@@ -626,7 +650,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             bigframes.series.Series: The `n` largest values in the Series, sorted in decreasing order.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def nsmallest(self, n: int = 5, keep: str = "first") -> Series:
         """
@@ -649,7 +673,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             bigframes.series.Series: The `n` smallest values in the Series, sorted in increasing order.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     # ----------------------------------------------------------------------
     # function application
@@ -672,7 +696,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: If func returns a Series object the result
                 will be a DataFrame.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def groupby(
         self,
@@ -726,7 +750,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.core.groupby.SeriesGroupBy: Returns a groupby object that contains
                 information about the groups.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def drop(
         self, labels=None, *, axis=0, index=None, columns=None, level=None
@@ -758,7 +782,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Raises:
             KeyError: If none of the labels are found in the index.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def reorder_levels(self, order: Sequence) -> Series:
         """
@@ -773,7 +797,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             type of caller (new object)
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def droplevel(self, level):
         """
@@ -788,7 +812,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             Series with requested index / column level(s) removed.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def fillna(
         self,
@@ -804,7 +828,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             Series or None: Object with missing values filled or None.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def between(
         self,
@@ -832,7 +856,7 @@ class Series(NDFrame):  # type: ignore[misc]
             right (inclusive).
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cumprod(self):
         """
@@ -844,7 +868,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             bigframes.series.Series: Return cumulative sum of scalar or Series.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cumsum(self):
         """
@@ -861,7 +885,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             scalar or Series: Return cumulative sum of scalar or Series.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cummax(self):
         """
@@ -878,7 +902,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             bigframes.series.Series: Return cumulative maximum of scalar or Series.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cummin(self):
         """
@@ -901,7 +925,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             bigframes.series.Series: Return cumulative minimum of scalar or Series.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def eq(self, other) -> Series:
         """Return equal of Series and other, element-wise (binary operator eq).
@@ -916,7 +940,7 @@ class Series(NDFrame):  # type: ignore[misc]
             Series: The result of the operation.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def ne(self, other) -> Series:
         """Return not equal of Series and other, element-wise (binary operator ne).
@@ -931,7 +955,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: The result of the operation.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def le(self, other) -> Series:
         """Get 'less than or equal to' of Series and other, element-wise (binary operator `<=`).
@@ -946,7 +970,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series. The result of the comparison.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def lt(self, other) -> Series:
         """Get 'less than' of Series and other, element-wise (binary operator `<`).
@@ -961,7 +985,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: The result of the operation.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def ge(self, other) -> Series:
         """Get 'greater than or equal to' of Series and other, element-wise (binary operator `>=`).
@@ -976,7 +1000,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: The result of the operation.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def gt(self, other) -> Series:
         """Get 'less than or equal to' of Series and other, element-wise (binary operator `<=`).
@@ -991,7 +1015,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: The result of the operation.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def add(self, other) -> Series:
         """Return addition of Series and other, element-wise (binary operator add).
@@ -1006,7 +1030,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: The result of the operation.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def radd(self, other) -> Series:
         """Return addition of Series and other, element-wise (binary operator radd).
@@ -1021,7 +1045,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: The result of the operation.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def sub(
         self,
@@ -1039,7 +1063,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: The result of the operation.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rsub(self, other) -> Series:
         """Return subtraction of Series and other, element-wise (binary operator rsub).
@@ -1054,7 +1078,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: The result of the operation.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def mul(self, other) -> Series:
         """Return multiplication of Series and other, element-wise (binary operator mul).
@@ -1069,7 +1093,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: The result of the operation.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rmul(self, other) -> Series:
         """Return multiplication of Series and other, element-wise (binary operator mul).
@@ -1083,7 +1107,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             Series: The result of the operation.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def truediv(self, other) -> Series:
         """Return floating division of Series and other, element-wise (binary operator truediv).
@@ -1098,7 +1122,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: The result of the operation.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rtruediv(self, other) -> Series:
         """Return floating division of Series and other, element-wise (binary operator rtruediv).
@@ -1113,7 +1137,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: The result of the operation.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def floordiv(self, other) -> Series:
         """Return integer division of Series and other, element-wise (binary operator floordiv).
@@ -1128,7 +1152,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: The result of the operation.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rfloordiv(self, other) -> Series:
         """Return integer division of Series and other, element-wise (binary operator rfloordiv).
@@ -1143,7 +1167,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: The result of the operation.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def mod(self, other) -> Series:
         """Return modulo of Series and other, element-wise (binary operator mod).
@@ -1158,7 +1182,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: The result of the operation.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rmod(self, other) -> Series:
         """Get modulo of Series and other, element-wise (binary operator `rmod`).
@@ -1173,7 +1197,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: The result of the operation.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def divmod(self, other) -> Series:
         """Return integer division and modulo of Series and other, element-wise (binary operator divmod).
@@ -1188,7 +1212,7 @@ class Series(NDFrame):  # type: ignore[misc]
             consistent with (floordiv, mod) (though pandas may not).
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rdivmod(self, other) -> Series:
         """Return integer division and modulo of Series and other, element-wise (binary operator rdivmod).
@@ -1203,7 +1227,7 @@ class Series(NDFrame):  # type: ignore[misc]
             consistent with (rfloordiv, rmod) (though pandas may not).
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def all(
         self,
@@ -1218,7 +1242,7 @@ class Series(NDFrame):  # type: ignore[misc]
             scalar or Series: If level is specified, then, Series is returned;
                 otherwise, scalar is returned.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def any(
         self,
@@ -1233,7 +1257,7 @@ class Series(NDFrame):  # type: ignore[misc]
             scalar or Series: If level is specified, then, Series is returned;
                 otherwise, scalar is returned.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def max(
         self,
@@ -1248,7 +1272,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             scalar or scalar
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def min(
         self,
@@ -1262,7 +1286,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             scalar or scalar
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def std(
         self,
@@ -1277,7 +1301,7 @@ class Series(NDFrame):  # type: ignore[misc]
         -------
         scalar or Series (if level specified)
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def var(
         self,
@@ -1290,7 +1314,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             scalar or Series (if level specified)
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def sum(self):
         """Return the sum of the values over the requested axis.
@@ -1300,7 +1324,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             scalar
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def mean(self):
         """Return the mean of the values over the requested axis.
@@ -1308,7 +1332,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             scalar
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def median(self, *, exact: bool = False):
         """Return the median of the values over the requested axis.
@@ -1321,7 +1345,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             scalar
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def prod(self):
         """Return the product of the values over the requested axis.
@@ -1329,7 +1353,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             scalar
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def skew(self):
         """Return unbiased skew over requested axis.
@@ -1339,7 +1363,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             scalar
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def kurt(self):
         """Return unbiased kurtosis over requested axis.
@@ -1349,7 +1373,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             scalar or scalar: Unbiased kurtosis over requested axis.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def where(self, cond, other):
         """Replace values where the condition is False.
@@ -1373,7 +1397,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             bigframes.series.Series: Series after the replacement.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def mask(self, cond, other):
         """Replace values where the condition is True.
@@ -1397,7 +1421,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             bigframes.series.Series: Series after the replacement.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def clip(self):
         """Trim values at input threshold(s).
@@ -1416,7 +1440,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             Series.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def argmax(self):
         """
@@ -1427,7 +1451,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             Series: Row position of the maximum value.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def argmin(self):
         """
@@ -1438,7 +1462,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             Series: Row position of the minimum value.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rename(self, index, **kwargs) -> Series | None:
         """
@@ -1461,7 +1485,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.series.Series: Series with index labels.
 
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rename_axis(self, mapper, **kwargs):
         """
@@ -1474,7 +1498,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             bigframes.series.Series: Series with the name of the axis set.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rolling(
         self,
@@ -1515,7 +1539,7 @@ class Series(NDFrame):  # type: ignore[misc]
             bigframes.core.window.Window: ``Window`` subclass if a ``win_type`` is passed.
                 ``Rolling`` subclass if ``win_type`` is not passed.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def expanding(self, min_periods=1):
         """
@@ -1529,7 +1553,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             bigframes.core.window.Window: ``Expanding`` subclass.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def value_counts(
         self,
@@ -1560,7 +1584,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             Series: Series containing counts of unique values.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def str(self):
@@ -1570,7 +1594,7 @@ class Series(NDFrame):  # type: ignore[misc]
         NAs stay NA unless handled otherwise by a particular method. Patterned
         after Python’s string methods, with some inspiration from R’s stringr package.
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def isin(self, values):
         """
@@ -1595,7 +1619,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Raises:
             TypeError: If input is not list-like.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def is_monotonic_increasing(self) -> bool:
@@ -1605,7 +1629,7 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             bool
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def is_monotonic_decreasing(self) -> bool:
@@ -1615,4 +1639,4 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             bool
         """
-        raise NotImplementedError("abstract property")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

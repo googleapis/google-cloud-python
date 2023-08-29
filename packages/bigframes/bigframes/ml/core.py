@@ -74,20 +74,18 @@ class BqmlModel:
                 string from which to construct the output dataframe. It must
                 include the index columns of the input SQL.
         """
-        source_sql, tagged_index_cols = input_data._to_sql_query(
-            always_include_index=True
+        source_sql, index_col_ids, index_labels = input_data._to_sql_query(
+            include_index=True
         )
 
-        if len(tagged_index_cols) != 1:
+        if len(index_col_ids) != 1:
             raise NotImplementedError(
                 f"Only exactly one index column is supported. {constants.FEEDBACK_LINK}"
             )
 
-        index_col_name, is_named_index = tagged_index_cols[0]
         sql = func(source_sql)
-        df = session.read_gbq(sql, index_col=[index_col_name])
-        if not is_named_index:
-            df.index.name = None
+        df = session.read_gbq(sql, index_col=index_col_ids)
+        df.index.names = index_labels
 
         return df
 
@@ -150,10 +148,10 @@ class BqmlModel:
     def evaluate(self, input_data: Optional[bpd.DataFrame] = None):
         # TODO: validate input data schema
         # Note: don't need index as evaluate returns a new table
-        source_sql, _ = (
-            input_data._to_sql_query(always_include_index=False)
+        source_sql, _, _ = (
+            input_data._to_sql_query(include_index=False)
             if (input_data is not None)
-            else (None, None)
+            else (None, None, None)
         )
         sql = ml_sql.ml_evaluate(self.model_name, source_sql)
 
@@ -163,6 +161,20 @@ class BqmlModel:
         assert self._model.model_type == "KMEANS"
 
         sql = ml_sql.ml_centroids(self.model_name)
+
+        return self._session.read_gbq(sql)
+
+    def principal_components(self):
+        assert self._model.model_type == "PCA"
+
+        sql = ml_sql.ml_principal_components(self.model_name)
+
+        return self._session.read_gbq(sql)
+
+    def principal_component_info(self):
+        assert self._model.model_type == "PCA"
+
+        sql = ml_sql.ml_principal_component_info(self.model_name)
 
         return self._session.read_gbq(sql)
 

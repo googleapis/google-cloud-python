@@ -41,6 +41,7 @@ method accepts either a fully-qualified table ID or a SQL query.
 
   import bigframes.pandas as bpd
 
+  bpd.options.bigquery.project = your_gcp_project_id
   df1 = bpd.read_gbq("project.dataset.table")
   df2 = bpd.read_gbq("SELECT a, b, c, FROM `project.dataset.table`")
 
@@ -260,7 +261,7 @@ To view and manage Cloud Functions functions, use the
 `Functions <https://console.cloud.google.com/functions/list?env=gen2>`_
 page and use the project picker to select the project in which you
 created the function. For easy identification, the names of the functions
-created by BigQuery DataFrames are prefixed by ``bigframes-``.
+created by BigQuery DataFrames are prefixed by ``bigframes``.
 
 **Requirements**
 
@@ -283,7 +284,9 @@ following IAM roles:
 * BigQuery Data Editor (roles/bigquery.dataEditor)
 * BigQuery Connection Admin (roles/bigquery.connectionAdmin)
 * Cloud Functions Developer (roles/cloudfunctions.developer)
-* Service Account User (roles/iam.serviceAccountUser)
+* Service Account User (roles/iam.serviceAccountUser) on the
+  `service account <https://cloud.google.com/functions/docs/reference/iam/roles#additional-configuration> `
+  ``PROJECT_NUMBER-compute@developer.gserviceaccount.com``
 * Storage Object Viewer (roles/storage.objectViewer)
 * Project IAM Admin (roles/resourcemanager.projectIamAdmin)
 
@@ -330,7 +333,7 @@ Data processing location
 
 BigQuery DataFrames is designed for scale, which it achieves by keeping data
 and processing on the BigQuery service. However, you can bring data into the
-memory of your client machine by calling ``.execute()`` on a DataFrame or Series
+memory of your client machine by calling ``.to_pandas()`` on a DataFrame or Series
 object. If you choose to do this, the memory limitation of your client machine
 applies.
 
