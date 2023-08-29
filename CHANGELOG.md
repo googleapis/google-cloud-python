@@ -32,6 +32,7 @@ Changelogs
 - [google-cloud-certificate-manager==1.4.3](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-certificate-manager/CHANGELOG.md)
 - [google-cloud-channel==1.15.1](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-channel/CHANGELOG.md)
 - [google-cloud-confidentialcomputing==0.4.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-confidentialcomputing/CHANGELOG.md)
+- [google-cloud-config==0.0.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-config/CHANGELOG.md)
 - [google-cloud-contact-center-insights==1.12.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-contact-center-insights/CHANGELOG.md)
 - [google-cloud-contentwarehouse==0.7.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-contentwarehouse/CHANGELOG.md)
 - [google-cloud-data-fusion==1.8.2](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-data-fusion/CHANGELOG.md)
