@@ -37,7 +37,7 @@ from .services.user_event_service import (
     UserEventServiceAsyncClient,
     UserEventServiceClient,
 )
-from .types.common import CustomAttribute, Interval, UserInfo
+from .types.common import CustomAttribute, DoubleList, Interval, UserInfo
 from .types.completion_service import CompleteQueryRequest, CompleteQueryResponse
 from .types.conversation import (
     Conversation,
@@ -139,6 +139,7 @@ __all__ = (
     "Document",
     "DocumentInfo",
     "DocumentServiceClient",
+    "DoubleList",
     "GcsSource",
     "GetConversationRequest",
     "GetDocumentRequest",

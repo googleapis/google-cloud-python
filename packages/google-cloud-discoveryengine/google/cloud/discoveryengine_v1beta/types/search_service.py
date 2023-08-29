@@ -155,6 +155,39 @@ class SearchRequest(proto.Message):
         content_search_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.ContentSearchSpec):
             A specification for configuring the behavior
             of content search.
+        embedding_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.EmbeddingSpec):
+            Uses the provided embedding to do additional semantic
+            document retrieval. The retrieval is based on the dot
+            product of
+            [SearchRequest.embedding_spec.embedding_vectors.vector][]
+            and the document embedding that is provided in
+            [SearchRequest.embedding_spec.embedding_vectors.field_path][].
+
+            If
+            [SearchRequest.embedding_spec.embedding_vectors.field_path][]
+            is not provided, it will use
+            [ServingConfig.embedding_config.field_paths][].
+        ranking_expression (str):
+            The ranking expression controls the customized ranking on
+            retrieval documents. This overrides
+            [ServingConfig.ranking_expression][]. The ranking expression
+            is a single function or multiple functions that are joint by
+            "+".
+
+            -  ranking_expression = function, { " + ", function };
+               Supported functions:
+            -  double \* relevance_score
+            -  double \* dotProduct(embedding_field_path) Function
+               variables: ``relevance_score``: pre-defined keywords,
+               used for measure relevance between query and document.
+               ``embedding_field_path``: the document embedding field
+               used with query embedding vector. ``dotProduct``:
+               embedding function between embedding_field_path and query
+               embedding vector.
+
+            Example ranking expression: If document has an embedding
+            field doc_embedding, the ranking expression could be
+            ``0.5 * relevance_score + 0.3 * dotProduct(doc_embedding)``.
         safe_search (bool):
             Whether to turn on safe search. This is only
             supported for website search.
@@ -469,6 +502,11 @@ class SearchRequest(proto.Message):
                 The condition under which query expansion should occur.
                 Default to
                 [Condition.DISABLED][google.cloud.discoveryengine.v1beta.SearchRequest.QueryExpansionSpec.Condition.DISABLED].
+            pin_unexpanded_results (bool):
+                Whether to pin unexpanded results. If this
+                field is set to true, unexpanded products are
+                always at the top of the search results,
+                followed by the expanded results.
         """
 
         class Condition(proto.Enum):
@@ -497,6 +535,10 @@ class SearchRequest(proto.Message):
             proto.ENUM,
             number=1,
             enum="SearchRequest.QueryExpansionSpec.Condition",
+        )
+        pin_unexpanded_results: bool = proto.Field(
+            proto.BOOL,
+            number=2,
         )
 
     class SpellCorrectionSpec(proto.Message):
@@ -645,6 +687,9 @@ class SearchRequest(proto.Message):
                     navigational queries. If this field is set to ``true``, we
                     skip generating summaries for non-summary seeking queries
                     and return fallback messages instead.
+                language_code (str):
+                    Language code for Summary. Use language tags defined by
+                    [BCP47][https://www.rfc-editor.org/rfc/bcp/bcp47.txt].
             """
 
             summary_result_count: int = proto.Field(
@@ -662,6 +707,10 @@ class SearchRequest(proto.Message):
             ignore_non_summary_seeking_query: bool = proto.Field(
                 proto.BOOL,
                 number=4,
+            )
+            language_code: str = proto.Field(
+                proto.STRING,
+                number=6,
             )
 
         class ExtractiveContentSpec(proto.Message):
@@ -704,9 +753,17 @@ class SearchRequest(proto.Message):
                     ``max_extractive_segment_count``, return all of the
                     segments. Otherwise, return the
                     ``max_extractive_segment_count``.
-
-                    Currently one segment is returned for each
-                    [SearchResult][google.cloud.discoveryengine.v1beta.SearchResponse.SearchResult].
+                return_extractive_segment_score (bool):
+                    Specifies whether to return the confidence score from the
+                    extractive segments in each search result. The default value
+                    is ``false``.
+                num_previous_segments (int):
+                    Specifies whether to also include the adjacent from each
+                    selected segments. Return at most ``num_previous_segments``
+                    segments before each selected segments.
+                num_next_segments (int):
+                    Return at most ``num_next_segments`` segments after each
+                    selected segments.
             """
 
             max_extractive_answer_count: int = proto.Field(
@@ -716,6 +773,18 @@ class SearchRequest(proto.Message):
             max_extractive_segment_count: int = proto.Field(
                 proto.INT32,
                 number=2,
+            )
+            return_extractive_segment_score: bool = proto.Field(
+                proto.BOOL,
+                number=3,
+            )
+            num_previous_segments: int = proto.Field(
+                proto.INT32,
+                number=4,
+            )
+            num_next_segments: int = proto.Field(
+                proto.INT32,
+                number=5,
             )
 
         snippet_spec: "SearchRequest.ContentSearchSpec.SnippetSpec" = proto.Field(
@@ -732,6 +801,43 @@ class SearchRequest(proto.Message):
             proto.MESSAGE,
             number=3,
             message="SearchRequest.ContentSearchSpec.ExtractiveContentSpec",
+        )
+
+    class EmbeddingSpec(proto.Message):
+        r"""The specification that uses customized query embedding vector
+        to do semantic document retrieval.
+
+        Attributes:
+            embedding_vectors (MutableSequence[google.cloud.discoveryengine_v1beta.types.SearchRequest.EmbeddingSpec.EmbeddingVector]):
+                The embedding vector used for retrieval.
+                Limit to 1.
+        """
+
+        class EmbeddingVector(proto.Message):
+            r"""Embedding vector.
+
+            Attributes:
+                field_path (str):
+                    Embedding field path in schema.
+                vector (MutableSequence[float]):
+                    Query embedding vector.
+            """
+
+            field_path: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            vector: MutableSequence[float] = proto.RepeatedField(
+                proto.FLOAT,
+                number=2,
+            )
+
+        embedding_vectors: MutableSequence[
+            "SearchRequest.EmbeddingSpec.EmbeddingVector"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SearchRequest.EmbeddingSpec.EmbeddingVector",
         )
 
     serving_config: str = proto.Field(
@@ -811,6 +917,15 @@ class SearchRequest(proto.Message):
         number=24,
         message=ContentSearchSpec,
     )
+    embedding_spec: EmbeddingSpec = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        message=EmbeddingSpec,
+    )
+    ranking_expression: str = proto.Field(
+        proto.STRING,
+        number=26,
+    )
     safe_search: bool = proto.Field(
         proto.BOOL,
         number=20,
@@ -872,6 +987,9 @@ class SearchResponse(proto.Message):
         applied_controls (MutableSequence[str]):
             Controls applied as part of the Control
             service.
+        query_expansion_info (google.cloud.discoveryengine_v1beta.types.SearchResponse.QueryExpansionInfo):
+            Query expansion information for the returned
+            results.
     """
 
     class SearchResult(proto.Message):
@@ -886,6 +1004,8 @@ class SearchResponse(proto.Message):
                 The document data snippet in the search
                 response. Only fields that are marked as
                 retrievable are populated.
+            model_scores (MutableMapping[str, google.cloud.discoveryengine_v1beta.types.DoubleList]):
+                Google provided available scores.
         """
 
         id: str = proto.Field(
@@ -896,6 +1016,12 @@ class SearchResponse(proto.Message):
             proto.MESSAGE,
             number=2,
             message=gcd_document.Document,
+        )
+        model_scores: MutableMapping[str, common.DoubleList] = proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=4,
+            message=common.DoubleList,
         )
 
     class Facet(proto.Message):
@@ -1025,6 +1151,9 @@ class SearchResponse(proto.Message):
                 Additional summary-skipped reasons. This
                 provides the reason for ignored cases. If
                 nothing is skipped, this field is not set.
+            safety_attributes (google.cloud.discoveryengine_v1beta.types.SearchResponse.Summary.SafetyAttributes):
+                A collection of Safety Attribute categories
+                and their associated confidence scores.
         """
 
         class SummarySkippedReason(proto.Enum):
@@ -1053,11 +1182,46 @@ class SearchResponse(proto.Message):
                     data store contains facts about company A but
                     the user query is asking questions about company
                     B.
+                POTENTIAL_POLICY_VIOLATION (4):
+                    The potential policy violation case.
+                    Google skips the summary if there is a potential
+                    policy violation detected. This includes content
+                    that may be violent or toxic.
+                LLM_ADDON_NOT_ENABLED (5):
+                    The LLM addon not enabled case.
+                    Google skips the summary if the LLM addon is not
+                    enabled.
             """
             SUMMARY_SKIPPED_REASON_UNSPECIFIED = 0
             ADVERSARIAL_QUERY_IGNORED = 1
             NON_SUMMARY_SEEKING_QUERY_IGNORED = 2
             OUT_OF_DOMAIN_QUERY_IGNORED = 3
+            POTENTIAL_POLICY_VIOLATION = 4
+            LLM_ADDON_NOT_ENABLED = 5
+
+        class SafetyAttributes(proto.Message):
+            r"""Safety Attribute categories and their associated confidence
+            scores.
+
+            Attributes:
+                categories (MutableSequence[str]):
+                    The display names of Safety Attribute
+                    categories associated with the generated
+                    content. Order matches the Scores.
+                scores (MutableSequence[float]):
+                    The confidence scores of the each category,
+                    higher value means higher confidence. Order
+                    matches the Categories.
+            """
+
+            categories: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+            scores: MutableSequence[float] = proto.RepeatedField(
+                proto.FLOAT,
+                number=2,
+            )
 
         summary_text: str = proto.Field(
             proto.STRING,
@@ -1069,6 +1233,35 @@ class SearchResponse(proto.Message):
             proto.ENUM,
             number=2,
             enum="SearchResponse.Summary.SummarySkippedReason",
+        )
+        safety_attributes: "SearchResponse.Summary.SafetyAttributes" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="SearchResponse.Summary.SafetyAttributes",
+        )
+
+    class QueryExpansionInfo(proto.Message):
+        r"""Information describing query expansion including whether
+        expansion has occurred.
+
+        Attributes:
+            expanded_query (bool):
+                Bool describing whether query expansion has
+                occurred.
+            pinned_result_count (int):
+                Number of pinned results. This field will only be set when
+                expansion happens and
+                [SearchRequest.QueryExpansionSpec.pin_unexpanded_results][google.cloud.discoveryengine.v1beta.SearchRequest.QueryExpansionSpec.pin_unexpanded_results]
+                is set to true.
+        """
+
+        expanded_query: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        pinned_result_count: int = proto.Field(
+            proto.INT64,
+            number=2,
         )
 
     @property
@@ -1118,6 +1311,11 @@ class SearchResponse(proto.Message):
     applied_controls: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=10,
+    )
+    query_expansion_info: QueryExpansionInfo = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=QueryExpansionInfo,
     )
 
 

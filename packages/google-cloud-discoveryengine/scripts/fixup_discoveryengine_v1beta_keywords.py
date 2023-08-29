@@ -41,7 +41,7 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'collect_user_event': ('parent', 'user_event', 'uri', 'ets', ),
         'complete_query': ('data_store', 'query', 'query_model', 'user_pseudo_id', 'include_tail_suggestions', ),
-        'converse_conversation': ('name', 'query', 'serving_config', 'conversation', 'safe_search', ),
+        'converse_conversation': ('name', 'query', 'serving_config', 'conversation', 'safe_search', 'user_labels', 'summary_spec', ),
         'create_conversation': ('parent', 'conversation', ),
         'create_document': ('parent', 'document', 'document_id', ),
         'create_schema': ('parent', 'schema', 'schema_id', ),
@@ -58,7 +58,7 @@ class discoveryengineCallTransformer(cst.CSTTransformer):
         'list_schemas': ('parent', 'page_size', 'page_token', ),
         'purge_documents': ('parent', 'filter', 'force', ),
         'recommend': ('serving_config', 'user_event', 'page_size', 'filter', 'validate_only', 'params', 'user_labels', ),
-        'search': ('serving_config', 'branch', 'query', 'image_query', 'page_size', 'page_token', 'offset', 'filter', 'order_by', 'user_info', 'facet_specs', 'boost_spec', 'params', 'query_expansion_spec', 'spell_correction_spec', 'user_pseudo_id', 'content_search_spec', 'safe_search', 'user_labels', ),
+        'search': ('serving_config', 'branch', 'query', 'image_query', 'page_size', 'page_token', 'offset', 'filter', 'order_by', 'user_info', 'facet_specs', 'boost_spec', 'params', 'query_expansion_spec', 'spell_correction_spec', 'user_pseudo_id', 'content_search_spec', 'embedding_spec', 'ranking_expression', 'safe_search', 'user_labels', ),
         'update_conversation': ('conversation', 'update_mask', ),
         'update_document': ('document', 'allow_missing', ),
         'update_schema': ('schema', 'allow_missing', ),

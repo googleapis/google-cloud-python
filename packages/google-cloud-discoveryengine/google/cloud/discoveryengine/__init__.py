@@ -62,6 +62,7 @@ from google.cloud.discoveryengine_v1beta.services.user_event_service.client impo
 )
 from google.cloud.discoveryengine_v1beta.types.common import (
     CustomAttribute,
+    DoubleList,
     Interval,
     UserInfo,
 )
@@ -162,6 +163,7 @@ __all__ = (
     "UserEventServiceClient",
     "UserEventServiceAsyncClient",
     "CustomAttribute",
+    "DoubleList",
     "Interval",
     "UserInfo",
     "CompleteQueryRequest",
