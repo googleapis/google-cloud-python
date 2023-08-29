@@ -2374,6 +2374,7 @@ def test_create_security_settings_rest(request_type):
         "inspect_template": "inspect_template_value",
         "deidentify_template": "deidentify_template_value",
         "retention_window_days": 2271,
+        "retention_strategy": 1,
         "purge_data_types": [1],
         "audio_export_settings": {
             "gcs_bucket": "gcs_bucket_value",
@@ -2603,6 +2604,7 @@ def test_create_security_settings_rest_bad_request(
         "inspect_template": "inspect_template_value",
         "deidentify_template": "deidentify_template_value",
         "retention_window_days": 2271,
+        "retention_strategy": 1,
         "purge_data_types": [1],
         "audio_export_settings": {
             "gcs_bucket": "gcs_bucket_value",
@@ -3018,6 +3020,7 @@ def test_update_security_settings_rest(request_type):
         "inspect_template": "inspect_template_value",
         "deidentify_template": "deidentify_template_value",
         "retention_window_days": 2271,
+        "retention_strategy": 1,
         "purge_data_types": [1],
         "audio_export_settings": {
             "gcs_bucket": "gcs_bucket_value",
@@ -3248,6 +3251,7 @@ def test_update_security_settings_rest_bad_request(
         "inspect_template": "inspect_template_value",
         "deidentify_template": "deidentify_template_value",
         "retention_window_days": 2271,
+        "retention_strategy": 1,
         "purge_data_types": [1],
         "audio_export_settings": {
             "gcs_bucket": "gcs_bucket_value",
