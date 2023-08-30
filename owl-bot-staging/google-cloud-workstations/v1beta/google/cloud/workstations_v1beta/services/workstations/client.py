@@ -462,9 +462,11 @@ class WorkstationsClient(metaclass=WorkstationsClientMeta):
 
         Returns:
             google.cloud.workstations_v1beta.types.WorkstationCluster:
-                A grouping of workstation
-                configurations and the associated
-                workstations  in that region.
+                A workstation cluster resource in the
+                Cloud Workstations API.
+                Defines a group of workstations in a
+                particular region and the VPC network
+                they're attached to.
 
         """
         # Create or coerce a protobuf request object.
@@ -698,8 +700,13 @@ class WorkstationsClient(metaclass=WorkstationsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.workstations_v1beta.types.WorkstationCluster` A grouping of workstation configurations and the associated workstations
-                   in that region.
+                The result type for the operation will be
+                :class:`google.cloud.workstations_v1beta.types.WorkstationCluster`
+                A workstation cluster resource in the Cloud Workstations
+                API.
+
+                   Defines a group of workstations in a particular
+                   region and the VPC network they're attached to.
 
         """
         # Create or coerce a protobuf request object.
@@ -825,8 +832,13 @@ class WorkstationsClient(metaclass=WorkstationsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.workstations_v1beta.types.WorkstationCluster` A grouping of workstation configurations and the associated workstations
-                   in that region.
+                The result type for the operation will be
+                :class:`google.cloud.workstations_v1beta.types.WorkstationCluster`
+                A workstation cluster resource in the Cloud Workstations
+                API.
+
+                   Defines a group of workstations in a particular
+                   region and the VPC network they're attached to.
 
         """
         # Create or coerce a protobuf request object.
@@ -942,8 +954,13 @@ class WorkstationsClient(metaclass=WorkstationsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.workstations_v1beta.types.WorkstationCluster` A grouping of workstation configurations and the associated workstations
-                   in that region.
+                The result type for the operation will be
+                :class:`google.cloud.workstations_v1beta.types.WorkstationCluster`
+                A workstation cluster resource in the Cloud Workstations
+                API.
+
+                   Defines a group of workstations in a particular
+                   region and the VPC network they're attached to.
 
         """
         # Create or coerce a protobuf request object.
@@ -1051,11 +1068,19 @@ class WorkstationsClient(metaclass=WorkstationsClientMeta):
 
         Returns:
             google.cloud.workstations_v1beta.types.WorkstationConfig:
-                A set of configuration options
-                describing how a workstation will be
-                run. Workstation configurations are
-                intended to be shared across multiple
-                workstations.
+                A workstation configuration resource in the Cloud
+                Workstations API.
+
+                   Workstation configurations act as templates for
+                   workstations. The workstation configuration defines
+                   details such as the workstation virtual machine (VM)
+                   instance type, persistent storage, container image
+                   defining environment, which IDE or Code Editor to
+                   use, and more. Administrators and platform teams can
+                   also use [Identity and Access Management
+                   (IAM)](https://cloud.google.com/iam/docs/overview)
+                   rules to grant access to teams or to individual
+                   developers.
 
         """
         # Create or coerce a protobuf request object.
@@ -1401,9 +1426,21 @@ class WorkstationsClient(metaclass=WorkstationsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.workstations_v1beta.types.WorkstationConfig` A set of configuration options describing how a workstation will be run.
-                   Workstation configurations are intended to be shared
-                   across multiple workstations.
+                The result type for the operation will be
+                :class:`google.cloud.workstations_v1beta.types.WorkstationConfig`
+                A workstation configuration resource in the Cloud
+                Workstations API.
+
+                   Workstation configurations act as templates for
+                   workstations. The workstation configuration defines
+                   details such as the workstation virtual machine (VM)
+                   instance type, persistent storage, container image
+                   defining environment, which IDE or Code Editor to
+                   use, and more. Administrators and platform teams can
+                   also use [Identity and Access Management
+                   (IAM)](https://cloud.google.com/iam/docs/overview)
+                   rules to grant access to teams or to individual
+                   developers.
 
         """
         # Create or coerce a protobuf request object.
@@ -1527,9 +1564,21 @@ class WorkstationsClient(metaclass=WorkstationsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.workstations_v1beta.types.WorkstationConfig` A set of configuration options describing how a workstation will be run.
-                   Workstation configurations are intended to be shared
-                   across multiple workstations.
+                The result type for the operation will be
+                :class:`google.cloud.workstations_v1beta.types.WorkstationConfig`
+                A workstation configuration resource in the Cloud
+                Workstations API.
+
+                   Workstation configurations act as templates for
+                   workstations. The workstation configuration defines
+                   details such as the workstation virtual machine (VM)
+                   instance type, persistent storage, container image
+                   defining environment, which IDE or Code Editor to
+                   use, and more. Administrators and platform teams can
+                   also use [Identity and Access Management
+                   (IAM)](https://cloud.google.com/iam/docs/overview)
+                   rules to grant access to teams or to individual
+                   developers.
 
         """
         # Create or coerce a protobuf request object.
@@ -1645,9 +1694,21 @@ class WorkstationsClient(metaclass=WorkstationsClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.workstations_v1beta.types.WorkstationConfig` A set of configuration options describing how a workstation will be run.
-                   Workstation configurations are intended to be shared
-                   across multiple workstations.
+                The result type for the operation will be
+                :class:`google.cloud.workstations_v1beta.types.WorkstationConfig`
+                A workstation configuration resource in the Cloud
+                Workstations API.
+
+                   Workstation configurations act as templates for
+                   workstations. The workstation configuration defines
+                   details such as the workstation virtual machine (VM)
+                   instance type, persistent storage, container image
+                   defining environment, which IDE or Code Editor to
+                   use, and more. Administrators and platform teams can
+                   also use [Identity and Access Management
+                   (IAM)](https://cloud.google.com/iam/docs/overview)
+                   rules to grant access to teams or to individual
+                   developers.
 
         """
         # Create or coerce a protobuf request object.

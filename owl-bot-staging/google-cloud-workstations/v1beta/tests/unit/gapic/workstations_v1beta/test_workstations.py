@@ -1990,6 +1990,7 @@ def test_get_workstation_config(request_type, transport: str = 'grpc'):
             uid='uid_value',
             reconciling=True,
             etag='etag_value',
+            replica_zones=['replica_zones_value'],
             degraded=True,
             enable_audit_agent=True,
         )
@@ -2007,6 +2008,7 @@ def test_get_workstation_config(request_type, transport: str = 'grpc'):
     assert response.uid == 'uid_value'
     assert response.reconciling is True
     assert response.etag == 'etag_value'
+    assert response.replica_zones == ['replica_zones_value']
     assert response.degraded is True
     assert response.enable_audit_agent is True
 
@@ -2050,6 +2052,7 @@ async def test_get_workstation_config_async(transport: str = 'grpc_asyncio', req
             uid='uid_value',
             reconciling=True,
             etag='etag_value',
+            replica_zones=['replica_zones_value'],
             degraded=True,
             enable_audit_agent=True,
         ))
@@ -2067,6 +2070,7 @@ async def test_get_workstation_config_async(transport: str = 'grpc_asyncio', req
     assert response.uid == 'uid_value'
     assert response.reconciling is True
     assert response.etag == 'etag_value'
+    assert response.replica_zones == ['replica_zones_value']
     assert response.degraded is True
     assert response.enable_audit_agent is True
 
@@ -7590,6 +7594,7 @@ def test_get_workstation_config_rest(request_type):
               uid='uid_value',
               reconciling=True,
               etag='etag_value',
+              replica_zones=['replica_zones_value'],
               degraded=True,
               enable_audit_agent=True,
         )
@@ -7611,6 +7616,7 @@ def test_get_workstation_config_rest(request_type):
     assert response.uid == 'uid_value'
     assert response.reconciling is True
     assert response.etag == 'etag_value'
+    assert response.replica_zones == ['replica_zones_value']
     assert response.degraded is True
     assert response.enable_audit_agent is True
 
@@ -8408,7 +8414,7 @@ def test_create_workstation_config_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2/workstationClusters/sample3'}
-    request_init["workstation_config"] = {'name': 'name_value', 'display_name': 'display_name_value', 'uid': 'uid_value', 'reconciling': True, 'annotations': {}, 'labels': {}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'delete_time': {}, 'etag': 'etag_value', 'idle_timeout': {'seconds': 751, 'nanos': 543}, 'running_timeout': {}, 'host': {'gce_instance': {'machine_type': 'machine_type_value', 'service_account': 'service_account_value', 'tags': ['tags_value1', 'tags_value2'], 'pool_size': 980, 'pooled_instances': 1706, 'disable_public_ip_addresses': True, 'shielded_instance_config': {'enable_secure_boot': True, 'enable_vtpm': True, 'enable_integrity_monitoring': True}, 'confidential_instance_config': {'enable_confidential_compute': True}, 'boot_disk_size_gb': 1792, 'accelerators': [{'type_': 'type__value', 'count': 553}]}}, 'persistent_directories': [{'mount_path': 'mount_path_value', 'gce_pd': {'size_gb': 739, 'fs_type': 'fs_type_value', 'disk_type': 'disk_type_value', 'source_snapshot': 'source_snapshot_value', 'reclaim_policy': 1}}], 'container': {'image': 'image_value', 'command': ['command_value1', 'command_value2'], 'args': ['args_value1', 'args_value2'], 'env': {}, 'working_dir': 'working_dir_value', 'run_as_user': 1190}, 'encryption_key': {'kms_key': 'kms_key_value', 'kms_key_service_account': 'kms_key_service_account_value'}, 'readiness_checks': [{'path': 'path_value', 'port': 453}], 'degraded': True, 'conditions': [{'code': 411, 'message': 'message_value', 'details': [{'type_url': 'type.googleapis.com/google.protobuf.Duration', 'value': b'\x08\x0c\x10\xdb\x07'}]}], 'enable_audit_agent': True}
+    request_init["workstation_config"] = {'name': 'name_value', 'display_name': 'display_name_value', 'uid': 'uid_value', 'reconciling': True, 'annotations': {}, 'labels': {}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'delete_time': {}, 'etag': 'etag_value', 'idle_timeout': {'seconds': 751, 'nanos': 543}, 'running_timeout': {}, 'host': {'gce_instance': {'machine_type': 'machine_type_value', 'service_account': 'service_account_value', 'service_account_scopes': ['service_account_scopes_value1', 'service_account_scopes_value2'], 'tags': ['tags_value1', 'tags_value2'], 'pool_size': 980, 'pooled_instances': 1706, 'disable_public_ip_addresses': True, 'enable_nested_virtualization': True, 'shielded_instance_config': {'enable_secure_boot': True, 'enable_vtpm': True, 'enable_integrity_monitoring': True}, 'confidential_instance_config': {'enable_confidential_compute': True}, 'boot_disk_size_gb': 1792, 'accelerators': [{'type_': 'type__value', 'count': 553}]}}, 'persistent_directories': [{'gce_pd': {'size_gb': 739, 'fs_type': 'fs_type_value', 'disk_type': 'disk_type_value', 'source_snapshot': 'source_snapshot_value', 'reclaim_policy': 1}, 'mount_path': 'mount_path_value'}], 'ephemeral_directories': [{'gce_pd': {'disk_type': 'disk_type_value', 'source_snapshot': 'source_snapshot_value', 'source_image': 'source_image_value', 'read_only': True}, 'mount_path': 'mount_path_value'}], 'container': {'image': 'image_value', 'command': ['command_value1', 'command_value2'], 'args': ['args_value1', 'args_value2'], 'env': {}, 'working_dir': 'working_dir_value', 'run_as_user': 1190}, 'encryption_key': {'kms_key': 'kms_key_value', 'kms_key_service_account': 'kms_key_service_account_value'}, 'readiness_checks': [{'path': 'path_value', 'port': 453}], 'replica_zones': ['replica_zones_value1', 'replica_zones_value2'], 'degraded': True, 'conditions': [{'code': 411, 'message': 'message_value', 'details': [{'type_url': 'type.googleapis.com/google.protobuf.Duration', 'value': b'\x08\x0c\x10\xdb\x07'}]}], 'enable_audit_agent': True}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -8568,7 +8574,7 @@ def test_create_workstation_config_rest_bad_request(transport: str = 'rest', req
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2/workstationClusters/sample3'}
-    request_init["workstation_config"] = {'name': 'name_value', 'display_name': 'display_name_value', 'uid': 'uid_value', 'reconciling': True, 'annotations': {}, 'labels': {}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'delete_time': {}, 'etag': 'etag_value', 'idle_timeout': {'seconds': 751, 'nanos': 543}, 'running_timeout': {}, 'host': {'gce_instance': {'machine_type': 'machine_type_value', 'service_account': 'service_account_value', 'tags': ['tags_value1', 'tags_value2'], 'pool_size': 980, 'pooled_instances': 1706, 'disable_public_ip_addresses': True, 'shielded_instance_config': {'enable_secure_boot': True, 'enable_vtpm': True, 'enable_integrity_monitoring': True}, 'confidential_instance_config': {'enable_confidential_compute': True}, 'boot_disk_size_gb': 1792, 'accelerators': [{'type_': 'type__value', 'count': 553}]}}, 'persistent_directories': [{'mount_path': 'mount_path_value', 'gce_pd': {'size_gb': 739, 'fs_type': 'fs_type_value', 'disk_type': 'disk_type_value', 'source_snapshot': 'source_snapshot_value', 'reclaim_policy': 1}}], 'container': {'image': 'image_value', 'command': ['command_value1', 'command_value2'], 'args': ['args_value1', 'args_value2'], 'env': {}, 'working_dir': 'working_dir_value', 'run_as_user': 1190}, 'encryption_key': {'kms_key': 'kms_key_value', 'kms_key_service_account': 'kms_key_service_account_value'}, 'readiness_checks': [{'path': 'path_value', 'port': 453}], 'degraded': True, 'conditions': [{'code': 411, 'message': 'message_value', 'details': [{'type_url': 'type.googleapis.com/google.protobuf.Duration', 'value': b'\x08\x0c\x10\xdb\x07'}]}], 'enable_audit_agent': True}
+    request_init["workstation_config"] = {'name': 'name_value', 'display_name': 'display_name_value', 'uid': 'uid_value', 'reconciling': True, 'annotations': {}, 'labels': {}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'delete_time': {}, 'etag': 'etag_value', 'idle_timeout': {'seconds': 751, 'nanos': 543}, 'running_timeout': {}, 'host': {'gce_instance': {'machine_type': 'machine_type_value', 'service_account': 'service_account_value', 'service_account_scopes': ['service_account_scopes_value1', 'service_account_scopes_value2'], 'tags': ['tags_value1', 'tags_value2'], 'pool_size': 980, 'pooled_instances': 1706, 'disable_public_ip_addresses': True, 'enable_nested_virtualization': True, 'shielded_instance_config': {'enable_secure_boot': True, 'enable_vtpm': True, 'enable_integrity_monitoring': True}, 'confidential_instance_config': {'enable_confidential_compute': True}, 'boot_disk_size_gb': 1792, 'accelerators': [{'type_': 'type__value', 'count': 553}]}}, 'persistent_directories': [{'gce_pd': {'size_gb': 739, 'fs_type': 'fs_type_value', 'disk_type': 'disk_type_value', 'source_snapshot': 'source_snapshot_value', 'reclaim_policy': 1}, 'mount_path': 'mount_path_value'}], 'ephemeral_directories': [{'gce_pd': {'disk_type': 'disk_type_value', 'source_snapshot': 'source_snapshot_value', 'source_image': 'source_image_value', 'read_only': True}, 'mount_path': 'mount_path_value'}], 'container': {'image': 'image_value', 'command': ['command_value1', 'command_value2'], 'args': ['args_value1', 'args_value2'], 'env': {}, 'working_dir': 'working_dir_value', 'run_as_user': 1190}, 'encryption_key': {'kms_key': 'kms_key_value', 'kms_key_service_account': 'kms_key_service_account_value'}, 'readiness_checks': [{'path': 'path_value', 'port': 453}], 'replica_zones': ['replica_zones_value1', 'replica_zones_value2'], 'degraded': True, 'conditions': [{'code': 411, 'message': 'message_value', 'details': [{'type_url': 'type.googleapis.com/google.protobuf.Duration', 'value': b'\x08\x0c\x10\xdb\x07'}]}], 'enable_audit_agent': True}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -8655,7 +8661,7 @@ def test_update_workstation_config_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {'workstation_config': {'name': 'projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4'}}
-    request_init["workstation_config"] = {'name': 'projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4', 'display_name': 'display_name_value', 'uid': 'uid_value', 'reconciling': True, 'annotations': {}, 'labels': {}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'delete_time': {}, 'etag': 'etag_value', 'idle_timeout': {'seconds': 751, 'nanos': 543}, 'running_timeout': {}, 'host': {'gce_instance': {'machine_type': 'machine_type_value', 'service_account': 'service_account_value', 'tags': ['tags_value1', 'tags_value2'], 'pool_size': 980, 'pooled_instances': 1706, 'disable_public_ip_addresses': True, 'shielded_instance_config': {'enable_secure_boot': True, 'enable_vtpm': True, 'enable_integrity_monitoring': True}, 'confidential_instance_config': {'enable_confidential_compute': True}, 'boot_disk_size_gb': 1792, 'accelerators': [{'type_': 'type__value', 'count': 553}]}}, 'persistent_directories': [{'mount_path': 'mount_path_value', 'gce_pd': {'size_gb': 739, 'fs_type': 'fs_type_value', 'disk_type': 'disk_type_value', 'source_snapshot': 'source_snapshot_value', 'reclaim_policy': 1}}], 'container': {'image': 'image_value', 'command': ['command_value1', 'command_value2'], 'args': ['args_value1', 'args_value2'], 'env': {}, 'working_dir': 'working_dir_value', 'run_as_user': 1190}, 'encryption_key': {'kms_key': 'kms_key_value', 'kms_key_service_account': 'kms_key_service_account_value'}, 'readiness_checks': [{'path': 'path_value', 'port': 453}], 'degraded': True, 'conditions': [{'code': 411, 'message': 'message_value', 'details': [{'type_url': 'type.googleapis.com/google.protobuf.Duration', 'value': b'\x08\x0c\x10\xdb\x07'}]}], 'enable_audit_agent': True}
+    request_init["workstation_config"] = {'name': 'projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4', 'display_name': 'display_name_value', 'uid': 'uid_value', 'reconciling': True, 'annotations': {}, 'labels': {}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'delete_time': {}, 'etag': 'etag_value', 'idle_timeout': {'seconds': 751, 'nanos': 543}, 'running_timeout': {}, 'host': {'gce_instance': {'machine_type': 'machine_type_value', 'service_account': 'service_account_value', 'service_account_scopes': ['service_account_scopes_value1', 'service_account_scopes_value2'], 'tags': ['tags_value1', 'tags_value2'], 'pool_size': 980, 'pooled_instances': 1706, 'disable_public_ip_addresses': True, 'enable_nested_virtualization': True, 'shielded_instance_config': {'enable_secure_boot': True, 'enable_vtpm': True, 'enable_integrity_monitoring': True}, 'confidential_instance_config': {'enable_confidential_compute': True}, 'boot_disk_size_gb': 1792, 'accelerators': [{'type_': 'type__value', 'count': 553}]}}, 'persistent_directories': [{'gce_pd': {'size_gb': 739, 'fs_type': 'fs_type_value', 'disk_type': 'disk_type_value', 'source_snapshot': 'source_snapshot_value', 'reclaim_policy': 1}, 'mount_path': 'mount_path_value'}], 'ephemeral_directories': [{'gce_pd': {'disk_type': 'disk_type_value', 'source_snapshot': 'source_snapshot_value', 'source_image': 'source_image_value', 'read_only': True}, 'mount_path': 'mount_path_value'}], 'container': {'image': 'image_value', 'command': ['command_value1', 'command_value2'], 'args': ['args_value1', 'args_value2'], 'env': {}, 'working_dir': 'working_dir_value', 'run_as_user': 1190}, 'encryption_key': {'kms_key': 'kms_key_value', 'kms_key_service_account': 'kms_key_service_account_value'}, 'readiness_checks': [{'path': 'path_value', 'port': 453}], 'replica_zones': ['replica_zones_value1', 'replica_zones_value2'], 'degraded': True, 'conditions': [{'code': 411, 'message': 'message_value', 'details': [{'type_url': 'type.googleapis.com/google.protobuf.Duration', 'value': b'\x08\x0c\x10\xdb\x07'}]}], 'enable_audit_agent': True}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -8799,7 +8805,7 @@ def test_update_workstation_config_rest_bad_request(transport: str = 'rest', req
 
     # send a request that will satisfy transcoding
     request_init = {'workstation_config': {'name': 'projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4'}}
-    request_init["workstation_config"] = {'name': 'projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4', 'display_name': 'display_name_value', 'uid': 'uid_value', 'reconciling': True, 'annotations': {}, 'labels': {}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'delete_time': {}, 'etag': 'etag_value', 'idle_timeout': {'seconds': 751, 'nanos': 543}, 'running_timeout': {}, 'host': {'gce_instance': {'machine_type': 'machine_type_value', 'service_account': 'service_account_value', 'tags': ['tags_value1', 'tags_value2'], 'pool_size': 980, 'pooled_instances': 1706, 'disable_public_ip_addresses': True, 'shielded_instance_config': {'enable_secure_boot': True, 'enable_vtpm': True, 'enable_integrity_monitoring': True}, 'confidential_instance_config': {'enable_confidential_compute': True}, 'boot_disk_size_gb': 1792, 'accelerators': [{'type_': 'type__value', 'count': 553}]}}, 'persistent_directories': [{'mount_path': 'mount_path_value', 'gce_pd': {'size_gb': 739, 'fs_type': 'fs_type_value', 'disk_type': 'disk_type_value', 'source_snapshot': 'source_snapshot_value', 'reclaim_policy': 1}}], 'container': {'image': 'image_value', 'command': ['command_value1', 'command_value2'], 'args': ['args_value1', 'args_value2'], 'env': {}, 'working_dir': 'working_dir_value', 'run_as_user': 1190}, 'encryption_key': {'kms_key': 'kms_key_value', 'kms_key_service_account': 'kms_key_service_account_value'}, 'readiness_checks': [{'path': 'path_value', 'port': 453}], 'degraded': True, 'conditions': [{'code': 411, 'message': 'message_value', 'details': [{'type_url': 'type.googleapis.com/google.protobuf.Duration', 'value': b'\x08\x0c\x10\xdb\x07'}]}], 'enable_audit_agent': True}
+    request_init["workstation_config"] = {'name': 'projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4', 'display_name': 'display_name_value', 'uid': 'uid_value', 'reconciling': True, 'annotations': {}, 'labels': {}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'delete_time': {}, 'etag': 'etag_value', 'idle_timeout': {'seconds': 751, 'nanos': 543}, 'running_timeout': {}, 'host': {'gce_instance': {'machine_type': 'machine_type_value', 'service_account': 'service_account_value', 'service_account_scopes': ['service_account_scopes_value1', 'service_account_scopes_value2'], 'tags': ['tags_value1', 'tags_value2'], 'pool_size': 980, 'pooled_instances': 1706, 'disable_public_ip_addresses': True, 'enable_nested_virtualization': True, 'shielded_instance_config': {'enable_secure_boot': True, 'enable_vtpm': True, 'enable_integrity_monitoring': True}, 'confidential_instance_config': {'enable_confidential_compute': True}, 'boot_disk_size_gb': 1792, 'accelerators': [{'type_': 'type__value', 'count': 553}]}}, 'persistent_directories': [{'gce_pd': {'size_gb': 739, 'fs_type': 'fs_type_value', 'disk_type': 'disk_type_value', 'source_snapshot': 'source_snapshot_value', 'reclaim_policy': 1}, 'mount_path': 'mount_path_value'}], 'ephemeral_directories': [{'gce_pd': {'disk_type': 'disk_type_value', 'source_snapshot': 'source_snapshot_value', 'source_image': 'source_image_value', 'read_only': True}, 'mount_path': 'mount_path_value'}], 'container': {'image': 'image_value', 'command': ['command_value1', 'command_value2'], 'args': ['args_value1', 'args_value2'], 'env': {}, 'working_dir': 'working_dir_value', 'run_as_user': 1190}, 'encryption_key': {'kms_key': 'kms_key_value', 'kms_key_service_account': 'kms_key_service_account_value'}, 'readiness_checks': [{'path': 'path_value', 'port': 453}], 'replica_zones': ['replica_zones_value1', 'replica_zones_value2'], 'degraded': True, 'conditions': [{'code': 411, 'message': 'message_value', 'details': [{'type_url': 'type.googleapis.com/google.protobuf.Duration', 'value': b'\x08\x0c\x10\xdb\x07'}]}], 'enable_audit_agent': True}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -9942,7 +9948,7 @@ def test_create_workstation_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4'}
-    request_init["workstation"] = {'name': 'name_value', 'display_name': 'display_name_value', 'uid': 'uid_value', 'reconciling': True, 'annotations': {}, 'labels': {}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'delete_time': {}, 'etag': 'etag_value', 'state': 1, 'host': 'host_value', 'env': {}}
+    request_init["workstation"] = {'name': 'name_value', 'display_name': 'display_name_value', 'uid': 'uid_value', 'reconciling': True, 'annotations': {}, 'labels': {}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'start_time': {}, 'delete_time': {}, 'etag': 'etag_value', 'state': 1, 'host': 'host_value', 'env': {}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10102,7 +10108,7 @@ def test_create_workstation_rest_bad_request(transport: str = 'rest', request_ty
 
     # send a request that will satisfy transcoding
     request_init = {'parent': 'projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4'}
-    request_init["workstation"] = {'name': 'name_value', 'display_name': 'display_name_value', 'uid': 'uid_value', 'reconciling': True, 'annotations': {}, 'labels': {}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'delete_time': {}, 'etag': 'etag_value', 'state': 1, 'host': 'host_value', 'env': {}}
+    request_init["workstation"] = {'name': 'name_value', 'display_name': 'display_name_value', 'uid': 'uid_value', 'reconciling': True, 'annotations': {}, 'labels': {}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'start_time': {}, 'delete_time': {}, 'etag': 'etag_value', 'state': 1, 'host': 'host_value', 'env': {}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -10189,7 +10195,7 @@ def test_update_workstation_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {'workstation': {'name': 'projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5'}}
-    request_init["workstation"] = {'name': 'projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5', 'display_name': 'display_name_value', 'uid': 'uid_value', 'reconciling': True, 'annotations': {}, 'labels': {}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'delete_time': {}, 'etag': 'etag_value', 'state': 1, 'host': 'host_value', 'env': {}}
+    request_init["workstation"] = {'name': 'projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5', 'display_name': 'display_name_value', 'uid': 'uid_value', 'reconciling': True, 'annotations': {}, 'labels': {}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'start_time': {}, 'delete_time': {}, 'etag': 'etag_value', 'state': 1, 'host': 'host_value', 'env': {}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10333,7 +10339,7 @@ def test_update_workstation_rest_bad_request(transport: str = 'rest', request_ty
 
     # send a request that will satisfy transcoding
     request_init = {'workstation': {'name': 'projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5'}}
-    request_init["workstation"] = {'name': 'projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5', 'display_name': 'display_name_value', 'uid': 'uid_value', 'reconciling': True, 'annotations': {}, 'labels': {}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'delete_time': {}, 'etag': 'etag_value', 'state': 1, 'host': 'host_value', 'env': {}}
+    request_init["workstation"] = {'name': 'projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5', 'display_name': 'display_name_value', 'uid': 'uid_value', 'reconciling': True, 'annotations': {}, 'labels': {}, 'create_time': {'seconds': 751, 'nanos': 543}, 'update_time': {}, 'start_time': {}, 'delete_time': {}, 'etag': 'etag_value', 'state': 1, 'host': 'host_value', 'env': {}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
