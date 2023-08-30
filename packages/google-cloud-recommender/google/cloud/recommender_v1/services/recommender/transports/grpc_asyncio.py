@@ -400,6 +400,45 @@ class RecommenderGrpcAsyncIOTransport(RecommenderTransport):
         return self._stubs["get_recommendation"]
 
     @property
+    def mark_recommendation_dismissed(
+        self,
+    ) -> Callable[
+        [recommender_service.MarkRecommendationDismissedRequest],
+        Awaitable[recommendation.Recommendation],
+    ]:
+        r"""Return a callable for the mark recommendation dismissed method over gRPC.
+
+        Mark the Recommendation State as Dismissed. Users can use this
+        method to indicate to the Recommender API that an ACTIVE
+        recommendation has to be marked back as DISMISSED.
+
+        MarkRecommendationDismissed can be applied to recommendations in
+        ACTIVE state.
+
+        Requires the recommender.*.update IAM permission for the
+        specified recommender.
+
+        Returns:
+            Callable[[~.MarkRecommendationDismissedRequest],
+                    Awaitable[~.Recommendation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "mark_recommendation_dismissed" not in self._stubs:
+            self._stubs[
+                "mark_recommendation_dismissed"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.recommender.v1.Recommender/MarkRecommendationDismissed",
+                request_serializer=recommender_service.MarkRecommendationDismissedRequest.serialize,
+                response_deserializer=recommendation.Recommendation.deserialize,
+            )
+        return self._stubs["mark_recommendation_dismissed"]
+
+    @property
     def mark_recommendation_claimed(
         self,
     ) -> Callable[

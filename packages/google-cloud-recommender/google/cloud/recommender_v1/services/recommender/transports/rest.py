@@ -137,6 +137,14 @@ class RecommenderRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_mark_recommendation_dismissed(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_mark_recommendation_dismissed(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_mark_recommendation_failed(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -358,6 +366,32 @@ class RecommenderRestInterceptor:
         self, response: recommendation.Recommendation
     ) -> recommendation.Recommendation:
         """Post-rpc interceptor for mark_recommendation_claimed
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Recommender server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_mark_recommendation_dismissed(
+        self,
+        request: recommender_service.MarkRecommendationDismissedRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        recommender_service.MarkRecommendationDismissedRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for mark_recommendation_dismissed
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Recommender server.
+        """
+        return request, metadata
+
+    def post_mark_recommendation_dismissed(
+        self, response: recommendation.Recommendation
+    ) -> recommendation.Recommendation:
+        """Post-rpc interceptor for mark_recommendation_dismissed
 
         Override in a subclass to manipulate the response
         after it is returned by the Recommender server but before
@@ -604,7 +638,7 @@ class RecommenderRestTransport(RecommenderTransport):
                 ~.insight.Insight:
                     An insight along with the information
                 used to derive the insight. The insight
-                may have associated recomendations as
+                may have associated recommendations as
                 well.
 
             """
@@ -715,6 +749,10 @@ class RecommenderRestTransport(RecommenderTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=organizations/*/locations/*/insightTypes/*/config}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=billingAccounts/*/locations/*/insightTypes/*/config}",
                 },
             ]
             request, metadata = self._interceptor.pre_get_insight_type_config(
@@ -911,6 +949,10 @@ class RecommenderRestTransport(RecommenderTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=organizations/*/locations/*/recommenders/*/config}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=billingAccounts/*/locations/*/recommenders/*/config}",
                 },
             ]
             request, metadata = self._interceptor.pre_get_recommender_config(
@@ -1192,7 +1234,7 @@ class RecommenderRestTransport(RecommenderTransport):
                 ~.insight.Insight:
                     An insight along with the information
                 used to derive the insight. The insight
-                may have associated recomendations as
+                may have associated recommendations as
                 well.
 
             """
@@ -1388,6 +1430,125 @@ class RecommenderRestTransport(RecommenderTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_mark_recommendation_claimed(resp)
+            return resp
+
+    class _MarkRecommendationDismissed(RecommenderRestStub):
+        def __hash__(self):
+            return hash("MarkRecommendationDismissed")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: recommender_service.MarkRecommendationDismissedRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> recommendation.Recommendation:
+            r"""Call the mark recommendation
+            dismissed method over HTTP.
+
+                Args:
+                    request (~.recommender_service.MarkRecommendationDismissedRequest):
+                        The request object. Request for the ``MarkRecommendationDismissed`` Method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.recommendation.Recommendation:
+                        A recommendation along with a
+                    suggested action. E.g., a rightsizing
+                    recommendation for an underutilized VM,
+                    IAM role recommendations, etc
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*/recommenders/*/recommendations/*}:markDismissed",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=billingAccounts/*/locations/*/recommenders/*/recommendations/*}:markDismissed",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=folders/*/locations/*/recommenders/*/recommendations/*}:markDismissed",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=organizations/*/locations/*/recommenders/*/recommendations/*}:markDismissed",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_mark_recommendation_dismissed(
+                request, metadata
+            )
+            pb_request = recommender_service.MarkRecommendationDismissedRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = recommendation.Recommendation()
+            pb_resp = recommendation.Recommendation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_mark_recommendation_dismissed(resp)
             return resp
 
     class _MarkRecommendationFailed(RecommenderRestStub):
@@ -1676,6 +1837,11 @@ class RecommenderRestTransport(RecommenderTransport):
                     "uri": "/v1/{insight_type_config.name=organizations/*/locations/*/insightTypes/*/config}",
                     "body": "insight_type_config",
                 },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{insight_type_config.name=billingAccounts/*/locations/*/insightTypes/*/config}",
+                    "body": "insight_type_config",
+                },
             ]
             request, metadata = self._interceptor.pre_update_insight_type_config(
                 request, metadata
@@ -1776,6 +1942,11 @@ class RecommenderRestTransport(RecommenderTransport):
                 {
                     "method": "patch",
                     "uri": "/v1/{recommender_config.name=organizations/*/locations/*/recommenders/*/config}",
+                    "body": "recommender_config",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1/{recommender_config.name=billingAccounts/*/locations/*/recommenders/*/config}",
                     "body": "recommender_config",
                 },
             ]
@@ -1911,6 +2082,17 @@ class RecommenderRestTransport(RecommenderTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._MarkRecommendationClaimed(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def mark_recommendation_dismissed(
+        self,
+    ) -> Callable[
+        [recommender_service.MarkRecommendationDismissedRequest],
+        recommendation.Recommendation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._MarkRecommendationDismissed(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def mark_recommendation_failed(
