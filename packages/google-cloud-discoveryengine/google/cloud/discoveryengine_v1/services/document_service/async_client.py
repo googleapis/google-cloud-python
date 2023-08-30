@@ -44,6 +44,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2
 from google.protobuf import struct_pb2  # type: ignore
 
@@ -396,9 +397,10 @@ class DocumentServiceAsyncClient:
                 documents under the default branch.
 
                 If the caller does not have permission to list
-                [Documents][]s under this branch, regardless of whether
-                or not this branch exists, a ``PERMISSION_DENIED`` error
-                is returned.
+                [Document][google.cloud.discoveryengine.v1.Document]s
+                under this branch, regardless of whether or not this
+                branch exists, a ``PERMISSION_DENIED`` error is
+                returned.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

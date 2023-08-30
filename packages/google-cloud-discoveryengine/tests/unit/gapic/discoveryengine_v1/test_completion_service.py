@@ -32,6 +32,7 @@ from google.api_core import exceptions as core_exceptions
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import json_format
@@ -752,7 +753,9 @@ def test_complete_query(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = completion_service.CompleteQueryResponse()
+        call.return_value = completion_service.CompleteQueryResponse(
+            tail_match_triggered=True,
+        )
         response = client.complete_query(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -762,6 +765,7 @@ def test_complete_query(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, completion_service.CompleteQueryResponse)
+    assert response.tail_match_triggered is True
 
 
 def test_complete_query_empty_call():
@@ -798,7 +802,9 @@ async def test_complete_query_async(
     with mock.patch.object(type(client.transport.complete_query), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            completion_service.CompleteQueryResponse()
+            completion_service.CompleteQueryResponse(
+                tail_match_triggered=True,
+            )
         )
         response = await client.complete_query(request)
 
@@ -809,6 +815,7 @@ async def test_complete_query_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, completion_service.CompleteQueryResponse)
+    assert response.tail_match_triggered is True
 
 
 @pytest.mark.asyncio
@@ -899,7 +906,9 @@ def test_complete_query_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = completion_service.CompleteQueryResponse()
+        return_value = completion_service.CompleteQueryResponse(
+            tail_match_triggered=True,
+        )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -913,6 +922,7 @@ def test_complete_query_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, completion_service.CompleteQueryResponse)
+    assert response.tail_match_triggered is True
 
 
 def test_complete_query_rest_required_fields(
@@ -954,6 +964,7 @@ def test_complete_query_rest_required_fields(
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
+            "include_tail_suggestions",
             "query",
             "query_model",
             "user_pseudo_id",
@@ -1022,6 +1033,7 @@ def test_complete_query_rest_unset_required_fields():
     assert set(unset_fields) == (
         set(
             (
+                "includeTailSuggestions",
                 "query",
                 "queryModel",
                 "userPseudoId",

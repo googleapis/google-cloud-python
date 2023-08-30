@@ -32,6 +32,7 @@ from google.api_core import exceptions as core_exceptions
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -787,7 +788,9 @@ def test_converse_conversation(request_type, transport: str = "grpc"):
         type(client.transport.converse_conversation), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = conversational_search_service.ConverseConversationResponse()
+        call.return_value = conversational_search_service.ConverseConversationResponse(
+            related_questions=["related_questions_value"],
+        )
         response = client.converse_conversation(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -799,6 +802,7 @@ def test_converse_conversation(request_type, transport: str = "grpc"):
     assert isinstance(
         response, conversational_search_service.ConverseConversationResponse
     )
+    assert response.related_questions == ["related_questions_value"]
 
 
 def test_converse_conversation_empty_call():
@@ -839,7 +843,9 @@ async def test_converse_conversation_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            conversational_search_service.ConverseConversationResponse()
+            conversational_search_service.ConverseConversationResponse(
+                related_questions=["related_questions_value"],
+            )
         )
         response = await client.converse_conversation(request)
 
@@ -852,6 +858,7 @@ async def test_converse_conversation_async(
     assert isinstance(
         response, conversational_search_service.ConverseConversationResponse
     )
+    assert response.related_questions == ["related_questions_value"]
 
 
 @pytest.mark.asyncio
@@ -2493,7 +2500,9 @@ def test_converse_conversation_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = conversational_search_service.ConverseConversationResponse()
+        return_value = conversational_search_service.ConverseConversationResponse(
+            related_questions=["related_questions_value"],
+        )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -2511,6 +2520,7 @@ def test_converse_conversation_rest(request_type):
     assert isinstance(
         response, conversational_search_service.ConverseConversationResponse
     )
+    assert response.related_questions == ["related_questions_value"]
 
 
 def test_converse_conversation_rest_required_fields(
@@ -2809,6 +2819,14 @@ def test_create_conversation_rest(request_type):
                             "end": 311,
                         }
                     ],
+                    "summary": {
+                        "summary_text": "summary_text_value",
+                        "summary_skipped_reasons": [1],
+                        "safety_attributes": {
+                            "categories": ["categories_value1", "categories_value2"],
+                            "scores": [0.656, 0.657],
+                        },
+                    },
                 },
                 "create_time": {"seconds": 751, "nanos": 543},
             }
@@ -3034,6 +3052,14 @@ def test_create_conversation_rest_bad_request(
                             "end": 311,
                         }
                     ],
+                    "summary": {
+                        "summary_text": "summary_text_value",
+                        "summary_skipped_reasons": [1],
+                        "safety_attributes": {
+                            "categories": ["categories_value1", "categories_value2"],
+                            "scores": [0.656, 0.657],
+                        },
+                    },
                 },
                 "create_time": {"seconds": 751, "nanos": 543},
             }
@@ -3426,6 +3452,14 @@ def test_update_conversation_rest(request_type):
                             "end": 311,
                         }
                     ],
+                    "summary": {
+                        "summary_text": "summary_text_value",
+                        "summary_skipped_reasons": [1],
+                        "safety_attributes": {
+                            "categories": ["categories_value1", "categories_value2"],
+                            "scores": [0.656, 0.657],
+                        },
+                    },
                 },
                 "create_time": {"seconds": 751, "nanos": 543},
             }
@@ -3644,6 +3678,14 @@ def test_update_conversation_rest_bad_request(
                             "end": 311,
                         }
                     ],
+                    "summary": {
+                        "summary_text": "summary_text_value",
+                        "summary_skipped_reasons": [1],
+                        "safety_attributes": {
+                            "categories": ["categories_value1", "categories_value2"],
+                            "scores": [0.656, 0.657],
+                        },
+                    },
                 },
                 "create_time": {"seconds": 751, "nanos": 543},
             }

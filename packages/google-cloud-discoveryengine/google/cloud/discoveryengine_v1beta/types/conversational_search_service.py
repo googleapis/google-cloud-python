@@ -65,6 +65,31 @@ class ConverseConversationRequest(proto.Message):
             conversation in auto session.
         safe_search (bool):
             Whether to turn on safe search.
+        user_labels (MutableMapping[str, str]):
+            The user labels applied to a resource must meet the
+            following requirements:
+
+            -  Each resource can have multiple labels, up to a maximum
+               of 64.
+            -  Each label must be a key-value pair.
+            -  Keys have a minimum length of 1 character and a maximum
+               length of 63 characters and cannot be empty. Values can
+               be empty and have a maximum length of 63 characters.
+            -  Keys and values can contain only lowercase letters,
+               numeric characters, underscores, and dashes. All
+               characters must use UTF-8 encoding, and international
+               characters are allowed.
+            -  The key portion of a label must be unique. However, you
+               can use the same key with multiple resources.
+            -  Keys must start with a lowercase letter or international
+               character.
+
+            See `Google Cloud
+            Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
+            for more details.
+        summary_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.ContentSearchSpec.SummarySpec):
+            A specification for configuring the summary
+            returned in the response.
     """
 
     name: str = proto.Field(
@@ -89,6 +114,18 @@ class ConverseConversationRequest(proto.Message):
         proto.BOOL,
         number=6,
     )
+    user_labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=7,
+    )
+    summary_spec: search_service.SearchRequest.ContentSearchSpec.SummarySpec = (
+        proto.Field(
+            proto.MESSAGE,
+            number=8,
+            message=search_service.SearchRequest.ContentSearchSpec.SummarySpec,
+        )
+    )
 
 
 class ConverseConversationResponse(proto.Message):
@@ -101,6 +138,8 @@ class ConverseConversationResponse(proto.Message):
             Answer to the current query.
         conversation (google.cloud.discoveryengine_v1beta.types.Conversation):
             Updated conversation including the answer.
+        related_questions (MutableSequence[str]):
+            Suggested related questions.
         search_results (MutableSequence[google.cloud.discoveryengine_v1beta.types.SearchResponse.SearchResult]):
             Search Results.
     """
@@ -114,6 +153,10 @@ class ConverseConversationResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message=gcd_conversation.Conversation,
+    )
+    related_questions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
     )
     search_results: MutableSequence[
         search_service.SearchResponse.SearchResult

@@ -620,6 +620,11 @@ class DocumentInfo(proto.Message):
             ``projects/{project_id}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}/branches/{branch_id}/documents/{document_id}``
 
             This field is a member of `oneof`_ ``document_descriptor``.
+        uri (str):
+            The [Document][google.cloud.discoveryengine.v1beta.Document]
+            URI - only allowed for website data stores.
+
+            This field is a member of `oneof`_ ``document_descriptor``.
         quantity (int):
             Quantity of the Document associated with the user event.
             Defaults to 1.
@@ -647,6 +652,11 @@ class DocumentInfo(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=2,
+        oneof="document_descriptor",
+    )
+    uri: str = proto.Field(
+        proto.STRING,
+        number=6,
         oneof="document_descriptor",
     )
     quantity: int = proto.Field(

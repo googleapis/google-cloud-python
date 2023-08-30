@@ -74,7 +74,7 @@ class CollectUserEventRequest(proto.Message):
             excluding the hash fragment with a length limit
             of 5,000 characters. This is often more useful
             than the referer URL, because many browsers only
-            send the domain for 3rd party requests.
+            send the domain for third-party requests.
 
             This field is a member of `oneof`_ ``_uri``.
         ets (int):
