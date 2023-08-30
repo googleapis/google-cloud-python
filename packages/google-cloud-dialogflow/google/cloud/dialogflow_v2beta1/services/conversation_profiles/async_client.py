@@ -1040,7 +1040,7 @@ class ConversationProfilesAsyncClient:
                 request = dialogflow_v2beta1.ClearSuggestionFeatureConfigRequest(
                     conversation_profile="conversation_profile_value",
                     participant_role="END_USER",
-                    suggestion_feature_type="CONVERSATION_SUMMARIZATION",
+                    suggestion_feature_type="KNOWLEDGE_SEARCH",
                 )
 
                 # Make the request

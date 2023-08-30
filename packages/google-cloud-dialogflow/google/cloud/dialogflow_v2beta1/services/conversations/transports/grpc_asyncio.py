@@ -496,6 +496,36 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
             )
         return self._stubs["generate_stateless_summary"]
 
+    @property
+    def search_knowledge(
+        self,
+    ) -> Callable[
+        [conversation.SearchKnowledgeRequest],
+        Awaitable[conversation.SearchKnowledgeResponse],
+    ]:
+        r"""Return a callable for the search knowledge method over gRPC.
+
+        Get answers for the given query based on knowledge
+        documents.
+
+        Returns:
+            Callable[[~.SearchKnowledgeRequest],
+                    Awaitable[~.SearchKnowledgeResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "search_knowledge" not in self._stubs:
+            self._stubs["search_knowledge"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Conversations/SearchKnowledge",
+                request_serializer=conversation.SearchKnowledgeRequest.serialize,
+                response_deserializer=conversation.SearchKnowledgeResponse.deserialize,
+            )
+        return self._stubs["search_knowledge"]
+
     def close(self):
         return self.grpc_channel.close()
 

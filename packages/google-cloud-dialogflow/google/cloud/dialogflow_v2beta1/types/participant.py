@@ -688,6 +688,9 @@ class SuggestionFeature(proto.Message):
             CONVERSATION_SUMMARIZATION (8):
                 Run conversation summarization model for
                 chat.
+            KNOWLEDGE_SEARCH (14):
+                Run knowledge search with text input from
+                agent or text generated query.
         """
         TYPE_UNSPECIFIED = 0
         ARTICLE_SUGGESTION = 1
@@ -695,6 +698,7 @@ class SuggestionFeature(proto.Message):
         SMART_REPLY = 3
         DIALOGFLOW_ASSIST = 4
         CONVERSATION_SUMMARIZATION = 8
+        KNOWLEDGE_SEARCH = 14
 
     type_: Type = proto.Field(
         proto.ENUM,
@@ -1106,7 +1110,8 @@ class StreamingAnalyzeContentRequest(proto.Message):
             Must be sent if ``text_config`` is set in the first message.
             Text length must not exceed 256 bytes for virtual agent
             interactions. The ``input_text`` field can be only sent
-            once.
+            once, and would cancel the speech recognition if any
+            ongoing.
 
             This field is a member of `oneof`_ ``input``.
         input_dtmf (google.cloud.dialogflow_v2beta1.types.TelephonyDtmfEvents):

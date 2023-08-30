@@ -111,6 +111,7 @@ class dialogflowCallTransformer(cst.CSTTransformer):
         'reload_document': ('name', 'gcs_source', 'import_gcs_custom_metadata', ),
         'restore_agent': ('parent', 'agent_uri', 'agent_content', ),
         'search_agents': ('parent', 'page_size', 'page_token', ),
+        'search_knowledge': ('query', 'conversation_profile', 'parent', 'session_id', 'conversation', 'latest_message', ),
         'set_agent': ('agent', 'update_mask', ),
         'set_suggestion_feature_config': ('conversation_profile', 'participant_role', 'suggestion_feature_config', ),
         'streaming_analyze_content': ('participant', 'audio_config', 'text_config', 'reply_audio_config', 'input_audio', 'input_text', 'input_dtmf', 'query_params', 'assist_query_params', 'cx_parameters', 'cx_current_page', 'enable_partial_automated_agent_reply', 'enable_debugging_info', ),

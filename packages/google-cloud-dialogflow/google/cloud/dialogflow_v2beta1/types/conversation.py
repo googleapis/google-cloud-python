@@ -23,7 +23,7 @@ import proto  # type: ignore
 from google.cloud.dialogflow_v2beta1.types import (
     conversation_profile as gcd_conversation_profile,
 )
-from google.cloud.dialogflow_v2beta1.types import participant
+from google.cloud.dialogflow_v2beta1.types import participant, session
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2beta1",
@@ -44,6 +44,9 @@ __protobuf__ = proto.module(
         "SuggestConversationSummaryResponse",
         "GenerateStatelessSummaryRequest",
         "GenerateStatelessSummaryResponse",
+        "SearchKnowledgeRequest",
+        "SearchKnowledgeResponse",
+        "SearchKnowledgeAnswer",
     },
 )
 
@@ -749,6 +752,162 @@ class GenerateStatelessSummaryResponse(proto.Message):
     context_size: int = proto.Field(
         proto.INT32,
         number=3,
+    )
+
+
+class SearchKnowledgeRequest(proto.Message):
+    r"""The request message for
+    [Conversations.SearchKnowledge][google.cloud.dialogflow.v2beta1.Conversations.SearchKnowledge].
+
+    Attributes:
+        parent (str):
+            The parent resource contains the conversation profile
+            Format: 'projects/' or
+            ``projects/<Project ID>/locations/<Location ID>``.
+        query (google.cloud.dialogflow_v2beta1.types.TextInput):
+            Required. The natural language text query for
+            knowledge search.
+        conversation_profile (str):
+            Required. The conversation profile used to configure the
+            search. Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversationProfiles/<Conversation Profile ID>``.
+        session_id (str):
+            The ID of the search session. The session_id can be combined
+            with Dialogflow V3 Agent ID retrieved from conversation
+            profile or on its own to identify a search session. The
+            search history of the same session will impact the search
+            result. It's up to the API caller to choose an appropriate
+            ``Session ID``. It can be a random number or some type of
+            session identifiers (preferably hashed). The length must not
+            exceed 36 characters.
+        conversation (str):
+            The conversation (between human agent and end user) where
+            the search request is triggered. Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
+        latest_message (str):
+            The name of the latest conversation message when the request
+            is triggered. Format:
+            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    query: session.TextInput = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=session.TextInput,
+    )
+    conversation_profile: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    session_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    conversation: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    latest_message: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class SearchKnowledgeResponse(proto.Message):
+    r"""The response message for
+    [Conversations.SearchKnowledge][google.cloud.dialogflow.v2beta1.Conversations.SearchKnowledge].
+
+    Attributes:
+        answers (MutableSequence[google.cloud.dialogflow_v2beta1.types.SearchKnowledgeAnswer]):
+            Most relevant snippets extracted from
+            articles in the given knowledge base, ordered by
+            confidence.
+    """
+
+    answers: MutableSequence["SearchKnowledgeAnswer"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="SearchKnowledgeAnswer",
+    )
+
+
+class SearchKnowledgeAnswer(proto.Message):
+    r"""Represents a SearchKnowledge answer.
+
+    Attributes:
+        answer (str):
+            The piece of text from the knowledge base
+            documents that answers the search query
+        answer_type (google.cloud.dialogflow_v2beta1.types.SearchKnowledgeAnswer.AnswerType):
+            The type of the answer.
+        answer_sources (MutableSequence[google.cloud.dialogflow_v2beta1.types.SearchKnowledgeAnswer.AnswerSource]):
+            All sources used to generate the answer.
+        answer_record (str):
+            The name of the answer record. Format:
+            ``projects/<Project ID>/locations/<location ID>/answer Records/<Answer Record ID>``
+    """
+
+    class AnswerType(proto.Enum):
+        r"""The type of the answer.
+
+        Values:
+            ANSWER_TYPE_UNSPECIFIED (0):
+                The answer has a unspecified type.
+            FAQ (1):
+                The answer is from FAQ doucments.
+            GENERATIVE (2):
+                The answer is from generative model.
+        """
+        ANSWER_TYPE_UNSPECIFIED = 0
+        FAQ = 1
+        GENERATIVE = 2
+
+    class AnswerSource(proto.Message):
+        r"""The sources of the answers.
+
+        Attributes:
+            title (str):
+                The title of the article.
+            uri (str):
+                The URI of the article.
+            snippet (str):
+                The relevant snippet of the article.
+        """
+
+        title: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        uri: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        snippet: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    answer: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    answer_type: AnswerType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=AnswerType,
+    )
+    answer_sources: MutableSequence[AnswerSource] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=AnswerSource,
+    )
+    answer_record: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 

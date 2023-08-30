@@ -267,6 +267,8 @@ class AgentAssistantFeedback(proto.Message):
             [DocumentEfficiency.INEFFICIENT][google.cloud.dialogflow.v2beta1.AgentAssistantFeedback.DocumentEfficiency.INEFFICIENT].
         summarization_feedback (google.cloud.dialogflow_v2beta1.types.AgentAssistantFeedback.SummarizationFeedback):
             Feedback for conversation summarization.
+        knowledge_search_feedback (google.cloud.dialogflow_v2beta1.types.AgentAssistantFeedback.KnowledgeSearchFeedback):
+            Optional. Feedback for knowledge search.
     """
 
     class AnswerRelevance(proto.Enum):
@@ -342,6 +344,32 @@ class AgentAssistantFeedback(proto.Message):
             number=3,
         )
 
+    class KnowledgeSearchFeedback(proto.Message):
+        r"""Feedback for knowledge search.
+
+        Attributes:
+            answer_copied (bool):
+                Whether the answer was copied by the human agent or not. If
+                the value is set to be true,
+                [AnswerFeedback.clicked][google.cloud.dialogflow.v2beta1.AnswerFeedback.clicked]
+                will be updated to be true.
+            clicked_uris (MutableSequence[str]):
+                The URIs clicked by the human agent. The value is appended
+                for each UpdateAnswerRecordRequest. If the value is not
+                empty,
+                [AnswerFeedback.clicked][google.cloud.dialogflow.v2beta1.AnswerFeedback.clicked]
+                will be updated to be true.
+        """
+
+        answer_copied: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        clicked_uris: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+
     answer_relevance: AnswerRelevance = proto.Field(
         proto.ENUM,
         number=1,
@@ -361,6 +389,11 @@ class AgentAssistantFeedback(proto.Message):
         proto.MESSAGE,
         number=4,
         message=SummarizationFeedback,
+    )
+    knowledge_search_feedback: KnowledgeSearchFeedback = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=KnowledgeSearchFeedback,
     )
 
 

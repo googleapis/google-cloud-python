@@ -3490,6 +3490,7 @@ def test_create_conversation_profile_rest(request_type):
                     {
                         "suggestion_feature": {"type_": 1},
                         "enable_event_based_suggestion": True,
+                        "disable_agent_query_logging": True,
                         "suggestion_trigger_settings": {
                             "no_small_talk": True,
                             "only_end_user": True,
@@ -3543,7 +3544,11 @@ def test_create_conversation_profile_rest(request_type):
         "notification_config": {},
         "logging_config": {"enable_stackdriver_logging": True},
         "new_message_event_notification_config": {},
-        "stt_config": {"speech_model_variant": 1, "model": "model_value"},
+        "stt_config": {
+            "speech_model_variant": 1,
+            "model": "model_value",
+            "use_timeout_based_endpointing": True,
+        },
         "language_code": "language_code_value",
         "time_zone": "time_zone_value",
         "security_settings": "security_settings_value",
@@ -3775,6 +3780,7 @@ def test_create_conversation_profile_rest_bad_request(
                     {
                         "suggestion_feature": {"type_": 1},
                         "enable_event_based_suggestion": True,
+                        "disable_agent_query_logging": True,
                         "suggestion_trigger_settings": {
                             "no_small_talk": True,
                             "only_end_user": True,
@@ -3828,7 +3834,11 @@ def test_create_conversation_profile_rest_bad_request(
         "notification_config": {},
         "logging_config": {"enable_stackdriver_logging": True},
         "new_message_event_notification_config": {},
-        "stt_config": {"speech_model_variant": 1, "model": "model_value"},
+        "stt_config": {
+            "speech_model_variant": 1,
+            "model": "model_value",
+            "use_timeout_based_endpointing": True,
+        },
         "language_code": "language_code_value",
         "time_zone": "time_zone_value",
         "security_settings": "security_settings_value",
@@ -3960,6 +3970,7 @@ def test_update_conversation_profile_rest(request_type):
                     {
                         "suggestion_feature": {"type_": 1},
                         "enable_event_based_suggestion": True,
+                        "disable_agent_query_logging": True,
                         "suggestion_trigger_settings": {
                             "no_small_talk": True,
                             "only_end_user": True,
@@ -4013,7 +4024,11 @@ def test_update_conversation_profile_rest(request_type):
         "notification_config": {},
         "logging_config": {"enable_stackdriver_logging": True},
         "new_message_event_notification_config": {},
-        "stt_config": {"speech_model_variant": 1, "model": "model_value"},
+        "stt_config": {
+            "speech_model_variant": 1,
+            "model": "model_value",
+            "use_timeout_based_endpointing": True,
+        },
         "language_code": "language_code_value",
         "time_zone": "time_zone_value",
         "security_settings": "security_settings_value",
@@ -4246,6 +4261,7 @@ def test_update_conversation_profile_rest_bad_request(
                     {
                         "suggestion_feature": {"type_": 1},
                         "enable_event_based_suggestion": True,
+                        "disable_agent_query_logging": True,
                         "suggestion_trigger_settings": {
                             "no_small_talk": True,
                             "only_end_user": True,
@@ -4299,7 +4315,11 @@ def test_update_conversation_profile_rest_bad_request(
         "notification_config": {},
         "logging_config": {"enable_stackdriver_logging": True},
         "new_message_event_notification_config": {},
-        "stt_config": {"speech_model_variant": 1, "model": "model_value"},
+        "stt_config": {
+            "speech_model_variant": 1,
+            "model": "model_value",
+            "use_timeout_based_endpointing": True,
+        },
         "language_code": "language_code_value",
         "time_zone": "time_zone_value",
         "security_settings": "security_settings_value",

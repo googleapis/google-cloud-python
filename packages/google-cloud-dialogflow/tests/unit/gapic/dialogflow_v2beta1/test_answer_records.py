@@ -1965,6 +1965,10 @@ def test_update_answer_record_rest(request_type):
                     "submit_timestamp": {},
                     "summary_text": "summary_text_value",
                 },
+                "knowledge_search_feedback": {
+                    "answer_copied": True,
+                    "clicked_uris": ["clicked_uris_value1", "clicked_uris_value2"],
+                },
             },
             "clicked": True,
             "click_time": {},
@@ -2445,6 +2449,10 @@ def test_update_answer_record_rest_bad_request(
                     "start_timestamp": {"seconds": 751, "nanos": 543},
                     "submit_timestamp": {},
                     "summary_text": "summary_text_value",
+                },
+                "knowledge_search_feedback": {
+                    "answer_copied": True,
+                    "clicked_uris": ["clicked_uris_value1", "clicked_uris_value2"],
                 },
             },
             "clicked": True,

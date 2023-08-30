@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for ClearSuggestionFeatureConfig
+# Snippet for SearchKnowledge
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dialogflow
 
 
-# [START dialogflow_v2beta1_generated_ConversationProfiles_ClearSuggestionFeatureConfig_sync]
+# [START dialogflow_v2beta1_generated_Conversations_SearchKnowledge_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,25 +34,19 @@
 from google.cloud import dialogflow_v2beta1
 
 
-def sample_clear_suggestion_feature_config():
+async def sample_search_knowledge():
     # Create a client
-    client = dialogflow_v2beta1.ConversationProfilesClient()
+    client = dialogflow_v2beta1.ConversationsAsyncClient()
 
     # Initialize request argument(s)
-    request = dialogflow_v2beta1.ClearSuggestionFeatureConfigRequest(
+    request = dialogflow_v2beta1.SearchKnowledgeRequest(
         conversation_profile="conversation_profile_value",
-        participant_role="END_USER",
-        suggestion_feature_type="KNOWLEDGE_SEARCH",
     )
 
     # Make the request
-    operation = client.clear_suggestion_feature_config(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = operation.result()
+    response = await client.search_knowledge(request=request)
 
     # Handle the response
     print(response)
 
-# [END dialogflow_v2beta1_generated_ConversationProfiles_ClearSuggestionFeatureConfig_sync]
+# [END dialogflow_v2beta1_generated_Conversations_SearchKnowledge_async]

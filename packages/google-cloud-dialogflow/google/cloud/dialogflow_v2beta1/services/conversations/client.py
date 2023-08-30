@@ -1527,6 +1527,88 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         # Done; return the response.
         return response
 
+    def search_knowledge(
+        self,
+        request: Optional[Union[conversation.SearchKnowledgeRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> conversation.SearchKnowledgeResponse:
+        r"""Get answers for the given query based on knowledge
+        documents.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflow_v2beta1
+
+            def sample_search_knowledge():
+                # Create a client
+                client = dialogflow_v2beta1.ConversationsClient()
+
+                # Initialize request argument(s)
+                request = dialogflow_v2beta1.SearchKnowledgeRequest(
+                    conversation_profile="conversation_profile_value",
+                )
+
+                # Make the request
+                response = client.search_knowledge(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.dialogflow_v2beta1.types.SearchKnowledgeRequest, dict]):
+                The request object. The request message for
+                [Conversations.SearchKnowledge][google.cloud.dialogflow.v2beta1.Conversations.SearchKnowledge].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2beta1.types.SearchKnowledgeResponse:
+                The response message for
+                   [Conversations.SearchKnowledge][google.cloud.dialogflow.v2beta1.Conversations.SearchKnowledge].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a conversation.SearchKnowledgeRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, conversation.SearchKnowledgeRequest):
+            request = conversation.SearchKnowledgeRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.search_knowledge]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def __enter__(self) -> "ConversationsClient":
         return self
 

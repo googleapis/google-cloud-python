@@ -496,6 +496,11 @@
                 "list_messages"
               ]
             },
+            "SearchKnowledge": {
+              "methods": [
+                "search_knowledge"
+              ]
+            },
             "SuggestConversationSummary": {
               "methods": [
                 "suggest_conversation_summary"
@@ -541,6 +546,11 @@
                 "list_messages"
               ]
             },
+            "SearchKnowledge": {
+              "methods": [
+                "search_knowledge"
+              ]
+            },
             "SuggestConversationSummary": {
               "methods": [
                 "suggest_conversation_summary"
@@ -584,6 +594,11 @@
             "ListMessages": {
               "methods": [
                 "list_messages"
+              ]
+            },
+            "SearchKnowledge": {
+              "methods": [
+                "search_knowledge"
               ]
             },
             "SuggestConversationSummary": {
