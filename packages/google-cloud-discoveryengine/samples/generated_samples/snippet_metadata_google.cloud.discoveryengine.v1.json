@@ -169,6 +169,990 @@
       "clientMethod": {
         "async": true,
         "client": {
+          "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceAsyncClient",
+          "shortName": "ConversationalSearchServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceAsyncClient.converse_conversation",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService.ConverseConversation",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService",
+            "shortName": "ConversationalSearchService"
+          },
+          "shortName": "ConverseConversation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.ConverseConversationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "query",
+            "type": "google.cloud.discoveryengine_v1.types.TextInput"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.types.ConverseConversationResponse",
+        "shortName": "converse_conversation"
+      },
+      "description": "Sample for ConverseConversation",
+      "file": "discoveryengine_v1_generated_conversational_search_service_converse_conversation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_ConversationalSearchService_ConverseConversation_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_conversational_search_service_converse_conversation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceClient",
+          "shortName": "ConversationalSearchServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceClient.converse_conversation",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService.ConverseConversation",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService",
+            "shortName": "ConversationalSearchService"
+          },
+          "shortName": "ConverseConversation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.ConverseConversationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "query",
+            "type": "google.cloud.discoveryengine_v1.types.TextInput"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.types.ConverseConversationResponse",
+        "shortName": "converse_conversation"
+      },
+      "description": "Sample for ConverseConversation",
+      "file": "discoveryengine_v1_generated_conversational_search_service_converse_conversation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_ConversationalSearchService_ConverseConversation_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_conversational_search_service_converse_conversation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceAsyncClient",
+          "shortName": "ConversationalSearchServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceAsyncClient.create_conversation",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService.CreateConversation",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService",
+            "shortName": "ConversationalSearchService"
+          },
+          "shortName": "CreateConversation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.CreateConversationRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "conversation",
+            "type": "google.cloud.discoveryengine_v1.types.Conversation"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.types.Conversation",
+        "shortName": "create_conversation"
+      },
+      "description": "Sample for CreateConversation",
+      "file": "discoveryengine_v1_generated_conversational_search_service_create_conversation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_ConversationalSearchService_CreateConversation_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_conversational_search_service_create_conversation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceClient",
+          "shortName": "ConversationalSearchServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceClient.create_conversation",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService.CreateConversation",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService",
+            "shortName": "ConversationalSearchService"
+          },
+          "shortName": "CreateConversation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.CreateConversationRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "conversation",
+            "type": "google.cloud.discoveryengine_v1.types.Conversation"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.types.Conversation",
+        "shortName": "create_conversation"
+      },
+      "description": "Sample for CreateConversation",
+      "file": "discoveryengine_v1_generated_conversational_search_service_create_conversation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_ConversationalSearchService_CreateConversation_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_conversational_search_service_create_conversation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceAsyncClient",
+          "shortName": "ConversationalSearchServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceAsyncClient.delete_conversation",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService.DeleteConversation",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService",
+            "shortName": "ConversationalSearchService"
+          },
+          "shortName": "DeleteConversation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.DeleteConversationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_conversation"
+      },
+      "description": "Sample for DeleteConversation",
+      "file": "discoveryengine_v1_generated_conversational_search_service_delete_conversation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_ConversationalSearchService_DeleteConversation_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_conversational_search_service_delete_conversation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceClient",
+          "shortName": "ConversationalSearchServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceClient.delete_conversation",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService.DeleteConversation",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService",
+            "shortName": "ConversationalSearchService"
+          },
+          "shortName": "DeleteConversation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.DeleteConversationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_conversation"
+      },
+      "description": "Sample for DeleteConversation",
+      "file": "discoveryengine_v1_generated_conversational_search_service_delete_conversation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_ConversationalSearchService_DeleteConversation_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_conversational_search_service_delete_conversation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceAsyncClient",
+          "shortName": "ConversationalSearchServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceAsyncClient.get_conversation",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService.GetConversation",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService",
+            "shortName": "ConversationalSearchService"
+          },
+          "shortName": "GetConversation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.GetConversationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.types.Conversation",
+        "shortName": "get_conversation"
+      },
+      "description": "Sample for GetConversation",
+      "file": "discoveryengine_v1_generated_conversational_search_service_get_conversation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_ConversationalSearchService_GetConversation_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_conversational_search_service_get_conversation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceClient",
+          "shortName": "ConversationalSearchServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceClient.get_conversation",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService.GetConversation",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService",
+            "shortName": "ConversationalSearchService"
+          },
+          "shortName": "GetConversation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.GetConversationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.types.Conversation",
+        "shortName": "get_conversation"
+      },
+      "description": "Sample for GetConversation",
+      "file": "discoveryengine_v1_generated_conversational_search_service_get_conversation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_ConversationalSearchService_GetConversation_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_conversational_search_service_get_conversation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceAsyncClient",
+          "shortName": "ConversationalSearchServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceAsyncClient.list_conversations",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService.ListConversations",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService",
+            "shortName": "ConversationalSearchService"
+          },
+          "shortName": "ListConversations"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.ListConversationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.services.conversational_search_service.pagers.ListConversationsAsyncPager",
+        "shortName": "list_conversations"
+      },
+      "description": "Sample for ListConversations",
+      "file": "discoveryengine_v1_generated_conversational_search_service_list_conversations_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_ConversationalSearchService_ListConversations_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_conversational_search_service_list_conversations_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceClient",
+          "shortName": "ConversationalSearchServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceClient.list_conversations",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService.ListConversations",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService",
+            "shortName": "ConversationalSearchService"
+          },
+          "shortName": "ListConversations"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.ListConversationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.services.conversational_search_service.pagers.ListConversationsPager",
+        "shortName": "list_conversations"
+      },
+      "description": "Sample for ListConversations",
+      "file": "discoveryengine_v1_generated_conversational_search_service_list_conversations_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_ConversationalSearchService_ListConversations_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_conversational_search_service_list_conversations_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceAsyncClient",
+          "shortName": "ConversationalSearchServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceAsyncClient.update_conversation",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService.UpdateConversation",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService",
+            "shortName": "ConversationalSearchService"
+          },
+          "shortName": "UpdateConversation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.UpdateConversationRequest"
+          },
+          {
+            "name": "conversation",
+            "type": "google.cloud.discoveryengine_v1.types.Conversation"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.types.Conversation",
+        "shortName": "update_conversation"
+      },
+      "description": "Sample for UpdateConversation",
+      "file": "discoveryengine_v1_generated_conversational_search_service_update_conversation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_ConversationalSearchService_UpdateConversation_async",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_conversational_search_service_update_conversation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceClient",
+          "shortName": "ConversationalSearchServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1.ConversationalSearchServiceClient.update_conversation",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService.UpdateConversation",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1.ConversationalSearchService",
+            "shortName": "ConversationalSearchService"
+          },
+          "shortName": "UpdateConversation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1.types.UpdateConversationRequest"
+          },
+          {
+            "name": "conversation",
+            "type": "google.cloud.discoveryengine_v1.types.Conversation"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1.types.Conversation",
+        "shortName": "update_conversation"
+      },
+      "description": "Sample for UpdateConversation",
+      "file": "discoveryengine_v1_generated_conversational_search_service_update_conversation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1_generated_ConversationalSearchService_UpdateConversation_sync",
+      "segments": [
+        {
+          "end": 50,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 50,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 45,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 51,
+          "start": 48,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1_generated_conversational_search_service_update_conversation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
           "fullName": "google.cloud.discoveryengine_v1.DocumentServiceAsyncClient",
           "shortName": "DocumentServiceAsyncClient"
         },

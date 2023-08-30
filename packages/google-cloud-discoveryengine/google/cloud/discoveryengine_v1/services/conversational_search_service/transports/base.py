@@ -16,31 +16,29 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
-from google.api import httpbody_pb2  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, operations_v1
+from google.api_core import gapic_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
+from google.longrunning import operations_pb2
 from google.oauth2 import service_account  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.discoveryengine_v1 import gapic_version as package_version
-from google.cloud.discoveryengine_v1.types import (
-    import_config,
-    user_event,
-    user_event_service,
-)
+from google.cloud.discoveryengine_v1.types import conversation as gcd_conversation
+from google.cloud.discoveryengine_v1.types import conversation
+from google.cloud.discoveryengine_v1.types import conversational_search_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
 )
 
 
-class UserEventServiceTransport(abc.ABC):
-    """Abstract transport class for UserEventService."""
+class ConversationalSearchServiceTransport(abc.ABC):
+    """Abstract transport class for ConversationalSearchService."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
@@ -129,28 +127,34 @@ class UserEventServiceTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.write_user_event: gapic_v1.method.wrap_method(
-                self.write_user_event,
+            self.converse_conversation: gapic_v1.method.wrap_method(
+                self.converse_conversation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.collect_user_event: gapic_v1.method.wrap_method(
-                self.collect_user_event,
+            self.create_conversation: gapic_v1.method.wrap_method(
+                self.create_conversation,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.import_user_events: gapic_v1.method.wrap_method(
-                self.import_user_events,
-                default_retry=retries.Retry(
-                    initial=1.0,
-                    maximum=30.0,
-                    multiplier=1.3,
-                    predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable,
-                    ),
-                    deadline=300.0,
-                ),
-                default_timeout=300.0,
+            self.delete_conversation: gapic_v1.method.wrap_method(
+                self.delete_conversation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_conversation: gapic_v1.method.wrap_method(
+                self.update_conversation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_conversation: gapic_v1.method.wrap_method(
+                self.get_conversation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_conversations: gapic_v1.method.wrap_method(
+                self.list_conversations,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }
@@ -165,34 +169,62 @@ class UserEventServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def operations_client(self):
-        """Return the client designed to process long-running operations."""
-        raise NotImplementedError()
-
-    @property
-    def write_user_event(
+    def converse_conversation(
         self,
     ) -> Callable[
-        [user_event_service.WriteUserEventRequest],
-        Union[user_event.UserEvent, Awaitable[user_event.UserEvent]],
+        [conversational_search_service.ConverseConversationRequest],
+        Union[
+            conversational_search_service.ConverseConversationResponse,
+            Awaitable[conversational_search_service.ConverseConversationResponse],
+        ],
     ]:
         raise NotImplementedError()
 
     @property
-    def collect_user_event(
+    def create_conversation(
         self,
     ) -> Callable[
-        [user_event_service.CollectUserEventRequest],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
+        [conversational_search_service.CreateConversationRequest],
+        Union[gcd_conversation.Conversation, Awaitable[gcd_conversation.Conversation]],
     ]:
         raise NotImplementedError()
 
     @property
-    def import_user_events(
+    def delete_conversation(
         self,
     ) -> Callable[
-        [import_config.ImportUserEventsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [conversational_search_service.DeleteConversationRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_conversation(
+        self,
+    ) -> Callable[
+        [conversational_search_service.UpdateConversationRequest],
+        Union[gcd_conversation.Conversation, Awaitable[gcd_conversation.Conversation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_conversation(
+        self,
+    ) -> Callable[
+        [conversational_search_service.GetConversationRequest],
+        Union[conversation.Conversation, Awaitable[conversation.Conversation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_conversations(
+        self,
+    ) -> Callable[
+        [conversational_search_service.ListConversationsRequest],
+        Union[
+            conversational_search_service.ListConversationsResponse,
+            Awaitable[conversational_search_service.ListConversationsResponse],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -222,4 +254,4 @@ class UserEventServiceTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("UserEventServiceTransport",)
+__all__ = ("ConversationalSearchServiceTransport",)

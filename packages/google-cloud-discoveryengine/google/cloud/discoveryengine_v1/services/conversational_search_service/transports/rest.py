@@ -20,13 +20,7 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import (
-    gapic_v1,
-    operations_v1,
-    path_template,
-    rest_helpers,
-    rest_streaming,
-)
+from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -44,19 +38,14 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 
-from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import (
-    document_service,
-    import_config,
-    purge_config,
-)
-from google.cloud.discoveryengine_v1.types import document
-from google.cloud.discoveryengine_v1.types import document as gcd_document
+from google.cloud.discoveryengine_v1.types import conversation as gcd_conversation
+from google.cloud.discoveryengine_v1.types import conversation
+from google.cloud.discoveryengine_v1.types import conversational_search_service
 
+from .base import ConversationalSearchServiceTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import DocumentServiceTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -65,8 +54,8 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-class DocumentServiceRestInterceptor:
-    """Interceptor for DocumentService.
+class ConversationalSearchServiceRestInterceptor:
+    """Interceptor for ConversationalSearchService.
 
     Interceptors are used to manipulate requests, request metadata, and responses
     in arbitrary ways.
@@ -76,210 +65,200 @@ class DocumentServiceRestInterceptor:
     * Stripping extraneous information from responses
 
     These use cases and more can be enabled by injecting an
-    instance of a custom subclass when constructing the DocumentServiceRestTransport.
+    instance of a custom subclass when constructing the ConversationalSearchServiceRestTransport.
 
     .. code-block:: python
-        class MyCustomDocumentServiceInterceptor(DocumentServiceRestInterceptor):
-            def pre_create_document(self, request, metadata):
+        class MyCustomConversationalSearchServiceInterceptor(ConversationalSearchServiceRestInterceptor):
+            def pre_converse_conversation(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_create_document(self, response):
+            def post_converse_conversation(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_delete_document(self, request, metadata):
+            def pre_create_conversation(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def pre_get_document(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_get_document(self, response):
+            def post_create_conversation(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_import_documents(self, request, metadata):
+            def pre_delete_conversation(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_import_documents(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_list_documents(self, request, metadata):
+            def pre_get_conversation(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_list_documents(self, response):
+            def post_get_conversation(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_purge_documents(self, request, metadata):
+            def pre_list_conversations(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_purge_documents(self, response):
+            def post_list_conversations(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_update_document(self, request, metadata):
+            def pre_update_conversation(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_update_document(self, response):
+            def post_update_conversation(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-        transport = DocumentServiceRestTransport(interceptor=MyCustomDocumentServiceInterceptor())
-        client = DocumentServiceClient(transport=transport)
+        transport = ConversationalSearchServiceRestTransport(interceptor=MyCustomConversationalSearchServiceInterceptor())
+        client = ConversationalSearchServiceClient(transport=transport)
 
 
     """
 
-    def pre_create_document(
+    def pre_converse_conversation(
         self,
-        request: document_service.CreateDocumentRequest,
+        request: conversational_search_service.ConverseConversationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[document_service.CreateDocumentRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for create_document
+    ) -> Tuple[
+        conversational_search_service.ConverseConversationRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for converse_conversation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DocumentService server.
+        before they are sent to the ConversationalSearchService server.
         """
         return request, metadata
 
-    def post_create_document(
-        self, response: gcd_document.Document
-    ) -> gcd_document.Document:
-        """Post-rpc interceptor for create_document
+    def post_converse_conversation(
+        self, response: conversational_search_service.ConverseConversationResponse
+    ) -> conversational_search_service.ConverseConversationResponse:
+        """Post-rpc interceptor for converse_conversation
 
         Override in a subclass to manipulate the response
-        after it is returned by the DocumentService server but before
+        after it is returned by the ConversationalSearchService server but before
         it is returned to user code.
         """
         return response
 
-    def pre_delete_document(
+    def pre_create_conversation(
         self,
-        request: document_service.DeleteDocumentRequest,
+        request: conversational_search_service.CreateConversationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[document_service.DeleteDocumentRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for delete_document
+    ) -> Tuple[
+        conversational_search_service.CreateConversationRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for create_conversation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DocumentService server.
+        before they are sent to the ConversationalSearchService server.
         """
         return request, metadata
 
-    def pre_get_document(
-        self,
-        request: document_service.GetDocumentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[document_service.GetDocumentRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for get_document
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DocumentService server.
-        """
-        return request, metadata
-
-    def post_get_document(self, response: document.Document) -> document.Document:
-        """Post-rpc interceptor for get_document
+    def post_create_conversation(
+        self, response: gcd_conversation.Conversation
+    ) -> gcd_conversation.Conversation:
+        """Post-rpc interceptor for create_conversation
 
         Override in a subclass to manipulate the response
-        after it is returned by the DocumentService server but before
+        after it is returned by the ConversationalSearchService server but before
         it is returned to user code.
         """
         return response
 
-    def pre_import_documents(
+    def pre_delete_conversation(
         self,
-        request: import_config.ImportDocumentsRequest,
+        request: conversational_search_service.DeleteConversationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[import_config.ImportDocumentsRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for import_documents
+    ) -> Tuple[
+        conversational_search_service.DeleteConversationRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for delete_conversation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DocumentService server.
+        before they are sent to the ConversationalSearchService server.
         """
         return request, metadata
 
-    def post_import_documents(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for import_documents
+    def pre_get_conversation(
+        self,
+        request: conversational_search_service.GetConversationRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        conversational_search_service.GetConversationRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_conversation
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ConversationalSearchService server.
+        """
+        return request, metadata
+
+    def post_get_conversation(
+        self, response: conversation.Conversation
+    ) -> conversation.Conversation:
+        """Post-rpc interceptor for get_conversation
 
         Override in a subclass to manipulate the response
-        after it is returned by the DocumentService server but before
+        after it is returned by the ConversationalSearchService server but before
         it is returned to user code.
         """
         return response
 
-    def pre_list_documents(
+    def pre_list_conversations(
         self,
-        request: document_service.ListDocumentsRequest,
+        request: conversational_search_service.ListConversationsRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[document_service.ListDocumentsRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for list_documents
+    ) -> Tuple[
+        conversational_search_service.ListConversationsRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for list_conversations
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DocumentService server.
+        before they are sent to the ConversationalSearchService server.
         """
         return request, metadata
 
-    def post_list_documents(
-        self, response: document_service.ListDocumentsResponse
-    ) -> document_service.ListDocumentsResponse:
-        """Post-rpc interceptor for list_documents
+    def post_list_conversations(
+        self, response: conversational_search_service.ListConversationsResponse
+    ) -> conversational_search_service.ListConversationsResponse:
+        """Post-rpc interceptor for list_conversations
 
         Override in a subclass to manipulate the response
-        after it is returned by the DocumentService server but before
+        after it is returned by the ConversationalSearchService server but before
         it is returned to user code.
         """
         return response
 
-    def pre_purge_documents(
+    def pre_update_conversation(
         self,
-        request: purge_config.PurgeDocumentsRequest,
+        request: conversational_search_service.UpdateConversationRequest,
         metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[purge_config.PurgeDocumentsRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for purge_documents
+    ) -> Tuple[
+        conversational_search_service.UpdateConversationRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for update_conversation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DocumentService server.
+        before they are sent to the ConversationalSearchService server.
         """
         return request, metadata
 
-    def post_purge_documents(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
-        """Post-rpc interceptor for purge_documents
+    def post_update_conversation(
+        self, response: gcd_conversation.Conversation
+    ) -> gcd_conversation.Conversation:
+        """Post-rpc interceptor for update_conversation
 
         Override in a subclass to manipulate the response
-        after it is returned by the DocumentService server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_update_document(
-        self,
-        request: document_service.UpdateDocumentRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[document_service.UpdateDocumentRequest, Sequence[Tuple[str, str]]]:
-        """Pre-rpc interceptor for update_document
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the DocumentService server.
-        """
-        return request, metadata
-
-    def post_update_document(self, response: document.Document) -> document.Document:
-        """Post-rpc interceptor for update_document
-
-        Override in a subclass to manipulate the response
-        after it is returned by the DocumentService server but before
+        after it is returned by the ConversationalSearchService server but before
         it is returned to user code.
         """
         return response
@@ -292,7 +271,7 @@ class DocumentServiceRestInterceptor:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DocumentService server.
+        before they are sent to the ConversationalSearchService server.
         """
         return request, metadata
 
@@ -302,7 +281,7 @@ class DocumentServiceRestInterceptor:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
-        after it is returned by the DocumentService server but before
+        after it is returned by the ConversationalSearchService server but before
         it is returned to user code.
         """
         return response
@@ -315,7 +294,7 @@ class DocumentServiceRestInterceptor:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the DocumentService server.
+        before they are sent to the ConversationalSearchService server.
         """
         return request, metadata
 
@@ -325,25 +304,23 @@ class DocumentServiceRestInterceptor:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
-        after it is returned by the DocumentService server but before
+        after it is returned by the ConversationalSearchService server but before
         it is returned to user code.
         """
         return response
 
 
 @dataclasses.dataclass
-class DocumentServiceRestStub:
+class ConversationalSearchServiceRestStub:
     _session: AuthorizedSession
     _host: str
-    _interceptor: DocumentServiceRestInterceptor
+    _interceptor: ConversationalSearchServiceRestInterceptor
 
 
-class DocumentServiceRestTransport(DocumentServiceTransport):
-    """REST backend transport for DocumentService.
+class ConversationalSearchServiceRestTransport(ConversationalSearchServiceTransport):
+    """REST backend transport for ConversationalSearchService.
 
-    Service for ingesting
-    [Document][google.cloud.discoveryengine.v1.Document] information of
-    the customer's website.
+    Service for conversational search.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -365,7 +342,7 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
-        interceptor: Optional[DocumentServiceRestInterceptor] = None,
+        interceptor: Optional[ConversationalSearchServiceRestInterceptor] = None,
         api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
@@ -424,163 +401,16 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST
         )
-        self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = interceptor or DocumentServiceRestInterceptor()
+        self._interceptor = interceptor or ConversationalSearchServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    @property
-    def operations_client(self) -> operations_v1.AbstractOperationsClient:
-        """Create the client designed to process long-running operations.
-
-        This property caches on the instance; repeated calls return the same
-        client.
-        """
-        # Only create a new client if we do not already have one.
-        if self._operations_client is None:
-            http_options: Dict[str, List[Dict[str, str]]] = {
-                "google.longrunning.Operations.GetOperation": [
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/engines/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/operations/*}",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/operations/*}",
-                    },
-                ],
-                "google.longrunning.Operations.ListOperations": [
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*/engines/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/collections/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*/models/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*/dataStores/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*/locations/*}/operations",
-                    },
-                    {
-                        "method": "get",
-                        "uri": "/v1/{name=projects/*}/operations",
-                    },
-                ],
-            }
-
-            rest_transport = operations_v1.OperationsRestTransport(
-                host=self._host,
-                # use the credentials which are saved
-                credentials=self._credentials,
-                scopes=self._scopes,
-                http_options=http_options,
-                path_prefix="v1",
-            )
-
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
-
-        # Return the client from cache.
-        return self._operations_client
-
-    class _CreateDocument(DocumentServiceRestStub):
+    class _ConverseConversation(ConversationalSearchServiceRestStub):
         def __hash__(self):
-            return hash("CreateDocument")
+            return hash("ConverseConversation")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
-            "documentId": "",
-        }
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -592,18 +422,18 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
 
         def __call__(
             self,
-            request: document_service.CreateDocumentRequest,
+            request: conversational_search_service.ConverseConversationRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> gcd_document.Document:
-            r"""Call the create document method over HTTP.
+        ) -> conversational_search_service.ConverseConversationResponse:
+            r"""Call the converse conversation method over HTTP.
 
             Args:
-                request (~.document_service.CreateDocumentRequest):
+                request (~.conversational_search_service.ConverseConversationRequest):
                     The request object. Request message for
-                [DocumentService.CreateDocument][google.cloud.discoveryengine.v1.DocumentService.CreateDocument]
+                [ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1.ConversationalSearchService.ConverseConversation]
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -612,27 +442,31 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.gcd_document.Document:
-                    Document captures all raw metadata
-                information of items to be recommended
-                or searched.
+                ~.conversational_search_service.ConverseConversationResponse:
+                    Response message for
+                [ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1.ConversationalSearchService.ConverseConversation]
+                method.
 
             """
 
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/dataStores/*/branches/*}/documents",
-                    "body": "document",
+                    "uri": "/v1/{name=projects/*/locations/*/dataStores/*/conversations/*}:converse",
+                    "body": "*",
                 },
                 {
                     "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/collections/*/dataStores/*/branches/*}/documents",
-                    "body": "document",
+                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}:converse",
+                    "body": "*",
                 },
             ]
-            request, metadata = self._interceptor.pre_create_document(request, metadata)
-            pb_request = document_service.CreateDocumentRequest.pb(request)
+            request, metadata = self._interceptor.pre_converse_conversation(
+                request, metadata
+            )
+            pb_request = conversational_search_service.ConverseConversationRequest.pb(
+                request
+            )
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -674,16 +508,18 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcd_document.Document()
-            pb_resp = gcd_document.Document.pb(resp)
+            resp = conversational_search_service.ConverseConversationResponse()
+            pb_resp = conversational_search_service.ConverseConversationResponse.pb(
+                resp
+            )
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_create_document(resp)
+            resp = self._interceptor.post_converse_conversation(resp)
             return resp
 
-    class _DeleteDocument(DocumentServiceRestStub):
+    class _CreateConversation(ConversationalSearchServiceRestStub):
         def __hash__(self):
-            return hash("DeleteDocument")
+            return hash("CreateConversation")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -697,18 +533,124 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
 
         def __call__(
             self,
-            request: document_service.DeleteDocumentRequest,
+            request: conversational_search_service.CreateConversationRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gcd_conversation.Conversation:
+            r"""Call the create conversation method over HTTP.
+
+            Args:
+                request (~.conversational_search_service.CreateConversationRequest):
+                    The request object. Request for CreateConversation
+                method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.gcd_conversation.Conversation:
+                    External conversation proto
+                definition.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/dataStores/*}/conversations",
+                    "body": "conversation",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/collections/*/dataStores/*}/conversations",
+                    "body": "conversation",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_conversation(
+                request, metadata
+            )
+            pb_request = conversational_search_service.CreateConversationRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gcd_conversation.Conversation()
+            pb_resp = gcd_conversation.Conversation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_conversation(resp)
+            return resp
+
+    class _DeleteConversation(ConversationalSearchServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteConversation")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: conversational_search_service.DeleteConversationRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
         ):
-            r"""Call the delete document method over HTTP.
+            r"""Call the delete conversation method over HTTP.
 
             Args:
-                request (~.document_service.DeleteDocumentRequest):
-                    The request object. Request message for
-                [DocumentService.DeleteDocument][google.cloud.discoveryengine.v1.DocumentService.DeleteDocument]
+                request (~.conversational_search_service.DeleteConversationRequest):
+                    The request object. Request for DeleteConversation
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -720,208 +662,21 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*/documents/*}",
+                    "uri": "/v1/{name=projects/*/locations/*/dataStores/*/conversations/*}",
                 },
                 {
                     "method": "delete",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*}",
+                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}",
                 },
             ]
-            request, metadata = self._interceptor.pre_delete_document(request, metadata)
-            pb_request = document_service.DeleteDocumentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-    class _GetDocument(DocumentServiceRestStub):
-        def __hash__(self):
-            return hash("GetDocument")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: document_service.GetDocumentRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> document.Document:
-            r"""Call the get document method over HTTP.
-
-            Args:
-                request (~.document_service.GetDocumentRequest):
-                    The request object. Request message for
-                [DocumentService.GetDocument][google.cloud.discoveryengine.v1.DocumentService.GetDocument]
-                method.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.document.Document:
-                    Document captures all raw metadata
-                information of items to be recommended
-                or searched.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/dataStores/*/branches/*/documents/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*}",
-                },
-            ]
-            request, metadata = self._interceptor.pre_get_document(request, metadata)
-            pb_request = document_service.GetDocumentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = document.Document()
-            pb_resp = document.Document.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_get_document(resp)
-            return resp
-
-    class _ImportDocuments(DocumentServiceRestStub):
-        def __hash__(self):
-            return hash("ImportDocuments")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: import_config.ImportDocumentsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the import documents method over HTTP.
-
-            Args:
-                request (~.import_config.ImportDocumentsRequest):
-                    The request object. Request message for Import methods.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/dataStores/*/branches/*}/documents:import",
-                    "body": "*",
-                },
-                {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/collections/*/dataStores/*/branches/*}/documents:import",
-                    "body": "*",
-                },
-            ]
-            request, metadata = self._interceptor.pre_import_documents(
+            request, metadata = self._interceptor.pre_delete_conversation(
                 request, metadata
             )
-            pb_request = import_config.ImportDocumentsRequest.pb(request)
+            pb_request = conversational_search_service.DeleteConversationRequest.pb(
+                request
+            )
             transcoded_request = path_template.transcode(http_options, pb_request)
 
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
-            )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
 
@@ -945,7 +700,6 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -953,15 +707,9 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-            # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_import_documents(resp)
-            return resp
-
-    class _ListDocuments(DocumentServiceRestStub):
+    class _GetConversation(ConversationalSearchServiceRestStub):
         def __hash__(self):
-            return hash("ListDocuments")
+            return hash("GetConversation")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -975,19 +723,17 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
 
         def __call__(
             self,
-            request: document_service.ListDocumentsRequest,
+            request: conversational_search_service.GetConversationRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> document_service.ListDocumentsResponse:
-            r"""Call the list documents method over HTTP.
+        ) -> conversation.Conversation:
+            r"""Call the get conversation method over HTTP.
 
             Args:
-                request (~.document_service.ListDocumentsRequest):
-                    The request object. Request message for
-                [DocumentService.ListDocuments][google.cloud.discoveryengine.v1.DocumentService.ListDocuments]
-                method.
+                request (~.conversational_search_service.GetConversationRequest):
+                    The request object. Request for GetConversation method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -995,9 +741,104 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.document_service.ListDocumentsResponse:
-                    Response message for
-                [DocumentService.ListDocuments][google.cloud.discoveryengine.v1.DocumentService.ListDocuments]
+                ~.conversation.Conversation:
+                    External conversation proto
+                definition.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/dataStores/*/conversations/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_conversation(
+                request, metadata
+            )
+            pb_request = conversational_search_service.GetConversationRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = conversation.Conversation()
+            pb_resp = conversation.Conversation.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_conversation(resp)
+            return resp
+
+    class _ListConversations(ConversationalSearchServiceRestStub):
+        def __hash__(self):
+            return hash("ListConversations")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: conversational_search_service.ListConversationsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> conversational_search_service.ListConversationsResponse:
+            r"""Call the list conversations method over HTTP.
+
+            Args:
+                request (~.conversational_search_service.ListConversationsRequest):
+                    The request object. Request for ListConversations method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.conversational_search_service.ListConversationsResponse:
+                    Response for ListConversations
                 method.
 
             """
@@ -1005,15 +846,19 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/dataStores/*/branches/*}/documents",
+                    "uri": "/v1/{parent=projects/*/locations/*/dataStores/*}/conversations",
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{parent=projects/*/locations/*/collections/*/dataStores/*/branches/*}/documents",
+                    "uri": "/v1/{parent=projects/*/locations/*/collections/*/dataStores/*}/conversations",
                 },
             ]
-            request, metadata = self._interceptor.pre_list_documents(request, metadata)
-            pb_request = document_service.ListDocumentsRequest.pb(request)
+            request, metadata = self._interceptor.pre_list_conversations(
+                request, metadata
+            )
+            pb_request = conversational_search_service.ListConversationsRequest.pb(
+                request
+            )
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             uri = transcoded_request["uri"]
@@ -1047,16 +892,16 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = document_service.ListDocumentsResponse()
-            pb_resp = document_service.ListDocumentsResponse.pb(resp)
+            resp = conversational_search_service.ListConversationsResponse()
+            pb_resp = conversational_search_service.ListConversationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_list_documents(resp)
+            resp = self._interceptor.post_list_conversations(resp)
             return resp
 
-    class _PurgeDocuments(DocumentServiceRestStub):
+    class _UpdateConversation(ConversationalSearchServiceRestStub):
         def __hash__(self):
-            return hash("PurgeDocuments")
+            return hash("UpdateConversation")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -1070,18 +915,17 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
 
         def __call__(
             self,
-            request: purge_config.PurgeDocumentsRequest,
+            request: conversational_search_service.UpdateConversationRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> operations_pb2.Operation:
-            r"""Call the purge documents method over HTTP.
+        ) -> gcd_conversation.Conversation:
+            r"""Call the update conversation method over HTTP.
 
             Args:
-                request (~.purge_config.PurgeDocumentsRequest):
-                    The request object. Request message for
-                [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1.DocumentService.PurgeDocuments]
+                request (~.conversational_search_service.UpdateConversationRequest):
+                    The request object. Request for UpdateConversation
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1090,27 +934,30 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.operations_pb2.Operation:
-                    This resource represents a
-                long-running operation that is the
-                result of a network API call.
+                ~.gcd_conversation.Conversation:
+                    External conversation proto
+                definition.
 
             """
 
             http_options: List[Dict[str, str]] = [
                 {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/dataStores/*/branches/*}/documents:purge",
-                    "body": "*",
+                    "method": "patch",
+                    "uri": "/v1/{conversation.name=projects/*/locations/*/dataStores/*/conversations/*}",
+                    "body": "conversation",
                 },
                 {
-                    "method": "post",
-                    "uri": "/v1/{parent=projects/*/locations/*/collections/*/dataStores/*/branches/*}/documents:purge",
-                    "body": "*",
+                    "method": "patch",
+                    "uri": "/v1/{conversation.name=projects/*/locations/*/collections/*/dataStores/*/conversations/*}",
+                    "body": "conversation",
                 },
             ]
-            request, metadata = self._interceptor.pre_purge_documents(request, metadata)
-            pb_request = purge_config.PurgeDocumentsRequest.pb(request)
+            request, metadata = self._interceptor.pre_update_conversation(
+                request, metadata
+            )
+            pb_request = conversational_search_service.UpdateConversationRequest.pb(
+                request
+            )
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -1152,179 +999,83 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = operations_pb2.Operation()
-            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_purge_documents(resp)
-            return resp
-
-    class _UpdateDocument(DocumentServiceRestStub):
-        def __hash__(self):
-            return hash("UpdateDocument")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: document_service.UpdateDocumentRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> document.Document:
-            r"""Call the update document method over HTTP.
-
-            Args:
-                request (~.document_service.UpdateDocumentRequest):
-                    The request object. Request message for
-                [DocumentService.UpdateDocument][google.cloud.discoveryengine.v1.DocumentService.UpdateDocument]
-                method.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.document.Document:
-                    Document captures all raw metadata
-                information of items to be recommended
-                or searched.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1/{document.name=projects/*/locations/*/dataStores/*/branches/*/documents/*}",
-                    "body": "document",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1/{document.name=projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*}",
-                    "body": "document",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_document(request, metadata)
-            pb_request = document_service.UpdateDocumentRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            # Jsonify the request body
-
-            body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
-            )
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    including_default_value_fields=False,
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-                data=body,
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = document.Document()
-            pb_resp = document.Document.pb(resp)
+            resp = gcd_conversation.Conversation()
+            pb_resp = gcd_conversation.Conversation.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_update_document(resp)
+            resp = self._interceptor.post_update_conversation(resp)
             return resp
 
     @property
-    def create_document(
-        self,
-    ) -> Callable[[document_service.CreateDocumentRequest], gcd_document.Document]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._CreateDocument(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def delete_document(
-        self,
-    ) -> Callable[[document_service.DeleteDocumentRequest], empty_pb2.Empty]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._DeleteDocument(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def get_document(
-        self,
-    ) -> Callable[[document_service.GetDocumentRequest], document.Document]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._GetDocument(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def import_documents(
-        self,
-    ) -> Callable[[import_config.ImportDocumentsRequest], operations_pb2.Operation]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._ImportDocuments(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def list_documents(
+    def converse_conversation(
         self,
     ) -> Callable[
-        [document_service.ListDocumentsRequest], document_service.ListDocumentsResponse
+        [conversational_search_service.ConverseConversationRequest],
+        conversational_search_service.ConverseConversationResponse,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDocuments(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ConverseConversation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def purge_documents(
+    def create_conversation(
         self,
-    ) -> Callable[[purge_config.PurgeDocumentsRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [conversational_search_service.CreateConversationRequest],
+        gcd_conversation.Conversation,
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._PurgeDocuments(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateConversation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_document(
+    def delete_conversation(
         self,
-    ) -> Callable[[document_service.UpdateDocumentRequest], document.Document]:
+    ) -> Callable[
+        [conversational_search_service.DeleteConversationRequest], empty_pb2.Empty
+    ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateDocument(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteConversation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_conversation(
+        self,
+    ) -> Callable[
+        [conversational_search_service.GetConversationRequest],
+        conversation.Conversation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetConversation(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_conversations(
+        self,
+    ) -> Callable[
+        [conversational_search_service.ListConversationsRequest],
+        conversational_search_service.ListConversationsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListConversations(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_conversation(
+        self,
+    ) -> Callable[
+        [conversational_search_service.UpdateConversationRequest],
+        gcd_conversation.Conversation,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateConversation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(DocumentServiceRestStub):
+    class _GetOperation(ConversationalSearchServiceRestStub):
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -1443,7 +1194,7 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(DocumentServiceRestStub):
+    class _ListOperations(ConversationalSearchServiceRestStub):
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -1566,4 +1317,4 @@ class DocumentServiceRestTransport(DocumentServiceTransport):
         self._session.close()
 
 
-__all__ = ("DocumentServiceRestTransport",)
+__all__ = ("ConversationalSearchServiceRestTransport",)

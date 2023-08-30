@@ -13,27 +13,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
-import google.auth  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers_async
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
+from google.longrunning import operations_pb2
+from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import schema, schema_service
+from google.cloud.discoveryengine_v1.types import conversation as gcd_conversation
+from google.cloud.discoveryengine_v1.types import conversation
+from google.cloud.discoveryengine_v1.types import conversational_search_service
 
-from .base import DEFAULT_CLIENT_INFO, SchemaServiceTransport
+from .base import DEFAULT_CLIENT_INFO, ConversationalSearchServiceTransport
+from .grpc import ConversationalSearchServiceGrpcTransport
 
 
-class SchemaServiceGrpcTransport(SchemaServiceTransport):
-    """gRPC backend transport for SchemaService.
+class ConversationalSearchServiceGrpcAsyncIOTransport(
+    ConversationalSearchServiceTransport
+):
+    """gRPC AsyncIO backend transport for ConversationalSearchService.
 
-    Service for managing
-    [Schema][google.cloud.discoveryengine.v1.Schema]s.
+    Service for conversational search.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -43,7 +48,51 @@ class SchemaServiceGrpcTransport(SchemaServiceTransport):
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _stubs: Dict[str, Callable]
+    _grpc_channel: aio.Channel
+    _stubs: Dict[str, Callable] = {}
+
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "discoveryengine.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> aio.Channel:
+        """Create and return a gRPC AsyncIO channel object.
+        Args:
+            host (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            aio.Channel: A gRPC AsyncIO channel object.
+        """
+
+        return grpc_helpers_async.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            quota_project_id=quota_project_id,
+            default_scopes=cls.AUTH_SCOPES,
+            scopes=scopes,
+            default_host=cls.DEFAULT_HOST,
+            **kwargs,
+        )
 
     def __init__(
         self,
@@ -52,7 +101,7 @@ class SchemaServiceGrpcTransport(SchemaServiceTransport):
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: Optional[grpc.Channel] = None,
+        channel: Optional[aio.Channel] = None,
         api_mtls_endpoint: Optional[str] = None,
         client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
@@ -76,9 +125,10 @@ class SchemaServiceGrpcTransport(SchemaServiceTransport):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            channel (Optional[grpc.Channel]): A ``Channel`` instance through
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            channel (Optional[aio.Channel]): A ``Channel`` instance through
                 which to make calls.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
@@ -105,7 +155,7 @@ class SchemaServiceGrpcTransport(SchemaServiceTransport):
                 be used for service account credentials.
 
         Raises:
-          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
               creation failed for any reason.
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
@@ -113,7 +163,6 @@ class SchemaServiceGrpcTransport(SchemaServiceTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
-        self._operations_client: Optional[operations_v1.OperationsClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -126,7 +175,6 @@ class SchemaServiceGrpcTransport(SchemaServiceTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -180,110 +228,30 @@ class SchemaServiceGrpcTransport(SchemaServiceTransport):
         # Wrap messages. This must be done after self._grpc_channel exists
         self._prep_wrapped_messages(client_info)
 
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "discoveryengine.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> grpc.Channel:
-        """Create and return a gRPC channel object.
-        Args:
-            host (Optional[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is mutually exclusive with credentials.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            grpc.Channel: A gRPC channel object.
-
-        Raises:
-            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
-              and ``credentials_file`` are passed.
-        """
-
-        return grpc_helpers.create_channel(
-            host,
-            credentials=credentials,
-            credentials_file=credentials_file,
-            quota_project_id=quota_project_id,
-            default_scopes=cls.AUTH_SCOPES,
-            scopes=scopes,
-            default_host=cls.DEFAULT_HOST,
-            **kwargs,
-        )
-
     @property
-    def grpc_channel(self) -> grpc.Channel:
-        """Return the channel designed to connect to this service."""
+    def grpc_channel(self) -> aio.Channel:
+        """Create the channel designed to connect to this service.
+
+        This property caches on the instance; repeated calls return
+        the same channel.
+        """
+        # Return the channel from cache.
         return self._grpc_channel
 
     @property
-    def operations_client(self) -> operations_v1.OperationsClient:
-        """Create the client designed to process long-running operations.
-
-        This property caches on the instance; repeated calls return the same
-        client.
-        """
-        # Quick check: Only create a new client if we do not already have one.
-        if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
-
-        # Return the client from cache.
-        return self._operations_client
-
-    @property
-    def get_schema(self) -> Callable[[schema_service.GetSchemaRequest], schema.Schema]:
-        r"""Return a callable for the get schema method over gRPC.
-
-        Gets a [Schema][google.cloud.discoveryengine.v1.Schema].
-
-        Returns:
-            Callable[[~.GetSchemaRequest],
-                    ~.Schema]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_schema" not in self._stubs:
-            self._stubs["get_schema"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1.SchemaService/GetSchema",
-                request_serializer=schema_service.GetSchemaRequest.serialize,
-                response_deserializer=schema.Schema.deserialize,
-            )
-        return self._stubs["get_schema"]
-
-    @property
-    def list_schemas(
+    def converse_conversation(
         self,
     ) -> Callable[
-        [schema_service.ListSchemasRequest], schema_service.ListSchemasResponse
+        [conversational_search_service.ConverseConversationRequest],
+        Awaitable[conversational_search_service.ConverseConversationResponse],
     ]:
-        r"""Return a callable for the list schemas method over gRPC.
+        r"""Return a callable for the converse conversation method over gRPC.
 
-        Gets a list of
-        [Schema][google.cloud.discoveryengine.v1.Schema]s.
+        Converses a conversation.
 
         Returns:
-            Callable[[~.ListSchemasRequest],
-                    ~.ListSchemasResponse]:
+            Callable[[~.ConverseConversationRequest],
+                    Awaitable[~.ConverseConversationResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -291,25 +259,32 @@ class SchemaServiceGrpcTransport(SchemaServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "list_schemas" not in self._stubs:
-            self._stubs["list_schemas"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1.SchemaService/ListSchemas",
-                request_serializer=schema_service.ListSchemasRequest.serialize,
-                response_deserializer=schema_service.ListSchemasResponse.deserialize,
+        if "converse_conversation" not in self._stubs:
+            self._stubs["converse_conversation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.ConversationalSearchService/ConverseConversation",
+                request_serializer=conversational_search_service.ConverseConversationRequest.serialize,
+                response_deserializer=conversational_search_service.ConverseConversationResponse.deserialize,
             )
-        return self._stubs["list_schemas"]
+        return self._stubs["converse_conversation"]
 
     @property
-    def create_schema(
+    def create_conversation(
         self,
-    ) -> Callable[[schema_service.CreateSchemaRequest], operations_pb2.Operation]:
-        r"""Return a callable for the create schema method over gRPC.
+    ) -> Callable[
+        [conversational_search_service.CreateConversationRequest],
+        Awaitable[gcd_conversation.Conversation],
+    ]:
+        r"""Return a callable for the create conversation method over gRPC.
 
-        Creates a [Schema][google.cloud.discoveryengine.v1.Schema].
+        Creates a Conversation.
+
+        If the
+        [Conversation][google.cloud.discoveryengine.v1.Conversation] to
+        create already exists, an ALREADY_EXISTS error is returned.
 
         Returns:
-            Callable[[~.CreateSchemaRequest],
-                    ~.Operation]:
+            Callable[[~.CreateConversationRequest],
+                    Awaitable[~.Conversation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -317,25 +292,32 @@ class SchemaServiceGrpcTransport(SchemaServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "create_schema" not in self._stubs:
-            self._stubs["create_schema"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1.SchemaService/CreateSchema",
-                request_serializer=schema_service.CreateSchemaRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+        if "create_conversation" not in self._stubs:
+            self._stubs["create_conversation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.ConversationalSearchService/CreateConversation",
+                request_serializer=conversational_search_service.CreateConversationRequest.serialize,
+                response_deserializer=gcd_conversation.Conversation.deserialize,
             )
-        return self._stubs["create_schema"]
+        return self._stubs["create_conversation"]
 
     @property
-    def update_schema(
+    def delete_conversation(
         self,
-    ) -> Callable[[schema_service.UpdateSchemaRequest], operations_pb2.Operation]:
-        r"""Return a callable for the update schema method over gRPC.
+    ) -> Callable[
+        [conversational_search_service.DeleteConversationRequest],
+        Awaitable[empty_pb2.Empty],
+    ]:
+        r"""Return a callable for the delete conversation method over gRPC.
 
-        Updates a [Schema][google.cloud.discoveryengine.v1.Schema].
+        Deletes a Conversation.
+
+        If the
+        [Conversation][google.cloud.discoveryengine.v1.Conversation] to
+        delete does not exist, a NOT_FOUND error is returned.
 
         Returns:
-            Callable[[~.UpdateSchemaRequest],
-                    ~.Operation]:
+            Callable[[~.DeleteConversationRequest],
+                    Awaitable[~.Empty]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -343,25 +325,33 @@ class SchemaServiceGrpcTransport(SchemaServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_schema" not in self._stubs:
-            self._stubs["update_schema"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1.SchemaService/UpdateSchema",
-                request_serializer=schema_service.UpdateSchemaRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+        if "delete_conversation" not in self._stubs:
+            self._stubs["delete_conversation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.ConversationalSearchService/DeleteConversation",
+                request_serializer=conversational_search_service.DeleteConversationRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs["update_schema"]
+        return self._stubs["delete_conversation"]
 
     @property
-    def delete_schema(
+    def update_conversation(
         self,
-    ) -> Callable[[schema_service.DeleteSchemaRequest], operations_pb2.Operation]:
-        r"""Return a callable for the delete schema method over gRPC.
+    ) -> Callable[
+        [conversational_search_service.UpdateConversationRequest],
+        Awaitable[gcd_conversation.Conversation],
+    ]:
+        r"""Return a callable for the update conversation method over gRPC.
 
-        Deletes a [Schema][google.cloud.discoveryengine.v1.Schema].
+        Updates a Conversation.
+
+        [Conversation][google.cloud.discoveryengine.v1.Conversation]
+        action type cannot be changed. If the
+        [Conversation][google.cloud.discoveryengine.v1.Conversation] to
+        update does not exist, a NOT_FOUND error is returned.
 
         Returns:
-            Callable[[~.DeleteSchemaRequest],
-                    ~.Operation]:
+            Callable[[~.UpdateConversationRequest],
+                    Awaitable[~.Conversation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -369,16 +359,75 @@ class SchemaServiceGrpcTransport(SchemaServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "delete_schema" not in self._stubs:
-            self._stubs["delete_schema"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1.SchemaService/DeleteSchema",
-                request_serializer=schema_service.DeleteSchemaRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+        if "update_conversation" not in self._stubs:
+            self._stubs["update_conversation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.ConversationalSearchService/UpdateConversation",
+                request_serializer=conversational_search_service.UpdateConversationRequest.serialize,
+                response_deserializer=gcd_conversation.Conversation.deserialize,
             )
-        return self._stubs["delete_schema"]
+        return self._stubs["update_conversation"]
+
+    @property
+    def get_conversation(
+        self,
+    ) -> Callable[
+        [conversational_search_service.GetConversationRequest],
+        Awaitable[conversation.Conversation],
+    ]:
+        r"""Return a callable for the get conversation method over gRPC.
+
+        Gets a Conversation.
+
+        Returns:
+            Callable[[~.GetConversationRequest],
+                    Awaitable[~.Conversation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_conversation" not in self._stubs:
+            self._stubs["get_conversation"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.ConversationalSearchService/GetConversation",
+                request_serializer=conversational_search_service.GetConversationRequest.serialize,
+                response_deserializer=conversation.Conversation.deserialize,
+            )
+        return self._stubs["get_conversation"]
+
+    @property
+    def list_conversations(
+        self,
+    ) -> Callable[
+        [conversational_search_service.ListConversationsRequest],
+        Awaitable[conversational_search_service.ListConversationsResponse],
+    ]:
+        r"""Return a callable for the list conversations method over gRPC.
+
+        Lists all Conversations by their parent
+        [DataStore][google.cloud.discoveryengine.v1.DataStore].
+
+        Returns:
+            Callable[[~.ListConversationsRequest],
+                    Awaitable[~.ListConversationsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_conversations" not in self._stubs:
+            self._stubs["list_conversations"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.ConversationalSearchService/ListConversations",
+                request_serializer=conversational_search_service.ListConversationsRequest.serialize,
+                response_deserializer=conversational_search_service.ListConversationsResponse.deserialize,
+            )
+        return self._stubs["list_conversations"]
 
     def close(self):
-        self.grpc_channel.close()
+        return self.grpc_channel.close()
 
     @property
     def get_operation(
@@ -416,9 +465,5 @@ class SchemaServiceGrpcTransport(SchemaServiceTransport):
             )
         return self._stubs["list_operations"]
 
-    @property
-    def kind(self) -> str:
-        return "grpc"
 
-
-__all__ = ("SchemaServiceGrpcTransport",)
+__all__ = ("ConversationalSearchServiceGrpcAsyncIOTransport",)

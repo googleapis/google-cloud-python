@@ -75,9 +75,9 @@ class ListDocumentsRequest(proto.Message):
             under the default branch.
 
             If the caller does not have permission to list
-            [Documents][]s under this branch, regardless of whether or
-            not this branch exists, a ``PERMISSION_DENIED`` error is
-            returned.
+            [Document][google.cloud.discoveryengine.v1.Document]s under
+            this branch, regardless of whether or not this branch
+            exists, a ``PERMISSION_DENIED`` error is returned.
         page_size (int):
             Maximum number of
             [Document][google.cloud.discoveryengine.v1.Document]s to

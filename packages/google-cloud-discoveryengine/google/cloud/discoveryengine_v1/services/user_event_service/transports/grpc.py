@@ -21,6 +21,7 @@ from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 
@@ -284,7 +285,7 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
 
         Writes a single user event from the browser. This
         uses a GET request to due to browser restriction of
-        POST-ing to a 3rd party domain.
+        POST-ing to a third-party domain.
         This method is used only by the Discovery Engine API
         JavaScript pixel and Google Tag Manager. Users should
         not call this method directly.

@@ -46,29 +46,29 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.api import httpbody_pb2  # type: ignore
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2
-from google.protobuf import any_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import (
-    common,
-    import_config,
-    user_event,
-    user_event_service,
+from google.cloud.discoveryengine_v1.services.conversational_search_service import (
+    pagers,
 )
+from google.cloud.discoveryengine_v1.types import (
+    conversational_search_service,
+    search_service,
+)
+from google.cloud.discoveryengine_v1.types import conversation as gcd_conversation
+from google.cloud.discoveryengine_v1.types import conversation
 
-from .transports.base import DEFAULT_CLIENT_INFO, UserEventServiceTransport
-from .transports.grpc import UserEventServiceGrpcTransport
-from .transports.grpc_asyncio import UserEventServiceGrpcAsyncIOTransport
-from .transports.rest import UserEventServiceRestTransport
+from .transports.base import DEFAULT_CLIENT_INFO, ConversationalSearchServiceTransport
+from .transports.grpc import ConversationalSearchServiceGrpcTransport
+from .transports.grpc_asyncio import ConversationalSearchServiceGrpcAsyncIOTransport
+from .transports.rest import ConversationalSearchServiceRestTransport
 
 
-class UserEventServiceClientMeta(type):
-    """Metaclass for the UserEventService client.
+class ConversationalSearchServiceClientMeta(type):
+    """Metaclass for the ConversationalSearchService client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
@@ -77,15 +77,17 @@ class UserEventServiceClientMeta(type):
 
     _transport_registry = (
         OrderedDict()
-    )  # type: Dict[str, Type[UserEventServiceTransport]]
-    _transport_registry["grpc"] = UserEventServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = UserEventServiceGrpcAsyncIOTransport
-    _transport_registry["rest"] = UserEventServiceRestTransport
+    )  # type: Dict[str, Type[ConversationalSearchServiceTransport]]
+    _transport_registry["grpc"] = ConversationalSearchServiceGrpcTransport
+    _transport_registry[
+        "grpc_asyncio"
+    ] = ConversationalSearchServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = ConversationalSearchServiceRestTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[UserEventServiceTransport]:
+    ) -> Type[ConversationalSearchServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -104,10 +106,10 @@ class UserEventServiceClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
-    """Service for ingesting end user actions on a website to
-    Discovery Engine API.
-    """
+class ConversationalSearchServiceClient(
+    metaclass=ConversationalSearchServiceClientMeta
+):
+    """Service for conversational search."""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
@@ -155,7 +157,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            UserEventServiceClient: The constructed client.
+            ConversationalSearchServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -173,7 +175,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            UserEventServiceClient: The constructed client.
+            ConversationalSearchServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -182,14 +184,38 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> UserEventServiceTransport:
+    def transport(self) -> ConversationalSearchServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            UserEventServiceTransport: The transport used by the client
+            ConversationalSearchServiceTransport: The transport used by the client
                 instance.
         """
         return self._transport
+
+    @staticmethod
+    def conversation_path(
+        project: str,
+        location: str,
+        data_store: str,
+        conversation: str,
+    ) -> str:
+        """Returns a fully-qualified conversation string."""
+        return "projects/{project}/locations/{location}/dataStores/{data_store}/conversations/{conversation}".format(
+            project=project,
+            location=location,
+            data_store=data_store,
+            conversation=conversation,
+        )
+
+    @staticmethod
+    def parse_conversation_path(path: str) -> Dict[str, str]:
+        """Parses a conversation path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/conversations/(?P<conversation>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def data_store_path(
@@ -235,6 +261,30 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         """Parses a document path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/branches/(?P<branch>.+?)/documents/(?P<document>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def serving_config_path(
+        project: str,
+        location: str,
+        data_store: str,
+        serving_config: str,
+    ) -> str:
+        """Returns a fully-qualified serving_config string."""
+        return "projects/{project}/locations/{location}/dataStores/{data_store}/servingConfigs/{serving_config}".format(
+            project=project,
+            location=location,
+            data_store=data_store,
+            serving_config=serving_config,
+        )
+
+    @staticmethod
+    def parse_serving_config_path(path: str) -> Dict[str, str]:
+        """Parses a serving_config path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/servingConfigs/(?P<serving_config>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -387,11 +437,11 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, UserEventServiceTransport]] = None,
+        transport: Optional[Union[str, ConversationalSearchServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the user event service client.
+        """Instantiates the conversational search service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -399,7 +449,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, UserEventServiceTransport]): The
+            transport (Union[str, ConversationalSearchServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
@@ -447,8 +497,8 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, UserEventServiceTransport):
-            # transport is a UserEventServiceTransport instance.
+        if isinstance(transport, ConversationalSearchServiceTransport):
+            # transport is a ConversationalSearchServiceTransport instance.
             if credentials or client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -483,105 +533,19 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 api_audience=client_options.api_audience,
             )
 
-    def write_user_event(
-        self,
-        request: Optional[Union[user_event_service.WriteUserEventRequest, dict]] = None,
-        *,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> user_event.UserEvent:
-        r"""Writes a single user event.
-
-        .. code-block:: python
-
-            # This snippet has been automatically generated and should be regarded as a
-            # code template only.
-            # It will require modifications to work:
-            # - It may require correct/in-range values for request initialization.
-            # - It may require specifying regional endpoints when creating the service
-            #   client as shown in:
-            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.cloud import discoveryengine_v1
-
-            def sample_write_user_event():
-                # Create a client
-                client = discoveryengine_v1.UserEventServiceClient()
-
-                # Initialize request argument(s)
-                request = discoveryengine_v1.WriteUserEventRequest(
-                    parent="parent_value",
-                )
-
-                # Make the request
-                response = client.write_user_event(request=request)
-
-                # Handle the response
-                print(response)
-
-        Args:
-            request (Union[google.cloud.discoveryengine_v1.types.WriteUserEventRequest, dict]):
-                The request object. Request message for WriteUserEvent
-                method.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.discoveryengine_v1.types.UserEvent:
-                UserEvent captures all metadata
-                information Discovery Engine API needs
-                to know about how end users interact
-                with customers' website.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Minor optimization to avoid making a copy if the user passes
-        # in a user_event_service.WriteUserEventRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, user_event_service.WriteUserEventRequest):
-            request = user_event_service.WriteUserEventRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.write_user_event]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def collect_user_event(
+    def converse_conversation(
         self,
         request: Optional[
-            Union[user_event_service.CollectUserEventRequest, dict]
+            Union[conversational_search_service.ConverseConversationRequest, dict]
         ] = None,
         *,
+        name: Optional[str] = None,
+        query: Optional[conversation.TextInput] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> httpbody_pb2.HttpBody:
-        r"""Writes a single user event from the browser. This
-        uses a GET request to due to browser restriction of
-        POST-ing to a third-party domain.
-        This method is used only by the Discovery Engine API
-        JavaScript pixel and Google Tag Manager. Users should
-        not call this method directly.
+    ) -> conversational_search_service.ConverseConversationResponse:
+        r"""Converses a conversation.
 
         .. code-block:: python
 
@@ -594,26 +558,44 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import discoveryengine_v1
 
-            def sample_collect_user_event():
+            def sample_converse_conversation():
                 # Create a client
-                client = discoveryengine_v1.UserEventServiceClient()
+                client = discoveryengine_v1.ConversationalSearchServiceClient()
 
                 # Initialize request argument(s)
-                request = discoveryengine_v1.CollectUserEventRequest(
-                    parent="parent_value",
-                    user_event="user_event_value",
+                request = discoveryengine_v1.ConverseConversationRequest(
+                    name="name_value",
                 )
 
                 # Make the request
-                response = client.collect_user_event(request=request)
+                response = client.converse_conversation(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.discoveryengine_v1.types.CollectUserEventRequest, dict]):
-                The request object. Request message for CollectUserEvent
+            request (Union[google.cloud.discoveryengine_v1.types.ConverseConversationRequest, dict]):
+                The request object. Request message for
+                [ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1.ConversationalSearchService.ConverseConversation]
                 method.
+            name (str):
+                Required. The resource name of the Conversation to get.
+                Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``.
+                Use
+                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/-``
+                to activate auto session mode, which automatically
+                creates a new conversation inside a ConverseConversation
+                session.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            query (google.cloud.discoveryengine_v1.types.TextInput):
+                Required. Current user input.
+                This corresponds to the ``query`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -621,71 +603,45 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api.httpbody_pb2.HttpBody:
-                Message that represents an arbitrary HTTP body. It should only be used for
-                   payload formats that can't be represented as JSON,
-                   such as raw binary or an HTML page.
-
-                   This message can be used both in streaming and
-                   non-streaming API methods in the request as well as
-                   the response.
-
-                   It can be used as a top-level request field, which is
-                   convenient if one wants to extract parameters from
-                   either the URL or HTTP template into the request
-                   fields and also want access to the raw HTTP body.
-
-                   Example:
-
-                      message GetResourceRequest {
-                         // A unique request id. string request_id = 1;
-
-                         // The raw HTTP body is bound to this field.
-                         google.api.HttpBody http_body = 2;
-
-                      }
-
-                      service ResourceService {
-                         rpc GetResource(GetResourceRequest)
-                            returns (google.api.HttpBody);
-
-                         rpc UpdateResource(google.api.HttpBody)
-                            returns (google.protobuf.Empty);
-
-                      }
-
-                   Example with streaming methods:
-
-                      service CaldavService {
-                         rpc GetCalendar(stream google.api.HttpBody)
-                            returns (stream google.api.HttpBody);
-
-                         rpc UpdateCalendar(stream google.api.HttpBody)
-                            returns (stream google.api.HttpBody);
-
-                      }
-
-                   Use of this type only changes how the request and
-                   response bodies are handled, all other features will
-                   continue to work unchanged.
+            google.cloud.discoveryengine_v1.types.ConverseConversationResponse:
+                Response message for
+                   [ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1.ConversationalSearchService.ConverseConversation]
+                   method.
 
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, query])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # Minor optimization to avoid making a copy if the user passes
-        # in a user_event_service.CollectUserEventRequest.
+        # in a conversational_search_service.ConverseConversationRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, user_event_service.CollectUserEventRequest):
-            request = user_event_service.CollectUserEventRequest(request)
+        if not isinstance(
+            request, conversational_search_service.ConverseConversationRequest
+        ):
+            request = conversational_search_service.ConverseConversationRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if query is not None:
+                request.query = query
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.collect_user_event]
+        rpc = self._transport._wrapped_methods[self._transport.converse_conversation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
@@ -699,21 +655,23 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         # Done; return the response.
         return response
 
-    def import_user_events(
+    def create_conversation(
         self,
-        request: Optional[Union[import_config.ImportUserEventsRequest, dict]] = None,
+        request: Optional[
+            Union[conversational_search_service.CreateConversationRequest, dict]
+        ] = None,
         *,
+        parent: Optional[str] = None,
+        conversation: Optional[gcd_conversation.Conversation] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Bulk import of User events. Request processing might
-        be synchronous. Events that already exist are skipped.
-        Use this method for backfilling historical user events.
-        Operation.response is of type ImportResponse. Note that
-        it is possible for a subset of the items to be
-        successfully inserted. Operation.metadata is of type
-        ImportMetadata.
+    ) -> gcd_conversation.Conversation:
+        r"""Creates a Conversation.
+
+        If the
+        [Conversation][google.cloud.discoveryengine.v1.Conversation] to
+        create already exists, an ALREADY_EXISTS error is returned.
 
         .. code-block:: python
 
@@ -726,34 +684,38 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import discoveryengine_v1
 
-            def sample_import_user_events():
+            def sample_create_conversation():
                 # Create a client
-                client = discoveryengine_v1.UserEventServiceClient()
+                client = discoveryengine_v1.ConversationalSearchServiceClient()
 
                 # Initialize request argument(s)
-                inline_source = discoveryengine_v1.InlineSource()
-                inline_source.user_events.event_type = "event_type_value"
-                inline_source.user_events.user_pseudo_id = "user_pseudo_id_value"
-
-                request = discoveryengine_v1.ImportUserEventsRequest(
-                    inline_source=inline_source,
+                request = discoveryengine_v1.CreateConversationRequest(
                     parent="parent_value",
                 )
 
                 # Make the request
-                operation = client.import_user_events(request=request)
-
-                print("Waiting for operation to complete...")
-
-                response = operation.result()
+                response = client.create_conversation(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.cloud.discoveryengine_v1.types.ImportUserEventsRequest, dict]):
-                The request object. Request message for the
-                ImportUserEvents request.
+            request (Union[google.cloud.discoveryengine_v1.types.CreateConversationRequest, dict]):
+                The request object. Request for CreateConversation
+                method.
+            parent (str):
+                Required. Full resource name of parent data store.
+                Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            conversation (google.cloud.discoveryengine_v1.types.Conversation):
+                Required. The conversation to create.
+                This corresponds to the ``conversation`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -761,27 +723,39 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.ImportUserEventsResponse` Response of the ImportUserEventsRequest. If the long running
-                   operation was successful, then this message is
-                   returned by the
-                   google.longrunning.Operations.response field if the
-                   operation was successful.
+            google.cloud.discoveryengine_v1.types.Conversation:
+                External conversation proto
+                definition.
 
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, conversation])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         # Minor optimization to avoid making a copy if the user passes
-        # in a import_config.ImportUserEventsRequest.
+        # in a conversational_search_service.CreateConversationRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, import_config.ImportUserEventsRequest):
-            request = import_config.ImportUserEventsRequest(request)
+        if not isinstance(
+            request, conversational_search_service.CreateConversationRequest
+        ):
+            request = conversational_search_service.CreateConversationRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if conversation is not None:
+                request.conversation = conversation
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.import_user_events]
+        rpc = self._transport._wrapped_methods[self._transport.create_conversation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -797,18 +771,459 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
             metadata=metadata,
         )
 
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            import_config.ImportUserEventsResponse,
-            metadata_type=import_config.ImportUserEventsMetadata,
+        # Done; return the response.
+        return response
+
+    def delete_conversation(
+        self,
+        request: Optional[
+            Union[conversational_search_service.DeleteConversationRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a Conversation.
+
+        If the
+        [Conversation][google.cloud.discoveryengine.v1.Conversation] to
+        delete does not exist, a NOT_FOUND error is returned.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1
+
+            def sample_delete_conversation():
+                # Create a client
+                client = discoveryengine_v1.ConversationalSearchServiceClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1.DeleteConversationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_conversation(request=request)
+
+        Args:
+            request (Union[google.cloud.discoveryengine_v1.types.DeleteConversationRequest, dict]):
+                The request object. Request for DeleteConversation
+                method.
+            name (str):
+                Required. The resource name of the Conversation to
+                delete. Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a conversational_search_service.DeleteConversationRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, conversational_search_service.DeleteConversationRequest
+        ):
+            request = conversational_search_service.DeleteConversationRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_conversation]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def update_conversation(
+        self,
+        request: Optional[
+            Union[conversational_search_service.UpdateConversationRequest, dict]
+        ] = None,
+        *,
+        conversation: Optional[gcd_conversation.Conversation] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcd_conversation.Conversation:
+        r"""Updates a Conversation.
+
+        [Conversation][google.cloud.discoveryengine.v1.Conversation]
+        action type cannot be changed. If the
+        [Conversation][google.cloud.discoveryengine.v1.Conversation] to
+        update does not exist, a NOT_FOUND error is returned.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1
+
+            def sample_update_conversation():
+                # Create a client
+                client = discoveryengine_v1.ConversationalSearchServiceClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1.UpdateConversationRequest(
+                )
+
+                # Make the request
+                response = client.update_conversation(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.discoveryengine_v1.types.UpdateConversationRequest, dict]):
+                The request object. Request for UpdateConversation
+                method.
+            conversation (google.cloud.discoveryengine_v1.types.Conversation):
+                Required. The Conversation to update.
+                This corresponds to the ``conversation`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Indicates which fields in the provided
+                [Conversation][google.cloud.discoveryengine.v1.Conversation]
+                to update. The following are NOT supported:
+
+                -  [conversation.name][]
+
+                If not set or empty, all supported fields are updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1.types.Conversation:
+                External conversation proto
+                definition.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([conversation, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a conversational_search_service.UpdateConversationRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, conversational_search_service.UpdateConversationRequest
+        ):
+            request = conversational_search_service.UpdateConversationRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if conversation is not None:
+                request.conversation = conversation
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_conversation]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("conversation.name", request.conversation.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def __enter__(self) -> "UserEventServiceClient":
+    def get_conversation(
+        self,
+        request: Optional[
+            Union[conversational_search_service.GetConversationRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> conversation.Conversation:
+        r"""Gets a Conversation.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1
+
+            def sample_get_conversation():
+                # Create a client
+                client = discoveryengine_v1.ConversationalSearchServiceClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1.GetConversationRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_conversation(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.discoveryengine_v1.types.GetConversationRequest, dict]):
+                The request object. Request for GetConversation method.
+            name (str):
+                Required. The resource name of the Conversation to get.
+                Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}/conversations/{conversation_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1.types.Conversation:
+                External conversation proto
+                definition.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a conversational_search_service.GetConversationRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, conversational_search_service.GetConversationRequest
+        ):
+            request = conversational_search_service.GetConversationRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_conversation]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_conversations(
+        self,
+        request: Optional[
+            Union[conversational_search_service.ListConversationsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListConversationsPager:
+        r"""Lists all Conversations by their parent
+        [DataStore][google.cloud.discoveryengine.v1.DataStore].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1
+
+            def sample_list_conversations():
+                # Create a client
+                client = discoveryengine_v1.ConversationalSearchServiceClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1.ListConversationsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_conversations(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.discoveryengine_v1.types.ListConversationsRequest, dict]):
+                The request object. Request for ListConversations method.
+            parent (str):
+                Required. The data store resource name. Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection}/dataStores/{data_store_id}``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1.services.conversational_search_service.pagers.ListConversationsPager:
+                Response for ListConversations
+                method.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a conversational_search_service.ListConversationsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, conversational_search_service.ListConversationsRequest
+        ):
+            request = conversational_search_service.ListConversationsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_conversations]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListConversationsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def __enter__(self) -> "ConversationalSearchServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -935,4 +1350,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("UserEventServiceClient",)
+__all__ = ("ConversationalSearchServiceClient",)
