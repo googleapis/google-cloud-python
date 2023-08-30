@@ -79,6 +79,8 @@ class ValidationMessage(proto.Message):
                 Multiple pages.
             TRANSITION_ROUTE_GROUP (7):
                 Transition route group.
+            AGENT_TRANSITION_ROUTE_GROUP (14):
+                Agent transition route group.
         """
         RESOURCE_TYPE_UNSPECIFIED = 0
         AGENT = 1
@@ -94,6 +96,7 @@ class ValidationMessage(proto.Message):
         PAGE = 6
         PAGES = 13
         TRANSITION_ROUTE_GROUP = 7
+        AGENT_TRANSITION_ROUTE_GROUP = 14
 
     class Severity(proto.Enum):
         r"""Severity level.

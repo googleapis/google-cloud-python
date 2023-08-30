@@ -202,6 +202,8 @@ class Flow(proto.Message):
             for agent-level groups.
         nlu_settings (google.cloud.dialogflowcx_v3beta1.types.NluSettings):
             NLU related settings of the flow.
+        knowledge_connector_settings (google.cloud.dialogflowcx_v3beta1.types.KnowledgeConnectorSettings):
+            Optional. Knowledge connector configuration.
     """
 
     name: str = proto.Field(
@@ -234,6 +236,11 @@ class Flow(proto.Message):
         proto.MESSAGE,
         number=11,
         message="NluSettings",
+    )
+    knowledge_connector_settings: page.KnowledgeConnectorSettings = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=page.KnowledgeConnectorSettings,
     )
 
 
