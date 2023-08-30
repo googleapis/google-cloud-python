@@ -50,6 +50,11 @@
                 "mark_recommendation_claimed"
               ]
             },
+            "MarkRecommendationDismissed": {
+              "methods": [
+                "mark_recommendation_dismissed"
+              ]
+            },
             "MarkRecommendationFailed": {
               "methods": [
                 "mark_recommendation_failed"
@@ -115,6 +120,11 @@
                 "mark_recommendation_claimed"
               ]
             },
+            "MarkRecommendationDismissed": {
+              "methods": [
+                "mark_recommendation_dismissed"
+              ]
+            },
             "MarkRecommendationFailed": {
               "methods": [
                 "mark_recommendation_failed"
@@ -178,6 +188,11 @@
             "MarkRecommendationClaimed": {
               "methods": [
                 "mark_recommendation_claimed"
+              ]
+            },
+            "MarkRecommendationDismissed": {
+              "methods": [
+                "mark_recommendation_dismissed"
               ]
             },
             "MarkRecommendationFailed": {

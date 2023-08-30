@@ -33,6 +33,8 @@ __protobuf__ = proto.module(
         "ValueMatcher",
         "CostProjection",
         "SecurityProjection",
+        "SustainabilityProjection",
+        "ReliabilityProjection",
         "Impact",
         "RecommendationStateInfo",
     },
@@ -466,6 +468,74 @@ class SecurityProjection(proto.Message):
     )
 
 
+class SustainabilityProjection(proto.Message):
+    r"""Contains metadata about how much sustainability a
+    recommendation can save or incur.
+
+    Attributes:
+        kg_c_o2e (float):
+            Carbon Footprint generated in kg of CO2 equivalent. Chose
+            kg_c_o2e so that the name renders correctly in camelCase
+            (kgCO2e).
+        duration (google.protobuf.duration_pb2.Duration):
+            Duration for which this sustainability
+            applies.
+    """
+
+    kg_c_o2e: float = proto.Field(
+        proto.DOUBLE,
+        number=1,
+    )
+    duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+
+
+class ReliabilityProjection(proto.Message):
+    r"""Contains information on the impact of a reliability
+    recommendation.
+
+    Attributes:
+        risks (MutableSequence[google.cloud.recommender_v1.types.ReliabilityProjection.RiskType]):
+            Reliability risks mitigated by this
+            recommendation.
+        details (google.protobuf.struct_pb2.Struct):
+            Per-recommender projection.
+    """
+
+    class RiskType(proto.Enum):
+        r"""The risk associated with the reliability issue.
+
+        Values:
+            RISK_TYPE_UNSPECIFIED (0):
+                Default unspecified risk. Don't use directly.
+            SERVICE_DISRUPTION (1):
+                Potential service downtime.
+            DATA_LOSS (2):
+                Potential data loss.
+            ACCESS_DENY (3):
+                Potential access denial. The service is still
+                up but some or all clients can't access it.
+        """
+        RISK_TYPE_UNSPECIFIED = 0
+        SERVICE_DISRUPTION = 1
+        DATA_LOSS = 2
+        ACCESS_DENY = 3
+
+    risks: MutableSequence[RiskType] = proto.RepeatedField(
+        proto.ENUM,
+        number=1,
+        enum=RiskType,
+    )
+    details: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=struct_pb2.Struct,
+    )
+
+
 class Impact(proto.Message):
     r"""Contains the impact a recommendation can have for a given
     category.
@@ -486,6 +556,14 @@ class Impact(proto.Message):
             This field is a member of `oneof`_ ``projection``.
         security_projection (google.cloud.recommender_v1.types.SecurityProjection):
             Use with CategoryType.SECURITY
+
+            This field is a member of `oneof`_ ``projection``.
+        sustainability_projection (google.cloud.recommender_v1.types.SustainabilityProjection):
+            Use with CategoryType.SUSTAINABILITY
+
+            This field is a member of `oneof`_ ``projection``.
+        reliability_projection (google.cloud.recommender_v1.types.ReliabilityProjection):
+            Use with CategoryType.RELAIBILITY
 
             This field is a member of `oneof`_ ``projection``.
     """
@@ -509,12 +587,20 @@ class Impact(proto.Message):
             MANAGEABILITY (4):
                 Indicates a potential increase or decrease in
                 manageability.
+            SUSTAINABILITY (5):
+                Indicates a potential increase or decrease in
+                sustainability.
+            RELIABILITY (6):
+                Indicates a potential increase or decrease in
+                reliability.
         """
         CATEGORY_UNSPECIFIED = 0
         COST = 1
         SECURITY = 2
         PERFORMANCE = 3
         MANAGEABILITY = 4
+        SUSTAINABILITY = 5
+        RELIABILITY = 6
 
     category: Category = proto.Field(
         proto.ENUM,
@@ -532,6 +618,18 @@ class Impact(proto.Message):
         number=101,
         oneof="projection",
         message="SecurityProjection",
+    )
+    sustainability_projection: "SustainabilityProjection" = proto.Field(
+        proto.MESSAGE,
+        number=102,
+        oneof="projection",
+        message="SustainabilityProjection",
+    )
+    reliability_projection: "ReliabilityProjection" = proto.Field(
+        proto.MESSAGE,
+        number=103,
+        oneof="projection",
+        message="ReliabilityProjection",
     )
 
 

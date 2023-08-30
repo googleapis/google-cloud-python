@@ -39,6 +39,7 @@ __protobuf__ = proto.module(
         "ListRecommendationsRequest",
         "ListRecommendationsResponse",
         "GetRecommendationRequest",
+        "MarkRecommendationDismissedRequest",
         "MarkRecommendationClaimedRequest",
         "MarkRecommendationSucceededRequest",
         "MarkRecommendationFailedRequest",
@@ -313,6 +314,27 @@ class GetRecommendationRequest(proto.Message):
     )
 
 
+class MarkRecommendationDismissedRequest(proto.Message):
+    r"""Request for the ``MarkRecommendationDismissed`` Method.
+
+    Attributes:
+        name (str):
+            Name of the recommendation.
+        etag (str):
+            Fingerprint of the Recommendation. Provides
+            optimistic locking.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class MarkRecommendationClaimedRequest(proto.Message):
     r"""Request for the ``MarkRecommendationClaimed`` Method.
 
@@ -420,6 +442,8 @@ class GetRecommenderConfigRequest(proto.Message):
             -  ``projects/[PROJECT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
 
             -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+
+            -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
     """
 
     name: str = proto.Field(
@@ -466,11 +490,13 @@ class GetInsightTypeConfigRequest(proto.Message):
 
             Acceptable formats:
 
-            -  ``projects/[PROJECT_NUMBER]/locations/global/recommenders/[INSIGHT_TYPE_ID]/config``
+            -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
 
-            -  ``projects/[PROJECT_ID]/locations/global/recommenders/[INSIGHT_TYPE_ID]/config``
+            -  ``projects/[PROJECT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
 
-            -  ``organizations/[ORGANIZATION_ID]/locations/global/recommenders/[INSIGHT_TYPE_ID]/config``
+            -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
+
+            -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
     """
 
     name: str = proto.Field(
