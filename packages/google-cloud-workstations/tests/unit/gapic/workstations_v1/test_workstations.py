@@ -2217,6 +2217,7 @@ def test_get_workstation_config(request_type, transport: str = "grpc"):
             uid="uid_value",
             reconciling=True,
             etag="etag_value",
+            replica_zones=["replica_zones_value"],
             degraded=True,
         )
         response = client.get_workstation_config(request)
@@ -2233,6 +2234,7 @@ def test_get_workstation_config(request_type, transport: str = "grpc"):
     assert response.uid == "uid_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
+    assert response.replica_zones == ["replica_zones_value"]
     assert response.degraded is True
 
 
@@ -2280,6 +2282,7 @@ async def test_get_workstation_config_async(
                 uid="uid_value",
                 reconciling=True,
                 etag="etag_value",
+                replica_zones=["replica_zones_value"],
                 degraded=True,
             )
         )
@@ -2297,6 +2300,7 @@ async def test_get_workstation_config_async(
     assert response.uid == "uid_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
+    assert response.replica_zones == ["replica_zones_value"]
     assert response.degraded is True
 
 
@@ -8409,6 +8413,7 @@ def test_get_workstation_config_rest(request_type):
             uid="uid_value",
             reconciling=True,
             etag="etag_value",
+            replica_zones=["replica_zones_value"],
             degraded=True,
         )
 
@@ -8429,6 +8434,7 @@ def test_get_workstation_config_rest(request_type):
     assert response.uid == "uid_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
+    assert response.replica_zones == ["replica_zones_value"]
     assert response.degraded is True
 
 
@@ -9415,6 +9421,10 @@ def test_create_workstation_config_rest(request_type):
             "gce_instance": {
                 "machine_type": "machine_type_value",
                 "service_account": "service_account_value",
+                "service_account_scopes": [
+                    "service_account_scopes_value1",
+                    "service_account_scopes_value2",
+                ],
                 "tags": ["tags_value1", "tags_value2"],
                 "pool_size": 980,
                 "pooled_instances": 1706,
@@ -9453,6 +9463,8 @@ def test_create_workstation_config_rest(request_type):
             "kms_key": "kms_key_value",
             "kms_key_service_account": "kms_key_service_account_value",
         },
+        "readiness_checks": [{"path": "path_value", "port": 453}],
+        "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
         "degraded": True,
         "conditions": [
             {
@@ -9697,6 +9709,10 @@ def test_create_workstation_config_rest_bad_request(
             "gce_instance": {
                 "machine_type": "machine_type_value",
                 "service_account": "service_account_value",
+                "service_account_scopes": [
+                    "service_account_scopes_value1",
+                    "service_account_scopes_value2",
+                ],
                 "tags": ["tags_value1", "tags_value2"],
                 "pool_size": 980,
                 "pooled_instances": 1706,
@@ -9735,6 +9751,8 @@ def test_create_workstation_config_rest_bad_request(
             "kms_key": "kms_key_value",
             "kms_key_service_account": "kms_key_service_account_value",
         },
+        "readiness_checks": [{"path": "path_value", "port": 453}],
+        "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
         "degraded": True,
         "conditions": [
             {
@@ -9866,6 +9884,10 @@ def test_update_workstation_config_rest(request_type):
             "gce_instance": {
                 "machine_type": "machine_type_value",
                 "service_account": "service_account_value",
+                "service_account_scopes": [
+                    "service_account_scopes_value1",
+                    "service_account_scopes_value2",
+                ],
                 "tags": ["tags_value1", "tags_value2"],
                 "pool_size": 980,
                 "pooled_instances": 1706,
@@ -9904,6 +9926,8 @@ def test_update_workstation_config_rest(request_type):
             "kms_key": "kms_key_value",
             "kms_key_service_account": "kms_key_service_account_value",
         },
+        "readiness_checks": [{"path": "path_value", "port": 453}],
+        "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
         "degraded": True,
         "conditions": [
             {
@@ -10130,6 +10154,10 @@ def test_update_workstation_config_rest_bad_request(
             "gce_instance": {
                 "machine_type": "machine_type_value",
                 "service_account": "service_account_value",
+                "service_account_scopes": [
+                    "service_account_scopes_value1",
+                    "service_account_scopes_value2",
+                ],
                 "tags": ["tags_value1", "tags_value2"],
                 "pool_size": 980,
                 "pooled_instances": 1706,
@@ -10168,6 +10196,8 @@ def test_update_workstation_config_rest_bad_request(
             "kms_key": "kms_key_value",
             "kms_key_service_account": "kms_key_service_account_value",
         },
+        "readiness_checks": [{"path": "path_value", "port": 453}],
+        "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
         "degraded": True,
         "conditions": [
             {
@@ -11563,6 +11593,7 @@ def test_create_workstation_rest(request_type):
         "labels": {},
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "start_time": {},
         "delete_time": {},
         "etag": "etag_value",
         "state": 1,
@@ -11787,6 +11818,7 @@ def test_create_workstation_rest_bad_request(
         "labels": {},
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "start_time": {},
         "delete_time": {},
         "etag": "etag_value",
         "state": 1,
@@ -11901,6 +11933,7 @@ def test_update_workstation_rest(request_type):
         "labels": {},
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "start_time": {},
         "delete_time": {},
         "etag": "etag_value",
         "state": 1,
@@ -12110,6 +12143,7 @@ def test_update_workstation_rest_bad_request(
         "labels": {},
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
+        "start_time": {},
         "delete_time": {},
         "etag": "etag_value",
         "state": 1,
