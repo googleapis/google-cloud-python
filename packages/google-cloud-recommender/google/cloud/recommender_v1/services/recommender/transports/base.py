@@ -197,6 +197,11 @@ class RecommenderTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.mark_recommendation_dismissed: gapic_v1.method.wrap_method(
+                self.mark_recommendation_dismissed,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.mark_recommendation_claimed: gapic_v1.method.wrap_method(
                 self.mark_recommendation_claimed,
                 default_timeout=60.0,
@@ -290,6 +295,15 @@ class RecommenderTransport(abc.ABC):
         self,
     ) -> Callable[
         [recommender_service.GetRecommendationRequest],
+        Union[recommendation.Recommendation, Awaitable[recommendation.Recommendation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def mark_recommendation_dismissed(
+        self,
+    ) -> Callable[
+        [recommender_service.MarkRecommendationDismissedRequest],
         Union[recommendation.Recommendation, Awaitable[recommendation.Recommendation]],
     ]:
         raise NotImplementedError()

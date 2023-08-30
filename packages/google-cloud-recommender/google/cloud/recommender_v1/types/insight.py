@@ -33,7 +33,8 @@ __protobuf__ = proto.module(
 
 class Insight(proto.Message):
     r"""An insight along with the information used to derive the
-    insight. The insight may have associated recomendations as well.
+    insight. The insight may have associated recommendations as
+    well.
 
     Attributes:
         name (str):
@@ -85,12 +86,18 @@ class Insight(proto.Message):
                 The insight is related to performance.
             MANAGEABILITY (4):
                 This insight is related to manageability.
+            SUSTAINABILITY (5):
+                The insight is related to sustainability.
+            RELIABILITY (6):
+                This insight is related to reliability.
         """
         CATEGORY_UNSPECIFIED = 0
         COST = 1
         SECURITY = 2
         PERFORMANCE = 3
         MANAGEABILITY = 4
+        SUSTAINABILITY = 5
+        RELIABILITY = 6
 
     class Severity(proto.Enum):
         r"""Insight severity levels.

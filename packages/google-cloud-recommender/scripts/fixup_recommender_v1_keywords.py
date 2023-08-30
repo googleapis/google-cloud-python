@@ -47,6 +47,7 @@ class recommenderCallTransformer(cst.CSTTransformer):
         'list_recommendations': ('parent', 'page_size', 'page_token', 'filter', ),
         'mark_insight_accepted': ('name', 'etag', 'state_metadata', ),
         'mark_recommendation_claimed': ('name', 'etag', 'state_metadata', ),
+        'mark_recommendation_dismissed': ('name', 'etag', ),
         'mark_recommendation_failed': ('name', 'etag', 'state_metadata', ),
         'mark_recommendation_succeeded': ('name', 'etag', 'state_metadata', ),
         'update_insight_type_config': ('insight_type_config', 'update_mask', 'validate_only', ),

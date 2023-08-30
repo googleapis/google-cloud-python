@@ -442,7 +442,7 @@ class RecommenderAsyncClient:
             google.cloud.recommender_v1.types.Insight:
                 An insight along with the information
                 used to derive the insight. The insight
-                may have associated recomendations as
+                may have associated recommendations as
                 well.
 
         """
@@ -579,7 +579,7 @@ class RecommenderAsyncClient:
             google.cloud.recommender_v1.types.Insight:
                 An insight along with the information
                 used to derive the insight. The insight
-                may have associated recomendations as
+                may have associated recommendations as
                 well.
 
         """
@@ -895,6 +895,97 @@ class RecommenderAsyncClient:
                 deadline=60.0,
             ),
             default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def mark_recommendation_dismissed(
+        self,
+        request: Optional[
+            Union[recommender_service.MarkRecommendationDismissedRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> recommendation.Recommendation:
+        r"""Mark the Recommendation State as Dismissed. Users can use this
+        method to indicate to the Recommender API that an ACTIVE
+        recommendation has to be marked back as DISMISSED.
+
+        MarkRecommendationDismissed can be applied to recommendations in
+        ACTIVE state.
+
+        Requires the recommender.*.update IAM permission for the
+        specified recommender.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import recommender_v1
+
+            async def sample_mark_recommendation_dismissed():
+                # Create a client
+                client = recommender_v1.RecommenderAsyncClient()
+
+                # Initialize request argument(s)
+                request = recommender_v1.MarkRecommendationDismissedRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.mark_recommendation_dismissed(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.recommender_v1.types.MarkRecommendationDismissedRequest, dict]]):
+                The request object. Request for the ``MarkRecommendationDismissed`` Method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recommender_v1.types.Recommendation:
+                A recommendation along with a
+                suggested action. E.g., a rightsizing
+                recommendation for an underutilized VM,
+                IAM role recommendations, etc
+
+        """
+        # Create or coerce a protobuf request object.
+        request = recommender_service.MarkRecommendationDismissedRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.mark_recommendation_dismissed,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1383,6 +1474,8 @@ class RecommenderAsyncClient:
 
                 -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
 
+                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1597,11 +1690,13 @@ class RecommenderAsyncClient:
 
                 Acceptable formats:
 
-                -  ``projects/[PROJECT_NUMBER]/locations/global/recommenders/[INSIGHT_TYPE_ID]/config``
+                -  ``projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
 
-                -  ``projects/[PROJECT_ID]/locations/global/recommenders/[INSIGHT_TYPE_ID]/config``
+                -  ``projects/[PROJECT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
 
-                -  ``organizations/[ORGANIZATION_ID]/locations/global/recommenders/[INSIGHT_TYPE_ID]/config``
+                -  ``organizations/[ORGANIZATION_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
+
+                -  ``billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/config``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
