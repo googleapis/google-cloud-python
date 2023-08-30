@@ -53,11 +53,13 @@ from .types.agent import (
     ExportAgentResponse,
     GetAgentRequest,
     GetAgentValidationResultRequest,
+    GetGenerativeSettingsRequest,
     ListAgentsRequest,
     ListAgentsResponse,
     RestoreAgentRequest,
     SpeechToTextSettings,
     UpdateAgentRequest,
+    UpdateGenerativeSettingsRequest,
     ValidateAgentRequest,
 )
 from .types.audio_config import (
@@ -78,6 +80,7 @@ from .types.changelog import (
     ListChangelogsRequest,
     ListChangelogsResponse,
 )
+from .types.data_store_connection import DataStoreConnection, DataStoreType
 from .types.deployment import (
     Deployment,
     GetDeploymentRequest,
@@ -149,6 +152,7 @@ from .types.flow import (
 )
 from .types.fulfillment import Fulfillment
 from .types.gcs import GcsDestination
+from .types.generative_settings import GenerativeSettings
 from .types.import_strategy import ImportStrategy
 from .types.intent import (
     CreateIntentRequest,
@@ -166,6 +170,7 @@ from .types.page import (
     EventHandler,
     Form,
     GetPageRequest,
+    KnowledgeConnectorSettings,
     ListPagesRequest,
     ListPagesResponse,
     Page,
@@ -173,6 +178,7 @@ from .types.page import (
     UpdatePageRequest,
 )
 from .types.response_message import ResponseMessage
+from .types.safety_settings import SafetySettings
 from .types.security_settings import (
     CreateSecuritySettingsRequest,
     DeleteSecuritySettingsRequest,
@@ -336,6 +342,8 @@ __all__ = (
     "CreateVersionOperationMetadata",
     "CreateVersionRequest",
     "CreateWebhookRequest",
+    "DataStoreConnection",
+    "DataStoreType",
     "DeleteAgentRequest",
     "DeleteEntityTypeRequest",
     "DeleteEnvironmentRequest",
@@ -380,6 +388,7 @@ __all__ = (
     "FulfillIntentResponse",
     "Fulfillment",
     "GcsDestination",
+    "GenerativeSettings",
     "GetAgentRequest",
     "GetAgentValidationResultRequest",
     "GetChangelogRequest",
@@ -389,6 +398,7 @@ __all__ = (
     "GetExperimentRequest",
     "GetFlowRequest",
     "GetFlowValidationResultRequest",
+    "GetGenerativeSettingsRequest",
     "GetIntentRequest",
     "GetPageRequest",
     "GetSecuritySettingsRequest",
@@ -410,6 +420,7 @@ __all__ = (
     "IntentInput",
     "IntentView",
     "IntentsClient",
+    "KnowledgeConnectorSettings",
     "ListAgentsRequest",
     "ListAgentsResponse",
     "ListChangelogsRequest",
@@ -470,6 +481,7 @@ __all__ = (
     "RunTestCaseMetadata",
     "RunTestCaseRequest",
     "RunTestCaseResponse",
+    "SafetySettings",
     "SecuritySettings",
     "SecuritySettingsServiceClient",
     "SentimentAnalysisResult",
@@ -508,6 +520,7 @@ __all__ = (
     "UpdateEnvironmentRequest",
     "UpdateExperimentRequest",
     "UpdateFlowRequest",
+    "UpdateGenerativeSettingsRequest",
     "UpdateIntentRequest",
     "UpdatePageRequest",
     "UpdateSecuritySettingsRequest",

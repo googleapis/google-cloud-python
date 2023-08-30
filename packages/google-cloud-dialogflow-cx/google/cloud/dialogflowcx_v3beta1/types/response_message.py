@@ -116,6 +116,11 @@ class ResponseMessage(proto.Message):
             third-party endpoint.
 
             This field is a member of `oneof`_ ``message``.
+        knowledge_info_card (google.cloud.dialogflowcx_v3beta1.types.ResponseMessage.KnowledgeInfoCard):
+            Represents info card for knowledge answers,
+            to be better rendered in Dialogflow Messenger.
+
+            This field is a member of `oneof`_ ``message``.
         channel (str):
             The channel which the response is associated with. Clients
             can specify the channel via
@@ -371,6 +376,15 @@ class ResponseMessage(proto.Message):
             oneof="endpoint",
         )
 
+    class KnowledgeInfoCard(proto.Message):
+        r"""Represents info card response. If the response contains
+        generative knowledge prediction, Dialogflow will return a
+        payload with Infobot Messenger compatible info card.
+
+        Otherwise, the info card response is skipped.
+
+        """
+
     text: Text = proto.Field(
         proto.MESSAGE,
         number=1,
@@ -424,6 +438,12 @@ class ResponseMessage(proto.Message):
         number=18,
         oneof="message",
         message=TelephonyTransferCall,
+    )
+    knowledge_info_card: KnowledgeInfoCard = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        oneof="message",
+        message=KnowledgeInfoCard,
     )
     channel: str = proto.Field(
         proto.STRING,

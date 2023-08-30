@@ -21,7 +21,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflowcx_v3beta1.types import fulfillment
+from google.cloud.dialogflowcx_v3beta1.types import data_store_connection, fulfillment
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3beta1",
@@ -36,6 +36,7 @@ __protobuf__ = proto.module(
         "CreatePageRequest",
         "UpdatePageRequest",
         "DeletePageRequest",
+        "KnowledgeConnectorSettings",
     },
 )
 
@@ -81,8 +82,11 @@ class Page(proto.Message):
         transition_route_groups (MutableSequence[str]):
             Ordered list of
             [``TransitionRouteGroups``][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
-            associated with the page. Transition route groups must be
-            unique within a page.
+            added to the page. Transition route groups must be unique
+            within a page. If the page links both flow-level transition
+            route groups and agent-level transition route groups, the
+            flow-level ones will have higher priority and will be put
+            before the agent-level ones.
 
             -  If multiple transition routes within a page scope refer
                to the same intent, then the precedence order is: page's
@@ -123,6 +127,8 @@ class Page(proto.Message):
             Handlers associated with the page to handle
             events such as webhook errors, no match or no
             input.
+        knowledge_connector_settings (google.cloud.dialogflowcx_v3beta1.types.KnowledgeConnectorSettings):
+            Optional. Knowledge connector configuration.
     """
 
     name: str = proto.Field(
@@ -156,6 +162,11 @@ class Page(proto.Message):
         proto.MESSAGE,
         number=10,
         message="EventHandler",
+    )
+    knowledge_connector_settings: "KnowledgeConnectorSettings" = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message="KnowledgeConnectorSettings",
     )
 
 
@@ -418,6 +429,9 @@ class TransitionRoute(proto.Message):
         name (str):
             Output only. The unique identifier of this
             transition route.
+        description (str):
+            Optional. The description of the transition
+            route. The maximum length is 500 characters.
         intent (str):
             The unique identifier of an
             [Intent][google.cloud.dialogflow.cx.v3beta1.Intent]. Format:
@@ -459,6 +473,10 @@ class TransitionRoute(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
     intent: str = proto.Field(
         proto.STRING,
@@ -755,6 +773,74 @@ class DeletePageRequest(proto.Message):
     force: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+
+
+class KnowledgeConnectorSettings(proto.Message):
+    r"""The Knowledge Connector settings for this page or flow.
+    This includes information such as the attached Knowledge Bases,
+    and the way to execute fulfillment.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        enabled (bool):
+            Whether Knowledge Connector is enabled or
+            not.
+        trigger_fulfillment (google.cloud.dialogflowcx_v3beta1.types.Fulfillment):
+            The fulfillment to be triggered.
+
+            When the answers from the Knowledge Connector are selected
+            by Dialogflow, you can utitlize the request scoped parameter
+            ``$request.knowledge.answers`` (contains up to the 5 highest
+            confidence answers) and ``$request.knowledge.questions``
+            (contains the corresponding questions) to construct the
+            fulfillment.
+        target_page (str):
+            The target page to transition to. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
+
+            This field is a member of `oneof`_ ``target``.
+        target_flow (str):
+            The target flow to transition to. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+
+            This field is a member of `oneof`_ ``target``.
+        data_store_connections (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.DataStoreConnection]):
+            Optional. List of related data store
+            connections.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    trigger_fulfillment: fulfillment.Fulfillment = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=fulfillment.Fulfillment,
+    )
+    target_page: str = proto.Field(
+        proto.STRING,
+        number=4,
+        oneof="target",
+    )
+    target_flow: str = proto.Field(
+        proto.STRING,
+        number=5,
+        oneof="target",
+    )
+    data_store_connections: MutableSequence[
+        data_store_connection.DataStoreConnection
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message=data_store_connection.DataStoreConnection,
     )
 
 

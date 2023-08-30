@@ -28,8 +28,12 @@ from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1 import gapic_version as package_version
+from google.cloud.dialogflowcx_v3beta1.types import (
+    generative_settings as gcdc_generative_settings,
+)
 from google.cloud.dialogflowcx_v3beta1.types import agent
 from google.cloud.dialogflowcx_v3beta1.types import agent as gcdc_agent
+from google.cloud.dialogflowcx_v3beta1.types import generative_settings
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -183,6 +187,16 @@ class AgentsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_generative_settings: gapic_v1.method.wrap_method(
+                self.get_generative_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_generative_settings: gapic_v1.method.wrap_method(
+                self.update_generative_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -273,6 +287,30 @@ class AgentsTransport(abc.ABC):
     ) -> Callable[
         [agent.GetAgentValidationResultRequest],
         Union[agent.AgentValidationResult, Awaitable[agent.AgentValidationResult]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_generative_settings(
+        self,
+    ) -> Callable[
+        [agent.GetGenerativeSettingsRequest],
+        Union[
+            generative_settings.GenerativeSettings,
+            Awaitable[generative_settings.GenerativeSettings],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_generative_settings(
+        self,
+    ) -> Callable[
+        [agent.UpdateGenerativeSettingsRequest],
+        Union[
+            gcdc_generative_settings.GenerativeSettings,
+            Awaitable[gcdc_generative_settings.GenerativeSettings],
+        ],
     ]:
         raise NotImplementedError()
 
