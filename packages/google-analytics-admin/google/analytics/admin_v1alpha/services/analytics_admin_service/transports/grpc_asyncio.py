@@ -1340,6 +1340,168 @@ class AnalyticsAdminServiceGrpcAsyncIOTransport(AnalyticsAdminServiceTransport):
         return self._stubs["acknowledge_user_data_collection"]
 
     @property
+    def get_sk_ad_network_conversion_value_schema(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetSKAdNetworkConversionValueSchemaRequest],
+        Awaitable[resources.SKAdNetworkConversionValueSchema],
+    ]:
+        r"""Return a callable for the get sk ad network conversion
+        value schema method over gRPC.
+
+        Looks up a single SKAdNetworkConversionValueSchema.
+
+        Returns:
+            Callable[[~.GetSKAdNetworkConversionValueSchemaRequest],
+                    Awaitable[~.SKAdNetworkConversionValueSchema]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_sk_ad_network_conversion_value_schema" not in self._stubs:
+            self._stubs[
+                "get_sk_ad_network_conversion_value_schema"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetSKAdNetworkConversionValueSchema",
+                request_serializer=analytics_admin.GetSKAdNetworkConversionValueSchemaRequest.serialize,
+                response_deserializer=resources.SKAdNetworkConversionValueSchema.deserialize,
+            )
+        return self._stubs["get_sk_ad_network_conversion_value_schema"]
+
+    @property
+    def create_sk_ad_network_conversion_value_schema(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest],
+        Awaitable[resources.SKAdNetworkConversionValueSchema],
+    ]:
+        r"""Return a callable for the create sk ad network
+        conversion value schema method over gRPC.
+
+        Creates a SKAdNetworkConversionValueSchema.
+
+        Returns:
+            Callable[[~.CreateSKAdNetworkConversionValueSchemaRequest],
+                    Awaitable[~.SKAdNetworkConversionValueSchema]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_sk_ad_network_conversion_value_schema" not in self._stubs:
+            self._stubs[
+                "create_sk_ad_network_conversion_value_schema"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateSKAdNetworkConversionValueSchema",
+                request_serializer=analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest.serialize,
+                response_deserializer=resources.SKAdNetworkConversionValueSchema.deserialize,
+            )
+        return self._stubs["create_sk_ad_network_conversion_value_schema"]
+
+    @property
+    def delete_sk_ad_network_conversion_value_schema(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest],
+        Awaitable[empty_pb2.Empty],
+    ]:
+        r"""Return a callable for the delete sk ad network
+        conversion value schema method over gRPC.
+
+        Deletes target SKAdNetworkConversionValueSchema.
+
+        Returns:
+            Callable[[~.DeleteSKAdNetworkConversionValueSchemaRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_sk_ad_network_conversion_value_schema" not in self._stubs:
+            self._stubs[
+                "delete_sk_ad_network_conversion_value_schema"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteSKAdNetworkConversionValueSchema",
+                request_serializer=analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_sk_ad_network_conversion_value_schema"]
+
+    @property
+    def update_sk_ad_network_conversion_value_schema(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest],
+        Awaitable[resources.SKAdNetworkConversionValueSchema],
+    ]:
+        r"""Return a callable for the update sk ad network
+        conversion value schema method over gRPC.
+
+        Updates a SKAdNetworkConversionValueSchema.
+
+        Returns:
+            Callable[[~.UpdateSKAdNetworkConversionValueSchemaRequest],
+                    Awaitable[~.SKAdNetworkConversionValueSchema]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_sk_ad_network_conversion_value_schema" not in self._stubs:
+            self._stubs[
+                "update_sk_ad_network_conversion_value_schema"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateSKAdNetworkConversionValueSchema",
+                request_serializer=analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest.serialize,
+                response_deserializer=resources.SKAdNetworkConversionValueSchema.deserialize,
+            )
+        return self._stubs["update_sk_ad_network_conversion_value_schema"]
+
+    @property
+    def list_sk_ad_network_conversion_value_schemas(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListSKAdNetworkConversionValueSchemasRequest],
+        Awaitable[analytics_admin.ListSKAdNetworkConversionValueSchemasResponse],
+    ]:
+        r"""Return a callable for the list sk ad network conversion
+        value schemas method over gRPC.
+
+        Lists SKAdNetworkConversionValueSchema on a stream.
+        Properties can have at most one
+        SKAdNetworkConversionValueSchema.
+
+        Returns:
+            Callable[[~.ListSKAdNetworkConversionValueSchemasRequest],
+                    Awaitable[~.ListSKAdNetworkConversionValueSchemasResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_sk_ad_network_conversion_value_schemas" not in self._stubs:
+            self._stubs[
+                "list_sk_ad_network_conversion_value_schemas"
+            ] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListSKAdNetworkConversionValueSchemas",
+                request_serializer=analytics_admin.ListSKAdNetworkConversionValueSchemasRequest.serialize,
+                response_deserializer=analytics_admin.ListSKAdNetworkConversionValueSchemasResponse.deserialize,
+            )
+        return self._stubs["list_sk_ad_network_conversion_value_schemas"]
+
+    @property
     def search_change_history_events(
         self,
     ) -> Callable[

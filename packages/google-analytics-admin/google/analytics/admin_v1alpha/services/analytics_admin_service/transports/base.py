@@ -318,6 +318,31 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_sk_ad_network_conversion_value_schema: gapic_v1.method.wrap_method(
+                self.get_sk_ad_network_conversion_value_schema,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_sk_ad_network_conversion_value_schema: gapic_v1.method.wrap_method(
+                self.create_sk_ad_network_conversion_value_schema,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_sk_ad_network_conversion_value_schema: gapic_v1.method.wrap_method(
+                self.delete_sk_ad_network_conversion_value_schema,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_sk_ad_network_conversion_value_schema: gapic_v1.method.wrap_method(
+                self.update_sk_ad_network_conversion_value_schema,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_sk_ad_network_conversion_value_schemas: gapic_v1.method.wrap_method(
+                self.list_sk_ad_network_conversion_value_schemas,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.search_change_history_events: gapic_v1.method.wrap_method(
                 self.search_change_history_events,
                 default_timeout=None,
@@ -1132,6 +1157,63 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         Union[
             analytics_admin.AcknowledgeUserDataCollectionResponse,
             Awaitable[analytics_admin.AcknowledgeUserDataCollectionResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_sk_ad_network_conversion_value_schema(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetSKAdNetworkConversionValueSchemaRequest],
+        Union[
+            resources.SKAdNetworkConversionValueSchema,
+            Awaitable[resources.SKAdNetworkConversionValueSchema],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_sk_ad_network_conversion_value_schema(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest],
+        Union[
+            resources.SKAdNetworkConversionValueSchema,
+            Awaitable[resources.SKAdNetworkConversionValueSchema],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_sk_ad_network_conversion_value_schema(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_sk_ad_network_conversion_value_schema(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest],
+        Union[
+            resources.SKAdNetworkConversionValueSchema,
+            Awaitable[resources.SKAdNetworkConversionValueSchema],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_sk_ad_network_conversion_value_schemas(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListSKAdNetworkConversionValueSchemasRequest],
+        Union[
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse,
+            Awaitable[analytics_admin.ListSKAdNetworkConversionValueSchemasResponse],
         ],
     ]:
         raise NotImplementedError()

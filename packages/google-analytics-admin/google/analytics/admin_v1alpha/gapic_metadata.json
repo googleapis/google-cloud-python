@@ -170,6 +170,11 @@
                 "create_property"
               ]
             },
+            "CreateSKAdNetworkConversionValueSchema": {
+              "methods": [
+                "create_sk_ad_network_conversion_value_schema"
+              ]
+            },
             "CreateSearchAds360Link": {
               "methods": [
                 "create_search_ads360_link"
@@ -253,6 +258,11 @@
             "DeleteProperty": {
               "methods": [
                 "delete_property"
+              ]
+            },
+            "DeleteSKAdNetworkConversionValueSchema": {
+              "methods": [
+                "delete_sk_ad_network_conversion_value_schema"
               ]
             },
             "DeleteSearchAds360Link": {
@@ -385,6 +395,11 @@
                 "get_property"
               ]
             },
+            "GetSKAdNetworkConversionValueSchema": {
+              "methods": [
+                "get_sk_ad_network_conversion_value_schema"
+              ]
+            },
             "GetSearchAds360Link": {
               "methods": [
                 "get_search_ads360_link"
@@ -493,6 +508,11 @@
             "ListProperties": {
               "methods": [
                 "list_properties"
+              ]
+            },
+            "ListSKAdNetworkConversionValueSchemas": {
+              "methods": [
+                "list_sk_ad_network_conversion_value_schemas"
               ]
             },
             "ListSearchAds360Links": {
@@ -613,6 +633,11 @@
             "UpdateProperty": {
               "methods": [
                 "update_property"
+              ]
+            },
+            "UpdateSKAdNetworkConversionValueSchema": {
+              "methods": [
+                "update_sk_ad_network_conversion_value_schema"
               ]
             },
             "UpdateSearchAds360Link": {
@@ -790,6 +815,11 @@
                 "create_property"
               ]
             },
+            "CreateSKAdNetworkConversionValueSchema": {
+              "methods": [
+                "create_sk_ad_network_conversion_value_schema"
+              ]
+            },
             "CreateSearchAds360Link": {
               "methods": [
                 "create_search_ads360_link"
@@ -873,6 +903,11 @@
             "DeleteProperty": {
               "methods": [
                 "delete_property"
+              ]
+            },
+            "DeleteSKAdNetworkConversionValueSchema": {
+              "methods": [
+                "delete_sk_ad_network_conversion_value_schema"
               ]
             },
             "DeleteSearchAds360Link": {
@@ -1005,6 +1040,11 @@
                 "get_property"
               ]
             },
+            "GetSKAdNetworkConversionValueSchema": {
+              "methods": [
+                "get_sk_ad_network_conversion_value_schema"
+              ]
+            },
             "GetSearchAds360Link": {
               "methods": [
                 "get_search_ads360_link"
@@ -1113,6 +1153,11 @@
             "ListProperties": {
               "methods": [
                 "list_properties"
+              ]
+            },
+            "ListSKAdNetworkConversionValueSchemas": {
+              "methods": [
+                "list_sk_ad_network_conversion_value_schemas"
               ]
             },
             "ListSearchAds360Links": {
@@ -1233,6 +1278,11 @@
             "UpdateProperty": {
               "methods": [
                 "update_property"
+              ]
+            },
+            "UpdateSKAdNetworkConversionValueSchema": {
+              "methods": [
+                "update_sk_ad_network_conversion_value_schema"
               ]
             },
             "UpdateSearchAds360Link": {
@@ -1410,6 +1460,11 @@
                 "create_property"
               ]
             },
+            "CreateSKAdNetworkConversionValueSchema": {
+              "methods": [
+                "create_sk_ad_network_conversion_value_schema"
+              ]
+            },
             "CreateSearchAds360Link": {
               "methods": [
                 "create_search_ads360_link"
@@ -1493,6 +1548,11 @@
             "DeleteProperty": {
               "methods": [
                 "delete_property"
+              ]
+            },
+            "DeleteSKAdNetworkConversionValueSchema": {
+              "methods": [
+                "delete_sk_ad_network_conversion_value_schema"
               ]
             },
             "DeleteSearchAds360Link": {
@@ -1625,6 +1685,11 @@
                 "get_property"
               ]
             },
+            "GetSKAdNetworkConversionValueSchema": {
+              "methods": [
+                "get_sk_ad_network_conversion_value_schema"
+              ]
+            },
             "GetSearchAds360Link": {
               "methods": [
                 "get_search_ads360_link"
@@ -1733,6 +1798,11 @@
             "ListProperties": {
               "methods": [
                 "list_properties"
+              ]
+            },
+            "ListSKAdNetworkConversionValueSchemas": {
+              "methods": [
+                "list_sk_ad_network_conversion_value_schemas"
               ]
             },
             "ListSearchAds360Links": {
@@ -1853,6 +1923,11 @@
             "UpdateProperty": {
               "methods": [
                 "update_property"
+              ]
+            },
+            "UpdateSKAdNetworkConversionValueSchema": {
+              "methods": [
+                "update_sk_ad_network_conversion_value_schema"
               ]
             },
             "UpdateSearchAds360Link": {

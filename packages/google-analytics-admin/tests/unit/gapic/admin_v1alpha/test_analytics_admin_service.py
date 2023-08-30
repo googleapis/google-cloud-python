@@ -10041,6 +10041,1521 @@ async def test_acknowledge_user_data_collection_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        analytics_admin.GetSKAdNetworkConversionValueSchemaRequest,
+        dict,
+    ],
+)
+def test_get_sk_ad_network_conversion_value_schema(
+    request_type, transport: str = "grpc"
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SKAdNetworkConversionValueSchema(
+            name="name_value",
+            apply_conversion_values=True,
+        )
+        response = client.get_sk_ad_network_conversion_value_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetSKAdNetworkConversionValueSchemaRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SKAdNetworkConversionValueSchema)
+    assert response.name == "name_value"
+    assert response.apply_conversion_values is True
+
+
+def test_get_sk_ad_network_conversion_value_schema_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        client.get_sk_ad_network_conversion_value_schema()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetSKAdNetworkConversionValueSchemaRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_sk_ad_network_conversion_value_schema_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.GetSKAdNetworkConversionValueSchemaRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SKAdNetworkConversionValueSchema(
+                name="name_value",
+                apply_conversion_values=True,
+            )
+        )
+        response = await client.get_sk_ad_network_conversion_value_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.GetSKAdNetworkConversionValueSchemaRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SKAdNetworkConversionValueSchema)
+    assert response.name == "name_value"
+    assert response.apply_conversion_values is True
+
+
+@pytest.mark.asyncio
+async def test_get_sk_ad_network_conversion_value_schema_async_from_dict():
+    await test_get_sk_ad_network_conversion_value_schema_async(request_type=dict)
+
+
+def test_get_sk_ad_network_conversion_value_schema_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.GetSKAdNetworkConversionValueSchemaRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        call.return_value = resources.SKAdNetworkConversionValueSchema()
+        client.get_sk_ad_network_conversion_value_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_sk_ad_network_conversion_value_schema_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.GetSKAdNetworkConversionValueSchemaRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SKAdNetworkConversionValueSchema()
+        )
+        await client.get_sk_ad_network_conversion_value_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_sk_ad_network_conversion_value_schema_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SKAdNetworkConversionValueSchema()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_sk_ad_network_conversion_value_schema(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_sk_ad_network_conversion_value_schema_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_sk_ad_network_conversion_value_schema(
+            analytics_admin.GetSKAdNetworkConversionValueSchemaRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_sk_ad_network_conversion_value_schema_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SKAdNetworkConversionValueSchema()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SKAdNetworkConversionValueSchema()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_sk_ad_network_conversion_value_schema(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_sk_ad_network_conversion_value_schema_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_sk_ad_network_conversion_value_schema(
+            analytics_admin.GetSKAdNetworkConversionValueSchemaRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest,
+        dict,
+    ],
+)
+def test_create_sk_ad_network_conversion_value_schema(
+    request_type, transport: str = "grpc"
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SKAdNetworkConversionValueSchema(
+            name="name_value",
+            apply_conversion_values=True,
+        )
+        response = client.create_sk_ad_network_conversion_value_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SKAdNetworkConversionValueSchema)
+    assert response.name == "name_value"
+    assert response.apply_conversion_values is True
+
+
+def test_create_sk_ad_network_conversion_value_schema_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        client.create_sk_ad_network_conversion_value_schema()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_sk_ad_network_conversion_value_schema_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SKAdNetworkConversionValueSchema(
+                name="name_value",
+                apply_conversion_values=True,
+            )
+        )
+        response = await client.create_sk_ad_network_conversion_value_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SKAdNetworkConversionValueSchema)
+    assert response.name == "name_value"
+    assert response.apply_conversion_values is True
+
+
+@pytest.mark.asyncio
+async def test_create_sk_ad_network_conversion_value_schema_async_from_dict():
+    await test_create_sk_ad_network_conversion_value_schema_async(request_type=dict)
+
+
+def test_create_sk_ad_network_conversion_value_schema_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        call.return_value = resources.SKAdNetworkConversionValueSchema()
+        client.create_sk_ad_network_conversion_value_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_sk_ad_network_conversion_value_schema_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SKAdNetworkConversionValueSchema()
+        )
+        await client.create_sk_ad_network_conversion_value_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_sk_ad_network_conversion_value_schema_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SKAdNetworkConversionValueSchema()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_sk_ad_network_conversion_value_schema(
+            parent="parent_value",
+            skadnetwork_conversion_value_schema=resources.SKAdNetworkConversionValueSchema(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].skadnetwork_conversion_value_schema
+        mock_val = resources.SKAdNetworkConversionValueSchema(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_sk_ad_network_conversion_value_schema_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_sk_ad_network_conversion_value_schema(
+            analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest(),
+            parent="parent_value",
+            skadnetwork_conversion_value_schema=resources.SKAdNetworkConversionValueSchema(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_sk_ad_network_conversion_value_schema_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SKAdNetworkConversionValueSchema()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SKAdNetworkConversionValueSchema()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_sk_ad_network_conversion_value_schema(
+            parent="parent_value",
+            skadnetwork_conversion_value_schema=resources.SKAdNetworkConversionValueSchema(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].skadnetwork_conversion_value_schema
+        mock_val = resources.SKAdNetworkConversionValueSchema(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_sk_ad_network_conversion_value_schema_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_sk_ad_network_conversion_value_schema(
+            analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest(),
+            parent="parent_value",
+            skadnetwork_conversion_value_schema=resources.SKAdNetworkConversionValueSchema(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest,
+        dict,
+    ],
+)
+def test_delete_sk_ad_network_conversion_value_schema(
+    request_type, transport: str = "grpc"
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_sk_ad_network_conversion_value_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_sk_ad_network_conversion_value_schema_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        client.delete_sk_ad_network_conversion_value_schema()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_sk_ad_network_conversion_value_schema_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_sk_ad_network_conversion_value_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_sk_ad_network_conversion_value_schema_async_from_dict():
+    await test_delete_sk_ad_network_conversion_value_schema_async(request_type=dict)
+
+
+def test_delete_sk_ad_network_conversion_value_schema_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_sk_ad_network_conversion_value_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_sk_ad_network_conversion_value_schema_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_sk_ad_network_conversion_value_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_sk_ad_network_conversion_value_schema_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_sk_ad_network_conversion_value_schema(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_sk_ad_network_conversion_value_schema_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_sk_ad_network_conversion_value_schema(
+            analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_sk_ad_network_conversion_value_schema_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_sk_ad_network_conversion_value_schema(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_sk_ad_network_conversion_value_schema_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_sk_ad_network_conversion_value_schema(
+            analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest,
+        dict,
+    ],
+)
+def test_update_sk_ad_network_conversion_value_schema(
+    request_type, transport: str = "grpc"
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SKAdNetworkConversionValueSchema(
+            name="name_value",
+            apply_conversion_values=True,
+        )
+        response = client.update_sk_ad_network_conversion_value_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SKAdNetworkConversionValueSchema)
+    assert response.name == "name_value"
+    assert response.apply_conversion_values is True
+
+
+def test_update_sk_ad_network_conversion_value_schema_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        client.update_sk_ad_network_conversion_value_schema()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest()
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_sk_ad_network_conversion_value_schema_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SKAdNetworkConversionValueSchema(
+                name="name_value",
+                apply_conversion_values=True,
+            )
+        )
+        response = await client.update_sk_ad_network_conversion_value_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert (
+            args[0] == analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest()
+        )
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SKAdNetworkConversionValueSchema)
+    assert response.name == "name_value"
+    assert response.apply_conversion_values is True
+
+
+@pytest.mark.asyncio
+async def test_update_sk_ad_network_conversion_value_schema_async_from_dict():
+    await test_update_sk_ad_network_conversion_value_schema_async(request_type=dict)
+
+
+def test_update_sk_ad_network_conversion_value_schema_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest()
+
+    request.skadnetwork_conversion_value_schema.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        call.return_value = resources.SKAdNetworkConversionValueSchema()
+        client.update_sk_ad_network_conversion_value_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "skadnetwork_conversion_value_schema.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_sk_ad_network_conversion_value_schema_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest()
+
+    request.skadnetwork_conversion_value_schema.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SKAdNetworkConversionValueSchema()
+        )
+        await client.update_sk_ad_network_conversion_value_schema(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "skadnetwork_conversion_value_schema.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_sk_ad_network_conversion_value_schema_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SKAdNetworkConversionValueSchema()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_sk_ad_network_conversion_value_schema(
+            skadnetwork_conversion_value_schema=resources.SKAdNetworkConversionValueSchema(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].skadnetwork_conversion_value_schema
+        mock_val = resources.SKAdNetworkConversionValueSchema(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_sk_ad_network_conversion_value_schema_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_sk_ad_network_conversion_value_schema(
+            analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest(),
+            skadnetwork_conversion_value_schema=resources.SKAdNetworkConversionValueSchema(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_sk_ad_network_conversion_value_schema_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_sk_ad_network_conversion_value_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = resources.SKAdNetworkConversionValueSchema()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.SKAdNetworkConversionValueSchema()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_sk_ad_network_conversion_value_schema(
+            skadnetwork_conversion_value_schema=resources.SKAdNetworkConversionValueSchema(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].skadnetwork_conversion_value_schema
+        mock_val = resources.SKAdNetworkConversionValueSchema(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_sk_ad_network_conversion_value_schema_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_sk_ad_network_conversion_value_schema(
+            analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest(),
+            skadnetwork_conversion_value_schema=resources.SKAdNetworkConversionValueSchema(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListSKAdNetworkConversionValueSchemasRequest,
+        dict,
+    ],
+)
+def test_list_sk_ad_network_conversion_value_schemas(
+    request_type, transport: str = "grpc"
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sk_ad_network_conversion_value_schemas), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = client.list_sk_ad_network_conversion_value_schemas(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListSKAdNetworkConversionValueSchemasRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSKAdNetworkConversionValueSchemasPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_sk_ad_network_conversion_value_schemas_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sk_ad_network_conversion_value_schemas), "__call__"
+    ) as call:
+        client.list_sk_ad_network_conversion_value_schemas()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListSKAdNetworkConversionValueSchemasRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_sk_ad_network_conversion_value_schemas_async(
+    transport: str = "grpc_asyncio",
+    request_type=analytics_admin.ListSKAdNetworkConversionValueSchemasRequest,
+):
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sk_ad_network_conversion_value_schemas), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_sk_ad_network_conversion_value_schemas(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analytics_admin.ListSKAdNetworkConversionValueSchemasRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSKAdNetworkConversionValueSchemasAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_sk_ad_network_conversion_value_schemas_async_from_dict():
+    await test_list_sk_ad_network_conversion_value_schemas_async(request_type=dict)
+
+
+def test_list_sk_ad_network_conversion_value_schemas_field_headers():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.ListSKAdNetworkConversionValueSchemasRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sk_ad_network_conversion_value_schemas), "__call__"
+    ) as call:
+        call.return_value = (
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse()
+        )
+        client.list_sk_ad_network_conversion_value_schemas(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_sk_ad_network_conversion_value_schemas_field_headers_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analytics_admin.ListSKAdNetworkConversionValueSchemasRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sk_ad_network_conversion_value_schemas), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse()
+        )
+        await client.list_sk_ad_network_conversion_value_schemas(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_sk_ad_network_conversion_value_schemas_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sk_ad_network_conversion_value_schemas), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_sk_ad_network_conversion_value_schemas(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_sk_ad_network_conversion_value_schemas_flattened_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_sk_ad_network_conversion_value_schemas(
+            analytics_admin.ListSKAdNetworkConversionValueSchemasRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_sk_ad_network_conversion_value_schemas_flattened_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sk_ad_network_conversion_value_schemas), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = (
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse()
+        )
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_sk_ad_network_conversion_value_schemas(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_sk_ad_network_conversion_value_schemas_flattened_error_async():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_sk_ad_network_conversion_value_schemas(
+            analytics_admin.ListSKAdNetworkConversionValueSchemasRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_sk_ad_network_conversion_value_schemas_pager(
+    transport_name: str = "grpc",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sk_ad_network_conversion_value_schemas), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[
+                    resources.SKAdNetworkConversionValueSchema(),
+                    resources.SKAdNetworkConversionValueSchema(),
+                    resources.SKAdNetworkConversionValueSchema(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[
+                    resources.SKAdNetworkConversionValueSchema(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[
+                    resources.SKAdNetworkConversionValueSchema(),
+                    resources.SKAdNetworkConversionValueSchema(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_sk_ad_network_conversion_value_schemas(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, resources.SKAdNetworkConversionValueSchema) for i in results
+        )
+
+
+def test_list_sk_ad_network_conversion_value_schemas_pages(
+    transport_name: str = "grpc",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sk_ad_network_conversion_value_schemas), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[
+                    resources.SKAdNetworkConversionValueSchema(),
+                    resources.SKAdNetworkConversionValueSchema(),
+                    resources.SKAdNetworkConversionValueSchema(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[
+                    resources.SKAdNetworkConversionValueSchema(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[
+                    resources.SKAdNetworkConversionValueSchema(),
+                    resources.SKAdNetworkConversionValueSchema(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(
+            client.list_sk_ad_network_conversion_value_schemas(request={}).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_sk_ad_network_conversion_value_schemas_async_pager():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sk_ad_network_conversion_value_schemas),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[
+                    resources.SKAdNetworkConversionValueSchema(),
+                    resources.SKAdNetworkConversionValueSchema(),
+                    resources.SKAdNetworkConversionValueSchema(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[
+                    resources.SKAdNetworkConversionValueSchema(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[
+                    resources.SKAdNetworkConversionValueSchema(),
+                    resources.SKAdNetworkConversionValueSchema(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_sk_ad_network_conversion_value_schemas(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, resources.SKAdNetworkConversionValueSchema) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_sk_ad_network_conversion_value_schemas_async_pages():
+    client = AnalyticsAdminServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_sk_ad_network_conversion_value_schemas),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[
+                    resources.SKAdNetworkConversionValueSchema(),
+                    resources.SKAdNetworkConversionValueSchema(),
+                    resources.SKAdNetworkConversionValueSchema(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[
+                    resources.SKAdNetworkConversionValueSchema(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[
+                    resources.SKAdNetworkConversionValueSchema(),
+                    resources.SKAdNetworkConversionValueSchema(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_sk_ad_network_conversion_value_schemas(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         analytics_admin.SearchChangeHistoryEventsRequest,
         dict,
     ],
@@ -29480,7 +30995,7 @@ def test_get_big_query_link(request_type, transport: str = "grpc"):
             project="project_value",
             daily_export_enabled=True,
             streaming_export_enabled=True,
-            enterprise_export_enabled=True,
+            fresh_daily_export_enabled=True,
             include_advertising_id=True,
             export_streams=["export_streams_value"],
             excluded_events=["excluded_events_value"],
@@ -29498,7 +31013,7 @@ def test_get_big_query_link(request_type, transport: str = "grpc"):
     assert response.project == "project_value"
     assert response.daily_export_enabled is True
     assert response.streaming_export_enabled is True
-    assert response.enterprise_export_enabled is True
+    assert response.fresh_daily_export_enabled is True
     assert response.include_advertising_id is True
     assert response.export_streams == ["export_streams_value"]
     assert response.excluded_events == ["excluded_events_value"]
@@ -29546,7 +31061,7 @@ async def test_get_big_query_link_async(
                 project="project_value",
                 daily_export_enabled=True,
                 streaming_export_enabled=True,
-                enterprise_export_enabled=True,
+                fresh_daily_export_enabled=True,
                 include_advertising_id=True,
                 export_streams=["export_streams_value"],
                 excluded_events=["excluded_events_value"],
@@ -29565,7 +31080,7 @@ async def test_get_big_query_link_async(
     assert response.project == "project_value"
     assert response.daily_export_enabled is True
     assert response.streaming_export_enabled is True
-    assert response.enterprise_export_enabled is True
+    assert response.fresh_daily_export_enabled is True
     assert response.include_advertising_id is True
     assert response.export_streams == ["export_streams_value"]
     assert response.excluded_events == ["excluded_events_value"]
@@ -43537,6 +45052,1661 @@ def test_acknowledge_user_data_collection_rest_error():
     client = AnalyticsAdminServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.GetSKAdNetworkConversionValueSchemaRequest,
+        dict,
+    ],
+)
+def test_get_sk_ad_network_conversion_value_schema_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/dataStreams/sample2/sKAdNetworkConversionValueSchema/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SKAdNetworkConversionValueSchema(
+            name="name_value",
+            apply_conversion_values=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.SKAdNetworkConversionValueSchema.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_sk_ad_network_conversion_value_schema(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SKAdNetworkConversionValueSchema)
+    assert response.name == "name_value"
+    assert response.apply_conversion_values is True
+
+
+def test_get_sk_ad_network_conversion_value_schema_rest_required_fields(
+    request_type=analytics_admin.GetSKAdNetworkConversionValueSchemaRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_sk_ad_network_conversion_value_schema._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_sk_ad_network_conversion_value_schema._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.SKAdNetworkConversionValueSchema()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.SKAdNetworkConversionValueSchema.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_sk_ad_network_conversion_value_schema(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_sk_ad_network_conversion_value_schema_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.get_sk_ad_network_conversion_value_schema._get_unset_required_fields(
+            {}
+        )
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_sk_ad_network_conversion_value_schema_rest_interceptors(null_interceptor):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_get_sk_ad_network_conversion_value_schema",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_get_sk_ad_network_conversion_value_schema",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.GetSKAdNetworkConversionValueSchemaRequest.pb(
+            analytics_admin.GetSKAdNetworkConversionValueSchemaRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.SKAdNetworkConversionValueSchema.to_json(
+            resources.SKAdNetworkConversionValueSchema()
+        )
+
+        request = analytics_admin.GetSKAdNetworkConversionValueSchemaRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.SKAdNetworkConversionValueSchema()
+
+        client.get_sk_ad_network_conversion_value_schema(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_sk_ad_network_conversion_value_schema_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.GetSKAdNetworkConversionValueSchemaRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/dataStreams/sample2/sKAdNetworkConversionValueSchema/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_sk_ad_network_conversion_value_schema(request)
+
+
+def test_get_sk_ad_network_conversion_value_schema_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SKAdNetworkConversionValueSchema()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "properties/sample1/dataStreams/sample2/sKAdNetworkConversionValueSchema/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.SKAdNetworkConversionValueSchema.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_sk_ad_network_conversion_value_schema(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/dataStreams/*/sKAdNetworkConversionValueSchema/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_sk_ad_network_conversion_value_schema_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_sk_ad_network_conversion_value_schema(
+            analytics_admin.GetSKAdNetworkConversionValueSchemaRequest(),
+            name="name_value",
+        )
+
+
+def test_get_sk_ad_network_conversion_value_schema_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest,
+        dict,
+    ],
+)
+def test_create_sk_ad_network_conversion_value_schema_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1/dataStreams/sample2"}
+    request_init["skadnetwork_conversion_value_schema"] = {
+        "name": "name_value",
+        "postback_window_one": {
+            "conversion_values": [
+                {
+                    "display_name": "display_name_value",
+                    "fine_value": 1054,
+                    "coarse_value": 1,
+                    "event_mappings": [
+                        {
+                            "event_name": "event_name_value",
+                            "min_event_count": 1613,
+                            "max_event_count": 1615,
+                            "min_event_value": 0.16010000000000002,
+                            "max_event_value": 0.1603,
+                        }
+                    ],
+                    "lock_enabled": True,
+                }
+            ],
+            "postback_window_settings_enabled": True,
+        },
+        "postback_window_two": {},
+        "postback_window_three": {},
+        "apply_conversion_values": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SKAdNetworkConversionValueSchema(
+            name="name_value",
+            apply_conversion_values=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.SKAdNetworkConversionValueSchema.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_sk_ad_network_conversion_value_schema(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SKAdNetworkConversionValueSchema)
+    assert response.name == "name_value"
+    assert response.apply_conversion_values is True
+
+
+def test_create_sk_ad_network_conversion_value_schema_rest_required_fields(
+    request_type=analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_sk_ad_network_conversion_value_schema._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_sk_ad_network_conversion_value_schema._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.SKAdNetworkConversionValueSchema()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.SKAdNetworkConversionValueSchema.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_sk_ad_network_conversion_value_schema(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_sk_ad_network_conversion_value_schema_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_sk_ad_network_conversion_value_schema._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "parent",
+                "skadnetworkConversionValueSchema",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_sk_ad_network_conversion_value_schema_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_create_sk_ad_network_conversion_value_schema",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_create_sk_ad_network_conversion_value_schema",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest.pb(
+            analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.SKAdNetworkConversionValueSchema.to_json(
+            resources.SKAdNetworkConversionValueSchema()
+        )
+
+        request = analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.SKAdNetworkConversionValueSchema()
+
+        client.create_sk_ad_network_conversion_value_schema(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_sk_ad_network_conversion_value_schema_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1/dataStreams/sample2"}
+    request_init["skadnetwork_conversion_value_schema"] = {
+        "name": "name_value",
+        "postback_window_one": {
+            "conversion_values": [
+                {
+                    "display_name": "display_name_value",
+                    "fine_value": 1054,
+                    "coarse_value": 1,
+                    "event_mappings": [
+                        {
+                            "event_name": "event_name_value",
+                            "min_event_count": 1613,
+                            "max_event_count": 1615,
+                            "min_event_value": 0.16010000000000002,
+                            "max_event_value": 0.1603,
+                        }
+                    ],
+                    "lock_enabled": True,
+                }
+            ],
+            "postback_window_settings_enabled": True,
+        },
+        "postback_window_two": {},
+        "postback_window_three": {},
+        "apply_conversion_values": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_sk_ad_network_conversion_value_schema(request)
+
+
+def test_create_sk_ad_network_conversion_value_schema_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SKAdNetworkConversionValueSchema()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1/dataStreams/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            skadnetwork_conversion_value_schema=resources.SKAdNetworkConversionValueSchema(
+                name="name_value"
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.SKAdNetworkConversionValueSchema.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_sk_ad_network_conversion_value_schema(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*/dataStreams/*}/sKAdNetworkConversionValueSchema"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_sk_ad_network_conversion_value_schema_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_sk_ad_network_conversion_value_schema(
+            analytics_admin.CreateSKAdNetworkConversionValueSchemaRequest(),
+            parent="parent_value",
+            skadnetwork_conversion_value_schema=resources.SKAdNetworkConversionValueSchema(
+                name="name_value"
+            ),
+        )
+
+
+def test_create_sk_ad_network_conversion_value_schema_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest,
+        dict,
+    ],
+)
+def test_delete_sk_ad_network_conversion_value_schema_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/dataStreams/sample2/sKAdNetworkConversionValueSchema/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_sk_ad_network_conversion_value_schema(request)
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_sk_ad_network_conversion_value_schema_rest_required_fields(
+    request_type=analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_sk_ad_network_conversion_value_schema._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_sk_ad_network_conversion_value_schema._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = None
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = ""
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_sk_ad_network_conversion_value_schema(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_sk_ad_network_conversion_value_schema_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_sk_ad_network_conversion_value_schema._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_sk_ad_network_conversion_value_schema_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_delete_sk_ad_network_conversion_value_schema",
+    ) as pre:
+        pre.assert_not_called()
+        pb_message = analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest.pb(
+            analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+
+        request = analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+
+        client.delete_sk_ad_network_conversion_value_schema(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+
+
+def test_delete_sk_ad_network_conversion_value_schema_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "properties/sample1/dataStreams/sample2/sKAdNetworkConversionValueSchema/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_sk_ad_network_conversion_value_schema(request)
+
+
+def test_delete_sk_ad_network_conversion_value_schema_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "properties/sample1/dataStreams/sample2/sKAdNetworkConversionValueSchema/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_sk_ad_network_conversion_value_schema(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{name=properties/*/dataStreams/*/sKAdNetworkConversionValueSchema/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_sk_ad_network_conversion_value_schema_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_sk_ad_network_conversion_value_schema(
+            analytics_admin.DeleteSKAdNetworkConversionValueSchemaRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_sk_ad_network_conversion_value_schema_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest,
+        dict,
+    ],
+)
+def test_update_sk_ad_network_conversion_value_schema_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "skadnetwork_conversion_value_schema": {
+            "name": "properties/sample1/dataStreams/sample2/sKAdNetworkConversionValueSchema/sample3"
+        }
+    }
+    request_init["skadnetwork_conversion_value_schema"] = {
+        "name": "properties/sample1/dataStreams/sample2/sKAdNetworkConversionValueSchema/sample3",
+        "postback_window_one": {
+            "conversion_values": [
+                {
+                    "display_name": "display_name_value",
+                    "fine_value": 1054,
+                    "coarse_value": 1,
+                    "event_mappings": [
+                        {
+                            "event_name": "event_name_value",
+                            "min_event_count": 1613,
+                            "max_event_count": 1615,
+                            "min_event_value": 0.16010000000000002,
+                            "max_event_value": 0.1603,
+                        }
+                    ],
+                    "lock_enabled": True,
+                }
+            ],
+            "postback_window_settings_enabled": True,
+        },
+        "postback_window_two": {},
+        "postback_window_three": {},
+        "apply_conversion_values": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SKAdNetworkConversionValueSchema(
+            name="name_value",
+            apply_conversion_values=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.SKAdNetworkConversionValueSchema.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_sk_ad_network_conversion_value_schema(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, resources.SKAdNetworkConversionValueSchema)
+    assert response.name == "name_value"
+    assert response.apply_conversion_values is True
+
+
+def test_update_sk_ad_network_conversion_value_schema_rest_required_fields(
+    request_type=analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_sk_ad_network_conversion_value_schema._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_sk_ad_network_conversion_value_schema._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("update_mask",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = resources.SKAdNetworkConversionValueSchema()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = resources.SKAdNetworkConversionValueSchema.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_sk_ad_network_conversion_value_schema(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_sk_ad_network_conversion_value_schema_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_sk_ad_network_conversion_value_schema._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(("updateMask",))
+        & set(
+            (
+                "skadnetworkConversionValueSchema",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_sk_ad_network_conversion_value_schema_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_update_sk_ad_network_conversion_value_schema",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_update_sk_ad_network_conversion_value_schema",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest.pb(
+            analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = resources.SKAdNetworkConversionValueSchema.to_json(
+            resources.SKAdNetworkConversionValueSchema()
+        )
+
+        request = analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = resources.SKAdNetworkConversionValueSchema()
+
+        client.update_sk_ad_network_conversion_value_schema(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_sk_ad_network_conversion_value_schema_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "skadnetwork_conversion_value_schema": {
+            "name": "properties/sample1/dataStreams/sample2/sKAdNetworkConversionValueSchema/sample3"
+        }
+    }
+    request_init["skadnetwork_conversion_value_schema"] = {
+        "name": "properties/sample1/dataStreams/sample2/sKAdNetworkConversionValueSchema/sample3",
+        "postback_window_one": {
+            "conversion_values": [
+                {
+                    "display_name": "display_name_value",
+                    "fine_value": 1054,
+                    "coarse_value": 1,
+                    "event_mappings": [
+                        {
+                            "event_name": "event_name_value",
+                            "min_event_count": 1613,
+                            "max_event_count": 1615,
+                            "min_event_value": 0.16010000000000002,
+                            "max_event_value": 0.1603,
+                        }
+                    ],
+                    "lock_enabled": True,
+                }
+            ],
+            "postback_window_settings_enabled": True,
+        },
+        "postback_window_two": {},
+        "postback_window_three": {},
+        "apply_conversion_values": True,
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_sk_ad_network_conversion_value_schema(request)
+
+
+def test_update_sk_ad_network_conversion_value_schema_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = resources.SKAdNetworkConversionValueSchema()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "skadnetwork_conversion_value_schema": {
+                "name": "properties/sample1/dataStreams/sample2/sKAdNetworkConversionValueSchema/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            skadnetwork_conversion_value_schema=resources.SKAdNetworkConversionValueSchema(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = resources.SKAdNetworkConversionValueSchema.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_sk_ad_network_conversion_value_schema(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{skadnetwork_conversion_value_schema.name=properties/*/dataStreams/*/sKAdNetworkConversionValueSchema/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_sk_ad_network_conversion_value_schema_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_sk_ad_network_conversion_value_schema(
+            analytics_admin.UpdateSKAdNetworkConversionValueSchemaRequest(),
+            skadnetwork_conversion_value_schema=resources.SKAdNetworkConversionValueSchema(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_sk_ad_network_conversion_value_schema_rest_error():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analytics_admin.ListSKAdNetworkConversionValueSchemasRequest,
+        dict,
+    ],
+)
+def test_list_sk_ad_network_conversion_value_schemas_rest(request_type):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1/dataStreams/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = (
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_sk_ad_network_conversion_value_schemas(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSKAdNetworkConversionValueSchemasPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_sk_ad_network_conversion_value_schemas_rest_required_fields(
+    request_type=analytics_admin.ListSKAdNetworkConversionValueSchemasRequest,
+):
+    transport_class = transports.AnalyticsAdminServiceRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_sk_ad_network_conversion_value_schemas._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_sk_ad_network_conversion_value_schemas._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = analytics_admin.ListSKAdNetworkConversionValueSchemasResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = (
+                analytics_admin.ListSKAdNetworkConversionValueSchemasResponse.pb(
+                    return_value
+                )
+            )
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_sk_ad_network_conversion_value_schemas(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_sk_ad_network_conversion_value_schemas_rest_unset_required_fields():
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_sk_ad_network_conversion_value_schemas._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_sk_ad_network_conversion_value_schemas_rest_interceptors(
+    null_interceptor,
+):
+    transport = transports.AnalyticsAdminServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AnalyticsAdminServiceRestInterceptor(),
+    )
+    client = AnalyticsAdminServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "post_list_sk_ad_network_conversion_value_schemas",
+    ) as post, mock.patch.object(
+        transports.AnalyticsAdminServiceRestInterceptor,
+        "pre_list_sk_ad_network_conversion_value_schemas",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = analytics_admin.ListSKAdNetworkConversionValueSchemasRequest.pb(
+            analytics_admin.ListSKAdNetworkConversionValueSchemasRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse.to_json(
+                analytics_admin.ListSKAdNetworkConversionValueSchemasResponse()
+            )
+        )
+
+        request = analytics_admin.ListSKAdNetworkConversionValueSchemasRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = (
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse()
+        )
+
+        client.list_sk_ad_network_conversion_value_schemas(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_sk_ad_network_conversion_value_schemas_rest_bad_request(
+    transport: str = "rest",
+    request_type=analytics_admin.ListSKAdNetworkConversionValueSchemasRequest,
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "properties/sample1/dataStreams/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_sk_ad_network_conversion_value_schemas(request)
+
+
+def test_list_sk_ad_network_conversion_value_schemas_rest_flattened():
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = analytics_admin.ListSKAdNetworkConversionValueSchemasResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "properties/sample1/dataStreams/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = (
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse.pb(
+                return_value
+            )
+        )
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_sk_ad_network_conversion_value_schemas(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1alpha/{parent=properties/*/dataStreams/*}/sKAdNetworkConversionValueSchema"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_sk_ad_network_conversion_value_schemas_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_sk_ad_network_conversion_value_schemas(
+            analytics_admin.ListSKAdNetworkConversionValueSchemasRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_sk_ad_network_conversion_value_schemas_rest_pager(
+    transport: str = "rest",
+):
+    client = AnalyticsAdminServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[
+                    resources.SKAdNetworkConversionValueSchema(),
+                    resources.SKAdNetworkConversionValueSchema(),
+                    resources.SKAdNetworkConversionValueSchema(),
+                ],
+                next_page_token="abc",
+            ),
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[],
+                next_page_token="def",
+            ),
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[
+                    resources.SKAdNetworkConversionValueSchema(),
+                ],
+                next_page_token="ghi",
+            ),
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse(
+                skadnetwork_conversion_value_schemas=[
+                    resources.SKAdNetworkConversionValueSchema(),
+                    resources.SKAdNetworkConversionValueSchema(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            analytics_admin.ListSKAdNetworkConversionValueSchemasResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "properties/sample1/dataStreams/sample2"}
+
+        pager = client.list_sk_ad_network_conversion_value_schemas(
+            request=sample_request
+        )
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, resources.SKAdNetworkConversionValueSchema) for i in results
+        )
+
+        pages = list(
+            client.list_sk_ad_network_conversion_value_schemas(
+                request=sample_request
+            ).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.parametrize(
@@ -64036,7 +67206,7 @@ def test_get_big_query_link_rest(request_type):
             project="project_value",
             daily_export_enabled=True,
             streaming_export_enabled=True,
-            enterprise_export_enabled=True,
+            fresh_daily_export_enabled=True,
             include_advertising_id=True,
             export_streams=["export_streams_value"],
             excluded_events=["excluded_events_value"],
@@ -64058,7 +67228,7 @@ def test_get_big_query_link_rest(request_type):
     assert response.project == "project_value"
     assert response.daily_export_enabled is True
     assert response.streaming_export_enabled is True
-    assert response.enterprise_export_enabled is True
+    assert response.fresh_daily_export_enabled is True
     assert response.include_advertising_id is True
     assert response.export_streams == ["export_streams_value"]
     assert response.excluded_events == ["excluded_events_value"]
@@ -68805,6 +71975,11 @@ def test_analytics_admin_service_base_transport():
         "delete_measurement_protocol_secret",
         "update_measurement_protocol_secret",
         "acknowledge_user_data_collection",
+        "get_sk_ad_network_conversion_value_schema",
+        "create_sk_ad_network_conversion_value_schema",
+        "delete_sk_ad_network_conversion_value_schema",
+        "update_sk_ad_network_conversion_value_schema",
+        "list_sk_ad_network_conversion_value_schemas",
         "search_change_history_events",
         "get_google_signals_settings",
         "update_google_signals_settings",
@@ -69281,6 +72456,21 @@ def test_analytics_admin_service_client_transport_session_collision(transport_na
     assert session1 != session2
     session1 = client1.transport.acknowledge_user_data_collection._session
     session2 = client2.transport.acknowledge_user_data_collection._session
+    assert session1 != session2
+    session1 = client1.transport.get_sk_ad_network_conversion_value_schema._session
+    session2 = client2.transport.get_sk_ad_network_conversion_value_schema._session
+    assert session1 != session2
+    session1 = client1.transport.create_sk_ad_network_conversion_value_schema._session
+    session2 = client2.transport.create_sk_ad_network_conversion_value_schema._session
+    assert session1 != session2
+    session1 = client1.transport.delete_sk_ad_network_conversion_value_schema._session
+    session2 = client2.transport.delete_sk_ad_network_conversion_value_schema._session
+    assert session1 != session2
+    session1 = client1.transport.update_sk_ad_network_conversion_value_schema._session
+    session2 = client2.transport.update_sk_ad_network_conversion_value_schema._session
+    assert session1 != session2
+    session1 = client1.transport.list_sk_ad_network_conversion_value_schemas._session
+    session2 = client2.transport.list_sk_ad_network_conversion_value_schemas._session
     assert session1 != session2
     session1 = client1.transport.search_change_history_events._session
     session2 = client2.transport.search_change_history_events._session
@@ -70298,9 +73488,43 @@ def test_parse_search_ads360_link_path():
     assert expected == actual
 
 
+def test_sk_ad_network_conversion_value_schema_path():
+    property = "scallop"
+    data_stream = "abalone"
+    skadnetwork_conversion_value_schema = "squid"
+    expected = "properties/{property}/dataStreams/{data_stream}/sKAdNetworkConversionValueSchema/{skadnetwork_conversion_value_schema}".format(
+        property=property,
+        data_stream=data_stream,
+        skadnetwork_conversion_value_schema=skadnetwork_conversion_value_schema,
+    )
+    actual = AnalyticsAdminServiceClient.sk_ad_network_conversion_value_schema_path(
+        property, data_stream, skadnetwork_conversion_value_schema
+    )
+    assert expected == actual
+
+
+def test_parse_sk_ad_network_conversion_value_schema_path():
+    expected = {
+        "property": "clam",
+        "data_stream": "whelk",
+        "skadnetwork_conversion_value_schema": "octopus",
+    }
+    path = AnalyticsAdminServiceClient.sk_ad_network_conversion_value_schema_path(
+        **expected
+    )
+
+    # Check that the path construction is reversible.
+    actual = (
+        AnalyticsAdminServiceClient.parse_sk_ad_network_conversion_value_schema_path(
+            path
+        )
+    )
+    assert expected == actual
+
+
 def test_user_link_path():
-    account = "scallop"
-    user_link = "abalone"
+    account = "oyster"
+    user_link = "nudibranch"
     expected = "accounts/{account}/userLinks/{user_link}".format(
         account=account,
         user_link=user_link,
@@ -70311,8 +73535,8 @@ def test_user_link_path():
 
 def test_parse_user_link_path():
     expected = {
-        "account": "squid",
-        "user_link": "clam",
+        "account": "cuttlefish",
+        "user_link": "mussel",
     }
     path = AnalyticsAdminServiceClient.user_link_path(**expected)
 
@@ -70322,7 +73546,7 @@ def test_parse_user_link_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -70332,7 +73556,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = AnalyticsAdminServiceClient.common_billing_account_path(**expected)
 
@@ -70342,7 +73566,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -70352,7 +73576,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = AnalyticsAdminServiceClient.common_folder_path(**expected)
 
@@ -70362,7 +73586,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -70372,7 +73596,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = AnalyticsAdminServiceClient.common_organization_path(**expected)
 
@@ -70382,7 +73606,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -70392,7 +73616,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = AnalyticsAdminServiceClient.common_project_path(**expected)
 
@@ -70402,8 +73626,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -70414,8 +73638,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = AnalyticsAdminServiceClient.common_location_path(**expected)
 

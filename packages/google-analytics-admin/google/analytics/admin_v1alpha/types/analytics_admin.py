@@ -86,6 +86,12 @@ __protobuf__ = proto.module(
         "UpdateMeasurementProtocolSecretRequest",
         "ListMeasurementProtocolSecretsRequest",
         "ListMeasurementProtocolSecretsResponse",
+        "GetSKAdNetworkConversionValueSchemaRequest",
+        "CreateSKAdNetworkConversionValueSchemaRequest",
+        "DeleteSKAdNetworkConversionValueSchemaRequest",
+        "UpdateSKAdNetworkConversionValueSchemaRequest",
+        "ListSKAdNetworkConversionValueSchemasRequest",
+        "ListSKAdNetworkConversionValueSchemasResponse",
         "GetGoogleSignalsSettingsRequest",
         "UpdateGoogleSignalsSettingsRequest",
         "CreateConversionEventRequest",
@@ -1699,6 +1705,165 @@ class ListMeasurementProtocolSecretsResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message=resources.MeasurementProtocolSecret,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetSKAdNetworkConversionValueSchemaRequest(proto.Message):
+    r"""Request message for GetSKAdNetworkConversionValueSchema RPC.
+
+    Attributes:
+        name (str):
+            Required. The resource name of SKAdNetwork conversion value
+            schema to look up. Format:
+            properties/{property}/dataStreams/{dataStream}/sKAdNetworkConversionValueSchema/{skadnetwork_conversion_value_schema}
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateSKAdNetworkConversionValueSchemaRequest(proto.Message):
+    r"""Request message for CreateSKAdNetworkConversionValueSchema
+    RPC.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where this
+            schema will be created. Format:
+            properties/{property}/dataStreams/{dataStream}
+        skadnetwork_conversion_value_schema (google.analytics.admin_v1alpha.types.SKAdNetworkConversionValueSchema):
+            Required. SKAdNetwork conversion value schema
+            to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    skadnetwork_conversion_value_schema: resources.SKAdNetworkConversionValueSchema = (
+        proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=resources.SKAdNetworkConversionValueSchema,
+        )
+    )
+
+
+class DeleteSKAdNetworkConversionValueSchemaRequest(proto.Message):
+    r"""Request message for DeleteSKAdNetworkConversionValueSchema
+    RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the SKAdNetworkConversionValueSchema
+            to delete. Format:
+            properties/{property}/dataStreams/{dataStream}/sKAdNetworkConversionValueSchema/{skadnetwork_conversion_value_schema}
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateSKAdNetworkConversionValueSchemaRequest(proto.Message):
+    r"""Request message for UpdateSKAdNetworkConversionValueSchema
+    RPC.
+
+    Attributes:
+        skadnetwork_conversion_value_schema (google.analytics.admin_v1alpha.types.SKAdNetworkConversionValueSchema):
+            Required. SKAdNetwork conversion value schema
+            to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated.
+            Omitted fields will not be updated.
+    """
+
+    skadnetwork_conversion_value_schema: resources.SKAdNetworkConversionValueSchema = (
+        proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=resources.SKAdNetworkConversionValueSchema,
+        )
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class ListSKAdNetworkConversionValueSchemasRequest(proto.Message):
+    r"""Request message for ListSKAdNetworkConversionValueSchemas RPC
+
+    Attributes:
+        parent (str):
+            Required. Format:
+            properties/{property_id}/dataStreams/{dataStream}/sKAdNetworkConversionValueSchema
+            Example:
+            properties/1234/dataStreams/5678/sKAdNetworkConversionValueSchema
+        page_size (int):
+            The maximum number of resources to return.
+            The service may return fewer than this value,
+            even if there are additional pages. If
+            unspecified, at most 50 resources will be
+            returned. The maximum value is 200; (higher
+            values will be coerced to the maximum)
+        page_token (str):
+            A page token, received from a previous
+            ``ListSKAdNetworkConversionValueSchemas`` call. Provide this
+            to retrieve the subsequent page. When paginating, all other
+            parameters provided to
+            ``ListSKAdNetworkConversionValueSchema`` must match the call
+            that provided the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListSKAdNetworkConversionValueSchemasResponse(proto.Message):
+    r"""Response message for ListSKAdNetworkConversionValueSchemas
+    RPC
+
+    Attributes:
+        skadnetwork_conversion_value_schemas (MutableSequence[google.analytics.admin_v1alpha.types.SKAdNetworkConversionValueSchema]):
+            List of SKAdNetworkConversionValueSchemas.
+            This will have at most one value.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages. Currently, Google Analytics supports only one
+            SKAdNetworkConversionValueSchema per dataStream, so this
+            will never be populated.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    skadnetwork_conversion_value_schemas: MutableSequence[
+        resources.SKAdNetworkConversionValueSchema
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.SKAdNetworkConversionValueSchema,
     )
     next_page_token: str = proto.Field(
         proto.STRING,

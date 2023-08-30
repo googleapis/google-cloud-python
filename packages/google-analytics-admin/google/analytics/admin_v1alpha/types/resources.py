@@ -41,6 +41,7 @@ __protobuf__ = proto.module(
         "LinkProposalInitiatingProduct",
         "LinkProposalState",
         "PropertyType",
+        "CoarseValue",
         "Account",
         "Property",
         "DataStream",
@@ -53,6 +54,10 @@ __protobuf__ = proto.module(
         "AccountSummary",
         "PropertySummary",
         "MeasurementProtocolSecret",
+        "SKAdNetworkConversionValueSchema",
+        "PostbackWindow",
+        "ConversionValues",
+        "EventMapping",
         "ChangeHistoryEvent",
         "ChangeHistoryChange",
         "DisplayVideo360AdvertiserLink",
@@ -264,6 +269,8 @@ class ChangeHistoryResourceType(proto.Enum):
             ChannelGroup resource
         ENHANCED_MEASUREMENT_SETTINGS (24):
             EnhancedMeasurementSettings resource
+        SKADNETWORK_CONVERSION_VALUE_SCHEMA (26):
+            SKAdNetworkConversionValueSchema resource
         ADSENSE_LINK (27):
             AdSenseLink resource
         AUDIENCE (28):
@@ -290,6 +297,7 @@ class ChangeHistoryResourceType(proto.Enum):
     EXPANDED_DATA_SET = 21
     CHANNEL_GROUP = 22
     ENHANCED_MEASUREMENT_SETTINGS = 24
+    SKADNETWORK_CONVERSION_VALUE_SCHEMA = 26
     ADSENSE_LINK = 27
     AUDIENCE = 28
     EVENT_CREATE_RULE = 29
@@ -410,6 +418,28 @@ class PropertyType(proto.Enum):
     PROPERTY_TYPE_ORDINARY = 1
     PROPERTY_TYPE_SUBPROPERTY = 2
     PROPERTY_TYPE_ROLLUP = 3
+
+
+class CoarseValue(proto.Enum):
+    r"""The coarse conversion value set on the updatePostbackConversionValue
+    SDK call when a ConversionValues.event_mappings conditions are
+    satisfied. For more information, see
+    `SKAdNetwork.CoarseConversionValue <https://developer.apple.com/documentation/storekit/skadnetwork/coarseconversionvalue>`__.
+
+    Values:
+        COARSE_VALUE_UNSPECIFIED (0):
+            Coarse value not specified.
+        COARSE_VALUE_LOW (1):
+            Coarse value of low.
+        COARSE_VALUE_MEDIUM (2):
+            Coarse value of medium.
+        COARSE_VALUE_HIGH (3):
+            Coarse value of high.
+    """
+    COARSE_VALUE_UNSPECIFIED = 0
+    COARSE_VALUE_LOW = 1
+    COARSE_VALUE_MEDIUM = 2
+    COARSE_VALUE_HIGH = 3
 
 
 class Account(proto.Message):
@@ -1163,6 +1193,243 @@ class MeasurementProtocolSecret(proto.Message):
     )
 
 
+class SKAdNetworkConversionValueSchema(proto.Message):
+    r"""SKAdNetwork conversion value schema of an iOS stream.
+
+    Attributes:
+        name (str):
+            Output only. Resource name of the schema.
+            This will be child of ONLY an iOS stream, and
+            there can be at most one such child under an iOS
+            stream. Format:
+
+            properties/{property}/dataStreams/{dataStream}/sKAdNetworkConversionValueSchema
+        postback_window_one (google.analytics.admin_v1alpha.types.PostbackWindow):
+            Required. The conversion value settings for
+            the first postback window. These differ from
+            values for postback window two and three in that
+            they contain a "Fine" grained conversion value
+            (a numeric value).
+            Conversion values for this postback window must
+            be set.  The other windows are optional and may
+            inherit this window's settings if unset or
+            disabled.
+        postback_window_two (google.analytics.admin_v1alpha.types.PostbackWindow):
+            The conversion value settings for the second postback
+            window.
+
+            This field should only be configured if there is a need to
+            define different conversion values for this postback window.
+
+            If enable_postback_window_settings is set to false for this
+            postback window, the values from postback_window_one will be
+            used.
+        postback_window_three (google.analytics.admin_v1alpha.types.PostbackWindow):
+            The conversion value settings for the third postback window.
+
+            This field should only be set if the user chose to define
+            different conversion values for this postback window. It is
+            allowed to configure window 3 without setting window 2. In
+            case window 1 & 2 settings are set and
+            enable_postback_window_settings for this postback window is
+            set to false, the schema will inherit settings from
+            postback_window_two.
+        apply_conversion_values (bool):
+            If enabled, the GA SDK will set conversion
+            values using this schema definition, and schema
+            will be exported to any Google Ads accounts
+            linked to this property. If disabled, the GA SDK
+            will not automatically set conversion values,
+            and also the schema will not be exported to Ads.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    postback_window_one: "PostbackWindow" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="PostbackWindow",
+    )
+    postback_window_two: "PostbackWindow" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="PostbackWindow",
+    )
+    postback_window_three: "PostbackWindow" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="PostbackWindow",
+    )
+    apply_conversion_values: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+
+
+class PostbackWindow(proto.Message):
+    r"""Settings for a SKAdNetwork conversion postback window.
+
+    Attributes:
+        conversion_values (MutableSequence[google.analytics.admin_v1alpha.types.ConversionValues]):
+            Ordering of the repeated field will be used to prioritize
+            the conversion value settings. Lower indexed entries are
+            prioritized higher. The first conversion value setting that
+            evaluates to true will be selected. It must have at least
+            one entry if enable_postback_window_settings is set to true.
+            It can have maximum of 128 entries.
+        postback_window_settings_enabled (bool):
+            If enable_postback_window_settings is true,
+            conversion_values must be populated and will be used for
+            determining when and how to set the Conversion Value on a
+            client device and exporting schema to linked Ads accounts.
+            If false, the settings are not used, but are retained in
+            case they may be used in the future. This must always be
+            true for postback_window_one.
+    """
+
+    conversion_values: MutableSequence["ConversionValues"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ConversionValues",
+    )
+    postback_window_settings_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+
+
+class ConversionValues(proto.Message):
+    r"""Conversion value settings for a postback window for
+    SKAdNetwork conversion value schema.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        display_name (str):
+            Display name of the SKAdNetwork conversion
+            value. The max allowed display name length is 50
+            UTF-16 code units.
+        fine_value (int):
+            The fine-grained conversion value. This is applicable only
+            to the first postback window. Its valid values are [0,63],
+            both inclusive. It must be set for postback window 1, and
+            must not be set for postback window 2 & 3. This value is not
+            guaranteed to be unique.
+
+            If the configuration for the first postback window is
+            re-used for second or third postback windows this field has
+            no effect.
+
+            This field is a member of `oneof`_ ``_fine_value``.
+        coarse_value (google.analytics.admin_v1alpha.types.CoarseValue):
+            Required. A coarse grained conversion value.
+            This value is not guaranteed to be unique.
+        event_mappings (MutableSequence[google.analytics.admin_v1alpha.types.EventMapping]):
+            Event conditions that must be met for this
+            Conversion Value to be achieved. The conditions
+            in this list are ANDed together. It must have
+            minimum of 1 entry and maximum of 3 entries, if
+            the postback window is enabled.
+        lock_enabled (bool):
+            If true, the SDK should lock to this
+            conversion value for the current postback
+            window.
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    fine_value: int = proto.Field(
+        proto.INT32,
+        number=2,
+        optional=True,
+    )
+    coarse_value: "CoarseValue" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="CoarseValue",
+    )
+    event_mappings: MutableSequence["EventMapping"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="EventMapping",
+    )
+    lock_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+
+
+class EventMapping(proto.Message):
+    r"""Event setting conditions to match an event.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        event_name (str):
+            Required. Name of the GA4 event. It must
+            always be set. The max allowed display name
+            length is 40 UTF-16 code units.
+        min_event_count (int):
+            At least one of the following four min/max
+            values must be set. The values set will be ANDed
+            together to qualify an event. The minimum number
+            of times the event occurred. If not set, minimum
+            event count won't be checked.
+
+            This field is a member of `oneof`_ ``_min_event_count``.
+        max_event_count (int):
+            The maximum number of times the event
+            occurred. If not set, maximum event count won't
+            be checked.
+
+            This field is a member of `oneof`_ ``_max_event_count``.
+        min_event_value (float):
+            The minimum revenue generated due to the
+            event. Revenue currency will be defined at the
+            property level. If not set, minimum event value
+            won't be checked.
+
+            This field is a member of `oneof`_ ``_min_event_value``.
+        max_event_value (float):
+            The maximum revenue generated due to the
+            event. Revenue currency will be defined at the
+            property level. If not set, maximum event value
+            won't be checked.
+
+            This field is a member of `oneof`_ ``_max_event_value``.
+    """
+
+    event_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    min_event_count: int = proto.Field(
+        proto.INT64,
+        number=2,
+        optional=True,
+    )
+    max_event_count: int = proto.Field(
+        proto.INT64,
+        number=3,
+        optional=True,
+    )
+    min_event_value: float = proto.Field(
+        proto.DOUBLE,
+        number=4,
+        optional=True,
+    )
+    max_event_value: float = proto.Field(
+        proto.DOUBLE,
+        number=5,
+        optional=True,
+    )
+
+
 class ChangeHistoryEvent(proto.Message):
     r"""A set of changes within a Google Analytics account or its
     child properties that resulted from the same cause. Common
@@ -1352,6 +1619,12 @@ class ChangeHistoryChange(proto.Message):
                 resource in change history.
 
                 This field is a member of `oneof`_ ``resource``.
+            skadnetwork_conversion_value_schema (google.analytics.admin_v1alpha.types.SKAdNetworkConversionValueSchema):
+                A snapshot of
+                SKAdNetworkConversionValueSchema resource in
+                change history.
+
+                This field is a member of `oneof`_ ``resource``.
             adsense_link (google.analytics.admin_v1alpha.types.AdSenseLink):
                 A snapshot of an AdSenseLink resource in
                 change history.
@@ -1484,6 +1757,14 @@ class ChangeHistoryChange(proto.Message):
             number=24,
             oneof="resource",
             message="EnhancedMeasurementSettings",
+        )
+        skadnetwork_conversion_value_schema: "SKAdNetworkConversionValueSchema" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=26,
+                oneof="resource",
+                message="SKAdNetworkConversionValueSchema",
+            )
         )
         adsense_link: "AdSenseLink" = proto.Field(
             proto.MESSAGE,
@@ -2460,9 +2741,9 @@ class BigQueryLink(proto.Message):
         streaming_export_enabled (bool):
             If set true, enables streaming export to the
             linked Google Cloud project.
-        enterprise_export_enabled (bool):
-            If set true, enables enterprise export to the
-            linked Google Cloud project.
+        fresh_daily_export_enabled (bool):
+            If set true, enables fresh daily export to
+            the linked Google Cloud project.
         include_advertising_id (bool):
             If set true, exported data will include
             advertising identifiers for mobile app streams.
@@ -2497,7 +2778,7 @@ class BigQueryLink(proto.Message):
         proto.BOOL,
         number=5,
     )
-    enterprise_export_enabled: bool = proto.Field(
+    fresh_daily_export_enabled: bool = proto.Field(
         proto.BOOL,
         number=9,
     )
