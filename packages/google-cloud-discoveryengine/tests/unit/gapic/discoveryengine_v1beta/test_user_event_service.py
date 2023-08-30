@@ -42,6 +42,7 @@ from google.api_core import operation_async  # type: ignore
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
@@ -1283,6 +1284,7 @@ def test_write_user_event_rest(request_type):
             {
                 "id": "id_value",
                 "name": "name_value",
+                "uri": "uri_value",
                 "quantity": 895,
                 "promotion_ids": ["promotion_ids_value1", "promotion_ids_value2"],
             }
@@ -1535,6 +1537,7 @@ def test_write_user_event_rest_bad_request(
             {
                 "id": "id_value",
                 "name": "name_value",
+                "uri": "uri_value",
                 "quantity": 895,
                 "promotion_ids": ["promotion_ids_value1", "promotion_ids_value2"],
             }

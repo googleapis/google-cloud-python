@@ -23,11 +23,13 @@ from .agent import (
     ExportAgentResponse,
     GetAgentRequest,
     GetAgentValidationResultRequest,
+    GetGenerativeSettingsRequest,
     ListAgentsRequest,
     ListAgentsResponse,
     RestoreAgentRequest,
     SpeechToTextSettings,
     UpdateAgentRequest,
+    UpdateGenerativeSettingsRequest,
     ValidateAgentRequest,
 )
 from .audio_config import (
@@ -48,6 +50,7 @@ from .changelog import (
     ListChangelogsRequest,
     ListChangelogsResponse,
 )
+from .data_store_connection import DataStoreConnection, DataStoreType
 from .deployment import (
     Deployment,
     GetDeploymentRequest,
@@ -119,6 +122,7 @@ from .flow import (
 )
 from .fulfillment import Fulfillment
 from .gcs import GcsDestination
+from .generative_settings import GenerativeSettings
 from .intent import (
     CreateIntentRequest,
     DeleteIntentRequest,
@@ -135,6 +139,7 @@ from .page import (
     EventHandler,
     Form,
     GetPageRequest,
+    KnowledgeConnectorSettings,
     ListPagesRequest,
     ListPagesResponse,
     Page,
@@ -142,6 +147,7 @@ from .page import (
     UpdatePageRequest,
 )
 from .response_message import ResponseMessage
+from .safety_settings import SafetySettings
 from .security_settings import (
     CreateSecuritySettingsRequest,
     DeleteSecuritySettingsRequest,
@@ -265,11 +271,13 @@ __all__ = (
     "ExportAgentResponse",
     "GetAgentRequest",
     "GetAgentValidationResultRequest",
+    "GetGenerativeSettingsRequest",
     "ListAgentsRequest",
     "ListAgentsResponse",
     "RestoreAgentRequest",
     "SpeechToTextSettings",
     "UpdateAgentRequest",
+    "UpdateGenerativeSettingsRequest",
     "ValidateAgentRequest",
     "InputAudioConfig",
     "OutputAudioConfig",
@@ -285,6 +293,8 @@ __all__ = (
     "GetChangelogRequest",
     "ListChangelogsRequest",
     "ListChangelogsResponse",
+    "DataStoreConnection",
+    "DataStoreType",
     "Deployment",
     "GetDeploymentRequest",
     "ListDeploymentsRequest",
@@ -346,6 +356,7 @@ __all__ = (
     "ValidateFlowRequest",
     "Fulfillment",
     "GcsDestination",
+    "GenerativeSettings",
     "ImportStrategy",
     "CreateIntentRequest",
     "DeleteIntentRequest",
@@ -360,12 +371,14 @@ __all__ = (
     "EventHandler",
     "Form",
     "GetPageRequest",
+    "KnowledgeConnectorSettings",
     "ListPagesRequest",
     "ListPagesResponse",
     "Page",
     "TransitionRoute",
     "UpdatePageRequest",
     "ResponseMessage",
+    "SafetySettings",
     "CreateSecuritySettingsRequest",
     "DeleteSecuritySettingsRequest",
     "GetSecuritySettingsRequest",

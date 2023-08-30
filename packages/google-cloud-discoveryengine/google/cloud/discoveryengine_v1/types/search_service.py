@@ -52,12 +52,14 @@ class SearchRequest(proto.Message):
             empty, to search documents under the default branch.
         query (str):
             Raw search query.
+        image_query (google.cloud.discoveryengine_v1.types.SearchRequest.ImageQuery):
+            Raw image query.
         page_size (int):
             Maximum number of
             [Document][google.cloud.discoveryengine.v1.Document]s to
             return. If unspecified, defaults to a reasonable value. The
-            maximum allowed value is 100. Values above 100 will be
-            coerced to 100.
+            maximum allowed value is 100. Values above 100 are coerced
+            to 100.
 
             If this field is negative, an ``INVALID_ARGUMENT`` is
             returned.
@@ -81,10 +83,37 @@ class SearchRequest(proto.Message):
 
             If this field is negative, an ``INVALID_ARGUMENT`` is
             returned.
+        filter (str):
+            The filter syntax consists of an expression language for
+            constructing a predicate from one or more fields of the
+            documents being filtered. Filter expression is
+            case-sensitive.
+
+            If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
+            returned.
+        order_by (str):
+            The order in which documents are returned. Documents can be
+            ordered by a field in an
+            [Document][google.cloud.discoveryengine.v1.Document] object.
+            Leave it unset if ordered by relevance. ``order_by``
+            expression is case-sensitive.
+
+            If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
+            returned.
         user_info (google.cloud.discoveryengine_v1.types.UserInfo):
             Information about the end user. Highly recommended for
-            analytics. The user_agent string in UserInfo will be used to
-            deduce device_type for analytics.
+            analytics.
+            [UserInfo.user_agent][google.cloud.discoveryengine.v1.UserInfo.user_agent]
+            is used to deduce ``device_type`` for analytics.
+        facet_specs (MutableSequence[google.cloud.discoveryengine_v1.types.SearchRequest.FacetSpec]):
+            Facet specifications for faceted search. If empty, no facets
+            are returned.
+
+            A maximum of 100 values are allowed. Otherwise, an
+            ``INVALID_ARGUMENT`` error is returned.
+        boost_spec (google.cloud.discoveryengine_v1.types.SearchRequest.BoostSpec):
+            Boost specification to boost certain
+            documents.
         params (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Additional search parameters.
 
@@ -100,11 +129,11 @@ class SearchRequest(proto.Message):
         query_expansion_spec (google.cloud.discoveryengine_v1.types.SearchRequest.QueryExpansionSpec):
             The query expansion specification that
             specifies the conditions under which query
-            expansion will occur.
+            expansion occurs.
         spell_correction_spec (google.cloud.discoveryengine_v1.types.SearchRequest.SpellCorrectionSpec):
             The spell correction specification that
             specifies the mode under which spell correction
-            will take effect.
+            takes effect.
         user_pseudo_id (str):
             A unique identifier for tracking visitors. For example, this
             could be implemented with an HTTP cookie, which should be
@@ -124,11 +153,11 @@ class SearchRequest(proto.Message):
             of 128 characters. Otherwise, an ``INVALID_ARGUMENT`` error
             is returned.
         content_search_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec):
-            The content search spec that configs the
-            desired behavior of content search.
+            A specification for configuring the behavior
+            of content search.
         safe_search (bool):
-            Whether to turn on safe search. This is only supported for
-            [ContentConfig.PUBLIC_WEBSITE][].
+            Whether to turn on safe search. This is only
+            supported for website search.
         user_labels (MutableMapping[str, str]):
             The user labels applied to a resource must meet the
             following requirements:
@@ -153,6 +182,284 @@ class SearchRequest(proto.Message):
             for more details.
     """
 
+    class ImageQuery(proto.Message):
+        r"""Specifies the image query input.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            image_bytes (str):
+                Base64 encoded image bytes. Supported image
+                formats: JPEG, PNG, and
+                BMP.
+
+                This field is a member of `oneof`_ ``image``.
+        """
+
+        image_bytes: str = proto.Field(
+            proto.STRING,
+            number=1,
+            oneof="image",
+        )
+
+    class FacetSpec(proto.Message):
+        r"""A facet specification to perform faceted search.
+
+        Attributes:
+            facet_key (google.cloud.discoveryengine_v1.types.SearchRequest.FacetSpec.FacetKey):
+                Required. The facet key specification.
+            limit (int):
+                Maximum of facet values that should be returned for this
+                facet. If unspecified, defaults to 20. The maximum allowed
+                value is 300. Values above 300 are coerced to 300.
+
+                If this field is negative, an ``INVALID_ARGUMENT`` is
+                returned.
+            excluded_filter_keys (MutableSequence[str]):
+                List of keys to exclude when faceting.
+
+                By default,
+                [FacetKey.key][google.cloud.discoveryengine.v1.SearchRequest.FacetSpec.FacetKey.key]
+                is not excluded from the filter unless it is listed in this
+                field.
+
+                Listing a facet key in this field allows its values to
+                appear as facet results, even when they are filtered out of
+                search results. Using this field does not affect what search
+                results are returned.
+
+                For example, suppose there are 100 documents with the color
+                facet "Red" and 200 documents with the color facet "Blue". A
+                query containing the filter "color:ANY("Red")" and having
+                "color" as
+                [FacetKey.key][google.cloud.discoveryengine.v1.SearchRequest.FacetSpec.FacetKey.key]
+                would by default return only "Red" documents in the search
+                results, and also return "Red" with count 100 as the only
+                color facet. Although there are also blue documents
+                available, "Blue" would not be shown as an available facet
+                value.
+
+                If "color" is listed in "excludedFilterKeys", then the query
+                returns the facet values "Red" with count 100 and "Blue"
+                with count 200, because the "color" key is now excluded from
+                the filter. Because this field doesn't affect search
+                results, the search results are still correctly filtered to
+                return only "Red" documents.
+
+                A maximum of 100 values are allowed. Otherwise, an
+                ``INVALID_ARGUMENT`` error is returned.
+            enable_dynamic_position (bool):
+                Enables dynamic position for this facet. If set to true, the
+                position of this facet among all facets in the response is
+                determined automatically. If dynamic facets are enabled, it
+                is ordered together. If set to false, the position of this
+                facet in the response is the same as in the request, and it
+                is ranked before the facets with dynamic position enable and
+                all dynamic facets.
+
+                For example, you may always want to have rating facet
+                returned in the response, but it's not necessarily to always
+                display the rating facet at the top. In that case, you can
+                set enable_dynamic_position to true so that the position of
+                rating facet in response is determined automatically.
+
+                Another example, assuming you have the following facets in
+                the request:
+
+                -  "rating", enable_dynamic_position = true
+
+                -  "price", enable_dynamic_position = false
+
+                -  "brands", enable_dynamic_position = false
+
+                And also you have a dynamic facets enabled, which generates
+                a facet ``gender``. Then the final order of the facets in
+                the response can be ("price", "brands", "rating", "gender")
+                or ("price", "brands", "gender", "rating") depends on how
+                API orders "gender" and "rating" facets. However, notice
+                that "price" and "brands" are always ranked at first and
+                second position because their enable_dynamic_position is
+                false.
+        """
+
+        class FacetKey(proto.Message):
+            r"""Specifies how a facet is computed.
+
+            Attributes:
+                key (str):
+                    Required. Supported textual and numerical facet keys in
+                    [Document][google.cloud.discoveryengine.v1.Document] object,
+                    over which the facet values are computed. Facet key is
+                    case-sensitive.
+                intervals (MutableSequence[google.cloud.discoveryengine_v1.types.Interval]):
+                    Set only if values should be bucketed into
+                    intervals. Must be set for facets with numerical
+                    values. Must not be set for facet with text
+                    values. Maximum number of intervals is 30.
+                restricted_values (MutableSequence[str]):
+                    Only get facet for the given restricted values. Only
+                    supported on textual fields. For example, suppose "category"
+                    has three values "Action > 2022", "Action > 2021" and
+                    "Sci-Fi > 2022". If set "restricted_values" to "Action >
+                    2022", the "category" facet only contains "Action > 2022".
+                    Only supported on textual fields. Maximum is 10.
+                prefixes (MutableSequence[str]):
+                    Only get facet values that start with the
+                    given string prefix. For example, suppose
+                    "category" has three values "Action > 2022",
+                    "Action > 2021" and "Sci-Fi > 2022". If set
+                    "prefixes" to "Action", the "category" facet
+                    only contains "Action > 2022" and "Action >
+                    2021". Only supported on textual fields. Maximum
+                    is 10.
+                contains (MutableSequence[str]):
+                    Only get facet values that contains the given
+                    strings. For example, suppose "category" has
+                    three values "Action > 2022", "Action > 2021"
+                    and "Sci-Fi > 2022". If set "contains" to
+                    "2022", the "category" facet only contains
+                    "Action > 2022" and "Sci-Fi > 2022". Only
+                    supported on textual fields. Maximum is 10.
+                case_insensitive (bool):
+                    True to make facet keys case insensitive when
+                    getting faceting values with prefixes or
+                    contains; false otherwise.
+                order_by (str):
+                    The order in which documents are returned.
+
+                    Allowed values are:
+
+                    -  "count desc", which means order by
+                       [SearchResponse.Facet.values.count][google.cloud.discoveryengine.v1.SearchResponse.Facet.FacetValue.count]
+                       descending.
+
+                    -  "value desc", which means order by
+                       [SearchResponse.Facet.values.value][google.cloud.discoveryengine.v1.SearchResponse.Facet.FacetValue.value]
+                       descending. Only applies to textual facets.
+
+                    If not set, textual values are sorted in `natural
+                    order <https://en.wikipedia.org/wiki/Natural_sort_order>`__;
+                    numerical intervals are sorted in the order given by
+                    [FacetSpec.FacetKey.intervals][google.cloud.discoveryengine.v1.SearchRequest.FacetSpec.FacetKey.intervals].
+            """
+
+            key: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            intervals: MutableSequence[common.Interval] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message=common.Interval,
+            )
+            restricted_values: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=3,
+            )
+            prefixes: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=4,
+            )
+            contains: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=5,
+            )
+            case_insensitive: bool = proto.Field(
+                proto.BOOL,
+                number=6,
+            )
+            order_by: str = proto.Field(
+                proto.STRING,
+                number=7,
+            )
+
+        facet_key: "SearchRequest.FacetSpec.FacetKey" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="SearchRequest.FacetSpec.FacetKey",
+        )
+        limit: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        excluded_filter_keys: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
+        enable_dynamic_position: bool = proto.Field(
+            proto.BOOL,
+            number=4,
+        )
+
+    class BoostSpec(proto.Message):
+        r"""Boost specification to boost certain documents.
+
+        Attributes:
+            condition_boost_specs (MutableSequence[google.cloud.discoveryengine_v1.types.SearchRequest.BoostSpec.ConditionBoostSpec]):
+                Condition boost specifications. If a document
+                matches multiple conditions in the
+                specifictions, boost scores from these
+                specifications are all applied and combined in a
+                non-linear way. Maximum number of specifications
+                is 20.
+        """
+
+        class ConditionBoostSpec(proto.Message):
+            r"""Boost applies to documents which match a condition.
+
+            Attributes:
+                condition (str):
+                    An expression which specifies a boost condition. The syntax
+                    and supported fields are the same as a filter expression.
+                    See
+                    [SearchRequest.filter][google.cloud.discoveryengine.v1.SearchRequest.filter]
+                    for detail syntax and limitations.
+
+                    Examples:
+
+                    -  To boost documents with document ID "doc_1" or "doc_2",
+                       and color "Red" or "Blue":
+
+                       -  (id: ANY("doc_1", "doc_2")) AND (color:
+                          ANY("Red","Blue"))
+                boost (float):
+                    Strength of the condition boost, which should be in [-1, 1].
+                    Negative boost means demotion. Default is 0.0.
+
+                    Setting to 1.0 gives the document a big promotion. However,
+                    it does not necessarily mean that the boosted document will
+                    be the top result at all times, nor that other documents
+                    will be excluded. Results could still be shown even when
+                    none of them matches the condition. And results that are
+                    significantly more relevant to the search query can still
+                    trump your heavily favored but irrelevant documents.
+
+                    Setting to -1.0 gives the document a big demotion. However,
+                    results that are deeply relevant might still be shown. The
+                    document will have an upstream battle to get a fairly high
+                    ranking, but it is not blocked out completely.
+
+                    Setting to 0.0 means no boost applied. The boosting
+                    condition is ignored.
+            """
+
+            condition: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            boost: float = proto.Field(
+                proto.FLOAT,
+                number=2,
+            )
+
+        condition_boost_specs: MutableSequence[
+            "SearchRequest.BoostSpec.ConditionBoostSpec"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SearchRequest.BoostSpec.ConditionBoostSpec",
+        )
+
     class QueryExpansionSpec(proto.Message):
         r"""Specification to determine under which conditions query
         expansion should occur.
@@ -162,6 +469,11 @@ class SearchRequest(proto.Message):
                 The condition under which query expansion should occur.
                 Default to
                 [Condition.DISABLED][google.cloud.discoveryengine.v1.SearchRequest.QueryExpansionSpec.Condition.DISABLED].
+            pin_unexpanded_results (bool):
+                Whether to pin unexpanded results. If this
+                field is set to true, unexpanded products are
+                always at the top of the search results,
+                followed by the expanded results.
         """
 
         class Condition(proto.Enum):
@@ -190,6 +502,10 @@ class SearchRequest(proto.Message):
             proto.ENUM,
             number=1,
             enum="SearchRequest.QueryExpansionSpec.Condition",
+        )
+        pin_unexpanded_results: bool = proto.Field(
+            proto.BOOL,
+            number=2,
         )
 
     class SpellCorrectionSpec(proto.Message):
@@ -232,29 +548,36 @@ class SearchRequest(proto.Message):
         )
 
     class ContentSearchSpec(proto.Message):
-        r"""The specification that configs the desired behavior of the
-        UCS content search.
+        r"""A specification for configuring the behavior of content
+        search.
 
         Attributes:
             snippet_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.SnippetSpec):
-                If there is no snippet spec provided, there
-                will be no snippet in the search result.
+                If ``snippetSpec`` is not specified, snippets are not
+                included in the search response.
+            summary_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.SummarySpec):
+                If ``summarySpec`` is not specified, summaries are not
+                included in the search response.
         """
 
         class SnippetSpec(proto.Message):
-            r"""The specification that configs the snippet in the search
-            results.
+            r"""A specification for configuring snippets in a search
+            response.
 
             Attributes:
                 max_snippet_count (int):
-                    Max number of snippets returned in each search result. If
-                    the matching snippets is less than the max_snippet_count,
-                    return all of the snippets; otherwise, return the
-                    max_snippet_count.
-
-                    At most 5 snippets will be returned for each SearchResult.
+                    [DEPRECATED] This field is deprecated. To control snippet
+                    return, use ``return_snippet`` field. For backwards
+                    compatibility, we will return snippet if max_snippet_count >
+                    0.
                 reference_only (bool):
-                    if true, only snippet reference is returned.
+                    [DEPRECATED] This field is deprecated and will have no
+                    affect on the snippet.
+                return_snippet (bool):
+                    If ``true``, then return snippet. If no snippet can be
+                    generated, we return "No snippet is available for this
+                    page." A ``snippet_status`` with ``SUCCESS`` or
+                    ``NO_SNIPPET_AVAILABLE`` will also be returned.
             """
 
             max_snippet_count: int = proto.Field(
@@ -265,11 +588,104 @@ class SearchRequest(proto.Message):
                 proto.BOOL,
                 number=2,
             )
+            return_snippet: bool = proto.Field(
+                proto.BOOL,
+                number=3,
+            )
+
+        class SummarySpec(proto.Message):
+            r"""A specification for configuring a summary returned in a
+            search response.
+
+            Attributes:
+                summary_result_count (int):
+                    The number of top results to generate the summary from. If
+                    the number of results returned is less than
+                    ``summaryResultCount``, the summary is generated from all of
+                    the results.
+
+                    At most five results can be used to generate a summary.
+                include_citations (bool):
+                    Specifies whether to include citations in the summary. The
+                    default value is ``false``.
+
+                    When this field is set to ``true``, summaries include
+                    in-line citation numbers.
+
+                    Example summary including citations:
+
+                    BigQuery is Google Cloud's fully managed and completely
+                    serverless enterprise data warehouse [1]. BigQuery supports
+                    all data types, works across clouds, and has built-in
+                    machine learning and business intelligence, all within a
+                    unified platform [2, 3].
+
+                    The citation numbers refer to the returned search results
+                    and are 1-indexed. For example, [1] means that the sentence
+                    is attributed to the first search result. [2, 3] means that
+                    the sentence is attributed to both the second and third
+                    search results.
+                ignore_adversarial_query (bool):
+                    Specifies whether to filter out adversarial queries. The
+                    default value is ``false``.
+
+                    Google employs search-query classification to detect
+                    adversarial queries. No summary is returned if the search
+                    query is classified as an adversarial query. For example, a
+                    user might ask a question regarding negative comments about
+                    the company or submit a query designed to generate unsafe,
+                    policy-violating output. If this field is set to ``true``,
+                    we skip generating summaries for adversarial queries and
+                    return fallback messages instead.
+                ignore_non_summary_seeking_query (bool):
+                    Specifies whether to filter out queries that are not
+                    summary-seeking. The default value is ``false``.
+
+                    Google employs search-query classification to detect
+                    summary-seeking queries. No summary is returned if the
+                    search query is classified as a non-summary seeking query.
+                    For example, ``why is the sky blue`` and
+                    ``Who is the best soccer player in the world?`` are
+                    summary-seeking queries, but ``SFO airport`` and
+                    ``world cup 2026`` are not. They are most likely
+                    navigational queries. If this field is set to ``true``, we
+                    skip generating summaries for non-summary seeking queries
+                    and return fallback messages instead.
+                language_code (str):
+                    Language code for Summary. Use language tags defined by
+                    [BCP47][https://www.rfc-editor.org/rfc/bcp/bcp47.txt].
+            """
+
+            summary_result_count: int = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            include_citations: bool = proto.Field(
+                proto.BOOL,
+                number=2,
+            )
+            ignore_adversarial_query: bool = proto.Field(
+                proto.BOOL,
+                number=3,
+            )
+            ignore_non_summary_seeking_query: bool = proto.Field(
+                proto.BOOL,
+                number=4,
+            )
+            language_code: str = proto.Field(
+                proto.STRING,
+                number=6,
+            )
 
         snippet_spec: "SearchRequest.ContentSearchSpec.SnippetSpec" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="SearchRequest.ContentSearchSpec.SnippetSpec",
+        )
+        summary_spec: "SearchRequest.ContentSearchSpec.SummarySpec" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="SearchRequest.ContentSearchSpec.SummarySpec",
         )
 
     serving_config: str = proto.Field(
@@ -284,6 +700,11 @@ class SearchRequest(proto.Message):
         proto.STRING,
         number=3,
     )
+    image_query: ImageQuery = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message=ImageQuery,
+    )
     page_size: int = proto.Field(
         proto.INT32,
         number=4,
@@ -296,10 +717,28 @@ class SearchRequest(proto.Message):
         proto.INT32,
         number=6,
     )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
     user_info: common.UserInfo = proto.Field(
         proto.MESSAGE,
         number=21,
         message=common.UserInfo,
+    )
+    facet_specs: MutableSequence[FacetSpec] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message=FacetSpec,
+    )
+    boost_spec: BoostSpec = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=BoostSpec,
     )
     params: MutableMapping[str, struct_pb2.Value] = proto.MapField(
         proto.STRING,
@@ -346,6 +785,8 @@ class SearchResponse(proto.Message):
         results (MutableSequence[google.cloud.discoveryengine_v1.types.SearchResponse.SearchResult]):
             A list of matched documents. The order
             represents the ranking.
+        facets (MutableSequence[google.cloud.discoveryengine_v1.types.SearchResponse.Facet]):
+            Results of facets requested by user.
         total_size (int):
             The estimated total count of matched items irrespective of
             pagination. The count of
@@ -358,6 +799,13 @@ class SearchResponse(proto.Message):
             [UserEvent][google.cloud.discoveryengine.v1.UserEvent] logs
             resulting from this search, which enables accurate
             attribution of search model performance.
+        redirect_uri (str):
+            The URI of a customer-defined redirect page. If redirect
+            action is triggered, no search is performed, and only
+            [redirect_uri][google.cloud.discoveryengine.v1.SearchResponse.redirect_uri]
+            and
+            [attribution_token][google.cloud.discoveryengine.v1.SearchResponse.attribution_token]
+            are set in the response.
         next_page_token (str):
             A token that can be sent as
             [SearchRequest.page_token][google.cloud.discoveryengine.v1.SearchRequest.page_token]
@@ -368,6 +816,14 @@ class SearchResponse(proto.Message):
             correction type is AUTOMATIC, then the search results are
             based on corrected_query. Otherwise the original query is
             used for search.
+        summary (google.cloud.discoveryengine_v1.types.SearchResponse.Summary):
+            A summary as part of the search results. This field is only
+            returned if
+            [SearchRequest.ContentSearchSpec.summary_spec][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.summary_spec]
+            is set.
+        query_expansion_info (google.cloud.discoveryengine_v1.types.SearchResponse.QueryExpansionInfo):
+            Query expansion information for the returned
+            results.
     """
 
     class SearchResult(proto.Message):
@@ -394,6 +850,202 @@ class SearchResponse(proto.Message):
             message=gcd_document.Document,
         )
 
+    class Facet(proto.Message):
+        r"""A facet result.
+
+        Attributes:
+            key (str):
+                The key for this facet. E.g., "colors" or "price". It
+                matches
+                [SearchRequest.FacetSpec.FacetKey.key][google.cloud.discoveryengine.v1.SearchRequest.FacetSpec.FacetKey.key].
+            values (MutableSequence[google.cloud.discoveryengine_v1.types.SearchResponse.Facet.FacetValue]):
+                The facet values for this field.
+            dynamic_facet (bool):
+                Whether the facet is dynamically generated.
+        """
+
+        class FacetValue(proto.Message):
+            r"""A facet value which contains value names and their count.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                value (str):
+                    Text value of a facet, such as "Black" for
+                    facet "colors".
+
+                    This field is a member of `oneof`_ ``facet_value``.
+                interval (google.cloud.discoveryengine_v1.types.Interval):
+                    Interval value for a facet, such as [10, 20) for facet
+                    "price". It matches
+                    [SearchRequest.FacetSpec.FacetKey.intervals][google.cloud.discoveryengine.v1.SearchRequest.FacetSpec.FacetKey.intervals].
+
+                    This field is a member of `oneof`_ ``facet_value``.
+                count (int):
+                    Number of items that have this facet value.
+            """
+
+            value: str = proto.Field(
+                proto.STRING,
+                number=1,
+                oneof="facet_value",
+            )
+            interval: common.Interval = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="facet_value",
+                message=common.Interval,
+            )
+            count: int = proto.Field(
+                proto.INT64,
+                number=3,
+            )
+
+        key: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        values: MutableSequence[
+            "SearchResponse.Facet.FacetValue"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="SearchResponse.Facet.FacetValue",
+        )
+        dynamic_facet: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+
+    class Summary(proto.Message):
+        r"""Summary of the top N search result specified by the summary
+        spec.
+
+        Attributes:
+            summary_text (str):
+                The summary content.
+            summary_skipped_reasons (MutableSequence[google.cloud.discoveryengine_v1.types.SearchResponse.Summary.SummarySkippedReason]):
+                Additional summary-skipped reasons. This
+                provides the reason for ignored cases. If
+                nothing is skipped, this field is not set.
+            safety_attributes (google.cloud.discoveryengine_v1.types.SearchResponse.Summary.SafetyAttributes):
+                A collection of Safety Attribute categories
+                and their associated confidence scores.
+        """
+
+        class SummarySkippedReason(proto.Enum):
+            r"""An Enum for summary-skipped reasons.
+
+            Values:
+                SUMMARY_SKIPPED_REASON_UNSPECIFIED (0):
+                    Default value. The summary skipped reason is
+                    not specified.
+                ADVERSARIAL_QUERY_IGNORED (1):
+                    The adversarial query ignored case.
+
+                    Only populated when
+                    [SummarySpec.ignore_adversarial_query][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SummarySpec.ignore_adversarial_query]
+                    is set to ``true``.
+                NON_SUMMARY_SEEKING_QUERY_IGNORED (2):
+                    The non-summary seeking query ignored case.
+
+                    Only populated when
+                    [SummarySpec.ignore_non_summary_seeking_query][google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SummarySpec.ignore_non_summary_seeking_query]
+                    is set to ``true``.
+                OUT_OF_DOMAIN_QUERY_IGNORED (3):
+                    The out-of-domain query ignored case.
+                    Google skips the summary if there are no
+                    high-relevance search results. For example, the
+                    data store contains facts about company A but
+                    the user query is asking questions about company
+                    B.
+                POTENTIAL_POLICY_VIOLATION (4):
+                    The potential policy violation case.
+                    Google skips the summary if there is a potential
+                    policy violation detected. This includes content
+                    that may be violent or toxic.
+                LLM_ADDON_NOT_ENABLED (5):
+                    The LLM addon not enabled case.
+                    Google skips the summary if the LLM addon is not
+                    enabled.
+            """
+            SUMMARY_SKIPPED_REASON_UNSPECIFIED = 0
+            ADVERSARIAL_QUERY_IGNORED = 1
+            NON_SUMMARY_SEEKING_QUERY_IGNORED = 2
+            OUT_OF_DOMAIN_QUERY_IGNORED = 3
+            POTENTIAL_POLICY_VIOLATION = 4
+            LLM_ADDON_NOT_ENABLED = 5
+
+        class SafetyAttributes(proto.Message):
+            r"""Safety Attribute categories and their associated confidence
+            scores.
+
+            Attributes:
+                categories (MutableSequence[str]):
+                    The display names of Safety Attribute
+                    categories associated with the generated
+                    content. Order matches the Scores.
+                scores (MutableSequence[float]):
+                    The confidence scores of the each category,
+                    higher value means higher confidence. Order
+                    matches the Categories.
+            """
+
+            categories: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+            scores: MutableSequence[float] = proto.RepeatedField(
+                proto.FLOAT,
+                number=2,
+            )
+
+        summary_text: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        summary_skipped_reasons: MutableSequence[
+            "SearchResponse.Summary.SummarySkippedReason"
+        ] = proto.RepeatedField(
+            proto.ENUM,
+            number=2,
+            enum="SearchResponse.Summary.SummarySkippedReason",
+        )
+        safety_attributes: "SearchResponse.Summary.SafetyAttributes" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="SearchResponse.Summary.SafetyAttributes",
+        )
+
+    class QueryExpansionInfo(proto.Message):
+        r"""Information describing query expansion including whether
+        expansion has occurred.
+
+        Attributes:
+            expanded_query (bool):
+                Bool describing whether query expansion has
+                occurred.
+            pinned_result_count (int):
+                Number of pinned results. This field will only be set when
+                expansion happens and
+                [SearchRequest.QueryExpansionSpec.pin_unexpanded_results][google.cloud.discoveryengine.v1.SearchRequest.QueryExpansionSpec.pin_unexpanded_results]
+                is set to true.
+        """
+
+        expanded_query: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        pinned_result_count: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+
     @property
     def raw_page(self):
         return self
@@ -403,6 +1055,11 @@ class SearchResponse(proto.Message):
         number=1,
         message=SearchResult,
     )
+    facets: MutableSequence[Facet] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=Facet,
+    )
     total_size: int = proto.Field(
         proto.INT32,
         number=3,
@@ -411,6 +1068,10 @@ class SearchResponse(proto.Message):
         proto.STRING,
         number=4,
     )
+    redirect_uri: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
     next_page_token: str = proto.Field(
         proto.STRING,
         number=5,
@@ -418,6 +1079,16 @@ class SearchResponse(proto.Message):
     corrected_query: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    summary: Summary = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=Summary,
+    )
+    query_expansion_info: QueryExpansionInfo = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=QueryExpansionInfo,
     )
 
 

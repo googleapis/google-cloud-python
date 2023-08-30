@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
         "Interval",
         "CustomAttribute",
         "UserInfo",
+        "DoubleList",
     },
 )
 
@@ -160,6 +161,20 @@ class UserInfo(proto.Message):
     user_agent: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class DoubleList(proto.Message):
+    r"""Double list.
+
+    Attributes:
+        values (MutableSequence[float]):
+            Double values.
+    """
+
+    values: MutableSequence[float] = proto.RepeatedField(
+        proto.DOUBLE,
+        number=1,
     )
 
 

@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .common import CustomAttribute, Interval, UserInfo
+from .common import CustomAttribute, DoubleList, Interval, UserInfo
 from .completion_service import CompleteQueryRequest, CompleteQueryResponse
 from .conversation import (
     Conversation,
@@ -85,6 +85,7 @@ from .user_event_service import CollectUserEventRequest, WriteUserEventRequest
 
 __all__ = (
     "CustomAttribute",
+    "DoubleList",
     "Interval",
     "UserInfo",
     "CompleteQueryRequest",

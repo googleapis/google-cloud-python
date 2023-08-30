@@ -20,6 +20,8 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.discoveryengine_v1beta.types import search_service
+
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1beta",
     manifest={
@@ -103,9 +105,11 @@ class Reply(proto.Message):
 
     Attributes:
         reply (str):
-            Text reply.
+            DEPRECATED: use ``summary`` instead. Text reply.
         references (MutableSequence[google.cloud.discoveryengine_v1beta.types.Reply.Reference]):
             References in the reply.
+        summary (google.cloud.discoveryengine_v1beta.types.SearchResponse.Summary):
+            Summary based on search results.
     """
 
     class Reference(proto.Message):
@@ -147,6 +151,11 @@ class Reply(proto.Message):
         proto.MESSAGE,
         number=2,
         message=Reference,
+    )
+    summary: search_service.SearchResponse.Summary = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=search_service.SearchResponse.Summary,
     )
 
 

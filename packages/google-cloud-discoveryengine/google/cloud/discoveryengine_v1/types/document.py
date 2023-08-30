@@ -43,15 +43,15 @@ class Document(proto.Message):
         struct_data (google.protobuf.struct_pb2.Struct):
             The structured JSON data for the document. It should conform
             to the registered
-            [Schema.schema][google.cloud.discoveryengine.v1.Schema.schema]
-            or an ``INVALID_ARGUMENT`` error is thrown.
+            [Schema][google.cloud.discoveryengine.v1.Schema] or an
+            ``INVALID_ARGUMENT`` error is thrown.
 
             This field is a member of `oneof`_ ``data``.
         json_data (str):
             The JSON string representation of the document. It should
             conform to the registered
-            [Schema.schema][google.cloud.discoveryengine.v1.Schema.schema]
-            or an ``INVALID_ARGUMENT`` error is thrown.
+            [Schema][google.cloud.discoveryengine.v1.Schema] or an
+            ``INVALID_ARGUMENT`` error is thrown.
 
             This field is a member of `oneof`_ ``data``.
         name (str):
@@ -117,8 +117,14 @@ class Document(proto.Message):
             mime_type (str):
                 The MIME type of the content. Supported types:
 
-                -  ``application/pdf`` (PDF)
+                -  ``application/pdf`` (PDF, only native PDFs are supported
+                   for now)
                 -  ``text/html`` (HTML)
+                -  ``application/vnd.openxmlformats-officedocument.wordprocessingml.document``
+                   (DOCX)
+                -  ``application/vnd.openxmlformats-officedocument.presentationml.presentation``
+                   (PPTX)
+                -  ``text/plain`` (TXT)
 
                 See
                 https://www.iana.org/assignments/media-types/media-types.xhtml.

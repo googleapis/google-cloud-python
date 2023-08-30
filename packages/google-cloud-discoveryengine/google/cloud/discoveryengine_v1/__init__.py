@@ -22,6 +22,10 @@ from .services.completion_service import (
     CompletionServiceAsyncClient,
     CompletionServiceClient,
 )
+from .services.conversational_search_service import (
+    ConversationalSearchServiceAsyncClient,
+    ConversationalSearchServiceClient,
+)
 from .services.document_service import DocumentServiceAsyncClient, DocumentServiceClient
 from .services.schema_service import SchemaServiceAsyncClient, SchemaServiceClient
 from .services.search_service import SearchServiceAsyncClient, SearchServiceClient
@@ -29,8 +33,25 @@ from .services.user_event_service import (
     UserEventServiceAsyncClient,
     UserEventServiceClient,
 )
-from .types.common import CustomAttribute, UserInfo
+from .types.common import CustomAttribute, Interval, UserInfo
 from .types.completion_service import CompleteQueryRequest, CompleteQueryResponse
+from .types.conversation import (
+    Conversation,
+    ConversationContext,
+    ConversationMessage,
+    Reply,
+    TextInput,
+)
+from .types.conversational_search_service import (
+    ConverseConversationRequest,
+    ConverseConversationResponse,
+    CreateConversationRequest,
+    DeleteConversationRequest,
+    GetConversationRequest,
+    ListConversationsRequest,
+    ListConversationsResponse,
+    UpdateConversationRequest,
+)
 from .types.document import Document
 from .types.document_service import (
     CreateDocumentRequest,
@@ -83,6 +104,7 @@ from .types.user_event_service import CollectUserEventRequest, WriteUserEventReq
 
 __all__ = (
     "CompletionServiceAsyncClient",
+    "ConversationalSearchServiceAsyncClient",
     "DocumentServiceAsyncClient",
     "SchemaServiceAsyncClient",
     "SearchServiceAsyncClient",
@@ -93,10 +115,18 @@ __all__ = (
     "CompleteQueryResponse",
     "CompletionInfo",
     "CompletionServiceClient",
+    "Conversation",
+    "ConversationContext",
+    "ConversationMessage",
+    "ConversationalSearchServiceClient",
+    "ConverseConversationRequest",
+    "ConverseConversationResponse",
+    "CreateConversationRequest",
     "CreateDocumentRequest",
     "CreateSchemaMetadata",
     "CreateSchemaRequest",
     "CustomAttribute",
+    "DeleteConversationRequest",
     "DeleteDocumentRequest",
     "DeleteSchemaMetadata",
     "DeleteSchemaRequest",
@@ -104,6 +134,7 @@ __all__ = (
     "DocumentInfo",
     "DocumentServiceClient",
     "GcsSource",
+    "GetConversationRequest",
     "GetDocumentRequest",
     "GetSchemaRequest",
     "ImportDocumentsMetadata",
@@ -113,6 +144,9 @@ __all__ = (
     "ImportUserEventsMetadata",
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
+    "Interval",
+    "ListConversationsRequest",
+    "ListConversationsResponse",
     "ListDocumentsRequest",
     "ListDocumentsResponse",
     "ListSchemasRequest",
@@ -123,13 +157,16 @@ __all__ = (
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
+    "Reply",
     "Schema",
     "SchemaServiceClient",
     "SearchInfo",
     "SearchRequest",
     "SearchResponse",
     "SearchServiceClient",
+    "TextInput",
     "TransactionInfo",
+    "UpdateConversationRequest",
     "UpdateDocumentRequest",
     "UpdateSchemaMetadata",
     "UpdateSchemaRequest",
