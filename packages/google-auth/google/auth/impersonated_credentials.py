@@ -37,8 +37,6 @@ from google.auth import exceptions
 from google.auth import jwt
 from google.auth import metrics
 
-_DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
-
 _IAM_SCOPE = ["https://www.googleapis.com/auth/iam"]
 
 _IAM_ENDPOINT = (
