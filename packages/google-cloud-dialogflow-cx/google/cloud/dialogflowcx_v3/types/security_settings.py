@@ -179,6 +179,10 @@ class SecuritySettings(proto.Message):
     on the settings to propagate to all the related components and
     take effect.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -249,6 +253,11 @@ class SecuritySettings(proto.Message):
             to 0 also means we use default TTL.
 
             This field is a member of `oneof`_ ``data_retention``.
+        retention_strategy (google.cloud.dialogflowcx_v3.types.SecuritySettings.RetentionStrategy):
+            Specifies the retention behavior defined by
+            [SecuritySettings.RetentionStrategy][google.cloud.dialogflow.cx.v3.SecuritySettings.RetentionStrategy].
+
+            This field is a member of `oneof`_ ``data_retention``.
         purge_data_types (MutableSequence[google.cloud.dialogflowcx_v3.types.SecuritySettings.PurgeDataType]):
             List of types of data to remove when
             retention settings triggers purge.
@@ -310,6 +319,23 @@ class SecuritySettings(proto.Message):
         """
         REDACTION_SCOPE_UNSPECIFIED = 0
         REDACT_DISK_STORAGE = 2
+
+    class RetentionStrategy(proto.Enum):
+        r"""Defines how long we retain persisted data that contains
+        sensitive info.
+
+        Values:
+            RETENTION_STRATEGY_UNSPECIFIED (0):
+                Retains the persisted data with Dialogflow's
+                internal default 365d TTLs.
+            REMOVE_AFTER_CONVERSATION (1):
+                Removes data when the conversation ends. If there is no
+                [Conversation][] explicitly established, a default
+                conversation ends when the corresponding Dialogflow session
+                ends.
+        """
+        RETENTION_STRATEGY_UNSPECIFIED = 0
+        REMOVE_AFTER_CONVERSATION = 1
 
     class PurgeDataType(proto.Enum):
         r"""Type of data we purge after retention settings triggers
@@ -430,6 +456,12 @@ class SecuritySettings(proto.Message):
         proto.INT32,
         number=6,
         oneof="data_retention",
+    )
+    retention_strategy: RetentionStrategy = proto.Field(
+        proto.ENUM,
+        number=7,
+        oneof="data_retention",
+        enum=RetentionStrategy,
     )
     purge_data_types: MutableSequence[PurgeDataType] = proto.RepeatedField(
         proto.ENUM,

@@ -70,6 +70,7 @@ from google.cloud.dialogflowcx_v3.types import (
     response_message,
     validation_message,
 )
+from google.cloud.dialogflowcx_v3.types import data_store_connection
 from google.cloud.dialogflowcx_v3.types import flow
 from google.cloud.dialogflowcx_v3.types import flow as gcdc_flow
 
@@ -2998,6 +2999,7 @@ def test_create_flow_rest(request_type):
         "transition_routes": [
             {
                 "name": "name_value",
+                "description": "description_value",
                 "intent": "intent_value",
                 "condition": "condition_value",
                 "trigger_fulfillment": {
@@ -3032,6 +3034,7 @@ def test_create_flow_rest(request_type):
                             "telephony_transfer_call": {
                                 "phone_number": "phone_number_value"
                             },
+                            "knowledge_info_card": {},
                             "response_type": 1,
                             "channel": "channel_value",
                         }
@@ -3086,6 +3089,15 @@ def test_create_flow_rest(request_type):
             "model_type": 1,
             "classification_threshold": 0.25520000000000004,
             "model_training_mode": 1,
+        },
+        "knowledge_connector_settings": {
+            "enabled": True,
+            "trigger_fulfillment": {},
+            "target_page": "target_page_value",
+            "target_flow": "target_flow_value",
+            "data_store_connections": [
+                {"data_store_type": 1, "data_store": "data_store_value"}
+            ],
         },
     }
     request = request_type(**request_init)
@@ -3281,6 +3293,7 @@ def test_create_flow_rest_bad_request(
         "transition_routes": [
             {
                 "name": "name_value",
+                "description": "description_value",
                 "intent": "intent_value",
                 "condition": "condition_value",
                 "trigger_fulfillment": {
@@ -3315,6 +3328,7 @@ def test_create_flow_rest_bad_request(
                             "telephony_transfer_call": {
                                 "phone_number": "phone_number_value"
                             },
+                            "knowledge_info_card": {},
                             "response_type": 1,
                             "channel": "channel_value",
                         }
@@ -3369,6 +3383,15 @@ def test_create_flow_rest_bad_request(
             "model_type": 1,
             "classification_threshold": 0.25520000000000004,
             "model_training_mode": 1,
+        },
+        "knowledge_connector_settings": {
+            "enabled": True,
+            "trigger_fulfillment": {},
+            "target_page": "target_page_value",
+            "target_flow": "target_flow_value",
+            "data_store_connections": [
+                {"data_store_type": 1, "data_store": "data_store_value"}
+            ],
         },
     }
     request = request_type(**request_init)
@@ -4338,6 +4361,7 @@ def test_update_flow_rest(request_type):
         "transition_routes": [
             {
                 "name": "name_value",
+                "description": "description_value",
                 "intent": "intent_value",
                 "condition": "condition_value",
                 "trigger_fulfillment": {
@@ -4372,6 +4396,7 @@ def test_update_flow_rest(request_type):
                             "telephony_transfer_call": {
                                 "phone_number": "phone_number_value"
                             },
+                            "knowledge_info_card": {},
                             "response_type": 1,
                             "channel": "channel_value",
                         }
@@ -4426,6 +4451,15 @@ def test_update_flow_rest(request_type):
             "model_type": 1,
             "classification_threshold": 0.25520000000000004,
             "model_training_mode": 1,
+        },
+        "knowledge_connector_settings": {
+            "enabled": True,
+            "trigger_fulfillment": {},
+            "target_page": "target_page_value",
+            "target_flow": "target_flow_value",
+            "data_store_connections": [
+                {"data_store_type": 1, "data_store": "data_store_value"}
+            ],
         },
     }
     request = request_type(**request_init)
@@ -4625,6 +4659,7 @@ def test_update_flow_rest_bad_request(
         "transition_routes": [
             {
                 "name": "name_value",
+                "description": "description_value",
                 "intent": "intent_value",
                 "condition": "condition_value",
                 "trigger_fulfillment": {
@@ -4659,6 +4694,7 @@ def test_update_flow_rest_bad_request(
                             "telephony_transfer_call": {
                                 "phone_number": "phone_number_value"
                             },
+                            "knowledge_info_card": {},
                             "response_type": 1,
                             "channel": "channel_value",
                         }
@@ -4713,6 +4749,15 @@ def test_update_flow_rest_bad_request(
             "model_type": 1,
             "classification_threshold": 0.25520000000000004,
             "model_training_mode": 1,
+        },
+        "knowledge_connector_settings": {
+            "enabled": True,
+            "trigger_fulfillment": {},
+            "target_page": "target_page_value",
+            "target_flow": "target_flow_value",
+            "data_store_connections": [
+                {"data_store_type": 1, "data_store": "data_store_value"}
+            ],
         },
     }
     request = request_type(**request_init)

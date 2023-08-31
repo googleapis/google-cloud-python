@@ -35,6 +35,11 @@
                 "get_agent_validation_result"
               ]
             },
+            "GetGenerativeSettings": {
+              "methods": [
+                "get_generative_settings"
+              ]
+            },
             "ListAgents": {
               "methods": [
                 "list_agents"
@@ -48,6 +53,11 @@
             "UpdateAgent": {
               "methods": [
                 "update_agent"
+              ]
+            },
+            "UpdateGenerativeSettings": {
+              "methods": [
+                "update_generative_settings"
               ]
             },
             "ValidateAgent": {
@@ -85,6 +95,11 @@
                 "get_agent_validation_result"
               ]
             },
+            "GetGenerativeSettings": {
+              "methods": [
+                "get_generative_settings"
+              ]
+            },
             "ListAgents": {
               "methods": [
                 "list_agents"
@@ -98,6 +113,11 @@
             "UpdateAgent": {
               "methods": [
                 "update_agent"
+              ]
+            },
+            "UpdateGenerativeSettings": {
+              "methods": [
+                "update_generative_settings"
               ]
             },
             "ValidateAgent": {
@@ -135,6 +155,11 @@
                 "get_agent_validation_result"
               ]
             },
+            "GetGenerativeSettings": {
+              "methods": [
+                "get_generative_settings"
+              ]
+            },
             "ListAgents": {
               "methods": [
                 "list_agents"
@@ -148,6 +173,11 @@
             "UpdateAgent": {
               "methods": [
                 "update_agent"
+              ]
+            },
+            "UpdateGenerativeSettings": {
+              "methods": [
+                "update_generative_settings"
               ]
             },
             "ValidateAgent": {

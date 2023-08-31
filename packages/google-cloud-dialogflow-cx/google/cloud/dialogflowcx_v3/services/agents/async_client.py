@@ -51,10 +51,15 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.agents import pagers
+from google.cloud.dialogflowcx_v3.types import (
+    generative_settings as gcdc_generative_settings,
+)
 from google.cloud.dialogflowcx_v3.types import advanced_settings
 from google.cloud.dialogflowcx_v3.types import agent
 from google.cloud.dialogflowcx_v3.types import agent as gcdc_agent
 from google.cloud.dialogflowcx_v3.types import audio_config, flow
+from google.cloud.dialogflowcx_v3.types import generative_settings
+from google.cloud.dialogflowcx_v3.types import safety_settings
 
 from .client import AgentsClient
 from .transports.base import DEFAULT_CLIENT_INFO, AgentsTransport
@@ -71,6 +76,12 @@ class AgentsAsyncClient:
 
     agent_path = staticmethod(AgentsClient.agent_path)
     parse_agent_path = staticmethod(AgentsClient.parse_agent_path)
+    agent_generative_settings_path = staticmethod(
+        AgentsClient.agent_generative_settings_path
+    )
+    parse_agent_generative_settings_path = staticmethod(
+        AgentsClient.parse_agent_generative_settings_path
+    )
     agent_validation_result_path = staticmethod(
         AgentsClient.agent_validation_result_path
     )
@@ -1229,6 +1240,233 @@ class AgentsAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_generative_settings(
+        self,
+        request: Optional[Union[agent.GetGenerativeSettingsRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        language_code: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> generative_settings.GenerativeSettings:
+        r"""Gets the generative settings for the agent.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflowcx_v3
+
+            async def sample_get_generative_settings():
+                # Create a client
+                client = dialogflowcx_v3.AgentsAsyncClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.GetGenerativeSettingsRequest(
+                    name="name_value",
+                    language_code="language_code_value",
+                )
+
+                # Make the request
+                response = await client.get_generative_settings(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.GetGenerativeSettingsRequest, dict]]):
+                The request object. Request for
+                [GetGenerativeSettings][google.cloud.dialogflow.cx.v3.Agents.GetGenerativeSettings]
+                RPC.
+            name (:class:`str`):
+                Required. Format:
+                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/generativeSettings``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            language_code (:class:`str`):
+                Required. Language code of the
+                generative settings.
+
+                This corresponds to the ``language_code`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflowcx_v3.types.GenerativeSettings:
+                Settings for Generative AI.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, language_code])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = agent.GetGenerativeSettingsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+        if language_code is not None:
+            request.language_code = language_code
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_generative_settings,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_generative_settings(
+        self,
+        request: Optional[Union[agent.UpdateGenerativeSettingsRequest, dict]] = None,
+        *,
+        generative_settings: Optional[
+            gcdc_generative_settings.GenerativeSettings
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcdc_generative_settings.GenerativeSettings:
+        r"""Updates the generative settings for the agent.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflowcx_v3
+
+            async def sample_update_generative_settings():
+                # Create a client
+                client = dialogflowcx_v3.AgentsAsyncClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3.UpdateGenerativeSettingsRequest(
+                )
+
+                # Make the request
+                response = await client.update_generative_settings(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.UpdateGenerativeSettingsRequest, dict]]):
+                The request object. Request for
+                [UpdateGenerativeSettings][google.cloud.dialogflow.cx.v3.Agents.UpdateGenerativeSettings]
+                RPC.
+            generative_settings (:class:`google.cloud.dialogflowcx_v3.types.GenerativeSettings`):
+                Required. Generative settings to
+                update.
+
+                This corresponds to the ``generative_settings`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. The mask to control which
+                fields get updated. If the mask is not
+                present, all fields will be updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflowcx_v3.types.GenerativeSettings:
+                Settings for Generative AI.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([generative_settings, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = agent.UpdateGenerativeSettingsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if generative_settings is not None:
+            request.generative_settings = generative_settings
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_generative_settings,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("generative_settings.name", request.generative_settings.name),)
+            ),
         )
 
         # Send the request.

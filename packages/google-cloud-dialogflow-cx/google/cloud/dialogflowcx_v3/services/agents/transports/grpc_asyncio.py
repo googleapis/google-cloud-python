@@ -25,8 +25,12 @@ from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
+from google.cloud.dialogflowcx_v3.types import (
+    generative_settings as gcdc_generative_settings,
+)
 from google.cloud.dialogflowcx_v3.types import agent
 from google.cloud.dialogflowcx_v3.types import agent as gcdc_agent
+from google.cloud.dialogflowcx_v3.types import generative_settings
 
 from .base import DEFAULT_CLIENT_INFO, AgentsTransport
 from .grpc import AgentsGrpcTransport
@@ -526,6 +530,64 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
                 response_deserializer=agent.AgentValidationResult.deserialize,
             )
         return self._stubs["get_agent_validation_result"]
+
+    @property
+    def get_generative_settings(
+        self,
+    ) -> Callable[
+        [agent.GetGenerativeSettingsRequest],
+        Awaitable[generative_settings.GenerativeSettings],
+    ]:
+        r"""Return a callable for the get generative settings method over gRPC.
+
+        Gets the generative settings for the agent.
+
+        Returns:
+            Callable[[~.GetGenerativeSettingsRequest],
+                    Awaitable[~.GenerativeSettings]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_generative_settings" not in self._stubs:
+            self._stubs["get_generative_settings"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3.Agents/GetGenerativeSettings",
+                request_serializer=agent.GetGenerativeSettingsRequest.serialize,
+                response_deserializer=generative_settings.GenerativeSettings.deserialize,
+            )
+        return self._stubs["get_generative_settings"]
+
+    @property
+    def update_generative_settings(
+        self,
+    ) -> Callable[
+        [agent.UpdateGenerativeSettingsRequest],
+        Awaitable[gcdc_generative_settings.GenerativeSettings],
+    ]:
+        r"""Return a callable for the update generative settings method over gRPC.
+
+        Updates the generative settings for the agent.
+
+        Returns:
+            Callable[[~.UpdateGenerativeSettingsRequest],
+                    Awaitable[~.GenerativeSettings]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_generative_settings" not in self._stubs:
+            self._stubs["update_generative_settings"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3.Agents/UpdateGenerativeSettings",
+                request_serializer=agent.UpdateGenerativeSettingsRequest.serialize,
+                response_deserializer=gcdc_generative_settings.GenerativeSettings.deserialize,
+            )
+        return self._stubs["update_generative_settings"]
 
     def close(self):
         return self.grpc_channel.close()

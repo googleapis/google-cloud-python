@@ -23,6 +23,9 @@ import proto  # type: ignore
 from google.cloud.dialogflowcx_v3.types import (
     advanced_settings as gcdc_advanced_settings,
 )
+from google.cloud.dialogflowcx_v3.types import (
+    generative_settings as gcdc_generative_settings,
+)
 from google.cloud.dialogflowcx_v3.types import audio_config, flow
 
 __protobuf__ = proto.module(
@@ -42,6 +45,8 @@ __protobuf__ = proto.module(
         "ValidateAgentRequest",
         "GetAgentValidationResultRequest",
         "AgentValidationResult",
+        "GetGenerativeSettingsRequest",
+        "UpdateGenerativeSettingsRequest",
     },
 )
 
@@ -75,6 +80,9 @@ class Agent(proto.Message):
     [Webhooks][google.cloud.dialogflow.cx.v3.Webhook],
     [TransitionRouteGroups][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
     and so on to manage the conversation flows.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
@@ -147,6 +155,10 @@ class Agent(proto.Message):
             Settings on instructing the speech
             synthesizer on how to generate the output audio
             content.
+        gen_app_builder_settings (google.cloud.dialogflowcx_v3.types.Agent.GenAppBuilderSettings):
+            Gen App Builder-related agent-level settings.
+
+            This field is a member of `oneof`_ ``_gen_app_builder_settings``.
     """
 
     class GitIntegrationSettings(proto.Message):
@@ -208,6 +220,21 @@ class Agent(proto.Message):
             number=1,
             oneof="git_settings",
             message="Agent.GitIntegrationSettings.GithubSettings",
+        )
+
+    class GenAppBuilderSettings(proto.Message):
+        r"""Settings for Gen App Builder.
+
+        Attributes:
+            engine (str):
+                Required. The full name of the Gen App Builder engine
+                related to this agent if there is one. Format:
+                ``projects/{Project ID}/locations/{Location ID}/collections/{Collection ID}/engines/{Engine ID}``
+        """
+
+        engine: str = proto.Field(
+            proto.STRING,
+            number=1,
         )
 
     name: str = proto.Field(
@@ -277,6 +304,12 @@ class Agent(proto.Message):
         proto.MESSAGE,
         number=31,
         message=audio_config.TextToSpeechSettings,
+    )
+    gen_app_builder_settings: GenAppBuilderSettings = proto.Field(
+        proto.MESSAGE,
+        number=33,
+        optional=True,
+        message=GenAppBuilderSettings,
     )
 
 
@@ -735,6 +768,56 @@ class AgentValidationResult(proto.Message):
         proto.MESSAGE,
         number=2,
         message=flow.FlowValidationResult,
+    )
+
+
+class GetGenerativeSettingsRequest(proto.Message):
+    r"""Request for
+    [GetGenerativeSettings][google.cloud.dialogflow.cx.v3.Agents.GetGenerativeSettings]
+    RPC.
+
+    Attributes:
+        name (str):
+            Required. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/generativeSettings``.
+        language_code (str):
+            Required. Language code of the generative
+            settings.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateGenerativeSettingsRequest(proto.Message):
+    r"""Request for
+    [UpdateGenerativeSettings][google.cloud.dialogflow.cx.v3.Agents.UpdateGenerativeSettings]
+    RPC.
+
+    Attributes:
+        generative_settings (google.cloud.dialogflowcx_v3.types.GenerativeSettings):
+            Required. Generative settings to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The mask to control which fields
+            get updated. If the mask is not present, all
+            fields will be updated.
+    """
+
+    generative_settings: gcdc_generative_settings.GenerativeSettings = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcdc_generative_settings.GenerativeSettings,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
