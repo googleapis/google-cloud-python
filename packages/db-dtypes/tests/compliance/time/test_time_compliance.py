@@ -22,6 +22,7 @@ https://github.com/pandas-dev/pandas/blob/main/pandas/tests/extension/test_perio
 
 import pandas
 from pandas.tests.extension import base
+import pandas._testing as tm
 import pytest
 
 import db_dtypes
@@ -88,7 +89,7 @@ class TestMethods(base.BaseMethodsTests):
         result = pandas.Series(all_data).value_counts(dropna=dropna).sort_index()
         expected = pandas.Series(other).value_counts(dropna=dropna).sort_index()
 
-        self.assert_series_equal(result, expected)
+        tm.assert_series_equal(result, expected)
 
 
 class TestParsing(base.BaseParsingTests):
