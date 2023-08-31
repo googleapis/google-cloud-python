@@ -92,11 +92,13 @@ from google.cloud.dialogflowcx_v3.types.agent import (
     ExportAgentResponse,
     GetAgentRequest,
     GetAgentValidationResultRequest,
+    GetGenerativeSettingsRequest,
     ListAgentsRequest,
     ListAgentsResponse,
     RestoreAgentRequest,
     SpeechToTextSettings,
     UpdateAgentRequest,
+    UpdateGenerativeSettingsRequest,
     ValidateAgentRequest,
 )
 from google.cloud.dialogflowcx_v3.types.audio_config import (
@@ -116,6 +118,10 @@ from google.cloud.dialogflowcx_v3.types.changelog import (
     GetChangelogRequest,
     ListChangelogsRequest,
     ListChangelogsResponse,
+)
+from google.cloud.dialogflowcx_v3.types.data_store_connection import (
+    DataStoreConnection,
+    DataStoreType,
 )
 from google.cloud.dialogflowcx_v3.types.deployment import (
     Deployment,
@@ -188,6 +194,7 @@ from google.cloud.dialogflowcx_v3.types.flow import (
 )
 from google.cloud.dialogflowcx_v3.types.fulfillment import Fulfillment
 from google.cloud.dialogflowcx_v3.types.gcs import GcsDestination
+from google.cloud.dialogflowcx_v3.types.generative_settings import GenerativeSettings
 from google.cloud.dialogflowcx_v3.types.import_strategy import ImportStrategy
 from google.cloud.dialogflowcx_v3.types.intent import (
     CreateIntentRequest,
@@ -205,6 +212,7 @@ from google.cloud.dialogflowcx_v3.types.page import (
     EventHandler,
     Form,
     GetPageRequest,
+    KnowledgeConnectorSettings,
     ListPagesRequest,
     ListPagesResponse,
     Page,
@@ -212,6 +220,7 @@ from google.cloud.dialogflowcx_v3.types.page import (
     UpdatePageRequest,
 )
 from google.cloud.dialogflowcx_v3.types.response_message import ResponseMessage
+from google.cloud.dialogflowcx_v3.types.safety_settings import SafetySettings
 from google.cloud.dialogflowcx_v3.types.security_settings import (
     CreateSecuritySettingsRequest,
     DeleteSecuritySettingsRequest,
@@ -370,11 +379,13 @@ __all__ = (
     "ExportAgentResponse",
     "GetAgentRequest",
     "GetAgentValidationResultRequest",
+    "GetGenerativeSettingsRequest",
     "ListAgentsRequest",
     "ListAgentsResponse",
     "RestoreAgentRequest",
     "SpeechToTextSettings",
     "UpdateAgentRequest",
+    "UpdateGenerativeSettingsRequest",
     "ValidateAgentRequest",
     "InputAudioConfig",
     "OutputAudioConfig",
@@ -390,6 +401,8 @@ __all__ = (
     "GetChangelogRequest",
     "ListChangelogsRequest",
     "ListChangelogsResponse",
+    "DataStoreConnection",
+    "DataStoreType",
     "Deployment",
     "GetDeploymentRequest",
     "ListDeploymentsRequest",
@@ -451,6 +464,7 @@ __all__ = (
     "ValidateFlowRequest",
     "Fulfillment",
     "GcsDestination",
+    "GenerativeSettings",
     "ImportStrategy",
     "CreateIntentRequest",
     "DeleteIntentRequest",
@@ -465,12 +479,14 @@ __all__ = (
     "EventHandler",
     "Form",
     "GetPageRequest",
+    "KnowledgeConnectorSettings",
     "ListPagesRequest",
     "ListPagesResponse",
     "Page",
     "TransitionRoute",
     "UpdatePageRequest",
     "ResponseMessage",
+    "SafetySettings",
     "CreateSecuritySettingsRequest",
     "DeleteSecuritySettingsRequest",
     "GetSecuritySettingsRequest",

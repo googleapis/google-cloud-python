@@ -66,6 +66,7 @@ from google.cloud.dialogflowcx_v3.services.test_cases import (
 )
 from google.cloud.dialogflowcx_v3.types import (
     audio_config,
+    data_store_connection,
     fulfillment,
     intent,
     page,
@@ -4572,6 +4573,7 @@ def test_create_test_case_rest(request_type):
                                     "telephony_transfer_call": {
                                         "phone_number": "phone_number_value"
                                     },
+                                    "knowledge_info_card": {},
                                     "response_type": 1,
                                     "channel": "channel_value",
                                 }
@@ -4636,6 +4638,7 @@ def test_create_test_case_rest(request_type):
                         "transition_routes": [
                             {
                                 "name": "name_value",
+                                "description": "description_value",
                                 "intent": "intent_value",
                                 "condition": "condition_value",
                                 "trigger_fulfillment": {},
@@ -4644,6 +4647,15 @@ def test_create_test_case_rest(request_type):
                             }
                         ],
                         "event_handlers": {},
+                        "knowledge_connector_settings": {
+                            "enabled": True,
+                            "trigger_fulfillment": {},
+                            "target_page": "target_page_value",
+                            "target_flow": "target_flow_value",
+                            "data_store_connections": [
+                                {"data_store_type": 1, "data_store": "data_store_value"}
+                            ],
+                        },
                     },
                     "text_responses": {},
                     "status": {
@@ -4970,6 +4982,7 @@ def test_create_test_case_rest_bad_request(
                                     "telephony_transfer_call": {
                                         "phone_number": "phone_number_value"
                                     },
+                                    "knowledge_info_card": {},
                                     "response_type": 1,
                                     "channel": "channel_value",
                                 }
@@ -5034,6 +5047,7 @@ def test_create_test_case_rest_bad_request(
                         "transition_routes": [
                             {
                                 "name": "name_value",
+                                "description": "description_value",
                                 "intent": "intent_value",
                                 "condition": "condition_value",
                                 "trigger_fulfillment": {},
@@ -5042,6 +5056,15 @@ def test_create_test_case_rest_bad_request(
                             }
                         ],
                         "event_handlers": {},
+                        "knowledge_connector_settings": {
+                            "enabled": True,
+                            "trigger_fulfillment": {},
+                            "target_page": "target_page_value",
+                            "target_flow": "target_flow_value",
+                            "data_store_connections": [
+                                {"data_store_type": 1, "data_store": "data_store_value"}
+                            ],
+                        },
                     },
                     "text_responses": {},
                     "status": {
@@ -5275,6 +5298,7 @@ def test_update_test_case_rest(request_type):
                                     "telephony_transfer_call": {
                                         "phone_number": "phone_number_value"
                                     },
+                                    "knowledge_info_card": {},
                                     "response_type": 1,
                                     "channel": "channel_value",
                                 }
@@ -5339,6 +5363,7 @@ def test_update_test_case_rest(request_type):
                         "transition_routes": [
                             {
                                 "name": "name_value",
+                                "description": "description_value",
                                 "intent": "intent_value",
                                 "condition": "condition_value",
                                 "trigger_fulfillment": {},
@@ -5347,6 +5372,15 @@ def test_update_test_case_rest(request_type):
                             }
                         ],
                         "event_handlers": {},
+                        "knowledge_connector_settings": {
+                            "enabled": True,
+                            "trigger_fulfillment": {},
+                            "target_page": "target_page_value",
+                            "target_flow": "target_flow_value",
+                            "data_store_connections": [
+                                {"data_store_type": 1, "data_store": "data_store_value"}
+                            ],
+                        },
                     },
                     "text_responses": {},
                     "status": {
@@ -5674,6 +5708,7 @@ def test_update_test_case_rest_bad_request(
                                     "telephony_transfer_call": {
                                         "phone_number": "phone_number_value"
                                     },
+                                    "knowledge_info_card": {},
                                     "response_type": 1,
                                     "channel": "channel_value",
                                 }
@@ -5738,6 +5773,7 @@ def test_update_test_case_rest_bad_request(
                         "transition_routes": [
                             {
                                 "name": "name_value",
+                                "description": "description_value",
                                 "intent": "intent_value",
                                 "condition": "condition_value",
                                 "trigger_fulfillment": {},
@@ -5746,6 +5782,15 @@ def test_update_test_case_rest_bad_request(
                             }
                         ],
                         "event_handlers": {},
+                        "knowledge_connector_settings": {
+                            "enabled": True,
+                            "trigger_fulfillment": {},
+                            "target_page": "target_page_value",
+                            "target_flow": "target_flow_value",
+                            "data_store_connections": [
+                                {"data_store_type": 1, "data_store": "data_store_value"}
+                            ],
+                        },
                     },
                     "text_responses": {},
                     "status": {
