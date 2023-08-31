@@ -763,7 +763,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
             google.cloud.recommender_v1beta1.types.Insight:
                 An insight along with the information
                 used to derive the insight. The insight
-                may have associated recomendations as
+                may have associated recommendations as
                 well.
 
         """
@@ -890,7 +890,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
             google.cloud.recommender_v1beta1.types.Insight:
                 An insight along with the information
                 used to derive the insight. The insight
-                may have associated recomendations as
+                may have associated recommendations as
                 well.
 
         """
@@ -2064,6 +2064,182 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
             request,
             retry=retry,
             timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_recommenders(
+        self,
+        request: Optional[
+            Union[recommender_service.ListRecommendersRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListRecommendersPager:
+        r"""Lists all available Recommenders.
+        No IAM permissions are required.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import recommender_v1beta1
+
+            def sample_list_recommenders():
+                # Create a client
+                client = recommender_v1beta1.RecommenderClient()
+
+                # Initialize request argument(s)
+                request = recommender_v1beta1.ListRecommendersRequest(
+                )
+
+                # Make the request
+                page_result = client.list_recommenders(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.recommender_v1beta1.types.ListRecommendersRequest, dict]):
+                The request object. Request for the ``ListRecommender`` method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recommender_v1beta1.services.recommender.pagers.ListRecommendersPager:
+                Response for the ListRecommender method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a recommender_service.ListRecommendersRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, recommender_service.ListRecommendersRequest):
+            request = recommender_service.ListRecommendersRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_recommenders]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListRecommendersPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_insight_types(
+        self,
+        request: Optional[
+            Union[recommender_service.ListInsightTypesRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListInsightTypesPager:
+        r"""Lists available InsightTypes.
+        No IAM permissions are required.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import recommender_v1beta1
+
+            def sample_list_insight_types():
+                # Create a client
+                client = recommender_v1beta1.RecommenderClient()
+
+                # Initialize request argument(s)
+                request = recommender_v1beta1.ListInsightTypesRequest(
+                )
+
+                # Make the request
+                page_result = client.list_insight_types(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.recommender_v1beta1.types.ListInsightTypesRequest, dict]):
+                The request object. Request for the ``ListInsightTypes`` method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recommender_v1beta1.services.recommender.pagers.ListInsightTypesPager:
+                Response for the ListInsightTypes method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a recommender_service.ListInsightTypesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, recommender_service.ListInsightTypesRequest):
+            request = recommender_service.ListInsightTypesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_insight_types]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListInsightTypesPager(
+            method=rpc,
+            request=request,
+            response=response,
             metadata=metadata,
         )
 

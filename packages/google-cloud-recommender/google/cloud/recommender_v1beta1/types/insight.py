@@ -27,13 +27,15 @@ __protobuf__ = proto.module(
     manifest={
         "Insight",
         "InsightStateInfo",
+        "InsightType",
     },
 )
 
 
 class Insight(proto.Message):
     r"""An insight along with the information used to derive the
-    insight. The insight may have associated recomendations as well.
+    insight. The insight may have associated recommendations as
+    well.
 
     Attributes:
         name (str):
@@ -235,6 +237,22 @@ class InsightStateInfo(proto.Message):
         proto.STRING,
         proto.STRING,
         number=2,
+    )
+
+
+class InsightType(proto.Message):
+    r"""The type of insight.
+
+    Attributes:
+        name (str):
+            The insight_type’s name in format
+            insightTypes/{insight_type} eg:
+            insightTypes/google.iam.policy.Insight
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

@@ -30,6 +30,11 @@
                 "get_recommender_config"
               ]
             },
+            "ListInsightTypes": {
+              "methods": [
+                "list_insight_types"
+              ]
+            },
             "ListInsights": {
               "methods": [
                 "list_insights"
@@ -38,6 +43,11 @@
             "ListRecommendations": {
               "methods": [
                 "list_recommendations"
+              ]
+            },
+            "ListRecommenders": {
+              "methods": [
+                "list_recommenders"
               ]
             },
             "MarkInsightAccepted": {
@@ -95,6 +105,11 @@
                 "get_recommender_config"
               ]
             },
+            "ListInsightTypes": {
+              "methods": [
+                "list_insight_types"
+              ]
+            },
             "ListInsights": {
               "methods": [
                 "list_insights"
@@ -103,6 +118,11 @@
             "ListRecommendations": {
               "methods": [
                 "list_recommendations"
+              ]
+            },
+            "ListRecommenders": {
+              "methods": [
+                "list_recommenders"
               ]
             },
             "MarkInsightAccepted": {
@@ -160,6 +180,11 @@
                 "get_recommender_config"
               ]
             },
+            "ListInsightTypes": {
+              "methods": [
+                "list_insight_types"
+              ]
+            },
             "ListInsights": {
               "methods": [
                 "list_insights"
@@ -168,6 +193,11 @@
             "ListRecommendations": {
               "methods": [
                 "list_recommendations"
+              ]
+            },
+            "ListRecommenders": {
+              "methods": [
+                "list_recommenders"
               ]
             },
             "MarkInsightAccepted": {

@@ -36,6 +36,7 @@ __protobuf__ = proto.module(
         "SustainabilityProjection",
         "Impact",
         "RecommendationStateInfo",
+        "RecommenderType",
     },
 )
 
@@ -639,6 +640,22 @@ class RecommendationStateInfo(proto.Message):
         proto.STRING,
         proto.STRING,
         number=2,
+    )
+
+
+class RecommenderType(proto.Message):
+    r"""The type of a recommender.
+
+    Attributes:
+        name (str):
+            The recommender's name in format
+            RecommenderTypes/{recommender_type} eg:
+            recommenderTypes/google.iam.policy.Recommender
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

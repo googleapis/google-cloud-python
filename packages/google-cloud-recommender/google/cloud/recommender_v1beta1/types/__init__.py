@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .insight import Insight, InsightStateInfo
+from .insight import Insight, InsightStateInfo, InsightType
 from .insight_type_config import InsightTypeConfig, InsightTypeGenerationConfig
 from .recommendation import (
     CostProjection,
@@ -23,6 +23,7 @@ from .recommendation import (
     Recommendation,
     RecommendationContent,
     RecommendationStateInfo,
+    RecommenderType,
     SecurityProjection,
     SustainabilityProjection,
     ValueMatcher,
@@ -35,8 +36,12 @@ from .recommender_service import (
     GetRecommenderConfigRequest,
     ListInsightsRequest,
     ListInsightsResponse,
+    ListInsightTypesRequest,
+    ListInsightTypesResponse,
     ListRecommendationsRequest,
     ListRecommendationsResponse,
+    ListRecommendersRequest,
+    ListRecommendersResponse,
     MarkInsightAcceptedRequest,
     MarkRecommendationClaimedRequest,
     MarkRecommendationFailedRequest,
@@ -48,6 +53,7 @@ from .recommender_service import (
 __all__ = (
     "Insight",
     "InsightStateInfo",
+    "InsightType",
     "InsightTypeConfig",
     "InsightTypeGenerationConfig",
     "CostProjection",
@@ -57,6 +63,7 @@ __all__ = (
     "Recommendation",
     "RecommendationContent",
     "RecommendationStateInfo",
+    "RecommenderType",
     "SecurityProjection",
     "SustainabilityProjection",
     "ValueMatcher",
@@ -68,8 +75,12 @@ __all__ = (
     "GetRecommenderConfigRequest",
     "ListInsightsRequest",
     "ListInsightsResponse",
+    "ListInsightTypesRequest",
+    "ListInsightTypesResponse",
     "ListRecommendationsRequest",
     "ListRecommendationsResponse",
+    "ListRecommendersRequest",
+    "ListRecommendersResponse",
     "MarkInsightAcceptedRequest",
     "MarkRecommendationClaimedRequest",
     "MarkRecommendationFailedRequest",

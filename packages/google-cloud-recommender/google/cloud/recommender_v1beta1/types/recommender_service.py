@@ -46,6 +46,10 @@ __protobuf__ = proto.module(
         "UpdateRecommenderConfigRequest",
         "GetInsightTypeConfigRequest",
         "UpdateInsightTypeConfigRequest",
+        "ListRecommendersRequest",
+        "ListRecommendersResponse",
+        "ListInsightTypesRequest",
+        "ListInsightTypesResponse",
     },
 )
 
@@ -74,7 +78,7 @@ class ListInsightsRequest(proto.Message):
             https://cloud.google.com/recommender/docs/insights/insight-types.
         page_size (int):
             Optional. The maximum number of results to
-            return from this request.  Non-positive values
+            return from this request. Non-positive values
             are ignored. If not specified, the server will
             determine the number of results to return.
         page_token (str):
@@ -219,7 +223,7 @@ class ListRecommendationsRequest(proto.Message):
             https://cloud.google.com/recommender/docs/recommenders.
         page_size (int):
             Optional. The maximum number of results to
-            return from this request.  Non-positive values
+            return from this request. Non-positive values
             are ignored. If not specified, the server will
             determine the number of results to return.
         page_token (str):
@@ -505,6 +509,106 @@ class UpdateInsightTypeConfigRequest(proto.Message):
     validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+
+
+class ListRecommendersRequest(proto.Message):
+    r"""Request for the ``ListRecommender`` method.
+
+    Attributes:
+        page_size (int):
+            The number of RecommenderTypes to return per
+            page. The service may return fewer than this
+            value.
+        page_token (str):
+            A page token, received from a previous ``ListRecommenders``
+            call. Provide this to retrieve the subsequent page.
+    """
+
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListRecommendersResponse(proto.Message):
+    r"""Response for the ``ListRecommender`` method.
+
+    Attributes:
+        recommenders (MutableSequence[google.cloud.recommender_v1beta1.types.RecommenderType]):
+            The set of recommenders available
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    recommenders: MutableSequence[recommendation.RecommenderType] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=recommendation.RecommenderType,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListInsightTypesRequest(proto.Message):
+    r"""Request for the ``ListInsightTypes`` method.
+
+    Attributes:
+        page_size (int):
+            The number of InsightTypes to return per
+            page. The service may return fewer than this
+            value.
+        page_token (str):
+            A page token, received from a previous ``ListRecommenders``
+            call. Provide this to retrieve the subsequent page.
+    """
+
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListInsightTypesResponse(proto.Message):
+    r"""Response for the ``ListInsightTypes`` method.
+
+    Attributes:
+        insight_types (MutableSequence[google.cloud.recommender_v1beta1.types.InsightType]):
+            The set of recommenders available
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    insight_types: MutableSequence[insight.InsightType] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=insight.InsightType,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

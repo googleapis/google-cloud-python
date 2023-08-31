@@ -19,7 +19,7 @@ __version__ = package_version.__version__
 
 
 from .services.recommender import RecommenderAsyncClient, RecommenderClient
-from .types.insight import Insight, InsightStateInfo
+from .types.insight import Insight, InsightStateInfo, InsightType
 from .types.insight_type_config import InsightTypeConfig, InsightTypeGenerationConfig
 from .types.recommendation import (
     CostProjection,
@@ -29,6 +29,7 @@ from .types.recommendation import (
     Recommendation,
     RecommendationContent,
     RecommendationStateInfo,
+    RecommenderType,
     SecurityProjection,
     SustainabilityProjection,
     ValueMatcher,
@@ -41,8 +42,12 @@ from .types.recommender_service import (
     GetRecommenderConfigRequest,
     ListInsightsRequest,
     ListInsightsResponse,
+    ListInsightTypesRequest,
+    ListInsightTypesResponse,
     ListRecommendationsRequest,
     ListRecommendationsResponse,
+    ListRecommendersRequest,
+    ListRecommendersResponse,
     MarkInsightAcceptedRequest,
     MarkRecommendationClaimedRequest,
     MarkRecommendationFailedRequest,
@@ -61,12 +66,17 @@ __all__ = (
     "Impact",
     "Insight",
     "InsightStateInfo",
+    "InsightType",
     "InsightTypeConfig",
     "InsightTypeGenerationConfig",
+    "ListInsightTypesRequest",
+    "ListInsightTypesResponse",
     "ListInsightsRequest",
     "ListInsightsResponse",
     "ListRecommendationsRequest",
     "ListRecommendationsResponse",
+    "ListRecommendersRequest",
+    "ListRecommendersResponse",
     "MarkInsightAcceptedRequest",
     "MarkRecommendationClaimedRequest",
     "MarkRecommendationFailedRequest",
@@ -79,6 +89,7 @@ __all__ = (
     "RecommenderClient",
     "RecommenderConfig",
     "RecommenderGenerationConfig",
+    "RecommenderType",
     "SecurityProjection",
     "SustainabilityProjection",
     "UpdateInsightTypeConfigRequest",

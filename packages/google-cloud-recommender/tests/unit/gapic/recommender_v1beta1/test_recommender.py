@@ -4313,6 +4313,588 @@ async def test_update_insight_type_config_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        recommender_service.ListRecommendersRequest,
+        dict,
+    ],
+)
+def test_list_recommenders(request_type, transport: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommenders), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommender_service.ListRecommendersResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_recommenders(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.ListRecommendersRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRecommendersPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_recommenders_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommenders), "__call__"
+    ) as call:
+        client.list_recommenders()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.ListRecommendersRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_recommenders_async(
+    transport: str = "grpc_asyncio",
+    request_type=recommender_service.ListRecommendersRequest,
+):
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommenders), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommender_service.ListRecommendersResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_recommenders(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.ListRecommendersRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRecommendersAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_recommenders_async_from_dict():
+    await test_list_recommenders_async(request_type=dict)
+
+
+def test_list_recommenders_pager(transport_name: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommenders), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recommender_service.ListRecommendersResponse(
+                recommenders=[
+                    recommendation.RecommenderType(),
+                    recommendation.RecommenderType(),
+                    recommendation.RecommenderType(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListRecommendersResponse(
+                recommenders=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListRecommendersResponse(
+                recommenders=[
+                    recommendation.RecommenderType(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListRecommendersResponse(
+                recommenders=[
+                    recommendation.RecommenderType(),
+                    recommendation.RecommenderType(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        pager = client.list_recommenders(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, recommendation.RecommenderType) for i in results)
+
+
+def test_list_recommenders_pages(transport_name: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommenders), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recommender_service.ListRecommendersResponse(
+                recommenders=[
+                    recommendation.RecommenderType(),
+                    recommendation.RecommenderType(),
+                    recommendation.RecommenderType(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListRecommendersResponse(
+                recommenders=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListRecommendersResponse(
+                recommenders=[
+                    recommendation.RecommenderType(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListRecommendersResponse(
+                recommenders=[
+                    recommendation.RecommenderType(),
+                    recommendation.RecommenderType(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_recommenders(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_recommenders_async_pager():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommenders),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recommender_service.ListRecommendersResponse(
+                recommenders=[
+                    recommendation.RecommenderType(),
+                    recommendation.RecommenderType(),
+                    recommendation.RecommenderType(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListRecommendersResponse(
+                recommenders=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListRecommendersResponse(
+                recommenders=[
+                    recommendation.RecommenderType(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListRecommendersResponse(
+                recommenders=[
+                    recommendation.RecommenderType(),
+                    recommendation.RecommenderType(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_recommenders(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, recommendation.RecommenderType) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_recommenders_async_pages():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_recommenders),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recommender_service.ListRecommendersResponse(
+                recommenders=[
+                    recommendation.RecommenderType(),
+                    recommendation.RecommenderType(),
+                    recommendation.RecommenderType(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListRecommendersResponse(
+                recommenders=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListRecommendersResponse(
+                recommenders=[
+                    recommendation.RecommenderType(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListRecommendersResponse(
+                recommenders=[
+                    recommendation.RecommenderType(),
+                    recommendation.RecommenderType(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_recommenders(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.ListInsightTypesRequest,
+        dict,
+    ],
+)
+def test_list_insight_types(request_type, transport: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_insight_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recommender_service.ListInsightTypesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_insight_types(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.ListInsightTypesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListInsightTypesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_insight_types_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_insight_types), "__call__"
+    ) as call:
+        client.list_insight_types()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.ListInsightTypesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_insight_types_async(
+    transport: str = "grpc_asyncio",
+    request_type=recommender_service.ListInsightTypesRequest,
+):
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_insight_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recommender_service.ListInsightTypesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_insight_types(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recommender_service.ListInsightTypesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListInsightTypesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_insight_types_async_from_dict():
+    await test_list_insight_types_async(request_type=dict)
+
+
+def test_list_insight_types_pager(transport_name: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_insight_types), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[
+                    insight.InsightType(),
+                    insight.InsightType(),
+                    insight.InsightType(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[
+                    insight.InsightType(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[
+                    insight.InsightType(),
+                    insight.InsightType(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        pager = client.list_insight_types(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, insight.InsightType) for i in results)
+
+
+def test_list_insight_types_pages(transport_name: str = "grpc"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_insight_types), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[
+                    insight.InsightType(),
+                    insight.InsightType(),
+                    insight.InsightType(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[
+                    insight.InsightType(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[
+                    insight.InsightType(),
+                    insight.InsightType(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_insight_types(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_insight_types_async_pager():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_insight_types),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[
+                    insight.InsightType(),
+                    insight.InsightType(),
+                    insight.InsightType(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[
+                    insight.InsightType(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[
+                    insight.InsightType(),
+                    insight.InsightType(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_insight_types(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, insight.InsightType) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_insight_types_async_pages():
+    client = RecommenderAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_insight_types),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[
+                    insight.InsightType(),
+                    insight.InsightType(),
+                    insight.InsightType(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[
+                    insight.InsightType(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[
+                    insight.InsightType(),
+                    insight.InsightType(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_insight_types(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         recommender_service.ListInsightsRequest,
         dict,
     ],
@@ -7995,6 +8577,376 @@ def test_update_insight_type_config_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.ListRecommendersRequest,
+        dict,
+    ],
+)
+def test_list_recommenders_rest(request_type):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = recommender_service.ListRecommendersResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = recommender_service.ListRecommendersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_recommenders(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListRecommendersPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_recommenders_rest_interceptors(null_interceptor):
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RecommenderRestInterceptor(),
+    )
+    client = RecommenderClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_list_recommenders"
+    ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "pre_list_recommenders"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = recommender_service.ListRecommendersRequest.pb(
+            recommender_service.ListRecommendersRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            recommender_service.ListRecommendersResponse.to_json(
+                recommender_service.ListRecommendersResponse()
+            )
+        )
+
+        request = recommender_service.ListRecommendersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = recommender_service.ListRecommendersResponse()
+
+        client.list_recommenders(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_recommenders_rest_bad_request(
+    transport: str = "rest", request_type=recommender_service.ListRecommendersRequest
+):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_recommenders(request)
+
+
+def test_list_recommenders_rest_pager(transport: str = "rest"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            recommender_service.ListRecommendersResponse(
+                recommenders=[
+                    recommendation.RecommenderType(),
+                    recommendation.RecommenderType(),
+                    recommendation.RecommenderType(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListRecommendersResponse(
+                recommenders=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListRecommendersResponse(
+                recommenders=[
+                    recommendation.RecommenderType(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListRecommendersResponse(
+                recommenders=[
+                    recommendation.RecommenderType(),
+                    recommendation.RecommenderType(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            recommender_service.ListRecommendersResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {}
+
+        pager = client.list_recommenders(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, recommendation.RecommenderType) for i in results)
+
+        pages = list(client.list_recommenders(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recommender_service.ListInsightTypesRequest,
+        dict,
+    ],
+)
+def test_list_insight_types_rest(request_type):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = recommender_service.ListInsightTypesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = recommender_service.ListInsightTypesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_insight_types(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListInsightTypesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_insight_types_rest_interceptors(null_interceptor):
+    transport = transports.RecommenderRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.RecommenderRestInterceptor(),
+    )
+    client = RecommenderClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RecommenderRestInterceptor, "post_list_insight_types"
+    ) as post, mock.patch.object(
+        transports.RecommenderRestInterceptor, "pre_list_insight_types"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = recommender_service.ListInsightTypesRequest.pb(
+            recommender_service.ListInsightTypesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            recommender_service.ListInsightTypesResponse.to_json(
+                recommender_service.ListInsightTypesResponse()
+            )
+        )
+
+        request = recommender_service.ListInsightTypesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = recommender_service.ListInsightTypesResponse()
+
+        client.list_insight_types(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_insight_types_rest_bad_request(
+    transport: str = "rest", request_type=recommender_service.ListInsightTypesRequest
+):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_insight_types(request)
+
+
+def test_list_insight_types_rest_pager(transport: str = "rest"):
+    client = RecommenderClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[
+                    insight.InsightType(),
+                    insight.InsightType(),
+                    insight.InsightType(),
+                ],
+                next_page_token="abc",
+            ),
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[],
+                next_page_token="def",
+            ),
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[
+                    insight.InsightType(),
+                ],
+                next_page_token="ghi",
+            ),
+            recommender_service.ListInsightTypesResponse(
+                insight_types=[
+                    insight.InsightType(),
+                    insight.InsightType(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            recommender_service.ListInsightTypesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {}
+
+        pager = client.list_insight_types(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, insight.InsightType) for i in results)
+
+        pages = list(client.list_insight_types(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.RecommenderGrpcTransport(
@@ -8146,6 +9098,8 @@ def test_recommender_base_transport():
         "update_recommender_config",
         "get_insight_type_config",
         "update_insight_type_config",
+        "list_recommenders",
+        "list_insight_types",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -8436,6 +9390,12 @@ def test_recommender_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.update_insight_type_config._session
     session2 = client2.transport.update_insight_type_config._session
+    assert session1 != session2
+    session1 = client1.transport.list_recommenders._session
+    session2 = client2.transport.list_recommenders._session
+    assert session1 != session2
+    session1 = client1.transport.list_insight_types._session
+    session2 = client2.transport.list_insight_types._session
     assert session1 != session2
 
 
