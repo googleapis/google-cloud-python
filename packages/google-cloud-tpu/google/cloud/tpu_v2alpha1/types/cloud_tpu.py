@@ -71,6 +71,8 @@ __protobuf__ = proto.module(
         "SimulateMaintenanceEventRequest",
         "AcceleratorConfig",
         "ShieldedInstanceConfig",
+        "BootDiskConfig",
+        "CustomerEncryptionKey",
     },
 )
 
@@ -400,6 +402,8 @@ class Node(proto.Message):
         multislice_node (bool):
             Output only. Whether the Node belongs to a
             Multislice group.
+        boot_disk_config (google.cloud.tpu_v2alpha1.types.BootDiskConfig):
+            Optional. Boot disk configuration.
     """
 
     class State(proto.Enum):
@@ -610,6 +614,11 @@ class Node(proto.Message):
     multislice_node: bool = proto.Field(
         proto.BOOL,
         number=47,
+    )
+    boot_disk_config: "BootDiskConfig" = proto.Field(
+        proto.MESSAGE,
+        number=49,
+        message="BootDiskConfig",
     )
 
 
@@ -1950,6 +1959,68 @@ class ShieldedInstanceConfig(proto.Message):
     enable_secure_boot: bool = proto.Field(
         proto.BOOL,
         number=1,
+    )
+
+
+class BootDiskConfig(proto.Message):
+    r"""Boot disk configurations.
+
+    Attributes:
+        customer_encryption_key (google.cloud.tpu_v2alpha1.types.CustomerEncryptionKey):
+            Optional. Customer encryption key for boot
+            disk.
+        enable_confidential_compute (bool):
+            Optional. Whether the boot disk will be
+            created with confidential compute mode.
+    """
+
+    customer_encryption_key: "CustomerEncryptionKey" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="CustomerEncryptionKey",
+    )
+    enable_confidential_compute: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+
+
+class CustomerEncryptionKey(proto.Message):
+    r"""Customer's encryption key.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        kms_key_name (str):
+            The name of the encryption key that is stored in Google
+            Cloud KMS. For example:
+
+            .. raw:: html
+
+                <pre class="lang-html">"kmsKeyName": "projects/
+                <var class="apiparam">kms_project_id</var>/locations/
+                <var class="apiparam">region</var>/keyRings/<var class="apiparam">
+                key_region</var>/cryptoKeys/<var class="apiparam">key</var>
+                </pre>
+
+            The fully-qualifed key name may be returned for resource GET
+            requests. For example:
+
+            .. raw:: html
+
+                <pre class="lang-html">"kmsKeyName": "projects/
+                <var class="apiparam">kms_project_id</var>/locations/
+                <var class="apiparam">region</var>/keyRings/<var class="apiparam">
+                key_region</var>/cryptoKeys/<var class="apiparam">key</var>
+                /cryptoKeyVersions/1</pre>
+
+            This field is a member of `oneof`_ ``key``.
+    """
+
+    kms_key_name: str = proto.Field(
+        proto.STRING,
+        number=7,
+        oneof="key",
     )
 
 
