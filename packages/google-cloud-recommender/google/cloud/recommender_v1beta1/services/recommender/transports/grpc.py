@@ -632,6 +632,66 @@ class RecommenderGrpcTransport(RecommenderTransport):
             )
         return self._stubs["update_insight_type_config"]
 
+    @property
+    def list_recommenders(
+        self,
+    ) -> Callable[
+        [recommender_service.ListRecommendersRequest],
+        recommender_service.ListRecommendersResponse,
+    ]:
+        r"""Return a callable for the list recommenders method over gRPC.
+
+        Lists all available Recommenders.
+        No IAM permissions are required.
+
+        Returns:
+            Callable[[~.ListRecommendersRequest],
+                    ~.ListRecommendersResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_recommenders" not in self._stubs:
+            self._stubs["list_recommenders"] = self.grpc_channel.unary_unary(
+                "/google.cloud.recommender.v1beta1.Recommender/ListRecommenders",
+                request_serializer=recommender_service.ListRecommendersRequest.serialize,
+                response_deserializer=recommender_service.ListRecommendersResponse.deserialize,
+            )
+        return self._stubs["list_recommenders"]
+
+    @property
+    def list_insight_types(
+        self,
+    ) -> Callable[
+        [recommender_service.ListInsightTypesRequest],
+        recommender_service.ListInsightTypesResponse,
+    ]:
+        r"""Return a callable for the list insight types method over gRPC.
+
+        Lists available InsightTypes.
+        No IAM permissions are required.
+
+        Returns:
+            Callable[[~.ListInsightTypesRequest],
+                    ~.ListInsightTypesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_insight_types" not in self._stubs:
+            self._stubs["list_insight_types"] = self.grpc_channel.unary_unary(
+                "/google.cloud.recommender.v1beta1.Recommender/ListInsightTypes",
+                request_serializer=recommender_service.ListInsightTypesRequest.serialize,
+                response_deserializer=recommender_service.ListInsightTypesResponse.deserialize,
+            )
+        return self._stubs["list_insight_types"]
+
     def close(self):
         self.grpc_channel.close()
 
