@@ -13,7 +13,6 @@ greenlet==2.0.2
 grpcio==1.57.0
 grpcio-status==1.57.0
 idna==3.4
-importlib-resources===5.12.0; python_version == '3.7'
 importlib-resources==6.0.1; python_version >= '3.8'
 mako==1.2.4
 markupsafe==2.1.3
