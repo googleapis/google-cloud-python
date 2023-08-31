@@ -147,6 +147,15 @@ class TestImpersonatedCredentials(object):
         assert not credentials.valid
         assert credentials.expired
 
+    def test_make_from_service_account_self_signed_jwt(self):
+        source_credentials = service_account.Credentials(
+            SIGNER, self.SERVICE_ACCOUNT_EMAIL, TOKEN_URI, always_use_jwt_access=True
+        )
+        credentials = self.make_credentials(source_credentials=source_credentials)
+        # test the source credential don't lose self signed jwt setting
+        assert credentials._source_credentials._always_use_jwt_access
+        assert credentials._source_credentials._jwt_credentials
+
     def make_request(
         self,
         data,

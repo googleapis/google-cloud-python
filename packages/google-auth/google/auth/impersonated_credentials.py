@@ -226,6 +226,13 @@ class Credentials(
         # their original scopes modified.
         if isinstance(self._source_credentials, credentials.Scoped):
             self._source_credentials = self._source_credentials.with_scopes(_IAM_SCOPE)
+            # If the source credential is service account and self signed jwt
+            # is needed, we need to create a jwt credential inside it
+            if (
+                hasattr(self._source_credentials, "_create_self_signed_jwt")
+                and self._source_credentials._always_use_jwt_access
+            ):
+                self._source_credentials._create_self_signed_jwt(None)
         self._target_principal = target_principal
         self._target_scopes = target_scopes
         self._delegates = delegates
