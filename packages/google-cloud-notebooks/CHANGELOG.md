@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-notebooks-v1.7.1...google-cloud-notebooks-v1.8.0) (2023-08-31)
+
+
+### Features
+
+* clients for Notebooks API V2 ([3787d95](https://github.com/googleapis/google-cloud-python/commit/3787d95665660ec7ecfe49fb8f21a92301779f15))
+
+
+### Documentation
+
+* supports Workbench Instances ([3787d95](https://github.com/googleapis/google-cloud-python/commit/3787d95665660ec7ecfe49fb8f21a92301779f15))
+
 ## [1.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-notebooks-v1.7.0...google-cloud-notebooks-v1.7.1) (2023-07-05)
 
 

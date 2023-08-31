@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.26.0...google-cloud-dialogflow-cx-v1.27.0) (2023-08-31)
+
+
+### Features
+
+* added generative AI, safety/security and speech endpointing settings ([#11614](https://github.com/googleapis/google-cloud-python/issues/11614)) ([85fb0fe](https://github.com/googleapis/google-cloud-python/commit/85fb0fe9ba4215e9f0daea49270af9b1d1664c7a))
+* added generative AI, safety/security and speech endpointing settings ([#11621](https://github.com/googleapis/google-cloud-python/issues/11621)) ([f0a5399](https://github.com/googleapis/google-cloud-python/commit/f0a539993f9baac2b32fc13d2297ee9deb623186))
+
 ## [1.26.0](https://github.com/googleapis/python-dialogflow-cx/compare/v1.25.0...v1.26.0) (2023-08-10)
 
 

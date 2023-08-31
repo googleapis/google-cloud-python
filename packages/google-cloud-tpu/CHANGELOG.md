@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tpu-v1.14.0...google-cloud-tpu-v1.15.0) (2023-08-31)
+
+
+### Features
+
+* Add MultiNodeParams in TPU ([ee2ea0d](https://github.com/googleapis/google-cloud-python/commit/ee2ea0d1ff8798d445146df8dea19eb697390b98))
+* Add ResetQueueResource to the TPU service ([ee2ea0d](https://github.com/googleapis/google-cloud-python/commit/ee2ea0d1ff8798d445146df8dea19eb697390b98))
+* publish boot_disk_config to support CHD with KMS ([#11622](https://github.com/googleapis/google-cloud-python/issues/11622)) ([050b5c1](https://github.com/googleapis/google-cloud-python/commit/050b5c1515a2773d5c7bc833bda97a62c2cb76b6))
+
 ## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tpu-v1.13.0...google-cloud-tpu-v1.14.0) (2023-08-10)
 
 
