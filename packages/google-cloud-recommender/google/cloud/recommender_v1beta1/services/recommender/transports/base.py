@@ -232,6 +232,16 @@ class RecommenderTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_recommenders: gapic_v1.method.wrap_method(
+                self.list_recommenders,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_insight_types: gapic_v1.method.wrap_method(
+                self.list_insight_types,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -365,6 +375,30 @@ class RecommenderTransport(abc.ABC):
         Union[
             gcr_insight_type_config.InsightTypeConfig,
             Awaitable[gcr_insight_type_config.InsightTypeConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_recommenders(
+        self,
+    ) -> Callable[
+        [recommender_service.ListRecommendersRequest],
+        Union[
+            recommender_service.ListRecommendersResponse,
+            Awaitable[recommender_service.ListRecommendersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_insight_types(
+        self,
+    ) -> Callable[
+        [recommender_service.ListInsightTypesRequest],
+        Union[
+            recommender_service.ListInsightTypesResponse,
+            Awaitable[recommender_service.ListInsightTypesResponse],
         ],
     ]:
         raise NotImplementedError()
