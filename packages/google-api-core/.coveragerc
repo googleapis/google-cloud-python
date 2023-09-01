@@ -11,3 +11,5 @@ exclude_lines =
     def __repr__
     # Ignore abstract methods
     raise NotImplementedError
+    # Ignore coverage for code specific to static type checkers
+    TYPE_CHECKING
