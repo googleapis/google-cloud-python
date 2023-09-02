@@ -387,8 +387,23 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     ) -> Series:
         return Series(block_ops.rank(self._block, method, na_option, ascending))
 
-    def fillna(self, value=None) -> "Series" | None:
+    def fillna(self, value=None) -> Series:
         return self._apply_binary_op(value, ops.fillna_op)
+
+    def dropna(
+        self,
+        *,
+        axis: int = 0,
+        inplace: bool = False,
+        how: typing.Optional[str] = None,
+        ignore_index: bool = False,
+    ) -> Series:
+        if inplace:
+            raise NotImplementedError("'inplace'=True not supported")
+        result = block_ops.dropna(self._block, how="any")
+        if ignore_index:
+            result = result.reset_index()
+        return Series(result)
 
     def head(self, n: int = 5) -> Series:
         return typing.cast(Series, self.iloc[0:n])
@@ -546,6 +561,18 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def rfloordiv(self, other: float | int | Series) -> Series:
         return self._apply_binary_op(other, ops.reverse(ops.floordiv_op))
+
+    def __pow__(self, other: float | int | Series) -> Series:
+        return self.pow(other)
+
+    def __rpow__(self, other: float | int | Series) -> Series:
+        return self.rpow(other)
+
+    def pow(self, other: float | int | Series) -> Series:
+        return self._apply_binary_op(other, ops.pow_op)
+
+    def rpow(self, other: float | int | Series) -> Series:
+        return self._apply_binary_op(other, ops.reverse(ops.pow_op))
 
     def __lt__(self, other: float | int | Series) -> Series:  # type: ignore
         return self.lt(other)
@@ -843,23 +870,15 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     @property
     def is_monotonic_increasing(self) -> bool:
-        period = 1
-        window = bigframes.core.WindowSpec(
-            preceding=period,
-            following=None,
+        return typing.cast(
+            bool, self._block.is_monotonic_increasing(self._value_column)
         )
-        shifted_series = self._apply_window_op(agg_ops.ShiftOp(period), window)
-        return self.notna().__and__(self >= shifted_series).all()
 
     @property
     def is_monotonic_decreasing(self) -> bool:
-        period = 1
-        window = bigframes.core.WindowSpec(
-            preceding=period,
-            following=None,
+        return typing.cast(
+            bool, self._block.is_monotonic_decreasing(self._value_column)
         )
-        shifted_series = self._apply_window_op(agg_ops.ShiftOp(period), window)
-        return self.notna().__and__(self <= shifted_series).all()
 
     def __getitem__(self, indexer):
         # TODO: enforce stricter alignment, should fail if indexer is missing any keys.
@@ -1105,9 +1124,12 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             )
         return self.where(~cond, other)
 
-    def to_frame(self) -> bigframes.dataframe.DataFrame:
+    def to_frame(self, name: blocks.Label = None) -> bigframes.dataframe.DataFrame:
+        provided_name = name if name else self.name
         # To be consistent with Pandas, it assigns 0 as the column name if missing. 0 is the first element of RangeIndex.
-        block = self._block.with_column_labels([self.name] if self.name else ["0"])
+        block = self._block.with_column_labels(
+            [provided_name] if provided_name else ["0"]
+        )
         return bigframes.dataframe.DataFrame(block)
 
     def to_csv(self, path_or_buf=None, **kwargs) -> typing.Optional[str]:
@@ -1191,6 +1213,57 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def to_xarray(self):
         return self.to_pandas().to_xarray()
 
+    def _throw_if_index_contains_duplicates(
+        self, error_message: typing.Optional[str] = None
+    ) -> None:
+        duplicates_block, _ = block_ops.indicate_duplicates(
+            self._get_block(), self._get_block().index_columns
+        )
+        duplicates_block = duplicates_block.with_column_labels(
+            ["values", "is_duplicate"]
+        )
+        duplicates_df = bigframes.dataframe.DataFrame(duplicates_block)
+        if duplicates_df["is_duplicate"].any():
+            error_message = (
+                error_message
+                if error_message
+                else "Index contains duplicate entries, but uniqueness is required."
+            )
+            raise pandas.errors.InvalidIndexError(error_message)
+
+    def map(
+        self,
+        arg: typing.Union[Mapping, Series],
+        na_action: Optional[str] = None,
+        *,
+        verify_integrity: bool = False,
+    ) -> Series:
+        if na_action:
+            raise NotImplementedError(
+                f"Non-None na_action argument is not yet supported for Series.map. {constants.FEEDBACK_LINK}"
+            )
+        if isinstance(arg, Series):
+            if verify_integrity:
+                error_message = "When verify_integrity is True in Series.map, index of arg parameter must not have duplicate entries."
+                arg._throw_if_index_contains_duplicates(error_message=error_message)
+            map_df = bigframes.dataframe.DataFrame(arg._block)
+            map_df = map_df.rename(columns={arg.name: self.name})
+        elif isinstance(arg, Mapping):
+            map_df = bigframes.dataframe.DataFrame(
+                {"keys": list(arg.keys()), self.name: list(arg.values())},
+                session=self._get_block().expr._session,
+            )
+            map_df = map_df.set_index("keys")
+        elif callable(arg):
+            return self.apply(arg)
+        else:
+            # Mirroring pandas, call the uncallable object
+            arg()  # throws TypeError: object is not callable
+
+        self_df = self.to_frame(name="series")
+        result_df = self_df.join(map_df, on="series")
+        return result_df[self.name]
+
     def __array_ufunc__(
         self, ufunc: numpy.ufunc, method: str, *inputs, **kwargs
     ) -> Series:
@@ -1198,16 +1271,17 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         See: https://numpy.org/doc/stable/reference/ufuncs.html
         """
         # Only __call__ supported with zero arguments
-        if (
-            inputs[0] is not self
-            or method != "__call__"
-            or len(inputs) > 1
-            or len(kwargs) > 0
-        ):
+        if method != "__call__" or len(inputs) > 2 or len(kwargs) > 0:
             return NotImplemented
 
-        if ufunc in ops.NUMPY_TO_OP:
+        if len(inputs) == 1 and ufunc in ops.NUMPY_TO_OP:
             return self._apply_unary_op(ops.NUMPY_TO_OP[ufunc])
+        if len(inputs) == 2 and ufunc in ops.NUMPY_TO_BINOP:
+            binop = ops.NUMPY_TO_BINOP[ufunc]
+            if inputs[0] is self:
+                return self._apply_binary_op(inputs[1], binop)
+            else:
+                return self._apply_binary_op(inputs[0], ops.reverse(binop))
 
         return NotImplemented
 

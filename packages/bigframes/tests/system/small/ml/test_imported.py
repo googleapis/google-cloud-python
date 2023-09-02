@@ -25,6 +25,11 @@ def test_tensorflow_create_model(imported_tensorflow_model):
     assert imported_tensorflow_model is not None
 
 
+def test_tensorflow_create_model_default_session(imported_tensorflow_model_path):
+    model = imported.TensorFlowModel(model_path=imported_tensorflow_model_path)
+    assert model is not None
+
+
 def test_tensorflow_model_predict(imported_tensorflow_model, llm_text_df):
     df = llm_text_df.rename(columns={"prompt": "input"})
     result = imported_tensorflow_model.predict(df).to_pandas()
@@ -59,6 +64,11 @@ def test_tensorflow_model_to_gbq(
 def test_onnx_create_model(imported_onnx_model):
     # Model creation doesn't return error
     assert imported_onnx_model is not None
+
+
+def test_onnx_create_model_default_session(imported_onnx_model_path):
+    model = imported.TensorFlowModel(model_path=imported_onnx_model_path)
+    assert model is not None
 
 
 def test_onnx_model_predict(imported_onnx_model, onnx_iris_df):

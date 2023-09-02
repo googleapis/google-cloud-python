@@ -67,6 +67,36 @@ class Index(vendored_pandas_index.Index):
         """Returns True if the Index is empty, otherwise returns False."""
         return self.shape[0] == 0
 
+    @property
+    def is_monotonic_increasing(self) -> bool:
+        """
+        Return a boolean if the values are equal or increasing.
+
+        Returns:
+            bool
+        """
+        return typing.cast(
+            bool,
+            self._data._get_block().is_monotonic_increasing(
+                self._data._get_block().index_columns
+            ),
+        )
+
+    @property
+    def is_monotonic_decreasing(self) -> bool:
+        """
+        Return a boolean if the values are equal or decreasing.
+
+        Returns:
+            bool
+        """
+        return typing.cast(
+            bool,
+            self._data._get_block().is_monotonic_decreasing(
+                self._data._get_block().index_columns
+            ),
+        )
+
     def __getitem__(self, key: int) -> typing.Any:
         if isinstance(key, int):
             result_pd_df, _ = self._data._get_block().slice(key, key + 1, 1).to_pandas()

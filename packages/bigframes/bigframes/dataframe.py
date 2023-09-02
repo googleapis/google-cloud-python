@@ -529,7 +529,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     def _apply_binop(
         self,
-        other: float | int | bigframes.series.Series,
+        other: float | int | bigframes.series.Series | DataFrame,
         op,
         axis: str | int = "columns",
     ):
@@ -537,6 +537,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             return self._apply_scalar_binop(other, op)
         elif isinstance(other, bigframes.series.Series):
             return self._apply_series_binop(other, op, axis=axis)
+        elif isinstance(other, DataFrame):
+            return self._apply_dataframe_binop(other, op)
         raise NotImplementedError(
             f"binary operation is not implemented on the second operand of type {type(other).__name__}."
             f"{constants.FEEDBACK_LINK}"
@@ -588,6 +590,47 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         block = block.with_index_labels(self.index.names)
         return DataFrame(block)
 
+    def _apply_dataframe_binop(
+        self,
+        other: DataFrame,
+        op: ops.BinaryOp,
+    ) -> DataFrame:
+        # Join rows
+        joined_index, (get_column_left, get_column_right) = self._block.index.join(
+            other._block.index, how="outer"
+        )
+        # join columns schema
+        columns, lcol_indexer, rcol_indexer = self.columns.join(
+            other.columns, how="outer", return_indexers=True
+        )
+
+        binop_result_ids = []
+        block = joined_index._block
+        for left_index, right_index in zip(lcol_indexer, rcol_indexer):
+            if left_index >= 0 and right_index >= 0:  # -1 indices indicate missing
+                left_col_id = self._block.value_columns[left_index]
+                right_col_id = other._block.value_columns[right_index]
+                block, result_col_id = block.apply_binary_op(
+                    get_column_left(left_col_id),
+                    get_column_right(right_col_id),
+                    op,
+                )
+                binop_result_ids.append(result_col_id)
+            elif left_index >= 0:
+                dtype = self.dtypes[left_index]
+                block, null_col_id = block.create_constant(None, dtype=dtype)
+                binop_result_ids.append(null_col_id)
+            elif right_index >= 0:
+                dtype = other.dtypes[right_index]
+                block, null_col_id = block.create_constant(None, dtype=dtype)
+                binop_result_ids.append(null_col_id)
+            else:
+                # Should not be possible
+                raise ValueError("No right or left index.")
+
+        block = block.select_columns(binop_result_ids).with_column_labels(columns)
+        return DataFrame(block)
+
     def eq(self, other: typing.Any, axis: str | int = "columns") -> DataFrame:
         return self._apply_binop(other, ops.eq_op, axis=axis)
 
@@ -619,7 +662,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     __ge__ = ge
 
     def add(
-        self, other: float | int | bigframes.series.Series, axis: str | int = "columns"
+        self,
+        other: float | int | bigframes.series.Series | DataFrame,
+        axis: str | int = "columns",
     ) -> DataFrame:
         # TODO(swast): Support fill_value parameter.
         # TODO(swast): Support level parameter with MultiIndex.
@@ -628,63 +673,91 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     __radd__ = __add__ = radd = add
 
     def sub(
-        self, other: float | int | bigframes.series.Series, axis: str | int = "columns"
+        self,
+        other: float | int | bigframes.series.Series | DataFrame,
+        axis: str | int = "columns",
     ) -> DataFrame:
         return self._apply_binop(other, ops.sub_op, axis=axis)
 
     __sub__ = subtract = sub
 
     def rsub(
-        self, other: float | int | bigframes.series.Series, axis: str | int = "columns"
+        self,
+        other: float | int | bigframes.series.Series | DataFrame,
+        axis: str | int = "columns",
     ) -> DataFrame:
         return self._apply_binop(other, ops.reverse(ops.sub_op), axis=axis)
 
     __rsub__ = rsub
 
     def mul(
-        self, other: float | int | bigframes.series.Series, axis: str | int = "columns"
+        self,
+        other: float | int | bigframes.series.Series | DataFrame,
+        axis: str | int = "columns",
     ) -> DataFrame:
         return self._apply_binop(other, ops.mul_op, axis=axis)
 
     __rmul__ = __mul__ = rmul = multiply = mul
 
     def truediv(
-        self, other: float | int | bigframes.series.Series, axis: str | int = "columns"
+        self,
+        other: float | int | bigframes.series.Series | DataFrame,
+        axis: str | int = "columns",
     ) -> DataFrame:
         return self._apply_binop(other, ops.div_op, axis=axis)
 
     div = divide = __truediv__ = truediv
 
     def rtruediv(
-        self, other: float | int | bigframes.series.Series, axis: str | int = "columns"
+        self,
+        other: float | int | bigframes.series.Series | DataFrame,
+        axis: str | int = "columns",
     ) -> DataFrame:
         return self._apply_binop(other, ops.reverse(ops.div_op), axis=axis)
 
     __rtruediv__ = rdiv = rtruediv
 
     def floordiv(
-        self, other: float | int | bigframes.series.Series, axis: str | int = "columns"
+        self,
+        other: float | int | bigframes.series.Series | DataFrame,
+        axis: str | int = "columns",
     ) -> DataFrame:
         return self._apply_binop(other, ops.floordiv_op, axis=axis)
 
     __floordiv__ = floordiv
 
     def rfloordiv(
-        self, other: float | int | bigframes.series.Series, axis: str | int = "columns"
+        self,
+        other: float | int | bigframes.series.Series | DataFrame,
+        axis: str | int = "columns",
     ) -> DataFrame:
         return self._apply_binop(other, ops.reverse(ops.floordiv_op), axis=axis)
 
     __rfloordiv__ = rfloordiv
 
-    def mod(self, other: int | bigframes.series.Series, axis: str | int = "columns") -> DataFrame:  # type: ignore
+    def mod(self, other: int | bigframes.series.Series | DataFrame, axis: str | int = "columns") -> DataFrame:  # type: ignore
         return self._apply_binop(other, ops.mod_op, axis=axis)
 
-    def rmod(self, other: int | bigframes.series.Series, axis: str | int = "columns") -> DataFrame:  # type: ignore
+    def rmod(self, other: int | bigframes.series.Series | DataFrame, axis: str | int = "columns") -> DataFrame:  # type: ignore
         return self._apply_binop(other, ops.reverse(ops.mod_op), axis=axis)
 
     __mod__ = mod
 
     __rmod__ = rmod
+
+    def pow(
+        self, other: int | bigframes.series.Series, axis: str | int = "columns"
+    ) -> DataFrame:
+        return self._apply_binop(other, ops.pow_op, axis=axis)
+
+    def rpow(
+        self, other: int | bigframes.series.Series, axis: str | int = "columns"
+    ) -> DataFrame:
+        return self._apply_binop(other, ops.reverse(ops.pow_op), axis=axis)
+
+    __pow__ = pow
+
+    __rpow__ = rpow
 
     def to_pandas(
         self,
@@ -1023,8 +1096,72 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         axis = 1 if axis is None else axis
         return DataFrame(self._get_block().add_suffix(suffix, axis))
 
-    def dropna(self) -> DataFrame:
-        return DataFrame(block_ops.dropna(self._block, how="any"))
+    def fillna(self, value=None) -> DataFrame:
+        return self._apply_binop(value, ops.fillna_op)
+
+    def isin(self, values) -> DataFrame:
+        if utils.is_dict_like(values):
+            block = self._block
+            result_ids = []
+            for col, label in zip(self._block.value_columns, self._block.column_labels):
+                if label in values.keys():
+                    value_for_key = values[label]
+                    block, result_id = block.apply_unary_op(
+                        col, ops.IsInOp(value_for_key, match_nulls=True), label
+                    )
+                    result_ids.append(result_id)
+                else:
+                    block, result_id = block.create_constant(
+                        False, label=label, dtype=pandas.BooleanDtype()
+                    )
+                    result_ids.append(result_id)
+            return DataFrame(block.select_columns(result_ids)).fillna(value=False)
+        elif utils.is_list_like(values):
+            return self._apply_unary_op(ops.IsInOp(values, match_nulls=True)).fillna(
+                value=False
+            )
+        else:
+            raise TypeError(
+                "only list-like objects are allowed to be passed to "
+                f"isin(), you passed a [{type(values).__name__}]"
+            )
+
+    def dropna(
+        self,
+        *,
+        axis: int | str = 0,
+        inplace: bool = False,
+        how: str = "any",
+        ignore_index=False,
+    ) -> DataFrame:
+        if inplace:
+            raise NotImplementedError(
+                "'inplace'=True not supported. {constants.FEEDBACK_LINK}"
+            )
+        if how not in ("any", "all"):
+            raise ValueError("'how' must be one of 'any', 'all'")
+
+        axis_n = utils.get_axis_number(axis)
+
+        if axis_n == 0:
+            result = block_ops.dropna(self._block, how=how)  # type: ignore
+            if ignore_index:
+                result = result.reset_index()
+            return DataFrame(result)
+        else:
+            isnull_block = self._block.multi_apply_unary_op(
+                self._block.value_columns, ops.isnull_op
+            )
+            if how == "any":
+                null_locations = DataFrame(isnull_block).any().to_pandas()
+            else:  # 'all'
+                null_locations = DataFrame(isnull_block).all().to_pandas()
+            keep_columns = [
+                col
+                for col, to_drop in zip(self._block.value_columns, null_locations)
+                if not to_drop
+            ]
+            return DataFrame(self._block.select_columns(keep_columns))
 
     def any(
         self,
@@ -1205,7 +1342,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     def stack(self):
         # TODO: support 'level' param by simply reordering levels such that selected level is last before passing to Block.stack.
-        # TODO: support 'dropna' param by executing dropna only conditionally
+        # TODO: match impl to pandas future_stack as described in pandas 2.1 release notes
         result_block = block_ops.dropna(self._block.stack(), how="all")
         if not isinstance(self.columns, pandas.MultiIndex):
             return bigframes.series.Series(result_block)
@@ -1879,16 +2016,17 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         """Used to support numpy ufuncs.
         See: https://numpy.org/doc/stable/reference/ufuncs.html
         """
-        if (
-            inputs[0] is not self
-            or method != "__call__"
-            or len(inputs) > 1
-            or len(kwargs) > 0
-        ):
+        if method != "__call__" or len(inputs) > 2 or len(kwargs) > 0:
             return NotImplemented
 
-        if ufunc in ops.NUMPY_TO_OP:
+        if len(inputs) == 1 and ufunc in ops.NUMPY_TO_OP:
             return self._apply_unary_op(ops.NUMPY_TO_OP[ufunc])
+        if len(inputs) == 2 and ufunc in ops.NUMPY_TO_BINOP:
+            binop = ops.NUMPY_TO_BINOP[ufunc]
+            if inputs[0] is self:
+                return self._apply_binop(inputs[1], binop)
+            else:
+                return self._apply_binop(inputs[0], ops.reverse(binop))
 
         return NotImplemented
 

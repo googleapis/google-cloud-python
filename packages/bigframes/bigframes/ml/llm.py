@@ -16,10 +16,10 @@
 
 from __future__ import annotations
 
-from typing import cast, Union
+from typing import cast, Optional, Union
 
 import bigframes
-import bigframes.constants as constants
+from bigframes import clients, constants
 from bigframes.core import blocks
 from bigframes.ml import base, core, utils
 import bigframes.pandas as bpd
@@ -35,17 +35,43 @@ class PaLM2TextGenerator(base.Predictor):
     """PaLM2 text generator LLM model.
 
     Args:
-        session (BigQuery Session):
-            BQ session to create the model
-        connection_name (str):
-            connection to connect with remote service. str of the format <PROJECT_NUMBER/PROJECT_ID>.<REGION>.<CONNECTION_NAME>"""
+        session (bigframes.Session or None):
+            BQ session to create the model. If None, use the global default session.
+        connection_name (str or None):
+            connection to connect with remote service. str of the format <PROJECT_NUMBER/PROJECT_ID>.<REGION>.<CONNECTION_NAME>.
+            if None, use default connection in session context.
+    """
 
-    def __init__(self, session: bigframes.Session, connection_name: str):
-        self.session = session
-        self.connection_name = connection_name
+    def __init__(
+        self,
+        session: Optional[bigframes.Session] = None,
+        connection_name: Optional[str] = None,
+    ):
+        self.session = session or bpd.get_global_session()
+        self.connection_name = connection_name or self.session._bq_connection
+        self._bq_connection_manager = clients.BqConnectionManager(
+            self.session.bqconnectionclient, self.session.resourcemanagerclient
+        )
         self._bqml_model: core.BqmlModel = self._create_bqml_model()
 
     def _create_bqml_model(self):
+        # Parse and create connection if needed.
+        if not self.connection_name:
+            raise ValueError(
+                "Must provide connection_name, either in constructor or through session options."
+            )
+        connection_name_parts = self.connection_name.split(".")
+        if len(connection_name_parts) != 3:
+            raise ValueError(
+                f"connection_name must be of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>, got {self.connection_name}."
+            )
+        self._bq_connection_manager.create_bq_connection(
+            project_id=connection_name_parts[0],
+            location=connection_name_parts[1],
+            connection_id=connection_name_parts[2],
+            iam_role="aiplatform.user",
+        )
+
         options = {
             "remote_service_type": _REMOTE_TEXT_GENERATOR_MODEL_CODE,
         }
@@ -140,17 +166,43 @@ class PaLM2TextEmbeddingGenerator(base.Predictor):
     """PaLM2 text embedding generator LLM model.
 
     Args:
-        session (BigQuery Session):
-            BQ session to create the model
-        connection_name (str):
-            connection to connect with remote service. str of the format <PROJECT_NUMBER/PROJECT_ID>.<REGION>.<CONNECTION_NAME>"""
+        session (bigframes.Session or None):
+            BQ session to create the model. If None, use the global default session.
+        connection_name (str or None):
+            connection to connect with remote service. str of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
+            if None, use default connection in session context.
+    """
 
-    def __init__(self, session: bigframes.Session, connection_name: str):
-        self.session = session
-        self.connection_name = connection_name
+    def __init__(
+        self,
+        session: Optional[bigframes.Session] = None,
+        connection_name: Optional[str] = None,
+    ):
+        self.session = session or bpd.get_global_session()
+        self.connection_name = connection_name or self.session._bq_connection
+        self._bq_connection_manager = clients.BqConnectionManager(
+            self.session.bqconnectionclient, self.session.resourcemanagerclient
+        )
         self._bqml_model: core.BqmlModel = self._create_bqml_model()
 
     def _create_bqml_model(self):
+        # Parse and create connection if needed.
+        if not self.connection_name:
+            raise ValueError(
+                "Must provide connection_name, either in constructor or through session options."
+            )
+        connection_name_parts = self.connection_name.split(".")
+        if len(connection_name_parts) != 3:
+            raise ValueError(
+                f"connection_name must be of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>, got {self.connection_name}."
+            )
+        self._bq_connection_manager.create_bq_connection(
+            project_id=connection_name_parts[0],
+            location=connection_name_parts[1],
+            connection_id=connection_name_parts[2],
+            iam_role="aiplatform.user",
+        )
+
         options = {
             "remote_service_type": _REMOTE_EMBEDDING_GENERATOR_MODEL_CODE,
         }

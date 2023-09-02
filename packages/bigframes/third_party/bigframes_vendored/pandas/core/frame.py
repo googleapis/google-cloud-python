@@ -380,8 +380,41 @@ class DataFrame(NDFrame):
     ) -> DataFrame:
         """Remove missing values.
 
+        Args:
+            axis ({0 or 'index', 1 or 'columns'}, default 'columns'):
+                Determine if rows or columns which contain missing values are
+                removed.
+
+                * 0, or 'index' : Drop rows which contain missing values.
+                * 1, or 'columns' : Drop columns which contain missing value.
+            how ({'any', 'all'}, default 'any'):
+                Determine if row or column is removed from DataFrame, when we have
+                at least one NA or all NA.
+
+                * 'any' : If any NA values are present, drop that row or column.
+                * 'all' : If all values are NA, drop that row or column.
+            ignore_index (bool, default ``False``):
+                If ``True``, the resulting axis will be labeled 0, 1, …, n - 1.
+
+
         Returns:
             bigframes.dataframe.DataFrame: DataFrame with NA entries dropped from it.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def isin(self, values):
+        """
+        Whether each element in the DataFrame is contained in values.
+
+        Args:
+            values (iterable, or dict):
+                The result will only be true at a location if all the
+                labels match. If `values` is a dict, the keys must be
+                the column names, which must match.
+
+        Returns:
+            DataFrame: DataFrame of booleans showing whether each element
+            in the DataFrame is contained in values.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -789,6 +822,54 @@ class DataFrame(NDFrame):
         """Get modulo of DataFrame and other, element-wise (binary operator `%`).
 
         Equivalent to ``other % dataframe``. With reverse version, `mod`.
+
+        Among flexible wrappers (`add`, `sub`, `mul`, `div`, `mod`, `pow`) to
+        arithmetic operators: `+`, `-`, `*`, `/`, `//`, `%`, `**`.
+
+        .. note::
+            Mismatched indices will be unioned together.
+
+        Args:
+            other (float, int, or Series):
+                Any single or multiple element data structure, or list-like object.
+            axis ({0 or 'index', 1 or 'columns'}):
+                Whether to compare by the index (0 or 'index') or columns.
+                (1 or 'columns'). For Series input, axis to match Series index on.
+
+        Returns:
+            DataFrame: DataFrame result of the arithmetic operation.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def pow(self, other, axis: str | int = "columns") -> DataFrame:
+        """Get Exponential power of dataframe and other, element-wise (binary operator `pow`).
+
+        Equivalent to ``dataframe ** other``, but with support to substitute a fill_value
+        for missing data in one of the inputs. With reverse version, `rpow`.
+
+        Among flexible wrappers (`add`, `sub`, `mul`, `div`, `mod`, `pow`) to
+        arithmetic operators: `+`, `-`, `*`, `/`, `//`, `%`, `**`.
+
+        .. note::
+            Mismatched indices will be unioned together.
+
+        Args:
+            other (float, int, or Series):
+                Any single or multiple element data structure, or list-like object.
+            axis ({0 or 'index', 1 or 'columns'}):
+                Whether to compare by the index (0 or 'index') or columns.
+                (1 or 'columns'). For Series input, axis to match Series index on.
+
+        Returns:
+            DataFrame: DataFrame result of the arithmetic operation.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def rpow(self, other, axis: str | int = "columns") -> DataFrame:
+        """Get Exponential power of dataframe and other, element-wise (binary operator `rpow`).
+
+        Equivalent to ``other ** dataframe``, but with support to substitute a fill_value
+        for missing data in one of the inputs. With reverse version, `pow`.
 
         Among flexible wrappers (`add`, `sub`, `mul`, `div`, `mod`, `pow`) to
         arithmetic operators: `+`, `-`, `*`, `/`, `//`, `%`, `**`.
@@ -1336,5 +1417,22 @@ class DataFrame(NDFrame):
 
         Returns:
             Series: Series containing counts of unique rows in the DataFrame
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def fillna(self, value):
+        """
+        Fill NA/NaN values using the specified method.
+
+        Args:
+            value (scalar, Series):
+                Value to use to fill holes (e.g. 0), alternately a
+                Series of values specifying which value to use for
+                each index (for a Series) or column (for a DataFrame).  Values not
+                in the Series will not be filled. This value cannot
+                be a list.
+
+        Returns:
+            DataFrame: Object with missing values filled
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

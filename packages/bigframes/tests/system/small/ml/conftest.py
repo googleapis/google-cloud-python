@@ -32,8 +32,8 @@ from bigframes.ml import (
 
 
 @pytest.fixture(scope="session")
-def ml_connection() -> str:
-    return "bigframes-dev.us.bigframes-ml"
+def bq_connection() -> str:
+    return "bigframes-dev.us.bigframes-rf-conn"
 
 
 @pytest.fixture(scope="session")
@@ -198,33 +198,33 @@ def llm_text_df(session, llm_text_pandas_df):
 
 
 @pytest.fixture(scope="session")
-def bqml_palm2_text_generator_model(session, ml_connection) -> core.BqmlModel:
+def bqml_palm2_text_generator_model(session, bq_connection) -> core.BqmlModel:
     options = {
         "remote_service_type": "CLOUD_AI_LARGE_LANGUAGE_MODEL_V1",
     }
     return core.create_bqml_remote_model(
-        session=session, connection_name=ml_connection, options=options
+        session=session, connection_name=bq_connection, options=options
     )
 
 
 @pytest.fixture(scope="session")
-def palm2_text_generator_model(session, ml_connection) -> llm.PaLM2TextGenerator:
-    return llm.PaLM2TextGenerator(session=session, connection_name=ml_connection)
+def palm2_text_generator_model(session, bq_connection) -> llm.PaLM2TextGenerator:
+    return llm.PaLM2TextGenerator(session=session, connection_name=bq_connection)
 
 
 @pytest.fixture(scope="function")
 def ephemera_palm2_text_generator_model(
-    session, ml_connection
+    session, bq_connection
 ) -> llm.PaLM2TextGenerator:
-    return llm.PaLM2TextGenerator(session=session, connection_name=ml_connection)
+    return llm.PaLM2TextGenerator(session=session, connection_name=bq_connection)
 
 
 @pytest.fixture(scope="session")
 def palm2_embedding_generator_model(
-    session, ml_connection
+    session, bq_connection
 ) -> llm.PaLM2TextEmbeddingGenerator:
     return llm.PaLM2TextEmbeddingGenerator(
-        session=session, connection_name=ml_connection
+        session=session, connection_name=bq_connection
     )
 
 
@@ -247,10 +247,22 @@ def time_series_arima_plus_model(
 
 
 @pytest.fixture(scope="session")
-def imported_tensorflow_model(session) -> imported.TensorFlowModel:
+def imported_tensorflow_model_path() -> str:
+    return "gs://cloud-training-demos/txtclass/export/exporter/1549825580/*"
+
+
+@pytest.fixture(scope="session")
+def imported_onnx_model_path() -> str:
+    return "gs://cloud-samples-data/bigquery/ml/onnx/pipeline_rf.onnx"
+
+
+@pytest.fixture(scope="session")
+def imported_tensorflow_model(
+    session, imported_tensorflow_model_path
+) -> imported.TensorFlowModel:
     return imported.TensorFlowModel(
         session=session,
-        model_path="gs://cloud-training-demos/txtclass/export/exporter/1549825580/*",
+        model_path=imported_tensorflow_model_path,
     )
 
 
@@ -263,8 +275,8 @@ def ephemera_imported_tensorflow_model(session) -> imported.TensorFlowModel:
 
 
 @pytest.fixture(scope="session")
-def imported_onnx_model(session) -> imported.ONNXModel:
+def imported_onnx_model(session, imported_onnx_model_path) -> imported.ONNXModel:
     return imported.ONNXModel(
         session=session,
-        model_path="gs://cloud-samples-data/bigquery/ml/onnx/pipeline_rf.onnx",
+        model_path=imported_onnx_model_path,
     )

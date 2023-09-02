@@ -38,6 +38,7 @@ _NEG_INF = typing.cast(ibis_types.NumericValue, ibis_types.literal(-np.inf))
 # FLOAT64 has 11 exponent bits, so max values is about 2**(2**10)
 # ln(2**(2**10)) == (2**10)*ln(2) ~= 709.78, so EXP(x) for x>709.78 will overflow.
 _FLOAT64_EXP_BOUND = typing.cast(ibis_types.NumericValue, ibis_types.literal(709.78))
+_INT64_EXP_BOUND = typing.cast(ibis_types.NumericValue, ibis_types.literal(43.6))
 
 BinaryOp = typing.Callable[[ibis_types.Value, ibis_types.Value], ibis_types.Value]
 TernaryOp = typing.Callable[
@@ -538,12 +539,27 @@ class IsInOp(UnaryOp):
         self._match_nulls = match_nulls
 
     def _as_ibis(self, x: ibis_types.Value):
-        if self._match_nulls and any(is_null(value) for value in self._values):
-            return x.isnull() | x.isin(
-                [val for val in self._values if not is_null(val)]
-            )
+        contains_nulls = any(is_null(value) for value in self._values)
+        matchable_ibis_values = []
+        for item in self._values:
+            if not is_null(item):
+                try:
+                    # we want values that *could* be cast to the dtype, but we don't want
+                    # to actually cast it, as that could be lossy (eg float -> int)
+                    item_inferred_type = ibis.literal(item).type()
+                    if (
+                        x.type() == item_inferred_type
+                        or x.type().is_numeric()
+                        and item_inferred_type.is_numeric()
+                    ):
+                        matchable_ibis_values.append(item)
+                except TypeError:
+                    pass
+
+        if self._match_nulls and contains_nulls:
+            return x.isnull() | x.isin(matchable_ibis_values)
         else:
-            return x.isin(self._values)
+            return x.isin(matchable_ibis_values)
 
 
 class BinopPartialRight(UnaryOp):
@@ -746,6 +762,94 @@ def div_op(
     )
 
 
+@short_circuit_nulls(ibis_dtypes.float)
+def pow_op(
+    x: ibis_types.Value,
+    y: ibis_types.Value,
+):
+    if x.type().is_integer() and y.type().is_integer():
+        return _int_pow_op(x, y)
+    else:
+        return _float_pow_op(x, y)
+
+
+def _int_pow_op(
+    x: ibis_types.Value,
+    y: ibis_types.Value,
+):
+    # Need to avoid any error cases - should produce NaN instead
+    # See: https://cloud.google.com/bigquery/docs/reference/standard-sql/mathematical_functions#pow
+    x_as_decimal = typing.cast(
+        ibis_types.NumericValue,
+        x.cast(ibis_dtypes.Decimal(precision=38, scale=9, nullable=True)),
+    )
+    y_val = typing.cast(ibis_types.NumericValue, y)
+
+    # BQ POW() function outputs FLOAT64, which can lose precision.
+    # Therefore, we do math in NUMERIC and cast back down after.
+    # Also, explicit bounds checks, pandas will silently overflow.
+    pow_result = x_as_decimal**y_val
+    overflow_cond = (pow_result > _ibis_num((2**63) - 1)) | (
+        pow_result < _ibis_num(-(2**63))
+    )
+
+    return (
+        ibis.case()
+        .when((overflow_cond), ibis.null())
+        .else_(pow_result.cast(ibis_dtypes.int64))
+        .end()
+    )
+
+
+def _float_pow_op(
+    x: ibis_types.Value,
+    y: ibis_types.Value,
+):
+    # Most conditions here seek to prevent calling BQ POW with inputs that would generate errors.
+    # See: https://cloud.google.com/bigquery/docs/reference/standard-sql/mathematical_functions#pow
+    x_val = typing.cast(ibis_types.NumericValue, x)
+    y_val = typing.cast(ibis_types.NumericValue, y)
+
+    overflow_cond = (x_val != _ZERO) & ((y_val * x_val.abs().ln()) > _FLOAT64_EXP_BOUND)
+
+    # Float64 lose integer precision beyond 2**53, beyond this insufficient precision to get parity
+    exp_too_big = y_val.abs() > _ibis_num(2**53)
+    # Treat very large exponents as +=INF
+    norm_exp = exp_too_big.ifelse(_INF * y_val.sign(), y_val)
+
+    pow_result = x_val**norm_exp
+
+    # This cast is dangerous, need to only excuted where y_val has been bounds-checked
+    # Ibis needs try_cast binding to bq safe_cast
+    exponent_is_whole = y_val.cast(ibis_dtypes.int64) == y_val
+    odd_exponent = (x_val < _ZERO) & (
+        y_val.cast(ibis_dtypes.int64) % _ibis_num(2) == _ibis_num(1)
+    )
+    infinite_base = x_val.abs() == _INF
+
+    return (
+        ibis.case()
+        # Might be able to do something more clever with x_val==0 case
+        .when(y_val == _ZERO, _ibis_num(1))
+        .when(
+            x_val == _ibis_num(1), _ibis_num(1)
+        )  # Need to ignore exponent, even if it is NA
+        .when(
+            (x_val == _ZERO) & (y_val < _ZERO), _INF
+        )  # This case would error POW function in BQ
+        .when(infinite_base, pow_result)
+        .when(
+            exp_too_big, pow_result
+        )  # Bigquery can actually handle the +-inf cases gracefully
+        .when((x_val < _ZERO) & (~exponent_is_whole), _NAN)
+        .when(
+            overflow_cond, _INF * odd_exponent.ifelse(_ibis_num(-1), _ibis_num(1))
+        )  # finite overflows would cause bq to error
+        .else_(pow_result)
+        .end()
+    )
+
+
 @short_circuit_nulls(ibis_dtypes.bool)
 def lt_op(
     x: ibis_types.Value,
@@ -878,6 +982,15 @@ def partial_left(op: BinaryOp, scalar: typing.Any) -> UnaryOp:
 
 def partial_right(op: BinaryOp, scalar: typing.Any) -> UnaryOp:
     return BinopPartialRight(op, scalar)
+
+
+NUMPY_TO_BINOP: typing.Final = {
+    np.add: add_op,
+    np.subtract: sub_op,
+    np.multiply: mul_op,
+    np.divide: div_op,
+    np.power: pow_op,
+}
 
 
 # Ternary ops

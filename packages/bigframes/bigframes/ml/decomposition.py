@@ -61,7 +61,7 @@ class PCA(
         (X,) = utils.convert_to_dataframe(X)
 
         self._bqml_model = core.create_bqml_model(
-            train_X=X,
+            X_train=X,
             transforms=transforms,
             options={
                 "model_type": "PCA",

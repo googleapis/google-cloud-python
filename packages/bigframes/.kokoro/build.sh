@@ -15,8 +15,14 @@
 
 set -eo pipefail
 
+if [[ -z "${KOKORO_GOB_COMMIT}" ]]; then
+    PROJECT_SCM="github"
+else
+    PROJECT_SCM="git"
+fi
+
 if [[ -z "${PROJECT_ROOT:-}" ]]; then
-    PROJECT_ROOT="${KOKORO_ARTIFACTS_DIR}/git/bigframes"
+    PROJECT_ROOT="${KOKORO_ARTIFACTS_DIR}/${PROJECT_SCM}/bigframes"
 fi
 
 cd "${PROJECT_ROOT}"

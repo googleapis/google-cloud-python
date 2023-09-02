@@ -34,8 +34,8 @@ def _encode_value(v: Union[str, int, float, Iterable[str]]) -> str:
         raise ValueError(f"Unexpected value type. {constants.FEEDBACK_LINK}")
 
 
-def _build_param_Iterable(**kwargs: Union[str, int, float, Iterable[str]]) -> str:
-    """Encode a dict of values into a formatted Iterable of KVPs for SQL"""
+def _build_parameters(**kwargs: Union[str, int, float, Iterable[str]]) -> str:
+    """Encode a dict of values into a formatted Iterable of key-value pairs for SQL"""
     indent_str = "  "
     param_strs = [f"{k}={_encode_value(v)}" for k, v in kwargs.items()]
     return "\n" + indent_str + f",\n{indent_str}".join(param_strs)
@@ -43,10 +43,10 @@ def _build_param_Iterable(**kwargs: Union[str, int, float, Iterable[str]]) -> st
 
 def options(**kwargs: Union[str, int, float, Iterable[str]]) -> str:
     """Encode the OPTIONS clause for BQML"""
-    return f"OPTIONS({_build_param_Iterable(**kwargs)})"
+    return f"OPTIONS({_build_parameters(**kwargs)})"
 
 
-def _build_struct_param_Iterable(**kwargs: Union[int, float]) -> str:
+def _build_structs(**kwargs: Union[int, float]) -> str:
     """Encode a dict of values into a formatted STRUCT items for SQL"""
     indent_str = "  "
     param_strs = [f"{v} AS {k}" for k, v in kwargs.items()]
@@ -55,10 +55,10 @@ def _build_struct_param_Iterable(**kwargs: Union[int, float]) -> str:
 
 def struct_options(**kwargs: Union[int, float]) -> str:
     """Encode a BQ STRUCT as options."""
-    return f"STRUCT({_build_struct_param_Iterable(**kwargs)})"
+    return f"STRUCT({_build_structs(**kwargs)})"
 
 
-def _build_expr_Iterable(*expr_sqls: str) -> str:
+def _build_expressions(*expr_sqls: str) -> str:
     """Encode a Iterable of SQL expressions into a formatted Iterable for SQL"""
     indent_str = "  "
     return "\n" + indent_str + f",\n{indent_str}".join(expr_sqls)
@@ -66,7 +66,7 @@ def _build_expr_Iterable(*expr_sqls: str) -> str:
 
 def transform(*expr_sqls: str) -> str:
     """Encode the TRANSFORM clause for BQML"""
-    return f"TRANSFORM({_build_expr_Iterable(*expr_sqls)})"
+    return f"TRANSFORM({_build_expressions(*expr_sqls)})"
 
 
 def connection(conn_name: str) -> str:
@@ -137,7 +137,7 @@ def alter_model(
     return "\n".join(parts)
 
 
-def ml_evaluate(model_name: str, source_sql: Union[str, None] = None) -> str:
+def ml_evaluate(model_name: str, source_sql: Optional[str] = None) -> str:
     """Encode ML.EVALUATE for BQML"""
     if source_sql is None:
         return f"""SELECT * FROM ML.EVALUATE(MODEL `{model_name}`)"""

@@ -1021,20 +1021,6 @@ class ArrayValue:
         if not step:
             step = 1
 
-        # Special cases for head() and tail(), where we don't need to project
-        # offsets. LIMIT clause is much more efficient in BigQuery than a
-        # filter on row_number().
-        if (
-            (start is None or start == 0)
-            and step == 1
-            and stop is not None
-            and stop > 0
-        ):
-            return self.apply_limit(stop)
-
-        if start is not None and start < 0 and step == 1 and stop is None:
-            return self.reversed().apply_limit(abs(start)).reversed()
-
         expr_with_offsets = self.project_offsets()
 
         # start with True and reduce with start, stop, and step conditions

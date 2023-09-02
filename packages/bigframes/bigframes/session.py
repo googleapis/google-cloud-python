@@ -270,9 +270,22 @@ class Session(
     third_party_pandas_readers.ReaderIOMixin,
 ):
     """Establishes a BigQuery connection to capture a group of job activities related to
-    DataFrames."""
+    DataFrames.
 
-    def __init__(self, context: Optional[bigquery_options.BigQueryOptions] = None):
+    Args:
+        context (bigframes._config.bigquery_options.BigQueryOptions):
+            Configuration adjusting how to connect to BigQuery and related
+            APIs. Note that some options are ignored if ``clients_provider`` is
+            set.
+        clients_provider (bigframes.session.ClientsProvider):
+            An object providing client library objects.
+    """
+
+    def __init__(
+        self,
+        context: Optional[bigquery_options.BigQueryOptions] = None,
+        clients_provider: Optional[ClientsProvider] = None,
+    ):
         if context is None:
             context = bigquery_options.BigQueryOptions()
 
@@ -288,12 +301,15 @@ class Session(
 
         # Instantiate a clients provider to help with cloud clients that will be
         # used in the future operations in the session
-        self._clients_provider = ClientsProvider(
-            project=context.project,
-            location=self._location,
-            use_regional_endpoints=context.use_regional_endpoints,
-            credentials=context.credentials,
-        )
+        if clients_provider:
+            self._clients_provider = clients_provider
+        else:
+            self._clients_provider = ClientsProvider(
+                project=context.project,
+                location=self._location,
+                use_regional_endpoints=context.use_regional_endpoints,
+                credentials=context.credentials,
+            )
 
         self._create_and_bind_bq_session()
         self.ibis_client = typing.cast(
@@ -305,7 +321,7 @@ class Session(
             ),
         )
 
-        self._remote_udf_connection = context.remote_udf_connection
+        self._bq_connection = context.bq_connection
 
         # Now that we're starting the session, don't allow the options to be
         # changed.
@@ -381,10 +397,10 @@ class Session(
             try:
                 query_job = self.bqclient.query(abort_session_query)
                 query_job.result()  # blocks until finished
-            except google.api_core.exceptions.BadRequest as e:
+            except google.api_core.exceptions.BadRequest as exc:
                 # Ignore the exception when the BQ session itself has expired
                 # https://cloud.google.com/bigquery/docs/sessions-terminating#auto-terminate_a_session
-                if not e.message.startswith(
+                if not exc.message.startswith(
                     f"Session {self._session_id} has expired and is no longer available."
                 ):
                     raise

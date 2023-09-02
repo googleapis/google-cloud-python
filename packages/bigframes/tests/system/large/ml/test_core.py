@@ -20,7 +20,7 @@ import bigframes.ml.sql
 
 def test_bqml_e2e(session, dataset_id, penguins_df_default_index, new_penguins_df):
     df = penguins_df_default_index.dropna()
-    train_X = df[
+    X_train = df[
         [
             "species",
             "island",
@@ -30,10 +30,10 @@ def test_bqml_e2e(session, dataset_id, penguins_df_default_index, new_penguins_d
             "sex",
         ]
     ]
-    train_y = df[["body_mass_g"]]
+    y_train = df[["body_mass_g"]]
 
     model = bigframes.ml.core.create_bqml_model(
-        train_X, train_y, options={"model_type": "linear_reg"}
+        X_train, y_train, options={"model_type": "linear_reg"}
     )
 
     # no data - report evaluation from the automatic data split
@@ -85,22 +85,22 @@ def test_bqml_manual_preprocessing_e2e(
     session, dataset_id, penguins_df_default_index, new_penguins_df
 ):
     df = penguins_df_default_index.dropna()
-    train_X = df[
+    X_train = df[
         [
             "culmen_length_mm",
             "culmen_depth_mm",
             "flipper_length_mm",
         ]
     ]
-    train_y = df[["body_mass_g"]]
+    y_train = df[["body_mass_g"]]
     transforms = [
         bigframes.ml.sql.ml_standard_scaler(column, column)
-        for column in train_X.columns.tolist()
+        for column in X_train.columns.tolist()
     ]
-    transforms.extend(train_y.columns.tolist())
+    transforms.extend(y_train.columns.tolist())
     options = {"model_type": "linear_reg"}
     model = bigframes.ml.core.create_bqml_model(
-        train_X, train_y, transforms=transforms, options=options
+        X_train, y_train, transforms=transforms, options=options
     )
 
     # no data - report evaluation from the automatic data split

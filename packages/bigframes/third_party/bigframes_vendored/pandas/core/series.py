@@ -207,9 +207,15 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def to_frame(self) -> DataFrame:
+    def to_frame(self, name=None) -> DataFrame:
         """
         Convert Series to DataFrame.
+
+        The column in the new dataframe will be named name (the keyword parameter)
+        if the name parameter is provided and not None.
+
+        Args:
+            name (Hashable, default None)
 
         Returns:
             bigframes.dataframe.DataFrame: DataFrame representation of Series.
@@ -830,6 +836,23 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def dropna(self, *, axis=0, inplace: bool = False, how=None) -> Series:
+        """
+        Return a new Series with missing values removed.
+
+        Args:
+            axis (0 or 'index'):
+                Unused. Parameter needed for compatibility with DataFrame.
+            inplace (bool, default False):
+                Unsupported, do not set.
+            how (str, optional):
+                Not in use. Kept for compatibility.
+
+        Returns:
+            Series: Series with NA entries dropped from it.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def between(
         self,
         left,
@@ -1185,9 +1208,39 @@ class Series(NDFrame):  # type: ignore[misc]
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def rmod(self, other) -> Series:
-        """Get modulo of Series and other, element-wise (binary operator `rmod`).
+        """Return modulo of Series and other, element-wise (binary operator mod).
 
-        Equivalent to ``other % series``, but with support to substitute a fill_value for
+        Equivalent to ``series % other``, but with support to substitute a fill_value for
+        missing data in either one of the inputs.
+
+        Args:
+            other (Series, or scalar value):
+
+        Returns:
+            bigframes.series.Series: The result of the operation.
+
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def pow(self, other) -> Series:
+        """Return Exponential power of series and other, element-wise (binary operator `pow`).
+
+        Equivalent to ``series ** other``, but with support to substitute a fill_value for
+        missing data in either one of the inputs.
+
+        Args:
+            other (Series, or scalar value):
+
+        Returns:
+            bigframes.series.Series: The result of the operation.
+
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def rpow(self, other) -> Series:
+        """Return Exponential power of series and other, element-wise (binary operator `rpow`).
+
+        Equivalent to ``other ** series``, but with support to substitute a fill_value for
         missing data in either one of the inputs.
 
         Args:
@@ -1638,5 +1691,48 @@ class Series(NDFrame):  # type: ignore[misc]
 
         Returns:
             bool
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def map(
+        self,
+        arg,
+        na_action=None,
+        *,
+        verify_integrity=False,
+    ) -> Series:
+        """
+        Map values of Series according to an input mapping or function.
+
+        Used for substituting each value in a Series with another value,
+        that may be derived from a remote function, ``dict``, or a :class:`Series`.
+
+        If arg is a remote function, the overhead for remote functions
+        applies. If mapping with a dict, fully deferred computation is possible.
+        If mapping with a Series, fully deferred computation is only possible if
+        verify_integrity=False.
+
+        .. note::
+            Bigframes does not yet support ``dict`` subclasses that define
+            ``__missing__`` (i.e. provide a method for default values). These
+            are treated the same as ``dict``.
+
+        Args:
+            arg (function, Mapping, Series):
+                remote function, collections.abc.Mapping subclass or Series
+                Mapping correspondence.
+            na_action: (str, default None)
+                Only None is currently supported, indicating that arg may
+                map <NA> values to scalars. <NA> values won't be ignored.
+                Passing 'ignore' will raise NotImplementedException.
+            verify_integrity: (bool, default False)
+                Only applies when arg is a Series. If True, throw if the Series
+                index contains duplicate entries (this matches pandas behavior).
+                If False, skip the expensive computation, and any duplicate
+                index entries will produce duplicate rows in the result for each
+                index entry.
+
+        Returns:
+            Series: Same index as caller.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

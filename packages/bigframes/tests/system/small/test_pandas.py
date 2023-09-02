@@ -16,6 +16,7 @@ import pandas as pd
 import pytest
 
 import bigframes.pandas as bpd
+from tests.system.utils import assert_pandas_df_equal_ignore_ordering
 
 
 def test_concat_dataframe(scalars_dfs):
@@ -105,3 +106,106 @@ def test_concat_axis_1(scalars_dfs, how):
     pd_result = pd.concat([pd_part1, pd_part2, pd_part3], join=how, axis=1)
 
     pd.testing.assert_frame_equal(bf_result.to_pandas(), pd_result)
+
+
+@pytest.mark.parametrize(
+    ("merge_how",),
+    [
+        ("inner",),
+        ("outer",),
+        ("left",),
+        ("right",),
+    ],
+)
+def test_merge(scalars_dfs, merge_how):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    on = "rowindex_2"
+    left_columns = ["int64_col", "float64_col", "rowindex_2"]
+    right_columns = ["int64_col", "bool_col", "string_col", "rowindex_2"]
+
+    left = scalars_df[left_columns]
+    # Offset the rows somewhat so that outer join can have an effect.
+    right = scalars_df[right_columns].assign(rowindex_2=scalars_df["rowindex_2"] + 2)
+
+    df = bpd.merge(left, right, merge_how, on, sort=True)
+    bf_result = df.to_pandas()
+
+    pd_result = pd.merge(
+        scalars_pandas_df[left_columns],
+        scalars_pandas_df[right_columns].assign(
+            rowindex_2=scalars_pandas_df["rowindex_2"] + 2
+        ),
+        merge_how,
+        on,
+        sort=True,
+    )
+
+    assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+
+
+@pytest.mark.parametrize(
+    ("merge_how",),
+    [
+        ("inner",),
+        ("outer",),
+        ("left",),
+        ("right",),
+    ],
+)
+def test_merge_left_on_right_on(scalars_dfs, merge_how):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    left_columns = ["int64_col", "float64_col", "int64_too"]
+    right_columns = ["int64_col", "bool_col", "string_col", "rowindex_2"]
+
+    left = scalars_df[left_columns]
+    right = scalars_df[right_columns]
+
+    df = bpd.merge(
+        left, right, merge_how, left_on="int64_too", right_on="rowindex_2", sort=True
+    )
+    bf_result = df.to_pandas()
+
+    pd_result = pd.merge(
+        scalars_pandas_df[left_columns],
+        scalars_pandas_df[right_columns],
+        merge_how,
+        left_on="int64_too",
+        right_on="rowindex_2",
+        sort=True,
+    )
+
+    assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+
+
+@pytest.mark.parametrize(
+    ("merge_how",),
+    [
+        ("inner",),
+        ("outer",),
+        ("left",),
+        ("right",),
+    ],
+)
+def test_merge_series(scalars_dfs, merge_how):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    left_column = "int64_too"
+    right_columns = ["int64_col", "bool_col", "string_col", "rowindex_2"]
+
+    left = scalars_df[left_column]
+    right = scalars_df[right_columns]
+
+    df = bpd.merge(
+        left, right, merge_how, left_on="int64_too", right_on="rowindex_2", sort=True
+    )
+    bf_result = df.to_pandas()
+
+    pd_result = pd.merge(
+        scalars_pandas_df[left_column],
+        scalars_pandas_df[right_columns],
+        merge_how,
+        left_on="int64_too",
+        right_on="rowindex_2",
+        sort=True,
+    )
+
+    assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)

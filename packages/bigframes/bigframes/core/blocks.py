@@ -62,6 +62,10 @@ _HEAD = "head"
 _UNIFORM = "uniform"
 _SAMPLING_METHODS = (_HEAD, _UNIFORM)
 
+# Monotonic Cache Names
+_MONOTONIC_INCREASING = "monotonic_increasing"
+_MONOTONIC_DECREASING = "monotonic_decreasing"
+
 
 class BlockHolder(typing.Protocol):
     """Interface for mutable objects with state represented by a block value object."""
@@ -118,6 +122,8 @@ class Block:
             col_id: {} for col_id in self.value_columns
         }
         # TODO(kemppeterson) Add a cache for corr to parallel the single-column stats.
+
+        self._stats_cache[" ".join(self.index_columns)] = {}
 
     @property
     def index(self) -> indexes.IndexValue:
@@ -1407,6 +1413,71 @@ class Block:
             column_labels=self.column_labels,
             index_labels=self.index.names,
         )
+
+    def is_monotonic_increasing(
+        self, column_id: typing.Union[str, Sequence[str]]
+    ) -> bool:
+        return self._is_monotonic(column_id, increasing=True)
+
+    def is_monotonic_decreasing(
+        self, column_id: typing.Union[str, Sequence[str]]
+    ) -> bool:
+        return self._is_monotonic(column_id, increasing=False)
+
+    def _is_monotonic(
+        self, column_ids: typing.Union[str, Sequence[str]], increasing: bool
+    ) -> bool:
+        if isinstance(column_ids, str):
+            column_ids = (column_ids,)
+
+        op_name = _MONOTONIC_INCREASING if increasing else _MONOTONIC_DECREASING
+
+        column_name = " ".join(column_ids)
+        if op_name in self._stats_cache[column_name]:
+            return self._stats_cache[column_name][op_name]
+
+        period = 1
+        window = bigframes.core.WindowSpec(
+            preceding=period,
+            following=None,
+        )
+
+        # any NaN value means not monotonic
+        block, last_notna_id = self.apply_unary_op(column_ids[0], ops.notnull_op)
+        for column_id in column_ids[1:]:
+            block, notna_id = block.apply_unary_op(column_id, ops.notnull_op)
+            block, last_notna_id = block.apply_binary_op(
+                last_notna_id, notna_id, ops.and_op
+            )
+
+        # loop over all columns to check monotonicity
+        last_result_id = None
+        for column_id in column_ids[::-1]:
+            block, lag_result_id = block.apply_window_op(
+                column_id, agg_ops.ShiftOp(period), window
+            )
+            block, strict_monotonic_id = block.apply_binary_op(
+                column_id, lag_result_id, ops.gt_op if increasing else ops.lt_op
+            )
+            block, equal_id = block.apply_binary_op(column_id, lag_result_id, ops.eq_op)
+            if last_result_id is None:
+                block, last_result_id = block.apply_binary_op(
+                    equal_id, strict_monotonic_id, ops.or_op
+                )
+                continue
+            block, equal_monotonic_id = block.apply_binary_op(
+                equal_id, last_result_id, ops.and_op
+            )
+            block, last_result_id = block.apply_binary_op(
+                equal_monotonic_id, strict_monotonic_id, ops.or_op
+            )
+
+        block, monotonic_result_id = block.apply_binary_op(
+            last_result_id, last_notna_id, ops.and_op  # type: ignore
+        )
+        result = block.get_stat(monotonic_result_id, agg_ops.all_op)
+        self._stats_cache[column_name].update({op_name: result})
+        return result
 
 
 def block_from_local(data, session=None, use_index=True) -> Block:

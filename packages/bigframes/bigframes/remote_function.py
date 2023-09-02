@@ -26,7 +26,6 @@ import subprocess
 import sys
 import tempfile
 import textwrap
-import time
 from typing import List, NamedTuple, Optional, Sequence, TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -49,6 +48,7 @@ from ibis.expr.datatypes.core import dtype as python_type_to_bigquery_type
 import ibis.expr.operations as ops
 import ibis.expr.rules as rlz
 
+from bigframes import clients
 import bigframes.constants as constants
 
 # TODO(shobs): Change the min log level to INFO after the development stabilizes
@@ -167,35 +167,22 @@ class RemoteFunctionClient:
         self._bq_location = bq_location
         self._bq_dataset = bq_dataset
         self._bq_client = bq_client
-        self._bq_connection_client = bq_connection_client
         self._bq_connection_id = bq_connection_id
-        self._cloud_resource_manager_client = cloud_resource_manager_client
+        self._bq_connection_manager = clients.BqConnectionManager(
+            bq_connection_client, cloud_resource_manager_client
+        )
 
     def create_bq_remote_function(
         self, input_args, input_types, output_type, endpoint, bq_function_name
     ):
         """Create a BigQuery remote function given the artifacts of a user defined
         function and the http endpoint of a corresponding cloud function."""
-        # TODO(shobs): The below command to enable BigQuery Connection API needs
-        # to be automated. Disabling for now since most target users would not
-        # have the privilege to enable API in a project.
-        # log("Making sure BigQuery Connection API is enabled")
-        # if os.system("gcloud services enable bigqueryconnection.googleapis.com"):
-        #    raise ValueError("Failed to enable BigQuery Connection API")
-
-        # If the intended connection does not exist then create it
-        service_account_id = self.get_service_account_if_connection_exists()
-        if service_account_id:
-            logger.info(f"Connector {self._bq_connection_id} already exists")
-        else:
-            connection_name, service_account_id = self.create_bq_connection()
-            logger.info(
-                f"Created BQ connection {connection_name} with service account id: {service_account_id}"
-            )
-
-        # Ensure IAM role on the BQ connection
-        # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#grant_permission_on_function
-        self._ensure_iam_binding(service_account_id, "run.invoker")
+        self._bq_connection_manager.create_bq_connection(
+            self._gcp_project_id,
+            self._bq_location,
+            self._bq_connection_id,
+            "run.invoker",
+        )
 
         # Create BQ function
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#create_a_remote_function_2
@@ -236,86 +223,6 @@ class RemoteFunctionClient:
         except google.api_core.exceptions.NotFound:
             pass
         return None
-
-    # Introduce retries to accommodate transient errors like etag mismatch,
-    # which can be caused by concurrent operation on the same resource, and
-    # manifests with message like:
-    # google.api_core.exceptions.Aborted: 409 There were concurrent policy
-    # changes. Please retry the whole read-modify-write with exponential
-    # backoff. The request's ETag '\007\006\003,\264\304\337\272' did not match
-    # the current policy's ETag '\007\006\003,\3750&\363'.
-    @google.api_core.retry.Retry(
-        predicate=google.api_core.retry.if_exception_type(
-            google.api_core.exceptions.Aborted
-        ),
-        initial=10,
-        maximum=20,
-        multiplier=2,
-        timeout=60,
-    )
-    def _ensure_iam_binding(self, service_account: str, role: str):
-        """Ensure necessary IAM role is configured on a service account."""
-        project = f"projects/{self._gcp_project_id}"
-        service_account = f"serviceAccount:{service_account}"
-        role = f"roles/{role}"
-        request = google.iam.v1.iam_policy_pb2.GetIamPolicyRequest(resource=project)
-        policy = self._cloud_resource_manager_client.get_iam_policy(request=request)
-
-        # Check if the binding already exists, and if does, do nothing more
-        for binding in policy.bindings:
-            if binding.role == role:
-                if service_account in binding.members:
-                    return
-
-        # Create a new binding
-        new_binding = google.iam.v1.policy_pb2.Binding(
-            role=role, members=[service_account]
-        )
-        policy.bindings.append(new_binding)
-        request = google.iam.v1.iam_policy_pb2.SetIamPolicyRequest(
-            resource=project, policy=policy
-        )
-        self._cloud_resource_manager_client.set_iam_policy(request=request)
-
-        # We would wait for the IAM policy change to take effect
-        # https://cloud.google.com/iam/docs/access-change-propagation
-        logger.info(
-            f"Waiting {self._iam_wait_seconds} seconds for IAM to take effect.."
-        )
-        time.sleep(self._iam_wait_seconds)
-
-    def create_bq_connection(self):
-        """Create the BigQuery Connection and returns corresponding service account id."""
-        client = self._bq_connection_client
-        connection = bigquery_connection_v1.Connection(
-            cloud_resource=bigquery_connection_v1.CloudResourceProperties()
-        )
-        request = bigquery_connection_v1.CreateConnectionRequest(
-            parent=client.common_location_path(self._gcp_project_id, self._bq_location),
-            connection_id=self._bq_connection_id,
-            connection=connection,
-        )
-        connection = client.create_connection(request)
-        return connection.name, connection.cloud_resource.service_account_id
-
-    def get_service_account_if_connection_exists(self) -> Optional[str]:
-        """Check if the BigQuery Connection exists."""
-        client = self._bq_connection_client
-        request = bigquery_connection_v1.GetConnectionRequest(
-            name=client.connection_path(
-                self._gcp_project_id, self._bq_location, self._bq_connection_id
-            )
-        )
-
-        service_account = None
-        try:
-            service_account = client.get_connection(
-                request=request
-            ).cloud_resource.service_account_id
-        except google.api_core.exceptions.NotFound:
-            pass
-
-        return service_account
 
     def generate_udf_code(self, def_, dir):
         """Generate serialized bytecode using cloudpickle given a udf."""
@@ -825,7 +732,7 @@ def remote_function(
     # A connection is required for BQ remote function
     # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#create_a_remote_function
     if not bigquery_connection and session:
-        bigquery_connection = session._remote_udf_connection  # type: ignore
+        bigquery_connection = session._bq_connection  # type: ignore
     if not bigquery_connection:
         raise ValueError(
             "BigQuery connection must be provided, either directly or via session. "

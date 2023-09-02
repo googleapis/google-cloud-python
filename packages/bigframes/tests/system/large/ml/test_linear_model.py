@@ -21,7 +21,7 @@ def test_linear_regression_configure_fit_score(penguins_df_default_index, datase
     model = bigframes.ml.linear_model.LinearRegression(fit_intercept=False)
 
     df = penguins_df_default_index.dropna()
-    train_X = df[
+    X_train = df[
         [
             "species",
             "island",
@@ -31,11 +31,11 @@ def test_linear_regression_configure_fit_score(penguins_df_default_index, datase
             "sex",
         ]
     ]
-    train_y = df[["body_mass_g"]]
-    model.fit(train_X, train_y)
+    y_train = df[["body_mass_g"]]
+    model.fit(X_train, y_train)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).to_pandas()
+    result = model.score(X_train, y_train).to_pandas()
     expected = pd.DataFrame(
         {
             "mean_absolute_error": [225.735767],
@@ -66,7 +66,7 @@ def test_linear_regression_manual_split_configure_fit_score(
     model = bigframes.ml.linear_model.LinearRegression(fit_intercept=True)
 
     df = penguins_df_default_index.dropna()
-    train_X = df[
+    X_train = df[
         [
             "species",
             "island",
@@ -76,11 +76,11 @@ def test_linear_regression_manual_split_configure_fit_score(
             "sex",
         ]
     ]
-    train_y = df[["body_mass_g"]]
-    model.fit(train_X, train_y)
+    y_train = df[["body_mass_g"]]
+    model.fit(X_train, y_train)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).to_pandas()
+    result = model.score(X_train, y_train).to_pandas()
     expected = pd.DataFrame(
         {
             "mean_absolute_error": [225.735767],
@@ -108,7 +108,7 @@ def test_logistic_regression_auto_class_weights_configure_fit_score(
 ):
     model = bigframes.ml.linear_model.LogisticRegression()
     df = penguins_df_default_index.dropna()
-    train_X = df[
+    X_train = df[
         [
             "species",
             "island",
@@ -117,11 +117,11 @@ def test_logistic_regression_auto_class_weights_configure_fit_score(
             "flipper_length_mm",
         ]
     ]
-    train_y = df[["sex"]]
-    model.fit(train_X, train_y)
+    y_train = df[["sex"]]
+    model.fit(X_train, y_train)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).to_pandas()
+    result = model.score(X_train, y_train).to_pandas()
     expected = pd.DataFrame(
         {
             "precision": [0.58085],
@@ -155,7 +155,7 @@ def test_logistic_regression_manual_split_configure_fit_score(
     model = bigframes.ml.linear_model.LogisticRegression(fit_intercept=True)
 
     df = penguins_df_default_index.dropna()
-    train_X = df[
+    X_train = df[
         [
             "species",
             "island",
@@ -165,11 +165,11 @@ def test_logistic_regression_manual_split_configure_fit_score(
             "body_mass_g",
         ]
     ]
-    train_y = df[["sex"]]
-    model.fit(train_X, train_y)
+    y_train = df[["sex"]]
+    model.fit(X_train, y_train)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).to_pandas()
+    result = model.score(X_train, y_train).to_pandas()
     expected = pd.DataFrame(
         {
             "precision": [0.616753],

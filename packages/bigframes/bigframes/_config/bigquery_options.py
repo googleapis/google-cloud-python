@@ -35,13 +35,13 @@ class BigQueryOptions:
         credentials: Optional[google.auth.credentials.Credentials] = None,
         project: Optional[str] = None,
         location: Optional[str] = None,
-        remote_udf_connection: Optional[str] = None,
+        bq_connection: Optional[str] = None,
         use_regional_endpoints: bool = False,
     ):
         self._credentials = credentials
         self._project = project
         self._location = location
-        self._remote_udf_connection = remote_udf_connection
+        self._bq_connection = bq_connection
         self._use_regional_endpoints = use_regional_endpoints
         self._session_started = False
 
@@ -82,23 +82,21 @@ class BigQueryOptions:
         self._project = value
 
     @property
-    def remote_udf_connection(self) -> Optional[str]:
-        """Name of the BigQuery connection to use for remote functions.
+    def bq_connection(self) -> Optional[str]:
+        """Name of the BigQuery connection to use.
 
         You should either have the connection already created in the
         <code>location</code> you have chosen, or you should have the Project IAM
         Admin role to enable the service to create the connection for you if you
         need it.
         """
-        return self._remote_udf_connection
+        return self._bq_connection
 
-    @remote_udf_connection.setter
-    def remote_udf_connection(self, value: Optional[str]):
-        if self._session_started and self._remote_udf_connection != value:
-            raise ValueError(
-                SESSION_STARTED_MESSAGE.format(attribute="remote_udf_connection")
-            )
-        self._remote_udf_connection = value
+    @bq_connection.setter
+    def bq_connection(self, value: Optional[str]):
+        if self._session_started and self._bq_connection != value:
+            raise ValueError(SESSION_STARTED_MESSAGE.format(attribute="bq_connection"))
+        self._bq_connection = value
 
     @property
     def use_regional_endpoints(self) -> bool:

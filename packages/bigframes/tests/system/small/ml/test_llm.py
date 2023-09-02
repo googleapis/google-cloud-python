@@ -17,10 +17,25 @@ from unittest import TestCase
 import numpy as np
 import pytest
 
+from bigframes.ml import llm
+
 
 def test_create_text_generator_model(palm2_text_generator_model):
     # Model creation doesn't return error
     assert palm2_text_generator_model is not None
+    assert palm2_text_generator_model._bqml_model is not None
+
+
+def test_create_text_generator_model_defaults(bq_connection):
+    import bigframes.pandas as bpd
+
+    bpd.reset_session()
+    bpd.options.bigquery.bq_connection = bq_connection
+    bpd.options.bigquery.location = "us"
+
+    model = llm.PaLM2TextGenerator()
+    assert model is not None
+    assert model._bqml_model is not None
 
 
 # Marked as flaky only because BQML LLM is in preview, the service only has limited capacity, not stable enough.
@@ -74,6 +89,19 @@ def test_text_generator_predict_with_params_success(
 def test_create_embedding_generator_model(palm2_embedding_generator_model):
     # Model creation doesn't return error
     assert palm2_embedding_generator_model is not None
+    assert palm2_embedding_generator_model._bqml_model is not None
+
+
+def test_create_text_embedding_generator_model_defaults(bq_connection):
+    import bigframes.pandas as bpd
+
+    bpd.reset_session()
+    bpd.options.bigquery.bq_connection = bq_connection
+    bpd.options.bigquery.location = "us"
+
+    model = llm.PaLM2TextEmbeddingGenerator()
+    assert model is not None
+    assert model._bqml_model is not None
 
 
 @pytest.mark.flaky(retries=2, delay=120)

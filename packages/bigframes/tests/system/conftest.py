@@ -849,7 +849,7 @@ def floats_pd():
         {
             "float64_col": [
                 float("-inf"),
-                float("-inf"),
+                float("inf"),
                 float("nan"),
                 float(-234239487.4),
                 float(-1.0),
@@ -863,11 +863,13 @@ def floats_pd():
                 float(math.e),
                 float(math.pi),
                 float(234239487.4),
+                float(1.23124 * (2**70)),
                 pd.NA,
             ]
         },
         dtype=pd.Float64Dtype(),
     )
+    # Index helps debug failed cases
     df.index = df.float64_col
     # Upload fails if index name same as column name
     df.index.name = None
@@ -875,5 +877,19 @@ def floats_pd():
 
 
 @pytest.fixture()
+def floats_product_pd(floats_pd):
+    df = pd.merge(floats_pd, floats_pd, how="cross")
+    # Index helps debug failed cases
+    df = df.set_index([df.float64_col_x, df.float64_col_y])
+    df.index.names = ["left", "right"]
+    return df
+
+
+@pytest.fixture()
 def floats_bf(session, floats_pd):
     return session.read_pandas(floats_pd.to_frame()).float64_col
+
+
+@pytest.fixture()
+def floats_product_bf(session, floats_product_pd):
+    return session.read_pandas(floats_product_pd)

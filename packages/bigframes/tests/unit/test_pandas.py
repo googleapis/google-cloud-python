@@ -17,11 +17,16 @@ import re
 import sys
 import unittest.mock as mock
 
+import google.api_core.exceptions
+import google.cloud.bigquery
 import pandas as pd
 import pytest
 
+import bigframes.core.global_session
 import bigframes.pandas as bpd
 import bigframes.session
+
+from . import resources
 
 leading_whitespace = re.compile(r"^\s+", flags=re.MULTILINE)
 
@@ -109,3 +114,37 @@ def test_pandas_attribute():
     assert bpd.Int64Dtype is pd.Int64Dtype
     assert bpd.StringDtype is pd.StringDtype
     assert bpd.ArrowDtype is pd.ArrowDtype
+
+
+def test_reset_session_after_bq_session_ended(monkeypatch):
+    bqclient = mock.create_autospec(google.cloud.bigquery.Client, instance=True)
+    bqclient.project = "test-project"
+    session = resources.create_bigquery_session(
+        bqclient=bqclient, session_id="JUST_A_TEST"
+    )
+
+    # Simulate that the session has already expired.
+    # Note: this needs to be done after the Session is constructed, as the
+    # initializer sends a query to start the BigQuery Session.
+    query_job = mock.create_autospec(google.cloud.bigquery.QueryJob, instance=True)
+    query_job.result.side_effect = google.api_core.exceptions.BadRequest(
+        "Session JUST_A_TEST has expired and is no longer available."
+    )
+    bqclient.query.return_value = query_job
+
+    # Simulate that the session has already started.
+    monkeypatch.setattr(bigframes.core.global_session, "_global_session", session)
+    bpd.options.bigquery._session_started = True
+
+    # Confirm that as a result bigframes.pandas interface is unusable
+    with pytest.raises(
+        google.api_core.exceptions.BadRequest,
+        match="Session JUST_A_TEST has expired and is no longer available.",
+    ):
+        bpd.read_gbq("SELECT 1")
+
+    # Even though the query to stop the session raises an exception, we should
+    # still be able to reset it without raising an error to the user.
+    bpd.reset_session()
+    assert "CALL BQ.ABORT_SESSION('JUST_A_TEST')" in bqclient.query.call_args.args[0]
+    assert bigframes.core.global_session._global_session is None

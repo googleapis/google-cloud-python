@@ -13,39 +13,55 @@
 # limitations under the License.
 
 import ibis
-from ibis.expr.types import Table
+import pandas
 
-from bigframes import core
+import bigframes.core as core
 
-ORDERING = core.ExpressionOrdering(
-    [
-        core.OrderingColumnReference("int64_col"),
-        core.OrderingColumnReference("string_col"),
-    ],
-    total_ordering_columns=frozenset(["int64_col", "string_col"]),
-)
+from . import resources
 
 
-def test_constructor_from_ibis_table_adds_all_columns(
-    session, scalars_ibis_table: Table
-):
-    columns = tuple(scalars_ibis_table[key] for key in scalars_ibis_table.columns)
-    actual = core.ArrayValue(
-        session=session, table=scalars_ibis_table, columns=columns, ordering=ORDERING
+def test_arrayvalue_constructor_from_ibis_table_adds_all_columns():
+    session = resources.create_pandas_session(
+        {
+            "test_table": pandas.DataFrame(
+                {
+                    "col1": [1, 2, 3],
+                    "not_included": [True, False, True],
+                    "col2": ["a", "b", "c"],
+                    "col3": [0.1, 0.2, 0.3],
+                }
+            )
+        }
     )
-    assert actual._table is scalars_ibis_table
-    assert len(actual._columns) == len(scalars_ibis_table.columns)
+    ibis_table = session.ibis_client.table("test_table")
+    columns = (ibis_table["col1"], ibis_table["col2"], ibis_table["col3"])
+    ordering = core.ExpressionOrdering(
+        [core.OrderingColumnReference("col1")],
+        total_ordering_columns=frozenset(["col1"]),
+    )
+    actual = core.ArrayValue(
+        session=session, table=ibis_table, columns=columns, ordering=ordering
+    )
+    assert actual.table is ibis_table
+    assert len(actual.columns) == 3
 
 
-def test_to_ibis_expr_with_projection(session, scalars_ibis_table: Table):
-    columns = tuple(scalars_ibis_table[key] for key in scalars_ibis_table.columns)
-    expr = core.ArrayValue(
-        session=session, table=scalars_ibis_table, columns=columns, ordering=ORDERING
-    ).projection(
+def test_arrayvalue_to_ibis_expr_with_projection():
+    value = resources.create_arrayvalue(
+        pandas.DataFrame(
+            {
+                "col1": [1, 2, 3],
+                "col2": ["a", "b", "c"],
+                "col3": [0.1, 0.2, 0.3],
+            }
+        ),
+        total_ordering_columns=["col1"],
+    )
+    expr = value.projection(
         [
-            scalars_ibis_table["int64_col"],
+            (value.table["col1"] + ibis.literal(-1)).name("int64_col"),
             ibis.literal(123456789).name("literals"),
-            scalars_ibis_table["string_col"],
+            value.table["col2"].name("string_col"),
         ]
     )
     actual = expr.to_ibis_expr()

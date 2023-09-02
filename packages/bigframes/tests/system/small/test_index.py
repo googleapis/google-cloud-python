@@ -50,3 +50,17 @@ def test_index_getitem_int(scalars_df_index, scalars_pandas_df_index):
     bf_result = scalars_df_index.index[-2]
     pd_result = scalars_pandas_df_index.index[-2]
     assert bf_result == pd_result
+
+
+def test_is_monotonic_increasing(scalars_df_index, scalars_pandas_df_index):
+    assert (
+        scalars_df_index.index.is_monotonic_increasing
+        == scalars_pandas_df_index.index.is_monotonic_increasing
+    )
+
+
+def test_is_monotonic_decreasing(scalars_df_index, scalars_pandas_df_index):
+    assert (
+        scalars_df_index.index.is_monotonic_increasing
+        == scalars_pandas_df_index.index.is_monotonic_increasing
+    )

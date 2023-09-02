@@ -20,9 +20,13 @@ import pytest
 
 import bigframes
 
+from . import resources
+
 
 @pytest.mark.parametrize("missing_parts_table_id", [(""), ("table")])
-def test_read_gbq_missing_parts(session, missing_parts_table_id):
+def test_read_gbq_missing_parts(missing_parts_table_id):
+    session = resources.create_bigquery_session()
+
     with pytest.raises(ValueError):
         session.read_gbq(missing_parts_table_id)
 
@@ -31,7 +35,14 @@ def test_read_gbq_missing_parts(session, missing_parts_table_id):
     "not_found_table_id",
     [("unknown.dataset.table"), ("project.unknown.table"), ("project.dataset.unknown")],
 )
-def test_read_gdb_not_found_tables(session, not_found_table_id):
+def test_read_gdb_not_found_tables(not_found_table_id):
+    bqclient = mock.create_autospec(google.cloud.bigquery.Client, instance=True)
+    bqclient.project = "test-project"
+    bqclient.get_table.side_effect = google.api_core.exceptions.NotFound(
+        "table not found"
+    )
+    session = resources.create_bigquery_session(bqclient=bqclient)
+
     with pytest.raises(google.api_core.exceptions.NotFound):
         session.read_gbq(not_found_table_id)
 

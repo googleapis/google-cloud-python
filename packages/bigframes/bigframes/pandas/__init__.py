@@ -52,6 +52,7 @@ import bigframes.dataframe
 import bigframes.series
 import bigframes.session
 import third_party.bigframes_vendored.pandas.core.reshape.concat as vendored_pandas_concat
+import third_party.bigframes_vendored.pandas.core.reshape.merge as vendored_pandas_merge
 import third_party.bigframes_vendored.pandas.core.reshape.tile as vendored_pandas_tile
 
 
@@ -130,6 +131,37 @@ def cut(
 
 
 cut.__doc__ = vendored_pandas_tile.cut.__doc__
+
+
+def merge(
+    left: DataFrame,
+    right: DataFrame,
+    how: Literal[
+        "inner",
+        "left",
+        "outer",
+        "right",
+    ] = "inner",
+    on: Optional[str] = None,
+    *,
+    left_on: Optional[str] = None,
+    right_on: Optional[str] = None,
+    sort: bool = False,
+    suffixes: tuple[str, str] = ("_x", "_y"),
+) -> DataFrame:
+    return bigframes.core.joins.merge(
+        left,
+        right,
+        how=how,
+        on=on,
+        left_on=left_on,
+        right_on=right_on,
+        sort=sort,
+        suffixes=suffixes,
+    )
+
+
+merge.__doc__ = vendored_pandas_merge.merge.__doc__
 
 
 def _set_default_session_location_if_possible(query):
@@ -390,7 +422,6 @@ def read_gbq_function(function_name: str):
 
 read_gbq_function.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_function)
 
-
 # pandas dtype attributes
 NA = pandas.NA
 BooleanDtype = pandas.BooleanDtype
@@ -421,6 +452,7 @@ reset_session = global_session.reset_session
 __all___ = [
     # Functions
     "concat",
+    "merge",
     "read_csv",
     "read_gbq",
     "read_gbq_function",

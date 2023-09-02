@@ -14,10 +14,12 @@
 
 """Helpers to join ArrayValue objects."""
 
+from bigframes.core.joins.merge import merge
 from bigframes.core.joins.row_identity import join_by_row_identity
 from bigframes.core.joins.single_column import join_by_column
 
 __all__ = (
     "join_by_row_identity",
     "join_by_column",
+    "merge",
 )

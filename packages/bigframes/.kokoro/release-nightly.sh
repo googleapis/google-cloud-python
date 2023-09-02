@@ -34,8 +34,14 @@ while [ $# -gt 0 ] ; do
   shift 1;
 done
 
+if [[ -z "${KOKORO_GOB_COMMIT}" ]]; then
+    PROJECT_SCM="github"
+else
+    PROJECT_SCM="git"
+fi
+
 if [ -z "${PROJECT_ROOT:-}" ]; then
-    PROJECT_ROOT="${KOKORO_ARTIFACTS_DIR}/git/bigframes"
+    PROJECT_ROOT="${KOKORO_ARTIFACTS_DIR}/${PROJECT_SCM}/bigframes"
 fi
 
 # Move into the package, build the distribution and upload to shared bucket.
@@ -56,16 +62,6 @@ export PYTHONUNBUFFERED=1
 
 # Install dependencies, as the following steps depend on it
 python3.10 -m pip install -e .[all]
-
-# If NOX_SESSION is set, it only runs the specified session,
-# otherwise run all the sessions.
-if ! [ ${DRY_RUN} ]; then
-    if [ -n "${NOX_SESSION:-}" ]; then
-        python3.10 -m nox -s ${NOX_SESSION:-}
-    else
-        python3.10 -m nox
-    fi
-fi
 
 # Generate third party notices and include it in the licenses in setup.cfg
 # TODO(shobs): Don't include it in the package once vertex colab can pick it
@@ -138,15 +134,8 @@ if ! [ ${DRY_RUN} ]; then
       gsutil cp -v dist/* ${gcs_path}
       gsutil cp -v LICENSE ${gcs_path}
       gsutil cp -v ${THIRD_PARTY_NOTICES_FILE} ${gcs_path}
-      gsutil -m cp -v "notebooks/00 - Summary.ipynb" \
-                      "notebooks/01 - Getting Started.ipynb" \
-                      "notebooks/02 - DataFrame.ipynb" \
-                      "notebooks/03 - Using ML - ML fundamentals.ipynb" \
-                      "notebooks/04 - Using ML - SKLearn linear regression.ipynb" \
-                      "notebooks/05 - Using ML - Easy linear regression.ipynb" \
-                      "notebooks/06 - Using ML - Large Language Models.ipynb" \
-                      "notebooks/50 - Remote Function.ipynb" \
-                      ${gcs_path}notebooks/
+      gsutil -m cp -r -v "notebooks/" ${gcs_path}notebooks/
+
     done
 
     # publish API coverage information to BigQuery

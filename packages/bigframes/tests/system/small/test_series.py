@@ -186,6 +186,23 @@ def test_fillna(scalars_dfs):
     )
 
 
+@pytest.mark.parametrize(
+    ("ignore_index",),
+    (
+        (True,),
+        (False,),
+    ),
+)
+def test_series_dropna(scalars_dfs, ignore_index):
+    if pd.__version__.startswith("1."):
+        pytest.skip("ignore_index parameter not supported in pandas 1.x.")
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_name = "string_col"
+    bf_result = scalars_df[col_name].dropna(ignore_index=ignore_index).to_pandas()
+    pd_result = scalars_pandas_df[col_name].dropna(ignore_index=ignore_index)
+    pd.testing.assert_series_equal(pd_result, bf_result, check_index_type=False)
+
+
 def test_series_agg_single_string(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_result = scalars_df["int64_col"].agg("sum")
@@ -361,6 +378,24 @@ def test_series_int_int_operators_scalar(
 
     bf_result = maybe_reversed_op(scalars_df["int64_col"], other_scalar).to_pandas()
     pd_result = maybe_reversed_op(scalars_pandas_df["int64_col"], other_scalar)
+
+    assert_series_equal_ignoring_order(pd_result, bf_result)
+
+
+def test_series_pow_scalar(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = (scalars_df["int64_col"] ** 2).to_pandas()
+    pd_result = scalars_pandas_df["int64_col"] ** 2
+
+    assert_series_equal_ignoring_order(pd_result, bf_result)
+
+
+def test_series_pow_scalar_reverse(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = (0.8 ** scalars_df["int64_col"]).to_pandas()
+    pd_result = 0.8 ** scalars_pandas_df["int64_col"]
 
     assert_series_equal_ignoring_order(pd_result, bf_result)
 
@@ -2463,3 +2498,57 @@ def test_is_monotonic_decreasing(series_input):
     assert (
         scalars_df.is_monotonic_decreasing == scalars_pandas_df.is_monotonic_decreasing
     )
+
+
+def test_map_dict_input(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    local_map = dict()
+    # construct a local map, incomplete to cover <NA> behavior
+    for s in scalars_pandas_df.string_col[:-3]:
+        if isinstance(s, str):
+            local_map[s] = ord(s[0])
+
+    pd_result = scalars_pandas_df.string_col.map(local_map)
+    pd_result = pd_result.astype("Int64")  # pandas type differences
+    bf_result = scalars_df.string_col.map(local_map)
+
+    pd.testing.assert_series_equal(
+        bf_result.to_pandas(),
+        pd_result,
+    )
+
+
+def test_map_series_input(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    new_index = scalars_pandas_df.int64_too.drop_duplicates()
+    pd_map_series = scalars_pandas_df.string_col.iloc[0 : len(new_index)]
+    pd_map_series.index = new_index
+    bf_map_series = series.Series(
+        pd_map_series, session=scalars_df._get_block().expr._session
+    )
+
+    pd_result = scalars_pandas_df.int64_too.map(pd_map_series)
+    bf_result = scalars_df.int64_too.map(bf_map_series)
+
+    pd.testing.assert_series_equal(
+        bf_result.to_pandas(),
+        pd_result,
+    )
+
+
+def test_map_series_input_duplicates_error(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    new_index = scalars_pandas_df.int64_too
+    pd_map_series = scalars_pandas_df.string_col.iloc[0 : len(new_index)]
+    pd_map_series.index = new_index
+    bf_map_series = series.Series(
+        pd_map_series, session=scalars_df._get_block().expr._session
+    )
+
+    with pytest.raises(pd.errors.InvalidIndexError):
+        scalars_pandas_df.int64_too.map(pd_map_series)
+    with pytest.raises(pd.errors.InvalidIndexError):
+        scalars_df.int64_too.map(bf_map_series, verify_integrity=True)

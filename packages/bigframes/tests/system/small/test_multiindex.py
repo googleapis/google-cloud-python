@@ -634,12 +634,17 @@ def test_column_multi_index_stack(scalars_df_index, scalars_pandas_df_index):
     pd_df.columns = multi_columns
 
     bf_result = bf_df.stack().to_pandas()
+    # Shifting sort behavior in stack
     pd_result = pd_df.stack()
 
     # Pandas produces NaN, where bq dataframes produces pd.NA
-    pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+    # Column ordering seems to depend on pandas version
+    pandas.testing.assert_frame_equal(
+        bf_result.sort_index(axis=1), pd_result.sort_index(axis=1), check_dtype=False
+    )
 
 
+@pytest.mark.skip(reason="Pandas fails in newer versions.")
 def test_column_multi_index_w_na_stack(scalars_df_index, scalars_pandas_df_index):
     columns = ["int64_too", "int64_col", "rowindex_2"]
     level1 = pandas.Index(["b", pandas.NA, pandas.NA])
@@ -656,3 +661,64 @@ def test_column_multi_index_w_na_stack(scalars_df_index, scalars_pandas_df_index
 
     # Pandas produces NaN, where bq dataframes produces pd.NA
     pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
+
+
+@pytest.mark.parametrize(
+    ("index_names",),
+    [
+        (["rowindex_2", "int64_too"],),
+        (["int64_too", "rowindex_2"],),
+    ],
+)
+def test_is_monotonic_increasing(
+    scalars_df_index, scalars_pandas_df_index, index_names
+):
+    bf_result = scalars_df_index.set_index(index_names).index
+    pd_result = scalars_pandas_df_index.set_index(index_names).index
+
+    assert bf_result.is_monotonic_increasing == pd_result.is_monotonic_increasing
+
+
+@pytest.mark.parametrize(
+    ("indexes",),
+    [
+        ({"A": [1, 2, 3], "B": [1, 2, 3], "C": [1, 2, 3]},),
+        ({"A": [1, 2, 3], "B": [1, 2, 3], "C": [1, None, 3]},),
+        ({"A": [1, 2, 2], "B": [1, 2, 1], "C": [1, 2, 3]},),
+        ({"A": [1, 2, 2], "B": [1, 2, 3], "C": [1, 2, 1]},),
+        ({"A": [1, 2, 1], "B": [1, 2, 3], "C": [1, 2, 1]},),
+        ({"A": [3, 2, 1], "B": [3, 2, 1], "C": [2, 2, 1]},),
+    ],
+)
+def test_is_monotonic_increasing_extra(indexes):
+    bf_result = bpd.DataFrame(indexes)
+    bf_result = bf_result.set_index(["A", "B", "C"])
+    pd_result = pandas.DataFrame(indexes)
+    pd_result = pd_result.set_index(["A", "B", "C"])
+
+    assert (
+        bf_result.index.is_monotonic_increasing
+        == pd_result.index.is_monotonic_increasing
+    )
+
+
+@pytest.mark.parametrize(
+    ("indexes",),
+    [
+        ({"A": [3, 2, 1], "B": [3, 2, 1], "C": [3, 2, 1]},),
+        ({"A": [3, 2, 1], "B": [3, 2, 1], "C": [3, None, 1]},),
+        ({"A": [2, 2, 1], "B": [1, 2, 1], "C": [3, 2, 1]},),
+        ({"A": [2, 2, 1], "B": [3, 2, 1], "C": [1, 2, 1]},),
+        ({"A": [1, 2, 1], "B": [3, 2, 1], "C": [1, 2, 1]},),
+    ],
+)
+def test_is_monotonic_decreasing_extra(indexes):
+    bf_result = bpd.DataFrame(indexes)
+    bf_result = bf_result.set_index(["A", "B", "C"])
+    pd_result = pandas.DataFrame(indexes)
+    pd_result = pd_result.set_index(["A", "B", "C"])
+
+    assert (
+        bf_result.index.is_monotonic_decreasing
+        == pd_result.index.is_monotonic_decreasing
+    )

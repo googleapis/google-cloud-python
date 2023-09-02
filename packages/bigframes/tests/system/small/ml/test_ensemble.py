@@ -25,7 +25,7 @@ def test_xgbregressor_model_score(
     penguins_xgbregressor_model, penguins_df_default_index
 ):
     df = penguins_df_default_index.dropna()
-    test_X = df[
+    X_test = df[
         [
             "species",
             "island",
@@ -35,8 +35,8 @@ def test_xgbregressor_model_score(
             "body_mass_g",
         ]
     ]
-    test_y = df[["sex"]]
-    result = penguins_xgbregressor_model.score(test_X, test_y).to_pandas()
+    y_test = df[["sex"]]
+    result = penguins_xgbregressor_model.score(X_test, y_test).to_pandas()
     expected = pandas.DataFrame(
         {
             "mean_absolute_error": [108.77582],
@@ -62,7 +62,7 @@ def test_xgbregressor_model_score_series(
     penguins_xgbregressor_model, penguins_df_default_index
 ):
     df = penguins_df_default_index.dropna()
-    test_X = df[
+    X_test = df[
         [
             "species",
             "island",
@@ -72,8 +72,8 @@ def test_xgbregressor_model_score_series(
             "body_mass_g",
         ]
     ]
-    test_y = df["sex"]
-    result = penguins_xgbregressor_model.score(test_X, test_y).to_pandas()
+    y_test = df["sex"]
+    result = penguins_xgbregressor_model.score(X_test, y_test).to_pandas()
     expected = pandas.DataFrame(
         {
             "mean_absolute_error": [108.77582],
@@ -120,7 +120,7 @@ def test_to_gbq_saved_xgbregressor_model_scores(
         f"{dataset_id}.test_penguins_model", replace=True
     )
     df = penguins_df_default_index.dropna()
-    test_X = df[
+    X_test = df[
         [
             "species",
             "island",
@@ -130,8 +130,8 @@ def test_to_gbq_saved_xgbregressor_model_scores(
             "body_mass_g",
         ]
     ]
-    test_y = df[["sex"]]
-    result = saved_model.score(test_X, test_y).to_pandas()
+    y_test = df[["sex"]]
+    result = saved_model.score(X_test, y_test).to_pandas()
     expected = pandas.DataFrame(
         {
             "mean_absolute_error": [109.016973],
@@ -165,7 +165,7 @@ def test_xgbclassifier_model_score(
     penguins_xgbclassifier_model, penguins_df_default_index
 ):
     df = penguins_df_default_index.dropna()
-    test_X = df[
+    X_test = df[
         [
             "species",
             "island",
@@ -175,8 +175,8 @@ def test_xgbclassifier_model_score(
             "body_mass_g",
         ]
     ]
-    test_y = df[["sex"]]
-    result = penguins_xgbclassifier_model.score(test_X, test_y).to_pandas()
+    y_test = df[["sex"]]
+    result = penguins_xgbclassifier_model.score(X_test, y_test).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "precision",
@@ -193,7 +193,7 @@ def test_xgbclassifier_model_score_series(
     penguins_xgbclassifier_model, penguins_df_default_index
 ):
     df = penguins_df_default_index.dropna()
-    test_X = df[
+    X_test = df[
         [
             "species",
             "island",
@@ -203,8 +203,8 @@ def test_xgbclassifier_model_score_series(
             "body_mass_g",
         ]
     ]
-    test_y = df["sex"]
-    result = penguins_xgbclassifier_model.score(test_X, test_y).to_pandas()
+    y_test = df["sex"]
+    result = penguins_xgbclassifier_model.score(X_test, y_test).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "precision",
@@ -242,7 +242,7 @@ def test_to_gbq_saved_xgbclassifier_model_scores(
         f"{dataset_id}.test_penguins_model", replace=True
     )
     df = penguins_df_default_index.dropna()
-    test_X = df[
+    X_test = df[
         [
             "species",
             "island",
@@ -252,8 +252,8 @@ def test_to_gbq_saved_xgbclassifier_model_scores(
             "body_mass_g",
         ]
     ]
-    test_y = df[["sex"]]
-    result = saved_model.score(test_X, test_y).to_pandas()
+    y_test = df[["sex"]]
+    result = saved_model.score(X_test, y_test).to_pandas()
     expected = pandas.DataFrame(
         {
             "precision": [1.0],
@@ -289,7 +289,7 @@ def test_randomforestregressor_model_score(
     penguins_randomforest_regressor_model, penguins_df_default_index
 ):
     df = penguins_df_default_index.dropna()
-    test_X = df[
+    X_test = df[
         [
             "species",
             "island",
@@ -299,8 +299,8 @@ def test_randomforestregressor_model_score(
             "body_mass_g",
         ]
     ]
-    test_y = df[["sex"]]
-    result = penguins_randomforest_regressor_model.score(test_X, test_y).to_pandas()
+    y_test = df[["sex"]]
+    result = penguins_randomforest_regressor_model.score(X_test, y_test).to_pandas()
     expected = pandas.DataFrame(
         {
             "mean_absolute_error": [317.031042],
@@ -326,7 +326,7 @@ def test_randomforestregressor_model_score_series(
     penguins_randomforest_regressor_model, penguins_df_default_index
 ):
     df = penguins_df_default_index.dropna()
-    test_X = df[
+    X_test = df[
         [
             "species",
             "island",
@@ -336,8 +336,8 @@ def test_randomforestregressor_model_score_series(
             "body_mass_g",
         ]
     ]
-    test_y = df["sex"]
-    result = penguins_randomforest_regressor_model.score(test_X, test_y).to_pandas()
+    y_test = df["sex"]
+    result = penguins_randomforest_regressor_model.score(X_test, y_test).to_pandas()
     expected = pandas.DataFrame(
         {
             "mean_absolute_error": [317.031042],
@@ -385,7 +385,7 @@ def test_to_gbq_saved_randomforestregressor_model_scores(
         f"{dataset_id}.test_penguins_model", replace=True
     )
     df = penguins_df_default_index.dropna()
-    test_X = df[
+    X_test = df[
         [
             "species",
             "island",
@@ -395,8 +395,8 @@ def test_to_gbq_saved_randomforestregressor_model_scores(
             "body_mass_g",
         ]
     ]
-    test_y = df[["sex"]]
-    result = saved_model.score(test_X, test_y).to_pandas()
+    y_test = df[["sex"]]
+    result = saved_model.score(X_test, y_test).to_pandas()
     expected = pandas.DataFrame(
         {
             "mean_absolute_error": [319.239235],
@@ -434,7 +434,7 @@ def test_randomforestclassifier_model_score(
     penguins_randomforest_classifier_model, penguins_df_default_index
 ):
     df = penguins_df_default_index.dropna()
-    test_X = df[
+    X_test = df[
         [
             "species",
             "island",
@@ -444,8 +444,8 @@ def test_randomforestclassifier_model_score(
             "body_mass_g",
         ]
     ]
-    test_y = df[["sex"]]
-    result = penguins_randomforest_classifier_model.score(test_X, test_y).to_pandas()
+    y_test = df[["sex"]]
+    result = penguins_randomforest_classifier_model.score(X_test, y_test).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "precision",
@@ -462,7 +462,7 @@ def test_randomforestclassifier_model_score_series(
     penguins_randomforest_classifier_model, penguins_df_default_index
 ):
     df = penguins_df_default_index.dropna()
-    test_X = df[
+    X_test = df[
         [
             "species",
             "island",
@@ -472,8 +472,8 @@ def test_randomforestclassifier_model_score_series(
             "body_mass_g",
         ]
     ]
-    test_y = df["sex"]
-    result = penguins_randomforest_classifier_model.score(test_X, test_y).to_pandas()
+    y_test = df["sex"]
+    result = penguins_randomforest_classifier_model.score(X_test, y_test).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "precision",
@@ -512,7 +512,7 @@ def test_to_gbq_saved_randomforestclassifier_model_scores(
         f"{dataset_id}.test_penguins_model", replace=True
     )
     df = penguins_df_default_index.dropna()
-    test_X = df[
+    X_test = df[
         [
             "species",
             "island",
@@ -522,8 +522,8 @@ def test_to_gbq_saved_randomforestclassifier_model_scores(
             "body_mass_g",
         ]
     ]
-    test_y = df[["sex"]]
-    result = saved_model.score(test_X, test_y).to_pandas()
+    y_test = df[["sex"]]
+    result = saved_model.score(X_test, y_test).to_pandas()
     expected = pandas.DataFrame(
         {
             "precision": [0.636746],

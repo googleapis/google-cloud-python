@@ -26,7 +26,7 @@ import bigframes._config.bigquery_options as bigquery_options
         ("credentials", object(), object()),
         ("location", "us-east1", "us-central1"),
         ("project", "my-project", "my-other-project"),
-        ("remote_udf_connection", "path/to/connection/1", "path/to/connection/2"),
+        ("bq_connection", "path/to/connection/1", "path/to/connection/2"),
     ],
 )
 def test_setter_raises_if_session_started(attribute, original_value, new_value):
@@ -56,7 +56,7 @@ def test_setter_raises_if_session_started(attribute, original_value, new_value):
             "credentials",
             "location",
             "project",
-            "remote_udf_connection",
+            "bq_connection",
         ]
     ],
 )

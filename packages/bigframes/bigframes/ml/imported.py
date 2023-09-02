@@ -34,8 +34,12 @@ class TensorFlowModel(base.Predictor):
         model_path (str):
             GCS path that holds the model files."""
 
-    def __init__(self, session: bigframes.Session, model_path: Optional[str] = None):
-        self.session = session
+    def __init__(
+        self,
+        session: Optional[bigframes.Session] = None,
+        model_path: Optional[str] = None,
+    ):
+        self.session = session or bpd.get_global_session()
         self.model_path = model_path
         self._bqml_model: Optional[core.BqmlModel] = None
 
@@ -112,8 +116,12 @@ class ONNXModel(base.Predictor):
         model_path (str):
             Cloud Storage path that holds the model files."""
 
-    def __init__(self, session: bigframes.Session, model_path: Optional[str] = None):
-        self.session = session
+    def __init__(
+        self,
+        session: Optional[bigframes.Session] = None,
+        model_path: Optional[str] = None,
+    ):
+        self.session = session or bpd.get_global_session()
         self.model_path = model_path
         self._bqml_model: Optional[core.BqmlModel] = None
 

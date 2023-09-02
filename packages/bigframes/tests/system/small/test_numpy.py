@@ -67,3 +67,69 @@ def test_df_ufuncs(scalars_dfs, opname):
     pd_result = getattr(np, opname)(scalars_pandas_df[["float64_col", "int64_col"]])
 
     pd.testing.assert_frame_equal(bf_result, pd_result)
+
+
+@pytest.mark.parametrize(
+    ("opname",),
+    [
+        ("add",),
+        ("subtract",),
+        ("multiply",),
+        ("divide",),
+        ("power",),
+    ],
+)
+def test_series_binary_ufuncs(floats_product_pd, floats_product_bf, opname):
+    bf_result = getattr(np, opname)(
+        floats_product_bf.float64_col_x, floats_product_bf.float64_col_y
+    ).to_pandas()
+    pd_result = getattr(np, opname)(
+        floats_product_pd.float64_col_x, floats_product_pd.float64_col_y
+    )
+    pd.testing.assert_series_equal(bf_result, pd_result)
+
+
+@pytest.mark.parametrize(
+    ("opname",),
+    [
+        ("add",),
+        ("subtract",),
+        ("multiply",),
+        ("divide",),
+        ("power",),
+    ],
+)
+def test_df_binary_ufuncs(scalars_dfs, opname):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_result = getattr(np, opname)(
+        scalars_df[["float64_col", "int64_col"]], 5.1
+    ).to_pandas()
+    pd_result = getattr(np, opname)(
+        scalars_pandas_df[["float64_col", "int64_col"]], 5.1
+    )
+
+    pd.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_series_binary_ufuncs_reverse(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    # Could be any non-symmetric binary op
+    bf_result = np.subtract(5.1, scalars_df["int64_col"]).to_pandas()
+    pd_result = np.subtract(5.1, scalars_pandas_df["int64_col"])
+
+    pd.testing.assert_series_equal(bf_result, pd_result)
+
+
+def test_df_binary_ufuncs_reverse(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    # Could be any non-symmetric binary op
+    bf_result = np.subtract(5.1, scalars_df[["float64_col", "int64_col"]]).to_pandas()
+    pd_result = np.subtract(
+        5.1,
+        scalars_pandas_df[["float64_col", "int64_col"]],
+    )
+
+    pd.testing.assert_frame_equal(bf_result, pd_result)

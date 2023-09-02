@@ -25,7 +25,7 @@ def test_xgbregressor_default_params(penguins_df_default_index, dataset_id):
     model = bigframes.ml.ensemble.XGBRegressor()
 
     df = penguins_df_default_index.dropna()
-    train_X = df[
+    X_train = df[
         [
             "species",
             "island",
@@ -35,11 +35,11 @@ def test_xgbregressor_default_params(penguins_df_default_index, dataset_id):
             "sex",
         ]
     ]
-    train_y = df[["body_mass_g"]]
-    model.fit(train_X, train_y)
+    y_train = df[["body_mass_g"]]
+    model.fit(X_train, y_train)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).to_pandas()
+    result = model.score(X_train, y_train).to_pandas()
     expected = pandas.DataFrame(
         {
             "mean_absolute_error": [97.368139],
@@ -86,7 +86,7 @@ def test_xgbregressor_dart_booster_multiple_params(
     )
 
     df = penguins_df_default_index.dropna().sample(n=70)
-    train_X = df[
+    X_train = df[
         [
             "species",
             "island",
@@ -96,11 +96,11 @@ def test_xgbregressor_dart_booster_multiple_params(
             "sex",
         ]
     ]
-    train_y = df[["body_mass_g"]]
-    model.fit(train_X, train_y)
+    y_train = df[["body_mass_g"]]
+    model.fit(X_train, y_train)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).to_pandas()
+    result = model.score(X_train, y_train).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "mean_absolute_error",
@@ -144,7 +144,7 @@ def test_xgbclassifier_default_params(penguins_df_default_index, dataset_id):
     model = bigframes.ml.ensemble.XGBClassifier()
 
     df = penguins_df_default_index.dropna().sample(n=70)
-    train_X = df[
+    X_train = df[
         [
             "species",
             "island",
@@ -153,11 +153,11 @@ def test_xgbclassifier_default_params(penguins_df_default_index, dataset_id):
             "flipper_length_mm",
         ]
     ]
-    train_y = df[["sex"]]
-    model.fit(train_X, train_y)
+    y_train = df[["sex"]]
+    model.fit(X_train, y_train)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).to_pandas()
+    result = model.score(X_train, y_train).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "precision",
@@ -201,7 +201,7 @@ def test_xgbclassifier_dart_booster_multiple_params(
     )
 
     df = penguins_df_default_index.dropna().sample(n=70)
-    train_X = df[
+    X_train = df[
         [
             "species",
             "island",
@@ -210,11 +210,11 @@ def test_xgbclassifier_dart_booster_multiple_params(
             "flipper_length_mm",
         ]
     ]
-    train_y = df[["sex"]]
-    model.fit(train_X, train_y)
+    y_train = df[["sex"]]
+    model.fit(X_train, y_train)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).to_pandas()
+    result = model.score(X_train, y_train).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "precision",
@@ -258,7 +258,7 @@ def test_randomforestregressor_default_params(penguins_df_default_index, dataset
     model = bigframes.ml.ensemble.RandomForestRegressor()
 
     df = penguins_df_default_index.dropna()
-    train_X = df[
+    X_train = df[
         [
             "species",
             "island",
@@ -268,11 +268,11 @@ def test_randomforestregressor_default_params(penguins_df_default_index, dataset
             "sex",
         ]
     ]
-    train_y = df[["body_mass_g"]]
-    model.fit(train_X, train_y)
+    y_train = df[["body_mass_g"]]
+    model.fit(X_train, y_train)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).to_pandas()
+    result = model.score(X_train, y_train).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "mean_absolute_error",
@@ -311,7 +311,7 @@ def test_randomforestregressor_multiple_params(penguins_df_default_index, datase
     )
 
     df = penguins_df_default_index.dropna().sample(n=70)
-    train_X = df[
+    X_train = df[
         [
             "species",
             "island",
@@ -321,11 +321,11 @@ def test_randomforestregressor_multiple_params(penguins_df_default_index, datase
             "sex",
         ]
     ]
-    train_y = df[["body_mass_g"]]
-    model.fit(train_X, train_y)
+    y_train = df[["body_mass_g"]]
+    model.fit(X_train, y_train)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).to_pandas()
+    result = model.score(X_train, y_train).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "mean_absolute_error",
@@ -366,7 +366,7 @@ def test_randomforestclassifier_default_params(penguins_df_default_index, datase
     model = bigframes.ml.ensemble.RandomForestClassifier()
 
     df = penguins_df_default_index.dropna().sample(n=70)
-    train_X = df[
+    X_train = df[
         [
             "species",
             "island",
@@ -375,11 +375,11 @@ def test_randomforestclassifier_default_params(penguins_df_default_index, datase
             "flipper_length_mm",
         ]
     ]
-    train_y = df[["sex"]]
-    model.fit(train_X, train_y)
+    y_train = df[["sex"]]
+    model.fit(X_train, y_train)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).to_pandas()
+    result = model.score(X_train, y_train).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "precision",
@@ -418,7 +418,7 @@ def test_randomforestclassifier_multiple_params(penguins_df_default_index, datas
     )
 
     df = penguins_df_default_index.dropna().sample(n=70)
-    train_X = df[
+    X_train = df[
         [
             "species",
             "island",
@@ -427,11 +427,11 @@ def test_randomforestclassifier_multiple_params(penguins_df_default_index, datas
             "flipper_length_mm",
         ]
     ]
-    train_y = df[["sex"]]
-    model.fit(train_X, train_y)
+    y_train = df[["sex"]]
+    model.fit(X_train, y_train)
 
     # Check score to ensure the model was fitted
-    result = model.score(train_X, train_y).to_pandas()
+    result = model.score(X_train, y_train).to_pandas()
     TestCase().assertSequenceEqual(result.shape, (1, 6))
     for col_name in [
         "precision",

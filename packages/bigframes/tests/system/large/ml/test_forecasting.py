@@ -21,9 +21,9 @@ def test_arima_plus_model_fit_score(
     time_series_df_default_index, dataset_id, new_time_series_df
 ):
     model = forecasting.ARIMAPlus()
-    train_X = time_series_df_default_index[["parsed_date"]]
-    train_y = time_series_df_default_index[["total_visits"]]
-    model.fit(train_X, train_y)
+    X_train = time_series_df_default_index[["parsed_date"]]
+    y_train = time_series_df_default_index[["total_visits"]]
+    model.fit(X_train, y_train)
 
     result = model.score(
         new_time_series_df[["parsed_date"]], new_time_series_df[["total_visits"]]

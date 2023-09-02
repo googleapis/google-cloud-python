@@ -254,49 +254,6 @@ def test_read_gbq_must_comply_with_set_location_non_US(
     assert df is not None
 
 
-def test_reset_session_after_bq_session_ended():
-    # Use a simple test query to verify that default session works to interact
-    # with BQ
-    test_query = "SELECT 1"
-
-    # Confirm that there is a session id in the default session
-    session = bpd.get_global_session()
-    assert session._session_id
-
-    # Confirm that session works as usual
-    df = bpd.read_gbq(test_query)
-    assert df is not None
-
-    # Abort the session to simulate the auto-expiration
-    # https://cloud.google.com/bigquery/docs/sessions-terminating#auto-terminate_a_session
-    abort_session_query = "CALL BQ.ABORT_SESSION()"
-    query_job = session.bqclient.query(abort_session_query)
-    query_job.result()  # blocks until finished
-
-    # Confirm that session is unusable to run any jobs
-    with pytest.raises(
-        google.api_core.exceptions.BadRequest,
-        match=f"Session {session._session_id} has expired and is no longer available.",
-    ):
-        query_job = session.bqclient.query(test_query)
-        query_job.result()  # blocks until finished
-
-    # Confirm that as a result bigframes.pandas interface is unusable
-    with pytest.raises(
-        google.api_core.exceptions.BadRequest,
-        match=f"Session {session._session_id} has expired and is no longer available.",
-    ):
-        bpd.read_gbq(test_query)
-
-    # Now try to reset session and verify that it works
-    bpd.reset_session()
-    assert bigframes.core.global_session._global_session is None
-
-    # Now verify that use is able to start over
-    df = bpd.read_gbq(test_query)
-    assert df is not None
-
-
 def test_reset_session_after_credentials_need_reauthentication(monkeypatch):
     # Use a simple test query to verify that default session works to interact
     # with BQ

@@ -551,13 +551,69 @@ def test_assign_callable_lambda(scalars_dfs):
     assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
 
 
-def test_dropna(scalars_dfs):
+@pytest.mark.parametrize(
+    ("axis", "how", "ignore_index"),
+    [
+        (0, "any", False),
+        (0, "any", True),
+        (1, "any", False),
+        (1, "all", False),
+    ],
+)
+def test_df_dropna(scalars_dfs, axis, how, ignore_index):
+    if pd.__version__.startswith("1."):
+        pytest.skip("ignore_index parameter not supported in pandas 1.x.")
     scalars_df, scalars_pandas_df = scalars_dfs
-    df = scalars_df.dropna()
+    df = scalars_df.dropna(axis=axis, how=how, ignore_index=ignore_index)
     bf_result = df.to_pandas()
-    pd_result = scalars_pandas_df.dropna()
+    pd_result = scalars_pandas_df.dropna(axis=axis, how=how, ignore_index=ignore_index)
 
-    assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+    # Pandas uses int64 instead of Int64 (nullable) dtype.
+    pd_result.index = pd_result.index.astype(pd.Int64Dtype())
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_df_fillna(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    df = scalars_df[["int64_col", "float64_col"]].fillna(3)
+    bf_result = df.to_pandas()
+    pd_result = scalars_pandas_df[["int64_col", "float64_col"]].fillna(3)
+
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_df_isin_list(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    values = ["Hello, World!", 55555, 2.51, pd.NA, True]
+    bf_result = (
+        scalars_df[["int64_col", "float64_col", "string_col", "bool_col"]]
+        .isin(values)
+        .to_pandas()
+    )
+    pd_result = scalars_pandas_df[
+        ["int64_col", "float64_col", "string_col", "bool_col"]
+    ].isin(values)
+
+    pandas.testing.assert_frame_equal(bf_result, pd_result.astype("boolean"))
+
+
+def test_df_isin_dict(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    values = {
+        "string_col": ["Hello, World!", 55555, 2.51, pd.NA, True],
+        "int64_col": [5555, 2.51],
+        "bool_col": [pd.NA],
+    }
+    bf_result = (
+        scalars_df[["int64_col", "float64_col", "string_col", "bool_col"]]
+        .isin(values)
+        .to_pandas()
+    )
+    pd_result = scalars_pandas_df[
+        ["int64_col", "float64_col", "string_col", "bool_col"]
+    ].isin(values)
+
+    pandas.testing.assert_frame_equal(bf_result, pd_result.astype("boolean"))
 
 
 @pytest.mark.parametrize(
@@ -1084,50 +1140,43 @@ def test_series_binop_axis_index(
 
 
 @pytest.mark.parametrize(
-    ("op"),
+    ("left_labels", "right_labels"),
     [
-        (lambda x, y: x.add(y, axis="index")),
-        (lambda x, y: x.radd(y, axis="index")),
-        (lambda x, y: x.sub(y, axis="index")),
-        (lambda x, y: x.rsub(y, axis="index")),
-        (lambda x, y: x.mul(y, axis="index")),
-        (lambda x, y: x.rmul(y, axis="index")),
-        (lambda x, y: x.truediv(y, axis="index")),
-        (lambda x, y: x.rtruediv(y, axis="index")),
-        (lambda x, y: x.floordiv(y, axis="index")),
-        (lambda x, y: x.floordiv(y, axis="index")),
-        (lambda x, y: x.gt(y, axis="index")),
-        (lambda x, y: x.ge(y, axis="index")),
-        (lambda x, y: x.lt(y, axis="index")),
-        (lambda x, y: x.le(y, axis="index")),
+        (["a", "a", "b"], ["c", "c", "d"]),
+        (["a", "b", "c"], ["c", "a", "b"]),
+        (["a", "c", "c"], ["c", "a", "c"]),
     ],
     ids=[
-        "add",
-        "radd",
-        "sub",
-        "rsub",
-        "mul",
-        "rmul",
-        "truediv",
-        "rtruediv",
-        "floordiv",
-        "rfloordiv",
-        "gt",
-        "ge",
-        "lt",
-        "le",
+        "no_overlap",
+        "one_one_match",
+        "multi_match",
     ],
 )
-def test_dataframe_binop_axis_index_throws_not_implemented(
-    scalars_dfs,
-    op,
+def test_binop_df_df_binary_op(
+    scalars_df_index,
+    scalars_df_2_index,
+    scalars_pandas_df_index,
+    left_labels,
+    right_labels,
 ):
-    scalars_df, scalars_pandas_df = scalars_dfs
-    df_columns = ["int64_col", "float64_col"]
-    other_df_columns = ["int64_too"]
+    if pd.__version__.startswith("1."):
+        pytest.skip("pd.NA vs NaN not handled well in pandas 1.x.")
+    columns = ["int64_too", "int64_col", "float64_col"]
 
-    with pytest.raises(NotImplementedError):
-        op(scalars_df[df_columns], scalars_df[other_df_columns]).to_pandas()
+    bf_df_a = scalars_df_index[columns]
+    bf_df_a.columns = left_labels
+    bf_df_b = scalars_df_2_index[columns]
+    bf_df_b.columns = right_labels
+    bf_result = (bf_df_a - bf_df_b).to_pandas()
+
+    pd_df_a = scalars_pandas_df_index[columns]
+    pd_df_a.columns = left_labels
+    pd_df_b = scalars_pandas_df_index[columns]
+    pd_df_b.columns = right_labels
+    pd_result = pd_df_a - pd_df_b
+
+    # Some dtype inconsistency for all-NULL columns
+    pd.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
 
 
 # Differnt table will only work for explicit index, since default index orders are arbitrary.
