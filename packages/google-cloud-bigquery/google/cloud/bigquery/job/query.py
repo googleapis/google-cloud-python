@@ -198,6 +198,59 @@ class DmlStats(typing.NamedTuple):
         return cls(*args)
 
 
+class IndexUnusedReason(typing.NamedTuple):
+    """Reason about why no search index was used in the search query (or sub-query).
+
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#indexunusedreason
+    """
+
+    code: Optional[str] = None
+    """Specifies the high-level reason for the scenario when no search index was used.
+    """
+
+    message: Optional[str] = None
+    """Free form human-readable reason for the scenario when no search index was used.
+    """
+
+    baseTable: Optional[TableReference] = None
+    """Specifies the base table involved in the reason that no search index was used.
+    """
+
+    indexName: Optional[str] = None
+    """Specifies the name of the unused search index, if available."""
+
+    @classmethod
+    def from_api_repr(cls, reason):
+        code = reason.get("code")
+        message = reason.get("message")
+        baseTable = reason.get("baseTable")
+        indexName = reason.get("indexName")
+
+        return cls(code, message, baseTable, indexName)
+
+
+class SearchStats(typing.NamedTuple):
+    """Statistics related to Search Queries. Populated as part of JobStatistics2.
+
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#searchstatistics
+    """
+
+    mode: Optional[str] = None
+    """Indicates the type of search index usage in the entire search query."""
+
+    reason: List[IndexUnusedReason] = []
+    """Reason about why no search index was used in the search query (or sub-query)"""
+
+    @classmethod
+    def from_api_repr(cls, stats: Dict[str, Any]):
+        mode = stats.get("indexUsageMode", None)
+        reason = [
+            IndexUnusedReason.from_api_repr(r)
+            for r in stats.get("indexUnusedReasons", [])
+        ]
+        return cls(mode, reason)
+
+
 class ScriptOptions:
     """Options controlling the execution of scripts.
 
@@ -724,7 +777,6 @@ class QueryJobConfig(_JobConfig):
             Dict: A dictionary in the format used by the BigQuery API.
         """
         resource = copy.deepcopy(self._properties)
-
         # Query parameters have an addition property associated with them
         # to indicate if the query is using named or positional parameters.
         query_parameters = resource["query"].get("queryParameters")
@@ -857,6 +909,15 @@ class QueryJob(_AsyncJob):
         :attr:`google.cloud.bigquery.job.QueryJobConfig.priority`.
         """
         return self.configuration.priority
+
+    @property
+    def search_stats(self) -> Optional[SearchStats]:
+        """Returns a SearchStats object."""
+
+        stats = self._job_statistics().get("searchStatistics")
+        if stats is not None:
+            return SearchStats.from_api_repr(stats)
+        return None
 
     @property
     def query(self):
