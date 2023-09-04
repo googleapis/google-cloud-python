@@ -17,9 +17,9 @@ set -e
 function save_to_temp_then_file() {
     TEMP_FILE="$(echo mktemp)"
     # Redirect output to temporary file TEMP_FILE
-    cat > TEMP_FILE
+    cat > $TEMP_FILE
     # Replace the original file
-    mv -f TEMP_FILE "${1}"
+    mv -f $TEMP_FILE "${1}"
 }
 
 
