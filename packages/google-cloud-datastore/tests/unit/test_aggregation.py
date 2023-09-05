@@ -15,7 +15,12 @@
 import mock
 import pytest
 
-from google.cloud.datastore.aggregation import CountAggregation, AggregationQuery
+from google.cloud.datastore.aggregation import (
+    CountAggregation,
+    SumAggregation,
+    AvgAggregation,
+    AggregationQuery,
+)
 from google.cloud.datastore.helpers import set_database_id_to_request
 
 from tests.unit.test_query import _make_query, _make_client
@@ -32,6 +37,30 @@ def test_count_aggregation_to_pb():
     expected_aggregation_query_pb.count = query_pb2.AggregationQuery.Aggregation.Count()
     expected_aggregation_query_pb.alias = count_aggregation.alias
     assert count_aggregation._to_pb() == expected_aggregation_query_pb
+
+
+def test_sum_aggregation_to_pb():
+    from google.cloud.datastore_v1.types import query as query_pb2
+
+    sum_aggregation = SumAggregation("appearances", alias="total")
+
+    expected_aggregation_query_pb = query_pb2.AggregationQuery.Aggregation()
+    expected_aggregation_query_pb.sum = query_pb2.AggregationQuery.Aggregation.Sum()
+    expected_aggregation_query_pb.sum.property.name = sum_aggregation.property_ref
+    expected_aggregation_query_pb.alias = sum_aggregation.alias
+    assert sum_aggregation._to_pb() == expected_aggregation_query_pb
+
+
+def test_avg_aggregation_to_pb():
+    from google.cloud.datastore_v1.types import query as query_pb2
+
+    avg_aggregation = AvgAggregation("appearances", alias="total")
+
+    expected_aggregation_query_pb = query_pb2.AggregationQuery.Aggregation()
+    expected_aggregation_query_pb.avg = query_pb2.AggregationQuery.Aggregation.Avg()
+    expected_aggregation_query_pb.avg.property.name = avg_aggregation.property_ref
+    expected_aggregation_query_pb.alias = avg_aggregation.alias
+    assert avg_aggregation._to_pb() == expected_aggregation_query_pb
 
 
 @pytest.fixture
@@ -117,6 +146,8 @@ def test_pb_over_query_with_add_aggregations(client, database_id):
     aggregations = [
         CountAggregation(alias="total"),
         CountAggregation(alias="all"),
+        SumAggregation("appearances", alias="sum_appearances"),
+        AvgAggregation("appearances", alias="avg_appearances"),
     ]
 
     query = _make_query(client)
@@ -125,9 +156,73 @@ def test_pb_over_query_with_add_aggregations(client, database_id):
     aggregation_query.add_aggregations(aggregations)
     pb = aggregation_query._to_pb()
     assert pb.nested_query == _pb_from_query(query)
-    assert len(pb.aggregations) == 2
+    assert len(pb.aggregations) == 4
     assert pb.aggregations[0] == CountAggregation(alias="total")._to_pb()
     assert pb.aggregations[1] == CountAggregation(alias="all")._to_pb()
+    assert (
+        pb.aggregations[2]
+        == SumAggregation("appearances", alias="sum_appearances")._to_pb()
+    )
+    assert (
+        pb.aggregations[3]
+        == AvgAggregation("appearances", alias="avg_appearances")._to_pb()
+    )
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
+def test_pb_over_query_with_sum(client, database_id):
+    from google.cloud.datastore.query import _pb_from_query
+
+    query = _make_query(client)
+    aggregation_query = _make_aggregation_query(client=client, query=query)
+
+    aggregation_query.sum("appearances", alias="total")
+    pb = aggregation_query._to_pb()
+    assert pb.nested_query == _pb_from_query(query)
+    assert len(pb.aggregations) == 1
+    assert pb.aggregations[0] == SumAggregation("appearances", alias="total")._to_pb()
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
+def test_pb_over_query_sum_with_add_aggregation(client, database_id):
+    from google.cloud.datastore.query import _pb_from_query
+
+    query = _make_query(client)
+    aggregation_query = _make_aggregation_query(client=client, query=query)
+
+    aggregation_query.add_aggregation(SumAggregation("appearances", alias="total"))
+    pb = aggregation_query._to_pb()
+    assert pb.nested_query == _pb_from_query(query)
+    assert len(pb.aggregations) == 1
+    assert pb.aggregations[0] == SumAggregation("appearances", alias="total")._to_pb()
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
+def test_pb_over_query_with_avg(client, database_id):
+    from google.cloud.datastore.query import _pb_from_query
+
+    query = _make_query(client)
+    aggregation_query = _make_aggregation_query(client=client, query=query)
+
+    aggregation_query.avg("appearances", alias="avg")
+    pb = aggregation_query._to_pb()
+    assert pb.nested_query == _pb_from_query(query)
+    assert len(pb.aggregations) == 1
+    assert pb.aggregations[0] == AvgAggregation("appearances", alias="avg")._to_pb()
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
+def test_pb_over_query_avg_with_add_aggregation(client, database_id):
+    from google.cloud.datastore.query import _pb_from_query
+
+    query = _make_query(client)
+    aggregation_query = _make_aggregation_query(client=client, query=query)
+
+    aggregation_query.add_aggregation(AvgAggregation("appearances", alias="avg"))
+    pb = aggregation_query._to_pb()
+    assert pb.nested_query == _pb_from_query(query)
+    assert len(pb.aggregations) == 1
+    assert pb.aggregations[0] == AvgAggregation("appearances", alias="avg")._to_pb()
 
 
 @pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
@@ -243,8 +338,11 @@ def test_iterator__build_protobuf_all_values():
     query = _make_query(client)
     alias = "total"
     limit = 2
+    property_ref = "appearances"
     aggregation_query = AggregationQuery(client=client, query=query)
     aggregation_query.count(alias)
+    aggregation_query.sum(property_ref)
+    aggregation_query.avg(property_ref)
 
     iterator = _make_aggregation_iterator(aggregation_query, client, limit=limit)
     iterator.num_results = 4
@@ -252,9 +350,22 @@ def test_iterator__build_protobuf_all_values():
     pb = iterator._build_protobuf()
     expected_pb = query_pb2.AggregationQuery()
     expected_pb.nested_query = query_pb2.Query()
+    expected_pb.nested_query.limit = limit
+
     expected_count_pb = query_pb2.AggregationQuery.Aggregation(alias=alias)
-    expected_count_pb.count.up_to = limit
+    expected_count_pb.count = query_pb2.AggregationQuery.Aggregation.Count()
     expected_pb.aggregations.append(expected_count_pb)
+
+    expected_sum_pb = query_pb2.AggregationQuery.Aggregation()
+    expected_sum_pb.sum = query_pb2.AggregationQuery.Aggregation.Sum()
+    expected_sum_pb.sum.property.name = property_ref
+    expected_pb.aggregations.append(expected_sum_pb)
+
+    expected_avg_pb = query_pb2.AggregationQuery.Aggregation()
+    expected_avg_pb.avg = query_pb2.AggregationQuery.Aggregation.Avg()
+    expected_avg_pb.avg.property.name = property_ref
+    expected_pb.aggregations.append(expected_avg_pb)
+
     assert pb == expected_pb
 
 
@@ -426,6 +537,81 @@ def test__item_to_aggregation_result():
         assert result[0].value == map_composite_mock.__getitem__().integer_value
 
 
+@pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
+@pytest.mark.parametrize(
+    "aggregation_type,aggregation_args",
+    [
+        ("count", ()),
+        (
+            "sum",
+            ("appearances",),
+        ),
+        ("avg", ("appearances",)),
+    ],
+)
+def test_eventual_transaction_fails(database_id, aggregation_type, aggregation_args):
+    """
+    Queries with eventual consistency cannot be used in a transaction.
+    """
+    import mock
+
+    transaction = mock.Mock()
+    transaction.id = b"expected_id"
+    client = _Client(None, database=database_id, transaction=transaction)
+
+    query = _make_query(client)
+    aggregation_query = _make_aggregation_query(client=client, query=query)
+    # initiate requested aggregation (ex count, sum, avg)
+    getattr(aggregation_query, aggregation_type)(*aggregation_args)
+    with pytest.raises(ValueError):
+        list(aggregation_query.fetch(eventual=True))
+
+
+@pytest.mark.parametrize("database_id", [None, "somedb"], indirect=True)
+@pytest.mark.parametrize(
+    "aggregation_type,aggregation_args",
+    [
+        ("count", ()),
+        (
+            "sum",
+            ("appearances",),
+        ),
+        ("avg", ("appearances",)),
+    ],
+)
+def test_transaction_id_populated(database_id, aggregation_type, aggregation_args):
+    """
+    When an aggregation is run in the context of a transaction, the transaction
+    ID should be populated in the request.
+    """
+    import mock
+
+    transaction = mock.Mock()
+    transaction.id = b"expected_id"
+    mock_datastore_api = mock.Mock()
+    mock_gapic = mock_datastore_api.run_aggregation_query
+    mock_gapic.return_value = _make_aggregation_query_response([])
+    client = _Client(
+        None,
+        datastore_api=mock_datastore_api,
+        database=database_id,
+        transaction=transaction,
+    )
+
+    query = _make_query(client)
+    aggregation_query = _make_aggregation_query(client=client, query=query)
+
+    # initiate requested aggregation (ex count, sum, avg)
+    getattr(aggregation_query, aggregation_type)(*aggregation_args)
+    # run mock query
+    list(aggregation_query.fetch())
+    assert mock_gapic.call_count == 1
+    request = mock_gapic.call_args[1]["request"]
+    read_options = request["read_options"]
+    # ensure transaction ID is populated
+    assert read_options.transaction == client.current_transaction.id
+
+
 class _Client(object):
     def __init__(
         self,
@@ -459,7 +645,9 @@ def _make_aggregation_iterator(*args, **kw):
     return AggregationResultIterator(*args, **kw)
 
 
-def _make_aggregation_query_response(aggregation_pbs, more_results_enum):
+def _make_aggregation_query_response(
+    aggregation_pbs, more_results_enum=3
+):  # 3 = NO_MORE_RESULTS
     from google.cloud.datastore_v1.types import datastore as datastore_pb2
     from google.cloud.datastore_v1.types import aggregation_result
 

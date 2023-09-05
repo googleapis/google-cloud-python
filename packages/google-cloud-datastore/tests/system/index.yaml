@@ -39,9 +39,9 @@ indexes:
     - name: family
     - name: appearances
 
-
 - kind: Character
   ancestor: yes
   properties:
     - name: family
     - name: appearances
+

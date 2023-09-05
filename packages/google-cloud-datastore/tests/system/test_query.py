@@ -83,6 +83,21 @@ def test_query_w_ancestor(ancestor_query, database_id):
 
 
 @pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_query_in_transaction(ancestor_query, database_id):
+    """
+    when a query is run in a transaction, the transaction id should be sent with the request.
+    the result is the same as when it is run outside of a transaction.
+    """
+    query = ancestor_query
+    client = query._client
+    expected_matches = 8
+    with client.transaction():
+        # run full query
+        entities = _do_fetch(query)
+        assert len(entities) == expected_matches
+
+
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
 def test_query_w_limit_paging(ancestor_query, database_id):
     query = ancestor_query
     limit = 5

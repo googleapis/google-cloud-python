@@ -39,6 +39,9 @@ class BaseAggregation(ABC):
     Base class representing an Aggregation operation in Datastore
     """
 
+    def __init__(self, alias=None):
+        self.alias = alias
+
     @abc.abstractmethod
     def _to_pb(self):
         """
@@ -59,7 +62,7 @@ class CountAggregation(BaseAggregation):
     """
 
     def __init__(self, alias=None):
-        self.alias = alias
+        super(CountAggregation, self).__init__(alias=alias)
 
     def _to_pb(self):
         """
@@ -67,6 +70,60 @@ class CountAggregation(BaseAggregation):
         """
         aggregation_pb = query_pb2.AggregationQuery.Aggregation()
         aggregation_pb.count = query_pb2.AggregationQuery.Aggregation.Count()
+        aggregation_pb.alias = self.alias
+        return aggregation_pb
+
+
+class SumAggregation(BaseAggregation):
+    """
+    Representation of a "Sum" aggregation query.
+
+    :type property_ref: str
+    :param property_ref: The property_ref for the aggregation.
+
+    :type value: int
+    :param value: The resulting value from the aggregation.
+
+    """
+
+    def __init__(self, property_ref, alias=None):
+        self.property_ref = property_ref
+        super(SumAggregation, self).__init__(alias=alias)
+
+    def _to_pb(self):
+        """
+        Convert this instance to the protobuf representation
+        """
+        aggregation_pb = query_pb2.AggregationQuery.Aggregation()
+        aggregation_pb.sum = query_pb2.AggregationQuery.Aggregation.Sum()
+        aggregation_pb.sum.property.name = self.property_ref
+        aggregation_pb.alias = self.alias
+        return aggregation_pb
+
+
+class AvgAggregation(BaseAggregation):
+    """
+    Representation of a "Avg" aggregation query.
+
+    :type property_ref: str
+    :param property_ref: The property_ref for the aggregation.
+
+    :type value: int
+    :param value: The resulting value from the aggregation.
+
+    """
+
+    def __init__(self, property_ref, alias=None):
+        self.property_ref = property_ref
+        super(AvgAggregation, self).__init__(alias=alias)
+
+    def _to_pb(self):
+        """
+        Convert this instance to the protobuf representation
+        """
+        aggregation_pb = query_pb2.AggregationQuery.Aggregation()
+        aggregation_pb.avg = query_pb2.AggregationQuery.Aggregation.Avg()
+        aggregation_pb.avg.property.name = self.property_ref
         aggregation_pb.alias = self.alias
         return aggregation_pb
 
@@ -152,6 +209,28 @@ class AggregationQuery(object):
         """
         count_aggregation = CountAggregation(alias=alias)
         self._aggregations.append(count_aggregation)
+        return self
+
+    def sum(self, property_ref, alias=None):
+        """
+        Adds a sum over the nested query
+
+        :type property_ref: str
+        :param property_ref: The property_ref for the sum
+        """
+        sum_aggregation = SumAggregation(property_ref=property_ref, alias=alias)
+        self._aggregations.append(sum_aggregation)
+        return self
+
+    def avg(self, property_ref, alias=None):
+        """
+        Adds a avg over the nested query
+
+        :type property_ref: str
+        :param property_ref: The property_ref for the sum
+        """
+        avg_aggregation = AvgAggregation(property_ref=property_ref, alias=alias)
+        self._aggregations.append(avg_aggregation)
         return self
 
     def add_aggregation(self, aggregation):
@@ -327,8 +406,7 @@ class AggregationResultIterator(page_iterator.Iterator):
         """
         pb = self._aggregation_query._to_pb()
         if self._limit is not None and self._limit > 0:
-            for aggregation in pb.aggregations:
-                aggregation.count.up_to = self._limit
+            pb.nested_query.limit = self._limit
         return pb
 
     def _process_query_results(self, response_pb):
@@ -438,5 +516,8 @@ def _item_to_aggregation_result(iterator, pb):
     :rtype: :class:`google.cloud.datastore.aggregation.AggregationResult`
     :returns: The list of AggregationResults
     """
-    results = [AggregationResult(alias=k, value=pb[k].integer_value) for k in pb.keys()]
+    results = [
+        AggregationResult(alias=k, value=pb[k].integer_value or pb[k].double_value)
+        for k in pb.keys()
+    ]
     return results
