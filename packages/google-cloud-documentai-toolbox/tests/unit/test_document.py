@@ -661,6 +661,16 @@ def test_export_hocr_str():
     assert actual_hocr == expected
 
 
+def test_export_hocr_str_with_blank_document():
+    wrapped_document = document.Document.from_document_path(
+        document_path="tests/unit/resources/blank_document.json"
+    )
+
+    actual_hocr = wrapped_document.export_hocr_str(title="hocr_blank")
+
+    assert actual_hocr
+
+
 def test_document_to_merged_documentai_document(get_bytes_multiple_files_mock):
     wrapped_document = document.Document.from_gcs(
         gcs_bucket_name="test-directory", gcs_prefix="documentai/output/123456789/1/"
