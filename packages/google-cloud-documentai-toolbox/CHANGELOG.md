@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.10.0-alpha...v0.10.1-alpha) (2023-09-05)
+
+
+### Bug Fixes
+
+* Add handling for documents missing all layout elements. ([#161](https://github.com/googleapis/python-documentai-toolbox/issues/161)) ([1ac6f5e](https://github.com/googleapis/python-documentai-toolbox/commit/1ac6f5e0e458cfd48594a69c857bcb0d8e1ab6e5))
+
 ## [0.10.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.9.1-alpha...v0.10.0-alpha) (2023-08-09)
 
 
