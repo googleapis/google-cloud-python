@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import BatchControllerTransport
 from .grpc import BatchControllerGrpcTransport
 from .grpc_asyncio import BatchControllerGrpcAsyncIOTransport
-from .rest import BatchControllerRestTransport
-from .rest import BatchControllerRestInterceptor
-
+from .rest import BatchControllerRestInterceptor, BatchControllerRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[BatchControllerTransport]]

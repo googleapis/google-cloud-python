@@ -22,44 +22,25 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-import grpc
-from grpc.experimental import aio
 from collections.abc import Iterable
-from google.protobuf import json_format
 import json
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-from proto.marshal.rules import wrappers
-from requests import Response
-from requests import Request, PreparedRequest
-from requests.sessions import Session
-from google.protobuf import json_format
 
+from google.api_core import (
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    operation,
+    operations_v1,
+    path_template,
+)
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import future
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import operation
 from google.api_core import operation_async  # type: ignore
-from google.api_core import operations_v1
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.dataproc_v1.services.workflow_template_service import (
-    WorkflowTemplateServiceAsyncClient,
-)
-from google.cloud.dataproc_v1.services.workflow_template_service import (
-    WorkflowTemplateServiceClient,
-)
-from google.cloud.dataproc_v1.services.workflow_template_service import pagers
-from google.cloud.dataproc_v1.services.workflow_template_service import transports
-from google.cloud.dataproc_v1.types import clusters
-from google.cloud.dataproc_v1.types import jobs
-from google.cloud.dataproc_v1.types import shared
-from google.cloud.dataproc_v1.types import workflow_templates
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -67,8 +48,23 @@ from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import json_format
 from google.protobuf import timestamp_pb2  # type: ignore
-import google.auth
+import grpc
+from grpc.experimental import aio
+from proto.marshal.rules import wrappers
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+from requests import PreparedRequest, Request, Response
+from requests.sessions import Session
+
+from google.cloud.dataproc_v1.services.workflow_template_service import (
+    WorkflowTemplateServiceAsyncClient,
+    WorkflowTemplateServiceClient,
+    pagers,
+    transports,
+)
+from google.cloud.dataproc_v1.types import clusters, jobs, shared, workflow_templates
 
 
 def client_cert_source_callback():

@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import NodeGroupControllerTransport
 from .grpc import NodeGroupControllerGrpcTransport
 from .grpc_asyncio import NodeGroupControllerGrpcAsyncIOTransport
-from .rest import NodeGroupControllerRestTransport
-from .rest import NodeGroupControllerRestInterceptor
-
+from .rest import NodeGroupControllerRestInterceptor, NodeGroupControllerRestTransport
 
 # Compile a registry of transports.
 _transport_registry = (

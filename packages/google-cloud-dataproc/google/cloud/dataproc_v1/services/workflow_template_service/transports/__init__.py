@@ -19,9 +19,10 @@ from typing import Dict, Type
 from .base import WorkflowTemplateServiceTransport
 from .grpc import WorkflowTemplateServiceGrpcTransport
 from .grpc_asyncio import WorkflowTemplateServiceGrpcAsyncIOTransport
-from .rest import WorkflowTemplateServiceRestTransport
-from .rest import WorkflowTemplateServiceRestInterceptor
-
+from .rest import (
+    WorkflowTemplateServiceRestInterceptor,
+    WorkflowTemplateServiceRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (

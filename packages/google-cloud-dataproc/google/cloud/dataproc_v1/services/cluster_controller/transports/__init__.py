@@ -19,9 +19,7 @@ from typing import Dict, Type
 from .base import ClusterControllerTransport
 from .grpc import ClusterControllerGrpcTransport
 from .grpc_asyncio import ClusterControllerGrpcAsyncIOTransport
-from .rest import ClusterControllerRestTransport
-from .rest import ClusterControllerRestInterceptor
-
+from .rest import ClusterControllerRestInterceptor, ClusterControllerRestTransport
 
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ClusterControllerTransport]]

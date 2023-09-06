@@ -29,17 +29,17 @@ from typing import (
     cast,
 )
 
-from google.cloud.dataproc_v1 import gapic_version as package_version
-
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.dataproc_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -48,12 +48,14 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.dataproc_v1.services.job_controller import pagers
-from google.cloud.dataproc_v1.types import jobs
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2
-from .transports.base import JobControllerTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.dataproc_v1.services.job_controller import pagers
+from google.cloud.dataproc_v1.types import jobs
+
+from .transports.base import DEFAULT_CLIENT_INFO, JobControllerTransport
 from .transports.grpc import JobControllerGrpcTransport
 from .transports.grpc_asyncio import JobControllerGrpcAsyncIOTransport
 from .transports.rest import JobControllerRestTransport

@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import AutoscalingPolicyServiceClient
 from .async_client import AutoscalingPolicyServiceAsyncClient
+from .client import AutoscalingPolicyServiceClient
 
 __all__ = (
     "AutoscalingPolicyServiceClient",

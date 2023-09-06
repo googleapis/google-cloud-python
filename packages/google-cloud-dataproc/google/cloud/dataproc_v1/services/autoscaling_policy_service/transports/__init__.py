@@ -19,9 +19,10 @@ from typing import Dict, Type
 from .base import AutoscalingPolicyServiceTransport
 from .grpc import AutoscalingPolicyServiceGrpcTransport
 from .grpc_asyncio import AutoscalingPolicyServiceGrpcAsyncIOTransport
-from .rest import AutoscalingPolicyServiceRestTransport
-from .rest import AutoscalingPolicyServiceRestInterceptor
-
+from .rest import (
+    AutoscalingPolicyServiceRestInterceptor,
+    AutoscalingPolicyServiceRestTransport,
+)
 
 # Compile a registry of transports.
 _transport_registry = (
