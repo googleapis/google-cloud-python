@@ -50,6 +50,8 @@ class TestChangeSummary(unittest.TestCase):
         expected_result = """{
     "packages": {
         "packages/google-cloud-ids": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-ids",
             "extra-files": [
                 "google/cloud/ids/gapic_version.py",

@@ -124,6 +124,8 @@ def configure_release_please_config(
             "component": f"{package_dir.name}",
             "release-type": "python",
             "extra-files": extra_files,
+            "bump-minor-pre-major": True,
+            "bump-patch-for-minor-pre-major": True,
         }
 
     with open(release_please_config, "w") as f:
