@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [2.6.0](https://github.com/googleapis/google-resumable-media-python/compare/v2.5.0...v2.6.0) (2023-09-06)
+
+
+### Features
+
+* Add support for concurrent XML MPU uploads ([#395](https://github.com/googleapis/google-resumable-media-python/issues/395)) ([a8d56bc](https://github.com/googleapis/google-resumable-media-python/commit/a8d56bc7f51b9b75f5735b241b4bcdb5b2c62fd6))
+* Introduce compatibility with native namespace packages ([#385](https://github.com/googleapis/google-resumable-media-python/issues/385)) ([cdd7a5e](https://github.com/googleapis/google-resumable-media-python/commit/cdd7a5ec140d9e4f77fa7201d9d6dd289f82dabf))
+
+
+### Bug Fixes
+
+* Add google-auth to aiohttp extra ([#386](https://github.com/googleapis/google-resumable-media-python/issues/386)) ([30c2ebd](https://github.com/googleapis/google-resumable-media-python/commit/30c2ebdb18be28cae522df9fd2af45f1cb2b406d))
+
 ## [2.5.0](https://github.com/googleapis/google-resumable-media-python/compare/v2.4.1...v2.5.0) (2023-04-21)
 
 
