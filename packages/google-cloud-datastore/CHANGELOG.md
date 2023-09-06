@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.18.0](https://github.com/googleapis/python-datastore/compare/v2.17.0...v2.18.0) (2023-09-05)
+
+
+### Features
+
+* Add support for Sum and Avg aggregation query ([#437](https://github.com/googleapis/python-datastore/issues/437)) ([e99120d](https://github.com/googleapis/python-datastore/commit/e99120d0dde446d89674addab49987cb24279fe3))
+
+
+### Documentation
+
+* Update property requirement specifications ([#470](https://github.com/googleapis/python-datastore/issues/470)) ([795ce81](https://github.com/googleapis/python-datastore/commit/795ce81c61d2af4e1ba285b4f0f8d796ea435bc3))
+
 ## [2.17.0](https://github.com/googleapis/python-datastore/compare/v2.16.1...v2.17.0) (2023-08-09)
 
 
