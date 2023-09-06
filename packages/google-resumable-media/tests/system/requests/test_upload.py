@@ -659,3 +659,118 @@ class TestResumableUploadUnknownSize(object):
             content_type=BYTES_CONTENT_TYPE,
         )
         self._check_range_sent(response2, 2 * chunk_size, total_bytes - 1, total_bytes)
+
+
+@pytest.mark.parametrize("checksum", ["md5", "crc32c", None])
+def test_XMLMPU(authorized_transport, bucket, cleanup, checksum):
+    with open(ICO_FILE, "rb") as file_obj:
+        actual_contents = file_obj.read()
+
+    blob_name = os.path.basename(ICO_FILE)
+    # Make sure to clean up the uploaded blob when we are done.
+    cleanup(blob_name, authorized_transport)
+    check_does_not_exist(authorized_transport, blob_name)
+
+    # Create the actual upload object.
+    upload_url = utils.XML_UPLOAD_URL_TEMPLATE.format(bucket=bucket, blob=blob_name)
+    container = resumable_requests.XMLMPUContainer(upload_url, blob_name)
+    # Initiate
+    container.initiate(authorized_transport, ICO_CONTENT_TYPE)
+    assert container.upload_id
+
+    part = resumable_requests.XMLMPUPart(
+        upload_url,
+        container.upload_id,
+        ICO_FILE,
+        0,
+        len(actual_contents),
+        1,
+        checksum=checksum,
+    )
+    part.upload(authorized_transport)
+    assert part.etag
+
+    container.register_part(1, part.etag)
+    container.finalize(authorized_transport)
+    assert container.finished
+
+    # Download the content to make sure it's "working as expected".
+    check_content(blob_name, actual_contents, authorized_transport)
+
+
+@pytest.mark.parametrize("checksum", ["md5", "crc32c"])
+def test_XMLMPU_with_bad_checksum(authorized_transport, bucket, checksum):
+    with open(ICO_FILE, "rb") as file_obj:
+        actual_contents = file_obj.read()
+
+    blob_name = os.path.basename(ICO_FILE)
+    # No need to clean up, since the upload will not be finalized successfully.
+    check_does_not_exist(authorized_transport, blob_name)
+
+    # Create the actual upload object.
+    upload_url = utils.XML_UPLOAD_URL_TEMPLATE.format(bucket=bucket, blob=blob_name)
+    container = resumable_requests.XMLMPUContainer(upload_url, blob_name)
+    # Initiate
+    container.initiate(authorized_transport, ICO_CONTENT_TYPE)
+    assert container.upload_id
+
+    try:
+        part = resumable_requests.XMLMPUPart(
+            upload_url,
+            container.upload_id,
+            ICO_FILE,
+            0,
+            len(actual_contents),
+            1,
+            checksum=checksum,
+        )
+
+        fake_checksum_object = _helpers._get_checksum_object(checksum)
+        fake_checksum_object.update(b"bad data")
+        fake_prepared_checksum_digest = _helpers.prepare_checksum_digest(
+            fake_checksum_object.digest()
+        )
+        with mock.patch.object(
+            _helpers,
+            "prepare_checksum_digest",
+            return_value=fake_prepared_checksum_digest,
+        ):
+            with pytest.raises(common.DataCorruption):
+                part.upload(authorized_transport)
+    finally:
+        utils.retry_transient_errors(authorized_transport.delete)(
+            upload_url + "?uploadId=" + str(container.upload_id)
+        )
+
+
+def test_XMLMPU_cancel(authorized_transport, bucket):
+    with open(ICO_FILE, "rb") as file_obj:
+        actual_contents = file_obj.read()
+
+    blob_name = os.path.basename(ICO_FILE)
+    check_does_not_exist(authorized_transport, blob_name)
+
+    # Create the actual upload object.
+    upload_url = utils.XML_UPLOAD_URL_TEMPLATE.format(bucket=bucket, blob=blob_name)
+    container = resumable_requests.XMLMPUContainer(upload_url, blob_name)
+    # Initiate
+    container.initiate(authorized_transport, ICO_CONTENT_TYPE)
+    assert container.upload_id
+
+    part = resumable_requests.XMLMPUPart(
+        upload_url,
+        container.upload_id,
+        ICO_FILE,
+        0,
+        len(actual_contents),
+        1,
+    )
+    part.upload(authorized_transport)
+    assert part.etag
+
+    container.register_part(1, part.etag)
+    container.cancel(authorized_transport)
+
+    # Validate the cancel worked by expecting a 404 on finalize.
+    with pytest.raises(resumable_media.InvalidResponse):
+        container.finalize(authorized_transport)

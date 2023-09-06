@@ -33,6 +33,8 @@ from google import resumable_media
 from google.resumable_media import _helpers
 from google.resumable_media import common
 
+from xml.etree import ElementTree
+
 
 _CONTENT_TYPE_HEADER = "content-type"
 _CONTENT_RANGE_TEMPLATE = "bytes {:d}-{:d}/{:d}"
@@ -54,6 +56,7 @@ _STREAM_READ_PAST_TEMPLATE = (
     "{:d} bytes have been read from the stream, which exceeds "
     "the expected total {:d}."
 )
+_DELETE = "DELETE"
 _POST = "POST"
 _PUT = "PUT"
 _UPLOAD_CHECKSUM_MISMATCH_MESSAGE = (
@@ -63,6 +66,14 @@ _UPLOAD_CHECKSUM_MISMATCH_MESSAGE = (
 _UPLOAD_METADATA_NO_APPROPRIATE_CHECKSUM_MESSAGE = (
     "Response metadata had no ``{}`` value; checksum could not be validated."
 )
+_UPLOAD_HEADER_NO_APPROPRIATE_CHECKSUM_MESSAGE = (
+    "Response headers had no ``{}`` value; checksum could not be validated."
+)
+_MPU_INITIATE_QUERY = "?uploads"
+_MPU_PART_QUERY_TEMPLATE = "?partNumber={part}&uploadId={upload_id}"
+_S3_COMPAT_XML_NAMESPACE = "{http://s3.amazonaws.com/doc/2006-03-01/}"
+_UPLOAD_ID_NODE = "UploadId"
+_MPU_FINAL_QUERY_TEMPLATE = "?uploadId={upload_id}"
 
 
 class UploadBase(object):
@@ -236,7 +247,7 @@ class MultipartUpload(UploadBase):
         upload_url (str): The URL where the content will be uploaded.
         headers (Optional[Mapping[str, str]]): Extra headers that should
             be sent with the request, e.g. headers for encrypted data.
-        checksum Optional([str]): The type of checksum to compute to verify
+        checksum (Optional([str])): The type of checksum to compute to verify
             the integrity of the object. The request metadata will be amended
             to include the computed value. Using this option will override a
             manually-set checksum value. Supported values are "md5", "crc32c"
@@ -341,10 +352,8 @@ class ResumableUpload(UploadBase):
         upload_url (str): The URL where the resumable upload will be initiated.
         chunk_size (int): The size of each chunk used to upload the resource.
         headers (Optional[Mapping[str, str]]): Extra headers that should
-            be sent with the :meth:`initiate` request, e.g. headers for
-            encrypted data. These **will not** be sent with
-            :meth:`transmit_next_chunk` or :meth:`recover` requests.
-        checksum Optional([str]): The type of checksum to compute to verify
+            be sent with every request.
+        checksum (Optional([str])): The type of checksum to compute to verify
             the integrity of the object. After the upload is complete, the
             server-computed checksum of the resulting object will be read
             and google.resumable_media.common.DataCorruption will be raised on
@@ -587,8 +596,7 @@ class ResumableUpload(UploadBase):
               * the body of the request
               * headers for the request
 
-            The headers **do not** incorporate the ``_headers`` on the
-            current instance.
+            The headers incorporate the ``_headers`` on the current instance.
 
         Raises:
             ValueError: If the current upload has finished.
@@ -718,7 +726,7 @@ class ResumableUpload(UploadBase):
             self._bytes_uploaded = int(match.group("end_byte")) + 1
 
     def _validate_checksum(self, response):
-        """Check the computed checksum, if any, against the response headers.
+        """Check the computed checksum, if any, against the recieved metadata.
 
         Args:
             response (object): The HTTP response object.
@@ -858,6 +866,512 @@ class ResumableUpload(UploadBase):
             NotImplementedError: Always, since virtual.
         """
         raise NotImplementedError("This implementation is virtual.")
+
+
+class XMLMPUContainer(UploadBase):
+    """Initiate and close an upload using the XML MPU API.
+
+    An XML MPU sends an initial request and then receives an upload ID.
+    Using the upload ID, the upload is then done in numbered parts and the
+    parts can be uploaded concurrently.
+
+    In order to avoid concurrency issues with this container object, the
+    uploading of individual parts is handled separately, by XMLMPUPart objects
+    spawned from this container class. The XMLMPUPart objects are not
+    necessarily in the same process as the container, so they do not update the
+    container automatically.
+
+    MPUs are sometimes referred to as "Multipart Uploads", which is ambiguous
+    given the JSON multipart upload, so the abbreviation "MPU" will be used
+    throughout.
+
+    See: https://cloud.google.com/storage/docs/multipart-uploads
+
+    Args:
+        upload_url (str): The URL of the object (without query parameters). The
+            initiate, PUT, and finalization requests will all use this URL, with
+            varying query parameters.
+        filename (str): The name (path) of the file to upload.
+        headers (Optional[Mapping[str, str]]): Extra headers that should
+            be sent with every request.
+
+    Attributes:
+        upload_url (str): The URL where the content will be uploaded.
+        upload_id (Optional(str)): The ID of the upload from the initialization
+            response.
+    """
+
+    def __init__(self, upload_url, filename, headers=None, upload_id=None):
+        super().__init__(upload_url, headers=headers)
+        self._filename = filename
+        self._upload_id = upload_id
+        self._parts = {}
+
+    @property
+    def upload_id(self):
+        return self._upload_id
+
+    def register_part(self, part_number, etag):
+        """Register an uploaded part by part number and corresponding etag.
+
+        XMLMPUPart objects represent individual parts, and their part number
+        and etag can be registered to the container object with this method
+        and therefore incorporated in the finalize() call to finish the upload.
+
+        This method accepts part_number and etag, but not XMLMPUPart objects
+        themselves, to reduce the complexity involved in running XMLMPUPart
+        uploads in separate processes.
+
+        Args:
+            part_number (int): The part number. Parts are assembled into the
+                final uploaded object with finalize() in order of their part
+                numbers.
+            etag (str): The etag included in the server response after upload.
+        """
+        self._parts[part_number] = etag
+
+    def _prepare_initiate_request(self, content_type):
+        """Prepare the contents of HTTP request to initiate upload.
+
+        This is everything that must be done before a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        Args:
+            content_type (str): The content type of the resource, e.g. a JPEG
+                image has content type ``image/jpeg``.
+
+        Returns:
+            Tuple[str, str, bytes, Mapping[str, str]]: The quadruple
+
+              * HTTP verb for the request (always POST)
+              * the URL for the request
+              * the body of the request
+              * headers for the request
+
+        Raises:
+            ValueError: If the current upload has already been initiated.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        if self.upload_id is not None:
+            raise ValueError("This upload has already been initiated.")
+
+        initiate_url = self.upload_url + _MPU_INITIATE_QUERY
+
+        headers = {
+            **self._headers,
+            _CONTENT_TYPE_HEADER: content_type,
+        }
+        return _POST, initiate_url, None, headers
+
+    def _process_initiate_response(self, response):
+        """Process the response from an HTTP request that initiated the upload.
+
+        This is everything that must be done after a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        This method takes the URL from the ``Location`` header and stores it
+        for future use. Within that URL, we assume the ``upload_id`` query
+        parameter has been included, but we do not check.
+
+        Args:
+            response (object): The HTTP response object.
+
+        Raises:
+            ~google.resumable_media.common.InvalidResponse: If the status
+                code is not 200.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        _helpers.require_status_code(response, (http.client.OK,), self._get_status_code)
+        root = ElementTree.fromstring(response.text)
+        self._upload_id = root.find(_S3_COMPAT_XML_NAMESPACE + _UPLOAD_ID_NODE).text
+
+    def initiate(
+        self,
+        transport,
+        content_type,
+        timeout=None,
+    ):
+        """Initiate an MPU and record the upload ID.
+
+        Args:
+            transport (object): An object which can make authenticated
+                requests.
+            content_type (str): The content type of the resource, e.g. a JPEG
+                image has content type ``image/jpeg``.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
+
+        Raises:
+            NotImplementedError: Always, since virtual.
+        """
+        raise NotImplementedError("This implementation is virtual.")
+
+    def _prepare_finalize_request(self):
+        """Prepare the contents of an HTTP request to finalize the upload.
+
+        All of the parts must be registered before calling this method.
+
+        Returns:
+            Tuple[str, str, bytes, Mapping[str, str]]: The quadruple
+
+              * HTTP verb for the request (always POST)
+              * the URL for the request
+              * the body of the request
+              * headers for the request
+
+        Raises:
+            ValueError: If the upload has not been initiated.
+        """
+        if self.upload_id is None:
+            raise ValueError("This upload has not yet been initiated.")
+
+        final_query = _MPU_FINAL_QUERY_TEMPLATE.format(upload_id=self._upload_id)
+        finalize_url = self.upload_url + final_query
+        final_xml_root = ElementTree.Element("CompleteMultipartUpload")
+        for part_number, etag in self._parts.items():
+            part = ElementTree.SubElement(final_xml_root, "Part")  # put in a loop
+            ElementTree.SubElement(part, "PartNumber").text = str(part_number)
+            ElementTree.SubElement(part, "ETag").text = etag
+        payload = ElementTree.tostring(final_xml_root)
+        return _POST, finalize_url, payload, self._headers
+
+    def _process_finalize_response(self, response):
+        """Process the response from an HTTP request that finalized the upload.
+
+        This is everything that must be done after a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        Args:
+            response (object): The HTTP response object.
+
+        Raises:
+            ~google.resumable_media.common.InvalidResponse: If the status
+                code is not 200.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+
+        _helpers.require_status_code(response, (http.client.OK,), self._get_status_code)
+        self._finished = True
+
+    def finalize(
+        self,
+        transport,
+        timeout=None,
+    ):
+        """Finalize an MPU request with all the parts.
+
+        Args:
+            transport (object): An object which can make authenticated
+                requests.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
+
+        Raises:
+            NotImplementedError: Always, since virtual.
+        """
+        raise NotImplementedError("This implementation is virtual.")
+
+    def _prepare_cancel_request(self):
+        """Prepare the contents of an HTTP request to cancel the upload.
+
+        Returns:
+            Tuple[str, str, bytes, Mapping[str, str]]: The quadruple
+
+              * HTTP verb for the request (always DELETE)
+              * the URL for the request
+              * the body of the request
+              * headers for the request
+
+        Raises:
+            ValueError: If the upload has not been initiated.
+        """
+        if self.upload_id is None:
+            raise ValueError("This upload has not yet been initiated.")
+
+        cancel_query = _MPU_FINAL_QUERY_TEMPLATE.format(upload_id=self._upload_id)
+        cancel_url = self.upload_url + cancel_query
+        return _DELETE, cancel_url, None, self._headers
+
+    def _process_cancel_response(self, response):
+        """Process the response from an HTTP request that canceled the upload.
+
+        This is everything that must be done after a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        Args:
+            response (object): The HTTP response object.
+
+        Raises:
+            ~google.resumable_media.common.InvalidResponse: If the status
+                code is not 204.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+
+        _helpers.require_status_code(
+            response, (http.client.NO_CONTENT,), self._get_status_code
+        )
+
+    def cancel(
+        self,
+        transport,
+        timeout=None,
+    ):
+        """Cancel an MPU request and permanently delete any uploaded parts.
+
+        This cannot be undone.
+
+        Args:
+            transport (object): An object which can make authenticated
+                requests.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
+
+        Raises:
+            NotImplementedError: Always, since virtual.
+        """
+        raise NotImplementedError("This implementation is virtual.")
+
+
+class XMLMPUPart(UploadBase):
+    """Upload a single part of an existing XML MPU container.
+
+    An XML MPU sends an initial request and then receives an upload ID.
+    Using the upload ID, the upload is then done in numbered parts and the
+    parts can be uploaded concurrently.
+
+    In order to avoid concurrency issues with the container object, the
+    uploading of individual parts is handled separately by multiple objects
+    of this class. Once a part is uploaded, it can be registered with the
+    container with `container.register_part(part.part_number, part.etag)`.
+
+    MPUs are sometimes referred to as "Multipart Uploads", which is ambiguous
+    given the JSON multipart upload, so the abbreviation "MPU" will be used
+    throughout.
+
+    See: https://cloud.google.com/storage/docs/multipart-uploads
+
+    Args:
+        upload_url (str): The URL of the object (without query parameters).
+        upload_id (str): The ID of the upload from the initialization response.
+        filename (str): The name (path) of the file to upload.
+        start (int): The byte index of the beginning of the part.
+        end (int): The byte index of the end of the part.
+        part_number (int): The part number. Part numbers will be assembled in
+            sequential order when the container is finalized.
+        headers (Optional[Mapping[str, str]]): Extra headers that should
+            be sent with every request.
+        checksum (Optional([str])): The type of checksum to compute to verify
+            the integrity of the object. The request headers will be amended
+            to include the computed value. Supported values are "md5", "crc32c"
+            and None. The default is None.
+
+    Attributes:
+        upload_url (str): The URL of the object (without query parameters).
+        upload_id (str): The ID of the upload from the initialization response.
+        filename (str): The name (path) of the file to upload.
+        start (int): The byte index of the beginning of the part.
+        end (int): The byte index of the end of the part.
+        part_number (int): The part number. Part numbers will be assembled in
+            sequential order when the container is finalized.
+        etag (Optional(str)): The etag returned by the service after upload.
+    """
+
+    def __init__(
+        self,
+        upload_url,
+        upload_id,
+        filename,
+        start,
+        end,
+        part_number,
+        headers=None,
+        checksum=None,
+    ):
+        super().__init__(upload_url, headers=headers)
+        self._filename = filename
+        self._start = start
+        self._end = end
+        self._upload_id = upload_id
+        self._part_number = part_number
+        self._etag = None
+        self._checksum_type = checksum
+        self._checksum_object = None
+
+    @property
+    def part_number(self):
+        return self._part_number
+
+    @property
+    def upload_id(self):
+        return self._upload_id
+
+    @property
+    def filename(self):
+        return self._filename
+
+    @property
+    def etag(self):
+        return self._etag
+
+    @property
+    def start(self):
+        return self._start
+
+    @property
+    def end(self):
+        return self._end
+
+    def _prepare_upload_request(self):
+        """Prepare the contents of HTTP request to upload a part.
+
+        This is everything that must be done before a request that doesn't
+        require network I/O. This is based on the `sans-I/O`_ philosophy.
+
+        For the time being, this **does require** some form of I/O to read
+        a part from ``stream`` (via :func:`get_part_payload`). However, this
+        will (almost) certainly not be network I/O.
+
+        Returns:
+            Tuple[str, str, bytes, Mapping[str, str]]: The quadruple
+
+              * HTTP verb for the request (always PUT)
+              * the URL for the request
+              * the body of the request
+              * headers for the request
+
+            The headers incorporate the ``_headers`` on the current instance.
+
+        Raises:
+            ValueError: If the current upload has finished.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        if self.finished:
+            raise ValueError("This part has already been uploaded.")
+
+        with open(self._filename, "br") as f:
+            f.seek(self._start)
+            payload = f.read(self._end - self._start)
+
+        self._checksum_object = _helpers._get_checksum_object(self._checksum_type)
+        if self._checksum_object is not None:
+            self._checksum_object.update(payload)
+
+        part_query = _MPU_PART_QUERY_TEMPLATE.format(
+            part=self._part_number, upload_id=self._upload_id
+        )
+        upload_url = self.upload_url + part_query
+        return _PUT, upload_url, payload, self._headers
+
+    def _process_upload_response(self, response):
+        """Process the response from an HTTP request.
+
+        This is everything that must be done after a request that doesn't
+        require network I/O (or other I/O). This is based on the `sans-I/O`_
+        philosophy.
+
+        Args:
+            response (object): The HTTP response object.
+
+        Raises:
+            ~google.resumable_media.common.InvalidResponse: If the status
+                code is not 200 or the response is missing data.
+
+        .. _sans-I/O: https://sans-io.readthedocs.io/
+        """
+        _helpers.require_status_code(
+            response,
+            (http.client.OK,),
+            self._get_status_code,
+        )
+
+        self._validate_checksum(response)
+
+        etag = _helpers.header_required(response, "etag", self._get_headers)
+        self._etag = etag
+        self._finished = True
+
+    def upload(
+        self,
+        transport,
+        timeout=None,
+    ):
+        """Upload the part.
+
+        Args:
+            transport (object): An object which can make authenticated
+                requests.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
+
+        Raises:
+            NotImplementedError: Always, since virtual.
+        """
+        raise NotImplementedError("This implementation is virtual.")
+
+    def _validate_checksum(self, response):
+        """Check the computed checksum, if any, against the response headers.
+
+        Args:
+            response (object): The HTTP response object.
+
+        Raises:
+            ~google.resumable_media.common.DataCorruption: If the checksum
+            computed locally and the checksum reported by the remote host do
+            not match.
+        """
+        if self._checksum_type is None:
+            return
+
+        remote_checksum = _helpers._get_uploaded_checksum_from_headers(
+            response, self._get_headers, self._checksum_type
+        )
+
+        if remote_checksum is None:
+            metadata_key = _helpers._get_metadata_key(self._checksum_type)
+            raise common.InvalidResponse(
+                response,
+                _UPLOAD_METADATA_NO_APPROPRIATE_CHECKSUM_MESSAGE.format(metadata_key),
+                self._get_headers(response),
+            )
+        local_checksum = _helpers.prepare_checksum_digest(
+            self._checksum_object.digest()
+        )
+        if local_checksum != remote_checksum:
+            raise common.DataCorruption(
+                response,
+                _UPLOAD_CHECKSUM_MISMATCH_MESSAGE.format(
+                    self._checksum_type.upper(), local_checksum, remote_checksum
+                ),
+            )
 
 
 def get_boundary():

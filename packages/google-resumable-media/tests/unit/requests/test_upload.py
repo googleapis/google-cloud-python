@@ -15,7 +15,8 @@
 import http.client
 import io
 import json
-
+import pytest  # type: ignore
+import tempfile
 from unittest import mock
 
 import google.resumable_media.requests.upload as upload_mod
@@ -30,6 +31,25 @@ BASIC_CONTENT = "text/plain"
 JSON_TYPE = "application/json; charset=UTF-8"
 JSON_TYPE_LINE = b"content-type: application/json; charset=UTF-8\r\n"
 EXPECTED_TIMEOUT = (61, 60)
+EXAMPLE_XML_UPLOAD_URL = "https://test-project.storage.googleapis.com/test-bucket"
+EXAMPLE_XML_MPU_INITIATE_TEXT_TEMPLATE = """<?xml version="1.0" encoding="UTF-8"?>
+<InitiateMultipartUploadResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <Bucket>travel-maps</Bucket>
+  <Key>paris.jpg</Key>
+  <UploadId>{upload_id}</UploadId>
+</InitiateMultipartUploadResult>
+"""
+UPLOAD_ID = "VXBsb2FkIElEIGZvciBlbHZpbmcncyBteS1tb3ZpZS5tMnRzIHVwbG9hZA"
+PARTS = {1: "39a59594290b0f9a30662a56d695b71d", 2: "00000000290b0f9a30662a56d695b71d"}
+FILE_DATA = b"testdata" * 128
+
+
+@pytest.fixture(scope="session")
+def filename():
+    with tempfile.NamedTemporaryFile() as f:
+        f.write(FILE_DATA)
+        f.flush()
+        yield f.name
 
 
 class TestSimpleUpload(object):
@@ -333,8 +353,54 @@ class TestResumableUpload(object):
         )
 
 
-def _make_response(status_code=http.client.OK, headers=None):
+def test_mpu_container():
+    container = upload_mod.XMLMPUContainer(EXAMPLE_XML_UPLOAD_URL, filename)
+
+    response_text = EXAMPLE_XML_MPU_INITIATE_TEXT_TEMPLATE.format(upload_id=UPLOAD_ID)
+
+    transport = mock.Mock(spec=["request"])
+    transport.request.return_value = _make_response(text=response_text)
+    container.initiate(transport, BASIC_CONTENT)
+    assert container.upload_id == UPLOAD_ID
+
+    for part, etag in PARTS.items():
+        container.register_part(part, etag)
+
+    assert container._parts == PARTS
+
+    transport = mock.Mock(spec=["request"])
+    transport.request.return_value = _make_response()
+    container.finalize(transport)
+    assert container.finished
+
+
+def test_mpu_container_cancel():
+    container = upload_mod.XMLMPUContainer(
+        EXAMPLE_XML_UPLOAD_URL, filename, upload_id=UPLOAD_ID
+    )
+
+    transport = mock.Mock(spec=["request"])
+    transport.request.return_value = _make_response(status_code=204)
+    container.cancel(transport)
+
+
+def test_mpu_part(filename):
+    part = upload_mod.XMLMPUPart(EXAMPLE_XML_UPLOAD_URL, UPLOAD_ID, filename, 0, 128, 1)
+
+    transport = mock.Mock(spec=["request"])
+    transport.request.return_value = _make_response(headers={"etag": PARTS[1]})
+
+    part.upload(transport)
+
+    assert part.finished
+    assert part.etag == PARTS[1]
+
+
+def _make_response(status_code=http.client.OK, headers=None, text=None):
     headers = headers or {}
     return mock.Mock(
-        headers=headers, status_code=status_code, spec=["headers", "status_code"]
+        headers=headers,
+        status_code=status_code,
+        text=text,
+        spec=["headers", "status_code", "text"],
     )

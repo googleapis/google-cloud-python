@@ -38,6 +38,9 @@ RESUMABLE_UPLOAD = _UPLOAD_BASE + "resumable"
 
 METADATA_URL_TEMPLATE = BUCKET_URL + "/o/{blob_name}"
 
+XML_UPLOAD_URL_TEMPLATE = "https://{bucket}.storage.googleapis.com/{blob}"
+
+
 GCS_RW_SCOPE = "https://www.googleapis.com/auth/devstorage.read_write"
 # Generated using random.choice() with all 256 byte choices.
 ENCRYPTION_KEY = (

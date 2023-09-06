@@ -15,6 +15,7 @@
 import http.client
 import io
 import sys
+import tempfile
 
 from unittest import mock
 import pytest  # type: ignore
@@ -32,6 +33,26 @@ ONE_MB = 1024 * 1024
 BASIC_CONTENT = "text/plain"
 JSON_TYPE = "application/json; charset=UTF-8"
 JSON_TYPE_LINE = b"content-type: application/json; charset=UTF-8\r\n"
+EXAMPLE_XML_UPLOAD_URL = "https://test-project.storage.googleapis.com/test-bucket"
+EXAMPLE_HEADERS = {"example-key": "example-content"}
+EXAMPLE_XML_MPU_INITIATE_TEXT_TEMPLATE = """<?xml version="1.0" encoding="UTF-8"?>
+<InitiateMultipartUploadResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+  <Bucket>travel-maps</Bucket>
+  <Key>paris.jpg</Key>
+  <UploadId>{upload_id}</UploadId>
+</InitiateMultipartUploadResult>
+"""
+UPLOAD_ID = "VXBsb2FkIElEIGZvciBlbHZpbmcncyBteS1tb3ZpZS5tMnRzIHVwbG9hZA"
+PARTS = {1: "39a59594290b0f9a30662a56d695b71d", 2: "00000000290b0f9a30662a56d695b71d"}
+FILE_DATA = b"testdata" * 128
+
+
+@pytest.fixture(scope="session")
+def filename():
+    with tempfile.NamedTemporaryFile() as f:
+        f.write(FILE_DATA)
+        f.flush()
+        yield f.name
 
 
 class TestUploadBase(object):
@@ -1230,12 +1251,269 @@ class Test_get_content_range(object):
         assert result == "bytes 1000-10000/*"
 
 
+def test_xml_mpu_container_constructor_and_properties(filename):
+    container = _upload.XMLMPUContainer(EXAMPLE_XML_UPLOAD_URL, filename)
+    assert container.upload_url == EXAMPLE_XML_UPLOAD_URL
+    assert container.upload_id is None
+    assert container._headers == {}
+    assert container._parts == {}
+    assert container._filename == filename
+
+    container = _upload.XMLMPUContainer(
+        EXAMPLE_XML_UPLOAD_URL,
+        filename,
+        headers=EXAMPLE_HEADERS,
+        upload_id=UPLOAD_ID,
+    )
+    container._parts = PARTS
+    assert container.upload_url == EXAMPLE_XML_UPLOAD_URL
+    assert container.upload_id == UPLOAD_ID
+    assert container._headers == EXAMPLE_HEADERS
+    assert container._parts == PARTS
+    assert container._filename == filename
+
+
+def test_xml_mpu_container_initiate(filename):
+    container = _upload.XMLMPUContainer(
+        EXAMPLE_XML_UPLOAD_URL, filename, upload_id=UPLOAD_ID
+    )
+    with pytest.raises(ValueError):
+        container._prepare_initiate_request(BASIC_CONTENT)
+
+    container = _upload.XMLMPUContainer(
+        EXAMPLE_XML_UPLOAD_URL, filename, headers=EXAMPLE_HEADERS
+    )
+    verb, url, body, headers = container._prepare_initiate_request(BASIC_CONTENT)
+    assert verb == _upload._POST
+    assert url == EXAMPLE_XML_UPLOAD_URL + _upload._MPU_INITIATE_QUERY
+    assert not body
+    assert headers == {**EXAMPLE_HEADERS, "content-type": BASIC_CONTENT}
+
+    _fix_up_virtual(container)
+    response = _make_xml_response(
+        text=EXAMPLE_XML_MPU_INITIATE_TEXT_TEMPLATE.format(upload_id=UPLOAD_ID)
+    )
+    container._process_initiate_response(response)
+    assert container.upload_id == UPLOAD_ID
+
+    with pytest.raises(NotImplementedError):
+        container.initiate(None, None)
+
+
+def test_xml_mpu_container_finalize(filename):
+    container = _upload.XMLMPUContainer(EXAMPLE_XML_UPLOAD_URL, filename)
+    with pytest.raises(ValueError):
+        container._prepare_finalize_request()
+
+    container = _upload.XMLMPUContainer(
+        EXAMPLE_XML_UPLOAD_URL,
+        filename,
+        headers=EXAMPLE_HEADERS,
+        upload_id=UPLOAD_ID,
+    )
+    container._parts = PARTS
+    verb, url, body, headers = container._prepare_finalize_request()
+    assert verb == _upload._POST
+    final_query = _upload._MPU_FINAL_QUERY_TEMPLATE.format(upload_id=UPLOAD_ID)
+    assert url == EXAMPLE_XML_UPLOAD_URL + final_query
+    assert headers == EXAMPLE_HEADERS
+    assert b"CompleteMultipartUpload" in body
+    for key, value in PARTS.items():
+        assert str(key).encode("utf-8") in body
+        assert value.encode("utf-8") in body
+
+    _fix_up_virtual(container)
+    response = _make_xml_response()
+    container._process_finalize_response(response)
+    assert container.finished
+
+    with pytest.raises(NotImplementedError):
+        container.finalize(None)
+
+
+def test_xml_mpu_container_cancel(filename):
+    container = _upload.XMLMPUContainer(EXAMPLE_XML_UPLOAD_URL, filename)
+    with pytest.raises(ValueError):
+        container._prepare_cancel_request()
+
+    container = _upload.XMLMPUContainer(
+        EXAMPLE_XML_UPLOAD_URL,
+        filename,
+        headers=EXAMPLE_HEADERS,
+        upload_id=UPLOAD_ID,
+    )
+    container._parts = PARTS
+    verb, url, body, headers = container._prepare_cancel_request()
+    assert verb == _upload._DELETE
+    final_query = _upload._MPU_FINAL_QUERY_TEMPLATE.format(upload_id=UPLOAD_ID)
+    assert url == EXAMPLE_XML_UPLOAD_URL + final_query
+    assert headers == EXAMPLE_HEADERS
+    assert not body
+
+    _fix_up_virtual(container)
+    response = _make_xml_response(status_code=204)
+    container._process_cancel_response(response)
+
+    with pytest.raises(NotImplementedError):
+        container.cancel(None)
+
+
+def test_xml_mpu_part(filename):
+    PART_NUMBER = 1
+    START = 0
+    END = 256
+    ETAG = PARTS[1]
+
+    part = _upload.XMLMPUPart(
+        EXAMPLE_XML_UPLOAD_URL,
+        UPLOAD_ID,
+        filename,
+        START,
+        END,
+        PART_NUMBER,
+        headers=EXAMPLE_HEADERS,
+        checksum="md5",
+    )
+    assert part.upload_url == EXAMPLE_XML_UPLOAD_URL
+    assert part.upload_id == UPLOAD_ID
+    assert part.filename == filename
+    assert part.etag is None
+    assert part.start == START
+    assert part.end == END
+    assert part.part_number == PART_NUMBER
+    assert part._headers == EXAMPLE_HEADERS
+    assert part._checksum_type == "md5"
+    assert part._checksum_object is None
+
+    part = _upload.XMLMPUPart(
+        EXAMPLE_XML_UPLOAD_URL,
+        UPLOAD_ID,
+        filename,
+        START,
+        END,
+        PART_NUMBER,
+        headers=EXAMPLE_HEADERS,
+    )
+    verb, url, payload, headers = part._prepare_upload_request()
+    assert verb == _upload._PUT
+    assert url == EXAMPLE_XML_UPLOAD_URL + _upload._MPU_PART_QUERY_TEMPLATE.format(
+        part=PART_NUMBER, upload_id=UPLOAD_ID
+    )
+    assert headers == EXAMPLE_HEADERS
+    assert payload == FILE_DATA[START:END]
+
+    _fix_up_virtual(part)
+    response = _make_xml_response(headers={"etag": ETAG})
+    part._process_upload_response(response)
+    assert part.etag == ETAG
+
+
+def test_xml_mpu_part_invalid_response(filename):
+    PART_NUMBER = 1
+    START = 0
+    END = 256
+    ETAG = PARTS[1]
+
+    part = _upload.XMLMPUPart(
+        EXAMPLE_XML_UPLOAD_URL,
+        UPLOAD_ID,
+        filename,
+        START,
+        END,
+        PART_NUMBER,
+        headers=EXAMPLE_HEADERS,
+        checksum="md5",
+    )
+    _fix_up_virtual(part)
+    response = _make_xml_response(headers={"etag": ETAG})
+    with pytest.raises(common.InvalidResponse):
+        part._process_upload_response(response)
+
+
+def test_xml_mpu_part_checksum_failure(filename):
+    PART_NUMBER = 1
+    START = 0
+    END = 256
+    ETAG = PARTS[1]
+
+    part = _upload.XMLMPUPart(
+        EXAMPLE_XML_UPLOAD_URL,
+        UPLOAD_ID,
+        filename,
+        START,
+        END,
+        PART_NUMBER,
+        headers=EXAMPLE_HEADERS,
+        checksum="md5",
+    )
+    _fix_up_virtual(part)
+    part._prepare_upload_request()
+    response = _make_xml_response(
+        headers={"etag": ETAG, "x-goog-hash": "md5=Ojk9c3dhfxgoKVVHYwFbHQ=="}
+    )  # Example md5 checksum but not the correct one
+    with pytest.raises(common.DataCorruption):
+        part._process_upload_response(response)
+
+
+def test_xml_mpu_part_checksum_success(filename):
+    PART_NUMBER = 1
+    START = 0
+    END = 256
+    ETAG = PARTS[1]
+
+    part = _upload.XMLMPUPart(
+        EXAMPLE_XML_UPLOAD_URL,
+        UPLOAD_ID,
+        filename,
+        START,
+        END,
+        PART_NUMBER,
+        headers=EXAMPLE_HEADERS,
+        checksum="md5",
+    )
+    _fix_up_virtual(part)
+    part._prepare_upload_request()
+    response = _make_xml_response(
+        headers={"etag": ETAG, "x-goog-hash": "md5=pOUFGnohRRFFd24NztFuFw=="}
+    )
+    part._process_upload_response(response)
+    assert part.etag == ETAG
+    assert part.finished
+
+    # Test error handling
+    part = _upload.XMLMPUPart(
+        EXAMPLE_XML_UPLOAD_URL,
+        UPLOAD_ID,
+        filename,
+        START,
+        END,
+        PART_NUMBER,
+        headers=EXAMPLE_HEADERS,
+        checksum="md5",
+    )
+    with pytest.raises(NotImplementedError):
+        part.upload(None)
+    part._finished = True
+    with pytest.raises(ValueError):
+        part._prepare_upload_request()
+
+
 def _make_response(status_code=http.client.OK, headers=None, metadata=None):
     headers = headers or {}
     return mock.Mock(
         headers=headers,
         status_code=status_code,
         json=mock.Mock(return_value=metadata),
+        spec=["headers", "status_code"],
+    )
+
+
+def _make_xml_response(status_code=http.client.OK, headers=None, text=None):
+    headers = headers or {}
+    return mock.Mock(
+        headers=headers,
+        status_code=status_code,
+        text=text,
         spec=["headers", "status_code"],
     )
 

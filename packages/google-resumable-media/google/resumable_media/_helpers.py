@@ -243,6 +243,34 @@ def _get_expected_checksum(response, get_headers, media_url, checksum_type):
     return (expected_checksum, checksum_object)
 
 
+def _get_uploaded_checksum_from_headers(response, get_headers, checksum_type):
+    """Get the computed checksum and checksum object from the response headers.
+
+    Args:
+        response (~requests.Response): The HTTP response object.
+        get_headers (callable: response->dict): returns response headers.
+        checksum_type Optional(str): The checksum type to read from the headers,
+            exactly as it will appear in the headers (case-sensitive). Must be
+            "md5", "crc32c" or None.
+
+    Returns:
+        Tuple (Optional[str], object): The checksum of the response,
+        if it can be detected from the ``X-Goog-Hash`` header, and the
+        appropriate checksum object for the expected checksum.
+    """
+    if checksum_type not in ["md5", "crc32c", None]:
+        raise ValueError("checksum must be ``'md5'``, ``'crc32c'`` or ``None``")
+    elif checksum_type in ["md5", "crc32c"]:
+        headers = get_headers(response)
+        remote_checksum = _parse_checksum_header(
+            headers.get(_HASH_HEADER), response, checksum_label=checksum_type
+        )
+    else:
+        remote_checksum = None
+
+    return remote_checksum
+
+
 def _parse_checksum_header(header_value, response, checksum_label):
     """Parses the checksum header from an ``X-Goog-Hash`` value.
 

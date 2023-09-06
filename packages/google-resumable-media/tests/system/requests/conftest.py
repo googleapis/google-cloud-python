@@ -53,6 +53,6 @@ def authorized_transport():
 def bucket(authorized_transport):
     ensure_bucket(authorized_transport)
 
-    yield utils.BUCKET_URL
+    yield utils.BUCKET_NAME
 
     cleanup_bucket(authorized_transport)

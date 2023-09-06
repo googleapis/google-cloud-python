@@ -669,7 +669,8 @@ from google.resumable_media.requests.download import RawChunkedDownload
 from google.resumable_media.requests.download import RawDownload
 from google.resumable_media.requests.upload import ResumableUpload
 from google.resumable_media.requests.upload import SimpleUpload
-
+from google.resumable_media.requests.upload import XMLMPUContainer
+from google.resumable_media.requests.upload import XMLMPUPart
 
 __all__ = [
     "ChunkedDownload",
@@ -679,4 +680,6 @@ __all__ = [
     "RawDownload",
     "ResumableUpload",
     "SimpleUpload",
+    "XMLMPUContainer",
+    "XMLMPUPart",
 ]

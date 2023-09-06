@@ -555,3 +555,208 @@ class ResumableUpload(_request_helpers.RequestsMixin, _upload.ResumableUpload):
         return _request_helpers.wait_and_retry(
             retriable_request, self._get_status_code, self._retry_strategy
         )
+
+
+class XMLMPUContainer(_request_helpers.RequestsMixin, _upload.XMLMPUContainer):
+    """Initiate and close an upload using the XML MPU API.
+
+    An XML MPU sends an initial request and then receives an upload ID.
+    Using the upload ID, the upload is then done in numbered parts and the
+    parts can be uploaded concurrently.
+
+    In order to avoid concurrency issues with this container object, the
+    uploading of individual parts is handled separately, by XMLMPUPart objects
+    spawned from this container class. The XMLMPUPart objects are not
+    necessarily in the same process as the container, so they do not update the
+    container automatically.
+
+    MPUs are sometimes referred to as "Multipart Uploads", which is ambiguous
+    given the JSON multipart upload, so the abbreviation "MPU" will be used
+    throughout.
+
+    See: https://cloud.google.com/storage/docs/multipart-uploads
+
+    Args:
+        upload_url (str): The URL of the object (without query parameters). The
+            initiate, PUT, and finalization requests will all use this URL, with
+            varying query parameters.
+        headers (Optional[Mapping[str, str]]): Extra headers that should
+            be sent with the :meth:`initiate` request, e.g. headers for
+            encrypted data. These headers will be propagated to individual
+            XMLMPUPart objects spawned from this container as well.
+
+    Attributes:
+        upload_url (str): The URL where the content will be uploaded.
+        upload_id (Optional(int)): The ID of the upload from the initialization
+            response.
+    """
+
+    def initiate(
+        self,
+        transport,
+        content_type,
+        timeout=(
+            _request_helpers._DEFAULT_CONNECT_TIMEOUT,
+            _request_helpers._DEFAULT_READ_TIMEOUT,
+        ),
+    ):
+        """Initiate an MPU and record the upload ID.
+
+        Args:
+            transport (object): An object which can make authenticated
+                requests.
+            content_type (str): The content type of the resource, e.g. a JPEG
+                image has content type ``image/jpeg``.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
+
+        Returns:
+            ~requests.Response: The HTTP response returned by ``transport``.
+        """
+
+        method, url, payload, headers = self._prepare_initiate_request(
+            content_type,
+        )
+
+        # Wrap the request business logic in a function to be retried.
+        def retriable_request():
+            result = transport.request(
+                method, url, data=payload, headers=headers, timeout=timeout
+            )
+
+            self._process_initiate_response(result)
+
+            return result
+
+        return _request_helpers.wait_and_retry(
+            retriable_request, self._get_status_code, self._retry_strategy
+        )
+
+    def finalize(
+        self,
+        transport,
+        timeout=(
+            _request_helpers._DEFAULT_CONNECT_TIMEOUT,
+            _request_helpers._DEFAULT_READ_TIMEOUT,
+        ),
+    ):
+        """Finalize an MPU request with all the parts.
+
+        Args:
+            transport (object): An object which can make authenticated
+                requests.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
+
+        Returns:
+            ~requests.Response: The HTTP response returned by ``transport``.
+        """
+        method, url, payload, headers = self._prepare_finalize_request()
+
+        # Wrap the request business logic in a function to be retried.
+        def retriable_request():
+            result = transport.request(
+                method, url, data=payload, headers=headers, timeout=timeout
+            )
+
+            self._process_finalize_response(result)
+
+            return result
+
+        return _request_helpers.wait_and_retry(
+            retriable_request, self._get_status_code, self._retry_strategy
+        )
+
+    def cancel(
+        self,
+        transport,
+        timeout=(
+            _request_helpers._DEFAULT_CONNECT_TIMEOUT,
+            _request_helpers._DEFAULT_READ_TIMEOUT,
+        ),
+    ):
+        """Cancel an MPU request and permanently delete any uploaded parts.
+
+        This cannot be undone.
+
+        Args:
+            transport (object): An object which can make authenticated
+                requests.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
+
+        Returns:
+            ~requests.Response: The HTTP response returned by ``transport``.
+        """
+        method, url, payload, headers = self._prepare_cancel_request()
+
+        # Wrap the request business logic in a function to be retried.
+        def retriable_request():
+            result = transport.request(
+                method, url, data=payload, headers=headers, timeout=timeout
+            )
+
+            self._process_cancel_response(result)
+
+            return result
+
+        return _request_helpers.wait_and_retry(
+            retriable_request, self._get_status_code, self._retry_strategy
+        )
+
+
+class XMLMPUPart(_request_helpers.RequestsMixin, _upload.XMLMPUPart):
+    def upload(
+        self,
+        transport,
+        timeout=(
+            _request_helpers._DEFAULT_CONNECT_TIMEOUT,
+            _request_helpers._DEFAULT_READ_TIMEOUT,
+        ),
+    ):
+        """Upload the part.
+
+        Args:
+            transport (object): An object which can make authenticated
+                requests.
+            timeout (Optional[Union[float, Tuple[float, float]]]):
+                The number of seconds to wait for the server response.
+                Depending on the retry strategy, a request may be repeated
+                several times using the same timeout each time.
+
+                Can also be passed as a tuple (connect_timeout, read_timeout).
+                See :meth:`requests.Session.request` documentation for details.
+
+        Returns:
+            ~requests.Response: The HTTP response returned by ``transport``.
+        """
+        method, url, payload, headers = self._prepare_upload_request()
+
+        # Wrap the request business logic in a function to be retried.
+        def retriable_request():
+            result = transport.request(
+                method, url, data=payload, headers=headers, timeout=timeout
+            )
+
+            self._process_upload_response(result)
+
+            return result
+
+        return _request_helpers.wait_and_retry(
+            retriable_request, self._get_status_code, self._retry_strategy
+        )
