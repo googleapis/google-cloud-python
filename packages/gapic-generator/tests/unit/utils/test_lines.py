@@ -246,3 +246,38 @@ mattis turpis quis hendrerit gravida. Curabitur nec diam
 erat. In nec est nisl. Quisque ut orci efficitur, vestibulum
 ante non, vestibulum erat. Donec mollis ultricies nisl."""
     assert lines.wrap(input, width=60) == expected
+
+
+def test_list_with_numbered_list():
+    input = """Config for video classification human labeling task.
+Currently two types of video classification are supported:
+1.  Assign labels on the entire video. Assign labels on the entire video.
+22. Split the video into multiple video clips based on camera shot, and
+assign labels on each video clip."""
+    expected = """Config for video classification human labeling task.
+Currently two types of video classification are supported:
+
+1.  Assign labels on the entire video. Assign labels on the
+    entire video.
+22. Split the video into multiple video clips based on
+    camera shot, and assign labels on each video clip."""
+    assert lines.wrap(input, width=60) == expected
+
+
+def test_list_with_plus_list_item_marker():
+    input = """User-assigned name of the trigger. Must be unique within the project.
+Trigger names must meet the following requirements:
++ They must contain only alphanumeric characters and dashes.
++ They can be 1-64 characters long.
++ They must begin and end with an alphanumeric character."""
+    expected = """User-assigned name of the trigger. Must
+be unique within the project. Trigger
+names must meet the following
+requirements:
+
++ They must contain only alphanumeric
+  characters and dashes.
++ They can be 1-64 characters long.
++ They must begin and end with an
+  alphanumeric character."""
+    assert lines.wrap(input, width=40) == expected

@@ -17,6 +17,9 @@ import textwrap
 from typing import Iterable, Optional
 
 
+NUMBERED_LIST_REGEX = r"^\d+\. "
+
+
 def sort_lines(text: str, dedupe: bool = True) -> str:
     """Sort the individual lines of a block of text.
 
@@ -38,6 +41,49 @@ def sort_lines(text: str, dedupe: bool = True) -> str:
     # Return the final string.
     answer = '\n'.join(sorted(lines))
     return f'{leading}{answer}{trailing}'
+
+
+def get_subsequent_line_indentation_level(list_item: str) -> int:
+    """
+    Given a list item return the indentation level for subsequent lines.
+    For example, if it is a numbered list, the indentation level should be 3
+    as shown below.
+
+    Here subsequent lines should be indented by 2
+
+    - The quick brown fox jumps over the lazy dog. The quick brown fox jumps
+      over the lazy dog
+
+    Here subsequent lines should be indented by 2
+
+    + The quick brown fox jumps over the lazy dog. The quick brown fox jumps
+      over the lazy dog
+
+    Here subsequent lines should be indented by 4 to cater for double digits
+
+    1.  The quick brown fox jumps over the lazy dog. The quick brown fox jumps
+        over the lazy dog
+
+    22. The quick brown fox jumps over the lazy dog. The quick brown fox jumps
+        over the lazy dog
+    """
+    if len(list_item) >= 2 and list_item[0:2] in ['- ', '+ ']:
+        indentation_level = 2
+    elif len(list_item) >= 4 and re.match(NUMBERED_LIST_REGEX, list_item):
+        indentation_level = 4
+    else:
+        # Don't use any intentation level if the list item marker is not known
+        indentation_level = 0
+    return indentation_level
+
+
+def is_list_item(list_item: str) -> bool:
+    """
+    Given a string return a boolean indicating whether a list is identified.
+    """
+    if len(list_item) < 3:
+        return False
+    return list_item.startswith('- ') or list_item.startswith('+ ') or bool(re.match(NUMBERED_LIST_REGEX, list_item))
 
 
 def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0) -> str:
@@ -93,11 +139,12 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
                                 break_on_hyphens=False,
                                 )
         # Strip the first \n from the text so it is not misidentified as an
-        # intentionally short line below, except when the text contains `:`
-        # as the new line is required for lists.
+        # intentionally short line below, except when the text contains a list,
+        # as the new line is required for lists. Look for a list item marker in
+        # the remaining text which indicates that a list is present.
         if '\n' in text:
-            initial_text = text.split('\n')[0]
-            if ":" not in initial_text:
+            remaining_text = "".join(text.split('\n')[1:])
+            if not is_list_item(remaining_text.strip()):
                 text = text.replace('\n', ' ', 1)
 
         # Save the new `first` line.
@@ -121,9 +168,9 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
     tokens = []
     token = ''
     for line in text.split('\n'):
-        # Ensure that lines that start with a hyphen are always on a new line
+        # Ensure that lines that start with a list item marker are always on a new line
         # Ensure that blank lines are preserved
-        if (line.strip().startswith('-') or not len(line)) and token:
+        if (is_list_item(line.strip()) or not len(line)) and token:
             tokens.append(token)
             token = ''
         token += line + '\n'
@@ -145,7 +192,7 @@ def wrap(text: str, width: int, *, offset: Optional[int] = None, indent: int = 0
             initial_indent=' ' * indent,
             # ensure that subsequent lines for lists are indented 2 spaces
             subsequent_indent=' ' * indent + \
-            ('  ' if token.strip().startswith('-') else ''),
+            ' ' * get_subsequent_line_indentation_level(token.strip()),
             text=token,
             width=width,
             break_on_hyphens=False,

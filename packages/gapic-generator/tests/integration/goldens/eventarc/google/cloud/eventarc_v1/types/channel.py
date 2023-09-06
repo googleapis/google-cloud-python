@@ -102,9 +102,9 @@ class Channel(proto.Message):
                 possible cases this state can happen:
 
                 1. The SaaS provider disconnected from this
-                Channel. 2. The Channel activation token has
-                expired but the SaaS provider    wasn't
-                connected.
+                    Channel.
+                2. The Channel activation token has expired but
+                    the SaaS provider    wasn't connected.
 
                 To re-establish a Connection with a provider,
                 the subscriber should create a new Channel and
