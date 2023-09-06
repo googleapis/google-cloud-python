@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [1.11.5](https://github.com/googleapis/gapic-generator-python/compare/v1.11.4...v1.11.5) (2023-09-06)
+
+
+### Bug Fixes
+
+* Fix docs build for generated clients ([#1715](https://github.com/googleapis/gapic-generator-python/issues/1715)) ([e4db994](https://github.com/googleapis/gapic-generator-python/commit/e4db9941078fe417e0d7b30bcd937e6c4dc0e6ba))
+* Fix docs build for numbered lists ([#1740](https://github.com/googleapis/gapic-generator-python/issues/1740)) ([19cc5b3](https://github.com/googleapis/gapic-generator-python/commit/19cc5b36348c1406d2c84fc65e44dbe45a2bdd1c))
+* Preserve new lines ([#1721](https://github.com/googleapis/gapic-generator-python/issues/1721)) ([baa136f](https://github.com/googleapis/gapic-generator-python/commit/baa136fd4fa94cfb6638c3074f10033dcc4f9da1))
+* Remove duplicate import statement for `google.longrunning.operations_pb2` ([#1726](https://github.com/googleapis/gapic-generator-python/issues/1726)) ([e3f08cd](https://github.com/googleapis/gapic-generator-python/commit/e3f08cd48bdf93e668be1b4b117190383ce2c022))
+* Resolve some Showcase test errors ([#1353](https://github.com/googleapis/gapic-generator-python/issues/1353)) ([4eee261](https://github.com/googleapis/gapic-generator-python/commit/4eee26181e8db9fb5144eef5a76f178c1594e48a))
+
 ## [1.11.4](https://github.com/googleapis/gapic-generator-python/compare/v1.11.3...v1.11.4) (2023-07-11)
 
 
