@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.5.0](https://github.com/googleapis/python-dataproc/compare/v5.4.3...v5.5.0) (2023-08-23)
+
+
+### Features
+
+* Support min_num_instances for primary worker and InstanceFlexibilityPolicy for secondary worker ([#555](https://github.com/googleapis/python-dataproc/issues/555)) ([8ab7c71](https://github.com/googleapis/python-dataproc/commit/8ab7c717c914ab806e02c2ae5c0988f755cf74a4))
+
 ## [5.4.3](https://github.com/googleapis/python-dataproc/compare/v5.4.2...v5.4.3) (2023-08-02)
 
 
