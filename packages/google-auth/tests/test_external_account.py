@@ -625,19 +625,20 @@ class TestCredentials(object):
         # Even though impersonation is used, is_workforce_pool should still return True.
         assert credentials.is_workforce_pool is True
 
+    @pytest.mark.parametrize("mock_expires_in", [2800, "2800"])
     @mock.patch(
         "google.auth.metrics.python_and_auth_lib_version",
         return_value=LANG_LIBRARY_METRICS_HEADER_VALUE,
     )
     @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
     def test_refresh_without_client_auth_success(
-        self, unused_utcnow, mock_auth_lib_value
+        self, unused_utcnow, mock_auth_lib_value, mock_expires_in
     ):
         response = self.SUCCESS_RESPONSE.copy()
         # Test custom expiration to confirm expiry is set correctly.
-        response["expires_in"] = 2800
+        response["expires_in"] = mock_expires_in
         expected_expiry = datetime.datetime.min + datetime.timedelta(
-            seconds=response["expires_in"]
+            seconds=int(mock_expires_in)
         )
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",

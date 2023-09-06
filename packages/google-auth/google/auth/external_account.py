@@ -385,7 +385,14 @@ class Credentials(
                 additional_headers=additional_headers,
             )
             self.token = response_data.get("access_token")
-            lifetime = datetime.timedelta(seconds=response_data.get("expires_in"))
+            expires_in = response_data.get("expires_in")
+            # Some services do not respect the OAUTH2.0 RFC and send expires_in as a
+            # JSON String.
+            if isinstance(expires_in, str):
+                expires_in = int(expires_in)
+
+            lifetime = datetime.timedelta(seconds=expires_in)
+
             self.expiry = now + lifetime
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
