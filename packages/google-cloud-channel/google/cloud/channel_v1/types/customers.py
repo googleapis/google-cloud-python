@@ -45,10 +45,10 @@ class Customer(proto.Message):
         org_postal_address (google.type.postal_address_pb2.PostalAddress):
             Required. The organization address for the
             customer. To enforce US laws and embargoes, we
-            require a region and zip code. You must provide
-            valid addresses for every customer. To set the
-            customer's language, use the Customer-level
-            language code.
+            require a region, postal code, and address
+            lines. You must provide valid addresses for
+            every customer. To set the customer's language,
+            use the Customer-level language code.
         primary_contact_info (google.cloud.channel_v1.types.ContactInfo):
             Primary contact info.
         alternate_email (str):

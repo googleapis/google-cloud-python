@@ -144,16 +144,28 @@ class RepricingConfig(proto.Message):
 
     Attributes:
         entitlement_granularity (google.cloud.channel_v1.types.RepricingConfig.EntitlementGranularity):
-            Applies the repricing configuration at the
-            entitlement level. This is the only supported
-            value for CustomerRepricingConfig.
+            Applies the repricing configuration at the entitlement
+            level.
+
+            Note: If a
+            [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+            using
+            [RepricingConfig.EntitlementGranularity][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity]
+            becomes effective, then no existing or future
+            [RepricingConfig.ChannelPartnerGranularity][google.cloud.channel.v1.RepricingConfig.ChannelPartnerGranularity]
+            will apply to the
+            [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement].
+            This is the recommended value for both
+            [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+            and
+            [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig].
 
             This field is a member of `oneof`_ ``granularity``.
         channel_partner_granularity (google.cloud.channel_v1.types.RepricingConfig.ChannelPartnerGranularity):
-            Applies the repricing configuration at the
-            channel partner level. This is the only
-            supported value for
-            ChannelPartnerRepricingConfig.
+            Applies the repricing configuration at the channel partner
+            level. Only
+            [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+            supports this value.
 
             This field is a member of `oneof`_ ``granularity``.
         effective_invoice_month (google.type.date_pb2.Date):

@@ -24,6 +24,7 @@ from google.cloud.channel_v1.types import (
     channel_partner_links as gcc_channel_partner_links,
 )
 from google.cloud.channel_v1.types import entitlement_changes as gcc_entitlement_changes
+from google.cloud.channel_v1.types import billing_accounts
 from google.cloud.channel_v1.types import common
 from google.cloud.channel_v1.types import customers as gcc_customers
 from google.cloud.channel_v1.types import entitlements as gcc_entitlements
@@ -100,6 +101,10 @@ __protobuf__ = proto.module(
         "ListPurchasableOffersRequest",
         "ListPurchasableOffersResponse",
         "PurchasableOffer",
+        "QueryEligibleBillingAccountsRequest",
+        "QueryEligibleBillingAccountsResponse",
+        "SkuPurchaseGroup",
+        "BillingAccountPurchaseInfo",
         "RegisterSubscriberRequest",
         "RegisterSubscriberResponse",
         "UnregisterSubscriberRequest",
@@ -694,6 +699,12 @@ class ListTransferableOffersRequest(proto.Message):
             example, "en-US". The response will localize in
             the corresponding language code, if specified.
             The default value is "en-US".
+        billing_account (str):
+            Optional. The Billing Account to look up Offers for. Format:
+            accounts/{account_id}/billingAccounts/{billing_account_id}.
+
+            This field is only relevant for multi-currency accounts. It
+            should be left empty for single currency accounts.
     """
 
     cloud_identity_id: str = proto.Field(
@@ -725,6 +736,10 @@ class ListTransferableOffersRequest(proto.Message):
     language_code: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    billing_account: str = proto.Field(
+        proto.STRING,
+        number=8,
     )
 
 
@@ -1760,6 +1775,14 @@ class ChangeOfferRequest(proto.Message):
             `UUID <https://tools.ietf.org/html/rfc4122>`__ with the
             exception that zero UUID is not supported
             (``00000000-0000-0000-0000-000000000000``).
+        billing_account (str):
+            Optional. The billing account resource name
+            that is used to pay for this entitlement when
+            setting up billing on a trial subscription.
+
+            This field is only relevant for multi-currency
+            accounts. It should be left empty for single
+            currency accounts.
     """
 
     name: str = proto.Field(
@@ -1782,6 +1805,10 @@ class ChangeOfferRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    billing_account: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
 
 
@@ -2384,11 +2411,19 @@ class ListPurchasableOffersRequest(proto.Message):
             sku (str):
                 Required. SKU that the result should be restricted to.
                 Format: products/{product_id}/skus/{sku_id}.
+            billing_account (str):
+                Optional. Billing account that the result should be
+                restricted to. Format:
+                accounts/{account_id}/billingAccounts/{billing_account_id}.
         """
 
         sku: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        billing_account: str = proto.Field(
+            proto.STRING,
+            number=2,
         )
 
     class ChangeOfferPurchase(proto.Message):
@@ -2402,6 +2437,14 @@ class ListPurchasableOffersRequest(proto.Message):
                 Optional. Resource name of the new target SKU. Provide this
                 SKU when upgrading or downgrading an entitlement. Format:
                 products/{product_id}/skus/{sku_id}
+            billing_account (str):
+                Optional. Resource name of the new target Billing Account.
+                Provide this Billing Account when setting up billing for a
+                trial subscription. Format:
+                accounts/{account_id}/billingAccounts/{billing_account_id}.
+
+                This field is only relevant for multi-currency accounts. It
+                should be left empty for single currency accounts.
         """
 
         entitlement: str = proto.Field(
@@ -2411,6 +2454,10 @@ class ListPurchasableOffersRequest(proto.Message):
         new_sku: str = proto.Field(
             proto.STRING,
             number=2,
+        )
+        billing_account: str = proto.Field(
+            proto.STRING,
+            number=3,
         )
 
     create_entitlement_purchase: CreateEntitlementPurchase = proto.Field(
@@ -2481,6 +2528,91 @@ class PurchasableOffer(proto.Message):
         proto.MESSAGE,
         number=1,
         message=gcc_offers.Offer,
+    )
+
+
+class QueryEligibleBillingAccountsRequest(proto.Message):
+    r"""Request message for QueryEligibleBillingAccounts.
+
+    Attributes:
+        customer (str):
+            Required. The resource name of the customer to list eligible
+            billing accounts for. Format:
+            accounts/{account_id}/customers/{customer_id}.
+        skus (MutableSequence[str]):
+            Required. List of SKUs to list eligible billing accounts
+            for. At least one SKU is required. Format:
+            products/{product_id}/skus/{sku_id}.
+    """
+
+    customer: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    skus: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class QueryEligibleBillingAccountsResponse(proto.Message):
+    r"""Response message for QueryEligibleBillingAccounts.
+
+    Attributes:
+        sku_purchase_groups (MutableSequence[google.cloud.channel_v1.types.SkuPurchaseGroup]):
+            List of SKU purchase groups where each group represents a
+            set of SKUs that must be purchased using the same billing
+            account. Each SKU from
+            [QueryEligibleBillingAccountsRequest.skus] will appear in
+            exactly one SKU group.
+    """
+
+    sku_purchase_groups: MutableSequence["SkuPurchaseGroup"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="SkuPurchaseGroup",
+    )
+
+
+class SkuPurchaseGroup(proto.Message):
+    r"""Represents a set of SKUs that must be purchased using the
+    same billing account.
+
+    Attributes:
+        skus (MutableSequence[str]):
+            Resource names of the SKUs included in this group. Format:
+            products/{product_id}/skus/{sku_id}.
+        billing_account_purchase_infos (MutableSequence[google.cloud.channel_v1.types.BillingAccountPurchaseInfo]):
+            List of billing accounts that are eligible to
+            purhcase these SKUs.
+    """
+
+    skus: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    billing_account_purchase_infos: MutableSequence[
+        "BillingAccountPurchaseInfo"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="BillingAccountPurchaseInfo",
+    )
+
+
+class BillingAccountPurchaseInfo(proto.Message):
+    r"""Represents a billing account that can be used to make a
+    purchase.
+
+    Attributes:
+        billing_account (google.cloud.channel_v1.types.BillingAccount):
+            The billing account resource.
+    """
+
+    billing_account: billing_accounts.BillingAccount = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=billing_accounts.BillingAccount,
     )
 
 

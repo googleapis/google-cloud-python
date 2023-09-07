@@ -6410,6 +6410,159 @@
           "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
           "shortName": "CloudChannelServiceAsyncClient"
         },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.query_eligible_billing_accounts",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.QueryEligibleBillingAccounts",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "QueryEligibleBillingAccounts"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.QueryEligibleBillingAccountsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.QueryEligibleBillingAccountsResponse",
+        "shortName": "query_eligible_billing_accounts"
+      },
+      "description": "Sample for QueryEligibleBillingAccounts",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_query_eligible_billing_accounts_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_QueryEligibleBillingAccounts_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_query_eligible_billing_accounts_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.query_eligible_billing_accounts",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.QueryEligibleBillingAccounts",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "QueryEligibleBillingAccounts"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.QueryEligibleBillingAccountsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.QueryEligibleBillingAccountsResponse",
+        "shortName": "query_eligible_billing_accounts"
+      },
+      "description": "Sample for QueryEligibleBillingAccounts",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_query_eligible_billing_accounts_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_QueryEligibleBillingAccounts_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_query_eligible_billing_accounts_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
         "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.register_subscriber",
         "method": {
           "fullName": "google.cloud.channel.v1.CloudChannelService.RegisterSubscriber",
