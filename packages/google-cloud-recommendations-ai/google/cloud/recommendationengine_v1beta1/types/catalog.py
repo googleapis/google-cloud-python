@@ -42,6 +42,7 @@ class CatalogItem(proto.Message):
         id (str):
             Required. Catalog item identifier. UTF-8
             encoded string with a length limit of 128 bytes.
+
             This id must be unique among all catalog items
             within the same catalog. It should also be used
             when logging user events in order for the user
@@ -86,6 +87,7 @@ class CatalogItem(proto.Message):
             Optional. Filtering tags associated with the
             catalog item. Each tag should be a UTF-8 encoded
             string with a length limit of 1 KiB.
+
             This tag can be used for filtering
             recommendation results by passing the tag as
             part of the predict request filter.
@@ -110,6 +112,7 @@ class CatalogItem(proto.Message):
                 Required. Catalog item categories. Each
                 category should be a UTF-8 encoded string with a
                 length limit of 2 KiB.
+
                 Note that the order in the list denotes the
                 specificity (from least to most specific).
         """

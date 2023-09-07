@@ -260,6 +260,7 @@ class JobServiceGrpcAsyncIOTransport(JobServiceTransport):
         r"""Return a callable for the create job method over gRPC.
 
         Creates a new job.
+
         Typically, the job becomes searchable within 10 seconds,
         but it may take up to 5 minutes.
 
@@ -341,6 +342,7 @@ class JobServiceGrpcAsyncIOTransport(JobServiceTransport):
         r"""Return a callable for the update job method over gRPC.
 
         Updates specified job.
+
         Typically, updated contents become visible in search
         results within 10 seconds, but it may take up to 5
         minutes.
@@ -398,6 +400,7 @@ class JobServiceGrpcAsyncIOTransport(JobServiceTransport):
         r"""Return a callable for the delete job method over gRPC.
 
         Deletes the specified job.
+
         Typically, the job becomes unsearchable within 10
         seconds, but it may take up to 5 minutes.
 

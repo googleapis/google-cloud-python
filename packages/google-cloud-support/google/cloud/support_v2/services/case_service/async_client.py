@@ -796,6 +796,7 @@ class CaseServiceAsyncClient:
     ) -> case.Case:
         r"""Escalate a case. Escalating a case will initiate the
         Google Cloud Support escalation management process.
+
         This operation is only available to certain Customer
         Care tiers. Go to https://cloud.google.com/support and
         look for 'Technical support escalations' in the feature

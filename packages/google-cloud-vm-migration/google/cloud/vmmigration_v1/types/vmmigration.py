@@ -1091,6 +1091,7 @@ class CreateCloneJobRequest(proto.Message):
             request if it has already been completed. The
             server will guarantee that for at least 60
             minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -1099,6 +1100,7 @@ class CreateCloneJobRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -1881,6 +1883,7 @@ class CreateSourceRequest(proto.Message):
             request if it has already been completed. The
             server will guarantee that for at least 60
             minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -1889,6 +1892,7 @@ class CreateSourceRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -1933,6 +1937,7 @@ class UpdateSourceRequest(proto.Message):
             request if it has already been completed. The
             server will guarantee that for at least 60
             minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -1941,6 +1946,7 @@ class UpdateSourceRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -1975,6 +1981,7 @@ class DeleteSourceRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -1983,6 +1990,7 @@ class DeleteSourceRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -2798,6 +2806,7 @@ class CreateUtilizationReportRequest(proto.Message):
             request if it has already been completed. The
             server will guarantee that for at least 60
             minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -2806,6 +2815,7 @@ class CreateUtilizationReportRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -2843,6 +2853,7 @@ class DeleteUtilizationReportRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -2851,6 +2862,7 @@ class DeleteUtilizationReportRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -2935,6 +2947,7 @@ class CreateDatacenterConnectorRequest(proto.Message):
             request if it has already been completed. The
             server will guarantee that for at least 60
             minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -2943,6 +2956,7 @@ class CreateDatacenterConnectorRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -2980,6 +2994,7 @@ class DeleteDatacenterConnectorRequest(proto.Message):
             request if it has already been completed. The
             server will guarantee that for at least 60
             minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -2988,6 +3003,7 @@ class DeleteDatacenterConnectorRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -3016,6 +3032,7 @@ class UpgradeApplianceRequest(proto.Message):
             request if it has already been completed. The
             server will guarantee that for at least 60
             minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -3024,6 +3041,7 @@ class UpgradeApplianceRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -3440,8 +3458,7 @@ class AppliedLicense(proto.Message):
 
 class SchedulingNodeAffinity(proto.Message):
     r"""Node Affinity: the configuration of desired nodes onto which
-    this Instance
-    could be scheduled. Based on
+    this Instance could be scheduled. Based on
     https://cloud.google.com/compute/docs/reference/rest/v1/instances/setScheduling
 
     Attributes:
@@ -3615,6 +3632,7 @@ class CreateMigratingVmRequest(proto.Message):
             request if it has already been completed. The
             server will guarantee that for at least 60
             minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -3623,6 +3641,7 @@ class CreateMigratingVmRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -3782,6 +3801,7 @@ class UpdateMigratingVmRequest(proto.Message):
             request if it has already been completed. The
             server will guarantee that for at least 60
             minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -3790,6 +3810,7 @@ class UpdateMigratingVmRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -4057,6 +4078,7 @@ class CreateTargetProjectRequest(proto.Message):
             request if it has already been completed. The
             server will guarantee that for at least 60
             minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -4065,6 +4087,7 @@ class CreateTargetProjectRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -4109,6 +4132,7 @@ class UpdateTargetProjectRequest(proto.Message):
             request if it has already been completed. The
             server will guarantee that for at least 60
             minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -4117,6 +4141,7 @@ class UpdateTargetProjectRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -4151,6 +4176,7 @@ class DeleteTargetProjectRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -4159,6 +4185,7 @@ class DeleteTargetProjectRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -4330,6 +4357,7 @@ class CreateGroupRequest(proto.Message):
             request if it has already been completed. The
             server will guarantee that for at least 60
             minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -4338,6 +4366,7 @@ class CreateGroupRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -4382,6 +4411,7 @@ class UpdateGroupRequest(proto.Message):
             request if it has already been completed. The
             server will guarantee that for at least 60
             minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -4390,6 +4420,7 @@ class UpdateGroupRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -4424,6 +4455,7 @@ class DeleteGroupRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -4432,6 +4464,7 @@ class DeleteGroupRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -4513,6 +4546,7 @@ class CreateCutoverJobRequest(proto.Message):
             request if it has already been completed. The
             server will guarantee that for at least 60
             minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and t he request times out.
             If you make the request again with the same
@@ -4521,6 +4555,7 @@ class CreateCutoverJobRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).

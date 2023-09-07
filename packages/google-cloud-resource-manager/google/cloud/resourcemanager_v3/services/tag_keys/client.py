@@ -50,7 +50,7 @@ from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -502,6 +502,7 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
         Returns:
             google.cloud.resourcemanager_v3.services.tag_keys.pagers.ListTagKeysPager:
                 The ListTagKeys response message.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1181,8 +1182,8 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
                 The request object. Request message for ``GetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
-                policy is being requested.
-                See the operation documentation for the
+                policy is being requested. See the
+                operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field
@@ -1316,8 +1317,8 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
                 The request object. Request message for ``SetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
-                policy is being specified.
-                See the operation documentation for the
+                policy is being specified. See the
+                operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field
@@ -1453,8 +1454,8 @@ class TagKeysClient(metaclass=TagKeysClientMeta):
                 The request object. Request message for ``TestIamPermissions`` method.
             resource (str):
                 REQUIRED: The resource for which the
-                policy detail is being requested.
-                See the operation documentation for the
+                policy detail is being requested. See
+                the operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field

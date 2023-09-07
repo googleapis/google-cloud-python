@@ -271,6 +271,7 @@ class ListJobsResponse(proto.Message):
     Attributes:
         jobs (MutableSequence[google.cloud.talent_v4.types.Job]):
             The Jobs for a given company.
+
             The maximum number of items returned is based on
             the limit field provided in the request.
         next_page_token (str):

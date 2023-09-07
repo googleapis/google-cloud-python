@@ -53,6 +53,7 @@ class CompleteQueryRequest(proto.Message):
             The maximum number of allowed characters is 255.
         page_size (int):
             Required. Completion result count.
+
             The maximum allowed page size is 10.
         company (str):
             If provided, restricts completion to specified company.
