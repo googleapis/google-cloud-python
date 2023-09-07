@@ -48,7 +48,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -502,6 +502,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_job.Job:
         r"""Creates a new job.
+
         Typically, the job becomes searchable within 10 seconds,
         but it may take up to 5 minutes.
 
@@ -873,6 +874,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gct_job.Job:
         r"""Updates specified job.
+
         Typically, updated contents become visible in search
         results within 10 seconds, but it may take up to 5
         minutes.
@@ -1141,6 +1143,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified job.
+
         Typically, the job becomes unsearchable within 10
         seconds, but it may take up to 5 minutes.
 
@@ -1460,6 +1463,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         Returns:
             google.cloud.talent_v4.services.job_service.pagers.ListJobsPager:
                 List jobs response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

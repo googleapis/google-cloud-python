@@ -181,6 +181,7 @@ class JobQuery(proto.Message):
             If false, the service attempts to correct a
             misspelled query, for example, "enginee" is
             corrected to "engineer".
+
             Defaults to false: a spell check is performed.
         employment_types (MutableSequence[google.cloud.talent_v4beta1.types.EmploymentType]):
             The employment type filter specifies the employment type of

@@ -100,6 +100,7 @@ class Operation(proto.Message):
             type used in the MetricValueSet must agree with
             the data type specified in the metric
             definition.
+
             Within a single operation, it is not allowed to
             have more than one MetricValue instances that
             have the same metric names and identical label

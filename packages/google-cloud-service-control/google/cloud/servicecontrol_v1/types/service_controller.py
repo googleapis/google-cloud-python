@@ -51,6 +51,7 @@ class CheckRequest(proto.Message):
             Specifies which version of service
             configuration should be used to process the
             request.
+
             If unspecified or no matching version can be
             found, the latest one will be used.
     """
@@ -80,6 +81,7 @@ class CheckResponse(proto.Message):
             Used for logging and diagnostics purposes.
         check_errors (MutableSequence[google.cloud.servicecontrol_v1.types.CheckError]):
             Indicate the decision of the check.
+
             If no check errors are present, the service
             should process the operation. Otherwise the
             service should use the list of errors to
@@ -125,7 +127,8 @@ class CheckResponse(proto.Message):
             project_number (int):
                 The Google cloud project number, e.g.
                 1234567890. A value of 0 indicates no project
-                number is found.
+                    number is found.
+
                 NOTE: This field is deprecated after we support
                 flexible consumer id. New code should not depend
                 on this field anymore.

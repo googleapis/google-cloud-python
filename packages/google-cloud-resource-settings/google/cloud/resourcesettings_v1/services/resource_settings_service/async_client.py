@@ -295,6 +295,7 @@ class ResourceSettingsServiceAsyncClient:
         Returns:
             google.cloud.resourcesettings_v1.services.resource_settings_service.pagers.ListSettingsAsyncPager:
                 The response from ListSettings.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

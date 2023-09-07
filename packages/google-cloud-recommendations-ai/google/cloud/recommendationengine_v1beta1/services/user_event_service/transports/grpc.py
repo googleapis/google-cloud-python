@@ -283,6 +283,7 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
         Writes a single user event from the browser. This
         uses a GET request to due to browser restriction of
         POST-ing to a 3rd party domain.
+
         This method is used only by the Recommendations AI
         JavaScript pixel. Users should not call this method
         directly.
@@ -376,6 +377,7 @@ class UserEventServiceGrpcTransport(UserEventServiceTransport):
         Bulk import of User events. Request processing might
         be synchronous. Events that already exist are skipped.
         Use this method for backfilling historical user events.
+
         Operation.response is of type ImportResponse. Note that
         it is possible for a subset of the items to be
         successfully inserted. Operation.metadata is of type
