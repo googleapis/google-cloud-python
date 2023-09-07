@@ -304,7 +304,7 @@ class TestInstalledAppFlow(object):
         assert credentials.token == mock.sentinel.access_token
         assert credentials._refresh_token == mock.sentinel.refresh_token
         assert credentials.id_token == mock.sentinel.id_token
-        assert webbrowser_mock.open.called
+        assert webbrowser_mock.get().open.called
         assert instance.redirect_uri == f"http://localhost:{port}/"
 
         expected_auth_response = auth_redirect_url.replace("http", "https")
@@ -343,7 +343,7 @@ class TestInstalledAppFlow(object):
         assert credentials.token == mock.sentinel.access_token
         assert credentials._refresh_token == mock.sentinel.refresh_token
         assert credentials.id_token == mock.sentinel.id_token
-        assert webbrowser_mock.open.called
+        assert webbrowser_mock.get().open.called
         assert instance.redirect_uri == f"http://localhost:{port}/"
 
         expected_auth_response = auth_redirect_url.replace("http", "https")
@@ -385,7 +385,7 @@ class TestInstalledAppFlow(object):
         assert credentials.token == mock.sentinel.access_token
         assert credentials._refresh_token == mock.sentinel.refresh_token
         assert credentials.id_token == mock.sentinel.id_token
-        assert webbrowser_mock.open.called
+        assert webbrowser_mock.get().open.called
         assert instance.redirect_uri == f"http://localhost:{port}"
 
         expected_auth_response = auth_redirect_url.replace("http", "https")
@@ -410,7 +410,7 @@ class TestInstalledAppFlow(object):
 
         instance.run_local_server(open_browser=False)
 
-        assert not webbrowser_mock.open.called
+        assert not webbrowser_mock.get().open.called
 
     @mock.patch("google_auth_oauthlib.flow.webbrowser", autospec=True)
     @mock.patch("wsgiref.simple_server.make_server", autospec=True)
@@ -426,7 +426,7 @@ class TestInstalledAppFlow(object):
         my_ip = socket.gethostbyname(socket.gethostname())
         instance.run_local_server(bind_addr=my_ip, host="localhost")
 
-        assert webbrowser_mock.open.called
+        assert webbrowser_mock.get().open.called
         name, args, kwargs = make_server_mock.mock_calls[0]
         assert args[0] == my_ip
 
