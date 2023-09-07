@@ -350,6 +350,7 @@ class BudgetServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> budget_model.Budget:
         r"""Updates a budget and returns the updated budget.
+
         WARNING: There are some fields exposed on the Google
         Cloud Console that aren't available on this API. Budget
         fields that are not exposed in this API will not be
@@ -487,6 +488,7 @@ class BudgetServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> budget_model.Budget:
         r"""Returns a budget.
+
         WARNING: There are some fields exposed on the Google
         Cloud Console that aren't available on this API. When
         reading from the API, you will not see these fields in
@@ -610,6 +612,7 @@ class BudgetServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBudgetsAsyncPager:
         r"""Returns a list of budgets for a billing account.
+
         WARNING: There are some fields exposed on the Google
         Cloud Console that aren't available on this API. When
         reading from the API, you will not see these fields in
@@ -663,6 +666,7 @@ class BudgetServiceAsyncClient:
         Returns:
             google.cloud.billing.budgets_v1.services.budget_service.pagers.ListBudgetsAsyncPager:
                 Response for ListBudgets
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

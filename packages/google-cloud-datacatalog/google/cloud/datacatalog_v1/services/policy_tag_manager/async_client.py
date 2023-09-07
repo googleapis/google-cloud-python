@@ -44,7 +44,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.datacatalog_v1.services.policy_tag_manager import pagers
 from google.cloud.datacatalog_v1.types import policytagmanager, timestamps
@@ -237,6 +237,7 @@ class PolicyTagManagerAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policytagmanager.Taxonomy:
         r"""Creates a taxonomy in a specified project.
+
         The taxonomy is initially empty, that is, it doesn't
         contain policy tags.
 

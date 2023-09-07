@@ -51,7 +51,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -1106,6 +1106,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         Returns:
             google.cloud.dataplex_v1.services.dataplex_service.pagers.ListLakesPager:
                 List lakes response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1334,6 +1335,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         Returns:
             google.cloud.dataplex_v1.services.dataplex_service.pagers.ListLakeActionsPager:
                 List actions response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1856,6 +1858,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         Returns:
             google.cloud.dataplex_v1.services.dataplex_service.pagers.ListZonesPager:
                 List zones response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -2076,6 +2079,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         Returns:
             google.cloud.dataplex_v1.services.dataplex_service.pagers.ListZoneActionsPager:
                 List actions response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -2588,6 +2592,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         Returns:
             google.cloud.dataplex_v1.services.dataplex_service.pagers.ListAssetsPager:
                 List assets response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -2803,6 +2808,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         Returns:
             google.cloud.dataplex_v1.services.dataplex_service.pagers.ListAssetActionsPager:
                 List actions response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -3311,6 +3317,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         Returns:
             google.cloud.dataplex_v1.services.dataplex_service.pagers.ListTasksPager:
                 List tasks response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -3523,6 +3530,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         Returns:
             google.cloud.dataplex_v1.services.dataplex_service.pagers.ListJobsPager:
                 List jobs response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -4322,6 +4330,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         Returns:
             google.cloud.dataplex_v1.services.dataplex_service.pagers.ListEnvironmentsPager:
                 List environments response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -4537,6 +4546,7 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         Returns:
             google.cloud.dataplex_v1.services.dataplex_service.pagers.ListSessionsPager:
                 List sessions response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

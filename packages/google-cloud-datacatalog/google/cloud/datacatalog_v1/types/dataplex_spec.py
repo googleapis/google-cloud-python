@@ -95,6 +95,7 @@ class DataplexTableSpec(proto.Message):
             List of external tables registered by
             Dataplex in other systems based on the same
             underlying data.
+
             External tables allow to query this data in
             those systems.
         dataplex_spec (google.cloud.datacatalog_v1.types.DataplexSpec):

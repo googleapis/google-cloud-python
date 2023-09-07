@@ -77,6 +77,7 @@ class UsageStats(proto.Message):
 
 class CommonUsageStats(proto.Message):
     r"""Common statistics on the entry's usage.
+
     They can be set on any system.
 
 
@@ -98,6 +99,7 @@ class CommonUsageStats(proto.Message):
 
 class UsageSignal(proto.Message):
     r"""The set of all usage signals that Data Catalog stores.
+
     Note: Usually, these signals are updated daily. In rare cases,
     an update may fail but will be performed again on the next day.
 
