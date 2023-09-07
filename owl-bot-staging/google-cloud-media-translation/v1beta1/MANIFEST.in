@@ -1,0 +1,2 @@
+recursive-include google/cloud/mediatranslation *.py
+recursive-include google/cloud/mediatranslation_v1beta1 *.py
