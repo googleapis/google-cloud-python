@@ -86,6 +86,10 @@ class DataMigrationServiceAsyncClient:
     parse_conversion_workspace_path = staticmethod(
         DataMigrationServiceClient.parse_conversion_workspace_path
     )
+    mapping_rule_path = staticmethod(DataMigrationServiceClient.mapping_rule_path)
+    parse_mapping_rule_path = staticmethod(
+        DataMigrationServiceClient.parse_mapping_rule_path
+    )
     migration_job_path = staticmethod(DataMigrationServiceClient.migration_job_path)
     parse_migration_job_path = staticmethod(
         DataMigrationServiceClient.parse_migration_job_path
@@ -1525,6 +1529,91 @@ class DataMigrationServiceAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.generate_ssh_script,
             default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("migration_job", request.migration_job),)
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def generate_tcp_proxy_script(
+        self,
+        request: Optional[Union[clouddms.GenerateTcpProxyScriptRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> clouddms.TcpProxyScript:
+        r"""Generate a TCP Proxy configuration script to
+        configure a cloud-hosted VM running a TCP Proxy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import clouddms_v1
+
+            async def sample_generate_tcp_proxy_script():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = clouddms_v1.GenerateTcpProxyScriptRequest(
+                    vm_name="vm_name_value",
+                    vm_machine_type="vm_machine_type_value",
+                    vm_subnet="vm_subnet_value",
+                )
+
+                # Make the request
+                response = await client.generate_tcp_proxy_script(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.clouddms_v1.types.GenerateTcpProxyScriptRequest, dict]]):
+                The request object. Request message for
+                'GenerateTcpProxyScript' request.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.clouddms_v1.types.TcpProxyScript:
+                Response message for
+                'GenerateTcpProxyScript' request.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = clouddms.GenerateTcpProxyScriptRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.generate_tcp_proxy_script,
+            default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -3303,6 +3392,463 @@ class DataMigrationServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def create_mapping_rule(
+        self,
+        request: Optional[Union[clouddms.CreateMappingRuleRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        mapping_rule: Optional[conversionworkspace_resources.MappingRule] = None,
+        mapping_rule_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> conversionworkspace_resources.MappingRule:
+        r"""Creates a new mapping rule for a given conversion
+        workspace.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import clouddms_v1
+
+            async def sample_create_mapping_rule():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                mapping_rule = clouddms_v1.MappingRule()
+                mapping_rule.single_entity_rename.new_name = "new_name_value"
+                mapping_rule.rule_scope = "DATABASE_ENTITY_TYPE_DATABASE"
+                mapping_rule.rule_order = 1075
+
+                request = clouddms_v1.CreateMappingRuleRequest(
+                    parent="parent_value",
+                    mapping_rule_id="mapping_rule_id_value",
+                    mapping_rule=mapping_rule,
+                )
+
+                # Make the request
+                response = await client.create_mapping_rule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.clouddms_v1.types.CreateMappingRuleRequest, dict]]):
+                The request object. Request message for
+                'CreateMappingRule' command.
+            parent (:class:`str`):
+                Required. The parent which owns this
+                collection of mapping rules.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            mapping_rule (:class:`google.cloud.clouddms_v1.types.MappingRule`):
+                Required. Represents a [mapping rule]
+                (https://cloud.google.com/database-migration/reference/rest/v1/projects.locations.mappingRules)
+                object.
+
+                This corresponds to the ``mapping_rule`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            mapping_rule_id (:class:`str`):
+                Required. The ID of the rule to
+                create.
+
+                This corresponds to the ``mapping_rule_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.clouddms_v1.types.MappingRule:
+                Definition of a transformation that
+                is to be applied to a group of entities
+                in the source schema. Several such
+                transformations can be applied to an
+                entity sequentially to define the
+                corresponding entity in the target
+                schema.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, mapping_rule, mapping_rule_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = clouddms.CreateMappingRuleRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if mapping_rule is not None:
+            request.mapping_rule = mapping_rule
+        if mapping_rule_id is not None:
+            request.mapping_rule_id = mapping_rule_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_mapping_rule,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_mapping_rule(
+        self,
+        request: Optional[Union[clouddms.DeleteMappingRuleRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a single mapping rule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import clouddms_v1
+
+            async def sample_delete_mapping_rule():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = clouddms_v1.DeleteMappingRuleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_mapping_rule(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.clouddms_v1.types.DeleteMappingRuleRequest, dict]]):
+                The request object. Request message for
+                'DeleteMappingRule' request.
+            name (:class:`str`):
+                Required. Name of the mapping rule
+                resource to delete.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = clouddms.DeleteMappingRuleRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_mapping_rule,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def list_mapping_rules(
+        self,
+        request: Optional[Union[clouddms.ListMappingRulesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListMappingRulesAsyncPager:
+        r"""Lists the mapping rules for a specific conversion
+        workspace.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import clouddms_v1
+
+            async def sample_list_mapping_rules():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = clouddms_v1.ListMappingRulesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_mapping_rules(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.clouddms_v1.types.ListMappingRulesRequest, dict]]):
+                The request object. Retrieve a list of all mapping rules
+                in a given conversion workspace.
+            parent (:class:`str`):
+                Required. Name of the conversion workspace resource
+                whose mapping rules are listed in the form of:
+                projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.clouddms_v1.services.data_migration_service.pagers.ListMappingRulesAsyncPager:
+                Response message for
+                'ListMappingRulesRequest' request.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = clouddms.ListMappingRulesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_mapping_rules,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListMappingRulesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_mapping_rule(
+        self,
+        request: Optional[Union[clouddms.GetMappingRuleRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> conversionworkspace_resources.MappingRule:
+        r"""Gets the details of a mapping rule.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import clouddms_v1
+
+            async def sample_get_mapping_rule():
+                # Create a client
+                client = clouddms_v1.DataMigrationServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = clouddms_v1.GetMappingRuleRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_mapping_rule(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.clouddms_v1.types.GetMappingRuleRequest, dict]]):
+                The request object. Request message for 'GetMappingRule'
+                request.
+            name (:class:`str`):
+                Required. Name of the mapping rule
+                resource to get. Example:
+                conversionWorkspaces/123/mappingRules/rule123
+                In order to retrieve a previous revision
+                of the mapping rule, also provide the
+                revision ID.
+                Example:
+
+                conversionWorkspace/123/mappingRules/rule123@c7cfa2a8c7cfa2a8c7cfa2a8c7cfa2a8
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.clouddms_v1.types.MappingRule:
+                Definition of a transformation that
+                is to be applied to a group of entities
+                in the source schema. Several such
+                transformations can be applied to an
+                entity sequentially to define the
+                corresponding entity in the target
+                schema.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = clouddms.GetMappingRuleRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_mapping_rule,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def seed_conversion_workspace(
         self,
         request: Optional[Union[clouddms.SeedConversionWorkspaceRequest, dict]] = None,
@@ -3427,8 +3973,15 @@ class DataMigrationServiceAsyncClient:
                 client = clouddms_v1.DataMigrationServiceAsyncClient()
 
                 # Initialize request argument(s)
+                rules_files = clouddms_v1.RulesFile()
+                rules_files.rules_source_filename = "rules_source_filename_value"
+                rules_files.rules_content = "rules_content_value"
+
                 request = clouddms_v1.ImportMappingRulesRequest(
                     parent="parent_value",
+                    rules_format="IMPORT_RULES_FILE_FORMAT_ORATOPG_CONFIG_FILE",
+                    rules_files=rules_files,
+                    auto_commit=True,
                 )
 
                 # Make the request
@@ -3920,6 +4473,7 @@ class DataMigrationServiceAsyncClient:
                 # Initialize request argument(s)
                 request = clouddms_v1.DescribeDatabaseEntitiesRequest(
                     conversion_workspace="conversion_workspace_value",
+                    tree="DESTINATION_TREE",
                 )
 
                 # Make the request

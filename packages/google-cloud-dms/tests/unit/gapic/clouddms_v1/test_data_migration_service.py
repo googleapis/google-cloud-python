@@ -49,6 +49,7 @@ from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -3276,6 +3277,166 @@ async def test_generate_ssh_script_field_headers_async():
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(clouddms.SshScript())
         await client.generate_ssh_script(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "migration_job=migration_job_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.GenerateTcpProxyScriptRequest,
+        dict,
+    ],
+)
+def test_generate_tcp_proxy_script(request_type, transport: str = "grpc"):
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_tcp_proxy_script), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = clouddms.TcpProxyScript(
+            script="script_value",
+        )
+        response = client.generate_tcp_proxy_script(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GenerateTcpProxyScriptRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, clouddms.TcpProxyScript)
+    assert response.script == "script_value"
+
+
+def test_generate_tcp_proxy_script_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_tcp_proxy_script), "__call__"
+    ) as call:
+        client.generate_tcp_proxy_script()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GenerateTcpProxyScriptRequest()
+
+
+@pytest.mark.asyncio
+async def test_generate_tcp_proxy_script_async(
+    transport: str = "grpc_asyncio", request_type=clouddms.GenerateTcpProxyScriptRequest
+):
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_tcp_proxy_script), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms.TcpProxyScript(
+                script="script_value",
+            )
+        )
+        response = await client.generate_tcp_proxy_script(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GenerateTcpProxyScriptRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, clouddms.TcpProxyScript)
+    assert response.script == "script_value"
+
+
+@pytest.mark.asyncio
+async def test_generate_tcp_proxy_script_async_from_dict():
+    await test_generate_tcp_proxy_script_async(request_type=dict)
+
+
+def test_generate_tcp_proxy_script_field_headers():
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = clouddms.GenerateTcpProxyScriptRequest()
+
+    request.migration_job = "migration_job_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_tcp_proxy_script), "__call__"
+    ) as call:
+        call.return_value = clouddms.TcpProxyScript()
+        client.generate_tcp_proxy_script(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "migration_job=migration_job_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_generate_tcp_proxy_script_field_headers_async():
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = clouddms.GenerateTcpProxyScriptRequest()
+
+    request.migration_job = "migration_job_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_tcp_proxy_script), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms.TcpProxyScript()
+        )
+        await client.generate_tcp_proxy_script(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -7442,6 +7603,1238 @@ async def test_delete_conversion_workspace_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        clouddms.CreateMappingRuleRequest,
+        dict,
+    ],
+)
+def test_create_mapping_rule(request_type, transport: str = "grpc"):
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_mapping_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = conversionworkspace_resources.MappingRule(
+            name="name_value",
+            display_name="display_name_value",
+            state=conversionworkspace_resources.MappingRule.State.ENABLED,
+            rule_scope=conversionworkspace_resources.DatabaseEntityType.DATABASE_ENTITY_TYPE_SCHEMA,
+            rule_order=1075,
+            revision_id="revision_id_value",
+        )
+        response = client.create_mapping_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.CreateMappingRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversionworkspace_resources.MappingRule)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.state == conversionworkspace_resources.MappingRule.State.ENABLED
+    assert (
+        response.rule_scope
+        == conversionworkspace_resources.DatabaseEntityType.DATABASE_ENTITY_TYPE_SCHEMA
+    )
+    assert response.rule_order == 1075
+    assert response.revision_id == "revision_id_value"
+
+
+def test_create_mapping_rule_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_mapping_rule), "__call__"
+    ) as call:
+        client.create_mapping_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.CreateMappingRuleRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_mapping_rule_async(
+    transport: str = "grpc_asyncio", request_type=clouddms.CreateMappingRuleRequest
+):
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_mapping_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversionworkspace_resources.MappingRule(
+                name="name_value",
+                display_name="display_name_value",
+                state=conversionworkspace_resources.MappingRule.State.ENABLED,
+                rule_scope=conversionworkspace_resources.DatabaseEntityType.DATABASE_ENTITY_TYPE_SCHEMA,
+                rule_order=1075,
+                revision_id="revision_id_value",
+            )
+        )
+        response = await client.create_mapping_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.CreateMappingRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversionworkspace_resources.MappingRule)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.state == conversionworkspace_resources.MappingRule.State.ENABLED
+    assert (
+        response.rule_scope
+        == conversionworkspace_resources.DatabaseEntityType.DATABASE_ENTITY_TYPE_SCHEMA
+    )
+    assert response.rule_order == 1075
+    assert response.revision_id == "revision_id_value"
+
+
+@pytest.mark.asyncio
+async def test_create_mapping_rule_async_from_dict():
+    await test_create_mapping_rule_async(request_type=dict)
+
+
+def test_create_mapping_rule_field_headers():
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = clouddms.CreateMappingRuleRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_mapping_rule), "__call__"
+    ) as call:
+        call.return_value = conversionworkspace_resources.MappingRule()
+        client.create_mapping_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_mapping_rule_field_headers_async():
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = clouddms.CreateMappingRuleRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_mapping_rule), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversionworkspace_resources.MappingRule()
+        )
+        await client.create_mapping_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_mapping_rule_flattened():
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_mapping_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = conversionworkspace_resources.MappingRule()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_mapping_rule(
+            parent="parent_value",
+            mapping_rule=conversionworkspace_resources.MappingRule(name="name_value"),
+            mapping_rule_id="mapping_rule_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].mapping_rule
+        mock_val = conversionworkspace_resources.MappingRule(name="name_value")
+        assert arg == mock_val
+        arg = args[0].mapping_rule_id
+        mock_val = "mapping_rule_id_value"
+        assert arg == mock_val
+
+
+def test_create_mapping_rule_flattened_error():
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_mapping_rule(
+            clouddms.CreateMappingRuleRequest(),
+            parent="parent_value",
+            mapping_rule=conversionworkspace_resources.MappingRule(name="name_value"),
+            mapping_rule_id="mapping_rule_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_mapping_rule_flattened_async():
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_mapping_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = conversionworkspace_resources.MappingRule()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversionworkspace_resources.MappingRule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_mapping_rule(
+            parent="parent_value",
+            mapping_rule=conversionworkspace_resources.MappingRule(name="name_value"),
+            mapping_rule_id="mapping_rule_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].mapping_rule
+        mock_val = conversionworkspace_resources.MappingRule(name="name_value")
+        assert arg == mock_val
+        arg = args[0].mapping_rule_id
+        mock_val = "mapping_rule_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_mapping_rule_flattened_error_async():
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_mapping_rule(
+            clouddms.CreateMappingRuleRequest(),
+            parent="parent_value",
+            mapping_rule=conversionworkspace_resources.MappingRule(name="name_value"),
+            mapping_rule_id="mapping_rule_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.DeleteMappingRuleRequest,
+        dict,
+    ],
+)
+def test_delete_mapping_rule(request_type, transport: str = "grpc"):
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_mapping_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_mapping_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.DeleteMappingRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_mapping_rule_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_mapping_rule), "__call__"
+    ) as call:
+        client.delete_mapping_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.DeleteMappingRuleRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_mapping_rule_async(
+    transport: str = "grpc_asyncio", request_type=clouddms.DeleteMappingRuleRequest
+):
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_mapping_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_mapping_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.DeleteMappingRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_mapping_rule_async_from_dict():
+    await test_delete_mapping_rule_async(request_type=dict)
+
+
+def test_delete_mapping_rule_field_headers():
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = clouddms.DeleteMappingRuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_mapping_rule), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_mapping_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_mapping_rule_field_headers_async():
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = clouddms.DeleteMappingRuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_mapping_rule), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_mapping_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_mapping_rule_flattened():
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_mapping_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_mapping_rule(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_mapping_rule_flattened_error():
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_mapping_rule(
+            clouddms.DeleteMappingRuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_mapping_rule_flattened_async():
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_mapping_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_mapping_rule(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_mapping_rule_flattened_error_async():
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_mapping_rule(
+            clouddms.DeleteMappingRuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.ListMappingRulesRequest,
+        dict,
+    ],
+)
+def test_list_mapping_rules(request_type, transport: str = "grpc"):
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_mapping_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = clouddms.ListMappingRulesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_mapping_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ListMappingRulesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListMappingRulesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_mapping_rules_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_mapping_rules), "__call__"
+    ) as call:
+        client.list_mapping_rules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ListMappingRulesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_mapping_rules_async(
+    transport: str = "grpc_asyncio", request_type=clouddms.ListMappingRulesRequest
+):
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_mapping_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms.ListMappingRulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_mapping_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ListMappingRulesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListMappingRulesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_mapping_rules_async_from_dict():
+    await test_list_mapping_rules_async(request_type=dict)
+
+
+def test_list_mapping_rules_field_headers():
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = clouddms.ListMappingRulesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_mapping_rules), "__call__"
+    ) as call:
+        call.return_value = clouddms.ListMappingRulesResponse()
+        client.list_mapping_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_mapping_rules_field_headers_async():
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = clouddms.ListMappingRulesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_mapping_rules), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms.ListMappingRulesResponse()
+        )
+        await client.list_mapping_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_mapping_rules_flattened():
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_mapping_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = clouddms.ListMappingRulesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_mapping_rules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_mapping_rules_flattened_error():
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_mapping_rules(
+            clouddms.ListMappingRulesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_mapping_rules_flattened_async():
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_mapping_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = clouddms.ListMappingRulesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms.ListMappingRulesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_mapping_rules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_mapping_rules_flattened_error_async():
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_mapping_rules(
+            clouddms.ListMappingRulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_mapping_rules_pager(transport_name: str = "grpc"):
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_mapping_rules), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            clouddms.ListMappingRulesResponse(
+                mapping_rules=[
+                    conversionworkspace_resources.MappingRule(),
+                    conversionworkspace_resources.MappingRule(),
+                    conversionworkspace_resources.MappingRule(),
+                ],
+                next_page_token="abc",
+            ),
+            clouddms.ListMappingRulesResponse(
+                mapping_rules=[],
+                next_page_token="def",
+            ),
+            clouddms.ListMappingRulesResponse(
+                mapping_rules=[
+                    conversionworkspace_resources.MappingRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            clouddms.ListMappingRulesResponse(
+                mapping_rules=[
+                    conversionworkspace_resources.MappingRule(),
+                    conversionworkspace_resources.MappingRule(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_mapping_rules(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, conversionworkspace_resources.MappingRule) for i in results
+        )
+
+
+def test_list_mapping_rules_pages(transport_name: str = "grpc"):
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_mapping_rules), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            clouddms.ListMappingRulesResponse(
+                mapping_rules=[
+                    conversionworkspace_resources.MappingRule(),
+                    conversionworkspace_resources.MappingRule(),
+                    conversionworkspace_resources.MappingRule(),
+                ],
+                next_page_token="abc",
+            ),
+            clouddms.ListMappingRulesResponse(
+                mapping_rules=[],
+                next_page_token="def",
+            ),
+            clouddms.ListMappingRulesResponse(
+                mapping_rules=[
+                    conversionworkspace_resources.MappingRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            clouddms.ListMappingRulesResponse(
+                mapping_rules=[
+                    conversionworkspace_resources.MappingRule(),
+                    conversionworkspace_resources.MappingRule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_mapping_rules(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_mapping_rules_async_pager():
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_mapping_rules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            clouddms.ListMappingRulesResponse(
+                mapping_rules=[
+                    conversionworkspace_resources.MappingRule(),
+                    conversionworkspace_resources.MappingRule(),
+                    conversionworkspace_resources.MappingRule(),
+                ],
+                next_page_token="abc",
+            ),
+            clouddms.ListMappingRulesResponse(
+                mapping_rules=[],
+                next_page_token="def",
+            ),
+            clouddms.ListMappingRulesResponse(
+                mapping_rules=[
+                    conversionworkspace_resources.MappingRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            clouddms.ListMappingRulesResponse(
+                mapping_rules=[
+                    conversionworkspace_resources.MappingRule(),
+                    conversionworkspace_resources.MappingRule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_mapping_rules(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, conversionworkspace_resources.MappingRule) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_mapping_rules_async_pages():
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_mapping_rules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            clouddms.ListMappingRulesResponse(
+                mapping_rules=[
+                    conversionworkspace_resources.MappingRule(),
+                    conversionworkspace_resources.MappingRule(),
+                    conversionworkspace_resources.MappingRule(),
+                ],
+                next_page_token="abc",
+            ),
+            clouddms.ListMappingRulesResponse(
+                mapping_rules=[],
+                next_page_token="def",
+            ),
+            clouddms.ListMappingRulesResponse(
+                mapping_rules=[
+                    conversionworkspace_resources.MappingRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            clouddms.ListMappingRulesResponse(
+                mapping_rules=[
+                    conversionworkspace_resources.MappingRule(),
+                    conversionworkspace_resources.MappingRule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_mapping_rules(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.GetMappingRuleRequest,
+        dict,
+    ],
+)
+def test_get_mapping_rule(request_type, transport: str = "grpc"):
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_mapping_rule), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = conversionworkspace_resources.MappingRule(
+            name="name_value",
+            display_name="display_name_value",
+            state=conversionworkspace_resources.MappingRule.State.ENABLED,
+            rule_scope=conversionworkspace_resources.DatabaseEntityType.DATABASE_ENTITY_TYPE_SCHEMA,
+            rule_order=1075,
+            revision_id="revision_id_value",
+        )
+        response = client.get_mapping_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GetMappingRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversionworkspace_resources.MappingRule)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.state == conversionworkspace_resources.MappingRule.State.ENABLED
+    assert (
+        response.rule_scope
+        == conversionworkspace_resources.DatabaseEntityType.DATABASE_ENTITY_TYPE_SCHEMA
+    )
+    assert response.rule_order == 1075
+    assert response.revision_id == "revision_id_value"
+
+
+def test_get_mapping_rule_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_mapping_rule), "__call__") as call:
+        client.get_mapping_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GetMappingRuleRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_mapping_rule_async(
+    transport: str = "grpc_asyncio", request_type=clouddms.GetMappingRuleRequest
+):
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_mapping_rule), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversionworkspace_resources.MappingRule(
+                name="name_value",
+                display_name="display_name_value",
+                state=conversionworkspace_resources.MappingRule.State.ENABLED,
+                rule_scope=conversionworkspace_resources.DatabaseEntityType.DATABASE_ENTITY_TYPE_SCHEMA,
+                rule_order=1075,
+                revision_id="revision_id_value",
+            )
+        )
+        response = await client.get_mapping_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GetMappingRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, conversionworkspace_resources.MappingRule)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.state == conversionworkspace_resources.MappingRule.State.ENABLED
+    assert (
+        response.rule_scope
+        == conversionworkspace_resources.DatabaseEntityType.DATABASE_ENTITY_TYPE_SCHEMA
+    )
+    assert response.rule_order == 1075
+    assert response.revision_id == "revision_id_value"
+
+
+@pytest.mark.asyncio
+async def test_get_mapping_rule_async_from_dict():
+    await test_get_mapping_rule_async(request_type=dict)
+
+
+def test_get_mapping_rule_field_headers():
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = clouddms.GetMappingRuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_mapping_rule), "__call__") as call:
+        call.return_value = conversionworkspace_resources.MappingRule()
+        client.get_mapping_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_mapping_rule_field_headers_async():
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = clouddms.GetMappingRuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_mapping_rule), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversionworkspace_resources.MappingRule()
+        )
+        await client.get_mapping_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_mapping_rule_flattened():
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_mapping_rule), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = conversionworkspace_resources.MappingRule()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_mapping_rule(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_mapping_rule_flattened_error():
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_mapping_rule(
+            clouddms.GetMappingRuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_mapping_rule_flattened_async():
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_mapping_rule), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = conversionworkspace_resources.MappingRule()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversionworkspace_resources.MappingRule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_mapping_rule(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_mapping_rule_flattened_error_async():
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_mapping_rule(
+            clouddms.GetMappingRuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         clouddms.SeedConversionWorkspaceRequest,
         dict,
     ],
@@ -9616,6 +11009,7 @@ def test_data_migration_service_base_transport():
         "verify_migration_job",
         "restart_migration_job",
         "generate_ssh_script",
+        "generate_tcp_proxy_script",
         "list_connection_profiles",
         "get_connection_profile",
         "create_connection_profile",
@@ -9630,6 +11024,10 @@ def test_data_migration_service_base_transport():
         "create_conversion_workspace",
         "update_conversion_workspace",
         "delete_conversion_workspace",
+        "create_mapping_rule",
+        "delete_mapping_rule",
+        "list_mapping_rules",
+        "get_mapping_rule",
         "seed_conversion_workspace",
         "import_mapping_rules",
         "convert_conversion_workspace",
@@ -10091,10 +11489,41 @@ def test_parse_conversion_workspace_path():
     assert expected == actual
 
 
-def test_migration_job_path():
+def test_mapping_rule_path():
     project = "squid"
     location = "clam"
-    migration_job = "whelk"
+    conversion_workspace = "whelk"
+    mapping_rule = "octopus"
+    expected = "projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}/mappingRules/{mapping_rule}".format(
+        project=project,
+        location=location,
+        conversion_workspace=conversion_workspace,
+        mapping_rule=mapping_rule,
+    )
+    actual = DataMigrationServiceClient.mapping_rule_path(
+        project, location, conversion_workspace, mapping_rule
+    )
+    assert expected == actual
+
+
+def test_parse_mapping_rule_path():
+    expected = {
+        "project": "oyster",
+        "location": "nudibranch",
+        "conversion_workspace": "cuttlefish",
+        "mapping_rule": "mussel",
+    }
+    path = DataMigrationServiceClient.mapping_rule_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataMigrationServiceClient.parse_mapping_rule_path(path)
+    assert expected == actual
+
+
+def test_migration_job_path():
+    project = "winkle"
+    location = "nautilus"
+    migration_job = "scallop"
     expected = (
         "projects/{project}/locations/{location}/migrationJobs/{migration_job}".format(
             project=project,
@@ -10110,9 +11539,9 @@ def test_migration_job_path():
 
 def test_parse_migration_job_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "migration_job": "nudibranch",
+        "project": "abalone",
+        "location": "squid",
+        "migration_job": "clam",
     }
     path = DataMigrationServiceClient.migration_job_path(**expected)
 
@@ -10122,8 +11551,8 @@ def test_parse_migration_job_path():
 
 
 def test_networks_path():
-    project = "cuttlefish"
-    network = "mussel"
+    project = "whelk"
+    network = "octopus"
     expected = "projects/{project}/global/networks/{network}".format(
         project=project,
         network=network,
@@ -10134,8 +11563,8 @@ def test_networks_path():
 
 def test_parse_networks_path():
     expected = {
-        "project": "winkle",
-        "network": "nautilus",
+        "project": "oyster",
+        "network": "nudibranch",
     }
     path = DataMigrationServiceClient.networks_path(**expected)
 
@@ -10145,9 +11574,9 @@ def test_parse_networks_path():
 
 
 def test_private_connection_path():
-    project = "scallop"
-    location = "abalone"
-    private_connection = "squid"
+    project = "cuttlefish"
+    location = "mussel"
+    private_connection = "winkle"
     expected = "projects/{project}/locations/{location}/privateConnections/{private_connection}".format(
         project=project,
         location=location,
@@ -10161,9 +11590,9 @@ def test_private_connection_path():
 
 def test_parse_private_connection_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "private_connection": "octopus",
+        "project": "nautilus",
+        "location": "scallop",
+        "private_connection": "abalone",
     }
     path = DataMigrationServiceClient.private_connection_path(**expected)
 
@@ -10173,7 +11602,7 @@ def test_parse_private_connection_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -10183,7 +11612,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "clam",
     }
     path = DataMigrationServiceClient.common_billing_account_path(**expected)
 
@@ -10193,7 +11622,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -10203,7 +11632,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "octopus",
     }
     path = DataMigrationServiceClient.common_folder_path(**expected)
 
@@ -10213,7 +11642,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -10223,7 +11652,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "nudibranch",
     }
     path = DataMigrationServiceClient.common_organization_path(**expected)
 
@@ -10233,7 +11662,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -10243,7 +11672,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "mussel",
     }
     path = DataMigrationServiceClient.common_project_path(**expected)
 
@@ -10253,8 +11682,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -10265,8 +11694,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = DataMigrationServiceClient.common_location_path(**expected)
 

@@ -29,6 +29,7 @@ from google.cloud.clouddms_v1.types import (
 __protobuf__ = proto.module(
     package="google.cloud.clouddms.v1",
     manifest={
+        "DatabaseEntityView",
         "ListMigrationJobsRequest",
         "ListMigrationJobsResponse",
         "GetMigrationJobRequest",
@@ -45,6 +46,8 @@ __protobuf__ = proto.module(
         "VmCreationConfig",
         "VmSelectionConfig",
         "SshScript",
+        "GenerateTcpProxyScriptRequest",
+        "TcpProxyScript",
         "ListConnectionProfilesRequest",
         "ListConnectionProfilesResponse",
         "GetConnectionProfileRequest",
@@ -66,6 +69,9 @@ __protobuf__ = proto.module(
         "CommitConversionWorkspaceRequest",
         "RollbackConversionWorkspaceRequest",
         "ApplyConversionWorkspaceRequest",
+        "ListMappingRulesRequest",
+        "ListMappingRulesResponse",
+        "GetMappingRuleRequest",
         "SeedConversionWorkspaceRequest",
         "ConvertConversionWorkspaceRequest",
         "ImportMappingRulesRequest",
@@ -75,10 +81,37 @@ __protobuf__ = proto.module(
         "SearchBackgroundJobsResponse",
         "DescribeConversionWorkspaceRevisionsRequest",
         "DescribeConversionWorkspaceRevisionsResponse",
+        "CreateMappingRuleRequest",
+        "DeleteMappingRuleRequest",
         "FetchStaticIpsRequest",
         "FetchStaticIpsResponse",
     },
 )
+
+
+class DatabaseEntityView(proto.Enum):
+    r"""AIP-157 Partial Response view for Database Entity.
+
+    Values:
+        DATABASE_ENTITY_VIEW_UNSPECIFIED (0):
+            Unspecified view. Defaults to basic view.
+        DATABASE_ENTITY_VIEW_BASIC (1):
+            Default view. Does not return DDLs or Issues.
+        DATABASE_ENTITY_VIEW_FULL (2):
+            Return full entity details including
+            mappings, ddl and issues.
+        DATABASE_ENTITY_VIEW_ROOT_SUMMARY (3):
+            Top-most (Database, Schema) nodes which are returned
+            contains summary details for their decendents such as the
+            number of entities per type and issues rollups. When this
+            view is used, only a single page of result is returned and
+            the page_size property of the request is ignored. The
+            returned page will only include the top-most node types.
+    """
+    DATABASE_ENTITY_VIEW_UNSPECIFIED = 0
+    DATABASE_ENTITY_VIEW_BASIC = 1
+    DATABASE_ENTITY_VIEW_FULL = 2
+    DATABASE_ENTITY_VIEW_ROOT_SUMMARY = 3
 
 
 class ListMigrationJobsRequest(proto.Message):
@@ -209,9 +242,9 @@ class CreateMigrationJobRequest(proto.Message):
             job <https://cloud.google.com/database-migration/docs/reference/rest/v1/projects.locations.migrationJobs>`__
             object.
         request_id (str):
-            A unique ID used to identify the request. If the server
-            receives two requests with the same ID, then the second
-            request is ignored.
+            Optional. A unique ID used to identify the request. If the
+            server receives two requests with the same ID, then the
+            second request is ignored.
 
             It is recommended to always set this value to a UUID.
 
@@ -322,11 +355,18 @@ class StartMigrationJobRequest(proto.Message):
     Attributes:
         name (str):
             Name of the migration job resource to start.
+        skip_validation (bool):
+            Optional. Start the migration job without running prior
+            configuration verification. Defaults to ``false``.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    skip_validation: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 
@@ -379,11 +419,29 @@ class VerifyMigrationJobRequest(proto.Message):
     Attributes:
         name (str):
             Name of the migration job resource to verify.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Field mask is used to specify the
+            changed fields to be verified. It will not
+            update the migration job.
+        migration_job (google.cloud.clouddms_v1.types.MigrationJob):
+            Optional. The changed migration job
+            parameters to verify. It will not update the
+            migration job.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    migration_job: clouddms_resources.MigrationJob = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=clouddms_resources.MigrationJob,
     )
 
 
@@ -394,11 +452,18 @@ class RestartMigrationJobRequest(proto.Message):
         name (str):
             Name of the migration job resource to
             restart.
+        skip_validation (bool):
+            Optional. Restart the migration job without running prior
+            configuration verification. Defaults to ``false``.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    skip_validation: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 
@@ -507,6 +572,71 @@ class SshScript(proto.Message):
     Attributes:
         script (str):
             The ssh configuration script.
+    """
+
+    script: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GenerateTcpProxyScriptRequest(proto.Message):
+    r"""Request message for 'GenerateTcpProxyScript' request.
+
+    Attributes:
+        migration_job (str):
+            Name of the migration job resource to
+            generate the TCP Proxy script.
+        vm_name (str):
+            Required. The name of the Compute instance
+            that will host the proxy.
+        vm_machine_type (str):
+            Required. The type of the Compute instance
+            that will host the proxy.
+        vm_zone (str):
+            Optional. The Google Cloud Platform zone to
+            create the VM in. The fully qualified name of
+            the zone must be specified, including the region
+            name, for example "us-central1-b". If not
+            specified, uses the "-b" zone of the destination
+            Connection Profile's region.
+        vm_subnet (str):
+            Required. The name of the subnet the Compute
+            instance will use for private connectivity. Must
+            be supplied in the form of
+            projects/{project}/regions/{region}/subnetworks/{subnetwork}.
+            Note: the region for the subnet must match the
+            Compute instance region.
+    """
+
+    migration_job: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    vm_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    vm_machine_type: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    vm_zone: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    vm_subnet: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class TcpProxyScript(proto.Message):
+    r"""Response message for 'GenerateTcpProxyScript' request.
+
+    Attributes:
+        script (str):
+            The TCP Proxy configuration script.
     """
 
     script: str = proto.Field(
@@ -1235,6 +1365,10 @@ class DeleteConversionWorkspaceRequest(proto.Message):
             The ID must contain only letters (a-z, A-Z), numbers (0-9),
             underscores (_), and hyphens (-). The maximum length is 40
             characters.
+        force (bool):
+            Force delete the conversion workspace, even
+            if there's a running migration that is using the
+            workspace.
     """
 
     name: str = proto.Field(
@@ -1244,6 +1378,10 @@ class DeleteConversionWorkspaceRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    force: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
@@ -1297,9 +1435,18 @@ class ApplyConversionWorkspaceRequest(proto.Message):
             Filter which entities to apply. Leaving this
             field empty will apply all of the entities.
             Supports Google AIP 160 based filtering.
+        dry_run (bool):
+            Optional. Only validates the apply process,
+            but doesn't change the destination database.
+            Only works for PostgreSQL destination connection
+            profile.
+        auto_commit (bool):
+            Optional. Specifies whether the conversion
+            workspace is to be committed automatically after
+            the apply.
         connection_profile (str):
-            Fully qualified (Uri) name of the destination
-            connection profile.
+            Optional. Fully qualified (Uri) name of the
+            destination connection profile.
 
             This field is a member of `oneof`_ ``destination``.
     """
@@ -1312,10 +1459,105 @@ class ApplyConversionWorkspaceRequest(proto.Message):
         proto.STRING,
         number=2,
     )
+    dry_run: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    auto_commit: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
     connection_profile: str = proto.Field(
         proto.STRING,
         number=100,
         oneof="destination",
+    )
+
+
+class ListMappingRulesRequest(proto.Message):
+    r"""Retrieve a list of all mapping rules in a given conversion
+    workspace.
+
+    Attributes:
+        parent (str):
+            Required. Name of the conversion workspace resource whose
+            mapping rules are listed in the form of:
+            projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
+        page_size (int):
+            The maximum number of rules to return. The
+            service may return fewer than this value.
+        page_token (str):
+            The nextPageToken value received in the
+            previous call to mappingRules.list, used in the
+            subsequent request to retrieve the next page of
+            results. On first call this should be left
+            blank. When paginating, all other parameters
+            provided to mappingRules.list must match the
+            call that provided the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListMappingRulesResponse(proto.Message):
+    r"""Response message for 'ListMappingRulesRequest' request.
+
+    Attributes:
+        mapping_rules (MutableSequence[google.cloud.clouddms_v1.types.MappingRule]):
+            The list of conversion workspace mapping
+            rules.
+        next_page_token (str):
+            A token which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    mapping_rules: MutableSequence[
+        conversionworkspace_resources.MappingRule
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=conversionworkspace_resources.MappingRule,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetMappingRuleRequest(proto.Message):
+    r"""Request message for 'GetMappingRule' request.
+
+    Attributes:
+        name (str):
+            Required. Name of the mapping rule resource
+            to get. Example:
+            conversionWorkspaces/123/mappingRules/rule123
+            In order to retrieve a previous revision of the
+            mapping rule, also provide the revision ID.
+            Example:
+
+            conversionWorkspace/123/mappingRules/rule123@c7cfa2a8c7cfa2a8c7cfa2a8c7cfa2a8
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -1338,13 +1580,13 @@ class SeedConversionWorkspaceRequest(proto.Message):
             Should the conversion workspace be committed
             automatically after the seed operation.
         source_connection_profile (str):
-            Fully qualified (Uri) name of the source
-            connection profile.
+            Optional. Fully qualified (Uri) name of the
+            source connection profile.
 
             This field is a member of `oneof`_ ``seed_from``.
         destination_connection_profile (str):
-            Fully qualified (Uri) name of the destination
-            connection profile.
+            Optional. Fully qualified (Uri) name of the
+            destination connection profile.
 
             This field is a member of `oneof`_ ``seed_from``.
     """
@@ -1378,13 +1620,20 @@ class ConvertConversionWorkspaceRequest(proto.Message):
             form of:
             projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
         auto_commit (bool):
-            Specifies whether the conversion workspace is
-            to be committed automatically after the
-            conversion.
+            Optional. Specifies whether the conversion
+            workspace is to be committed automatically after
+            the conversion.
         filter (str):
-            Filter the entities to convert. Leaving this
-            field empty will convert all of the entities.
-            Supports Google AIP-160 style filtering.
+            Optional. Filter the entities to convert.
+            Leaving this field empty will convert all of the
+            entities. Supports Google AIP-160 style
+            filtering.
+        convert_full_path (bool):
+            Optional. Automatically convert the full
+            entity path for each entity specified by the
+            filter. For example, if the filter specifies a
+            table, that table schema (and database if there
+            is one) will also be converted.
     """
 
     name: str = proto.Field(
@@ -1399,6 +1648,10 @@ class ConvertConversionWorkspaceRequest(proto.Message):
         proto.STRING,
         number=5,
     )
+    convert_full_path: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
 
 
 class ImportMappingRulesRequest(proto.Message):
@@ -1410,12 +1663,14 @@ class ImportMappingRulesRequest(proto.Message):
             import the rules to in the form of:
             projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
         rules_format (google.cloud.clouddms_v1.types.ImportRulesFileFormat):
-            The format of the rules content file.
+            Required. The format of the rules content
+            file.
         rules_files (MutableSequence[google.cloud.clouddms_v1.types.ImportMappingRulesRequest.RulesFile]):
-            One or more rules files.
+            Required. One or more rules files.
         auto_commit (bool):
-            Should the conversion workspace be committed
-            automatically after the import operation.
+            Required. Should the conversion workspace be
+            committed automatically after the import
+            operation.
     """
 
     class RulesFile(proto.Message):
@@ -1423,13 +1678,14 @@ class ImportMappingRulesRequest(proto.Message):
 
         Attributes:
             rules_source_filename (str):
-                The filename of the rules that needs to be
-                converted. The filename is used mainly so that
-                future logs of the import rules job contain it,
-                and can therefore be searched by it.
+                Required. The filename of the rules that
+                needs to be converted. The filename is used
+                mainly so that future logs of the import rules
+                job contain it, and can therefore be searched by
+                it.
             rules_content (str):
-                The text content of the rules that needs to
-                be converted.
+                Required. The text content of the rules that
+                needs to be converted.
         """
 
         rules_source_filename: str = proto.Field(
@@ -1470,12 +1726,12 @@ class DescribeDatabaseEntitiesRequest(proto.Message):
             database entities are described. Must be in the form of:
             projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
         page_size (int):
-            The maximum number of entities to return. The
-            service may return fewer entities than the value
-            specifies.
+            Optional. The maximum number of entities to
+            return. The service may return fewer entities
+            than the value specifies.
         page_token (str):
-            The nextPageToken value received in the
-            previous call to
+            Optional. The nextPageToken value received in
+            the previous call to
             conversionWorkspace.describeDatabaseEntities,
             used in the subsequent request to retrieve the
             next page of results. On first call this should
@@ -1485,18 +1741,20 @@ class DescribeDatabaseEntitiesRequest(proto.Message):
             must match the call that provided the page
             token.
         tree (google.cloud.clouddms_v1.types.DescribeDatabaseEntitiesRequest.DBTreeType):
-            The tree to fetch.
+            Required. The tree to fetch.
         uncommitted (bool):
-            Whether to retrieve the latest committed version of the
-            entities or the latest version. This field is ignored if a
-            specific commit_id is specified.
+            Optional. Whether to retrieve the latest committed version
+            of the entities or the latest version. This field is ignored
+            if a specific commit_id is specified.
         commit_id (str):
-            Request a specific commit ID. If not
-            specified, the entities from the latest commit
-            are returned.
+            Optional. Request a specific commit ID. If
+            not specified, the entities from the latest
+            commit are returned.
         filter (str):
-            Filter the returned entities based on AIP-160
-            standard.
+            Optional. Filter the returned entities based
+            on AIP-160 standard.
+        view (google.cloud.clouddms_v1.types.DatabaseEntityView):
+            Optional. Results view based on AIP-157
     """
 
     class DBTreeType(proto.Enum):
@@ -1545,6 +1803,11 @@ class DescribeDatabaseEntitiesRequest(proto.Message):
     filter: str = proto.Field(
         proto.STRING,
         number=13,
+    )
+    view: "DatabaseEntityView" = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum="DatabaseEntityView",
     )
 
 
@@ -1677,6 +1940,79 @@ class DescribeConversionWorkspaceRevisionsResponse(proto.Message):
         proto.MESSAGE,
         number=1,
         message=conversionworkspace_resources.ConversionWorkspace,
+    )
+
+
+class CreateMappingRuleRequest(proto.Message):
+    r"""Request message for 'CreateMappingRule' command.
+
+    Attributes:
+        parent (str):
+            Required. The parent which owns this
+            collection of mapping rules.
+        mapping_rule_id (str):
+            Required. The ID of the rule to create.
+        mapping_rule (google.cloud.clouddms_v1.types.MappingRule):
+            Required. Represents a [mapping rule]
+            (https://cloud.google.com/database-migration/reference/rest/v1/projects.locations.mappingRules)
+            object.
+        request_id (str):
+            A unique ID used to identify the request. If the server
+            receives two requests with the same ID, then the second
+            request is ignored.
+
+            It is recommended to always set this value to a UUID.
+
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
+            underscores (_), and hyphens (-). The maximum length is 40
+            characters.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    mapping_rule_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    mapping_rule: conversionworkspace_resources.MappingRule = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=conversionworkspace_resources.MappingRule,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class DeleteMappingRuleRequest(proto.Message):
+    r"""Request message for 'DeleteMappingRule' request.
+
+    Attributes:
+        name (str):
+            Required. Name of the mapping rule resource
+            to delete.
+        request_id (str):
+            Optional. A unique ID used to identify the request. If the
+            server receives two requests with the same ID, then the
+            second request is ignored.
+
+            It is recommended to always set this value to a UUID.
+
+            The ID must contain only letters (a-z, A-Z), numbers (0-9),
+            underscores (_), and hyphens (-). The maximum length is 40
+            characters.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

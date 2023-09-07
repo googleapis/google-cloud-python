@@ -39,8 +39,15 @@ async def sample_import_mapping_rules():
     client = clouddms_v1.DataMigrationServiceAsyncClient()
 
     # Initialize request argument(s)
+    rules_files = clouddms_v1.RulesFile()
+    rules_files.rules_source_filename = "rules_source_filename_value"
+    rules_files.rules_content = "rules_content_value"
+
     request = clouddms_v1.ImportMappingRulesRequest(
         parent="parent_value",
+        rules_format="IMPORT_RULES_FILE_FORMAT_ORATOPG_CONFIG_FILE",
+        rules_files=rules_files,
+        auto_commit=True,
     )
 
     # Make the request

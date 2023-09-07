@@ -384,6 +384,13 @@ class OracleConnectionProfile(proto.Message):
         database_service (str):
             Required. Database service for the Oracle
             connection.
+        ssl (google.cloud.clouddms_v1.types.SslConfig):
+            SSL configuration for the connection to the source Oracle
+            database.
+
+            -  Only ``SERVER_ONLY`` configuration is supported for
+               Oracle SSL.
+            -  SSL is supported for Oracle versions 12 and above.
         static_service_ip_connectivity (google.cloud.clouddms_v1.types.StaticServiceIpConnectivity):
             Static Service IP connectivity.
 
@@ -421,6 +428,11 @@ class OracleConnectionProfile(proto.Message):
     database_service: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    ssl: "SslConfig" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="SslConfig",
     )
     static_service_ip_connectivity: "StaticServiceIpConnectivity" = proto.Field(
         proto.MESSAGE,
@@ -713,6 +725,9 @@ class CloudSqlSettings(proto.Message):
                Outages in that zone affect data availability.
             -  ``REGIONAL``: The instance can serve data from more than
                one zone in a region (it is highly available).
+        edition (google.cloud.clouddms_v1.types.CloudSqlSettings.Edition):
+            Optional. The edition of the given Cloud SQL
+            instance.
     """
 
     class SqlActivationPolicy(proto.Enum):
@@ -769,6 +784,8 @@ class CloudSqlSettings(proto.Message):
                 PostgreSQL 13.
             POSTGRES_14 (17):
                 PostgreSQL 14.
+            POSTGRES_15 (18):
+                PostgreSQL 15.
         """
         SQL_DATABASE_VERSION_UNSPECIFIED = 0
         MYSQL_5_6 = 1
@@ -780,6 +797,7 @@ class CloudSqlSettings(proto.Message):
         POSTGRES_12 = 7
         POSTGRES_13 = 8
         POSTGRES_14 = 17
+        POSTGRES_15 = 18
 
     class SqlAvailabilityType(proto.Enum):
         r"""The availability type of the given Cloud SQL instance.
@@ -795,6 +813,22 @@ class CloudSqlSettings(proto.Message):
         SQL_AVAILABILITY_TYPE_UNSPECIFIED = 0
         ZONAL = 1
         REGIONAL = 2
+
+    class Edition(proto.Enum):
+        r"""The edition of the given Cloud SQL instance. Can be ENTERPRISE or
+        ENTERPRISE_PLUS.
+
+        Values:
+            EDITION_UNSPECIFIED (0):
+                The instance did not specify the edition.
+            ENTERPRISE (2):
+                The instance is an enterprise edition.
+            ENTERPRISE_PLUS (3):
+                The instance is an enterprise plus edition.
+        """
+        EDITION_UNSPECIFIED = 0
+        ENTERPRISE = 2
+        ENTERPRISE_PLUS = 3
 
     database_version: SqlDatabaseVersion = proto.Field(
         proto.ENUM,
@@ -877,6 +911,11 @@ class CloudSqlSettings(proto.Message):
         proto.ENUM,
         number=17,
         enum=SqlAvailabilityType,
+    )
+    edition: Edition = proto.Field(
+        proto.ENUM,
+        number=19,
+        enum=Edition,
     )
 
 
@@ -1054,8 +1093,8 @@ class StaticIpConnectivity(proto.Message):
 
 
 class PrivateServiceConnectConnectivity(proto.Message):
-    r"""Private Service Connect connectivity
-    (https://cloud.google.com/vpc/docs/private-service-connect#service-attachments)
+    r"""`Private Service Connect
+    connectivity <https://cloud.google.com/vpc/docs/private-service-connect#service-attachments>`__
 
     Attributes:
         service_attachment (str):
@@ -1337,6 +1376,10 @@ class MigrationJob(proto.Message):
                alloydb connection profile instead). Each Cloud CMEK key
                has the following format:
                projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]
+        performance_config (google.cloud.clouddms_v1.types.MigrationJob.PerformanceConfig):
+            Optional. Data dump parallelism settings used
+            by the migration. Currently applicable only for
+            MySQL to Cloud SQL for MySQL migrations only.
     """
 
     class State(proto.Enum):
@@ -1469,6 +1512,41 @@ class MigrationJob(proto.Message):
             message="MigrationJob.DumpFlag",
         )
 
+    class PerformanceConfig(proto.Message):
+        r"""Performance configuration definition.
+
+        Attributes:
+            dump_parallel_level (google.cloud.clouddms_v1.types.MigrationJob.PerformanceConfig.DumpParallelLevel):
+                Initial dump parallelism level.
+        """
+
+        class DumpParallelLevel(proto.Enum):
+            r"""Describes the parallelism level during initial dump.
+
+            Values:
+                DUMP_PARALLEL_LEVEL_UNSPECIFIED (0):
+                    Unknown dump parallel level. Will be
+                    defaulted to OPTIMAL.
+                MIN (1):
+                    Minimal parallel level.
+                OPTIMAL (2):
+                    Optimal parallel level.
+                MAX (3):
+                    Maximum parallel level.
+            """
+            DUMP_PARALLEL_LEVEL_UNSPECIFIED = 0
+            MIN = 1
+            OPTIMAL = 2
+            MAX = 3
+
+        dump_parallel_level: "MigrationJob.PerformanceConfig.DumpParallelLevel" = (
+            proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="MigrationJob.PerformanceConfig.DumpParallelLevel",
+            )
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -1579,6 +1657,11 @@ class MigrationJob(proto.Message):
     cmek_key_name: str = proto.Field(
         proto.STRING,
         number=21,
+    )
+    performance_config: PerformanceConfig = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        message=PerformanceConfig,
     )
 
 
@@ -1845,6 +1928,8 @@ class MigrationJobVerificationError(proto.Message):
             CANT_RESTART_RUNNING_MIGRATION (21):
                 Migration is already running at the time of
                 restart request.
+            SOURCE_ALREADY_SETUP (23):
+                The source already has a replication setup.
             TABLES_WITH_LIMITED_SUPPORT (24):
                 The source has tables with limited support.
                 E.g. PostgreSQL tables without primary keys.
@@ -1859,6 +1944,13 @@ class MigrationJobVerificationError(proto.Message):
                 The source DB size in Bytes exceeds a certain
                 threshold. The migration might require an
                 increase of quota, or might not be supported.
+            EXISTING_CONFLICTING_DATABASES (29):
+                The destination DB contains existing
+                databases that are conflicting with those in the
+                source DB.
+            PARALLEL_IMPORT_INSUFFICIENT_PRIVILEGE (30):
+                Insufficient privilege to enable the
+                parallelism configuration.
         """
         ERROR_CODE_UNSPECIFIED = 0
         CONNECTION_FAILURE = 1
@@ -1880,11 +1972,14 @@ class MigrationJobVerificationError(proto.Message):
         UNSUPPORTED_TABLE_DEFINITION = 18
         UNSUPPORTED_DEFINER = 19
         CANT_RESTART_RUNNING_MIGRATION = 21
+        SOURCE_ALREADY_SETUP = 23
         TABLES_WITH_LIMITED_SUPPORT = 24
         UNSUPPORTED_DATABASE_LOCALE = 25
         UNSUPPORTED_DATABASE_FDW_CONFIG = 26
         ERROR_RDBMS = 27
         SOURCE_SIZE_EXCEEDS_THRESHOLD = 28
+        EXISTING_CONFLICTING_DATABASES = 29
+        PARALLEL_IMPORT_INSUFFICIENT_PRIVILEGE = 30
 
     error_code: ErrorCode = proto.Field(
         proto.ENUM,
