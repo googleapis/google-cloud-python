@@ -165,7 +165,10 @@ class RepricingConfig(proto.Message):
             Applies the repricing configuration at the channel partner
             level. Only
             [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
-            supports this value.
+            supports this value. Deprecated: This is no longer
+            supported. Use
+            [RepricingConfig.entitlement_granularity][google.cloud.channel.v1.RepricingConfig.entitlement_granularity]
+            instead.
 
             This field is a member of `oneof`_ ``granularity``.
         effective_invoice_month (google.type.date_pb2.Date):
@@ -203,9 +206,11 @@ class RepricingConfig(proto.Message):
         )
 
     class ChannelPartnerGranularity(proto.Message):
-        r"""Applies the repricing configuration at the channel partner
-        level. The channel partner value is derived from the resource
-        name. Takes an empty json object.
+        r"""Applies the repricing configuration at the channel partner level.
+        The channel partner value is derived from the resource name. Takes
+        an empty json object. Deprecated: This is no longer supported. Use
+        [RepricingConfig.EntitlementGranularity][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity]
+        instead.
 
         """
 
