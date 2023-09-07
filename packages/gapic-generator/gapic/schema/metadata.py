@@ -28,7 +28,7 @@ with the things they describe for easy access in templates.
 
 import dataclasses
 import re
-from typing import FrozenSet, Tuple, Optional
+from typing import FrozenSet, Set, Tuple, Optional
 
 from google.protobuf import descriptor_pb2
 
@@ -54,7 +54,7 @@ class Address(BaseAddress):
     api_naming: naming.Naming = dataclasses.field(
         default_factory=naming.NewNaming,
     )
-    collisions: FrozenSet[str] = dataclasses.field(default_factory=frozenset)
+    collisions: Set[str] = dataclasses.field(default_factory=set)
 
     def __eq__(self, other) -> bool:
         # We don't want to use api_naming or collisions to determine equality,
@@ -351,7 +351,7 @@ class Address(BaseAddress):
             return f'{".".join(self.package)}.{selector}'
         return selector
 
-    def with_context(self, *, collisions: FrozenSet[str]) -> 'Address':
+    def with_context(self, *, collisions: Set[str]) -> 'Address':
         """Return a derivative of this address with the provided context.
 
         This method is used to address naming collisions. The returned
@@ -390,7 +390,7 @@ class Metadata:
             return '\n\n'.join(self.documentation.leading_detached_comments)
         return ''
 
-    def with_context(self, *, collisions: FrozenSet[str]) -> 'Metadata':
+    def with_context(self, *, collisions: Set[str]) -> 'Metadata':
         """Return a derivative of this metadata with the provided context.
 
         This method is used to address naming collisions. The returned

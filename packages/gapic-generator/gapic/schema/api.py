@@ -746,6 +746,7 @@ class _ProtoBuilder:
         if not self.file_to_generate:
             return naive
 
+        visited_messages: Set[wrappers.MessageType] = set()
         # Return a context-aware proto object.
         return dataclasses.replace(
             naive,
@@ -754,13 +755,19 @@ class _ProtoBuilder:
                 for k, v in naive.all_enums.items()
             ),
             all_messages=collections.OrderedDict(
-                (k, v.with_context(collisions=naive.names))
+                (k, v.with_context(
+                    collisions=naive.names,
+                    visited_messages=visited_messages,
+                ))
                 for k, v in naive.all_messages.items()
             ),
             services=collections.OrderedDict(
                 # Note: services bind to themselves because services get their
                 # own output files.
-                (k, v.with_context(collisions=v.names))
+                (k, v.with_context(
+                    collisions=v.names,
+                    visited_messages=visited_messages,
+                ))
                 for k, v in naive.services.items()
             ),
             meta=naive.meta.with_context(collisions=naive.names),
