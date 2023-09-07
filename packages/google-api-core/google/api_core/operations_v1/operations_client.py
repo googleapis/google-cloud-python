@@ -43,6 +43,7 @@ from google.api_core import page_iterator
 from google.api_core import retry as retries
 from google.api_core import timeout as timeouts
 from google.longrunning import operations_pb2
+from grpc import Compression
 
 
 class OperationsClient(object):
@@ -72,28 +73,34 @@ class OperationsClient(object):
         )
         default_timeout = timeouts.TimeToDeadlineTimeout(timeout=600.0)
 
+        default_compression = Compression.NoCompression
+
         self._get_operation = gapic_v1.method.wrap_method(
             self.operations_stub.GetOperation,
             default_retry=default_retry,
             default_timeout=default_timeout,
+            default_compression=default_compression,
         )
 
         self._list_operations = gapic_v1.method.wrap_method(
             self.operations_stub.ListOperations,
             default_retry=default_retry,
             default_timeout=default_timeout,
+            default_compression=default_compression,
         )
 
         self._cancel_operation = gapic_v1.method.wrap_method(
             self.operations_stub.CancelOperation,
             default_retry=default_retry,
             default_timeout=default_timeout,
+            default_compression=default_compression,
         )
 
         self._delete_operation = gapic_v1.method.wrap_method(
             self.operations_stub.DeleteOperation,
             default_retry=default_retry,
             default_timeout=default_timeout,
+            default_compression=default_compression,
         )
 
     # Service calls
@@ -102,6 +109,7 @@ class OperationsClient(object):
         name,
         retry=gapic_v1.method.DEFAULT,
         timeout=gapic_v1.method.DEFAULT,
+        compression=gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """Gets the latest state of a long-running operation.
@@ -128,6 +136,8 @@ class OperationsClient(object):
                 unspecified, the the default timeout in the client
                 configuration is used. If ``None``, then the RPC method will
                 not time out.
+            compression (grpc.Compression): An element of grpc.compression
+                e.g. grpc.compression.Gzip.
             metadata (Optional[List[Tuple[str, str]]]):
                 Additional gRPC metadata.
 
@@ -147,7 +157,11 @@ class OperationsClient(object):
         metadata.append(gapic_v1.routing_header.to_grpc_metadata({"name": name}))
 
         return self._get_operation(
-            request, retry=retry, timeout=timeout, metadata=metadata
+            request,
+            retry=retry,
+            timeout=timeout,
+            compression=compression,
+            metadata=metadata,
         )
 
     def list_operations(
@@ -156,6 +170,7 @@ class OperationsClient(object):
         filter_,
         retry=gapic_v1.method.DEFAULT,
         timeout=gapic_v1.method.DEFAULT,
+        compression=gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """
@@ -192,6 +207,8 @@ class OperationsClient(object):
                 unspecified, the the default timeout in the client
                 configuration is used. If ``None``, then the RPC method will
                 not time out.
+            compression (grpc.Compression): An element of grpc.compression
+                e.g. grpc.compression.Gzip.
             metadata (Optional[List[Tuple[str, str]]]): Additional gRPC
                 metadata.
 
@@ -216,7 +233,11 @@ class OperationsClient(object):
 
         # Create the method used to fetch pages
         method = functools.partial(
-            self._list_operations, retry=retry, timeout=timeout, metadata=metadata
+            self._list_operations,
+            retry=retry,
+            timeout=timeout,
+            compression=compression,
+            metadata=metadata,
         )
 
         iterator = page_iterator.GRPCIterator(
@@ -235,6 +256,7 @@ class OperationsClient(object):
         name,
         retry=gapic_v1.method.DEFAULT,
         timeout=gapic_v1.method.DEFAULT,
+        compression=gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """Starts asynchronous cancellation on a long-running operation.
@@ -267,6 +289,8 @@ class OperationsClient(object):
                 unspecified, the the default timeout in the client
                 configuration is used. If ``None``, then the RPC method will
                 not time out.
+            compression (grpc.Compression): An element of grpc.compression
+                e.g. grpc.compression.Gzip.
             metadata (Optional[List[Tuple[str, str]]]): Additional gRPC
                 metadata.
 
@@ -285,13 +309,20 @@ class OperationsClient(object):
         metadata = metadata or []
         metadata.append(gapic_v1.routing_header.to_grpc_metadata({"name": name}))
 
-        self._cancel_operation(request, retry=retry, timeout=timeout, metadata=metadata)
+        self._cancel_operation(
+            request,
+            retry=retry,
+            timeout=timeout,
+            compression=compression,
+            metadata=metadata,
+        )
 
     def delete_operation(
         self,
         name,
         retry=gapic_v1.method.DEFAULT,
         timeout=gapic_v1.method.DEFAULT,
+        compression=gapic_v1.method.DEFAULT,
         metadata=None,
     ):
         """Deletes a long-running operation.
@@ -318,6 +349,8 @@ class OperationsClient(object):
                 unspecified, the the default timeout in the client
                 configuration is used. If ``None``, then the RPC method will
                 not time out.
+            compression (grpc.Compression): An element of grpc.compression
+                e.g. grpc.compression.Gzip.
             metadata (Optional[List[Tuple[str, str]]]): Additional gRPC
                 metadata.
 
@@ -336,4 +369,10 @@ class OperationsClient(object):
         metadata = metadata or []
         metadata.append(gapic_v1.routing_header.to_grpc_metadata({"name": name}))
 
-        self._delete_operation(request, retry=retry, timeout=timeout, metadata=metadata)
+        self._delete_operation(
+            request,
+            retry=retry,
+            timeout=timeout,
+            compression=compression,
+            metadata=metadata,
+        )

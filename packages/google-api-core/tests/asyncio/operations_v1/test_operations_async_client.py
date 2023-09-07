@@ -16,7 +16,7 @@ import mock
 import pytest
 
 try:
-    from grpc import aio
+    from grpc import aio, Compression
 except ImportError:  # pragma: NO COVER
     pytest.skip("No GRPC", allow_module_level=True)
 
@@ -42,10 +42,13 @@ async def test_get_operation():
     )
     client = operations_v1.OperationsAsyncClient(mocked_channel)
 
-    response = await client.get_operation("name", metadata=[("header", "foo")])
+    response = await client.get_operation(
+        "name", metadata=[("header", "foo")], compression=Compression.Gzip
+    )
     assert method.call_count == 1
     assert tuple(method.call_args_list[0])[0][0].name == "name"
     assert ("header", "foo") in tuple(method.call_args_list[0])[1]["metadata"]
+    assert tuple(method.call_args_list[0])[1]["compression"] == Compression.Gzip
     assert ("x-goog-request-params", "name=name") in tuple(method.call_args_list[0])[1][
         "metadata"
     ]
@@ -63,7 +66,9 @@ async def test_list_operations():
     mocked_channel, method, fake_call = _mock_grpc_objects(list_response)
     client = operations_v1.OperationsAsyncClient(mocked_channel)
 
-    pager = await client.list_operations("name", "filter", metadata=[("header", "foo")])
+    pager = await client.list_operations(
+        "name", "filter", metadata=[("header", "foo")], compression=Compression.Gzip
+    )
 
     assert isinstance(pager, page_iterator_async.AsyncIterator)
     responses = []
@@ -74,6 +79,7 @@ async def test_list_operations():
 
     assert method.call_count == 1
     assert ("header", "foo") in tuple(method.call_args_list[0])[1]["metadata"]
+    assert tuple(method.call_args_list[0])[1]["compression"] == Compression.Gzip
     assert ("x-goog-request-params", "name=name") in tuple(method.call_args_list[0])[1][
         "metadata"
     ]
@@ -88,11 +94,14 @@ async def test_delete_operation():
     mocked_channel, method, fake_call = _mock_grpc_objects(empty_pb2.Empty())
     client = operations_v1.OperationsAsyncClient(mocked_channel)
 
-    await client.delete_operation("name", metadata=[("header", "foo")])
+    await client.delete_operation(
+        "name", metadata=[("header", "foo")], compression=Compression.Gzip
+    )
 
     assert method.call_count == 1
     assert tuple(method.call_args_list[0])[0][0].name == "name"
     assert ("header", "foo") in tuple(method.call_args_list[0])[1]["metadata"]
+    assert tuple(method.call_args_list[0])[1]["compression"] == Compression.Gzip
     assert ("x-goog-request-params", "name=name") in tuple(method.call_args_list[0])[1][
         "metadata"
     ]
@@ -103,11 +112,14 @@ async def test_cancel_operation():
     mocked_channel, method, fake_call = _mock_grpc_objects(empty_pb2.Empty())
     client = operations_v1.OperationsAsyncClient(mocked_channel)
 
-    await client.cancel_operation("name", metadata=[("header", "foo")])
+    await client.cancel_operation(
+        "name", metadata=[("header", "foo")], compression=Compression.Gzip
+    )
 
     assert method.call_count == 1
     assert tuple(method.call_args_list[0])[0][0].name == "name"
     assert ("header", "foo") in tuple(method.call_args_list[0])[1]["metadata"]
+    assert tuple(method.call_args_list[0])[1]["compression"] == Compression.Gzip
     assert ("x-goog-request-params", "name=name") in tuple(method.call_args_list[0])[1][
         "metadata"
     ]

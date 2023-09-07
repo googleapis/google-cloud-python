@@ -315,10 +315,16 @@ def from_grpc(operation, operations_stub, result_type, grpc_metadata=None, **kwa
             operation.
     """
     refresh = functools.partial(
-        _refresh_grpc, operations_stub, operation.name, metadata=grpc_metadata
+        _refresh_grpc,
+        operations_stub,
+        operation.name,
+        metadata=grpc_metadata,
     )
     cancel = functools.partial(
-        _cancel_grpc, operations_stub, operation.name, metadata=grpc_metadata
+        _cancel_grpc,
+        operations_stub,
+        operation.name,
+        metadata=grpc_metadata,
     )
     return Operation(operation, refresh, cancel, result_type, **kwargs)
 
@@ -347,9 +353,13 @@ def from_gapic(operation, operations_client, result_type, grpc_metadata=None, **
             operation.
     """
     refresh = functools.partial(
-        operations_client.get_operation, operation.name, metadata=grpc_metadata
+        operations_client.get_operation,
+        operation.name,
+        metadata=grpc_metadata,
     )
     cancel = functools.partial(
-        operations_client.cancel_operation, operation.name, metadata=grpc_metadata
+        operations_client.cancel_operation,
+        operation.name,
+        metadata=grpc_metadata,
     )
     return Operation(operation, refresh, cancel, result_type, **kwargs)

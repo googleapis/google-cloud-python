@@ -33,6 +33,7 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account  # type: ignore
+import grpc
 
 OptionalRetry = Union[retries.Retry, object]
 
@@ -368,6 +369,7 @@ class AbstractOperationsClient(metaclass=AbstractOperationsClientMeta):
         page_token: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
+        compression: Optional[grpc.Compression] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListOperationsPager:
         r"""Lists operations that match the specified filter in the request.
@@ -429,6 +431,7 @@ class AbstractOperationsClient(metaclass=AbstractOperationsClientMeta):
             request,
             retry=retry,
             timeout=timeout,
+            compression=compression,
             metadata=metadata,
         )
 
@@ -450,6 +453,7 @@ class AbstractOperationsClient(metaclass=AbstractOperationsClientMeta):
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
+        compression: Optional[grpc.Compression] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Gets the latest state of a long-running operation.
@@ -490,6 +494,7 @@ class AbstractOperationsClient(metaclass=AbstractOperationsClientMeta):
             request,
             retry=retry,
             timeout=timeout,
+            compression=compression,
             metadata=metadata,
         )
 
@@ -502,6 +507,7 @@ class AbstractOperationsClient(metaclass=AbstractOperationsClientMeta):
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
+        compression: Optional[grpc.Compression] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a long-running operation. This method indicates that the
@@ -541,6 +547,7 @@ class AbstractOperationsClient(metaclass=AbstractOperationsClientMeta):
             request,
             retry=retry,
             timeout=timeout,
+            compression=compression,
             metadata=metadata,
         )
 
@@ -550,6 +557,7 @@ class AbstractOperationsClient(metaclass=AbstractOperationsClientMeta):
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
+        compression: Optional[grpc.Compression] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Starts asynchronous cancellation on a long-running operation.
@@ -598,5 +606,6 @@ class AbstractOperationsClient(metaclass=AbstractOperationsClientMeta):
             request,
             retry=retry,
             timeout=timeout,
+            compression=compression,
             metadata=metadata,
         )

@@ -14,7 +14,7 @@
 """AsyncIO helpers for wrapping gRPC methods with common functionality.
 
 This is used by gapic clients to provide common error mapping, retry, timeout,
-pagination, and long-running operations to gRPC methods.
+compression, pagination, and long-running operations to gRPC methods.
 """
 
 import functools
@@ -30,19 +30,26 @@ def wrap_method(
     func,
     default_retry=None,
     default_timeout=None,
+    default_compression=None,
     client_info=client_info.DEFAULT_CLIENT_INFO,
 ):
     """Wrap an async RPC method with common behavior.
 
     Returns:
-        Callable: A new callable that takes optional ``retry`` and ``timeout``
-            arguments and applies the common error mapping, retry, timeout,
-            and metadata behavior to the low-level RPC method.
+        Callable: A new callable that takes optional ``retry``, ``timeout``,
+            and ``compression`` arguments and applies the common error mapping,
+            retry, timeout, metadata, and compression behavior to the low-level RPC method.
     """
     func = grpc_helpers_async.wrap_errors(func)
 
     metadata = [client_info.to_grpc_metadata()] if client_info is not None else None
 
     return functools.wraps(func)(
-        _GapicCallable(func, default_retry, default_timeout, metadata=metadata)
+        _GapicCallable(
+            func,
+            default_retry,
+            default_timeout,
+            default_compression,
+            metadata=metadata,
+        )
     )

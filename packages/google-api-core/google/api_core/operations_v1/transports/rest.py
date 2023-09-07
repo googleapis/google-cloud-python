@@ -29,6 +29,7 @@ from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format  # type: ignore
+import grpc
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO, OperationsTransport
 
 OptionalRetry = Union[retries.Retry, object]
@@ -149,6 +150,7 @@ class OperationsRestTransport(OperationsTransport):
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
+        compression: Optional[grpc.Compression] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.ListOperationsResponse:
         r"""Call the list operations method over HTTP.
@@ -228,6 +230,7 @@ class OperationsRestTransport(OperationsTransport):
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
+        compression: Optional[grpc.Compression] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operations_pb2.Operation:
         r"""Call the get operation method over HTTP.
@@ -308,6 +311,7 @@ class OperationsRestTransport(OperationsTransport):
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
+        compression: Optional[grpc.Compression] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> empty_pb2.Empty:
         r"""Call the delete operation method over HTTP.
@@ -378,6 +382,7 @@ class OperationsRestTransport(OperationsTransport):
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Optional[float] = None,
+        compression: Optional[grpc.Compression] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> empty_pb2.Empty:
         r"""Call the cancel operation method over HTTP.

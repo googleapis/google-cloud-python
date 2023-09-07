@@ -212,6 +212,7 @@ def create_channel(
     quota_project_id=None,
     default_scopes=None,
     default_host=None,
+    compression=None,
     **kwargs
 ):
     """Create an AsyncIO secure channel with credentials.
@@ -233,6 +234,8 @@ def create_channel(
         default_scopes (Sequence[str]): Default scopes passed by a Google client
             library. Use 'scopes' for user-defined scopes.
         default_host (str): The default endpoint. e.g., "pubsub.googleapis.com".
+        compression (grpc.Compression): An optional value indicating the
+            compression method to be used over the lifetime of the channel.
         kwargs: Additional key-word args passed to :func:`aio.secure_channel`.
 
     Returns:
@@ -252,7 +255,9 @@ def create_channel(
         default_host=default_host,
     )
 
-    return aio.secure_channel(target, composite_credentials, **kwargs)
+    return aio.secure_channel(
+        target, composite_credentials, compression=compression, **kwargs
+    )
 
 
 class FakeUnaryUnaryCall(_WrappedUnaryUnaryCall):

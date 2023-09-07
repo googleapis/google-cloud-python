@@ -359,7 +359,7 @@ def test_create_channel_implicit(grpc_secure_channel, default, composite_creds_c
     target = "example.com:443"
     composite_creds = composite_creds_call.return_value
 
-    channel = grpc_helpers.create_channel(target)
+    channel = grpc_helpers.create_channel(target, compression=grpc.Compression.Gzip)
 
     assert channel is grpc_secure_channel.return_value
 
@@ -368,7 +368,9 @@ def test_create_channel_implicit(grpc_secure_channel, default, composite_creds_c
     if grpc_helpers.HAS_GRPC_GCP:  # pragma: NO COVER
         grpc_secure_channel.assert_called_once_with(target, composite_creds, None)
     else:
-        grpc_secure_channel.assert_called_once_with(target, composite_creds)
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds, compression=grpc.Compression.Gzip
+        )
 
 
 @mock.patch("google.auth.transport.grpc.AuthMetadataPlugin", autospec=True)
@@ -403,7 +405,9 @@ def test_create_channel_implicit_with_default_host(
     if grpc_helpers.HAS_GRPC_GCP:  # pragma: NO COVER
         grpc_secure_channel.assert_called_once_with(target, composite_creds, None)
     else:
-        grpc_secure_channel.assert_called_once_with(target, composite_creds)
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds, compression=None
+        )
 
 
 @mock.patch("grpc.composite_channel_credentials")
@@ -430,7 +434,9 @@ def test_create_channel_implicit_with_ssl_creds(
     if grpc_helpers.HAS_GRPC_GCP:  # pragma: NO COVER
         grpc_secure_channel.assert_called_once_with(target, composite_creds, None)
     else:
-        grpc_secure_channel.assert_called_once_with(target, composite_creds)
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds, compression=None
+        )
 
 
 @mock.patch("grpc.composite_channel_credentials")
@@ -455,7 +461,9 @@ def test_create_channel_implicit_with_scopes(
     if grpc_helpers.HAS_GRPC_GCP:  # pragma: NO COVER
         grpc_secure_channel.assert_called_once_with(target, composite_creds, None)
     else:
-        grpc_secure_channel.assert_called_once_with(target, composite_creds)
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds, compression=None
+        )
 
 
 @mock.patch("grpc.composite_channel_credentials")
@@ -480,7 +488,9 @@ def test_create_channel_implicit_with_default_scopes(
     if grpc_helpers.HAS_GRPC_GCP:  # pragma: NO COVER
         grpc_secure_channel.assert_called_once_with(target, composite_creds, None)
     else:
-        grpc_secure_channel.assert_called_once_with(target, composite_creds)
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds, compression=None
+        )
 
 
 def test_create_channel_explicit_with_duplicate_credentials():
@@ -512,7 +522,9 @@ def test_create_channel_explicit(grpc_secure_channel, auth_creds, composite_cred
     if grpc_helpers.HAS_GRPC_GCP:  # pragma: NO COVER
         grpc_secure_channel.assert_called_once_with(target, composite_creds, None)
     else:
-        grpc_secure_channel.assert_called_once_with(target, composite_creds)
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds, compression=None
+        )
 
 
 @mock.patch("grpc.composite_channel_credentials")
@@ -536,7 +548,9 @@ def test_create_channel_explicit_scoped(grpc_secure_channel, composite_creds_cal
     if grpc_helpers.HAS_GRPC_GCP:  # pragma: NO COVER
         grpc_secure_channel.assert_called_once_with(target, composite_creds, None)
     else:
-        grpc_secure_channel.assert_called_once_with(target, composite_creds)
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds, compression=None
+        )
 
 
 @mock.patch("grpc.composite_channel_credentials")
@@ -564,7 +578,9 @@ def test_create_channel_explicit_default_scopes(
     if grpc_helpers.HAS_GRPC_GCP:  # pragma: NO COVER
         grpc_secure_channel.assert_called_once_with(target, composite_creds, None)
     else:
-        grpc_secure_channel.assert_called_once_with(target, composite_creds)
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds, compression=None
+        )
 
 
 @mock.patch("grpc.composite_channel_credentials")
@@ -590,7 +606,9 @@ def test_create_channel_explicit_with_quota_project(
     if grpc_helpers.HAS_GRPC_GCP:  # pragma: NO COVER
         grpc_secure_channel.assert_called_once_with(target, composite_creds, None)
     else:
-        grpc_secure_channel.assert_called_once_with(target, composite_creds)
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds, compression=None
+        )
 
 
 @mock.patch("grpc.composite_channel_credentials")
@@ -619,7 +637,9 @@ def test_create_channel_with_credentials_file(
     if grpc_helpers.HAS_GRPC_GCP:  # pragma: NO COVER
         grpc_secure_channel.assert_called_once_with(target, composite_creds, None)
     else:
-        grpc_secure_channel.assert_called_once_with(target, composite_creds)
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds, compression=None
+        )
 
 
 @mock.patch("grpc.composite_channel_credentials")
@@ -651,7 +671,9 @@ def test_create_channel_with_credentials_file_and_scopes(
     if grpc_helpers.HAS_GRPC_GCP:  # pragma: NO COVER
         grpc_secure_channel.assert_called_once_with(target, composite_creds, None)
     else:
-        grpc_secure_channel.assert_called_once_with(target, composite_creds)
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds, compression=None
+        )
 
 
 @mock.patch("grpc.composite_channel_credentials")
@@ -683,7 +705,9 @@ def test_create_channel_with_credentials_file_and_default_scopes(
     if grpc_helpers.HAS_GRPC_GCP:  # pragma: NO COVER
         grpc_secure_channel.assert_called_once_with(target, composite_creds, None)
     else:
-        grpc_secure_channel.assert_called_once_with(target, composite_creds)
+        grpc_secure_channel.assert_called_once_with(
+            target, composite_creds, compression=None
+        )
 
 
 @pytest.mark.skipif(
@@ -813,6 +837,7 @@ class TestChannelStub(object):
         stub = operations_pb2.OperationsStub(channel)
         expected_request = operations_pb2.GetOperationRequest(name="meep")
         expected_response = operations_pb2.Operation(name="moop")
+        expected_compression = grpc.Compression.NoCompression
         expected_metadata = [("red", "blue"), ("two", "shoe")]
         expected_credentials = mock.sentinel.credentials
         channel.GetOperation.response = expected_response
@@ -820,6 +845,7 @@ class TestChannelStub(object):
         response = stub.GetOperation(
             expected_request,
             timeout=42,
+            compression=expected_compression,
             metadata=expected_metadata,
             credentials=expected_credentials,
         )
@@ -827,7 +853,13 @@ class TestChannelStub(object):
         assert response == expected_response
         assert channel.requests == [("GetOperation", expected_request)]
         assert channel.GetOperation.calls == [
-            (expected_request, 42, expected_metadata, expected_credentials)
+            (
+                expected_request,
+                42,
+                expected_metadata,
+                expected_credentials,
+                expected_compression,
+            )
         ]
 
     def test_unary_unary(self):
