@@ -1548,6 +1548,7 @@ class GetMappingRuleRequest(proto.Message):
             Required. Name of the mapping rule resource
             to get. Example:
             conversionWorkspaces/123/mappingRules/rule123
+
             In order to retrieve a previous revision of the
             mapping rule, also provide the revision ID.
             Example:

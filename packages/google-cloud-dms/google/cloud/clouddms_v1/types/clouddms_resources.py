@@ -1277,7 +1277,6 @@ class MigrationJob(proto.Message):
         name (str):
             The name (URI) of this migration job
             resource, in the form of:
-
             projects/{project}/locations/{location}/migrationJobs/{migrationJob}.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the migration

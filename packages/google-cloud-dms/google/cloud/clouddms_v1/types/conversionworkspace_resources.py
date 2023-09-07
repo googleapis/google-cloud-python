@@ -645,7 +645,6 @@ class MappingRule(proto.Message):
         name (str):
             Full name of the mapping rule resource, in
             the form of:
-
             projects/{project}/locations/{location}/conversionWorkspaces/{set}/mappingRule/{rule}.
         display_name (str):
             Optional. A human readable name
@@ -858,6 +857,7 @@ class SingleEntityRename(proto.Message):
     The rule is used to rename an entity.
 
     The rule filter field can refer to only one entity.
+
     The rule scope can be one of: Database, Schema, Table, Column,
     Constraint, Index, View, Function, Stored Procedure,
     Materialized View, Sequence, UDT, Synonym
@@ -879,6 +879,7 @@ class MultiEntityRename(proto.Message):
     The rule is used to rename multiple entities.
 
     The rule filter field can refer to one or more entities.
+
     The rule scope can be one of: Database, Schema, Table, Column,
     Constraint, Index, View, Function, Stored Procedure,
     Materialized View, Sequence, UDT
@@ -913,7 +914,9 @@ class MultiEntityRename(proto.Message):
 class EntityMove(proto.Message):
     r"""Options to configure rule type EntityMove.
     The rule is used to move an entity to a new schema.
+
     The rule filter field can refer to one or more entities.
+
     The rule scope can be one of: Table, Column, Constraint, Index,
     View, Function, Stored Procedure, Materialized View, Sequence,
     UDT
@@ -932,6 +935,7 @@ class EntityMove(proto.Message):
 class SingleColumnChange(proto.Message):
     r"""Options to configure rule type SingleColumnChange.
     The rule is used to change the properties of a column.
+
     The rule filter field can refer to one entity.
 
     The rule scope can be one of: Column.
@@ -960,7 +964,8 @@ class SingleColumnChange(proto.Message):
             (8,2) - when relevant.
         fractional_seconds_precision (int):
             Optional. Column fractional seconds precision
-            - e.g. 2 as in timestamp (2) - when relevant.
+            - e.g. 2 as in timestamp (2)
+            - when relevant.
         array (bool):
             Optional. Is the column of array type.
         array_length (int):
@@ -1052,6 +1057,7 @@ class MultiColumnDatatypeChange(proto.Message):
     properties of multiple columns at once.
 
     The rule filter field can refer to one or more entities.
+
     The rule scope can be one of:Column.
 
     This rule requires additional filters to be specified beyond the
@@ -1218,7 +1224,9 @@ class ConditionalColumnSetValue(proto.Message):
     r"""Options to configure rule type ConditionalColumnSetValue.
     The rule is used to transform the data which is being
     replicated/migrated.
+
     The rule filter field can refer to one or more entities.
+
     The rule scope can be one of: Column.
 
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -1400,6 +1408,7 @@ class ConvertRowIdToColumn(proto.Message):
     on an Oracle rowid function/property.
 
     The rule filter field can refer to one or more entities.
+
     The rule scope can be one of: Table.
 
     This rule requires additional filter to be specified beyond the
@@ -1448,6 +1457,7 @@ class SetTablePrimaryKey(proto.Message):
 class SinglePackageChange(proto.Message):
     r"""Options to configure rule type SinglePackageChange.
     The rule is used to alter the sql code for a package entities.
+
     The rule filter field can refer to one entity.
 
     The rule scope can be: Package
@@ -1472,6 +1482,7 @@ class SinglePackageChange(proto.Message):
 class SourceSqlChange(proto.Message):
     r"""Options to configure rule type SourceSqlChange.
     The rule is used to alter the sql code for database entities.
+
     The rule filter field can refer to one entity.
 
     The rule scope can be: StoredProcedure, Function, Trigger, View

@@ -47,7 +47,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -3780,6 +3780,7 @@ class DataMigrationServiceAsyncClient:
                 Required. Name of the mapping rule
                 resource to get. Example:
                 conversionWorkspaces/123/mappingRules/rule123
+
                 In order to retrieve a previous revision
                 of the mapping rule, also provide the
                 revision ID.
