@@ -83,16 +83,6 @@ class OptimizeToursRequest(proto.Message):
             Shipment model to solve.
         solving_mode (google.cloud.optimization_v1.types.OptimizeToursRequest.SolvingMode):
             By default, the solving mode is ``DEFAULT_SOLVE`` (0).
-        max_validation_errors (int):
-            Truncates the number of validation errors returned. These
-            errors are typically attached to an INVALID_ARGUMENT error
-            payload as a BadRequest error detail
-            (https://cloud.google.com/apis/design/errors#error_details),
-            unless solving_mode=VALIDATE_ONLY: see the
-            [OptimizeToursResponse.validation_errors][google.cloud.optimization.v1.OptimizeToursResponse.validation_errors]
-            field. This defaults to 100 and is capped at 10,000.
-
-            This field is a member of `oneof`_ ``_max_validation_errors``.
         search_mode (google.cloud.optimization_v1.types.OptimizeToursRequest.SearchMode):
             Search mode used to solve the request.
         injected_first_solution_routes (MutableSequence[google.cloud.optimization_v1.types.ShipmentRoute]):
@@ -271,6 +261,16 @@ class OptimizeToursRequest(proto.Message):
             Its value must be at least 1.0 meters/seconds.
 
             This field is a member of `oneof`_ ``_geodesic_meters_per_second``.
+        max_validation_errors (int):
+            Truncates the number of validation errors returned. These
+            errors are typically attached to an INVALID_ARGUMENT error
+            payload as a BadRequest error detail
+            (https://cloud.google.com/apis/design/errors#error_details),
+            unless solving_mode=VALIDATE_ONLY: see the
+            [OptimizeToursResponse.validation_errors][google.cloud.optimization.v1.OptimizeToursResponse.validation_errors]
+            field. This defaults to 100 and is capped at 10,000.
+
+            This field is a member of `oneof`_ ``_max_validation_errors``.
         label (str):
             Label that may be used to identify this request, reported
             back in the
@@ -301,12 +301,20 @@ class OptimizeToursRequest(proto.Message):
                 as possible.
             DETECT_SOME_INFEASIBLE_SHIPMENTS (2):
                 Only populates
+                [OptimizeToursResponse.validation_errors][google.cloud.optimization.v1.OptimizeToursResponse.validation_errors]
+                or
                 [OptimizeToursResponse.skipped_shipments][google.cloud.optimization.v1.OptimizeToursResponse.skipped_shipments],
                 and doesn't actually solve the rest of the request
-                (``status`` and ``routes`` are unset in the response).
+                (``status`` and ``routes`` are unset in the response). If
+                infeasibilities in ``injected_solution_constraint`` routes
+                are detected they are populated in the
+                [OptimizeToursResponse.validation_errors][google.cloud.optimization.v1.OptimizeToursResponse.validation_errors]
+                field and
+                [OptimizeToursResponse.skipped_shipments][google.cloud.optimization.v1.OptimizeToursResponse.skipped_shipments]
+                is left empty.
 
                 *IMPORTANT*: not all infeasible shipments are returned here,
-                but only the ones that are detected as infeasible as a
+                but only the ones that are detected as infeasible during
                 preprocessing.
         """
         DEFAULT_SOLVE = 0
@@ -350,11 +358,6 @@ class OptimizeToursRequest(proto.Message):
         proto.ENUM,
         number=4,
         enum=SolvingMode,
-    )
-    max_validation_errors: int = proto.Field(
-        proto.INT32,
-        number=5,
-        optional=True,
     )
     search_mode: SearchMode = proto.Field(
         proto.ENUM,
@@ -405,6 +408,11 @@ class OptimizeToursRequest(proto.Message):
     geodesic_meters_per_second: float = proto.Field(
         proto.DOUBLE,
         number=16,
+        optional=True,
+    )
+    max_validation_errors: int = proto.Field(
+        proto.INT32,
+        number=5,
         optional=True,
     )
     label: str = proto.Field(
@@ -1915,9 +1923,13 @@ class Vehicle(proto.Message):
             DRIVING (1):
                 Travel mode corresponding to driving
                 directions (car, ...).
+            WALKING (2):
+                Travel mode corresponding to walking
+                directions.
         """
         TRAVEL_MODE_UNSPECIFIED = 0
         DRIVING = 1
+        WALKING = 2
 
     class UnloadingPolicy(proto.Enum):
         r"""Policy on how a vehicle can be unloaded. Applies only to shipments
@@ -2450,6 +2462,18 @@ class DistanceLimit(proto.Message):
             must be nonnegative.
 
             This field is a member of `oneof`_ ``_soft_max_meters``.
+        cost_per_kilometer_below_soft_max (float):
+            Cost per kilometer incurred, increasing up to
+            ``soft_max_meters``, with formula:
+
+            ::
+
+                 min(distance_meters, soft_max_meters) / 1000.0 *
+                 cost_per_kilometer_below_soft_max.
+
+            This cost is not supported in ``route_distance_limit``.
+
+            This field is a member of `oneof`_ ``_cost_per_kilometer_below_soft_max``.
         cost_per_kilometer_above_soft_max (float):
             Cost per kilometer incurred if distance is above
             ``soft_max_meters`` limit. The additional cost is 0 if the
@@ -2474,6 +2498,11 @@ class DistanceLimit(proto.Message):
     soft_max_meters: int = proto.Field(
         proto.INT64,
         number=2,
+        optional=True,
+    )
+    cost_per_kilometer_below_soft_max: float = proto.Field(
+        proto.DOUBLE,
+        number=4,
         optional=True,
     )
     cost_per_kilometer_above_soft_max: float = proto.Field(
@@ -3858,8 +3887,8 @@ class InjectedSolutionConstraint(proto.Message):
                         or before them.
                     RELAX_VISIT_TIMES_AND_SEQUENCE_AFTER_THRESHOLD (2):
                         Same as ``RELAX_VISIT_TIMES_AFTER_THRESHOLD``, but the visit
-                        sequence is also relaxed: visits remain simply bound to
-                        their vehicle.
+                        sequence is also relaxed: visits can only be performed by
+                        this vehicle, but can potentially become unperformed.
                     RELAX_ALL_AFTER_THRESHOLD (3):
                         Same as ``RELAX_VISIT_TIMES_AND_SEQUENCE_AFTER_THRESHOLD``,
                         but the vehicle is also relaxed: visits are completely free
@@ -3985,6 +4014,8 @@ class OptimizeToursValidationError(proto.Message):
                -  INJECTED_SOLUTION_CONCURRENT_SOLUTION_TYPES = 2005;
                -  INJECTED_SOLUTION_MORE_THAN_ONE_PER_TYPE = 2006;
                -  INJECTED_SOLUTION_REFRESH_WITHOUT_POPULATE = 2008;
+               -  INJECTED_SOLUTION_CONSTRAINED_ROUTE_PORTION_INFEASIBLE
+                  = 2010;
 
             -  SHIPMENT_MODEL_ERROR = 22;
 

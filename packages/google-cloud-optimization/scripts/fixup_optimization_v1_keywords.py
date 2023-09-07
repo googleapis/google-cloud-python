@@ -40,7 +40,7 @@ class optimizationCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'batch_optimize_tours': ('parent', 'model_configs', ),
-        'optimize_tours': ('parent', 'timeout', 'model', 'solving_mode', 'max_validation_errors', 'search_mode', 'injected_first_solution_routes', 'injected_solution_constraint', 'refresh_details_routes', 'interpret_injected_solutions_using_labels', 'consider_road_traffic', 'populate_polylines', 'populate_transition_polylines', 'allow_large_deadline_despite_interruption_risk', 'use_geodesic_distances', 'geodesic_meters_per_second', 'label', 'populate_travel_step_polylines', ),
+        'optimize_tours': ('parent', 'timeout', 'model', 'solving_mode', 'search_mode', 'injected_first_solution_routes', 'injected_solution_constraint', 'refresh_details_routes', 'interpret_injected_solutions_using_labels', 'consider_road_traffic', 'populate_polylines', 'populate_transition_polylines', 'allow_large_deadline_despite_interruption_risk', 'use_geodesic_distances', 'geodesic_meters_per_second', 'max_validation_errors', 'label', 'populate_travel_step_polylines', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
