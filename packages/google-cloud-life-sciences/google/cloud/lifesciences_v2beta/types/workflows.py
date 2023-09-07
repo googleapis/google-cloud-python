@@ -339,6 +339,7 @@ class Action(proto.Message):
             prevent typos in URIs or issues like lack of
             disk space from wasting large amounts of compute
             resources.
+
             If set, this flag prevents the worker from
             downloading the image until just before the
             action is executed.
@@ -498,6 +499,7 @@ class Mount(proto.Message):
 
 class Resources(proto.Message):
     r"""The system resources for the pipeline run.
+
     At least one zone or region must be specified or the pipeline
     run will fail.
 
@@ -583,6 +585,7 @@ class VirtualMachine(proto.Message):
             This parameter is only useful for carefully
             optimized work loads where the CPU platform has
             a significant impact.
+
             For more information about the effect of this
             parameter, see
             https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform.
@@ -920,6 +923,7 @@ class Volume(proto.Message):
 
 class PersistentDisk(proto.Message):
     r"""Configuration for a persistent disk to be attached to the VM.
+
     See https://cloud.google.com/compute/docs/disks/performance for
     more information about disk type, size, and performance
     considerations.

@@ -545,6 +545,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         r"""Return a callable for the save snapshot method over gRPC.
 
         Creates a snapshots of a Cloud Composer environment.
+
         As a result of this operation, snapshot of environment's
         state is stored in a location specified in the
         SaveSnapshotRequest.
@@ -576,6 +577,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         r"""Return a callable for the load snapshot method over gRPC.
 
         Loads a snapshot of a Cloud Composer environment.
+
         As a result of this operation, a snapshot of
         environment's specified in LoadSnapshotRequest is loaded
         into the environment.

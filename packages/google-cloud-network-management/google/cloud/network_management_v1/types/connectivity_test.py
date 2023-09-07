@@ -62,6 +62,7 @@ class ConnectivityTest(proto.Message):
             the VPC network. Otherwise, specify the VM
             instance, which already contains its internal IP
             address and VPC network information.
+
             If the source of the test is within an
             on-premises network, then you must provide the
             destination VPC network.
@@ -71,6 +72,7 @@ class ConnectivityTest(proto.Message):
             instance itself is not sufficient to identify
             the endpoint. So, you must also specify the
             source IP address or VPC network.
+
             A reachability analysis proceeds even if the
             source location is ambiguous. However, the test
             result may include endpoints that you don't
@@ -214,7 +216,7 @@ class Endpoint(proto.Message):
             provide forwarding information in the control
             plane. Format:
 
-            projects/{project}/global/forwardingRules/{id}
+             projects/{project}/global/forwardingRules/{id}
             or
             projects/{project}/regions/{region}/forwardingRules/{id}
         forwarding_rule_target (google.cloud.network_management_v1.types.Endpoint.ForwardingRuleTarget):
@@ -262,13 +264,12 @@ class Endpoint(proto.Message):
             provide the project ID:
 
             1. Only the IP address is specified, and the IP
-               address is within a Google Cloud project.
+                address is within a Google Cloud project.
             2. When you are using Shared VPC and the IP
-               address that you provide is from the service
-               project. In this case, the network that the IP
-               address resides in is defined in the host
-               project.
-
+                address that you provide is from the service
+                project. In this case, the network that the
+                IP address resides in is defined in the host
+                project.
     """
 
     class NetworkType(proto.Enum):
@@ -581,9 +582,8 @@ class ProbingDetails(proto.Message):
             from the test input and used for active probing.
         probing_latency (google.cloud.network_management_v1.types.LatencyDistribution):
             Latency as measured by active probing in one
-            direction:
-
-            from the source to the destination endpoint.
+            direction: from the source to the destination
+            endpoint.
         destination_egress_location (google.cloud.network_management_v1.types.ProbingDetails.EdgeLocation):
             The EdgeLocation from which a packet destined
             for/originating from the internet will egress/ingress the
