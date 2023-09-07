@@ -1,4 +1,13 @@
 # Changelog
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-budgets-v1.11.1...google-cloud-billing-budgets-v1.12.0) (2023-08-31)
+
+
+### Features
+
+* Added `enable_project_level_recipients` for project owner budget emails ([dd953ec](https://github.com/googleapis/google-cloud-python/commit/dd953ec8f3a6a31143a358573737e3f0d2fed9f2))
+* Added `scope` for project scope filter in `ListBudgetsRequest` ([dd953ec](https://github.com/googleapis/google-cloud-python/commit/dd953ec8f3a6a31143a358573737e3f0d2fed9f2))
+* Supported project-level-budgets ([dd953ec](https://github.com/googleapis/google-cloud-python/commit/dd953ec8f3a6a31143a358573737e3f0d2fed9f2))
+
 ## [1.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-budgets-v1.11.0...google-cloud-billing-budgets-v1.11.1) (2023-07-05)
 
 

@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bare-metal-solution-v1.4.2...google-cloud-bare-metal-solution-v1.5.0) (2023-08-31)
+
+
+### Features
+
+* Add new Instance state values ([72b4fc5](https://github.com/googleapis/google-cloud-python/commit/72b4fc5d5dced9491cae99a228dbc7604474dbe3))
+* Add NFSShare resource and methods ([72b4fc5](https://github.com/googleapis/google-cloud-python/commit/72b4fc5d5dced9491cae99a228dbc7604474dbe3))
+* Add OsImage resource and methods ([72b4fc5](https://github.com/googleapis/google-cloud-python/commit/72b4fc5d5dced9491cae99a228dbc7604474dbe3))
+* Add ProvisioningConfig resource and methods ([72b4fc5](https://github.com/googleapis/google-cloud-python/commit/72b4fc5d5dced9491cae99a228dbc7604474dbe3))
+* Add RPC EvictLun ([72b4fc5](https://github.com/googleapis/google-cloud-python/commit/72b4fc5d5dced9491cae99a228dbc7604474dbe3))
+* Add RPCs Enable/Disable InteractiveSerialConsole ([72b4fc5](https://github.com/googleapis/google-cloud-python/commit/72b4fc5d5dced9491cae99a228dbc7604474dbe3))
+* Add RPCs Rename/Evict Volume ([72b4fc5](https://github.com/googleapis/google-cloud-python/commit/72b4fc5d5dced9491cae99a228dbc7604474dbe3))
+* Add several new resources and RPCs ([72b4fc5](https://github.com/googleapis/google-cloud-python/commit/72b4fc5d5dced9491cae99a228dbc7604474dbe3))
+* Add SSHKey resource and methods ([72b4fc5](https://github.com/googleapis/google-cloud-python/commit/72b4fc5d5dced9491cae99a228dbc7604474dbe3))
+* Add VolumeSnapshot resource and methods ([72b4fc5](https://github.com/googleapis/google-cloud-python/commit/72b4fc5d5dced9491cae99a228dbc7604474dbe3))
+
 ## [1.4.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bare-metal-solution-v1.4.1...google-cloud-bare-metal-solution-v1.4.2) (2023-07-05)
 
 

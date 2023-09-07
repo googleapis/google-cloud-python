@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.4.1...google-cloud-workstations-v0.5.0) (2023-08-31)
+
+
+### Features
+
+* add config service_account_scopes ([03ea643](https://github.com/googleapis/google-cloud-python/commit/03ea6435209371d3ac18a1a954a5c96ece600c4c))
+* add enable_nested_virtualization ([03ea643](https://github.com/googleapis/google-cloud-python/commit/03ea6435209371d3ac18a1a954a5c96ece600c4c))
+* add ephemeral_directories ([03ea643](https://github.com/googleapis/google-cloud-python/commit/03ea6435209371d3ac18a1a954a5c96ece600c4c))
+* add initial files for google.cloud.workstations.v1 ([#11603](https://github.com/googleapis/google-cloud-python/issues/11603)) ([d355347](https://github.com/googleapis/google-cloud-python/commit/d355347eea116cc74d194c2fc99842f9b907f4ce))
+* add output field start_time ([03ea643](https://github.com/googleapis/google-cloud-python/commit/03ea6435209371d3ac18a1a954a5c96ece600c4c))
+* add replica_zones ([03ea643](https://github.com/googleapis/google-cloud-python/commit/03ea6435209371d3ac18a1a954a5c96ece600c4c))
+
+
+### Documentation
+
+* adjust documentation wording & annotations ([03ea643](https://github.com/googleapis/google-cloud-python/commit/03ea6435209371d3ac18a1a954a5c96ece600c4c))
+
 ## [0.4.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.4.0...google-cloud-workstations-v0.4.1) (2023-07-05)
 
 

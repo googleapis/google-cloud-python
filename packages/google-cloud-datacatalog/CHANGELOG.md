@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.15.0...google-cloud-datacatalog-v3.15.1) (2023-08-31)
+
+
+### Documentation
+
+* fix typo ([#11600](https://github.com/googleapis/google-cloud-python/issues/11600)) ([cc8021a](https://github.com/googleapis/google-cloud-python/commit/cc8021ab449c4be5346afbee42de573e812dc274))
+
 ## [3.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.14.0...google-cloud-datacatalog-v3.15.0) (2023-08-09)
 
 

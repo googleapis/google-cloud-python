@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.16.0...google-cloud-batch-v0.17.0) (2023-08-31)
+
+
+### Features
+
+* add Batch Managed Container support for v1alpha ([37e457c](https://github.com/googleapis/google-cloud-python/commit/37e457c74eccc838771cba93d216afc4be97030f))
+* Add more compute resource API descriptions to match with VM's machine type field ([37e457c](https://github.com/googleapis/google-cloud-python/commit/37e457c74eccc838771cba93d216afc4be97030f))
+* add stderr_snippet to indicate the real stderr output by runnables to the execution field of status event ([1a8670d](https://github.com/googleapis/google-cloud-python/commit/1a8670df87e7a840cee211bbf17794dc0114d840))
+* Clarify Batch API proto doc about pubsub notifications ([37e457c](https://github.com/googleapis/google-cloud-python/commit/37e457c74eccc838771cba93d216afc4be97030f))
+
+
+### Documentation
+
+* Clarify Batch API proto doc about pubsub notifications ([1a8670d](https://github.com/googleapis/google-cloud-python/commit/1a8670df87e7a840cee211bbf17794dc0114d840))
+* Expand compute resource API docs to match with VM's machine type field ([1a8670d](https://github.com/googleapis/google-cloud-python/commit/1a8670df87e7a840cee211bbf17794dc0114d840))
+* Update description on size_gb in disk field ([#11615](https://github.com/googleapis/google-cloud-python/issues/11615)) ([d46f714](https://github.com/googleapis/google-cloud-python/commit/d46f7142e4e50f4a3dedb01e9fa574ebb29ce50e))
+
 ## [0.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.15.0...google-cloud-batch-v0.16.0) (2023-08-09)
 
 

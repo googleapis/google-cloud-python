@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workflows-v1.11.0...google-cloud-workflows-v1.12.0) (2023-08-31)
+
+
+### Features
+
+* add filter and order_by fields to ListExecutionsRequest ([541d296](https://github.com/googleapis/google-cloud-python/commit/541d296a4a4e6dd41c77b4ca603daa73a143ab0e))
+* add LOG_NONE to call_log_level ([541d296](https://github.com/googleapis/google-cloud-python/commit/541d296a4a4e6dd41c77b4ca603daa73a143ab0e))
+* add status, labels, duration and state_error fields to Execution ([541d296](https://github.com/googleapis/google-cloud-python/commit/541d296a4a4e6dd41c77b4ca603daa73a143ab0e))
+* add UNAVAILABLE and QUEUED to state enum ([541d296](https://github.com/googleapis/google-cloud-python/commit/541d296a4a4e6dd41c77b4ca603daa73a143ab0e))
+
 ## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workflows-v1.10.2...google-cloud-workflows-v1.11.0) (2023-08-16)
 
 
