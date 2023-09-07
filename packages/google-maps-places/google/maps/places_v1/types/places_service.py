@@ -169,6 +169,7 @@ class SearchTextRequest(proto.Message):
 
     class Location(proto.Message):
         r"""The region to search.
+
         Deprecated. Use LocationRestriction or LocationBias instead.
 
 
