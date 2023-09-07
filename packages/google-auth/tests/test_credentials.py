@@ -42,6 +42,7 @@ def test_credentials_constructor():
     assert not credentials.expiry
     assert not credentials.expired
     assert not credentials.valid
+    assert credentials.universe_domain == "googleapis.com"
 
 
 def test_expired_and_valid():

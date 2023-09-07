@@ -54,6 +54,9 @@ class Credentials(metaclass=abc.ABCMeta):
         self._trust_boundary = None
         """Optional[str]: Encoded string representation of credentials trust
         boundary."""
+        self._universe_domain = "googleapis.com"
+        """Optional[str]: The universe domain value, default is googleapis.com
+        """
 
     @property
     def expired(self):
@@ -84,6 +87,11 @@ class Credentials(metaclass=abc.ABCMeta):
     def quota_project_id(self):
         """Project to use for quota and billing purposes."""
         return self._quota_project_id
+
+    @property
+    def universe_domain(self):
+        """The universe domain value."""
+        return self._universe_domain
 
     @abc.abstractmethod
     def refresh(self, request):

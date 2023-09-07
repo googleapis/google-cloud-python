@@ -498,6 +498,13 @@ class TestCredentials(object):
             "universe_domain": "dummy_universe.com",
         }
 
+    def test_universe_domain(self):
+        credentials = self.make_credentials(universe_domain="dummy_universe.com")
+        assert credentials.universe_domain == "dummy_universe.com"
+
+        credentials = self.make_credentials()
+        assert credentials.universe_domain == external_account._DEFAULT_UNIVERSE_DOMAIN
+
     def test_info_workforce_pool(self):
         credentials = self.make_workforce_pool_credentials(
             workforce_pool_user_project=self.WORKFORCE_POOL_USER_PROJECT
