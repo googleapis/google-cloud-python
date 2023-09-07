@@ -1,4 +1,4 @@
-# Copyright 2021 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,11 +29,11 @@ repos:
 -   repo: https://github.com/psf/black
     rev: 22.3.0
     hooks:
-    -   id: black
+    - id: black
 -   repo: https://github.com/pycqa/flake8
-    rev: 3.9.2
+    rev: 6.1.0
     hooks:
-    -   id: flake8
+    - id: flake8
 -   repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.1.1
     hooks:

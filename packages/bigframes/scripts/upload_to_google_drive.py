@@ -41,12 +41,9 @@ transport = google.auth.transport.requests.AuthorizedSession(credentials)
 wheel_id = "15fZ1DkrFDk4ibMNTzms4akpxmf2pzeAR"
 wheel_path = next(iter((repo_root / "dist").glob("bigframes-*.whl")))
 
-pdf_id = "1agYjxmPLrxelsaHI-lc41QHcgnQYemcX"
-pdf_path = repo_root / "docs" / "_build" / "latex" / "bigframes-latest.pdf"
-
 uploads = (
     (wheel_id, wheel_path, "application/octet-stream"),
-    (pdf_id, pdf_path, "application/pdf"),
+    # (pdf_id, pdf_path, "application/pdf"),
 )
 
 upload_template = (

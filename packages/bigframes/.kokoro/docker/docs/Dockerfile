@@ -80,4 +80,4 @@ RUN wget -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
 # Test pip
 RUN python3 -m pip
 
-CMD ["python3.9"]
+CMD ["python3.8"]

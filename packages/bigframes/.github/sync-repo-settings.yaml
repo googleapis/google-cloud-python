@@ -15,7 +15,7 @@ branchProtectionRules:
     - 'unit (3.10)'
     - 'unit (3.11)'
     - 'cover'
-    # TODO(tswast): add Kokoro once we've enabled it
+    - 'Kokoro presubmit'
 permissionRules:
   - team: actools-python
     permission: admin

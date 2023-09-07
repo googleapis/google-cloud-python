@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2021 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@
 # serve to show the default.
 
 import os
+import shlex
 import sys
-from typing import Any, Dict
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -80,8 +80,8 @@ source_suffix = [".rst", ".md"]
 root_doc = "index"
 
 # General information about the project.
-project = "BigQuery DataFrames"
-copyright = "2022-2023 Google LLC"
+project = "bigframes"
+copyright = "2019, Google"
 author = "Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
@@ -98,7 +98,7 @@ version = ".".join(release.split(".")[0:2])
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = "en"
+language = None
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -154,10 +154,10 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "BigQuery DataFrames provides DataFrame APIs on the BigQuery engine.",
-    # "github_user": "googleapis",
-    # "github_repo": "python-bigquery-storage",
-    # "github_banner": True,
+    "description": "BigQuery DataFrames provides DataFrame APIs on the BigQuery engine",
+    "github_user": "googleapis",
+    "github_repo": "python-bigquery-dataframes",
+    "github_banner": True,
     "font_family": "'Roboto', Georgia, sans",
     "head_font_family": "'Roboto', Georgia, serif",
     "code_font_family": "'Roboto Mono', 'Consolas', monospace",
@@ -185,7 +185,7 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-# html_static_path = ["_static"]
+html_static_path = ["_static"]
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
@@ -264,13 +264,15 @@ suppress_warnings = [
 
 # -- Options for LaTeX output ---------------------------------------------
 
-latex_elements: Dict[str, Any] = {
-    # Avoid "too deeply nested" error by using enumitem package.
-    # See: https://stackoverflow.com/a/28454426/101923
-    "preamble": r"""
-\usepackage{enumitem}
-\setlistdepth{99}
-"""
+latex_elements = {
+    # The paper size ('letterpaper' or 'a4paper').
+    #'papersize': 'letterpaper',
+    # The font size ('10pt', '11pt' or '12pt').
+    #'pointsize': '10pt',
+    # Additional stuff for the LaTeX preamble.
+    #'preamble': '',
+    # Latex figure (float) alignment
+    #'figure_align': 'htbp',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
@@ -366,6 +368,11 @@ intersphinx_mapping = {
     "grpc": ("https://grpc.github.io/grpc/python/", None),
     "proto-plus": ("https://proto-plus-python.readthedocs.io/en/latest/", None),
     "protobuf": ("https://googleapis.dev/python/protobuf/latest/", None),
+    "pandas": ("https://pandas.pydata.org/pandas-docs/stable/", None),
+    "pydata-google-auth": (
+        "https://pydata-google-auth.readthedocs.io/en/latest/",
+        None,
+    ),
 }
 
 

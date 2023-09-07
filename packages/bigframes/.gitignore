@@ -26,12 +26,9 @@ pip-log.txt
 
 # Unit test / coverage reports
 .coverage
-.coverage.*
 .nox
 .cache
-.mypy_cache
 .pytest_cache
-.pytype
 
 
 # Mac
@@ -53,7 +50,6 @@ docs.metadata
 
 # Virtual environment
 env/
-venv/
 
 # Test logs
 coverage.xml
@@ -65,6 +61,3 @@ system_tests/local_test_setup
 # Make sure a generated file isn't accidentally committed.
 pylintrc
 pylintrc.test
-
-# Notebook scratch
-.ipynb_checkpoints

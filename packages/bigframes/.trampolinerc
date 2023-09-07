@@ -20,6 +20,9 @@ required_envvars+=(
 pass_down_envvars+=(
     "NOX_SESSION"
     ###############
+    # Docs builds
+    ###############
+    "STAGING_BUCKET"
     "V2_STAGING_BUCKET"
     ##################
     # Samples builds

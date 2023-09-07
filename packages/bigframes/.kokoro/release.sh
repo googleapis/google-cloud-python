@@ -16,7 +16,7 @@
 set -eo pipefail
 
 # Start the releasetool reporter
-python3 -m pip install --require-hashes -r github/bigframes/.kokoro/requirements.txt
+python3 -m pip install --require-hashes -r github/python-bigquery-dataframes/.kokoro/requirements.txt
 python3 -m releasetool publish-reporter-script > /tmp/publisher-script; source /tmp/publisher-script
 
 # Disable buffering, so that the logs stream through.
@@ -24,6 +24,6 @@ export PYTHONUNBUFFERED=1
 
 # Move into the package, build the distribution and upload.
 TWINE_PASSWORD=$(cat "${KOKORO_KEYSTORE_DIR}/73713_google-cloud-pypi-token-keystore-1")
-cd github/bigframes
+cd github/python-bigquery-dataframes
 python3 setup.py sdist bdist_wheel
 twine upload --username __token__ --password "${TWINE_PASSWORD}" dist/*
