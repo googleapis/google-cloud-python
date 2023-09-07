@@ -44,7 +44,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import postal_address_pb2  # type: ignore
@@ -4710,6 +4710,7 @@ class CloudChannelServiceAsyncClient:
         Returns:
             google.cloud.channel_v1.services.cloud_channel_service.pagers.ListSkuGroupsAsyncPager:
                 Response message for ListSkuGroups.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -5048,6 +5049,7 @@ class CloudChannelServiceAsyncClient:
         Returns:
             google.cloud.channel_v1.services.cloud_channel_service.pagers.ListProductsAsyncPager:
                 Response message for ListProducts.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -5139,6 +5141,7 @@ class CloudChannelServiceAsyncClient:
         Returns:
             google.cloud.channel_v1.services.cloud_channel_service.pagers.ListSkusAsyncPager:
                 Response message for ListSkus.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -5235,6 +5238,7 @@ class CloudChannelServiceAsyncClient:
         Returns:
             google.cloud.channel_v1.services.cloud_channel_service.pagers.ListOffersAsyncPager:
                 Response message for ListOffers.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -5757,6 +5761,7 @@ class CloudChannelServiceAsyncClient:
         Returns:
             google.cloud.channel_v1.services.cloud_channel_service.pagers.ListSubscribersAsyncPager:
                 Response Message for ListSubscribers.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
