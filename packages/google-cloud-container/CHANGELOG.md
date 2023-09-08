@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.31.0](https://github.com/googleapis/python-container/compare/v2.30.0...v2.31.0) (2023-08-28)
+
+
+### Features
+
+* Add `machine_type`, `disk_type`, `disk_size_gb` fields to `UpdateNodePoolRequest` ([a1e508c](https://github.com/googleapis/python-container/commit/a1e508c53415ea816ed2649a46b791947bf87705))
+* Add support for NodeConfig Update ([a1e508c](https://github.com/googleapis/python-container/commit/a1e508c53415ea816ed2649a46b791947bf87705))
+* Publicize tpu topology in v1 API ([a1e508c](https://github.com/googleapis/python-container/commit/a1e508c53415ea816ed2649a46b791947bf87705))
+
 ## [2.30.0](https://github.com/googleapis/python-container/compare/v2.29.0...v2.30.0) (2023-08-11)
 
 
