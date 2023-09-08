@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import pytest
+import re
 
 import proto
 from google.protobuf.json_format import MessageToJson, Parse, ParseError
@@ -172,3 +173,26 @@ def test_json_name():
     s_two = Squid.from_json(j)
 
     assert s == s_two
+
+
+def test_json_sort_keys():
+    class Squid(proto.Message):
+        name = proto.Field(proto.STRING, number=1)
+        mass_kg = proto.Field(proto.INT32, number=2)
+
+    s = Squid(name="Steve", mass_kg=20)
+    j = Squid.to_json(s, sort_keys=True, indent=None)
+
+    assert re.search(r"massKg.*name", j)
+
+
+# TODO: https://github.com/googleapis/proto-plus-python/issues/390
+def test_json_float_precision():
+    class Squid(proto.Message):
+        name = proto.Field(proto.STRING, number=1)
+        mass_kg = proto.Field(proto.FLOAT, number=2)
+
+    s = Squid(name="Steve", mass_kg=3.14159265)
+    j = Squid.to_json(s, float_precision=3, indent=None)
+
+    assert j == '{"name": "Steve", "massKg": 3.14}'

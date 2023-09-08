@@ -271,6 +271,17 @@ def test_serialize_to_dict():
     assert new_s == s
 
 
+# TODO: https://github.com/googleapis/proto-plus-python/issues/390
+def test_serialize_to_dict_float_precision():
+    class Squid(proto.Message):
+        mass_kg = proto.Field(proto.FLOAT, number=1)
+
+    s = Squid(mass_kg=3.14159265)
+
+    s_dict = Squid.to_dict(s, float_precision=3)
+    assert s_dict["mass_kg"] == 3.14
+
+
 def test_unknown_field_deserialize():
     # This is a somewhat common setup: a client uses an older proto definition,
     # while the server sends the newer definition. The client still needs to be
