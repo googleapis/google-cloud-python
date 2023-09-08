@@ -117,8 +117,7 @@ class Instruction(proto.Message):
 
 class CsvInstruction(proto.Message):
     r"""Deprecated: this instruction format is not supported any
-    more.
-    Instruction from a CSV file.
+    more. Instruction from a CSV file.
 
     Attributes:
         gcs_file_uri (str):

@@ -553,6 +553,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         r"""Return a callable for the subscribe listing method over gRPC.
 
         Subscribes to a listing.
+
         Currently, with Analytics Hub, you can create listings
         that reference only BigQuery datasets.
         Upon subscription to a listing for a BigQuery dataset,

@@ -39,6 +39,7 @@ class SystemTimestamps(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp of the last modification of the
             resource or its metadata within a given system.
+
             Note: Depending on the source system, not every
             modification updates this timestamp.
             For example, BigQuery timestamps every metadata

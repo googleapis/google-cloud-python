@@ -22,7 +22,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 
 from google.cloud.datacatalog_v1.types import (
@@ -41,6 +41,7 @@ class PolicyTagManagerSerializationGrpcTransport(
     Policy Tag Manager Serialization API service allows you to
     manipulate your policy tags and taxonomies in a serialized
     format.
+
     Taxonomy is a hierarchical group of policy tags.
 
     This class defines the same methods as the primary client, so the
@@ -292,6 +293,7 @@ class PolicyTagManagerSerializationGrpcTransport(
         Creates new taxonomies (including their policy tags)
         in a given project by importing from inlined or
         cross-regional sources.
+
         For a cross-regional source, new taxonomies are created
         by copying from a source in another region.
 

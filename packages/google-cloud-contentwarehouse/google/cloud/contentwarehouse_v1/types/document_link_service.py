@@ -127,6 +127,7 @@ class ListLinkedSourcesRequest(proto.Message):
             The maximum number of document-links to
             return. The service may return fewer than this
             value.
+
             If unspecified, at most 50 document-links will
             be returned. The maximum value is 1000; values
             above 1000 will be coerced to 1000.

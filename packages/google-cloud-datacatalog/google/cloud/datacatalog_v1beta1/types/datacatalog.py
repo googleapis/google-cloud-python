@@ -84,14 +84,10 @@ class EntryType(proto.Enum):
             https://cloud.google.com/bigquery-ml/docs/bigqueryml-intro
         DATA_STREAM (3):
             Output only. An entry type which is used for
-            streaming entries. Example:
-
-            Pub/Sub topic.
+            streaming entries. Example: Pub/Sub topic.
         FILESET (4):
             An entry type which is a set of files or
-            objects. Example:
-
-            Cloud Storage fileset.
+            objects. Example: Cloud Storage fileset.
     """
     ENTRY_TYPE_UNSPECIFIED = 0
     TABLE = 2

@@ -85,6 +85,7 @@ class SerializedPolicyTag(proto.Message):
     Attributes:
         policy_tag (str):
             Resource name of the policy tag.
+
             This field will be ignored when calling
             ImportTaxonomies.
         display_name (str):
