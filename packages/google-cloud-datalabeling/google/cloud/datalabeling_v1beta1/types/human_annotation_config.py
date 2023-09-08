@@ -246,7 +246,7 @@ class VideoClassificationConfig(proto.Message):
 
     1. Assign labels on the entire video.
     2. Split the video into multiple video clips based on camera
-       shot, and assign labels on each video clip.
+        shot, and assign labels on each video clip.
 
     Attributes:
         annotation_spec_set_configs (MutableSequence[google.cloud.datalabeling_v1beta1.types.VideoClassificationConfig.AnnotationSpecSetConfig]):

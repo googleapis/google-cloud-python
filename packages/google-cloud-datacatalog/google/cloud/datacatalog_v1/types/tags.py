@@ -48,6 +48,7 @@ class Tag(proto.Message):
         name (str):
             The resource name of the tag in URL format
             where tag ID is a system-generated identifier.
+
             Note: The tag itself might not be stored in the
             location specified in its name.
         template (str):
@@ -73,6 +74,7 @@ class Tag(proto.Message):
             Required. Maps the ID of a tag field to its
             value and additional information about that
             field.
+
             Tag template defines valid field IDs. A tag
             must have at least 1 field and at most 500
             fields.
@@ -123,6 +125,7 @@ class TagField(proto.Message):
             This field is a member of `oneof`_ ``kind``.
         string_value (str):
             The value of a tag field with a string type.
+
             The maximum length is 2000 UTF-8 characters.
 
             This field is a member of `oneof`_ ``kind``.
@@ -137,6 +140,7 @@ class TagField(proto.Message):
             This field is a member of `oneof`_ ``kind``.
         enum_value (google.cloud.datacatalog_v1.types.TagField.EnumValue):
             The value of a tag field with an enum type.
+
             This value must be one of the allowed values
             listed in this enum.
 

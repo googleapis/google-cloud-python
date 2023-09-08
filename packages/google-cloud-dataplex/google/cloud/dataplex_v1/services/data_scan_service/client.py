@@ -51,7 +51,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -1109,6 +1109,7 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
         Returns:
             google.cloud.dataplex_v1.services.data_scan_service.pagers.ListDataScansPager:
                 List dataScans response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1433,6 +1434,7 @@ class DataScanServiceClient(metaclass=DataScanServiceClientMeta):
         Returns:
             google.cloud.dataplex_v1.services.data_scan_service.pagers.ListDataScanJobsPager:
                 List DataScanJobs response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

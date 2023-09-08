@@ -35,6 +35,7 @@ class Schema(proto.Message):
     Attributes:
         columns (MutableSequence[google.cloud.datacatalog_v1.types.ColumnSchema]):
             The unified GoogleSQL-like schema of columns.
+
             The overall maximum number of columns and nested
             columns is 10,000. The maximum nested depth is
             15 levels.
@@ -57,10 +58,12 @@ class ColumnSchema(proto.Message):
     Attributes:
         column (str):
             Required. Name of the column.
+
             Must be a UTF-8 string without dots (.).
             The maximum size is 64 bytes.
         type_ (str):
             Required. Type of the column.
+
             Must be a UTF-8 string with the maximum size of
             128 bytes.
         description (str):

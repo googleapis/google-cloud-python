@@ -149,6 +149,7 @@ class Deployment(proto.Message):
             instead attempt to automatically import the
             resource into the Terraform state (for supported
             resource types) and continue actuation.
+
             Not all resource types are supported, refer to
             documentation.
 
@@ -718,6 +719,7 @@ class CreateDeploymentRequest(proto.Message):
             know to ignore the request if it has already
             been completed. The server will guarantee that
             for at least 60 minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -726,6 +728,7 @@ class CreateDeploymentRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -776,6 +779,7 @@ class UpdateDeploymentRequest(proto.Message):
             know to ignore the request if it has already
             been completed. The server will guarantee that
             for at least 60 minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -784,6 +788,7 @@ class UpdateDeploymentRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -819,6 +824,7 @@ class DeleteDeploymentRequest(proto.Message):
             know to ignore the request if it has already
             been completed. The server will guarantee that
             for at least 60 minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -827,6 +833,7 @@ class DeleteDeploymentRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -1018,6 +1025,7 @@ class Revision(proto.Message):
             instead attempt to automatically import the
             resource into the Terraform state (for supported
             resource types) and continue actuation.
+
             Not all resource types are supported, refer to
             documentation.
         worker_pool (str):

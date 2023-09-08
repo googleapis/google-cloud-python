@@ -77,6 +77,7 @@ class Taxonomy(proto.Message):
             taxonomy IDs.
         display_name (str):
             Required. User-defined name of this taxonomy.
+
             The name can't start or end with spaces, must
             contain only Unicode letters, numbers,
             underscores, dashes, and spaces, and be at most
@@ -213,6 +214,7 @@ class PolicyTag(proto.Message):
             Resource name of this policy tag's parent
             policy tag. If empty, this is a top level tag.
             If not set, defaults to an empty string.
+
             For example, for the "LatLong" policy tag in the
             example above, this field contains the resource
             name of the "Geolocation" policy tag, and, for
@@ -329,6 +331,7 @@ class ListTaxonomiesRequest(proto.Message):
         page_token (str):
             The pagination token of the next results
             page. If not set, the first page is returned.
+
             The token is returned in the response to a
             previous list request.
         filter (str):
