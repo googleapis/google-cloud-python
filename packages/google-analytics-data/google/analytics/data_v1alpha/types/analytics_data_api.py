@@ -453,6 +453,7 @@ class RunFunnelReportRequest(proto.Message):
             subsets of a property's data. In a funnel report
             with segments, the funnel is evaluated in each
             segment.
+
             Each segment specified in this request
             produces a separate row in the response; in the
             response, each segment identified by its name.

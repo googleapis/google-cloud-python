@@ -262,8 +262,7 @@ class MetricType(proto.Enum):
 
 class DateRange(proto.Message):
     r"""A contiguous set of days: startDate, startDate + 1, ...,
-    endDate. Requests
-    are allowed up to 4 date ranges.
+    endDate. Requests are allowed up to 4 date ranges.
 
     Attributes:
         start_date (str):
@@ -1072,6 +1071,7 @@ class FunnelNextAction(proto.Message):
 class Funnel(proto.Message):
     r"""Configures the funnel in a funnel report request. A funnel
     reports on users as they pass through a sequence of steps.
+
     Funnel exploration lets you visualize the steps your users take
     to complete a task and quickly see how well they are succeeding
     or failing at each step. For example, how do prospects become
@@ -1921,6 +1921,7 @@ class SegmentEventFilter(proto.Message):
             If specified, this filter matches events that
             match both the single event name and the
             parameter filter expressions.
+
             Inside the parameter filter expression, only
             parameter filters are available.
 
@@ -2337,6 +2338,7 @@ class FunnelEventFilter(proto.Message):
             If specified, this filter matches events that
             match both the single event name and the
             parameter filter expressions.
+
             Inside the parameter filter expression, only
             parameter filters are available.
 

@@ -542,6 +542,7 @@ class Filter(proto.Message):
     Attributes:
         field_name (str):
             The dimension name or metric name.
+
             In most methods, dimensions & metrics can be
             used for the first time in this field. However
             in a RunPivotReportRequest, this field must be

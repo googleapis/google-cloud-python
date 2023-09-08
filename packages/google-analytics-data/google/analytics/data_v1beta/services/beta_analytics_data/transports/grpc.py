@@ -448,10 +448,12 @@ class BetaAnalyticsDataGrpcTransport(BetaAnalyticsDataTransport):
         metrics that can be added to a report request and
         maintain compatibility. This method fails if the
         request's dimensions and metrics are incompatible.
+
         In Google Analytics, reports fail if they request
         incompatible dimensions and/or metrics; in that case,
         you will need to remove dimensions and/or metrics from
         the incompatible report until the report is compatible.
+
         The Realtime and Core reports have different
         compatibility rules. This method checks compatibility
         for Core reports.
