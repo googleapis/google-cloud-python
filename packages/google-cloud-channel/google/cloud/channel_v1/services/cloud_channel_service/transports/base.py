@@ -351,6 +351,11 @@ class CloudChannelServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.query_eligible_billing_accounts: gapic_v1.method.wrap_method(
+                self.query_eligible_billing_accounts,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.register_subscriber: gapic_v1.method.wrap_method(
                 self.register_subscriber,
                 default_timeout=None,
@@ -835,6 +840,18 @@ class CloudChannelServiceTransport(abc.ABC):
         Union[
             service.ListPurchasableOffersResponse,
             Awaitable[service.ListPurchasableOffersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def query_eligible_billing_accounts(
+        self,
+    ) -> Callable[
+        [service.QueryEligibleBillingAccountsRequest],
+        Union[
+            service.QueryEligibleBillingAccountsResponse,
+            Awaitable[service.QueryEligibleBillingAccountsResponse],
         ],
     ]:
         raise NotImplementedError()

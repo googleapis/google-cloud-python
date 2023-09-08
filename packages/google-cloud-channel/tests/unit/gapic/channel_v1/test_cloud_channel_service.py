@@ -11655,6 +11655,161 @@ async def test_list_purchasable_offers_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
+        service.QueryEligibleBillingAccountsRequest,
+        dict,
+    ],
+)
+def test_query_eligible_billing_accounts(request_type, transport: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_eligible_billing_accounts), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.QueryEligibleBillingAccountsResponse()
+        response = client.query_eligible_billing_accounts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.QueryEligibleBillingAccountsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.QueryEligibleBillingAccountsResponse)
+
+
+def test_query_eligible_billing_accounts_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_eligible_billing_accounts), "__call__"
+    ) as call:
+        client.query_eligible_billing_accounts()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.QueryEligibleBillingAccountsRequest()
+
+
+@pytest.mark.asyncio
+async def test_query_eligible_billing_accounts_async(
+    transport: str = "grpc_asyncio",
+    request_type=service.QueryEligibleBillingAccountsRequest,
+):
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_eligible_billing_accounts), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.QueryEligibleBillingAccountsResponse()
+        )
+        response = await client.query_eligible_billing_accounts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.QueryEligibleBillingAccountsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.QueryEligibleBillingAccountsResponse)
+
+
+@pytest.mark.asyncio
+async def test_query_eligible_billing_accounts_async_from_dict():
+    await test_query_eligible_billing_accounts_async(request_type=dict)
+
+
+def test_query_eligible_billing_accounts_field_headers():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.QueryEligibleBillingAccountsRequest()
+
+    request.customer = "customer_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_eligible_billing_accounts), "__call__"
+    ) as call:
+        call.return_value = service.QueryEligibleBillingAccountsResponse()
+        client.query_eligible_billing_accounts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "customer=customer_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_query_eligible_billing_accounts_field_headers_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.QueryEligibleBillingAccountsRequest()
+
+    request.customer = "customer_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_eligible_billing_accounts), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.QueryEligibleBillingAccountsResponse()
+        )
+        await client.query_eligible_billing_accounts(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "customer=customer_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         service.RegisterSubscriberRequest,
         dict,
     ],
@@ -12949,6 +13104,7 @@ def test_cloud_channel_service_base_transport():
         "list_offers",
         "list_purchasable_skus",
         "list_purchasable_offers",
+        "query_eligible_billing_accounts",
         "register_subscriber",
         "unregister_subscriber",
         "list_subscribers",
@@ -13343,9 +13499,32 @@ def test_cloud_channel_service_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_channel_partner_link_path():
+def test_billing_account_path():
     account = "squid"
-    channel_partner_link = "clam"
+    billing_account = "clam"
+    expected = "accounts/{account}/billingAccounts/{billing_account}".format(
+        account=account,
+        billing_account=billing_account,
+    )
+    actual = CloudChannelServiceClient.billing_account_path(account, billing_account)
+    assert expected == actual
+
+
+def test_parse_billing_account_path():
+    expected = {
+        "account": "whelk",
+        "billing_account": "octopus",
+    }
+    path = CloudChannelServiceClient.billing_account_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudChannelServiceClient.parse_billing_account_path(path)
+    assert expected == actual
+
+
+def test_channel_partner_link_path():
+    account = "oyster"
+    channel_partner_link = "nudibranch"
     expected = "accounts/{account}/channelPartnerLinks/{channel_partner_link}".format(
         account=account,
         channel_partner_link=channel_partner_link,
@@ -13358,8 +13537,8 @@ def test_channel_partner_link_path():
 
 def test_parse_channel_partner_link_path():
     expected = {
-        "account": "whelk",
-        "channel_partner_link": "octopus",
+        "account": "cuttlefish",
+        "channel_partner_link": "mussel",
     }
     path = CloudChannelServiceClient.channel_partner_link_path(**expected)
 
@@ -13369,9 +13548,9 @@ def test_parse_channel_partner_link_path():
 
 
 def test_channel_partner_repricing_config_path():
-    account = "oyster"
-    channel_partner = "nudibranch"
-    channel_partner_repricing_config = "cuttlefish"
+    account = "winkle"
+    channel_partner = "nautilus"
+    channel_partner_repricing_config = "scallop"
     expected = "accounts/{account}/channelPartnerLinks/{channel_partner}/channelPartnerRepricingConfigs/{channel_partner_repricing_config}".format(
         account=account,
         channel_partner=channel_partner,
@@ -13385,9 +13564,9 @@ def test_channel_partner_repricing_config_path():
 
 def test_parse_channel_partner_repricing_config_path():
     expected = {
-        "account": "mussel",
-        "channel_partner": "winkle",
-        "channel_partner_repricing_config": "nautilus",
+        "account": "abalone",
+        "channel_partner": "squid",
+        "channel_partner_repricing_config": "clam",
     }
     path = CloudChannelServiceClient.channel_partner_repricing_config_path(**expected)
 
@@ -13397,8 +13576,8 @@ def test_parse_channel_partner_repricing_config_path():
 
 
 def test_customer_path():
-    account = "scallop"
-    customer = "abalone"
+    account = "whelk"
+    customer = "octopus"
     expected = "accounts/{account}/customers/{customer}".format(
         account=account,
         customer=customer,
@@ -13409,8 +13588,8 @@ def test_customer_path():
 
 def test_parse_customer_path():
     expected = {
-        "account": "squid",
-        "customer": "clam",
+        "account": "oyster",
+        "customer": "nudibranch",
     }
     path = CloudChannelServiceClient.customer_path(**expected)
 
@@ -13420,9 +13599,9 @@ def test_parse_customer_path():
 
 
 def test_customer_repricing_config_path():
-    account = "whelk"
-    customer = "octopus"
-    customer_repricing_config = "oyster"
+    account = "cuttlefish"
+    customer = "mussel"
+    customer_repricing_config = "winkle"
     expected = "accounts/{account}/customers/{customer}/customerRepricingConfigs/{customer_repricing_config}".format(
         account=account,
         customer=customer,
@@ -13436,9 +13615,9 @@ def test_customer_repricing_config_path():
 
 def test_parse_customer_repricing_config_path():
     expected = {
-        "account": "nudibranch",
-        "customer": "cuttlefish",
-        "customer_repricing_config": "mussel",
+        "account": "nautilus",
+        "customer": "scallop",
+        "customer_repricing_config": "abalone",
     }
     path = CloudChannelServiceClient.customer_repricing_config_path(**expected)
 
@@ -13448,9 +13627,9 @@ def test_parse_customer_repricing_config_path():
 
 
 def test_entitlement_path():
-    account = "winkle"
-    customer = "nautilus"
-    entitlement = "scallop"
+    account = "squid"
+    customer = "clam"
+    entitlement = "whelk"
     expected = (
         "accounts/{account}/customers/{customer}/entitlements/{entitlement}".format(
             account=account,
@@ -13464,9 +13643,9 @@ def test_entitlement_path():
 
 def test_parse_entitlement_path():
     expected = {
-        "account": "abalone",
-        "customer": "squid",
-        "entitlement": "clam",
+        "account": "octopus",
+        "customer": "oyster",
+        "entitlement": "nudibranch",
     }
     path = CloudChannelServiceClient.entitlement_path(**expected)
 
@@ -13476,8 +13655,8 @@ def test_parse_entitlement_path():
 
 
 def test_offer_path():
-    account = "whelk"
-    offer = "octopus"
+    account = "cuttlefish"
+    offer = "mussel"
     expected = "accounts/{account}/offers/{offer}".format(
         account=account,
         offer=offer,
@@ -13488,8 +13667,8 @@ def test_offer_path():
 
 def test_parse_offer_path():
     expected = {
-        "account": "oyster",
-        "offer": "nudibranch",
+        "account": "winkle",
+        "offer": "nautilus",
     }
     path = CloudChannelServiceClient.offer_path(**expected)
 
@@ -13499,7 +13678,7 @@ def test_parse_offer_path():
 
 
 def test_product_path():
-    product = "cuttlefish"
+    product = "scallop"
     expected = "products/{product}".format(
         product=product,
     )
@@ -13509,7 +13688,7 @@ def test_product_path():
 
 def test_parse_product_path():
     expected = {
-        "product": "mussel",
+        "product": "abalone",
     }
     path = CloudChannelServiceClient.product_path(**expected)
 
@@ -13519,8 +13698,8 @@ def test_parse_product_path():
 
 
 def test_sku_path():
-    product = "winkle"
-    sku = "nautilus"
+    product = "squid"
+    sku = "clam"
     expected = "products/{product}/skus/{sku}".format(
         product=product,
         sku=sku,
@@ -13531,8 +13710,8 @@ def test_sku_path():
 
 def test_parse_sku_path():
     expected = {
-        "product": "scallop",
-        "sku": "abalone",
+        "product": "whelk",
+        "sku": "octopus",
     }
     path = CloudChannelServiceClient.sku_path(**expected)
 
@@ -13542,8 +13721,8 @@ def test_parse_sku_path():
 
 
 def test_sku_group_path():
-    account = "squid"
-    sku_group = "clam"
+    account = "oyster"
+    sku_group = "nudibranch"
     expected = "accounts/{account}/skuGroups/{sku_group}".format(
         account=account,
         sku_group=sku_group,
@@ -13554,8 +13733,8 @@ def test_sku_group_path():
 
 def test_parse_sku_group_path():
     expected = {
-        "account": "whelk",
-        "sku_group": "octopus",
+        "account": "cuttlefish",
+        "sku_group": "mussel",
     }
     path = CloudChannelServiceClient.sku_group_path(**expected)
 
@@ -13565,7 +13744,7 @@ def test_parse_sku_group_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -13575,7 +13754,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "nautilus",
     }
     path = CloudChannelServiceClient.common_billing_account_path(**expected)
 
@@ -13585,7 +13764,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -13595,7 +13774,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "abalone",
     }
     path = CloudChannelServiceClient.common_folder_path(**expected)
 
@@ -13605,7 +13784,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -13615,7 +13794,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "clam",
     }
     path = CloudChannelServiceClient.common_organization_path(**expected)
 
@@ -13625,7 +13804,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -13635,7 +13814,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "octopus",
     }
     path = CloudChannelServiceClient.common_project_path(**expected)
 
@@ -13645,8 +13824,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -13657,8 +13836,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = CloudChannelServiceClient.common_location_path(**expected)
 
