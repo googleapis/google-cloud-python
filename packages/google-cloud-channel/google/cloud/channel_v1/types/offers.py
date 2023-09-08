@@ -294,11 +294,14 @@ class ParameterDefinition(proto.Message):
                 String type.
             DOUBLE (3):
                 Double type.
+            BOOLEAN (4):
+                Boolean type.
         """
         PARAMETER_TYPE_UNSPECIFIED = 0
         INT64 = 1
         STRING = 2
         DOUBLE = 3
+        BOOLEAN = 4
 
     name: str = proto.Field(
         proto.STRING,
