@@ -884,6 +884,7 @@ class SchemaServiceAsyncClient:
                 Required. The revision ID to roll
                 back to. It must be a revision of the
                 same schema.
+
                   Example: c7cfa2a8
 
                 This corresponds to the ``revision_id`` field
