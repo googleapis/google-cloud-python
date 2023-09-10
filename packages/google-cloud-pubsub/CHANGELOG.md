@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.18.4](https://github.com/googleapis/python-pubsub/compare/v2.18.3...v2.18.4) (2023-09-09)
+
+
+### Documentation
+
+* Minor formatting ([#988](https://github.com/googleapis/python-pubsub/issues/988)) ([4eea8c5](https://github.com/googleapis/python-pubsub/commit/4eea8c5c757da6800ba6958e4b8e66085b0e9ddb))
+
 ## [2.18.3](https://github.com/googleapis/python-pubsub/compare/v2.18.2...v2.18.3) (2023-08-18)
 
 
