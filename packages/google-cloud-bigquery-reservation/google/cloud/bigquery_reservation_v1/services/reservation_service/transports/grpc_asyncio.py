@@ -890,6 +890,7 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         r"""Return a callable for the move assignment method over gRPC.
 
         Moves an assignment under a new reservation.
+
         This differs from removing an existing assignment and
         recreating a new one by providing a transactional change
         that ensures an assignee always has an associated

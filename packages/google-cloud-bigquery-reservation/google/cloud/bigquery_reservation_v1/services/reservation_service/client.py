@@ -2673,6 +2673,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> reservation.Assignment:
         r"""Moves an assignment under a new reservation.
+
         This differs from removing an existing assignment and
         recreating a new one by providing a transactional change
         that ensures an assignee always has an associated

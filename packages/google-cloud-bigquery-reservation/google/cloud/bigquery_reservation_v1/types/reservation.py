@@ -141,11 +141,13 @@ class Reservation(proto.Message):
             Applicable only for reservations located
             within one of the BigQuery multi-regions (US or
             EU).
+
             If set to true, this reservation is placed in
             the organization's secondary region which is
             designated for disaster recovery purposes. If
             false, this reservation is placed in the
             organization's default region.
+
             NOTE: this is a preview feature. Project must be
             allow-listed in order to set this field.
         edition (google.cloud.bigquery_reservation_v1.types.Edition):
@@ -260,11 +262,13 @@ class CapacityCommitment(proto.Message):
             Applicable only for commitments located
             within one of the BigQuery multi-regions (US or
             EU).
+
             If set to true, this commitment is placed in the
             organization's secondary region which is
             designated for disaster recovery purposes. If
             false, this commitment is placed in the
             organization's default region.
+
             NOTE: this is a preview feature. Project must be
             allow-listed in order to set this field.
         edition (google.cloud.bigquery_reservation_v1.types.Edition):
