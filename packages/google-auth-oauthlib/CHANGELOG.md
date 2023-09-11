@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-auth-oauthlib/#history
 
+## [1.1.0](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v1.0.0...v1.1.0) (2023-09-07)
+
+
+### Features
+
+* Adding support to specify browser while launching browser to authention ([#305](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/305)) ([1a9dca8](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/1a9dca889357b93bdad17d75a28ac81e3ba6067f)), closes [#303](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/303)
+* Pass thru OAuth audience during InstalledAppFlow.run_local_server ([#300](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/300)) ([fe08531](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/fe0853176f24fa8b71013a1d068ca8deaec7ff69))
+
+
+### Documentation
+
+* Fix grammar with fetch_token docstring ([#273](https://github.com/googleapis/google-auth-library-python-oauthlib/issues/273)) ([b2e3688](https://github.com/googleapis/google-auth-library-python-oauthlib/commit/b2e3688462ea9326afee2cae0f580857bc59b5f7))
+
 ## [1.0.0](https://github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.8.0...v1.0.0) (2023-02-06)
 
 
