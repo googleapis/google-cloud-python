@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.23.0](https://github.com/googleapis/google-auth-library-python/compare/v2.22.0...v2.23.0) (2023-09-11)
+
+
+### Features
+
+* Add get_bq_config_path() to _cloud_sdk.py ([9f52f66](https://github.com/googleapis/google-auth-library-python/commit/9f52f665247ada59278ffddaaef3ada9e419154c))
+* Add get_bq_config_path() to _cloud_sdk.py ([#1358](https://github.com/googleapis/google-auth-library-python/issues/1358)) ([9f52f66](https://github.com/googleapis/google-auth-library-python/commit/9f52f665247ada59278ffddaaef3ada9e419154c))
+
+
+### Bug Fixes
+
+* Expose universe domain in credentials ([#1380](https://github.com/googleapis/google-auth-library-python/issues/1380)) ([8b8fce6](https://github.com/googleapis/google-auth-library-python/commit/8b8fce6a1e1ca6e0199cb5f15a90af477bf1c853))
+* Make external_account resistant to string type 'expires_in' responses from non-compliant services ([#1379](https://github.com/googleapis/google-auth-library-python/issues/1379)) ([01d3770](https://github.com/googleapis/google-auth-library-python/commit/01d37706d6750c20952cf01b6a616b23aafa5be9))
+* Missing ssj for impersonate cred ([#1377](https://github.com/googleapis/google-auth-library-python/issues/1377)) ([7d453dc](https://github.com/googleapis/google-auth-library-python/commit/7d453dc6408b908e24312a7bd3dc380ad43220be))
+* Skip checking projectid on cred if env var is set ([#1349](https://github.com/googleapis/google-auth-library-python/issues/1349)) ([a4135a3](https://github.com/googleapis/google-auth-library-python/commit/a4135a3e9620a2cbf99957858c13780b92ff707c))
+
 ## [2.22.0](https://github.com/googleapis/google-auth-library-python/compare/v2.21.0...v2.22.0) (2023-07-06)
 
 
