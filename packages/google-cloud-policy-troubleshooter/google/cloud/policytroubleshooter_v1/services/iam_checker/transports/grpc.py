@@ -31,6 +31,7 @@ class IamCheckerGrpcTransport(IamCheckerTransport):
     """gRPC backend transport for IamChecker.
 
     IAM Policy Troubleshooter service.
+
     This service helps you troubleshoot access issues for Google
     Cloud resources.
 

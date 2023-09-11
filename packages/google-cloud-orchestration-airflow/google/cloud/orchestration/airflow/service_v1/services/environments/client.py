@@ -50,7 +50,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -617,7 +617,6 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
             name (str):
                 The resource name of the environment
                 to get, in the form:
-
                 "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
 
                 This corresponds to the ``name`` field
@@ -721,7 +720,6 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
             parent (str):
                 List environments in the given
                 project and location, in the form:
-
                 "projects/{projectId}/locations/{locationId}"
 
                 This corresponds to the ``parent`` field
@@ -841,7 +839,6 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
             name (str):
                 The relative resource name of the
                 environment to update, in the form:
-
                 "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
 
                 This corresponds to the ``name`` field
@@ -1153,7 +1150,6 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
             name (str):
                 The environment to delete, in the
                 form:
-
                 "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
 
                 This corresponds to the ``name`` field
@@ -1485,6 +1481,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Creates a snapshots of a Cloud Composer environment.
+
         As a result of this operation, snapshot of environment's
         state is stored in a location specified in the
         SaveSnapshotRequest.
@@ -1585,6 +1582,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Loads a snapshot of a Cloud Composer environment.
+
         As a result of this operation, a snapshot of
         environment's specified in LoadSnapshotRequest is loaded
         into the environment.
