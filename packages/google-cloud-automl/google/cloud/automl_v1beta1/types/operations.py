@@ -232,8 +232,8 @@ class ExportDataOperationMetadata(proto.Message):
                 This field is a member of `oneof`_ ``output_location``.
             bigquery_output_dataset (str):
                 The path of the BigQuery dataset created, in
-                bq://projectId.bqDatasetId
-                format, into which the exported data is written.
+                bq://projectId.bqDatasetId format, into which
+                the exported data is written.
 
                 This field is a member of `oneof`_ ``output_location``.
         """
@@ -289,9 +289,8 @@ class BatchPredictOperationMetadata(proto.Message):
                 This field is a member of `oneof`_ ``output_location``.
             bigquery_output_dataset (str):
                 The path of the BigQuery dataset created, in
-                bq://projectId.bqDatasetId
-                format, into which the prediction output is
-                written.
+                bq://projectId.bqDatasetId format, into which
+                the prediction output is written.
 
                 This field is a member of `oneof`_ ``output_location``.
         """
@@ -370,9 +369,9 @@ class ExportEvaluatedExamplesOperationMetadata(proto.Message):
         Attributes:
             bigquery_output_dataset (str):
                 The path of the BigQuery dataset created, in
-                bq://projectId.bqDatasetId
-                format, into which the output of export
-                evaluated examples is written.
+                bq://projectId.bqDatasetId format, into which
+                the output of export evaluated examples is
+                written.
         """
 
         bigquery_output_dataset: str = proto.Field(

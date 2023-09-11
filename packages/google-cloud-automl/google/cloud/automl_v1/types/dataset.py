@@ -105,6 +105,7 @@ class Dataset(proto.Message):
             underscores and dashes. International characters
             are allowed. Label values are optional. Label
             keys must start with a letter.
+
             See https://goo.gl/xmQnxf for more information
             on and examples of labels.
     """

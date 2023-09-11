@@ -62,7 +62,7 @@ from google.cloud.automl_v1beta1.types import io
 from google.cloud.automl_v1beta1.types import operations
 from google.cloud.automl_v1beta1.types import prediction_service
 from google.cloud.automl_v1beta1.types import text_segment
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import struct_pb2  # type: ignore
 import google.auth

@@ -1108,6 +1108,7 @@ class DocumentInputConfig(proto.Message):
             The Google Cloud Storage location of the
             document file. Only a single path should be
             given.
+
             Max supported size: 512MB.
 
             Supported extensions: .PDF.
