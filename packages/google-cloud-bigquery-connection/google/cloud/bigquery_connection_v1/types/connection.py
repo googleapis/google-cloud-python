@@ -717,6 +717,7 @@ class SparkProperties(proto.Message):
             procedure for Apache Spark in BigQuery, the
             service account is used to connect to the
             desired resources in Google Cloud.
+
             The account ID is in the form of:
 
             bqcx-<projectnumber>-<uniqueid>@gcp-sa-bigquery-consp.iam.gserviceaccount.com
