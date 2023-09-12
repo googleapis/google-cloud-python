@@ -250,8 +250,16 @@ class OcrConfig(proto.Message):
             Includes symbol level OCR information if set
             to true.
         compute_style_info (bool):
-            Turn on font id model and returns font style
-            information.
+            Turn on font identification model and return font style
+            information. Deprecated, use
+            [PremiumFeatures.compute_style_info][google.cloud.documentai.v1beta3.OcrConfig.PremiumFeatures.compute_style_info]
+            instead.
+        disable_character_boxes_detection (bool):
+            Turn off character box detector in OCR
+            engine. Character box detection is enabled by
+            default in OCR 2.0+ processors.
+        premium_features (google.cloud.documentai_v1beta3.types.OcrConfig.PremiumFeatures):
+            Configurations for premium OCR features.
     """
 
     class Hints(proto.Message):
@@ -273,6 +281,34 @@ class OcrConfig(proto.Message):
         language_hints: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=1,
+        )
+
+    class PremiumFeatures(proto.Message):
+        r"""Configurations for premium OCR features.
+
+        Attributes:
+            enable_selection_mark_detection (bool):
+                Turn on selection mark detector in OCR
+                engine. Only available in OCR 2.0+ processors.
+            compute_style_info (bool):
+                Turn on font identification model and return
+                font style information.
+            enable_math_ocr (bool):
+                Turn on the model that can extract LaTeX math
+                formulas.
+        """
+
+        enable_selection_mark_detection: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+        compute_style_info: bool = proto.Field(
+            proto.BOOL,
+            number=4,
+        )
+        enable_math_ocr: bool = proto.Field(
+            proto.BOOL,
+            number=5,
         )
 
     hints: Hints = proto.Field(
@@ -299,6 +335,15 @@ class OcrConfig(proto.Message):
     compute_style_info: bool = proto.Field(
         proto.BOOL,
         number=8,
+    )
+    disable_character_boxes_detection: bool = proto.Field(
+        proto.BOOL,
+        number=10,
+    )
+    premium_features: PremiumFeatures = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=PremiumFeatures,
     )
 
 
