@@ -129,8 +129,8 @@ class NetworkServicesClient(metaclass=NetworkServicesClientMeta):
     def _get_default_mtls_endpoint(api_endpoint):
         """Converts api endpoint to mTLS endpoint.
 
-        Convert "\*.sandbox.googleapis.com" and "\*.googleapis.com" to
-        "\*.mtls.sandbox.googleapis.com" and "\*.mtls.googleapis.com" respectively.
+        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
+        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
             api_endpoint (Optional[str]): the api endpoint to convert.
         Returns:
