@@ -17,13 +17,12 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
-from google.cloud.optimization_v1.types import async_model
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.optimization_v1.types import async_model
 
 __protobuf__ = proto.module(
     package="google.cloud.optimization.v1",

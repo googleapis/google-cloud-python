@@ -18,37 +18,39 @@ from google.cloud.optimization_v1 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.fleet_routing import FleetRoutingClient
-from .services.fleet_routing import FleetRoutingAsyncClient
-
-from .types.async_model import AsyncModelMetadata
-from .types.async_model import GcsDestination
-from .types.async_model import GcsSource
-from .types.async_model import InputConfig
-from .types.async_model import OutputConfig
-from .types.async_model import DataFormat
-from .types.fleet_routing import AggregatedMetrics
-from .types.fleet_routing import BatchOptimizeToursRequest
-from .types.fleet_routing import BatchOptimizeToursResponse
-from .types.fleet_routing import BreakRule
-from .types.fleet_routing import CapacityQuantity
-from .types.fleet_routing import CapacityQuantityInterval
-from .types.fleet_routing import DistanceLimit
-from .types.fleet_routing import InjectedSolutionConstraint
-from .types.fleet_routing import Location
-from .types.fleet_routing import OptimizeToursRequest
-from .types.fleet_routing import OptimizeToursResponse
-from .types.fleet_routing import OptimizeToursValidationError
-from .types.fleet_routing import Shipment
-from .types.fleet_routing import ShipmentModel
-from .types.fleet_routing import ShipmentRoute
-from .types.fleet_routing import ShipmentTypeIncompatibility
-from .types.fleet_routing import ShipmentTypeRequirement
-from .types.fleet_routing import SkippedShipment
-from .types.fleet_routing import TimeWindow
-from .types.fleet_routing import TransitionAttributes
-from .types.fleet_routing import Vehicle
-from .types.fleet_routing import Waypoint
+from .services.fleet_routing import FleetRoutingAsyncClient, FleetRoutingClient
+from .types.async_model import (
+    AsyncModelMetadata,
+    DataFormat,
+    GcsDestination,
+    GcsSource,
+    InputConfig,
+    OutputConfig,
+)
+from .types.fleet_routing import (
+    AggregatedMetrics,
+    BatchOptimizeToursRequest,
+    BatchOptimizeToursResponse,
+    BreakRule,
+    CapacityQuantity,
+    CapacityQuantityInterval,
+    DistanceLimit,
+    InjectedSolutionConstraint,
+    Location,
+    OptimizeToursRequest,
+    OptimizeToursResponse,
+    OptimizeToursValidationError,
+    Shipment,
+    ShipmentModel,
+    ShipmentRoute,
+    ShipmentTypeIncompatibility,
+    ShipmentTypeRequirement,
+    SkippedShipment,
+    TimeWindow,
+    TransitionAttributes,
+    Vehicle,
+    Waypoint,
+)
 
 __all__ = (
     "FleetRoutingAsyncClient",

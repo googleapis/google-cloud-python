@@ -15,11 +15,11 @@
 #
 from .async_model import (
     AsyncModelMetadata,
+    DataFormat,
     GcsDestination,
     GcsSource,
     InputConfig,
     OutputConfig,
-    DataFormat,
 )
 from .fleet_routing import (
     AggregatedMetrics,
