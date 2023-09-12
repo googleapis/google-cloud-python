@@ -5,6 +5,27 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.12.0](https://github.com/googleapis/python-firestore/compare/v2.11.1...v2.12.0) (2023-08-07)
+
+
+### Features
+
+* Add ApiScope and COLLECTION_RECURSIVE query_scope for Firestore index ([#718](https://github.com/googleapis/python-firestore/issues/718)) ([d8de142](https://github.com/googleapis/python-firestore/commit/d8de142b52ed0a7f9e299309173cc72b20184e5c))
+* Add bloom filter related proto fields ([#710](https://github.com/googleapis/python-firestore/issues/710)) ([26ac1cf](https://github.com/googleapis/python-firestore/commit/26ac1cfd7450866e6f567169c4662410a4d11e5b))
+* Add CreateDatabase API ([#724](https://github.com/googleapis/python-firestore/issues/724)) ([64e4404](https://github.com/googleapis/python-firestore/commit/64e44042869cbe2b48316f7baba537a6379992eb))
+* Multi db test parametrization ([#717](https://github.com/googleapis/python-firestore/issues/717)) ([91fc8bb](https://github.com/googleapis/python-firestore/commit/91fc8bbcc239366b954eb32d19f41f44a404fd99))
+* Publish proto definitions for SUM/AVG in Firestore ([#746](https://github.com/googleapis/python-firestore/issues/746)) ([ccadec5](https://github.com/googleapis/python-firestore/commit/ccadec5eba81c20618a94c0e4a23f07dfb7c1ea7))
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#732](https://github.com/googleapis/python-firestore/issues/732)) ([2d42731](https://github.com/googleapis/python-firestore/commit/2d42731996586fd63e9b8453b0eb627d3e23a310))
+
+
+### Documentation
+
+* Minor formatting and grammar ([eb4fe8e](https://github.com/googleapis/python-firestore/commit/eb4fe8e5a13681ca1ae0909e941b9c28d216b887))
+
 ## [2.11.1](https://github.com/googleapis/python-firestore/compare/v2.11.0...v2.11.1) (2023-04-26)
 
 
