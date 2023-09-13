@@ -56,6 +56,7 @@ from .transports.grpc_asyncio import OsConfigServiceGrpcAsyncIOTransport
 
 class OsConfigServiceAsyncClient:
     """OS Config API
+
     The OS Config service is a server-side component that you can
     use to manage package installations and patch jobs for virtual
     machine instances.

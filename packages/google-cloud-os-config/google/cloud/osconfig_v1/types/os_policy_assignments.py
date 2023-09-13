@@ -168,6 +168,7 @@ class OSPolicyAssignment(proto.Message):
 
     class InstanceFilter(proto.Message):
         r"""Filters to select target VMs for an assignment.
+
         If more than one filter criteria is specified below, a VM will
         be selected if and only if it satisfies all of them.
 
@@ -182,11 +183,13 @@ class OSPolicyAssignment(proto.Message):
                 included if any of the label sets are applicable for the VM.
             exclusion_labels (MutableSequence[google.cloud.osconfig_v1.types.OSPolicyAssignment.LabelSet]):
                 List of label sets used for VM exclusion.
+
                 If the list has more than one label set, the VM
                 is excluded if any of the label sets are
                 applicable for the VM.
             inventories (MutableSequence[google.cloud.osconfig_v1.types.OSPolicyAssignment.InstanceFilter.Inventory]):
                 List of inventories to select VMs.
+
                 A VM is selected if its inventory data matches
                 at least one of the following inventories.
         """
@@ -420,9 +423,7 @@ class CreateOSPolicyAssignmentRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent resource name in the
-            form:
-
-            projects/{project}/locations/{location}
+            form: projects/{project}/locations/{location}
         os_policy_assignment (google.cloud.osconfig_v1.types.OSPolicyAssignment):
             Required. The OS policy assignment to be
             created.

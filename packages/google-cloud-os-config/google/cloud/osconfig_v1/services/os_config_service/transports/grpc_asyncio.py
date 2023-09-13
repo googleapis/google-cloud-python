@@ -33,6 +33,7 @@ class OsConfigServiceGrpcAsyncIOTransport(OsConfigServiceTransport):
     """gRPC AsyncIO backend transport for OsConfigService.
 
     OS Config API
+
     The OS Config service is a server-side component that you can
     use to manage package installations and patch jobs for virtual
     machine instances.

@@ -172,6 +172,7 @@ class OSPolicyAssignmentReport(proto.Message):
             Unique identifier of the last attempted run
             to apply the OS policies associated with this
             assignment on the VM.
+
             This ID is logged by the OS Config agent while
             applying the OS policies associated with this
             assignment on the VM. NOTE: If the service is
@@ -232,10 +233,12 @@ class OSPolicyAssignmentReport(proto.Message):
                     exact reason for the policy to be in this compliance state.
                 COMPLIANT (1):
                     Policy is compliant.
+
                     The policy is compliant if all the underlying
                     resources are also compliant.
                 NON_COMPLIANT (2):
                     Policy is non-compliant.
+
                     The policy is non-compliant if one or more
                     underlying resources are non-compliant.
             """
@@ -329,6 +332,7 @@ class OSPolicyAssignmentReport(proto.Message):
                             Re-checks the status of the desired state.
                             This check is done for a resource after the
                             enforcement of all OS policies.
+
                             This step is used to determine the final desired
                             state status for the resource. It accounts for
                             any resources that might have drifted from their

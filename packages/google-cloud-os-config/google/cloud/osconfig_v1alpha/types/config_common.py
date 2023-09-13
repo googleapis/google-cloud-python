@@ -88,6 +88,7 @@ class OSPolicyResourceConfigStep(proto.Message):
                 Re-check desired state status for a resource
                 after enforcement of all resources in the
                 current configuration run.
+
                 This step is used to determine the final desired
                 state status for the resource. It accounts for
                 any resources that might have drifted from their

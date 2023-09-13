@@ -109,6 +109,7 @@ class OsConfigZonalServiceClientMeta(type):
 
 class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
     """Zonal OS Config API
+
     The OS Config service is the server-side component that allows
     users to manage package installations and patch jobs for Compute
     Engine VM instances.
@@ -670,7 +671,6 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
             parent (str):
                 Required. The parent resource name in
                 the form:
-
                 projects/{project}/locations/{location}
 
                 This corresponds to the ``parent`` field
@@ -1666,6 +1666,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
                 A response message for listing OS
                 policies compliance data for all Compute
                 Engine VMs in the given location.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1944,6 +1945,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
                 A response message for listing OS
                 Policy assignment reports including the
                 page of results and page token.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -2191,6 +2193,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
                 A response message for listing
                 inventory data for all VMs in a
                 specified location.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -2434,6 +2437,7 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
                 A response message for listing
                 vulnerability reports for all VM
                 instances in the specified location.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

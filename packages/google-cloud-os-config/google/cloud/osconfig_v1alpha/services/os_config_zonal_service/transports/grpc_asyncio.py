@@ -39,6 +39,7 @@ class OsConfigZonalServiceGrpcAsyncIOTransport(OsConfigZonalServiceTransport):
     """gRPC AsyncIO backend transport for OsConfigZonalService.
 
     Zonal OS Config API
+
     The OS Config service is the server-side component that allows
     users to manage package installations and patch jobs for Compute
     Engine VM instances.
