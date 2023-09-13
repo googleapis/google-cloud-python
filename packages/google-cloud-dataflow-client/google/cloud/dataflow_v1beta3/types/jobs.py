@@ -223,6 +223,7 @@ class Job(proto.Message):
     Attributes:
         id (str):
             The unique ID of this job.
+
             This field is set by the Cloud Dataflow service
             when the Job is created, and is immutable for
             the life of the job.

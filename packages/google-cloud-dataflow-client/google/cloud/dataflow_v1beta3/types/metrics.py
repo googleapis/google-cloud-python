@@ -116,6 +116,7 @@ class MetricUpdate(proto.Message):
             "Mean", "Set", "And", "Or", and "Distribution".
             The specified aggregation kind is
             case-insensitive.
+
             If omitted, this is not an aggregated value but
             instead a single metric sample value.
         cumulative (bool):
@@ -342,6 +343,7 @@ class ProgressTimeseries(proto.Message):
             The current progress of the component, in the range [0,1].
         data_points (MutableSequence[google.cloud.dataflow_v1beta3.types.ProgressTimeseries.Point]):
             History of progress for the component.
+
             Points are sorted by time.
     """
 
@@ -388,6 +390,7 @@ class StageSummary(proto.Message):
             Start time of this stage.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             End time of this stage.
+
             If the work item is completed, this is the
             actual end time of the stage. Otherwise, it is
             the predicted end time.
@@ -537,6 +540,7 @@ class WorkItemDetails(proto.Message):
             Start time of this work item attempt.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             End time of this work item attempt.
+
             If the work item is completed, this is the
             actual end time of the work item.  Otherwise, it
             is the predicted end time.

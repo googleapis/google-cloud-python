@@ -43,43 +43,39 @@ class JobMessageImportance(proto.Enum):
             unknown.
         JOB_MESSAGE_DEBUG (1):
             The message is at the 'debug' level:
-            typically only useful for
-            software engineers working on the code the job
-            is running. Typically, Dataflow pipeline runners
-            do not display log messages at this level by
-            default.
+            typically only useful for software engineers
+            working on the code the job is running.
+            Typically, Dataflow pipeline runners do not
+            display log messages at this level by default.
         JOB_MESSAGE_DETAILED (2):
             The message is at the 'detailed' level:
-            somewhat verbose, but
-            potentially useful to users.  Typically,
-            Dataflow pipeline runners do not display log
-            messages at this level by default. These
-            messages are displayed by default in the
-            Dataflow monitoring UI.
+            somewhat verbose, but potentially useful to
+            users.  Typically, Dataflow pipeline runners do
+            not display log messages at this level by
+            default. These messages are displayed by default
+            in the Dataflow monitoring UI.
         JOB_MESSAGE_BASIC (5):
             The message is at the 'basic' level: useful
-            for keeping
-            track of the execution of a Dataflow pipeline.
-            Typically, Dataflow pipeline runners display log
-            messages at this level by default, and these
-            messages are displayed by default in the
-            Dataflow monitoring UI.
+            for keeping track of the execution of a Dataflow
+            pipeline.  Typically, Dataflow pipeline runners
+            display log messages at this level by default,
+            and these messages are displayed by default in
+            the Dataflow monitoring UI.
         JOB_MESSAGE_WARNING (3):
             The message is at the 'warning' level:
-            indicating a condition
-            pertaining to a job which may require human
-            intervention. Typically, Dataflow pipeline
-            runners display log messages at this level by
-            default, and these messages are displayed by
-            default in the Dataflow monitoring UI.
-        JOB_MESSAGE_ERROR (4):
-            The message is at the 'error' level:
-            indicating a condition
-            preventing a job from succeeding.  Typically,
+            indicating a condition pertaining to a job which
+            may require human intervention. Typically,
             Dataflow pipeline runners display log messages
             at this level by default, and these messages are
             displayed by default in the Dataflow monitoring
             UI.
+        JOB_MESSAGE_ERROR (4):
+            The message is at the 'error' level:
+            indicating a condition preventing a job from
+            succeeding.  Typically, Dataflow pipeline
+            runners display log messages at this level by
+            default, and these messages are displayed by
+            default in the Dataflow monitoring UI.
     """
     JOB_MESSAGE_IMPORTANCE_UNKNOWN = 0
     JOB_MESSAGE_DEBUG = 1
