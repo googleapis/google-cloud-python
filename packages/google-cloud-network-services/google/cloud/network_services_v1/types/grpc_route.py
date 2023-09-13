@@ -283,6 +283,7 @@ class GrpcRoute(proto.Message):
                 If only one serviceName is specified and it has
                 a weight greater than 0, 100% of the traffic is
                 forwarded to that backend.
+
                 If weights are specified for any one service
                 name, they need to be specified for all of them.
 

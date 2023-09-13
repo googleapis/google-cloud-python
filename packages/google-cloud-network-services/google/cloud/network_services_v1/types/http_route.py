@@ -392,6 +392,7 @@ class HttpRoute(proto.Message):
                 If only one serviceName is specified and it has
                 a weight greater than 0, 100% of the traffic is
                 forwarded to that backend.
+
                 If weights are specified for any one service
                 name, they need to be specified for all of them.
 
@@ -907,6 +908,7 @@ class HttpRoute(proto.Message):
                 requests. Each match is independent, i.e. this
                 rule will be matched if ANY one of the matches
                 is satisfied.
+
                 If no matches field is specified, this rule will
                 unconditionally match traffic.
 
