@@ -255,8 +255,8 @@ class AdmissionRule(proto.Message):
                 pod creation.
             DRYRUN_AUDIT_LOG_ONLY (2):
                 Dryrun mode: Audit logging only.  This will
-                allow the pod creation as if
-                the admission request had specified break-glass.
+                allow the pod creation as if the admission
+                request had specified break-glass.
         """
         ENFORCEMENT_MODE_UNSPECIFIED = 0
         ENFORCED_BLOCK_AND_AUDIT_LOG = 1
@@ -346,6 +346,7 @@ class UserOwnedGrafeasNote(proto.Message):
             Optional. Public keys that verify
             attestations signed by this attestor.  This
             field may be updated.
+
             If this field is non-empty, one of the specified
             public keys must verify that an attestation was
             signed by this attestor for the image specified
