@@ -189,8 +189,8 @@ class ServiceContext(proto.Message):
         resource_type (str):
             Type of the MonitoredResource. List of
             possible values:
-
             https://cloud.google.com/monitoring/api/resources
+
             Value is set automatically for incoming errors
             and must not be set when reporting errors.
     """
