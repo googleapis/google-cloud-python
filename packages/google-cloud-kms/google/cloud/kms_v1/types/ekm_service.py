@@ -436,6 +436,7 @@ class EkmConnection(proto.Message):
                 specified, all endpoints will be considered. An
                 endpoint will be chosen arbitrarily from the
                 filtered list for each request.
+
                 For endpoint filter syntax and examples, see
                 https://cloud.google.com/service-directory/docs/reference/rpc/google.cloud.servicedirectory.v1#resolveservicerequest.
             hostname (str):

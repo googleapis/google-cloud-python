@@ -384,6 +384,7 @@ class KeyOperationAttestation(proto.Message):
                 Cavium HSM attestation compressed with gzip.
                 Note that this format is defined by Cavium and
                 subject to change at any time.
+
                 See
                 https://www.marvell.com/products/security-solutions/nitrox-hs-adapters/software-key-attestation.html.
             CAVIUM_V2_COMPRESSED (4):
