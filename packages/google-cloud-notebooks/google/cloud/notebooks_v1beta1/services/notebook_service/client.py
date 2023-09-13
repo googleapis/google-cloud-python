@@ -52,7 +52,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -1978,6 +1978,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         Returns:
             google.cloud.notebooks_v1beta1.services.notebook_service.pagers.ListEnvironmentsPager:
                 Response for listing environments.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

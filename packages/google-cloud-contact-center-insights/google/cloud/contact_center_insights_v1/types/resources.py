@@ -981,6 +981,7 @@ class Entity(proto.Message):
                 -  ``day`` - Two digit day number, if detected.
             NUMBER (12):
                 Number.
+
                 The metadata is the number itself.
             PRICE (13):
                 Price.
@@ -2272,7 +2273,6 @@ class ConversationParticipant(proto.Message):
         dialogflow_participant_name (str):
             The name of the participant provided by
             Dialogflow. Format:
-
             projects/{project}/locations/{location}/conversations/{conversation}/participants/{participant}
 
             This field is a member of `oneof`_ ``participant``.

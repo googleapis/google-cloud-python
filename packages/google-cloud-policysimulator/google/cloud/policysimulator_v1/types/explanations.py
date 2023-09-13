@@ -108,6 +108,7 @@ class AccessTuple(proto.Message):
 
             For a complete list of IAM permissions, see
             https://cloud.google.com/iam/help/permissions/reference.
+
             For a complete list of predefined IAM roles and
             the permissions in each role, see
             https://cloud.google.com/iam/help/roles/reference.

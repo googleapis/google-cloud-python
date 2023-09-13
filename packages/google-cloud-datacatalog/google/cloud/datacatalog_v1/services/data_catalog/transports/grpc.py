@@ -597,6 +597,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         r"""Return a callable for the lookup entry method over gRPC.
 
         Gets an entry by its target resource name.
+
         The resource name comes from the source Google Cloud
         Platform service.
 
@@ -938,6 +939,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         value method over gRPC.
 
         Renames an enum value in a tag template.
+
         Within a single enum field, enum values must be unique.
 
         Returns:
@@ -1305,8 +1307,10 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Gets your permissions on a resource.
+
         Returns an empty set of permissions if the resource
         doesn't exist.
+
         Supported resources are:
 
         - Tag templates
@@ -1316,6 +1320,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         and can't be used to get policies from BigQuery,
         Pub/Sub, Dataproc Metastore, and any external Google
         Cloud Platform resources ingested into Data Catalog.
+
         No Google IAM permissions are required to call this
         method.
 

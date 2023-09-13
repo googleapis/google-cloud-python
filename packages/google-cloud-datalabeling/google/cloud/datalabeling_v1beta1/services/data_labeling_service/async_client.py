@@ -3477,6 +3477,7 @@ class DataLabelingServiceAsyncClient:
         Returns:
             google.cloud.datalabeling_v1beta1.services.data_labeling_service.pagers.SearchEvaluationsAsyncPager:
                 Results of searching evaluations.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -4407,6 +4408,7 @@ class DataLabelingServiceAsyncClient:
         Returns:
             google.cloud.datalabeling_v1beta1.services.data_labeling_service.pagers.ListEvaluationJobsAsyncPager:
                 Results for listing evaluation jobs.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

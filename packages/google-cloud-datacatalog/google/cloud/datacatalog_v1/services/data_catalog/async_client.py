@@ -46,7 +46,7 @@ from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.datacatalog_v1.services.data_catalog import pagers
@@ -472,6 +472,7 @@ class DataCatalogAsyncClient:
                 Required. The names of the project
                 and location that the new entry group
                 belongs to.
+
                 Note: The entry group itself and its
                 child resources might not be stored in
                 the location specified in its name.
@@ -1544,6 +1545,7 @@ class DataCatalogAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> datacatalog.Entry:
         r"""Gets an entry by its target resource name.
+
         The resource name comes from the source Google Cloud
         Platform service.
 
@@ -2835,6 +2837,7 @@ class DataCatalogAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> tags.TagTemplateField:
         r"""Renames an enum value in a tag template.
+
         Within a single enum field, enum values must be unique.
 
         .. code-block:: python
@@ -3910,8 +3913,8 @@ class DataCatalogAsyncClient:
                 The request object. Request message for ``SetIamPolicy`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
-                policy is being specified.
-                See the operation documentation for the
+                policy is being specified. See the
+                operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field
@@ -4067,8 +4070,8 @@ class DataCatalogAsyncClient:
                 The request object. Request message for ``GetIamPolicy`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
-                policy is being requested.
-                See the operation documentation for the
+                policy is being requested. See the
+                operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field
@@ -4167,8 +4170,10 @@ class DataCatalogAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Gets your permissions on a resource.
+
         Returns an empty set of permissions if the resource
         doesn't exist.
+
         Supported resources are:
 
         - Tag templates
@@ -4178,6 +4183,7 @@ class DataCatalogAsyncClient:
         and can't be used to get policies from BigQuery,
         Pub/Sub, Dataproc Metastore, and any external Google
         Cloud Platform resources ingested into Data Catalog.
+
         No Google IAM permissions are required to call this
         method.
 

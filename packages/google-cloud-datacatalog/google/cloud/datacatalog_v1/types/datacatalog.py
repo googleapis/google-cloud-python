@@ -401,6 +401,7 @@ class CreateEntryGroupRequest(proto.Message):
         parent (str):
             Required. The names of the project and
             location that the new entry group belongs to.
+
             Note: The entry group itself and its child
             resources might not be stored in the location
             specified in its name.
@@ -942,12 +943,14 @@ class Entry(proto.Message):
             This field is a member of `oneof`_ ``spec``.
         display_name (str):
             Display name of an entry.
+
             The maximum size is 500 bytes when encoded in
             UTF-8. Default value is an empty string.
         description (str):
             Entry description that can consist of several
             sentences or paragraphs that describe entry
             contents.
+
             The description must not contain Unicode
             non-characters as well as C0 and C1 control
             codes except tabs (HT), new lines (LF), carriage
@@ -972,6 +975,7 @@ class Entry(proto.Message):
             Resource usage statistics.
         labels (MutableMapping[str, str]):
             Cloud labels attached to the entry.
+
             In Data Catalog, you can create and modify
             labels attached only to custom entries. Synced
             entries have unmodifiable labels that come from
@@ -1591,6 +1595,7 @@ class EntryOverview(proto.Message):
     Attributes:
         overview (str):
             Entry overview with support for rich text.
+
             The overview must only contain Unicode
             characters, and should be formatted using HTML.
             The maximum length is 10 MiB as this value holds

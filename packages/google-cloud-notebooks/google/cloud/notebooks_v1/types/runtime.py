@@ -325,6 +325,7 @@ class LocalDisk(proto.Message):
             instance. Use initialization parameters to
             create boot disks or local SSDs attached to the
             new instance.
+
             This property is mutually exclusive with the
             source property; you can only define one or the
             other, but not both.

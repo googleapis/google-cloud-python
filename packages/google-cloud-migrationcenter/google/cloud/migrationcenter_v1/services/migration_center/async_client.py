@@ -45,7 +45,7 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -302,6 +302,7 @@ class MigrationCenterAsyncClient:
         Returns:
             google.cloud.migrationcenter_v1.services.migration_center.pagers.ListAssetsAsyncPager:
                 Response message for listing assets.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1228,6 +1229,7 @@ class MigrationCenterAsyncClient:
         Returns:
             google.cloud.migrationcenter_v1.services.migration_center.pagers.ListImportJobsAsyncPager:
                 A response for listing import jobs.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -2423,6 +2425,7 @@ class MigrationCenterAsyncClient:
         Returns:
             google.cloud.migrationcenter_v1.services.migration_center.pagers.ListGroupsAsyncPager:
                 A response for listing groups.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -3279,6 +3282,7 @@ class MigrationCenterAsyncClient:
         Returns:
             google.cloud.migrationcenter_v1.services.migration_center.pagers.ListErrorFramesAsyncPager:
                 A response for listing error frames.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -3492,6 +3496,7 @@ class MigrationCenterAsyncClient:
         Returns:
             google.cloud.migrationcenter_v1.services.migration_center.pagers.ListSourcesAsyncPager:
                 Response message for listing sources.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -5656,6 +5661,7 @@ class MigrationCenterAsyncClient:
         Returns:
             google.cloud.migrationcenter_v1.services.migration_center.pagers.ListReportsAsyncPager:
                 Response message for listing Reports.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

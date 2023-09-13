@@ -138,11 +138,11 @@ class DocumentQuery(proto.Message):
             PropertyFilters is OR.
         file_type_filter (google.cloud.contentwarehouse_v1.types.FileTypeFilter):
             This filter specifies the types of files to
-            return: ALL, FOLDER, or FILE.
-            If FOLDER or FILE is specified, then only either
-            folders or files will be returned, respectively.
-            If ALL is specified, both folders and files will
-            be returned.
+            return: ALL, FOLDER, or FILE. If FOLDER or FILE
+            is specified, then only either folders or files
+            will be returned, respectively. If ALL is
+            specified, both folders and files will be
+            returned.
 
             If no value is specified, ALL files will be
             returned.

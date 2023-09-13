@@ -495,6 +495,7 @@ class DataScan(proto.Message):
             Required. The data source for DataScan.
         execution_spec (google.cloud.dataplex_v1.types.DataScan.ExecutionSpec):
             Optional. DataScan execution settings.
+
             If not specified, the fields in it will use
             their default values.
         execution_status (google.cloud.dataplex_v1.types.DataScan.ExecutionStatus):

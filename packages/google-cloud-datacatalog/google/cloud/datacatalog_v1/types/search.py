@@ -52,6 +52,7 @@ class SearchResultType(proto.Enum):
 
 class SearchCatalogResult(proto.Message):
     r"""Result in the response to a search request.
+
     Each result captures details of one entry that matches the
     search.
 
@@ -65,6 +66,7 @@ class SearchCatalogResult(proto.Message):
     Attributes:
         search_result_type (google.cloud.datacatalog_v1.types.SearchResultType):
             Type of the search result.
+
             You can use this field to determine which get
             method to call to fetch the full resource.
         search_result_subtype (str):

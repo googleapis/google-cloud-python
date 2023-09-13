@@ -3659,6 +3659,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         Returns:
             google.cloud.datalabeling_v1beta1.services.data_labeling_service.pagers.SearchEvaluationsPager:
                 Results of searching evaluations.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -4563,6 +4564,7 @@ class DataLabelingServiceClient(metaclass=DataLabelingServiceClientMeta):
         Returns:
             google.cloud.datalabeling_v1beta1.services.data_labeling_service.pagers.ListEvaluationJobsPager:
                 Results for listing evaluation jobs.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
