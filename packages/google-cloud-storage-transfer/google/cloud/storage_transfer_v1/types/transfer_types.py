@@ -336,6 +336,7 @@ class AwsS3Data(proto.Message):
             credentials </storage-transfer/docs/data-retention#user-credentials>`__.
         path (str):
             Root path to transfer objects.
+
             Must be an empty string or full path name that
             ends with a '/'. This field is treated as an
             object prefix. As such, it should generally not
@@ -430,6 +431,7 @@ class AzureBlobStorageData(proto.Message):
             Azure Storage account.
         path (str):
             Root path to transfer objects.
+
             Must be an empty string or full path name that
             ends with a '/'. This field is treated as an
             object prefix. As such, it should generally not
@@ -567,6 +569,7 @@ class AwsS3CompatibleData(proto.Message):
             Required. Specifies the name of the bucket.
         path (str):
             Specifies the root path to transfer objects.
+
             Must be an empty string or full path name that
             ends with a '/'. This field is treated as an
             object prefix. As such, it should generally not
@@ -678,10 +681,9 @@ class S3CompatibleMetadata(proto.Message):
                 Perform requests using HTTPS.
             NETWORK_PROTOCOL_HTTP (2):
                 Not recommended: This sends data in
-                clear-text. This is only
-                appropriate within a closed network or for
-                publicly available data. Perform requests using
-                HTTP.
+                clear-text. This is only appropriate within a
+                closed network or for publicly available data.
+                Perform requests using HTTP.
         """
         NETWORK_PROTOCOL_UNSPECIFIED = 0
         NETWORK_PROTOCOL_HTTPS = 1
@@ -1700,6 +1702,7 @@ class ErrorSummary(proto.Message):
             Required. Count of this type of error.
         error_log_entries (MutableSequence[google.cloud.storage_transfer_v1.types.ErrorLogEntry]):
             Error samples.
+
             At most 5 error log entries are recorded for a
             given error code for a single transfer
             operation.
@@ -1787,6 +1790,7 @@ class TransferCounters(proto.Message):
             and ``base/b/`` is 3.
         directories_failed_to_list_from_source (int):
             For transfers involving PosixFilesystem only.
+
             Number of listing failures for each directory
             found at the source. Potential failures when
             listing a directory include permission failure
@@ -1794,6 +1798,7 @@ class TransferCounters(proto.Message):
             no files in the directory are transferred.
         directories_successfully_listed_from_source (int):
             For transfers involving PosixFilesystem only.
+
             Number of successful listings for each directory
             found at the source.
         intermediate_objects_cleaned_up (int):
