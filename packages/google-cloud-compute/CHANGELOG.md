@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.1](https://github.com/googleapis/python-compute/compare/v1.14.0...v1.14.1) (2023-09-13)
+
+
+### Documentation
+
+* Minor formatting ([#433](https://github.com/googleapis/python-compute/issues/433)) ([df0531d](https://github.com/googleapis/python-compute/commit/df0531d8ffa29caa561b087a8ec54b787c31c437))
+
 ## [1.14.0](https://github.com/googleapis/python-compute/compare/v1.13.0...v1.14.0) (2023-08-02)
 
 
