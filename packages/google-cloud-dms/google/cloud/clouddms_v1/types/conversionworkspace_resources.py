@@ -1090,22 +1090,22 @@ class MultiColumnDatatypeChange(proto.Message):
         new_data_type (str):
             Required. New data type.
         override_length (int):
-            Optional. Column length - e.g. varchar (50) -
-            if not specified and relevant uses the source
+            Optional. Column length, e.g. varchar (50).
+            If not specified and relevant uses the source
             column length.
         override_scale (int):
-            Optional. Column scale - when relevant - if
+            Optional. Column scale, when relevant. If
             not specified and relevant uses the source
             column scale.
         override_precision (int):
-            Optional. Column precision - when relevant -
-            if not specified and relevant uses the source
+            Optional. Column precision, when relevant.
+            If not specified and relevant uses the source
             column precision.
         override_fractional_seconds_precision (int):
-            Optional. Column fractional seconds precision
-            - used only for timestamp based datatypes - if
-              not specified and relevant uses the source
-              column fractional seconds precision.
+            Optional. Column fractional seconds precision,
+            used only for timestamp based datatypes. If
+            not specified and relevant uses the source
+            column fractional seconds precision.
         custom_features (google.protobuf.struct_pb2.Struct):
             Optional. Custom engine specific features.
     """
