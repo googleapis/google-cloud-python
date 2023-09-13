@@ -33,7 +33,6 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
 from google.protobuf import json_format
 import grpc  # type: ignore
 from requests import __version__ as requests_version
@@ -373,6 +372,7 @@ class ConversationDatasetsRestTransport(ConversationDatasetsTransport):
     """REST backend transport for ConversationDatasets.
 
     Conversation datasets.
+
     Conversation datasets contain raw conversation files and their
     customizable metadata that can be used for model training.
 

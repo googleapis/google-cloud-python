@@ -47,7 +47,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 
@@ -714,6 +714,7 @@ class ContextsClient(metaclass=ContextsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_context.Context:
         r"""Creates a context.
+
         If the specified context already exists, overrides the
         context.
 

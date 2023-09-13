@@ -21,7 +21,7 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 
@@ -278,6 +278,7 @@ class SessionEntityTypesGrpcTransport(SessionEntityTypesTransport):
         r"""Return a callable for the get session entity type method over gRPC.
 
         Retrieves the specified session entity type.
+
         This method doesn't work with Google Assistant
         integration. Contact Dialogflow support if you need to
         use session entities with Google Assistant integration.
@@ -310,6 +311,7 @@ class SessionEntityTypesGrpcTransport(SessionEntityTypesTransport):
         r"""Return a callable for the create session entity type method over gRPC.
 
         Creates a session entity type.
+
         If the specified session entity type already exists,
         overrides the session entity type.
 
@@ -345,6 +347,7 @@ class SessionEntityTypesGrpcTransport(SessionEntityTypesTransport):
         r"""Return a callable for the update session entity type method over gRPC.
 
         Updates the specified session entity type.
+
         This method doesn't work with Google Assistant
         integration. Contact Dialogflow support if you need to
         use session entities with Google Assistant integration.
@@ -376,6 +379,7 @@ class SessionEntityTypesGrpcTransport(SessionEntityTypesTransport):
         r"""Return a callable for the delete session entity type method over gRPC.
 
         Deletes the specified session entity type.
+
         This method doesn't work with Google Assistant
         integration. Contact Dialogflow support if you need to
         use session entities with Google Assistant integration.

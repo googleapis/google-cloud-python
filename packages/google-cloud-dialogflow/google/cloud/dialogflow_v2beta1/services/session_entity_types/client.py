@@ -47,7 +47,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.services.session_entity_types import pagers
@@ -598,6 +598,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> session_entity_type.SessionEntityType:
         r"""Retrieves the specified session entity type.
+
         This method doesn't work with Google Assistant
         integration. Contact Dialogflow support if you need to
         use session entities with Google Assistant integration.
@@ -724,6 +725,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_session_entity_type.SessionEntityType:
         r"""Creates a session entity type.
+
         If the specified session entity type already exists,
         overrides the session entity type.
 
@@ -866,6 +868,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_session_entity_type.SessionEntityType:
         r"""Updates the specified session entity type.
+
         This method doesn't work with Google Assistant
         integration. Contact Dialogflow support if you need to
         use session entities with Google Assistant integration.
@@ -995,6 +998,7 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified session entity type.
+
         This method doesn't work with Google Assistant
         integration. Contact Dialogflow support if you need to
         use session entities with Google Assistant integration.

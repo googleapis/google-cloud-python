@@ -73,6 +73,7 @@ class ConversationProfile(proto.Message):
             with this profile.
         human_agent_handoff_config (google.cloud.dialogflow_v2.types.HumanAgentHandoffConfig):
             Configuration for connecting to a live agent.
+
             Currently, this feature is not general
             available, please contact Google to get access.
         notification_config (google.cloud.dialogflow_v2.types.NotificationConfig):
@@ -823,6 +824,7 @@ class HumanAgentAssistantConfig(proto.Message):
 class HumanAgentHandoffConfig(proto.Message):
     r"""Defines the hand off to a live agent, typically on which
     external agent service provider to connect to a conversation.
+
     Currently, this feature is not general available, please contact
     Google to get access.
 

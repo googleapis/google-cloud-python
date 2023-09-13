@@ -20,7 +20,7 @@ from google.api_core import gapic_v1, grpc_helpers_async
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
@@ -298,6 +298,7 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         r"""Return a callable for the create version method over gRPC.
 
         Creates an agent version.
+
         The new version points to the agent instance in the
         "default" environment.
 
@@ -326,6 +327,7 @@ class VersionsGrpcAsyncIOTransport(VersionsTransport):
         r"""Return a callable for the update version method over gRPC.
 
         Updates the specified agent version.
+
         Note that this method does not allow you to update the
         state of the agent the given version points to. It
         allows you to update only mutable properties of the

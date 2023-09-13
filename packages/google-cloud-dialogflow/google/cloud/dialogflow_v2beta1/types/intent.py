@@ -484,6 +484,7 @@ class Intent(proto.Message):
                 This field is a member of `oneof`_ ``message``.
             rbm_text (google.cloud.dialogflow_v2beta1.types.Intent.Message.RbmText):
                 Rich Business Messaging (RBM) text response.
+
                 RBM allows businesses to send enriched and
                 branded versions of SMS. See
                 https://jibe.google.com/business-messaging.

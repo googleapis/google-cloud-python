@@ -77,6 +77,7 @@ class Fulfillment(proto.Message):
 
         - Basic authentication with username and password.
         - Authentication with additional authentication headers.
+
         More information could be found at:
 
         https://cloud.google.com/dialogflow/docs/fulfillment-configure.

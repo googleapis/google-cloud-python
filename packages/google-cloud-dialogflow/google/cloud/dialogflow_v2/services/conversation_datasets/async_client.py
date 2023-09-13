@@ -45,7 +45,7 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -62,6 +62,7 @@ from .transports.grpc_asyncio import ConversationDatasetsGrpcAsyncIOTransport
 
 class ConversationDatasetsAsyncClient:
     """Conversation datasets.
+
     Conversation datasets contain raw conversation files and their
     customizable metadata that can be used for model training.
     """

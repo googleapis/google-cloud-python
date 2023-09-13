@@ -87,12 +87,13 @@ class DetectIntentRequest(proto.Message):
             set to:
 
             1. an audio config which instructs the speech
-            recognizer how to process the speech audio,
+                recognizer how to process the speech audio,
 
             2. a conversational query in the form of text,
-            or
+                or
+
             3. an event that specifies which intent to
-            trigger.
+                trigger.
         output_audio_config (google.cloud.dialogflow_v2beta1.types.OutputAudioConfig):
             Instructs the speech synthesizer how to
             generate the output audio. If this field is not
@@ -345,7 +346,7 @@ class QueryInput(proto.Message):
     r"""Represents the query input. It can contain either:
 
     1. An audio config which instructs the speech recognizer how to
-    process the speech audio.
+        process the speech audio.
 
     2. A conversational query in the form of text.
 
@@ -771,12 +772,13 @@ class StreamingDetectIntentRequest(proto.Message):
             set to:
 
             1. an audio config which instructs the speech
-            recognizer how to process the speech audio,
+                recognizer how to process the speech audio,
 
             2. a conversational query in the form of text,
-            or
+                or
+
             3. an event that specifies which intent to
-            trigger.
+                trigger.
         single_utterance (bool):
             DEPRECATED. Please use
             [InputAudioConfig.single_utterance][google.cloud.dialogflow.v2beta1.InputAudioConfig.single_utterance]

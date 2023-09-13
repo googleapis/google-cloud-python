@@ -46,7 +46,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 
 from google.cloud.dialogflow_v2.types import audio_config
@@ -318,13 +318,14 @@ class SessionsAsyncClient:
                 can be set to:
 
                 1. an audio config which instructs the
-                speech recognizer how to process the
-                speech audio,
+                    speech recognizer how to process the
+                    speech audio,
 
                 2. a conversational query in the form of
-                text, or
+                    text, or
+
                 3. an event that specifies which intent
-                to trigger.
+                    to trigger.
 
                 This corresponds to the ``query_input`` field
                 on the ``request`` instance; if ``request`` is provided, this

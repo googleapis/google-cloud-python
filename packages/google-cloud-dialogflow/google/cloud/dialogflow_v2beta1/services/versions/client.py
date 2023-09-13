@@ -47,7 +47,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -699,6 +699,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_version.Version:
         r"""Creates an agent version.
+
         The new version points to the agent instance in the
         "default" environment.
 
@@ -833,6 +834,7 @@ class VersionsClient(metaclass=VersionsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcd_version.Version:
         r"""Updates the specified agent version.
+
         Note that this method does not allow you to update the
         state of the agent the given version points to. It
         allows you to update only mutable properties of the
