@@ -287,6 +287,7 @@ class WorkflowTemplateServiceGrpcTransport(WorkflowTemplateServiceTransport):
         r"""Return a callable for the get workflow template method over gRPC.
 
         Retrieves the latest workflow template.
+
         Can retrieve previously instantiated template by
         specifying optional version parameter.
 

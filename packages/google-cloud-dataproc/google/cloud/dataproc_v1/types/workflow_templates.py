@@ -224,6 +224,7 @@ class ManagedCluster(proto.Message):
             Required. The cluster name prefix. A unique
             cluster name will be formed by appending a
             random suffix.
+
             The name must contain only lower-case letters
             (a-z), numbers (0-9), and hyphens (-). Must
             begin with a letter. Cannot begin or end with
@@ -271,6 +272,7 @@ class ClusterSelector(proto.Message):
             Optional. The zone where workflow process
             executes. This parameter does not affect the
             selection of the cluster.
+
             If unspecified, the zone of the first cluster
             matching the selector is used.
         cluster_labels (MutableMapping[str, str]):
@@ -899,6 +901,7 @@ class GetWorkflowTemplateRequest(proto.Message):
             Optional. The version of workflow template to
             retrieve. Only previously instantiated versions
             can be retrieved.
+
             If unspecified, retrieves the current version.
     """
 
@@ -935,6 +938,7 @@ class InstantiateWorkflowTemplateRequest(proto.Message):
             instantiate. If specified, the workflow will be
             instantiated only if the current version of the
             workflow template has the supplied version.
+
             This option cannot be used to instantiate a
             previous version of workflow template.
         request_id (str):
@@ -1110,6 +1114,7 @@ class ListWorkflowTemplatesResponse(proto.Message):
 
 class DeleteWorkflowTemplateRequest(proto.Message):
     r"""A request to delete a workflow template.
+
     Currently started workflows will remain running.
 
     Attributes:

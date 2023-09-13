@@ -959,6 +959,7 @@ class JobStatus(proto.Message):
                 The job substate is unknown.
             SUBMITTED (1):
                 The Job is submitted to the agent.
+
                 Applies to RUNNING state.
             QUEUED (2):
                 The Job has been received and is awaiting
@@ -973,6 +974,7 @@ class JobStatus(proto.Message):
                 between the agent and Dataproc. If the agent
                 does not send a timely update, the job will
                 fail.
+
                 Applies to RUNNING state.
         """
         UNSPECIFIED = 0

@@ -353,6 +353,7 @@ class UpdateAutoscalingPolicyRequest(proto.Message):
 
 class DeleteAutoscalingPolicyRequest(proto.Message):
     r"""A request to delete an autoscaling policy.
+
     Autoscaling policies in use by one or more clusters will not be
     deleted.
 

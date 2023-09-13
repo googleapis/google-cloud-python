@@ -46,7 +46,7 @@ from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dataproc_v1.services.batch_controller import pagers
@@ -528,6 +528,7 @@ class BatchControllerAsyncClient:
         Returns:
             google.cloud.dataproc_v1.services.batch_controller.pagers.ListBatchesAsyncPager:
                 A list of batch workloads.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

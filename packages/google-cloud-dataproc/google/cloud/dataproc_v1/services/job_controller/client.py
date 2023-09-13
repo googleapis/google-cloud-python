@@ -50,7 +50,7 @@ from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.dataproc_v1.services.job_controller import pagers
 from google.cloud.dataproc_v1.types import jobs
@@ -918,6 +918,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         Returns:
             google.cloud.dataproc_v1.services.job_controller.pagers.ListJobsPager:
                 A list of jobs in a project.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

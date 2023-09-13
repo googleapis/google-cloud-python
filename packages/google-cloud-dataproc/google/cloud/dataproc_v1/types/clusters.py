@@ -873,6 +873,7 @@ class InstanceGroupConfig(proto.Message):
                 instance group.
             NON_PREEMPTIBLE (1):
                 Instances are non-preemptible.
+
                 This option is allowed for all instance groups
                 and is the only valid value for Master and
                 Worker instance groups.
@@ -1401,6 +1402,7 @@ class ClusterStatus(proto.Message):
                 The agent-reported status is out of date (may
                 occur if Dataproc loses communication with
                 Agent).
+
                 Applies to RUNNING state.
         """
         UNSPECIFIED = 0
@@ -1459,10 +1461,8 @@ class KerberosConfig(proto.Message):
     Attributes:
         enable_kerberos (bool):
             Optional. Flag to indicate whether to
-            Kerberize the cluster (default:
-
-            false). Set this field to true to enable
-            Kerberos on a cluster.
+            Kerberize the cluster (default: false). Set this
+            field to true to enable Kerberos on a cluster.
         root_principal_password_uri (str):
             Optional. The Cloud Storage URI of a KMS
             encrypted file containing the root principal
