@@ -58,6 +58,7 @@ class TraceServiceAsyncClient:
     trace.
     A trace is a collection of spans corresponding to a single
     operation or a set of operations in an application.
+
     A span is an individual timed event which forms a node of the
     trace tree. A single trace can contain spans from multiple
     services.

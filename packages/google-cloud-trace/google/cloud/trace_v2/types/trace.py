@@ -368,8 +368,7 @@ class Span(proto.Message):
 
         class Type(proto.Enum):
             r"""The relationship of the current span relative to the linked
-            span: child,
-            parent, or unspecified.
+            span: child, parent, or unspecified.
 
             Values:
                 TYPE_UNSPECIFIED (0):
@@ -663,8 +662,8 @@ class Module(proto.Message):
     Attributes:
         module (google.cloud.trace_v2.types.TruncatableString):
             For example: main binary, kernel modules, and
-            dynamic libraries
-            such as libc.so, sharedlib.so (up to 256 bytes).
+            dynamic libraries such as libc.so, sharedlib.so
+            (up to 256 bytes).
         build_id (google.cloud.trace_v2.types.TruncatableString):
             A unique identifier for the module, usually a
             hash of its contents (up to 128 bytes).
