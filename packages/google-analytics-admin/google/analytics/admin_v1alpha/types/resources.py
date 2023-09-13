@@ -698,6 +698,7 @@ class DataStream(proto.Message):
         Attributes:
             measurement_id (str):
                 Output only. Analytics Measurement ID.
+
                 Example: "G-1A2BCD345E".
             firebase_app_id (str):
                 Output only. ID of the corresponding web app
@@ -871,6 +872,7 @@ class AuditUserLink(proto.Message):
             Union of all permissions a user has at this
             account or property (includes direct
             permissions, group-inherited permissions, etc.).
+
             Format: predefinedRoles/viewer
     """
 
@@ -962,6 +964,7 @@ class GoogleAdsLink(proto.Message):
             Output only. Format:
 
             properties/{propertyId}/googleAdsLinks/{googleAdsLinkId}
+
             Note: googleAdsLinkId is not the Google Ads
             customer ID.
         customer_id (str):
@@ -1210,6 +1213,7 @@ class SKAdNetworkConversionValueSchema(proto.Message):
             values for postback window two and three in that
             they contain a "Fine" grained conversion value
             (a numeric value).
+
             Conversion values for this postback window must
             be set.  The other windows are optional and may
             inherit this window's settings if unset or
@@ -1326,6 +1330,7 @@ class ConversionValues(proto.Message):
             This field is a member of `oneof`_ ``_fine_value``.
         coarse_value (google.analytics.admin_v1alpha.types.CoarseValue):
             Required. A coarse grained conversion value.
+
             This value is not guaranteed to be unique.
         event_mappings (MutableSequence[google.analytics.admin_v1alpha.types.EventMapping]):
             Event conditions that must be met for this
@@ -1816,6 +1821,7 @@ class DisplayVideo360AdvertiserLink(proto.Message):
             DisplayVideo360AdvertiserLink resource. Format:
 
             properties/{propertyId}/displayVideo360AdvertiserLinks/{linkId}
+
             Note: linkId is not the Display & Video 360
             Advertiser ID
         advertiser_id (str):
@@ -1888,6 +1894,7 @@ class DisplayVideo360AdvertiserLinkProposal(proto.Message):
             Format:
 
             properties/{propertyId}/displayVideo360AdvertiserLinkProposals/{proposalId}
+
             Note: proposalId is not the Display & Video 360
             Advertiser ID
         advertiser_id (str):
@@ -1971,6 +1978,7 @@ class SearchAds360Link(proto.Message):
             Output only. The resource name for this
             SearchAds360Link resource. Format:
             properties/{propertyId}/searchAds360Links/{linkId}
+
             Note: linkId is not the Search Ads 360
             advertiser ID
         advertiser_id (str):
@@ -2219,6 +2227,7 @@ class CustomDimension(proto.Message):
         disallow_ads_personalization (bool):
             Optional. If set to true, sets this dimension
             as NPA and excludes it from ads personalization.
+
             This is currently only supported by user-scoped
             custom dimensions.
     """
@@ -2311,6 +2320,7 @@ class CustomMetric(proto.Message):
 
     class MeasurementUnit(proto.Enum):
         r"""Possible types of representing the custom metric's value.
+
         Currency representation may change in the future, requiring a
         breaking API change.
 
@@ -2494,6 +2504,7 @@ class AttributionSettings(proto.Message):
             Required. The reporting attribution model
             used to calculate conversion credit in this
             property's reports.
+
             Changing the attribution model will apply to
             both historical and future data. These changes
             will be reflected in reports with conversion and
@@ -2811,6 +2822,7 @@ class EnhancedMeasurementSettings(proto.Message):
             Indicates whether Enhanced Measurement
             Settings will be used to automatically measure
             interactions and content on this web stream.
+
             Changing this value does not affect the settings
             themselves, but determines whether they are
             respected.

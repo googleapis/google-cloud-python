@@ -480,6 +480,7 @@ class AnalyticsAdminServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListAccountsAsyncPager:
         r"""Returns all accounts accessible by the caller.
+
         Note that these accounts might not currently have GA4
         properties. Soft-deleted (ie: "trashed") accounts are
         excluded by default. Returns an empty list if no
@@ -523,6 +524,7 @@ class AnalyticsAdminServiceAsyncClient:
         Returns:
             google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListAccountsAsyncPager:
                 Request message for ListAccounts RPC.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -570,15 +572,16 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> None:
         r"""Marks target Account as soft-deleted (ie: "trashed")
         and returns it.
-
         This API does not have a method to restore soft-deleted
         accounts. However, they can be restored using the Trash
         Can UI.
+
         If the accounts are not restored before the expiration
         time, the account and all child resources (eg:
         Properties, GoogleAdsLinks, Streams, UserLinks) will be
         permanently purged.
         https://support.google.com/analytics/answer/6154772
+
         Returns an error if the target is not found.
 
         .. code-block:: python
@@ -1252,15 +1255,16 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> resources.Property:
         r"""Marks target Property as soft-deleted (ie: "trashed")
         and returns it.
-
         This API does not have a method to restore soft-deleted
         properties. However, they can be restored using the
         Trash Can UI.
+
         If the properties are not restored before the expiration
         time, the Property and all child resources (eg:
         GoogleAdsLinks, Streams, UserLinks) will be permanently
         purged.
         https://support.google.com/analytics/answer/6154772
+
         Returns an error if the target is not found, or is not a
         GA4 Property.
 
@@ -1892,6 +1896,7 @@ class AnalyticsAdminServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.UserLink:
         r"""Creates a user link on an account or property.
+
         If the user with the specified email already has
         permissions on the account or property, then the user's
         existing permissions will be unioned with the
@@ -2458,6 +2463,7 @@ class AnalyticsAdminServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.FirebaseLink:
         r"""Creates a FirebaseLink.
+
         Properties can have at most one FirebaseLink.
 
         .. code-block:: python
@@ -6162,6 +6168,7 @@ class AnalyticsAdminServiceAsyncClient:
                 A proposal for a link between a GA4
                 property and a Display & Video 360
                 advertiser.
+
                 A proposal is converted to a
                 DisplayVideo360AdvertiserLink once
                 approved. Google Analytics admins
@@ -6412,6 +6419,7 @@ class AnalyticsAdminServiceAsyncClient:
                 A proposal for a link between a GA4
                 property and a Display & Video 360
                 advertiser.
+
                 A proposal is converted to a
                 DisplayVideo360AdvertiserLink once
                 approved. Google Analytics admins
@@ -6723,6 +6731,7 @@ class AnalyticsAdminServiceAsyncClient:
                 A proposal for a link between a GA4
                 property and a Display & Video 360
                 advertiser.
+
                 A proposal is converted to a
                 DisplayVideo360AdvertiserLink once
                 approved. Google Analytics admins
@@ -13434,6 +13443,7 @@ class AnalyticsAdminServiceAsyncClient:
                 upon matched criteria of a source event.
                 Additional mutations of the parameters
                 from the source event can be defined.
+
                 Unlike Event Edit rules, Event Creation
                 Rules have no defined order.  They will
                 all be run independently.
@@ -13681,6 +13691,7 @@ class AnalyticsAdminServiceAsyncClient:
                 upon matched criteria of a source event.
                 Additional mutations of the parameters
                 from the source event can be defined.
+
                 Unlike Event Edit rules, Event Creation
                 Rules have no defined order.  They will
                 all be run independently.
@@ -13816,6 +13827,7 @@ class AnalyticsAdminServiceAsyncClient:
                 upon matched criteria of a source event.
                 Additional mutations of the parameters
                 from the source event can be defined.
+
                 Unlike Event Edit rules, Event Creation
                 Rules have no defined order.  They will
                 all be run independently.

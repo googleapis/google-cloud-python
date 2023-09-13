@@ -274,6 +274,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         r"""Return a callable for the list accounts method over gRPC.
 
         Returns all accounts accessible by the caller.
+
         Note that these accounts might not currently have GA4
         properties. Soft-deleted (ie: "trashed") accounts are
         excluded by default. Returns an empty list if no
@@ -305,15 +306,16 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
 
         Marks target Account as soft-deleted (ie: "trashed")
         and returns it.
-
         This API does not have a method to restore soft-deleted
         accounts. However, they can be restored using the Trash
         Can UI.
+
         If the accounts are not restored before the expiration
         time, the account and all child resources (eg:
         Properties, GoogleAdsLinks, Streams, UserLinks) will be
         permanently purged.
         https://support.google.com/analytics/answer/6154772
+
         Returns an error if the target is not found.
 
         Returns:
@@ -514,15 +516,16 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
 
         Marks target Property as soft-deleted (ie: "trashed")
         and returns it.
-
         This API does not have a method to restore soft-deleted
         properties. However, they can be restored using the
         Trash Can UI.
+
         If the properties are not restored before the expiration
         time, the Property and all child resources (eg:
         GoogleAdsLinks, Streams, UserLinks) will be permanently
         purged.
         https://support.google.com/analytics/answer/6154772
+
         Returns an error if the target is not found, or is not a
         GA4 Property.
 
@@ -700,6 +703,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         r"""Return a callable for the create user link method over gRPC.
 
         Creates a user link on an account or property.
+
         If the user with the specified email already has
         permissions on the account or property, then the user's
         existing permissions will be unioned with the
@@ -871,6 +875,7 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         r"""Return a callable for the create firebase link method over gRPC.
 
         Creates a FirebaseLink.
+
         Properties can have at most one FirebaseLink.
 
         Returns:

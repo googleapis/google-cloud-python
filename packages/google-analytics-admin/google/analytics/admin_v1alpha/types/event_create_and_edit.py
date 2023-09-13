@@ -69,6 +69,7 @@ class EventCreateRule(proto.Message):
     creation of an entirely new event based upon matched criteria of
     a source event. Additional mutations of the parameters from the
     source event can be defined.
+
     Unlike Event Edit rules, Event Creation Rules have no defined
     order.  They will all be run independently.
 

@@ -214,6 +214,7 @@ class RunAccessReportRequest(proto.Message):
             requested at the account level, Data Access
             Reports include all access for all properties
             under that account.
+
             To request at the property level, entity should
             be for example 'properties/123' if "123" is your
             GA4 property ID. To request at the account
@@ -443,9 +444,9 @@ class ListAccountsRequest(proto.Message):
             token.
         show_deleted (bool):
             Whether to include soft-deleted (ie:
-            "trashed") Accounts in the
-            results. Accounts can be inspected to determine
-            whether they are deleted or not.
+            "trashed") Accounts in the results. Accounts can
+            be inspected to determine whether they are
+            deleted or not.
     """
 
     page_size: int = proto.Field(
@@ -620,9 +621,9 @@ class ListPropertiesRequest(proto.Message):
             page token.
         show_deleted (bool):
             Whether to include soft-deleted (ie:
-            "trashed") Properties in the
-            results. Properties can be inspected to
-            determine whether they are deleted or not.
+            "trashed") Properties in the results. Properties
+            can be inspected to determine whether they are
+            deleted or not.
     """
 
     filter: str = proto.Field(
@@ -912,6 +913,7 @@ class AuditUserLinksResponse(proto.Message):
 
 class CreateUserLinkRequest(proto.Message):
     r"""Request message for CreateUserLink RPC.
+
     Users can have multiple email addresses associated with their
     Google account, and one of these email addresses is the
     "primary" email address. Any of the email addresses associated
@@ -1425,6 +1427,7 @@ class AcknowledgeUserDataCollectionRequest(proto.Message):
             Required. An acknowledgement that the caller
             of this method understands the terms of user
             data collection.
+
             This field must contain the exact value:
 
             "I acknowledge that I have the necessary privacy

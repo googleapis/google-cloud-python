@@ -518,6 +518,7 @@ class DataStream(proto.Message):
         Attributes:
             measurement_id (str):
                 Output only. Analytics Measurement ID.
+
                 Example: "G-1A2BCD345E".
             firebase_app_id (str):
                 Output only. ID of the corresponding web app
@@ -673,6 +674,7 @@ class GoogleAdsLink(proto.Message):
             Output only. Format:
 
             properties/{propertyId}/googleAdsLinks/{googleAdsLinkId}
+
             Note: googleAdsLinkId is not the Google Ads
             customer ID.
         customer_id (str):
@@ -1229,6 +1231,7 @@ class CustomDimension(proto.Message):
         disallow_ads_personalization (bool):
             Optional. If set to true, sets this dimension
             as NPA and excludes it from ads personalization.
+
             This is currently only supported by user-scoped
             custom dimensions.
     """
@@ -1321,6 +1324,7 @@ class CustomMetric(proto.Message):
 
     class MeasurementUnit(proto.Enum):
         r"""Possible types of representing the custom metric's value.
+
         Currency representation may change in the future, requiring a
         breaking API change.
 
