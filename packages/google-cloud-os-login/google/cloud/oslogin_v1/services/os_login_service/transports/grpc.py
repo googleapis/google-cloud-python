@@ -33,6 +33,7 @@ class OsLoginServiceGrpcTransport(OsLoginServiceTransport):
     """gRPC backend transport for OsLoginService.
 
     Cloud OS Login API
+
     The Cloud OS Login API allows you to manage users and their
     associated SSH public keys for logging into virtual machines on
     Google Cloud Platform.
