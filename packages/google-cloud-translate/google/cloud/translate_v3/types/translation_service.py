@@ -167,6 +167,7 @@ class TranslateTextRequest(proto.Message):
             underscores and dashes. International characters
             are allowed. Label values are optional. Label
             keys must start with a letter.
+
             See
             https://cloud.google.com/translate/docs/advanced/labels
             for more information.
@@ -331,6 +332,7 @@ class DetectLanguageRequest(proto.Message):
             underscores and dashes. International characters
             are allowed. Label values are optional. Label
             keys must start with a letter.
+
             See
             https://cloud.google.com/translate/docs/advanced/labels
             for more information.
@@ -893,6 +895,7 @@ class TranslateDocumentRequest(proto.Message):
             underscores and dashes. International characters
             are allowed. Label values are optional. Label
             keys must start with a letter.
+
             See
             https://cloud.google.com/translate/docs/advanced/labels
             for more information.
@@ -1112,6 +1115,7 @@ class BatchTranslateTextRequest(proto.Message):
             underscores and dashes. International characters
             are allowed. Label values are optional. Label
             keys must start with a letter.
+
             See
             https://cloud.google.com/translate/docs/advanced/labels
             for more information.

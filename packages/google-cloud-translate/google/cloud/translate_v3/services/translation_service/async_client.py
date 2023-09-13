@@ -841,6 +841,7 @@ class TranslationServiceAsyncClient:
         request, the partial results (for an input file, it's
         all or nothing) may still be available on the specified
         output location.
+
         This call returns immediately and you can
         use google.longrunning.Operation.name to poll the status
         of the call.
@@ -963,6 +964,7 @@ class TranslationServiceAsyncClient:
         request, the partial results (for an input file, it's
         all or nothing) may still be available on the specified
         output location.
+
         This call returns immediately and you can use
         google.longrunning.Operation.name to poll the status of
         the call.
@@ -1337,6 +1339,7 @@ class TranslationServiceAsyncClient:
         Returns:
             google.cloud.translate_v3.services.translation_service.pagers.ListGlossariesAsyncPager:
                 Response message for ListGlossaries.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

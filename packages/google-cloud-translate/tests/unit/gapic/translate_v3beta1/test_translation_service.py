@@ -57,7 +57,7 @@ from google.cloud.translate_v3beta1.services.translation_service import (
 from google.cloud.translate_v3beta1.services.translation_service import pagers
 from google.cloud.translate_v3beta1.services.translation_service import transports
 from google.cloud.translate_v3beta1.types import translation_service
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
