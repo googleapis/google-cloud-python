@@ -101,7 +101,7 @@ class PolicyBasedRoute(proto.Message):
             the lowest-numbered priority value wins. The
             default value is
             1000. The priority value must be from 1 to
-                65535, inclusive.
+            65535, inclusive.
         warnings (MutableSequence[google.cloud.networkconnectivity_v1.types.PolicyBasedRoute.Warnings]):
             Output only. If potential misconfigurations
             are detected for this route, this field will be
