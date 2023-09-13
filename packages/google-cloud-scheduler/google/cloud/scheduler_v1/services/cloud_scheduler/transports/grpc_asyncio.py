@@ -455,6 +455,7 @@ class CloudSchedulerGrpcAsyncIOTransport(CloudSchedulerTransport):
         r"""Return a callable for the run job method over gRPC.
 
         Forces a job to run now.
+
         When this method is called, Cloud Scheduler will
         dispatch the job, even if the job is already running.
 

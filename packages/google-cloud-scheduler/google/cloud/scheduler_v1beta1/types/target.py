@@ -303,10 +303,12 @@ class PubsubTarget(proto.Message):
             job.
         data (bytes):
             The message payload for PubsubMessage.
+
             Pubsub message must contain either non-empty
             data, or at least one attribute.
         attributes (MutableMapping[str, str]):
             Attributes for PubsubMessage.
+
             Pubsub message must contain either non-empty
             data, or at least one attribute.
     """
@@ -342,11 +344,13 @@ class AppEngineRouting(proto.Message):
     Attributes:
         service (str):
             App service.
+
             By default, the job is sent to the service which
             is the default service when the job is
             attempted.
         version (str):
             App version.
+
             By default, the job is sent to the version which
             is the default version when the job is
             attempted.

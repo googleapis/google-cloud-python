@@ -1070,6 +1070,7 @@ class CloudSchedulerAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> job.Job:
         r"""Forces a job to run now.
+
         When this method is called, Cloud Scheduler will
         dispatch the job, even if the job is already running.
 
