@@ -46,7 +46,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.texttospeech_v1beta1.types import cloud_tts
 
@@ -559,8 +559,7 @@ class TextToSpeechClient(metaclass=TextToSpeechClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_tts.SynthesizeSpeechResponse:
         r"""Synthesizes speech synchronously: receive results
-        after all text input
-        has been processed.
+        after all text input has been processed.
 
         .. code-block:: python
 

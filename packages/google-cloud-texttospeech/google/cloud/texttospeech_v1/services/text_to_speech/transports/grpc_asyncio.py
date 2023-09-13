@@ -19,7 +19,7 @@ import warnings
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
@@ -270,8 +270,7 @@ class TextToSpeechGrpcAsyncIOTransport(TextToSpeechTransport):
         r"""Return a callable for the synthesize speech method over gRPC.
 
         Synthesizes speech synchronously: receive results
-        after all text input
-        has been processed.
+        after all text input has been processed.
 
         Returns:
             Callable[[~.SynthesizeSpeechRequest],
