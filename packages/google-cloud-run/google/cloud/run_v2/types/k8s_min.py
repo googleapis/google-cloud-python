@@ -77,6 +77,7 @@ class Container(proto.Message):
             specified ports must be listening on all
             interfaces (0.0.0.0) within the container to be
             accessible.
+
             If omitted, a port number will be chosen and
             passed to the container through the PORT
             environment variable for the container to listen

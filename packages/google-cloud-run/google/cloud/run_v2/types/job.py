@@ -266,6 +266,7 @@ class Job(proto.Message):
     Attributes:
         name (str):
             The fully qualified name of this Job.
+
             Format:
 
             projects/{project}/locations/{location}/jobs/{job}
