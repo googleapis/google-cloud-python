@@ -67,6 +67,7 @@ class ProductSearchParams(proto.Message):
             expressions, where each expression within an OR
             must have the same key. An '=' should be used to
             connect the key and value.
+
             For example, "(color = red OR color = blue) AND
             brand = Google" is acceptable, but "(color = red
             OR brand = Google)" is not acceptable. "color:

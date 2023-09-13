@@ -182,6 +182,7 @@ class ProductSet(proto.Message):
             Output only. If there was an error with
             indexing the product set, the field is
             populated.
+
             This field is ignored when creating a
             ProductSet.
     """
@@ -230,6 +231,7 @@ class ReferenceImage(proto.Message):
             field is empty, the system will try to detect
             regions of interest. At most 10 bounding
             polygons will be used.
+
             The provided shape is converted into a
             non-rotated rectangle. Once converted, the small
             edge of the rectangle must be greater than or

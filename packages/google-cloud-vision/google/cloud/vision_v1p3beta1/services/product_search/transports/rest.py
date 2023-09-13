@@ -41,8 +41,8 @@ except AttributeError:  # pragma: NO COVER
 
 
 from google.cloud.vision_v1p3beta1.types import product_search_service
-from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .base import (
     ProductSearchTransport,

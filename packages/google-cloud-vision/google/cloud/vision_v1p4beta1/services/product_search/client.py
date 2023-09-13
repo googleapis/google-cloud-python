@@ -1023,6 +1023,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
     ) -> None:
         r"""Permanently deletes a ProductSet. Products and
         ReferenceImages in the ProductSet are not deleted.
+
         The actual image files are not deleted from Google Cloud
         Storage.
 
@@ -1862,6 +1863,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Permanently deletes a reference image.
+
         The image metadata will be deleted right away, but
         search queries against ProductSets containing the image
         may still work until all related caches are refreshed.

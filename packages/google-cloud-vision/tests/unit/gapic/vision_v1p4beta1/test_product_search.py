@@ -56,7 +56,7 @@ from google.cloud.vision_v1p4beta1.services.product_search import pagers
 from google.cloud.vision_v1p4beta1.services.product_search import transports
 from google.cloud.vision_v1p4beta1.types import geometry
 from google.cloud.vision_v1p4beta1.types import product_search_service
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore

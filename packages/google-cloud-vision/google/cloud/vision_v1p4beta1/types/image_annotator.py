@@ -1256,6 +1256,7 @@ class AnnotateFileRequest(proto.Message):
             Pages starts from 1, we assume the first page of
             the file is page 1. At most 5 pages are
             supported per request. Pages can be negative.
+
             Page 1 means the first page.
             Page 2 means the second page.
             Page -1 means the last page.
@@ -1263,6 +1264,7 @@ class AnnotateFileRequest(proto.Message):
 
             If the file is GIF instead of PDF or TIFF, page
             refers to GIF frames.
+
             If this field is empty, by default the service
             performs image annotation for the first 5 pages
             of the file.

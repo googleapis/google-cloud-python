@@ -411,6 +411,7 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Permanently deletes a ProductSet. Products and
         ReferenceImages in the ProductSet are not deleted.
+
         The actual image files are not deleted from Google Cloud
         Storage.
 
@@ -668,6 +669,7 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         r"""Return a callable for the delete reference image method over gRPC.
 
         Permanently deletes a reference image.
+
         The image metadata will be deleted right away, but
         search queries against ProductSets containing the image
         may still work until all related caches are refreshed.

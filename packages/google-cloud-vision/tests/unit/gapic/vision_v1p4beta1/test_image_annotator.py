@@ -57,7 +57,7 @@ from google.cloud.vision_v1p4beta1.types import face
 from google.cloud.vision_v1p4beta1.types import geometry
 from google.cloud.vision_v1p4beta1.types import image_annotator
 from google.cloud.vision_v1p4beta1.types import product_search
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.type import latlng_pb2  # type: ignore
 import google.auth
