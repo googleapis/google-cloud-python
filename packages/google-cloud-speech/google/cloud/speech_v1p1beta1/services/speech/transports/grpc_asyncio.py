@@ -26,7 +26,6 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.speech_v1p1beta1.types import cloud_speech
-from google.longrunning import operations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from .base import SpeechTransport, DEFAULT_CLIENT_INFO
 from .grpc import SpeechGrpcTransport
@@ -261,8 +260,7 @@ class SpeechGrpcAsyncIOTransport(SpeechTransport):
         r"""Return a callable for the recognize method over gRPC.
 
         Performs synchronous speech recognition: receive
-        results after all audio
-        has been sent and processed.
+        results after all audio has been sent and processed.
 
         Returns:
             Callable[[~.RecognizeRequest],
@@ -325,9 +323,8 @@ class SpeechGrpcAsyncIOTransport(SpeechTransport):
         r"""Return a callable for the streaming recognize method over gRPC.
 
         Performs bidirectional streaming speech recognition:
-        receive results while
-        sending audio. This method is only available via the
-        gRPC API (not REST).
+        receive results while sending audio. This method is only
+        available via the gRPC API (not REST).
 
         Returns:
             Callable[[~.StreamingRecognizeRequest],

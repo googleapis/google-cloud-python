@@ -53,7 +53,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.cloud.speech_v2.services.speech import pagers
 from google.cloud.speech_v2.types import cloud_speech
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -1317,8 +1317,7 @@ class SpeechClient(metaclass=SpeechClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_speech.RecognizeResponse:
         r"""Performs synchronous Speech recognition: receive
-        results after all audio
-        has been sent and processed.
+        results after all audio has been sent and processed.
 
         .. code-block:: python
 
@@ -1497,9 +1496,8 @@ class SpeechClient(metaclass=SpeechClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[cloud_speech.StreamingRecognizeResponse]:
         r"""Performs bidirectional streaming speech recognition:
-        receive results while
-        sending audio. This method is only available via the
-        gRPC API (not REST).
+        receive results while sending audio. This method is only
+        available via the gRPC API (not REST).
 
         .. code-block:: python
 
@@ -1663,10 +1661,9 @@ class SpeechClient(metaclass=SpeechClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Performs batch asynchronous speech recognition: send
-        a request with N
-        audio files and receive a long running operation that
-        can be polled to see when the transcriptions are
-        finished.
+        a request with N audio files and receive a long running
+        operation that can be polled to see when the
+        transcriptions are finished.
 
         .. code-block:: python
 

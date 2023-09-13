@@ -49,7 +49,7 @@ except AttributeError:  # pragma: NO COVER
 from google.cloud.speech_v1p1beta1.services.adaptation import pagers
 from google.cloud.speech_v1p1beta1.types import cloud_speech_adaptation
 from google.cloud.speech_v1p1beta1.types import resource
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import AdaptationTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AdaptationGrpcTransport
@@ -541,6 +541,7 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
                 phrase set, which will become the final
                 component of the phrase set's resource
                 name.
+
                 This value should restrict to letters,
                 numbers, and hyphens, with the first
                 character a letter, the last a letter or
@@ -1142,6 +1143,7 @@ class AdaptationClient(metaclass=AdaptationClientMeta):
                 custom class, which will become the
                 final component of the custom class'
                 resource name.
+
                 This value should restrict to letters,
                 numbers, and hyphens, with the first
                 character a letter, the last a letter or

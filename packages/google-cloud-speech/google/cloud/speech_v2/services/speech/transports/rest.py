@@ -29,7 +29,6 @@ from google.api_core import gapic_v1
 from google.protobuf import json_format
 from google.api_core import operations_v1
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
 from requests import __version__ as requests_version
 import dataclasses
 import re

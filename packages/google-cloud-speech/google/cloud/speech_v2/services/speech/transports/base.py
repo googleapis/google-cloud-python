@@ -29,7 +29,6 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.location import locations_pb2  # type: ignore
 from google.cloud.speech_v2.types import cloud_speech
-from google.longrunning import operations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

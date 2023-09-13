@@ -26,7 +26,7 @@ from grpc.experimental import aio  # type: ignore
 
 from google.cloud.speech_v1p1beta1.types import cloud_speech_adaptation
 from google.cloud.speech_v1p1beta1.types import resource
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from .base import AdaptationTransport, DEFAULT_CLIENT_INFO
 from .grpc import AdaptationGrpcTransport

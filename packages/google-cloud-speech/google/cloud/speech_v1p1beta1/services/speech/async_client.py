@@ -48,7 +48,7 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.speech_v1p1beta1.types import cloud_speech
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from .transports.base import SpeechTransport, DEFAULT_CLIENT_INFO
@@ -223,8 +223,7 @@ class SpeechAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> cloud_speech.RecognizeResponse:
         r"""Performs synchronous speech recognition: receive
-        results after all audio
-        has been sent and processed.
+        results after all audio has been sent and processed.
 
         .. code-block:: python
 
@@ -487,9 +486,8 @@ class SpeechAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[cloud_speech.StreamingRecognizeResponse]]:
         r"""Performs bidirectional streaming speech recognition:
-        receive results while
-        sending audio. This method is only available via the
-        gRPC API (not REST).
+        receive results while sending audio. This method is only
+        available via the gRPC API (not REST).
 
         .. code-block:: python
 

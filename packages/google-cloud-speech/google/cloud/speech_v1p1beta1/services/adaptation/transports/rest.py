@@ -27,7 +27,6 @@ from google.api_core import path_template
 from google.api_core import gapic_v1
 
 from google.protobuf import json_format
-from google.longrunning import operations_pb2
 from requests import __version__ as requests_version
 import dataclasses
 import re
@@ -43,6 +42,7 @@ except AttributeError:  # pragma: NO COVER
 from google.cloud.speech_v1p1beta1.types import cloud_speech_adaptation
 from google.cloud.speech_v1p1beta1.types import resource
 from google.protobuf import empty_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .base import AdaptationTransport, DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 

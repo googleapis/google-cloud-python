@@ -27,7 +27,6 @@ import grpc  # type: ignore
 
 from google.cloud.location import locations_pb2  # type: ignore
 from google.cloud.speech_v2.types import cloud_speech
-from google.longrunning import operations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from .base import SpeechTransport, DEFAULT_CLIENT_INFO
 
@@ -416,8 +415,7 @@ class SpeechGrpcTransport(SpeechTransport):
         r"""Return a callable for the recognize method over gRPC.
 
         Performs synchronous Speech recognition: receive
-        results after all audio
-        has been sent and processed.
+        results after all audio has been sent and processed.
 
         Returns:
             Callable[[~.RecognizeRequest],
@@ -447,9 +445,8 @@ class SpeechGrpcTransport(SpeechTransport):
         r"""Return a callable for the streaming recognize method over gRPC.
 
         Performs bidirectional streaming speech recognition:
-        receive results while
-        sending audio. This method is only available via the
-        gRPC API (not REST).
+        receive results while sending audio. This method is only
+        available via the gRPC API (not REST).
 
         Returns:
             Callable[[~.StreamingRecognizeRequest],
@@ -476,10 +473,9 @@ class SpeechGrpcTransport(SpeechTransport):
         r"""Return a callable for the batch recognize method over gRPC.
 
         Performs batch asynchronous speech recognition: send
-        a request with N
-        audio files and receive a long running operation that
-        can be polled to see when the transcriptions are
-        finished.
+        a request with N audio files and receive a long running
+        operation that can be polled to see when the
+        transcriptions are finished.
 
         Returns:
             Callable[[~.BatchRecognizeRequest],
