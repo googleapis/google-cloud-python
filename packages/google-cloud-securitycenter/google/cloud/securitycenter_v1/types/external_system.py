@@ -35,7 +35,6 @@ class ExternalSystem(proto.Message):
         name (str):
             Full resource name of the external system,
             for example:
-
             "organizations/1234/sources/5678/findings/123456/externalSystems/jira",
             "folders/1234/sources/5678/findings/123456/externalSystems/jira",
             "projects/1234/sources/5678/findings/123456/externalSystems/jira".

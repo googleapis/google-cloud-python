@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
 
 class NotificationConfig(proto.Message):
     r"""Security Command Center notification configs.
+
     A notification config is a Security Command Center resource that
     contains the configuration to send notifications for
     create/update events of findings, assets and etc.

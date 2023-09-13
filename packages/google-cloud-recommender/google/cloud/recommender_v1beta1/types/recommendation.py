@@ -433,6 +433,7 @@ class CostProjection(proto.Message):
             cost savings and positive cost units indicate
             increase. See google.type.Money documentation
             for positive/negative units.
+
             A user's permissions may affect whether the cost
             is computed using list prices or custom contract
             prices.
@@ -598,29 +599,34 @@ class RecommendationStateInfo(proto.Message):
                 Recommendation is active and can be applied.
                 Recommendations content can be updated by
                 Google.
+
                 ACTIVE recommendations can be marked as CLAIMED,
                 SUCCEEDED, or FAILED.
             CLAIMED (6):
                 Recommendation is in claimed state.
                 Recommendations content is immutable and cannot
                 be updated by Google.
+
                 CLAIMED recommendations can be marked as
                 CLAIMED, SUCCEEDED, or FAILED.
             SUCCEEDED (3):
                 Recommendation is in succeeded state.
                 Recommendations content is immutable and cannot
                 be updated by Google.
+
                 SUCCEEDED recommendations can be marked as
                 SUCCEEDED, or FAILED.
             FAILED (4):
                 Recommendation is in failed state.
                 Recommendations content is immutable and cannot
                 be updated by Google.
+
                 FAILED recommendations can be marked as
                 SUCCEEDED, or FAILED.
             DISMISSED (5):
                 Recommendation is in dismissed state.
                 Recommendation content can be updated by Google.
+
                 DISMISSED recommendations can be marked as
                 ACTIVE.
         """

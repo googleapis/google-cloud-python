@@ -516,6 +516,7 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
         Returns:
             google.cloud.resourcesettings_v1.services.resource_settings_service.pagers.ListSettingsPager:
                 The response from ListSettings.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

@@ -46,7 +46,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.talent_v4.services.company_service import pagers
@@ -991,6 +991,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
         Returns:
             google.cloud.talent_v4.services.company_service.pagers.ListCompaniesPager:
                 The List companies response object.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

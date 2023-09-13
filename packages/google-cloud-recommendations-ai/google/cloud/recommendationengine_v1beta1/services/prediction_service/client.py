@@ -562,6 +562,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
         Returns:
             google.cloud.recommendationengine_v1beta1.services.prediction_service.pagers.PredictPager:
                 Response message for predict method.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
