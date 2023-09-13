@@ -47,7 +47,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.asset_v1.services.asset_service import pagers
 from google.cloud.asset_v1.types import asset_service
 from google.cloud.asset_v1.types import assets
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -406,6 +406,7 @@ class AssetServiceAsyncClient:
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.ListAssetsAsyncPager:
                 ListAssets response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1303,6 +1304,7 @@ class AssetServiceAsyncClient:
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.SearchAllResourcesAsyncPager:
                 Search all resources response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1503,6 +1505,7 @@ class AssetServiceAsyncClient:
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.SearchAllIamPoliciesAsyncPager:
                 Search all IAM policies response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -2284,6 +2287,7 @@ class AssetServiceAsyncClient:
         Returns:
             google.cloud.asset_v1.services.asset_service.pagers.ListSavedQueriesAsyncPager:
                 Response of listing saved queries.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

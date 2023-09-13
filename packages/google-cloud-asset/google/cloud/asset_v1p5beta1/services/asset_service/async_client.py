@@ -45,7 +45,7 @@ except AttributeError:  # pragma: NO COVER
 from google.cloud.asset_v1p5beta1.services.asset_service import pagers
 from google.cloud.asset_v1p5beta1.types import asset_service
 from google.cloud.asset_v1p5beta1.types import assets
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from .transports.base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import AssetServiceGrpcAsyncIOTransport
 from .client import AssetServiceClient
@@ -280,6 +280,7 @@ class AssetServiceAsyncClient:
         Returns:
             google.cloud.asset_v1p5beta1.services.asset_service.pagers.ListAssetsAsyncPager:
                 ListAssets response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

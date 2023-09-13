@@ -49,7 +49,7 @@ except AttributeError:  # pragma: NO COVER
 from google.cloud.asset_v1p1beta1.services.asset_service import pagers
 from google.cloud.asset_v1p1beta1.types import asset_service
 from google.cloud.asset_v1p1beta1.types import assets
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from .transports.base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AssetServiceGrpcTransport
 from .transports.grpc_asyncio import AssetServiceGrpcAsyncIOTransport
@@ -505,6 +505,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         Returns:
             google.cloud.asset_v1p1beta1.services.asset_service.pagers.SearchAllResourcesPager:
                 Search all resources response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -646,6 +647,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         Returns:
             google.cloud.asset_v1p1beta1.services.asset_service.pagers.SearchAllIamPoliciesPager:
                 Search all IAM policies response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

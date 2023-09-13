@@ -50,7 +50,7 @@ from google.cloud.asset_v1p5beta1.services.asset_service import pagers
 from google.cloud.asset_v1p5beta1.services.asset_service import transports
 from google.cloud.asset_v1p5beta1.types import asset_service
 from google.cloud.asset_v1p5beta1.types import assets
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
