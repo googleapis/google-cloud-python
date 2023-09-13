@@ -633,6 +633,7 @@ class PartitionId(proto.Message):
     A partition ID identifies a grouping of entities. The grouping
     is always by project and namespace, however the namespace ID may
     be empty.
+
     A partition ID contains several dimensions:
 
     project ID and namespace ID.
@@ -1290,6 +1291,7 @@ class Key(proto.Message):
 
     class PathElement(proto.Message):
         r"""A (kind, ID/name) pair used to construct a key path.
+
         If either name or ID is set, the element is complete. If neither
         is set, the element is incomplete.
 

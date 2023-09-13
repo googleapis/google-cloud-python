@@ -994,6 +994,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
     The service also includes methods for sensitive data redaction
     and scheduling of data scans on Google Cloud Platform based data
     sets.
+
     To learn more about concepts and find how-to guides see
     https://cloud.google.com/dlp/docs/.
 

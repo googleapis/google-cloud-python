@@ -345,6 +345,7 @@ class MatchingType(proto.Enum):
             Invalid.
         MATCHING_TYPE_FULL_MATCH (1):
             Full match.
+
             - Dictionary: join of Dictionary results matched
               complete finding quote
             - Regex: all regex matches fill a finding quote
@@ -353,6 +354,7 @@ class MatchingType(proto.Enum):
               info types findings
         MATCHING_TYPE_PARTIAL_MATCH (2):
             Partial match.
+
             - Dictionary: at least one of the tokens in the
               finding matches
             - Regex: substring of the finding matches
@@ -360,6 +362,7 @@ class MatchingType(proto.Enum):
               info types findings
         MATCHING_TYPE_INVERSE_MATCH (3):
             Inverse match.
+
             - Dictionary: no tokens in the finding match the
               dictionary
             - Regex: finding doesn't match the regex
@@ -5035,6 +5038,7 @@ class DateShiftConfig(proto.Message):
             range (inclusive ends). Negative means shift to
             earlier in time. Must not be more than 365250
             days (1000 years) each direction.
+
             For example, 3 means shift date to at most 3
             days into the future.
         lower_bound_days (int):
@@ -5737,9 +5741,11 @@ class Schedule(proto.Message):
             With this option a job is started on a
             regular periodic basis. For example: every day
             (86400 seconds).
+
             A scheduled start time will be skipped if the
             previous execution has not ended when its
             scheduled time occurs.
+
             This value must be set to a time duration
             greater than or equal to 1 day and can be no
             longer than 60 days.
@@ -6224,6 +6230,7 @@ class Action(proto.Message):
                 bucket must be different from the input bucket.
                 De-identified files will overwrite files in the
                 output path.
+
                 Form of: gs://bucket/folder/ or gs://bucket
 
                 This field is a member of `oneof`_ ``output``.
