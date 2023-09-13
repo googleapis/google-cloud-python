@@ -80,6 +80,7 @@ class CreateCdnKeyRequest(proto.Message):
             Required. The ID to use for the CDN key,
             which will become the final component of the CDN
             key's resource name.
+
             This value should conform to RFC-1034, which
             restricts to lower-case letters, numbers, and
             hyphen, with the first character a letter, the

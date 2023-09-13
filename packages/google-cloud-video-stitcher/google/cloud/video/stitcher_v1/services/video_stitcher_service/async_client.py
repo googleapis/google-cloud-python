@@ -44,7 +44,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 
@@ -336,6 +336,7 @@ class VideoStitcherServiceAsyncClient:
                 key, which will become the final
                 component of the CDN key's resource
                 name.
+
                 This value should conform to RFC-1034,
                 which restricts to lower-case letters,
                 numbers, and hyphen, with the first
