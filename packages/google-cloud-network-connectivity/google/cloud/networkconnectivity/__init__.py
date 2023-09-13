@@ -24,6 +24,12 @@ from google.cloud.networkconnectivity_v1.services.hub_service.async_client impor
 from google.cloud.networkconnectivity_v1.services.hub_service.client import (
     HubServiceClient,
 )
+from google.cloud.networkconnectivity_v1.services.policy_based_routing_service.async_client import (
+    PolicyBasedRoutingServiceAsyncClient,
+)
+from google.cloud.networkconnectivity_v1.services.policy_based_routing_service.client import (
+    PolicyBasedRoutingServiceClient,
+)
 from google.cloud.networkconnectivity_v1.types.common import OperationMetadata
 from google.cloud.networkconnectivity_v1.types.hub import (
     CreateHubRequest,
@@ -49,10 +55,20 @@ from google.cloud.networkconnectivity_v1.types.hub import (
     UpdateHubRequest,
     UpdateSpokeRequest,
 )
+from google.cloud.networkconnectivity_v1.types.policy_based_routing import (
+    CreatePolicyBasedRouteRequest,
+    DeletePolicyBasedRouteRequest,
+    GetPolicyBasedRouteRequest,
+    ListPolicyBasedRoutesRequest,
+    ListPolicyBasedRoutesResponse,
+    PolicyBasedRoute,
+)
 
 __all__ = (
     "HubServiceClient",
     "HubServiceAsyncClient",
+    "PolicyBasedRoutingServiceClient",
+    "PolicyBasedRoutingServiceAsyncClient",
     "OperationMetadata",
     "CreateHubRequest",
     "CreateSpokeRequest",
@@ -76,4 +92,10 @@ __all__ = (
     "UpdateSpokeRequest",
     "LocationFeature",
     "State",
+    "CreatePolicyBasedRouteRequest",
+    "DeletePolicyBasedRouteRequest",
+    "GetPolicyBasedRouteRequest",
+    "ListPolicyBasedRoutesRequest",
+    "ListPolicyBasedRoutesResponse",
+    "PolicyBasedRoute",
 )
