@@ -67,6 +67,7 @@ class Constraint(proto.Message):
             "/projects/123/constraints/compute.disableSerialPortAccess".
         display_name (str):
             The human readable name.
+
             Mutable.
         description (str):
             Detailed description of what this ``Constraint`` controls as
