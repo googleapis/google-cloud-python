@@ -483,6 +483,7 @@ class MapsPlatformDatasetsV1AlphaRestTransport(MapsPlatformDatasetsV1AlphaTransp
             Args:
                 request (~.maps_platform_datasets.DeleteDatasetRequest):
                     The request object. Request to delete a dataset.
+
                 The dataset to be deleted.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
