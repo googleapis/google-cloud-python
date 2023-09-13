@@ -412,6 +412,7 @@ class RestoreConfig(proto.Message):
 
     class ClusterResourceRestoreScope(proto.Message):
         r"""Defines the scope of cluster-scoped resources to restore.
+
         Some group kinds are not reasonable choices for a restore, and
         will cause an error if selected here. Any scope selection that
         would restore "all valid" resources automatically excludes these
@@ -600,13 +601,14 @@ class RestoreConfig(proto.Message):
                     target location references:
 
                     1. If the target location specifies an array
-                    index, a new value is inserted into the array at
-                    the specified index. 2. If the target location
-                    specifies an object member that does not already
-                    exist, a new member is added to the object. 3.
-                    If the target location specifies an object
-                    member that does exist, that member's value is
-                    replaced.
+                        index, a new value is inserted into the
+                        array at the specified index.
+                    2. If the target location specifies an object
+                        member that does not already exist, a new
+                        member is added to the object.
+                    3. If the target location specifies an object
+                        member that does exist, that member's value
+                        is replaced.
                 TEST (5):
                     The "test" operation tests that a value at
                     the target location is equal to a specified

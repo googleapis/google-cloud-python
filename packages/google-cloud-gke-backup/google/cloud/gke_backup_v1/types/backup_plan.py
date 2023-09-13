@@ -249,11 +249,13 @@ class BackupPlan(proto.Message):
                 This flag specifies whether volume data
                 should be backed up when PVCs are included in
                 the scope of a Backup.
+
                 Default: False
             include_secrets (bool):
                 This flag specifies whether Kubernetes Secret
                 resources should be included when they fall into
                 the scope of Backups.
+
                 Default: False
             encryption_key (google.cloud.gke_backup_v1.types.EncryptionKey):
                 This defines a customer managed encryption
