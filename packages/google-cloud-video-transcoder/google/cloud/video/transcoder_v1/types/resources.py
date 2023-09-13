@@ -1500,6 +1500,7 @@ class VideoStream(proto.Message):
                 adjusted to match the specified height and input
                 aspect ratio. If both are omitted, the input
                 width is used.
+
                 For portrait videos that contain horizontal ASR
                 and rotation metadata, provide the width, in
                 pixels, per the horizontal ASR. The API
@@ -1512,6 +1513,7 @@ class VideoStream(proto.Message):
                 adjusted to match the specified width and input
                 aspect ratio. If both are omitted, the input
                 height is used.
+
                 For portrait videos that contain horizontal ASR
                 and rotation metadata, provide the height, in
                 pixels, per the horizontal ASR. The API
@@ -1733,6 +1735,7 @@ class VideoStream(proto.Message):
                 adjusted to match the specified height and input
                 aspect ratio. If both are omitted, the input
                 width is used.
+
                 For portrait videos that contain horizontal ASR
                 and rotation metadata, provide the width, in
                 pixels, per the horizontal ASR. The API
@@ -1745,6 +1748,7 @@ class VideoStream(proto.Message):
                 adjusted to match the specified width and input
                 aspect ratio. If both are omitted, the input
                 height is used.
+
                 For portrait videos that contain horizontal ASR
                 and rotation metadata, provide the height, in
                 pixels, per the horizontal ASR. The API
@@ -1975,6 +1979,7 @@ class VideoStream(proto.Message):
                 adjusted to match the specified height and input
                 aspect ratio. If both are omitted, the input
                 width is used.
+
                 For portrait videos that contain horizontal ASR
                 and rotation metadata, provide the width, in
                 pixels, per the horizontal ASR. The API
@@ -1987,6 +1992,7 @@ class VideoStream(proto.Message):
                 adjusted to match the specified width and input
                 aspect ratio. If both are omitted, the input
                 height is used.
+
                 For portrait videos that contain horizontal ASR
                 and rotation metadata, provide the height, in
                 pixels, per the horizontal ASR. The API
