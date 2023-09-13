@@ -120,6 +120,7 @@ class Key(proto.Message):
 
     class PathElement(proto.Message):
         r"""A (kind, ID/name) pair used to construct a key path.
+
         If either name or ID is set, the element is complete. If neither
         is set, the element is incomplete.
 
@@ -143,6 +144,7 @@ class Key(proto.Message):
                 base-64 encoding of the bytes.
             id (int):
                 The auto-allocated ID of the entity.
+
                 Never equal to zero. Values less than zero are
                 discouraged and may not be supported in the
                 future.
@@ -264,6 +266,7 @@ class Value(proto.Message):
             This field is a member of `oneof`_ ``value_type``.
         entity_value (google.cloud.datastore_v1.types.Entity):
             An entity value.
+
             - May have no key.
             - May have a key with an incomplete key path.
             - May have a reserved/read-only key.
@@ -356,6 +359,7 @@ class Value(proto.Message):
 
 class Entity(proto.Message):
     r"""A Datastore data object.
+
     Must not exceed 1 MiB - 4 bytes.
 
     Attributes:

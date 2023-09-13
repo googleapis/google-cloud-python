@@ -861,6 +861,7 @@ class ReadOptions(proto.Message):
             Reads entities as they were at the given
             time. This value is only supported for Cloud
             Firestore in Datastore mode.
+
             This must be a microsecond precision timestamp
             within the past one hour, or if Point-in-Time
             Recovery is enabled, can additionally be a whole
@@ -957,6 +958,7 @@ class TransactionOptions(proto.Message):
         Attributes:
             read_time (google.protobuf.timestamp_pb2.Timestamp):
                 Reads entities at the given time.
+
                 This must be a microsecond precision timestamp
                 within the past one hour, or if Point-in-Time
                 Recovery is enabled, can additionally be a whole

@@ -27,7 +27,6 @@ from grpc.experimental import aio  # type: ignore
 
 from google.cloud.datastore_admin_v1.types import datastore_admin
 from google.cloud.datastore_admin_v1.types import index
-from google.longrunning import operations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from .base import DatastoreAdminTransport, DEFAULT_CLIENT_INFO
 from .grpc import DatastoreAdminGrpcTransport
@@ -37,13 +36,16 @@ class DatastoreAdminGrpcAsyncIOTransport(DatastoreAdminTransport):
     """gRPC AsyncIO backend transport for DatastoreAdmin.
 
     Google Cloud Datastore Admin API
+
     The Datastore Admin API provides several admin services for
     Cloud Datastore.
+
     Concepts: Project, namespace, kind, and entity as defined in the
     Google Cloud Datastore API.
 
     Operation: An Operation represents work being performed in the
     background.
+
     EntityFilter: Allows specifying a subset of entities in a
     project. This is specified as a combination of kinds and
     namespaces (either or both of which may be all).

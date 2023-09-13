@@ -25,7 +25,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.datastore_v1.types import datastore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from .base import DatastoreTransport, DEFAULT_CLIENT_INFO
 from .grpc import DatastoreGrpcTransport
 

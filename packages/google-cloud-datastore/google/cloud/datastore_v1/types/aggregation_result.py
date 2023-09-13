@@ -74,6 +74,7 @@ class AggregationResultBatch(proto.Message):
             ``NO_MORE_RESULTS``.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Read timestamp this batch was returned from.
+
             In a single transaction, subsequent query result
             batches for the same query can have a greater
             timestamp. Each batch's read timestamp is valid
