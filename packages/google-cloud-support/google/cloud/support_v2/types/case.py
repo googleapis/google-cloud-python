@@ -64,6 +64,7 @@ class Case(proto.Message):
             updated.
         creator (google.cloud.support_v2.types.Actor):
             The user who created the case.
+
             Note: The name and email will be obfuscated if
             the case was created by Google Support.
         contact_email (str):

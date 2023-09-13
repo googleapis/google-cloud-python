@@ -35,6 +35,7 @@ __protobuf__ = proto.module(
 
 class Finding(proto.Message):
     r"""Security Command Center finding.
+
     A finding is a record of assessment data (security, risk, health
     or privacy) ingested into Security Command Center for
     presentation, notification, analysis, policy testing, and

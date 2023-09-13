@@ -51,7 +51,7 @@ from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -809,10 +809,11 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 Note:
 
                 1. If multiple bulk update requests
-                match the same resource, the order in
-                which they get executed is not defined.
+                    match the same resource, the order
+                    in which they get executed is not
+                    defined.
                 2. Once a bulk operation is started,
-                there is no way to stop it.
+                    there is no way to stop it.
             parent (str):
                 Required. The parent, at which bulk action needs to be
                 applied. Its format is
@@ -1239,6 +1240,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         Returns:
             google.cloud.securitycenter_v1.types.Finding:
                 Security Command Center finding.
+
                 A finding is a record of assessment data
                 like security, risk, health, or privacy,
                 that is ingested into Security Command
@@ -2029,8 +2031,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 The request object. Request message for ``GetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
-                policy is being requested.
-                See the operation documentation for the
+                policy is being requested. See the
+                operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field
@@ -3119,6 +3121,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         Returns:
             google.cloud.securitycenter_v1.services.security_center.pagers.ListAssetsPager:
                 Response message for listing assets.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -3238,6 +3241,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 Response message for listing
                 descendant Security Health Analytics
                 custom modules.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -3716,6 +3720,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 Response message for listing
                 effective Security Health Analytics
                 custom modules.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -3977,6 +3982,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         Returns:
             google.cloud.securitycenter_v1.services.security_center.pagers.ListSourcesPager:
                 Response message for listing sources.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -4242,6 +4248,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         Returns:
             google.cloud.securitycenter_v1.types.Finding:
                 Security Command Center finding.
+
                 A finding is a record of assessment data
                 like security, risk, health, or privacy,
                 that is ingested into Security Command
@@ -4368,6 +4375,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         Returns:
             google.cloud.securitycenter_v1.types.Finding:
                 Security Command Center finding.
+
                 A finding is a record of assessment data
                 like security, risk, health, or privacy,
                 that is ingested into Security Command
@@ -4466,8 +4474,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 The request object. Request message for ``SetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
-                policy is being specified.
-                See the operation documentation for the
+                policy is being specified. See the
+                operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field
@@ -4600,8 +4608,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 The request object. Request message for ``TestIamPermissions`` method.
             resource (str):
                 REQUIRED: The resource for which the
-                policy detail is being requested.
-                See the operation documentation for the
+                policy detail is being requested. See
+                the operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field
@@ -4850,6 +4858,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         Returns:
             google.cloud.securitycenter_v1.types.Finding:
                 Security Command Center finding.
+
                 A finding is a record of assessment data
                 like security, risk, health, or privacy,
                 that is ingested into Security Command

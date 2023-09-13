@@ -833,6 +833,7 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             Returns:
                 ~.gcs_finding.Finding:
                     Security Command Center finding.
+
                 A finding is a record of assessment data
                 (security, risk, health or privacy)
                 ingested into Security Command Center
@@ -1951,6 +1952,7 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             Returns:
                 ~.finding.Finding:
                     Security Command Center finding.
+
                 A finding is a record of assessment data
                 (security, risk, health or privacy)
                 ingested into Security Command Center
@@ -2325,6 +2327,7 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             Returns:
                 ~.gcs_finding.Finding:
                     Security Command Center finding.
+
                 A finding is a record of assessment data
                 (security, risk, health or privacy)
                 ingested into Security Command Center

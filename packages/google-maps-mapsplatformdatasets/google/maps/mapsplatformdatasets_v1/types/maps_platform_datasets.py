@@ -157,6 +157,7 @@ class ListDatasetsResponse(proto.Message):
 
 class DeleteDatasetRequest(proto.Message):
     r"""Request to delete a dataset.
+
     The dataset to be deleted.
 
     Attributes:

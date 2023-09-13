@@ -44,7 +44,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.resourcemanager_v3.services.tag_holds import pagers
@@ -532,6 +532,7 @@ class TagHoldsAsyncClient:
         Returns:
             google.cloud.resourcemanager_v3.services.tag_holds.pagers.ListTagHoldsAsyncPager:
                 The ListTagHolds response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import annotations
+
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -37,7 +39,7 @@ class PolicyBasedRoute(proto.Message):
     not just destination IP, but also source IP, protocol and more.
     A PBR always take precedence when it conflicts with other types
     of routes.
-    Next id: 19
+    Next id: 22
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -61,6 +63,12 @@ class PolicyBasedRoute(proto.Message):
             Optional. The IP of a global access enabled L4 ILB that
             should be the next hop to handle matching packets. For this
             version, only next_hop_ilb_ip is supported.
+
+            This field is a member of `oneof`_ ``next_hop``.
+        next_hop_other_routes (google.cloud.networkconnectivity_v1.types.PolicyBasedRoute.OtherRoutes):
+            Optional. Other routes that will be
+            referenced to determine the next hop of the
+            packet.
 
             This field is a member of `oneof`_ ``next_hop``.
         name (str):
@@ -91,8 +99,9 @@ class PolicyBasedRoute(proto.Message):
             based routes found. In cases where multiple
             policy based routes are matched, the one with
             the lowest-numbered priority value wins. The
-            default value is 1000. The priority value must
-            be from 1 to 65535, inclusive.
+            default value is
+            1000. The priority value must be from 1 to
+            65535, inclusive.
         warnings (MutableSequence[google.cloud.networkconnectivity_v1.types.PolicyBasedRoute.Warnings]):
             Output only. If potential misconfigurations
             are detected for this route, this field will be
@@ -105,6 +114,22 @@ class PolicyBasedRoute(proto.Message):
             networkconnectivity#policyBasedRoute for Policy
             Based Route resources.
     """
+
+    class OtherRoutes(proto.Enum):
+        r"""The other routing cases.
+
+        Values:
+            OTHER_ROUTES_UNSPECIFIED (0):
+                Default value.
+            DEFAULT_ROUTING (1):
+                Use the routes from the default routing
+                tables (system-generated routes, custom routes,
+                peering route) to determine the next hop. This
+                will effectively exclude matching packets being
+                applied on other PBRs with a lower priority.
+        """
+        OTHER_ROUTES_UNSPECIFIED = 0
+        DEFAULT_ROUTING = 1
 
     class VirtualMachine(proto.Message):
         r"""VM instances to which this policy based route applies to.
@@ -265,6 +290,12 @@ class PolicyBasedRoute(proto.Message):
         number=12,
         oneof="next_hop",
     )
+    next_hop_other_routes: OtherRoutes = proto.Field(
+        proto.ENUM,
+        number=21,
+        oneof="next_hop",
+        enum=OtherRoutes,
+    )
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -412,7 +443,7 @@ class CreatePolicyBasedRouteRequest(proto.Message):
             Required. The parent resource's name of the
             PolicyBasedRoute.
         policy_based_route_id (str):
-            Optional. Unique id for the Policy Based
+            Required. Unique id for the Policy Based
             Route to create.
         policy_based_route (google.cloud.networkconnectivity_v1.types.PolicyBasedRoute):
             Required. Initial values for a new Policy
@@ -424,14 +455,16 @@ class CreatePolicyBasedRouteRequest(proto.Message):
             know to ignore the request if it has already
             been completed. The server will guarantee that
             for at least 60 minutes since the first request.
+
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -470,14 +503,16 @@ class DeletePolicyBasedRouteRequest(proto.Message):
             know to ignore the request if it has already
             been completed. The server will guarantee that
             for at least 60 minutes after the first request.
+
             For example, consider a situation where you make
-            an initial request and t he request times out.
-            If you make the request again with the same
-            request ID, the server can check if original
-            operation with the same request ID was received,
-            and if so, will ignore the second request. This
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).

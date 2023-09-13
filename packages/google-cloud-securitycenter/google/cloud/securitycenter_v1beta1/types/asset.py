@@ -83,11 +83,11 @@ class Asset(proto.Message):
                 https://cloud.google.com/apis/design/resource_names#full_resource_name
             resource_type (str):
                 The type of the Google Cloud resource.
-                Examples include: APPLICATION,
-                PROJECT, and ORGANIZATION. This is a case
-                insensitive field defined by Security Command
-                Center and/or the producer of the resource and
-                is immutable after create time.
+                Examples include: APPLICATION, PROJECT, and
+                ORGANIZATION. This is a case insensitive field
+                defined by Security Command Center and/or the
+                producer of the resource and is immutable after
+                create time.
             resource_parent (str):
                 The full resource name of the immediate parent of the
                 resource. See:

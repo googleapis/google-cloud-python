@@ -550,6 +550,7 @@ class DataQualityRule(proto.Message):
 
     class RowConditionExpectation(proto.Message):
         r"""Evaluates whether each row passes the specified condition.
+
         The SQL expression needs to use BigQuery standard SQL syntax and
         should produce a boolean value per row as the result.
 
@@ -567,6 +568,7 @@ class DataQualityRule(proto.Message):
 
     class TableConditionExpectation(proto.Message):
         r"""Evaluates whether the provided expression is true.
+
         The SQL expression needs to use BigQuery standard SQL syntax and
         should produce a scalar boolean result.
 

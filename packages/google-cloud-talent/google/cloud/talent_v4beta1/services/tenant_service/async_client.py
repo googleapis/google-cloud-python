@@ -42,7 +42,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.talent_v4beta1.services.tenant_service import pagers
 from google.cloud.talent_v4beta1.types import tenant
@@ -738,6 +738,7 @@ class TenantServiceAsyncClient:
         Returns:
             google.cloud.talent_v4beta1.services.tenant_service.pagers.ListTenantsAsyncPager:
                 The List tenants response object.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

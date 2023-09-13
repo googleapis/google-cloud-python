@@ -726,6 +726,7 @@ class MapsPlatformDatasetsAsyncClient:
         Args:
             request (Optional[Union[google.maps.mapsplatformdatasets_v1.types.DeleteDatasetRequest, dict]]):
                 The request object. Request to delete a dataset.
+
                 The dataset to be deleted.
             name (:class:`str`):
                 Required. Format:

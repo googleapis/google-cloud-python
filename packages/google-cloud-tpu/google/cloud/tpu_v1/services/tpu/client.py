@@ -49,7 +49,7 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.tpu_v1.services.tpu import pagers
@@ -96,6 +96,7 @@ class TpuClientMeta(type):
 
 class TpuClient(metaclass=TpuClientMeta):
     """Manages TPU nodes and other resources
+
     TPU API v1
     """
 

@@ -32,7 +32,6 @@ from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.longrunning import operations_pb2
 from google.protobuf import json_format
 import grpc  # type: ignore
 from requests import __version__ as requests_version
@@ -1737,10 +1736,11 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
                 Note:
 
                 1. If multiple bulk update requests
-                match the same resource, the order in
-                which they get executed is not defined.
+                    match the same resource, the order
+                    in which they get executed is not
+                    defined.
                 2. Once a bulk operation is started,
-                there is no way to stop it.
+                    there is no way to stop it.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1973,6 +1973,7 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             Returns:
                 ~.gcs_finding.Finding:
                     Security Command Center finding.
+
                 A finding is a record of assessment data
                 like security, risk, health, or privacy,
                 that is ingested into Security Command
@@ -5031,6 +5032,7 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             Returns:
                 ~.finding.Finding:
                     Security Command Center finding.
+
                 A finding is a record of assessment data
                 like security, risk, health, or privacy,
                 that is ingested into Security Command
@@ -5318,6 +5320,7 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             Returns:
                 ~.finding.Finding:
                     Security Command Center finding.
+
                 A finding is a record of assessment data
                 like security, risk, health, or privacy,
                 that is ingested into Security Command
@@ -5750,6 +5753,7 @@ class SecurityCenterRestTransport(SecurityCenterTransport):
             Returns:
                 ~.gcs_finding.Finding:
                     Security Command Center finding.
+
                 A finding is a record of assessment data
                 like security, risk, health, or privacy,
                 that is ingested into Security Command

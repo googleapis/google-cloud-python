@@ -275,7 +275,7 @@ class ProvisionedService(proto.Message):
             entitlement. For Google Workspace, this is the
             underlying Subscription ID. For Google Cloud,
             this is the Billing Account ID of the billing
-            subaccount.".
+            subaccount.
         product_id (str):
             Output only. The product pertaining to the
             provisioning resource as specified in the Offer.
@@ -452,11 +452,16 @@ class TransferEligibility(proto.Message):
                 Reseller not eligible to sell the SKU.
             SKU_SUSPENDED (3):
                 SKU subscription is suspended
+            CHANNEL_PARTNER_NOT_AUTHORIZED_FOR_SKU (4):
+                The reseller is not authorized to transact on
+                this Product. See
+                https://support.google.com/channelservices/answer/9759265
         """
         REASON_UNSPECIFIED = 0
         PENDING_TOS_ACCEPTANCE = 1
         SKU_NOT_ELIGIBLE = 2
         SKU_SUSPENDED = 3
+        CHANNEL_PARTNER_NOT_AUTHORIZED_FOR_SKU = 4
 
     is_eligible: bool = proto.Field(
         proto.BOOL,

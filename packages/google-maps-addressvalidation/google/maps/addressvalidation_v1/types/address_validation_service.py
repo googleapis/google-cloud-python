@@ -192,6 +192,7 @@ class ProvideValidationFeedbackRequest(proto.Message):
 
 class ProvideValidationFeedbackResponse(proto.Message):
     r"""The response for validation feedback.
+
     The response is empty if the feedback is sent successfully.
 
     """

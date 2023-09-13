@@ -890,8 +890,7 @@ class DailySchedule(proto.Message):
 
 class WeeklySchedule(proto.Message):
     r"""Make a snapshot every week e.g. at Monday 04:00, Wednesday
-    05:20, Sunday
-    23:50
+    05:20, Sunday 23:50
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
