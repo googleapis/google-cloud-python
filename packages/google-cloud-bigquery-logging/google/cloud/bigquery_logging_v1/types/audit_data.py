@@ -1291,6 +1291,9 @@ class JobStatistics(proto.Message):
             populated. Aggregate usage of all jobs submitted
             to a reservation should provide a more reliable
             indicator of reservation imbalance.
+        reservation (str):
+            Reservation name or "unreserved" for
+            on-demand resource usage.
         referenced_tables (MutableSequence[google.cloud.bigquery_logging_v1.types.TableName]):
             The first N tables accessed by the query job. Older queries
             that reference a large number of tables may not have all of
@@ -1374,6 +1377,10 @@ class JobStatistics(proto.Message):
         proto.MESSAGE,
         number=14,
         message=ReservationResourceUsage,
+    )
+    reservation: str = proto.Field(
+        proto.STRING,
+        number=16,
     )
     referenced_tables: MutableSequence["TableName"] = proto.RepeatedField(
         proto.MESSAGE,
