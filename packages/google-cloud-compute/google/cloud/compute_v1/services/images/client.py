@@ -1649,6 +1649,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         Returns:
             google.cloud.compute_v1.services.images.pagers.ListPager:
                 Contains a list of images.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

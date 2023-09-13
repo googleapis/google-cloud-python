@@ -2380,6 +2380,7 @@ class DisksClient(metaclass=DisksClientMeta):
         Returns:
             google.cloud.compute_v1.services.disks.pagers.ListPager:
                 A list of Disk resources.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

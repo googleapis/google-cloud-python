@@ -1182,6 +1182,7 @@ class RegionAutoscalersClient(metaclass=RegionAutoscalersClientMeta):
         Returns:
             google.cloud.compute_v1.services.region_autoscalers.pagers.ListPager:
                 Contains a list of autoscalers.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

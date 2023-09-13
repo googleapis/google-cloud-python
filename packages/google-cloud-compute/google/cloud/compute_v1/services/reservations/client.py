@@ -480,6 +480,7 @@ class ReservationsClient(metaclass=ReservationsClientMeta):
         Returns:
             google.cloud.compute_v1.services.reservations.pagers.AggregatedListPager:
                 Contains a list of reservations.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

@@ -1494,6 +1494,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
         Returns:
             google.cloud.compute_v1.services.networks.pagers.ListPager:
                 Contains a list of networks.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

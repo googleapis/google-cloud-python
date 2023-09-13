@@ -1392,6 +1392,7 @@ __protobuf__ = proto.module(
 
 class AbandonInstancesInstanceGroupManagerRequest(proto.Message):
     r"""Messages
+
     A request message for InstanceGroupManagers.AbandonInstances.
     See the method description for details.
 

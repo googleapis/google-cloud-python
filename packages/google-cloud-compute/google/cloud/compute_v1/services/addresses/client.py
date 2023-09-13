@@ -1280,6 +1280,7 @@ class AddressesClient(metaclass=AddressesClientMeta):
         Returns:
             google.cloud.compute_v1.services.addresses.pagers.ListPager:
                 Contains a list of addresses.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

@@ -90,6 +90,7 @@ class AcceleratorTypesClientMeta(type):
 
 class AcceleratorTypesClient(metaclass=AcceleratorTypesClientMeta):
     """Services
+
     The AcceleratorTypes API.
     """
 
@@ -738,6 +739,7 @@ class AcceleratorTypesClient(metaclass=AcceleratorTypesClientMeta):
         Returns:
             google.cloud.compute_v1.services.accelerator_types.pagers.ListPager:
                 Contains a list of accelerator types.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

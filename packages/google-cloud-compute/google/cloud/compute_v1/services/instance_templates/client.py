@@ -1393,6 +1393,7 @@ class InstanceTemplatesClient(metaclass=InstanceTemplatesClientMeta):
         Returns:
             google.cloud.compute_v1.services.instance_templates.pagers.ListPager:
                 A list of instance templates.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

@@ -608,6 +608,7 @@ class RegionsClient(metaclass=RegionsClientMeta):
         Returns:
             google.cloud.compute_v1.services.regions.pagers.ListPager:
                 Contains a list of region resources.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

@@ -730,6 +730,7 @@ class NodeTypesClient(metaclass=NodeTypesClientMeta):
         Returns:
             google.cloud.compute_v1.services.node_types.pagers.ListPager:
                 Contains a list of node types.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

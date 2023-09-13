@@ -1093,6 +1093,7 @@ class FirewallsClient(metaclass=FirewallsClientMeta):
         Returns:
             google.cloud.compute_v1.services.firewalls.pagers.ListPager:
                 Contains a list of firewalls.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

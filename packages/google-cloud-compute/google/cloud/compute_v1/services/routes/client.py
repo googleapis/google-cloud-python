@@ -1090,6 +1090,7 @@ class RoutesClient(metaclass=RoutesClientMeta):
         Returns:
             google.cloud.compute_v1.services.routes.pagers.ListPager:
                 Contains a list of Route resources.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

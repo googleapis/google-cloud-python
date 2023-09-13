@@ -729,6 +729,7 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
         Returns:
             google.cloud.compute_v1.services.machine_types.pagers.ListPager:
                 Contains a list of machine types.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

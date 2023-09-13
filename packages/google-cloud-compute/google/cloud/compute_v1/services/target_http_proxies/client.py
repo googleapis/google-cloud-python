@@ -1228,6 +1228,7 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
         Returns:
             google.cloud.compute_v1.services.target_http_proxies.pagers.ListPager:
                 A list of TargetHttpProxy resources.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

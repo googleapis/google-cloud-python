@@ -1268,6 +1268,7 @@ class MachineImagesClient(metaclass=MachineImagesClientMeta):
         Returns:
             google.cloud.compute_v1.services.machine_images.pagers.ListPager:
                 A list of machine images.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

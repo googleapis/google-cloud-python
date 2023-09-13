@@ -1643,6 +1643,7 @@ class InstanceGroupsClient(metaclass=InstanceGroupsClientMeta):
         Returns:
             google.cloud.compute_v1.services.instance_groups.pagers.ListPager:
                 A list of InstanceGroup resources.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

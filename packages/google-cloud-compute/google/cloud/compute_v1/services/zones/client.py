@@ -593,6 +593,7 @@ class ZonesClient(metaclass=ZonesClientMeta):
         Returns:
             google.cloud.compute_v1.services.zones.pagers.ListPager:
                 Contains a list of zone resources.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

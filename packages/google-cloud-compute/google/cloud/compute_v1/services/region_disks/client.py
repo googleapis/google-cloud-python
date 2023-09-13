@@ -2256,6 +2256,7 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         Returns:
             google.cloud.compute_v1.services.region_disks.pagers.ListPager:
                 A list of Disk resources.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

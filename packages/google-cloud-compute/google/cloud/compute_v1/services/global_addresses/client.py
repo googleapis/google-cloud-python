@@ -1104,6 +1104,7 @@ class GlobalAddressesClient(metaclass=GlobalAddressesClientMeta):
         Returns:
             google.cloud.compute_v1.services.global_addresses.pagers.ListPager:
                 Contains a list of addresses.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

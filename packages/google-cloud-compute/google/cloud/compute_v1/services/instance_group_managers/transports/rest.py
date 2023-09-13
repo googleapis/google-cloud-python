@@ -837,6 +837,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
             Args:
                 request (~.compute.AbandonInstancesInstanceGroupManagerRequest):
                     The request object. Messages
+
                 A request message for
                 InstanceGroupManagers.AbandonInstances.
                 See the method description for details.

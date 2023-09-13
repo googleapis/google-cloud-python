@@ -174,6 +174,7 @@ class AcceleratorTypesRestTransport(AcceleratorTypesTransport):
     """REST backend transport for AcceleratorTypes.
 
     Services
+
     The AcceleratorTypes API.
 
     This class defines the same methods as the primary client, so the

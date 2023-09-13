@@ -3988,6 +3988,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         Returns:
             google.cloud.compute_v1.services.instances.pagers.ListPager:
                 Contains a list of instances.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

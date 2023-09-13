@@ -478,6 +478,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         Returns:
             google.cloud.compute_v1.services.routers.pagers.AggregatedListPager:
                 Contains a list of routers.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1539,6 +1540,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         Returns:
             google.cloud.compute_v1.services.routers.pagers.ListPager:
                 Contains a list of Router resources.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

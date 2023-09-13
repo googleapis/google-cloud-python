@@ -1194,6 +1194,7 @@ class RegionInstanceTemplatesClient(metaclass=RegionInstanceTemplatesClientMeta)
         Returns:
             google.cloud.compute_v1.services.region_instance_templates.pagers.ListPager:
                 A list of instance templates.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

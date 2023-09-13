@@ -1204,6 +1204,7 @@ class RegionTargetHttpProxiesClient(metaclass=RegionTargetHttpProxiesClientMeta)
         Returns:
             google.cloud.compute_v1.services.region_target_http_proxies.pagers.ListPager:
                 A list of TargetHttpProxy resources.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

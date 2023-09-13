@@ -1196,6 +1196,7 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         Returns:
             google.cloud.compute_v1.services.region_url_maps.pagers.ListPager:
                 Contains a list of UrlMap resources.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

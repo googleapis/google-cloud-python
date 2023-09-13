@@ -731,6 +731,7 @@ class DiskTypesClient(metaclass=DiskTypesClientMeta):
         Returns:
             google.cloud.compute_v1.services.disk_types.pagers.ListPager:
                 Contains a list of disk types.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

@@ -482,6 +482,7 @@ class ResourcePoliciesClient(metaclass=ResourcePoliciesClientMeta):
         Returns:
             google.cloud.compute_v1.services.resource_policies.pagers.AggregatedListPager:
                 Contains a list of resourcePolicies.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

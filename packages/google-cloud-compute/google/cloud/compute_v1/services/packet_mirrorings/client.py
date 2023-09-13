@@ -482,6 +482,7 @@ class PacketMirroringsClient(metaclass=PacketMirroringsClientMeta):
         Returns:
             google.cloud.compute_v1.services.packet_mirrorings.pagers.AggregatedListPager:
                 Contains a list of packetMirrorings.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
