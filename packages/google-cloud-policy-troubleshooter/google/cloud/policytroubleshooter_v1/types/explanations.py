@@ -107,6 +107,7 @@ class AccessTuple(proto.Message):
 
             For a complete list of IAM permissions, see
             https://cloud.google.com/iam/help/permissions/reference.
+
             For a complete list of predefined IAM roles and
             the permissions in each role, see
             https://cloud.google.com/iam/help/roles/reference.
@@ -155,12 +156,14 @@ class ExplainedPolicy(proto.Message):
             https://cloud.google.com/iam/help/troubleshooter/full-resource-names.
         policy (google.iam.v1.policy_pb2.Policy):
             The IAM policy attached to the resource.
+
             If the sender of the request does not have
             access to the policy, this field is empty.
         binding_explanations (MutableSequence[google.cloud.policytroubleshooter_v1.types.BindingExplanation]):
             Details about how each binding in the policy
             affects the principal's ability, or inability,
             to use the permission for the resource.
+
             If the sender of the request does not have
             access to the policy, this field is omitted.
         relevance (google.cloud.policytroubleshooter_v1.types.HeuristicRelevance):

@@ -96,6 +96,7 @@ class CreateCertificateRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -262,6 +263,7 @@ class RevokeCertificateRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -310,6 +312,7 @@ class UpdateCertificateRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -364,6 +367,7 @@ class ActivateCertificateAuthorityRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -421,6 +425,7 @@ class CreateCertificateAuthorityRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -471,6 +476,7 @@ class DisableCertificateAuthorityRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -512,6 +518,7 @@ class EnableCertificateAuthorityRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -696,6 +703,7 @@ class RestoreCertificateAuthorityRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -737,6 +745,7 @@ class ScheduleDeleteCertificateAuthorityRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -780,6 +789,7 @@ class UpdateCertificateAuthorityRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -939,6 +949,7 @@ class UpdateCertificateRevocationListRequest(proto.Message):
             and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).

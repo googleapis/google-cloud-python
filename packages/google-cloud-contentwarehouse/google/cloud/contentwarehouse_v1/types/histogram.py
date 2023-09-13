@@ -44,6 +44,7 @@ class HistogramQuery(proto.Message):
             Controls if the histogram query requires the
             return of a precise count. Enable this flag may
             adversely impact performance.
+
             Defaults to true.
         filters (google.cloud.contentwarehouse_v1.types.HistogramQueryPropertyNameFilter):
             Optional. Filter the result of histogram

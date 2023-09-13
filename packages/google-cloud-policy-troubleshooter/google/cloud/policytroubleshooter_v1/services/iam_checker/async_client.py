@@ -53,6 +53,7 @@ from .transports.grpc_asyncio import IamCheckerGrpcAsyncIOTransport
 
 class IamCheckerAsyncClient:
     """IAM Policy Troubleshooter service.
+
     This service helps you troubleshoot access issues for Google
     Cloud resources.
     """
