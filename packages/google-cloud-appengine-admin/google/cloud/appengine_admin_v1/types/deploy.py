@@ -96,6 +96,7 @@ class FileInfo(proto.Message):
             The SHA1 hash of the file, in hex.
         mime_type (str):
             The MIME type of the file.
+
             Defaults to the value from Google Cloud Storage.
     """
 
@@ -142,6 +143,7 @@ class CloudBuildOptions(proto.Message):
         app_yaml_path (str):
             Path to the yaml file used in deployment,
             used to determine runtime configuration details.
+
             Required for flexible environment builds.
 
             See

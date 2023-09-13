@@ -214,11 +214,13 @@ class Version(proto.Message):
             @OutputOnly
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Time that this version was created.
+
             @OutputOnly
         disk_usage_bytes (int):
             Total size in bytes of all the files that are
             included in this version and currently hosted on
             the App Engine disk.
+
             @OutputOnly
         runtime_api_version (str):
             The version of the API in the given runtime
@@ -299,6 +301,7 @@ class Version(proto.Message):
             Serving URL for this version. Example:
 
             "https://myversion-dot-myservice-dot-myapp.appspot.com"
+
             @OutputOnly
         endpoints_api_service (google.cloud.appengine_admin_v1.types.EndpointsApiService):
             Cloud Endpoints configuration.
@@ -595,6 +598,7 @@ class AutomaticScaling(proto.Message):
             Number of concurrent requests an automatic
             scaling instance can accept before the scheduler
             spawns a new instance.
+
             Defaults to a runtime-specific value.
         max_idle_instances (int):
             Maximum number of idle instances that should

@@ -44,12 +44,15 @@ class OperationMetadataV1(proto.Message):
             @OutputOnly
         insert_time (google.protobuf.timestamp_pb2.Timestamp):
             Time that this operation was created.
+
             @OutputOnly
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Time that this operation completed.
+
             @OutputOnly
         user (str):
             User who requested this operation.
+
             @OutputOnly
         target (str):
             Name of the resource that this operation is acting on.

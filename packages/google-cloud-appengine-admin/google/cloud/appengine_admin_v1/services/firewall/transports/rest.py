@@ -258,6 +258,7 @@ class FirewallRestTransport(FirewallTransport):
     position which specifies the rule's order in the sequence of
     rules, an IP range to be matched against requests, and an action
     to take upon matching requests.
+
     Every request is evaluated against the Firewall rules in
     priority order. Processesing stops at the first rule which
     matches the request's IP address. A final rule always specifies

@@ -252,6 +252,7 @@ class ManagedCertificate(proto.Message):
             Status of certificate management. Refers to
             the most recent certificate acquisition or
             renewal attempt.
+
             @OutputOnly
     """
 

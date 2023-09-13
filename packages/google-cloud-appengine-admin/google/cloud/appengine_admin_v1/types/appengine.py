@@ -729,6 +729,7 @@ class CreateIngressRuleRequest(proto.Message):
             new rule. Example: ``apps/myapp/firewall/ingressRules``.
         rule (google.cloud.appengine_admin_v1.types.FirewallRule):
             A FirewallRule containing the new resource.
+
             The user may optionally provide a position at
             which the new rule will be placed. The positions
             define a sequential list starting at 1. If a

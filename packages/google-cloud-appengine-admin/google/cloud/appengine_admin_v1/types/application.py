@@ -53,6 +53,7 @@ class Application(proto.Message):
             Google Apps authentication domain that
             controls which users can access this
             application.
+
             Defaults to open access for any Google Account.
         location_id (str):
             Location from which this application runs. Application
@@ -70,6 +71,7 @@ class Application(proto.Message):
             application. This bucket is associated with the
             application and can be used by the gcloud
             deployment commands.
+
             @OutputOnly
         default_cookie_expiration (google.protobuf.duration_pb2.Duration):
             Cookie expiration policy for this

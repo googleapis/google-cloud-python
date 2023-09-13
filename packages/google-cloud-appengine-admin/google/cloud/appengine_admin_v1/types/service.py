@@ -68,6 +68,7 @@ class Service(proto.Message):
             using labels is to tag resources belonging to
             different environments (e.g., "env=prod",
             "env=qa").
+
             <p>Label keys and values can be no longer than
             63 characters and can only contain lowercase
             letters, numeric characters, underscores,

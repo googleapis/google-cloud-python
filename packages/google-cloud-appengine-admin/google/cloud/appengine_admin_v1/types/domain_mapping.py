@@ -50,6 +50,7 @@ class DomainMapping(proto.Message):
             this domain mapping. These records must be added
             to the domain's DNS configuration in order to
             serve the application via this domain mapping.
+
             @OutputOnly
     """
 
