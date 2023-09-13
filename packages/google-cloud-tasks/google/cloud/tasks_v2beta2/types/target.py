@@ -249,6 +249,7 @@ class AppEngineHttpRequest(proto.Message):
             app_engine_routing][google.cloud.tasks.v2beta2.AppEngineHttpRequest.app_engine_routing].
         relative_url (str):
             The relative URL.
+
             The relative URL must begin with "/" and must be
             a valid HTTP relative URL. It can contain a path
             and query string arguments. If the relative URL
@@ -517,6 +518,7 @@ class AppEngineRouting(proto.Message):
 
 class HttpRequest(proto.Message):
     r"""HTTP request.
+
     The task will be pushed to the worker as an HTTP request. An
     HTTP request embodies a url, an http method, headers, body and
     authorization for the http task.
@@ -648,6 +650,7 @@ class HttpRequest(proto.Message):
 
 class PathOverride(proto.Message):
     r"""PathOverride.
+
     Path message defines path override for HTTP targets.
 
     Attributes:
@@ -664,6 +667,7 @@ class PathOverride(proto.Message):
 
 class QueryOverride(proto.Message):
     r"""QueryOverride.
+
     Query message defines query override for HTTP targets.
 
     Attributes:
@@ -681,6 +685,7 @@ class QueryOverride(proto.Message):
 
 class UriOverride(proto.Message):
     r"""Uri Override.
+
     When specified, all the HTTP tasks inside the queue will be
     partially or fully overridden depending on the configured
     values.
@@ -691,6 +696,7 @@ class UriOverride(proto.Message):
     Attributes:
         scheme (google.cloud.tasks_v2beta2.types.UriOverride.Scheme):
             Scheme override.
+
             When specified, the task URI scheme is replaced
             by the provided value (HTTP or HTTPS).
 
@@ -707,6 +713,7 @@ class UriOverride(proto.Message):
             This field is a member of `oneof`_ ``_host``.
         port (int):
             Port override.
+
             When specified, replaces the port part of the
             task URI. For instance, for a URI
             http://www.google.com/foo and port=123, the
@@ -718,16 +725,19 @@ class UriOverride(proto.Message):
             This field is a member of `oneof`_ ``_port``.
         path_override (google.cloud.tasks_v2beta2.types.PathOverride):
             URI path.
+
             When specified, replaces the existing path of
             the task URL. Setting the path value to an empty
             string clears the URI path segment.
         query_override (google.cloud.tasks_v2beta2.types.QueryOverride):
             URI Query.
+
             When specified, replaces the query part of the
             task URI. Setting the query value to an empty
             string clears the URI query segment.
         uri_override_enforce_mode (google.cloud.tasks_v2beta2.types.UriOverride.UriOverrideEnforceMode):
             URI Override Enforce Mode
+
             When specified, determines the Target
             UriOverride mode. If not specified, it defaults
             to ALWAYS.
@@ -819,6 +829,7 @@ class HttpTarget(proto.Message):
     Attributes:
         uri_override (google.cloud.tasks_v2beta2.types.UriOverride):
             Uri override.
+
             When specified, overrides the execution Uri for
             all the tasks in the queue.
         http_method (google.cloud.tasks_v2beta2.types.HttpMethod):

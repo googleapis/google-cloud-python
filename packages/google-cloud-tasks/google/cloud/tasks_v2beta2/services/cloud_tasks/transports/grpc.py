@@ -244,6 +244,7 @@ class CloudTasksGrpcTransport(CloudTasksTransport):
         r"""Return a callable for the list queues method over gRPC.
 
         Lists queues.
+
         Queues are returned in lexicographical order.
 
         Returns:
@@ -405,8 +406,10 @@ class CloudTasksGrpcTransport(CloudTasksTransport):
         r"""Return a callable for the purge queue method over gRPC.
 
         Purges a queue by deleting all of its tasks.
+
         All tasks created before this method is called are
         permanently deleted.
+
         Purge operations can take up to one minute to take
         effect. Tasks might be dispatched before the purge takes
         effect. A purge is irreversible.
@@ -505,6 +508,7 @@ class CloudTasksGrpcTransport(CloudTasksTransport):
         r"""Return a callable for the upload queue yaml method over gRPC.
 
         Update queue list by uploading a queue.yaml file.
+
         The queue.yaml file is supplied in the request body as a
         YAML encoded string. This method was added to support
         gcloud clients versions before 322.0.0. New clients
@@ -734,6 +738,7 @@ class CloudTasksGrpcTransport(CloudTasksTransport):
         r"""Return a callable for the delete task method over gRPC.
 
         Deletes a task.
+
         A task can be deleted if it is scheduled or dispatched.
         A task cannot be deleted if it has completed
         successfully or permanently failed.

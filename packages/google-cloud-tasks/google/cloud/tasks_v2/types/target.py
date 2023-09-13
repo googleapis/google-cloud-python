@@ -305,6 +305,7 @@ class AppEngineHttpRequest(proto.Message):
                app_engine_routing][google.cloud.tasks.v2.AppEngineHttpRequest.app_engine_routing].
         relative_uri (str):
             The relative URI.
+
             The relative URI must begin with "/" and must be
             a valid HTTP relative URI. It can contain a path
             and query string arguments. If the relative URI

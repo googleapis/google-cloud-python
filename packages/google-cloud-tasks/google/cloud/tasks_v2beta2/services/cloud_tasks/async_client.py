@@ -235,6 +235,7 @@ class CloudTasksAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListQueuesAsyncPager:
         r"""Lists queues.
+
         Queues are returned in lexicographical order.
 
         .. code-block:: python
@@ -862,8 +863,10 @@ class CloudTasksAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> queue.Queue:
         r"""Purges a queue by deleting all of its tasks.
+
         All tasks created before this method is called are
         permanently deleted.
+
         Purge operations can take up to one minute to take
         effect. Tasks might be dispatched before the purge takes
         effect. A purge is irreversible.
@@ -1205,6 +1208,7 @@ class CloudTasksAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Update queue list by uploading a queue.yaml file.
+
         The queue.yaml file is supplied in the request body as a
         YAML encoded string. This method was added to support
         gcloud clients versions before 322.0.0. New clients
@@ -1313,8 +1317,8 @@ class CloudTasksAsyncClient:
                 The request object. Request message for ``GetIamPolicy`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
-                policy is being requested.
-                See the operation documentation for the
+                policy is being requested. See the
+                operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field
@@ -1469,8 +1473,8 @@ class CloudTasksAsyncClient:
                 The request object. Request message for ``SetIamPolicy`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
-                policy is being specified.
-                See the operation documentation for the
+                policy is being specified. See the
+                operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field
@@ -1613,8 +1617,8 @@ class CloudTasksAsyncClient:
                 The request object. Request message for ``TestIamPermissions`` method.
             resource (:class:`str`):
                 REQUIRED: The resource for which the
-                policy detail is being requested.
-                See the operation documentation for the
+                policy detail is being requested. See
+                the operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field
@@ -2108,6 +2112,7 @@ class CloudTasksAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a task.
+
         A task can be deleted if it is scheduled or dispatched.
         A task cannot be deleted if it has completed
         successfully or permanently failed.

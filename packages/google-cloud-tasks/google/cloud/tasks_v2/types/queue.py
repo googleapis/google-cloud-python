@@ -320,6 +320,7 @@ class RateLimits(proto.Message):
 
 class RetryConfig(proto.Message):
     r"""Retry config.
+
     These settings determine when a failed task attempt is retried.
 
     Attributes:

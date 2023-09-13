@@ -394,6 +394,7 @@ class RateLimits(proto.Message):
 
 class RetryConfig(proto.Message):
     r"""Retry config.
+
     These settings determine how a failed task attempt is retried.
 
     This message has `oneof`_ fields (mutually exclusive fields).
