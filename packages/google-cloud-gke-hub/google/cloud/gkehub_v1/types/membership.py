@@ -242,6 +242,7 @@ class KubernetesResource(proto.Message):
             Input only. The YAML representation of the
             Membership CR. This field is ignored for GKE
             clusters where Hub can read the CR directly.
+
             Callers should provide the CR that is currently
             present in the cluster during CreateMembership
             or UpdateMembership, or leave this field empty
@@ -252,6 +253,7 @@ class KubernetesResource(proto.Message):
             Output only. Additional Kubernetes resources
             that need to be applied to the cluster after
             Membership creation, and after every update.
+
             This field is only populated in the Membership
             returned from a successful long-running
             operation from CreateMembership or
@@ -368,6 +370,7 @@ class GkeCluster(proto.Message):
             resource for the GKE cluster. For example:
 
             //container.googleapis.com/projects/my-project/locations/us-west1-a/clusters/my-cluster
+
             Zonal clusters are also supported.
         cluster_missing (bool):
             Output only. If cluster_missing is set then it denotes that

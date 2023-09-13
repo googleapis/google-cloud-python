@@ -146,6 +146,7 @@ class Membership(proto.Message):
         r"""Specifies the infrastructure type of a Membership.
         Infrastructure type is used by Hub to control
         infrastructure-specific behavior, including pricing.
+
         Each GKE distribution (on-GCP, on-Prem, on-X,...) will set this
         field automatically, but Attached Clusters customers should
         specify a type during registration.
@@ -344,6 +345,7 @@ class KubernetesResource(proto.Message):
             Input only. The YAML representation of the
             Membership CR. This field is ignored for GKE
             clusters where Hub can read the CR directly.
+
             Callers should provide the CR that is currently
             present in the cluster during CreateMembership
             or UpdateMembership, or leave this field empty
@@ -354,6 +356,7 @@ class KubernetesResource(proto.Message):
             Output only. Additional Kubernetes resources
             that need to be applied to the cluster after
             Membership creation, and after every update.
+
             This field is only populated in the Membership
             returned from a successful long-running
             operation from CreateMembership or
@@ -468,8 +471,8 @@ class GkeCluster(proto.Message):
         resource_link (str):
             Immutable. Self-link of the GCP resource for
             the GKE cluster. For example:
-
             //container.googleapis.com/projects/my-project/locations/us-west1-a/clusters/my-cluster
+
             Zonal clusters are also supported.
         cluster_missing (bool):
             Output only. If cluster_missing is set then it denotes that
@@ -993,6 +996,7 @@ class CreateMembershipRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -1001,6 +1005,7 @@ class CreateMembershipRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -1040,6 +1045,7 @@ class DeleteMembershipRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -1048,6 +1054,7 @@ class DeleteMembershipRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -1099,6 +1106,7 @@ class UpdateMembershipRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -1107,6 +1115,7 @@ class UpdateMembershipRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).

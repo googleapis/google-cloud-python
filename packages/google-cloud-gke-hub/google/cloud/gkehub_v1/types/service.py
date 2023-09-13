@@ -196,6 +196,7 @@ class CreateMembershipRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -204,6 +205,7 @@ class CreateMembershipRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -242,6 +244,7 @@ class DeleteMembershipRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -250,6 +253,7 @@ class DeleteMembershipRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -299,6 +303,7 @@ class UpdateMembershipRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -307,6 +312,7 @@ class UpdateMembershipRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -585,6 +591,7 @@ class CreateFeatureRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -593,6 +600,7 @@ class CreateFeatureRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -636,6 +644,7 @@ class DeleteFeatureRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -644,6 +653,7 @@ class DeleteFeatureRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -688,6 +698,7 @@ class UpdateFeatureRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -696,6 +707,7 @@ class UpdateFeatureRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).

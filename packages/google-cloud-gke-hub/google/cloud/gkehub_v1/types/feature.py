@@ -59,10 +59,12 @@ class Feature(proto.Message):
             for this Feature. If this Feature does not
             support any per-Membership configuration, this
             field may be unused.
+
             The keys indicate which Membership the
             configuration is for, in the form:
 
             `projects/{p}/locations/{l}/memberships/{m}`
+
             Where {p} is the project, {l} is a valid
             location and {m} is a valid Membership in this
             project at that location. {p} WILL match the
@@ -83,10 +85,12 @@ class Feature(proto.Message):
             Output only. Membership-specific Feature
             status. If this Feature does report any
             per-Membership status, this field may be unused.
+
             The keys indicate which Membership the state is
             for, in the form:
 
             `projects/{p}/locations/{l}/memberships/{m}`
+
             Where {p} is the project number, {l} is a valid
             location and {m} is a valid Membership in this
             project at that location. {p} MUST match the

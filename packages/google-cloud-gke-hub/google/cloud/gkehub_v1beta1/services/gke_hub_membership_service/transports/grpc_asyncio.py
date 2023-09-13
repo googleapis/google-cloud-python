@@ -484,6 +484,7 @@ class GkeHubMembershipServiceGrpcAsyncIOTransport(GkeHubMembershipServiceTranspo
         GenerateExclusivityManifest generates the manifests
         to update the exclusivity artifacts in the cluster if
         needed.
+
         Exclusivity artifacts include the Membership custom
         resource definition (CRD) and the singleton Membership
         custom resource (CR). Combined with ValidateExclusivity,
