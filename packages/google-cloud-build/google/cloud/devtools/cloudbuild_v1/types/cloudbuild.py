@@ -255,6 +255,7 @@ class RepoSource(proto.Message):
             Name of the Cloud Source Repository.
         branch_name (str):
             Regex matching branches to build.
+
             The syntax of the regular expressions accepted
             is the syntax accepted by RE2 and described at
             https://github.com/google/re2/wiki/Syntax
@@ -262,6 +263,7 @@ class RepoSource(proto.Message):
             This field is a member of `oneof`_ ``revision``.
         tag_name (str):
             Regex matching tags to build.
+
             The syntax of the regular expressions accepted
             is the syntax accepted by RE2 and described at
             https://github.com/google/re2/wiki/Syntax
@@ -607,6 +609,7 @@ class BuildStep(proto.Message):
             be specified in the build's ``Secret``.
         volumes (MutableSequence[google.cloud.devtools.cloudbuild_v1.types.Volume]):
             List of volumes to mount into the build step.
+
             Each volume is created as an empty volume prior
             to execution of the build step. Upon completion
             of the build, volumes and their contents are
@@ -649,6 +652,7 @@ class BuildStep(proto.Message):
             take precedence.
         script (str):
             A shell script to be executed in the step.
+
             When script is provided, the user cannot specify
             the entrypoint or args.
         automap_substitutions (bool):
@@ -748,12 +752,14 @@ class Volume(proto.Message):
     Attributes:
         name (str):
             Name of the volume to mount.
+
             Volume names must be unique per build step and
             must be valid names for Docker volumes. Each
             named volume must be used by at least two build
             steps.
         path (str):
             Path at which to mount the volume.
+
             Paths must be absolute and cannot conflict with
             other volume paths on the same build step or
             with certain reserved volume paths.
@@ -1305,6 +1311,7 @@ class Artifacts(proto.Message):
 
             The images will be pushed using the builder
             service account's credentials.
+
             The digests of the pushed images will be stored
             in the Build resource's results field.
 
@@ -1314,6 +1321,7 @@ class Artifacts(proto.Message):
             A list of objects to be uploaded to Cloud
             Storage upon successful completion of all build
             steps.
+
             Files in the workspace matching specified paths
             globs will be uploaded to the specified Cloud
             Storage location using the builder service
@@ -1329,6 +1337,7 @@ class Artifacts(proto.Message):
             A list of Maven artifacts to be uploaded to
             Artifact Registry upon successful completion of
             all build steps.
+
             Artifacts in the workspace matching specified
             paths globs will be uploaded to the specified
             Artifact Registry repository using the builder
@@ -1340,14 +1349,17 @@ class Artifacts(proto.Message):
             A list of Python packages to be uploaded to
             Artifact Registry upon successful completion of
             all build steps.
+
             The build service account credentials will be
             used to perform the upload.
+
             If any objects fail to be pushed, the build is
             marked FAILURE.
         npm_packages (MutableSequence[google.cloud.devtools.cloudbuild_v1.types.Artifacts.NpmPackage]):
             A list of npm packages to be uploaded to
             Artifact Registry upon successful completion of
             all build steps.
+
             Npm packages in the specified paths will be
             uploaded to the specified Artifact Registry
             repository using the builder service account's
@@ -1399,6 +1411,7 @@ class Artifacts(proto.Message):
             repository (str):
                 Artifact Registry repository, in the form
                 "https://$REGION-maven.pkg.dev/$PROJECT/$REPOSITORY"
+
                 Artifact in the workspace specified by path will
                 be uploaded to Artifact Registry with this
                 location as a prefix.
@@ -1451,6 +1464,7 @@ class Artifacts(proto.Message):
             repository (str):
                 Artifact Registry repository, in the form
                 "https://$REGION-python.pkg.dev/$PROJECT/$REPOSITORY"
+
                 Files in the workspace matching any path pattern
                 will be uploaded to Artifact Registry with this
                 location as a prefix.
@@ -1477,6 +1491,7 @@ class Artifacts(proto.Message):
             repository (str):
                 Artifact Registry repository, in the form
                 "https://$REGION-npm.pkg.dev/$PROJECT/$REPOSITORY"
+
                 Npm package in the workspace specified by path
                 will be zipped and uploaded to Artifact Registry
                 with this location as a prefix.
@@ -2754,6 +2769,7 @@ class PullRequestFilter(proto.Message):
     Attributes:
         branch (str):
             Regex of branches to match.
+
             The syntax of the regular expressions accepted
             is the syntax accepted by RE2 and described at
             https://github.com/google/re2/wiki/Syntax
@@ -2818,6 +2834,7 @@ class PushFilter(proto.Message):
     Attributes:
         branch (str):
             Regexes matching branches to build.
+
             The syntax of the regular expressions accepted
             is the syntax accepted by RE2 and described at
             https://github.com/google/re2/wiki/Syntax
@@ -2825,6 +2842,7 @@ class PushFilter(proto.Message):
             This field is a member of `oneof`_ ``git_ref``.
         tag (str):
             Regexes matching tags to build.
+
             The syntax of the regular expressions accepted
             is the syntax accepted by RE2 and described at
             https://github.com/google/re2/wiki/Syntax
@@ -3066,6 +3084,7 @@ class BuildOptions(proto.Message):
             Option to specify whether or not to apply
             bash style string operations to the
             substitutions.
+
             NOTE: this is always enabled for triggered
             builds and cannot be overridden in the build
             configuration file.
@@ -3093,6 +3112,7 @@ class BuildOptions(proto.Message):
             in this build. If a variable is defined in both
             globally and in a build step, the variable will
             use the build step value.
+
             The elements are of the form "KEY=VALUE" for the
             environment variable "KEY" being given the value
             "VALUE".
@@ -3547,9 +3567,8 @@ class WorkerPool(proto.Message):
             Output only. A unique identifier for the ``WorkerPool``.
         annotations (MutableMapping[str, str]):
             User specified annotations. See
-            https://google.aip.dev/128#annotations
-            for more details such as format and size
-            limitations.
+            https://google.aip.dev/128#annotations for more
+            details such as format and size limitations.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time at which the request to create the
             ``WorkerPool`` was received.

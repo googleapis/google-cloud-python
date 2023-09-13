@@ -56,7 +56,7 @@ from google.cloud.devtools.cloudbuild_v1.services.cloud_build import CloudBuildC
 from google.cloud.devtools.cloudbuild_v1.services.cloud_build import pagers
 from google.cloud.devtools.cloudbuild_v1.services.cloud_build import transports
 from google.cloud.devtools.cloudbuild_v1.types import cloudbuild
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore

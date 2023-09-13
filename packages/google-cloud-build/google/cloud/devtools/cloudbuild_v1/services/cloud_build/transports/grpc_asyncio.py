@@ -328,6 +328,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         r"""Return a callable for the list builds method over gRPC.
 
         Lists previously requested builds.
+
         Previously requested builds may still be in-progress, or
         may have finished successfully or unsuccessfully.
 
@@ -439,6 +440,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         r"""Return a callable for the approve build method over gRPC.
 
         Approves or rejects a pending build.
+
         If approved, the returned LRO will be analogous to the
         LRO returned from a CreateBuild call.
 

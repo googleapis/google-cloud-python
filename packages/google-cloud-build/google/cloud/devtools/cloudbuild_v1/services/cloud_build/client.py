@@ -964,6 +964,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListBuildsPager:
         r"""Lists previously requested builds.
+
         Previously requested builds may still be in-progress, or
         may have finished successfully or unsuccessfully.
 
@@ -1018,6 +1019,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         Returns:
             google.cloud.devtools.cloudbuild_v1.services.cloud_build.pagers.ListBuildsPager:
                 Response including listed builds.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1418,6 +1420,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Approves or rejects a pending build.
+
         If approved, the returned LRO will be analogous to the
         LRO returned from a CreateBuild call.
 
