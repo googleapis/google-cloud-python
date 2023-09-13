@@ -349,9 +349,8 @@ class ListTimeSeriesRequest(proto.Message):
             May only be specified if ``aggregation`` is specified.
         order_by (str):
             Unsupported: must be left blank. The points
-            in each time series are
-            currently returned in reverse time order (most
-            recent to oldest).
+            in each time series are currently returned in
+            reverse time order (most recent to oldest).
         view (google.cloud.monitoring_v3.types.ListTimeSeriesRequest.TimeSeriesView):
             Required. Specifies which information is
             returned about the time series.

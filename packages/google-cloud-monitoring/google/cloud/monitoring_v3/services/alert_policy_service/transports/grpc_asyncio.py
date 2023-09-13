@@ -308,6 +308,11 @@ class AlertPolicyServiceGrpcAsyncIOTransport(AlertPolicyServiceTransport):
 
         Creates a new alerting policy.
 
+        Design your application to single-thread API calls that
+        modify the state of alerting policies in a single
+        project. This includes calls to CreateAlertPolicy,
+        DeleteAlertPolicy and UpdateAlertPolicy.
+
         Returns:
             Callable[[~.CreateAlertPolicyRequest],
                     Awaitable[~.AlertPolicy]]:
@@ -333,6 +338,11 @@ class AlertPolicyServiceGrpcAsyncIOTransport(AlertPolicyServiceTransport):
         r"""Return a callable for the delete alert policy method over gRPC.
 
         Deletes an alerting policy.
+
+        Design your application to single-thread API calls that
+        modify the state of alerting policies in a single
+        project. This includes calls to CreateAlertPolicy,
+        DeleteAlertPolicy and UpdateAlertPolicy.
 
         Returns:
             Callable[[~.DeleteAlertPolicyRequest],
@@ -364,6 +374,11 @@ class AlertPolicyServiceGrpcAsyncIOTransport(AlertPolicyServiceTransport):
         policy with a new one or replace only certain fields in the
         current alerting policy by specifying the fields to be updated
         via ``updateMask``. Returns the updated alerting policy.
+
+        Design your application to single-thread API calls that modify
+        the state of alerting policies in a single project. This
+        includes calls to CreateAlertPolicy, DeleteAlertPolicy and
+        UpdateAlertPolicy.
 
         Returns:
             Callable[[~.UpdateAlertPolicyRequest],

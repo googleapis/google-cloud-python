@@ -733,8 +733,10 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListNotificationChannelsPager:
-        r"""Lists the notification channels that have been
-        created for the project.
+        r"""Lists the notification channels that have been created for the
+        project. To list the types of notification channels that are
+        supported, use the ``ListNotificationChannelDescriptors``
+        method.
 
         .. code-block:: python
 
@@ -988,6 +990,12 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         single notification endpoint such as an email address,
         SMS number, or PagerDuty service.
 
+        Design your application to single-thread API calls that
+        modify the state of notification channels in a single
+        project. This includes calls to
+        CreateNotificationChannel, DeleteNotificationChannel and
+        UpdateNotificationChannel.
+
         .. code-block:: python
 
             # This snippet has been automatically generated and should be regarded as a
@@ -1123,6 +1131,12 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         r"""Updates a notification channel. Fields not specified
         in the field mask remain unchanged.
 
+        Design your application to single-thread API calls that
+        modify the state of notification channels in a single
+        project. This includes calls to
+        CreateNotificationChannel, DeleteNotificationChannel and
+        UpdateNotificationChannel.
+
         .. code-block:: python
 
             # This snippet has been automatically generated and should be regarded as a
@@ -1246,6 +1260,12 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a notification channel.
+
+        Design your application to single-thread API calls that
+        modify the state of notification channels in a single
+        project. This includes calls to
+        CreateNotificationChannel, DeleteNotificationChannel and
+        UpdateNotificationChannel.
 
         .. code-block:: python
 

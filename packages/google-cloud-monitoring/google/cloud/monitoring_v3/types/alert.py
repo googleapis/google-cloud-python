@@ -56,12 +56,19 @@ class AlertPolicy(proto.Message):
             method, do not include the ``name`` field in the alerting
             policy passed as part of the request.
         display_name (str):
-            A short name or phrase used to identify the
-            policy in dashboards, notifications, and
-            incidents. To avoid confusion, don't use the
-            same display name for multiple policies in the
-            same project. The name is limited to 512 Unicode
-            characters.
+            A short name or phrase used to identify the policy in
+            dashboards, notifications, and incidents. To avoid
+            confusion, don't use the same display name for multiple
+            policies in the same project. The name is limited to 512
+            Unicode characters.
+
+            The convention for the display_name of a
+            PrometheusQueryLanguageCondition is "{rule group
+            name}/{alert name}", where the {rule group name} and {alert
+            name} should be taken from the corresponding Prometheus
+            configuration file. This convention is not enforced. In any
+            case the display_name is not a unique key of the
+            AlertPolicy.
         documentation (google.cloud.monitoring_v3.types.AlertPolicy.Documentation):
             Documentation that is included with
             notifications and incidents related to this
@@ -80,13 +87,23 @@ class AlertPolicy(proto.Message):
             is smaller. Labels and values can contain only lowercase
             letters, numerals, underscores, and dashes. Keys must begin
             with a letter.
+
+            Note that Prometheus {alert name} is a `valid Prometheus
+            label
+            names <https://prometheus.io/docs/concepts/data_model/#metric-names-and-labels>`__,
+            whereas Prometheus {rule group} is an unrestricted UTF-8
+            string. This means that they cannot be stored as-is in user
+            labels, because they may contain characters that are not
+            allowed in user-label values.
         conditions (MutableSequence[google.cloud.monitoring_v3.types.AlertPolicy.Condition]):
             A list of conditions for the policy. The conditions are
             combined by AND or OR according to the ``combiner`` field.
             If the combined conditions evaluate to true, then an
             incident is created. A policy can have from one to six
             conditions. If ``condition_time_series_query_language`` is
-            present, it must be the only ``condition``.
+            present, it must be the only ``condition``. If
+            ``condition_monitoring_query_language`` is present, it must
+            be the only ``condition``.
         combiner (google.cloud.monitoring_v3.types.AlertPolicy.ConditionCombinerType):
             How to combine the results of multiple conditions to
             determine if an incident should be opened. If
@@ -103,9 +120,9 @@ class AlertPolicy(proto.Message):
             that strips it out.
         validity (google.rpc.status_pb2.Status):
             Read-only description of how the alert policy
-            is invalid. OK if the alert policy is valid. If
-            not OK, the alert policy will not generate
-            incidents.
+            is invalid. This field is only set when the
+            alert policy is invalid. An invalid alert policy
+            will not generate incidents.
         notification_channels (MutableSequence[str]):
             Identifies the notification channels to which notifications
             should be sent when incidents are opened or closed or when
@@ -166,7 +183,7 @@ class AlertPolicy(proto.Message):
 
         Attributes:
             content (str):
-                The text of the documentation, interpreted according to
+                The body of the documentation, interpreted according to
                 ``mime_type``. The content may not exceed 8,192 Unicode
                 characters and may not exceed more than 10,240 bytes when
                 encoded in UTF-8 format, whichever is smaller. This text can
@@ -177,6 +194,23 @@ class AlertPolicy(proto.Message):
                 value ``"text/markdown"`` is supported. See
                 `Markdown <https://en.wikipedia.org/wiki/Markdown>`__ for
                 more information.
+            subject (str):
+                Optional. The subject line of the notification. The subject
+                line may not exceed 10,240 bytes. In notifications generated
+                by this policy, the contents of the subject line after
+                variable expansion will be truncated to 255 bytes or shorter
+                at the latest UTF-8 character boundary. The 255-byte limit
+                is recommended by `this
+                thread <https://stackoverflow.com/questions/1592291/what-is-the-email-subject-length-limit>`__.
+                It is both the limit imposed by some third-party ticketing
+                products and it is common to define textual fields in
+                databases as VARCHAR(255).
+
+                The contents of the subject line can be `templatized by
+                using
+                variables <https://cloud.google.com/monitoring/alerts/doc-variables>`__.
+                If this field is missing or empty, a default subject line
+                will be generated.
         """
 
         content: str = proto.Field(
@@ -186,6 +220,10 @@ class AlertPolicy(proto.Message):
         mime_type: str = proto.Field(
             proto.STRING,
             number=2,
+        )
+        subject: str = proto.Field(
+            proto.STRING,
+            number=3,
         )
 
     class Condition(proto.Message):
@@ -256,6 +294,11 @@ class AlertPolicy(proto.Message):
             condition_monitoring_query_language (google.cloud.monitoring_v3.types.AlertPolicy.Condition.MonitoringQueryLanguageCondition):
                 A condition that uses the Monitoring Query
                 Language to define alerts.
+
+                This field is a member of `oneof`_ ``condition``.
+            condition_prometheus_query_language (google.cloud.monitoring_v3.types.AlertPolicy.Condition.PrometheusQueryLanguageCondition):
+                A condition that uses the Prometheus query
+                language to define alerts.
 
                 This field is a member of `oneof`_ ``condition``.
         """
@@ -377,6 +420,12 @@ class AlertPolicy(proto.Message):
                     ``denominator_aggregations`` fields must use the same
                     alignment period and produce time series that have the same
                     periodicity and labels.
+                forecast_options (google.cloud.monitoring_v3.types.AlertPolicy.Condition.MetricThreshold.ForecastOptions):
+                    When this field is present, the ``MetricThreshold``
+                    condition forecasts whether the time series is predicted to
+                    violate the threshold within the ``forecast_horizon``. When
+                    this field is not set, the ``MetricThreshold`` tests the
+                    current value of the timeseries against the threshold.
                 comparison (google.cloud.monitoring_v3.types.ComparisonType):
                     The comparison to apply between the time series (indicated
                     by ``filter`` and ``aggregation``) and the threshold
@@ -415,6 +464,26 @@ class AlertPolicy(proto.Message):
                     data stops arriving.
             """
 
+            class ForecastOptions(proto.Message):
+                r"""Options used when forecasting the time series and testing
+                the predicted value against the threshold.
+
+                Attributes:
+                    forecast_horizon (google.protobuf.duration_pb2.Duration):
+                        Required. The length of time into the future to forecast
+                        whether a time series will violate the threshold. If the
+                        predicted value is found to violate the threshold, and the
+                        violation is observed in all forecasts made for the
+                        configured ``duration``, then the time series is considered
+                        to be failing.
+                """
+
+                forecast_horizon: duration_pb2.Duration = proto.Field(
+                    proto.MESSAGE,
+                    number=1,
+                    message=duration_pb2.Duration,
+                )
+
             filter: str = proto.Field(
                 proto.STRING,
                 number=2,
@@ -434,6 +503,11 @@ class AlertPolicy(proto.Message):
                 proto.MESSAGE,
                 number=10,
                 message=common.Aggregation,
+            )
+            forecast_options: "AlertPolicy.Condition.MetricThreshold.ForecastOptions" = proto.Field(
+                proto.MESSAGE,
+                number=12,
+                message="AlertPolicy.Condition.MetricThreshold.ForecastOptions",
             )
             comparison: common.ComparisonType = proto.Field(
                 proto.ENUM,
@@ -626,6 +700,134 @@ class AlertPolicy(proto.Message):
                 )
             )
 
+        class PrometheusQueryLanguageCondition(proto.Message):
+            r"""A condition type that allows alert policies to be defined using
+            `Prometheus Query Language
+            (PromQL) <https://prometheus.io/docs/prometheus/latest/querying/basics/>`__.
+
+            The PrometheusQueryLanguageCondition message contains information
+            from a Prometheus alerting rule and its associated rule group.
+
+            A Prometheus alerting rule is described
+            `here <https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/>`__.
+            The semantics of a Prometheus alerting rule is described
+            `here <https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/#rule>`__.
+
+            A Prometheus rule group is described
+            `here <https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/>`__.
+            The semantics of a Prometheus rule group is described
+            `here <https://prometheus.io/docs/prometheus/latest/configuration/recording_rules/#rule_group>`__.
+
+            Because Cloud Alerting has no representation of a Prometheus rule
+            group resource, we must embed the information of the parent rule
+            group inside each of the conditions that refer to it. We must also
+            update the contents of all Prometheus alerts in case the information
+            of their rule group changes.
+
+            The PrometheusQueryLanguageCondition protocol buffer combines the
+            information of the corresponding rule group and alerting rule. The
+            structure of the PrometheusQueryLanguageCondition protocol buffer
+            does NOT mimic the structure of the Prometheus rule group and
+            alerting rule YAML declarations. The
+            PrometheusQueryLanguageCondition protocol buffer may change in the
+            future to support future rule group and/or alerting rule features.
+            There are no new such features at the present time (2023-06-26).
+
+            Attributes:
+                query (str):
+                    Required. The PromQL expression to evaluate.
+                    Every evaluation cycle this expression is
+                    evaluated at the current time, and all resultant
+                    time series become pending/firing alerts. This
+                    field must not be empty.
+                duration (google.protobuf.duration_pb2.Duration):
+                    Optional. Alerts are considered firing once
+                    their PromQL expression was evaluated to be
+                    "true" for this long. Alerts whose PromQL
+                    expression was not evaluated to be "true" for
+                    long enough are considered pending.
+                    Must be a non-negative duration or missing.
+                    This field is optional. Its default value is
+                    zero.
+                evaluation_interval (google.protobuf.duration_pb2.Duration):
+                    Optional. How often this rule should be
+                    evaluated. Must be a positive multiple of 30
+                    seconds or missing. This field is optional. Its
+                    default value is 30 seconds. If this
+                    PrometheusQueryLanguageCondition was generated
+                    from a Prometheus alerting rule, then this value
+                    should be taken from the enclosing rule group.
+                labels (MutableMapping[str, str]):
+                    Optional. Labels to add to or overwrite in the PromQL query
+                    result. Label names `must be
+                    valid <https://prometheus.io/docs/concepts/data_model/#metric-names-and-labels>`__.
+                    Label values can be `templatized by using
+                    variables <https://cloud.google.com/monitoring/alerts/doc-variables>`__.
+                    The only available variable names are the names of the
+                    labels in the PromQL result, including "**name**" and
+                    "value". "labels" may be empty.
+                rule_group (str):
+                    Optional. The rule group name of this alert
+                    in the corresponding Prometheus configuration
+                    file.
+
+                    Some external tools may require this field to be
+                    populated correctly in order to refer to the
+                    original Prometheus configuration file. The rule
+                    group name and the alert name are necessary to
+                    update the relevant AlertPolicies in case the
+                    definition of the rule group changes in the
+                    future.
+
+                    This field is optional. If this field is not
+                    empty, then it must contain a valid UTF-8
+                    string.
+                    This field may not exceed 2048 Unicode
+                    characters in length.
+                alert_rule (str):
+                    Optional. The alerting rule name of this alert in the
+                    corresponding Prometheus configuration file.
+
+                    Some external tools may require this field to be populated
+                    correctly in order to refer to the original Prometheus
+                    configuration file. The rule group name and the alert name
+                    are necessary to update the relevant AlertPolicies in case
+                    the definition of the rule group changes in the future.
+
+                    This field is optional. If this field is not empty, then it
+                    must be a `valid Prometheus label
+                    name <https://prometheus.io/docs/concepts/data_model/#metric-names-and-labels>`__.
+                    This field may not exceed 2048 Unicode characters in length.
+            """
+
+            query: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            duration: duration_pb2.Duration = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message=duration_pb2.Duration,
+            )
+            evaluation_interval: duration_pb2.Duration = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message=duration_pb2.Duration,
+            )
+            labels: MutableMapping[str, str] = proto.MapField(
+                proto.STRING,
+                proto.STRING,
+                number=4,
+            )
+            rule_group: str = proto.Field(
+                proto.STRING,
+                number=5,
+            )
+            alert_rule: str = proto.Field(
+                proto.STRING,
+                number=6,
+            )
+
         name: str = proto.Field(
             proto.STRING,
             number=12,
@@ -658,6 +860,12 @@ class AlertPolicy(proto.Message):
             oneof="condition",
             message="AlertPolicy.Condition.MonitoringQueryLanguageCondition",
         )
+        condition_prometheus_query_language: "AlertPolicy.Condition.PrometheusQueryLanguageCondition" = proto.Field(
+            proto.MESSAGE,
+            number=21,
+            oneof="condition",
+            message="AlertPolicy.Condition.PrometheusQueryLanguageCondition",
+        )
 
     class AlertStrategy(proto.Message):
         r"""Control over how the notification channels in
@@ -673,6 +881,9 @@ class AlertPolicy(proto.Message):
                 If an alert policy that was active has no
                 data for this long, any open incidents will
                 close
+            notification_channel_strategy (MutableSequence[google.cloud.monitoring_v3.types.AlertPolicy.AlertStrategy.NotificationChannelStrategy]):
+                Control how notifications will be sent out,
+                on a per-channel basis.
         """
 
         class NotificationRateLimit(proto.Message):
@@ -690,6 +901,37 @@ class AlertPolicy(proto.Message):
                 message=duration_pb2.Duration,
             )
 
+        class NotificationChannelStrategy(proto.Message):
+            r"""Control over how the notification channels in
+            ``notification_channels`` are notified when this alert fires, on a
+            per-channel basis.
+
+            Attributes:
+                notification_channel_names (MutableSequence[str]):
+                    The full REST resource name for the notification channels
+                    that these settings apply to. Each of these correspond to
+                    the name field in one of the NotificationChannel objects
+                    referenced in the notification_channels field of this
+                    AlertPolicy. The format is:
+
+                    ::
+
+                        projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
+                renotify_interval (google.protobuf.duration_pb2.Duration):
+                    The frequency at which to send reminder
+                    notifications for open incidents.
+            """
+
+            notification_channel_names: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+            renotify_interval: duration_pb2.Duration = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message=duration_pb2.Duration,
+            )
+
         notification_rate_limit: "AlertPolicy.AlertStrategy.NotificationRateLimit" = (
             proto.Field(
                 proto.MESSAGE,
@@ -701,6 +943,13 @@ class AlertPolicy(proto.Message):
             proto.MESSAGE,
             number=3,
             message=duration_pb2.Duration,
+        )
+        notification_channel_strategy: MutableSequence[
+            "AlertPolicy.AlertStrategy.NotificationChannelStrategy"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="AlertPolicy.AlertStrategy.NotificationChannelStrategy",
         )
 
     name: str = proto.Field(

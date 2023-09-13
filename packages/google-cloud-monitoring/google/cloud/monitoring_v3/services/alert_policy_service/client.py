@@ -718,6 +718,11 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
     ) -> alert.AlertPolicy:
         r"""Creates a new alerting policy.
 
+        Design your application to single-thread API calls that
+        modify the state of alerting policies in a single
+        project. This includes calls to CreateAlertPolicy,
+        DeleteAlertPolicy and UpdateAlertPolicy.
+
         .. code-block:: python
 
             # This snippet has been automatically generated and should be regarded as a
@@ -848,6 +853,11 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
     ) -> None:
         r"""Deletes an alerting policy.
 
+        Design your application to single-thread API calls that
+        modify the state of alerting policies in a single
+        project. This includes calls to CreateAlertPolicy,
+        DeleteAlertPolicy and UpdateAlertPolicy.
+
         .. code-block:: python
 
             # This snippet has been automatically generated and should be regarded as a
@@ -946,6 +956,11 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
         policy with a new one or replace only certain fields in the
         current alerting policy by specifying the fields to be updated
         via ``updateMask``. Returns the updated alerting policy.
+
+        Design your application to single-thread API calls that modify
+        the state of alerting policies in a single project. This
+        includes calls to CreateAlertPolicy, DeleteAlertPolicy and
+        UpdateAlertPolicy.
 
         .. code-block:: python
 
