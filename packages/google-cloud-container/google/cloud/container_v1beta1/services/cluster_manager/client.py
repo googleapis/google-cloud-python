@@ -2999,6 +2999,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 (maxUnavailable + maxSurge) determines
                 the level of parallelism (how many nodes
                 are being upgraded at the same time).
+
                 Note: upgrades inevitably introduce some
                 disruption since workloads need to be
                 moved from old nodes to new, upgraded
@@ -3006,6 +3007,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 holds true. (Disruption stays within the
                 limits of PodDisruptionBudget, if it is
                 configured.)
+
                 Consider a hypothetical node pool with 5
                 nodes having maxSurge=2,
                 maxUnavailable=1. This means the upgrade

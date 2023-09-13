@@ -426,6 +426,7 @@ class NodeKubeletConfig(proto.Message):
             problems while still having your pods to be in
             Guaranteed QoS class by specifying the CPU
             limits.
+
             The default value is 'true' if unspecified.
         cpu_cfs_quota_period (str):
             Set the CPU CFS quota period value 'cpu.cfs_period_us'.
@@ -437,6 +438,7 @@ class NodeKubeletConfig(proto.Message):
         pod_pids_limit (int):
             Set the Pod PID limits. See
             https://kubernetes.io/docs/concepts/policy/pid-limiting/#pod-pid-limits
+
             Controls the maximum number of processes allowed
             to run in a pod. The value must be greater than
             or equal to 1024 and less than 4194304.
@@ -491,6 +493,7 @@ class NodeConfig(proto.Message):
             Size of the disk attached to each node,
             specified in GB. The smallest allowed disk size
             is 10GB.
+
             If unspecified, the default disk size is 100GB.
         oauth_scopes (MutableSequence[str]):
             The set of Google API scopes to be made available on all of
@@ -590,7 +593,6 @@ class NodeConfig(proto.Message):
         preemptible (bool):
             Whether the nodes are created as preemptible
             VM instances. See:
-
             https://cloud.google.com/compute/docs/instances/preemptible
             for more information about preemptible VM
             instances.
@@ -1423,6 +1425,7 @@ class MasterAuth(proto.Message):
             clusters v1.6.0 and later, basic authentication
             can be disabled by leaving username unspecified
             (or setting it to the empty string).
+
             Warning: basic authentication is deprecated, and
             will be removed in GKE control plane versions
             1.19 and newer. For a list of recommended
@@ -6593,6 +6596,7 @@ class AutoprovisioningNodePoolDefaults(proto.Message):
             Size of the disk attached to each node,
             specified in GB. The smallest allowed disk size
             is 10GB.
+
             If unspecified, the default disk size is 100GB.
         disk_type (str):
             Type of the disk attached to each node (e.g.
@@ -7827,6 +7831,7 @@ class CheckAutopilotCompatibilityResponse(proto.Message):
 class ReleaseChannel(proto.Message):
     r"""ReleaseChannel indicates which release channel a cluster is
     subscribed to. Release channels are arranged in order of risk.
+
     When a cluster is subscribed to a release channel, Google
     maintains both the master version and the node version. Node
     auto-upgrade defaults to true and cannot be disabled.
@@ -7847,6 +7852,7 @@ class ReleaseChannel(proto.Message):
                 RAPID channel is offered on an early access
                 basis for customers who want to test new
                 releases.
+
                 WARNING: Versions available in the RAPID Channel
                 may be subject to unresolved issues with no
                 known workaround and are not subject to any
