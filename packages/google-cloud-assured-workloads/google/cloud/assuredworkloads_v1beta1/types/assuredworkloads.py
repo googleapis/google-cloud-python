@@ -349,6 +349,7 @@ class Workload(proto.Message):
             Format:
 
             organizations/{organization}/locations/{location}/workloads/{workload}
+
             Read-only.
         display_name (str):
             Required. The user-assigned display name of
