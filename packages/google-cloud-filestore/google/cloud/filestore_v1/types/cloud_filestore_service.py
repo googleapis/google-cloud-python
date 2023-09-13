@@ -795,6 +795,7 @@ class CreateSnapshotRequest(proto.Message):
             Required. The ID to use for the snapshot.
             The ID must be unique within the specified
             instance.
+
             This value must start with a lowercase letter
             followed by up to 62 lowercase letters, numbers,
             or hyphens, and cannot end with a hyphen.
