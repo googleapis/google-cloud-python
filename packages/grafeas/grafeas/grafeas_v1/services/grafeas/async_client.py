@@ -336,6 +336,7 @@ class GrafeasAsyncClient:
         Returns:
             grafeas.grafeas_v1.services.grafeas.pagers.ListOccurrencesAsyncPager:
                 Response for listing occurrences.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1133,6 +1134,7 @@ class GrafeasAsyncClient:
         Returns:
             grafeas.grafeas_v1.services.grafeas.pagers.ListNotesAsyncPager:
                 Response for listing notes.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

@@ -160,6 +160,7 @@ class Source(proto.Message):
             Hash(es) of the build source, which can be
             used to verify that the original source
             integrity was maintained in the build.
+
             The keys to this map are file paths used as
             build source and the values contain the hash
             values for those files.
