@@ -1117,6 +1117,24 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-optimization": {
+            "component": "google-cloud-optimization",
+            "extra-files": [
+                "google/cloud/optimization/gapic_version.py",
+                "google/cloud/optimization_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.optimization.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_optimization_v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-orchestration-airflow": {
             "component": "google-cloud-orchestration-airflow",
             "extra-files": [
