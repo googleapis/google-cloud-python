@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-optimization/compare/v1.4.3...v1.5.0) (2023-09-13)
+
+
+### Features
+
+* Added support for walking mode and cost_per_kilometer_below_soft_max ([4095c0c](https://github.com/googleapis/python-optimization/commit/4095c0c17943f5fe833f411f11774305c5534377))
+
+
+### Documentation
+
+* Minor formatting ([a1952d2](https://github.com/googleapis/python-optimization/commit/a1952d2e272e774d3e1dfeef2c9b8ee8dc63a86d))
+* Minor formatting fix ([#148](https://github.com/googleapis/python-optimization/issues/148)) ([946f557](https://github.com/googleapis/python-optimization/commit/946f55708e81a45e7ed876fc22786c3490c60517))
+
 ## [1.4.3](https://github.com/googleapis/python-optimization/compare/v1.4.2...v1.4.3) (2023-08-16)
 
 
