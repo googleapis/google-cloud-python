@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.3](https://github.com/googleapis/python-assured-workloads/compare/v1.10.2...v1.10.3) (2023-09-13)
+
+
+### Documentation
+
+* Minor formatting ([#256](https://github.com/googleapis/python-assured-workloads/issues/256)) ([c73576e](https://github.com/googleapis/python-assured-workloads/commit/c73576e43e8d0f5721b87a22ad7e2332d9c99d82))
+
 ## [1.10.2](https://github.com/googleapis/python-assured-workloads/compare/v1.10.1...v1.10.2) (2023-07-04)
 
 
