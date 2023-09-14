@@ -1,9 +1,9 @@
-Python Client for Cloud Optimization API
-========================================
+Python Client for Cloud Optimization
+====================================
 
 |stable| |pypi| |versions|
 
-`Cloud Optimization API`_: is a managed routing service that takes your list of orders, vehicles, constraints, and objectives and returns the most efficient plan for your entire fleet in near real-time.
+`Cloud Optimization`_: is a managed routing service that takes your list of orders, vehicles, constraints, and objectives and returns the most efficient plan for your entire fleet in near real-time.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Cloud Optimization API
    :target: https://pypi.org/project/google-cloud-optimization/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-optimization.svg
    :target: https://pypi.org/project/google-cloud-optimization/
-.. _Cloud Optimization API: https://cloud.google.com/optimization/docs
+.. _Cloud Optimization: https://cloud.google.com/optimization/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/optimization/latest
 .. _Product Documentation:  https://cloud.google.com/optimization/docs
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Cloud Optimization API.`_
+3. `Enable the Cloud Optimization.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Cloud Optimization API.:  https://cloud.google.com/optimization/docs
+.. _Enable the Cloud Optimization.:  https://cloud.google.com/optimization/docs
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/python-optimization/tree/main/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-optimization/samples
 
 
 Supported Python Versions
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Cloud Optimization API
+-  Read the `Client Library Documentation`_ for Cloud Optimization
    to see other available methods on the client.
--  Read the `Cloud Optimization API Product documentation`_ to learn
+-  Read the `Cloud Optimization Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Cloud Optimization API Product documentation:  https://cloud.google.com/optimization/docs
+.. _Cloud Optimization Product documentation:  https://cloud.google.com/optimization/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
