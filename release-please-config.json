@@ -169,6 +169,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-assured-workloads": {
+            "component": "google-cloud-assured-workloads",
+            "extra-files": [
+                "google/cloud/assuredworkloads/gapic_version.py",
+                "google/cloud/assuredworkloads_v1/gapic_version.py",
+                "google/cloud/assuredworkloads_v1beta1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.assuredworkloads.v1beta1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.assuredworkloads.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-bare-metal-solution": {
             "component": "google-cloud-bare-metal-solution",
             "extra-files": [
