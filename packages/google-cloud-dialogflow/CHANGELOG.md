@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.24.0](https://github.com/googleapis/python-dialogflow/compare/v2.23.3...v2.24.0) (2023-09-13)
+
+
+### Features
+
+* Added baseline model version used to generate the summary ([6ac5a4f](https://github.com/googleapis/python-dialogflow/commit/6ac5a4f3e892ab3530117b0cab5038409e26c901))
+* Added baseline model version used to generate the summary ([64b674a](https://github.com/googleapis/python-dialogflow/commit/64b674a080b2d93da9c251ba56a811d671798583))
+* Added Knowledge Search API ([0bf73ae](https://github.com/googleapis/python-dialogflow/commit/0bf73ae45a6f66d45fa5478d62a6391138b73ab7))
+* Added Knowledge Search API ([f09e34e](https://github.com/googleapis/python-dialogflow/commit/f09e34e11748f3bbf449dcc9f0b6c23323f25a10))
+* Added speech endpointing setting ([0bf73ae](https://github.com/googleapis/python-dialogflow/commit/0bf73ae45a6f66d45fa5478d62a6391138b73ab7))
+* Added speech endpointing setting ([f09e34e](https://github.com/googleapis/python-dialogflow/commit/f09e34e11748f3bbf449dcc9f0b6c23323f25a10))
+* Added the platform of the virtual agent response messages ([6ac5a4f](https://github.com/googleapis/python-dialogflow/commit/6ac5a4f3e892ab3530117b0cab5038409e26c901))
+* Added the platform of the virtual agent response messages ([64b674a](https://github.com/googleapis/python-dialogflow/commit/64b674a080b2d93da9c251ba56a811d671798583))
+
+
+### Documentation
+
+* Minor formatting ([de86202](https://github.com/googleapis/python-dialogflow/commit/de862024df7f364a0612d09f01ae5ca5134a5fde))
+
 ## [2.23.3](https://github.com/googleapis/python-dialogflow/compare/v2.23.2...v2.23.3) (2023-08-03)
 
 
