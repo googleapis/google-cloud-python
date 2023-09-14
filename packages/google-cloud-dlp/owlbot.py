@@ -51,13 +51,6 @@ s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml"])
 
 python.py_samples(skip_readmes=True)
 
-# ignore docs warnings (only fail on errors). See b/275029141
-s.replace(
-    'noxfile.py',
-    '"-W",  # warnings as errors',
-    ''
-)
-
 # run format session for all directories which have a noxfile
 for noxfile in Path(".").glob("**/noxfile.py"):
     s.shell.run(["nox", "-s", "format"], cwd=noxfile.parent, hide_output=False)
