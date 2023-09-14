@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.2](https://github.com/googleapis/python-gke-hub/compare/v1.10.1...v1.10.2) (2023-09-13)
+
+
+### Documentation
+
+* Minor formatting ([#253](https://github.com/googleapis/python-gke-hub/issues/253)) ([5e0594c](https://github.com/googleapis/python-gke-hub/commit/5e0594c37d05c5a8658674190f5ab905ed25c9cd))
+
 ## [1.10.1](https://github.com/googleapis/python-gke-hub/compare/v1.10.0...v1.10.1) (2023-07-04)
 
 
