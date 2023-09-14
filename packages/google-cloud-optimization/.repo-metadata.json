@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-optimization",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-optimization",
     "api_id": "cloudoptimization.googleapis.com",
     "default_version": "v1",

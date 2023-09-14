@@ -7,7 +7,7 @@
     "release_level": "preview",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-network-services",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-network-services",
     "api_id": "networkservices.googleapis.com",
     "default_version": "v1",

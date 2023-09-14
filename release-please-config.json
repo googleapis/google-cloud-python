@@ -169,6 +169,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-assured-workloads": {
+            "component": "google-cloud-assured-workloads",
+            "extra-files": [
+                "google/cloud/assuredworkloads/gapic_version.py",
+                "google/cloud/assuredworkloads_v1/gapic_version.py",
+                "google/cloud/assuredworkloads_v1beta1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.assuredworkloads.v1beta1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.assuredworkloads.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-bare-metal-solution": {
             "component": "google-cloud-bare-metal-solution",
             "extra-files": [
@@ -790,6 +809,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-gke-backup": {
+            "component": "google-cloud-gke-backup",
+            "extra-files": [
+                "google/cloud/gke_backup_v1/gapic_version.py",
+                "google/cloud/gke_backup/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.gkebackup.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-gke-connect-gateway": {
             "component": "google-cloud-gke-connect-gateway",
             "extra-files": [
@@ -1047,6 +1079,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-network-services": {
+            "component": "google-cloud-network-services",
+            "extra-files": [
+                "google/cloud/network_services/gapic_version.py",
+                "google/cloud/network_services_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.networkservices.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-notebooks": {
             "component": "google-cloud-notebooks",
             "extra-files": [
@@ -1067,6 +1112,24 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.notebooks.v2.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-optimization": {
+            "component": "google-cloud-optimization",
+            "extra-files": [
+                "google/cloud/optimization/gapic_version.py",
+                "google/cloud/optimization_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.optimization.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_optimization_v1.json",
                     "type": "json"
                 }
             ],
