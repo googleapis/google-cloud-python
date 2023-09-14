@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.12.3](https://github.com/googleapis/python-dlp/compare/v3.12.2...v3.12.3) (2023-09-13)
+
+
+### Documentation
+
+* Minor formatting ([#520](https://github.com/googleapis/python-dlp/issues/520)) ([d8a3639](https://github.com/googleapis/python-dlp/commit/d8a363969e1d19e36f6a5c57ec2d439300c95082))
+
 ## [3.12.2](https://github.com/googleapis/python-dlp/compare/v3.12.1...v3.12.2) (2023-07-04)
 
 
