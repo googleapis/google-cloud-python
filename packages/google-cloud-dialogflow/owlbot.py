@@ -35,7 +35,6 @@ for library in s.get_staging_dirs(default_version):
     if clean_up_generated_samples:
         shutil.rmtree("samples/generated_samples", ignore_errors=True)
         clean_up_generated_samples = False
-
     s.move([library], excludes=["**/gapic_version.py"])
 s.remove_staging_dirs()
 
@@ -51,14 +50,6 @@ templated_files = gcp.CommonTemplates().py_library(
 s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml"])
 
 python.py_samples(skip_readmes=True)
-
-# Don't treat warnings as errors
-# Docstrings have unexpected idnentation and block quote formatting issues
-s.replace(
-    "noxfile.py",
-    '''["']-W["'],  # warnings as errors''',
-    "",
-)
 
 # run format session for all directories which have a noxfile
 for noxfile in Path(".").glob("**/noxfile.py"):
