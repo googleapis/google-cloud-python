@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.14.2](https://github.com/googleapis/python-tasks/compare/v2.14.1...v2.14.2) (2023-09-13)
+
+
+### Documentation
+
+* Minor formatting ([4635f43](https://github.com/googleapis/python-tasks/commit/4635f43809f41e581e217f404815184d7e1a11dc))
+
 ## [2.14.1](https://github.com/googleapis/python-tasks/compare/v2.14.0...v2.14.1) (2023-08-02)
 
 
