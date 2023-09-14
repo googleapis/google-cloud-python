@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.4](https://github.com/googleapis/python-network-services/compare/v0.5.3...v0.5.4) (2023-09-13)
+
+
+### Documentation
+
+* Minor formatting ([77844a9](https://github.com/googleapis/python-network-services/commit/77844a9947ddb22593a0f5e4ac16c439da3e7de3))
+
 ## [0.5.3](https://github.com/googleapis/python-network-services/compare/v0.5.2...v0.5.3) (2023-08-09)
 
 
