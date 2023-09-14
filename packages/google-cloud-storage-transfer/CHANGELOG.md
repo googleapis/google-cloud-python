@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.2](https://github.com/googleapis/python-storage-transfer/compare/v1.9.1...v1.9.2) (2023-09-13)
+
+
+### Documentation
+
+* Minor formatting ([b9b8298](https://github.com/googleapis/python-storage-transfer/commit/b9b8298970fa1277369900a2de7e27ea31d52196))
+
 ## [1.9.1](https://github.com/googleapis/python-storage-transfer/compare/v1.9.0...v1.9.1) (2023-07-04)
 
 
