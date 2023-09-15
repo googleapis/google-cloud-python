@@ -667,6 +667,7 @@ class TestDataset(unittest.TestCase):
             "location": "US",
             "selfLink": self.RESOURCE_URL,
             "defaultTableExpirationMs": 3600,
+            "storageBillingModel": "LOGICAL",
             "access": [
                 {"role": "OWNER", "userByEmail": USER_EMAIL},
                 {"role": "OWNER", "groupByEmail": GROUP_EMAIL},
@@ -736,7 +737,12 @@ class TestDataset(unittest.TestCase):
             )
         else:
             self.assertIsNone(dataset.default_encryption_configuration)
-
+        if "storageBillingModel" in resource:
+            self.assertEqual(
+                dataset.storage_billing_model, resource.get("storageBillingModel")
+            )
+        else:
+            self.assertIsNone(dataset.storage_billing_model)
         if "access" in resource:
             self._verify_access_entry(dataset.access_entries, resource)
         else:
@@ -940,6 +946,23 @@ class TestDataset(unittest.TestCase):
         )
         dataset.default_encryption_configuration = None
         self.assertIsNone(dataset.default_encryption_configuration)
+
+    def test_storage_billing_model_setter(self):
+        dataset = self._make_one(self.DS_REF)
+        dataset.storage_billing_model = "PHYSICAL"
+        self.assertEqual(dataset.storage_billing_model, "PHYSICAL")
+
+    def test_storage_billing_model_setter_with_none(self):
+        dataset = self._make_one(self.DS_REF)
+        dataset.storage_billing_model = None
+        self.assertEqual(dataset.storage_billing_model, "LOGICAL")
+
+    def test_storage_billing_model_setter_with_invalid_type(self):
+        dataset = self._make_one(self.DS_REF)
+        with self.assertRaises(ValueError) as raises:
+            dataset.storage_billing_model = object()
+
+        self.assertIn("storage_billing_model", str(raises.exception))
 
     def test_from_string(self):
         cls = self._get_target_class()
