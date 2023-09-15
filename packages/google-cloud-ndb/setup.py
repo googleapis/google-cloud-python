@@ -28,8 +28,10 @@ def main():
         "google-cloud-datastore >= 2.16.0, < 3.0.0dev",
         "protobuf >= 3.19.5, <5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
         "pymemcache >= 2.1.0, < 5.0.0dev",
+        "pytz >= 2018.3",
         "redis >= 3.0.0, < 5.0.0dev",
-        "pytz >= 2018.3"
+        # TODO(https://github.com/googleapis/python-ndb/issues/913) remove this dependency once six is no longer used in the codebase
+        "six >= 1.12.0, < 2.0.0dev"
     ]
 
     setuptools.setup(

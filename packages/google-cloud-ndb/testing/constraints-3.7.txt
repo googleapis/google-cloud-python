@@ -11,3 +11,5 @@ protobuf==3.19.5
 pymemcache==2.1.0
 redis==3.0.0
 pytz==2018.3
+# TODO(https://github.com/googleapis/python-ndb/issues/913) remove this dependency once six is no longer used in the codebase
+six==1.12.0
