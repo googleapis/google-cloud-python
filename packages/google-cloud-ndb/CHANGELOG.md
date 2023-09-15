@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [2.2.1](https://github.com/googleapis/python-ndb/compare/v2.2.0...v2.2.1) (2023-09-15)
+
+
+### Bug Fixes
+
+* **deps:** Add missing six dependency ([#912](https://github.com/googleapis/python-ndb/issues/912)) ([3b1ffb7](https://github.com/googleapis/python-ndb/commit/3b1ffb7e5cabdadfe2a4be6802adef774eec5ef8))
+
+
+### Documentation
+
+* Mark database argument for get_by_id and its async counterpart as ignored ([#905](https://github.com/googleapis/python-ndb/issues/905)) ([b0f4310](https://github.com/googleapis/python-ndb/commit/b0f431048b7b2ebb20e4255340290c7687e27425))
+
 ## [2.2.0](https://github.com/googleapis/python-ndb/compare/v2.1.1...v2.2.0) (2023-07-26)
 
 
