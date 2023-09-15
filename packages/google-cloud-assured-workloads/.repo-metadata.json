@@ -1,0 +1,17 @@
+{
+    "name": "assuredworkloads",
+    "name_pretty": "Assured Workloads for Government",
+    "product_documentation": "https://cloud.google.com/assured-workloads/",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/assuredworkloads/latest",
+    "issue_tracker": "",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/google-cloud-python",
+    "distribution_name": "google-cloud-assured-workloads",
+    "api_id": "assuredworkloads.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "assuredworkloads",
+    "api_description": "allows you to secure your government workloads and accelerate your path to running compliant workloads on Google Cloud with Assured Workloads for Government."
+}
