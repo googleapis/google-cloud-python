@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DescribeDatabaseEntities
+# Snippet for ListMappingRules
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-dms
 
 
-# [START datamigration_v1_generated_DataMigrationService_DescribeDatabaseEntities_async]
+# [START datamigration_v1_generated_DataMigrationService_ListMappingRules_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,21 +34,20 @@
 from google.cloud import clouddms_v1
 
 
-async def sample_describe_database_entities():
+def sample_list_mapping_rules():
     # Create a client
-    client = clouddms_v1.DataMigrationServiceAsyncClient()
+    client = clouddms_v1.DataMigrationServiceClient()
 
     # Initialize request argument(s)
-    request = clouddms_v1.DescribeDatabaseEntitiesRequest(
-        conversion_workspace="conversion_workspace_value",
-        tree="DESTINATION_TREE",
+    request = clouddms_v1.ListMappingRulesRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    page_result = client.describe_database_entities(request=request)
+    page_result = client.list_mapping_rules(request=request)
 
     # Handle the response
-    async for response in page_result:
+    for response in page_result:
         print(response)
 
-# [END datamigration_v1_generated_DataMigrationService_DescribeDatabaseEntities_async]
+# [END datamigration_v1_generated_DataMigrationService_ListMappingRules_sync]

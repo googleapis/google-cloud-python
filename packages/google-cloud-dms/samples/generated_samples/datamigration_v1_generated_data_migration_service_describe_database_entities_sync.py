@@ -41,6 +41,7 @@ def sample_describe_database_entities():
     # Initialize request argument(s)
     request = clouddms_v1.DescribeDatabaseEntitiesRequest(
         conversion_workspace="conversion_workspace_value",
+        tree="DESTINATION_TREE",
     )
 
     # Make the request

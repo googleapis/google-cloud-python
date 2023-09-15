@@ -23,6 +23,7 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
@@ -601,6 +602,35 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["generate_ssh_script"]
 
     @property
+    def generate_tcp_proxy_script(
+        self,
+    ) -> Callable[
+        [clouddms.GenerateTcpProxyScriptRequest], Awaitable[clouddms.TcpProxyScript]
+    ]:
+        r"""Return a callable for the generate tcp proxy script method over gRPC.
+
+        Generate a TCP Proxy configuration script to
+        configure a cloud-hosted VM running a TCP Proxy.
+
+        Returns:
+            Callable[[~.GenerateTcpProxyScriptRequest],
+                    Awaitable[~.TcpProxyScript]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "generate_tcp_proxy_script" not in self._stubs:
+            self._stubs["generate_tcp_proxy_script"] = self.grpc_channel.unary_unary(
+                "/google.cloud.clouddms.v1.DataMigrationService/GenerateTcpProxyScript",
+                request_serializer=clouddms.GenerateTcpProxyScriptRequest.serialize,
+                response_deserializer=clouddms.TcpProxyScript.deserialize,
+            )
+        return self._stubs["generate_tcp_proxy_script"]
+
+    @property
     def list_connection_profiles(
         self,
     ) -> Callable[
@@ -1009,6 +1039,120 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_conversion_workspace"]
+
+    @property
+    def create_mapping_rule(
+        self,
+    ) -> Callable[
+        [clouddms.CreateMappingRuleRequest],
+        Awaitable[conversionworkspace_resources.MappingRule],
+    ]:
+        r"""Return a callable for the create mapping rule method over gRPC.
+
+        Creates a new mapping rule for a given conversion
+        workspace.
+
+        Returns:
+            Callable[[~.CreateMappingRuleRequest],
+                    Awaitable[~.MappingRule]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_mapping_rule" not in self._stubs:
+            self._stubs["create_mapping_rule"] = self.grpc_channel.unary_unary(
+                "/google.cloud.clouddms.v1.DataMigrationService/CreateMappingRule",
+                request_serializer=clouddms.CreateMappingRuleRequest.serialize,
+                response_deserializer=conversionworkspace_resources.MappingRule.deserialize,
+            )
+        return self._stubs["create_mapping_rule"]
+
+    @property
+    def delete_mapping_rule(
+        self,
+    ) -> Callable[[clouddms.DeleteMappingRuleRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the delete mapping rule method over gRPC.
+
+        Deletes a single mapping rule.
+
+        Returns:
+            Callable[[~.DeleteMappingRuleRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_mapping_rule" not in self._stubs:
+            self._stubs["delete_mapping_rule"] = self.grpc_channel.unary_unary(
+                "/google.cloud.clouddms.v1.DataMigrationService/DeleteMappingRule",
+                request_serializer=clouddms.DeleteMappingRuleRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_mapping_rule"]
+
+    @property
+    def list_mapping_rules(
+        self,
+    ) -> Callable[
+        [clouddms.ListMappingRulesRequest], Awaitable[clouddms.ListMappingRulesResponse]
+    ]:
+        r"""Return a callable for the list mapping rules method over gRPC.
+
+        Lists the mapping rules for a specific conversion
+        workspace.
+
+        Returns:
+            Callable[[~.ListMappingRulesRequest],
+                    Awaitable[~.ListMappingRulesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_mapping_rules" not in self._stubs:
+            self._stubs["list_mapping_rules"] = self.grpc_channel.unary_unary(
+                "/google.cloud.clouddms.v1.DataMigrationService/ListMappingRules",
+                request_serializer=clouddms.ListMappingRulesRequest.serialize,
+                response_deserializer=clouddms.ListMappingRulesResponse.deserialize,
+            )
+        return self._stubs["list_mapping_rules"]
+
+    @property
+    def get_mapping_rule(
+        self,
+    ) -> Callable[
+        [clouddms.GetMappingRuleRequest],
+        Awaitable[conversionworkspace_resources.MappingRule],
+    ]:
+        r"""Return a callable for the get mapping rule method over gRPC.
+
+        Gets the details of a mapping rule.
+
+        Returns:
+            Callable[[~.GetMappingRuleRequest],
+                    Awaitable[~.MappingRule]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_mapping_rule" not in self._stubs:
+            self._stubs["get_mapping_rule"] = self.grpc_channel.unary_unary(
+                "/google.cloud.clouddms.v1.DataMigrationService/GetMappingRule",
+                request_serializer=clouddms.GetMappingRuleRequest.serialize,
+                response_deserializer=conversionworkspace_resources.MappingRule.deserialize,
+            )
+        return self._stubs["get_mapping_rule"]
 
     @property
     def seed_conversion_workspace(

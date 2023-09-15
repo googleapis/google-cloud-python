@@ -27,6 +27,7 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.clouddms_v1 import gapic_version as package_version
 from google.cloud.clouddms_v1.types import (
@@ -190,6 +191,11 @@ class DataMigrationServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.generate_tcp_proxy_script: gapic_v1.method.wrap_method(
+                self.generate_tcp_proxy_script,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_connection_profiles: gapic_v1.method.wrap_method(
                 self.list_connection_profiles,
                 default_timeout=60.0,
@@ -258,6 +264,26 @@ class DataMigrationServiceTransport(abc.ABC):
             self.delete_conversion_workspace: gapic_v1.method.wrap_method(
                 self.delete_conversion_workspace,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_mapping_rule: gapic_v1.method.wrap_method(
+                self.create_mapping_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_mapping_rule: gapic_v1.method.wrap_method(
+                self.delete_mapping_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_mapping_rules: gapic_v1.method.wrap_method(
+                self.list_mapping_rules,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_mapping_rule: gapic_v1.method.wrap_method(
+                self.get_mapping_rule,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.seed_conversion_workspace: gapic_v1.method.wrap_method(
@@ -440,6 +466,15 @@ class DataMigrationServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def generate_tcp_proxy_script(
+        self,
+    ) -> Callable[
+        [clouddms.GenerateTcpProxyScriptRequest],
+        Union[clouddms.TcpProxyScript, Awaitable[clouddms.TcpProxyScript]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_connection_profiles(
         self,
     ) -> Callable[
@@ -580,6 +615,51 @@ class DataMigrationServiceTransport(abc.ABC):
     ) -> Callable[
         [clouddms.DeleteConversionWorkspaceRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_mapping_rule(
+        self,
+    ) -> Callable[
+        [clouddms.CreateMappingRuleRequest],
+        Union[
+            conversionworkspace_resources.MappingRule,
+            Awaitable[conversionworkspace_resources.MappingRule],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_mapping_rule(
+        self,
+    ) -> Callable[
+        [clouddms.DeleteMappingRuleRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_mapping_rules(
+        self,
+    ) -> Callable[
+        [clouddms.ListMappingRulesRequest],
+        Union[
+            clouddms.ListMappingRulesResponse,
+            Awaitable[clouddms.ListMappingRulesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_mapping_rule(
+        self,
+    ) -> Callable[
+        [clouddms.GetMappingRuleRequest],
+        Union[
+            conversionworkspace_resources.MappingRule,
+            Awaitable[conversionworkspace_resources.MappingRule],
+        ],
     ]:
         raise NotImplementedError()
 
