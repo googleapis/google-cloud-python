@@ -61,7 +61,7 @@ Create an empty table with the
 Create a table using an external data source with the
 :func:`~google.cloud.bigquery.client.Client.create_table` method:
 
-.. literalinclude:: ../samples/create_table_external_data_configuration.py
+.. literalinclude:: ../samples/snippets/create_table_external_data_configuration.py
    :language: python
    :dedent: 4
    :start-after: [START bigquery_create_table_external_data_configuration]
