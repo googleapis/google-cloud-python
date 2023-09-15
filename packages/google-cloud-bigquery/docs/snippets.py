@@ -220,6 +220,8 @@ def test_update_table_expiration(client, to_delete):
     table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
     table = client.create_table(table)
 
+    # TODO(thejaredchapman): After code sample has been updated from cloud.google.com delete this.
+
     # [START bigquery_update_table_expiration]
     import datetime
 
