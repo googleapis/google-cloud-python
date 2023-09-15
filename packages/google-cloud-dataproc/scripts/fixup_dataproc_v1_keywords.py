@@ -50,7 +50,7 @@ class dataprocCallTransformer(cst.CSTTransformer):
         'delete_cluster': ('project_id', 'region', 'cluster_name', 'cluster_uuid', 'request_id', ),
         'delete_job': ('project_id', 'region', 'job_id', ),
         'delete_workflow_template': ('name', 'version', ),
-        'diagnose_cluster': ('project_id', 'region', 'cluster_name', ),
+        'diagnose_cluster': ('project_id', 'region', 'cluster_name', 'tarball_gcs_dir', 'diagnosis_interval', 'jobs', 'yarn_application_ids', ),
         'get_autoscaling_policy': ('name', ),
         'get_batch': ('name', ),
         'get_cluster': ('project_id', 'region', 'cluster_name', ),
