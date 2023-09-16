@@ -20,6 +20,7 @@ import pandas as pd
 
 import bigframes.constants as constants
 import bigframes.core as core
+import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
@@ -145,6 +146,16 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             self._raise_on_non_numeric("var")
         return self._aggregate_all(agg_ops.var_op, numeric_only=True)
 
+    def skew(
+        self,
+        *,
+        numeric_only: bool = False,
+    ) -> df.DataFrame:
+        if not numeric_only:
+            self._raise_on_non_numeric("skew")
+        block = block_ops.skew(self._block, self._selected_cols, self._by_col_ids)
+        return df.DataFrame(block)
+
     def all(self) -> df.DataFrame:
         return self._aggregate_all(agg_ops.all_op)
 
@@ -167,6 +178,22 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
 
     def cumprod(self, *args, **kwargs) -> df.DataFrame:
         return self._apply_window_op(agg_ops.product_op, numeric_only=True)
+
+    def shift(self, periods=1) -> series.Series:
+        window = core.WindowSpec(
+            grouping_keys=self._by_col_ids,
+            preceding=periods if periods > 0 else None,
+            following=-periods if periods < 0 else None,
+        )
+        return self._apply_window_op(agg_ops.ShiftOp(periods), window=window)
+
+    def diff(self, periods=1) -> series.Series:
+        window = core.WindowSpec(
+            grouping_keys=self._by_col_ids,
+            preceding=periods if periods > 0 else None,
+            following=-periods if periods < 0 else None,
+        )
+        return self._apply_window_op(agg_ops.DiffOp(periods), window=window)
 
     def agg(self, func=None, **kwargs) -> df.DataFrame:
         if func:
@@ -323,10 +350,10 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             grouping_keys=self._by_col_ids, following=0
         )
         columns = self._aggregated_columns(numeric_only=numeric_only)
-        block = self._block.multi_apply_window_op(
+        block, result_ids = self._block.multi_apply_window_op(
             columns, op, window_spec=window_spec, skip_null_groups=self._dropna
         )
-        block = block.select_columns(columns)
+        block = block.select_columns(result_ids)
         return df.DataFrame(block)
 
     def _resolve_label(self, label: blocks.Label) -> str:
@@ -390,6 +417,10 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
 
     def var(self, *args, **kwargs) -> series.Series:
         return self._aggregate(agg_ops.var_op)
+
+    def skew(self, *args, **kwargs) -> series.Series:
+        block = block_ops.skew(self._block, [self._value_column], self._by_col_ids)
+        return series.Series(block)
 
     def prod(self, *args) -> series.Series:
         return self._aggregate(agg_ops.product_op)
@@ -459,8 +490,13 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         )
         return self._apply_window_op(agg_ops.ShiftOp(periods), window=window)
 
-    def diff(self) -> series.Series:
-        return self._ungroup() - self.shift(1)
+    def diff(self, periods=1) -> series.Series:
+        window = core.WindowSpec(
+            grouping_keys=self._by_col_ids,
+            preceding=periods if periods > 0 else None,
+            following=-periods if periods < 0 else None,
+        )
+        return self._apply_window_op(agg_ops.DiffOp(periods), window=window)
 
     def rolling(self, window: int, min_periods=None) -> windows.Window:
         # To get n size window, need current row and n-1 preceding rows.

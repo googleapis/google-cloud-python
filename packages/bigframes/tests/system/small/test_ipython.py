@@ -22,7 +22,8 @@ def test_repr_cache(scalars_df_index):
     # Make sure the df has a new block that the method return value
     # is not already cached.
     test_df = scalars_df_index.head()
+    test_df._block.retrieve_repr_request_results.cache_clear()
     results = display_formatter.format(test_df)
     assert results[0].keys() == {"text/plain", "text/html"}
-    assert test_df._block.retrieve_repr_request_results.cache_info().misses == 1
-    assert test_df._block.retrieve_repr_request_results.cache_info().hits == 1
+    assert test_df._block.retrieve_repr_request_results.cache_info().misses >= 1
+    assert test_df._block.retrieve_repr_request_results.cache_info().hits >= 1

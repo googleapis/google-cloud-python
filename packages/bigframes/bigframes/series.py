@@ -42,6 +42,7 @@ from bigframes.core.ordering import (
     STABLE_SORTS,
 )
 import bigframes.core.scalar as scalars
+import bigframes.core.utils as utils
 import bigframes.core.window
 import bigframes.dataframe
 import bigframes.dtypes
@@ -310,11 +311,20 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         block = block.drop_columns([condition_id])
         return Series(block.select_column(self._value_column))
 
-    def droplevel(self, level: LevelsType):
+    def droplevel(self, level: LevelsType, axis: int | str = 0):
         resolved_level_ids = self._resolve_levels(level)
         return Series(self._block.drop_levels(resolved_level_ids))
 
-    def reorder_levels(self, order: LevelsType):
+    def swaplevel(self, i: int = -2, j: int = -1):
+        level_i = self._block.index_columns[i]
+        level_j = self._block.index_columns[j]
+        mapping = {level_i: level_j, level_j: level_i}
+        reordering = [
+            mapping.get(index_id, index_id) for index_id in self._block.index_columns
+        ]
+        return Series(self._block.reorder_levels(reordering))
+
+    def reorder_levels(self, order: LevelsType, axis: int | str = 0):
         resolved_level_ids = self._resolve_levels(order)
         return Series(self._block.reorder_levels(resolved_level_ids))
 
@@ -352,6 +362,14 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             agg_ops.sum_op, bigframes.core.WindowSpec(following=0)
         )
 
+    def ffill(self, *, limit: typing.Optional[int] = None) -> Series:
+        window = bigframes.core.WindowSpec(preceding=limit, following=0)
+        return self._apply_window_op(agg_ops.LastNonNullOp(), window)
+
+    def bfill(self, *, limit: typing.Optional[int] = None) -> Series:
+        window = bigframes.core.WindowSpec(preceding=0, following=limit)
+        return self._apply_window_op(agg_ops.FirstNonNullOp(), window)
+
     def cummax(self) -> Series:
         return self._apply_window_op(
             agg_ops.max_op, bigframes.core.WindowSpec(following=0)
@@ -375,7 +393,16 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return self._apply_window_op(agg_ops.ShiftOp(periods), window)
 
     def diff(self, periods: int = 1) -> Series:
-        return self - self.shift(periods=periods)
+        window = bigframes.core.WindowSpec(
+            preceding=periods if periods > 0 else None,
+            following=-periods if periods < 0 else None,
+        )
+        return self._apply_window_op(agg_ops.DiffOp(periods), window)
+
+    def pct_change(self, periods: int = 1) -> Series:
+        # Future versions of pandas will not perfrom ffill automatically
+        series = self.ffill()
+        return Series(block_ops.pct_change(series._block, periods=periods))
 
     def rank(
         self,
@@ -389,6 +416,47 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def fillna(self, value=None) -> Series:
         return self._apply_binary_op(value, ops.fillna_op)
+
+    def replace(
+        self, to_replace: typing.Any, value: typing.Any = None, *, regex: bool = False
+    ):
+        if regex:
+            if not (isinstance(to_replace, str) and isinstance(value, str)):
+                raise NotImplementedError(
+                    f"replace regex mode only supports strings for 'to_replace' and 'value'. {constants.FEEDBACK_LINK}"
+                )
+            block, result_col = self._block.apply_unary_op(
+                self._value_column,
+                ops.ReplaceRegexOp(to_replace, value),
+                result_label=self.name,
+            )
+            return Series(block.select_column(result_col))
+        elif utils.is_dict_like(to_replace):
+            raise NotImplementedError(
+                f"Dict 'to_replace' not supported. {constants.FEEDBACK_LINK}"
+            )
+        elif utils.is_list_like(to_replace):
+            block, cond = self._block.apply_unary_op(
+                self._value_column, ops.IsInOp(to_replace)
+            )
+            block, result_col = block.apply_binary_op(
+                cond,
+                self._value_column,
+                ops.partial_arg1(ops.where_op, value),
+                result_label=self.name,
+            )
+            return Series(block.select_column(result_col))
+        else:  # Scalar
+            block, cond = self._block.apply_unary_op(
+                self._value_column, ops.BinopPartialLeft(ops.eq_op, to_replace)
+            )
+            block, result_col = block.apply_binary_op(
+                cond,
+                self._value_column,
+                ops.partial_arg1(ops.where_op, value),
+                result_label=self.name,
+            )
+            return Series(block.select_column(result_col))
 
     def dropna(
         self,
@@ -414,52 +482,16 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def nlargest(self, n: int = 5, keep: str = "first") -> Series:
         if keep not in ("first", "last", "all"):
             raise ValueError("'keep must be one of 'first', 'last', or 'all'")
-        block = self._block
-        if keep == "last":
-            block = block.reversed()
-        ordering = (
-            OrderingColumnReference(
-                self._value_column, direction=OrderingDirection.DESC
-            ),
+        return Series(
+            block_ops.nlargest(self._block, n, [self._value_column], keep=keep)
         )
-        block = block.order_by(ordering, stable=True)
-        if keep in ("first", "last"):
-            return Series(block.slice(0, n))
-        else:  # keep == "all":
-            block, counter = block.apply_window_op(
-                self._value_column,
-                agg_ops.rank_op,
-                window_spec=WindowSpec(ordering=ordering),
-            )
-            block, condition = block.apply_unary_op(
-                counter, ops.partial_right(ops.le_op, n)
-            )
-            block = block.filter(condition)
-            block = block.select_column(self._value_column)
-            return Series(block)
 
     def nsmallest(self, n: int = 5, keep: str = "first") -> Series:
         if keep not in ("first", "last", "all"):
             raise ValueError("'keep must be one of 'first', 'last', or 'all'")
-        block = self._block
-        if keep == "last":
-            block = block.reversed()
-        ordering = (OrderingColumnReference(self._value_column),)
-        block = block.order_by(ordering, stable=True)
-        if keep in ("first", "last"):
-            return Series(block.slice(0, n))
-        else:  # keep == "all":
-            block, counter = block.apply_window_op(
-                self._value_column,
-                agg_ops.rank_op,
-                window_spec=WindowSpec(ordering=ordering),
-            )
-            block, condition = block.apply_unary_op(
-                counter, ops.partial_right(ops.le_op, n)
-            )
-            block = block.filter(condition)
-            block = block.select_column(self._value_column)
-            return Series(block)
+        return Series(
+            block_ops.nsmallest(self._block, n, [self._value_column], keep=keep)
+        )
 
     def isin(self, values) -> "Series" | None:
         if not _is_list_like(values):
@@ -697,13 +729,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         """Useful helper for calculating central moment statistics"""
         # Nth central moment is mean((x-mean(x))^n)
         # See: https://en.wikipedia.org/wiki/Moment_(mathematics)
-        mean = self.mean()
-        mean_deltas = self - mean
-        delta_power = mean_deltas
-        # TODO(tbergeron): Replace with pow once implemented
-        for i in range(1, n):
-            delta_power = delta_power * mean_deltas
-        return delta_power.mean()
+        mean_deltas = self - self.mean()
+        delta_powers = mean_deltas**n
+        return delta_powers.mean()
 
     def agg(self, func: str | typing.Sequence[str]) -> scalars.Scalar | Series:
         if _is_list_like(func):
@@ -1096,6 +1124,85 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def add_suffix(self, suffix: str, axis: int | str | None = None) -> Series:
         return Series(self._get_block().add_suffix(suffix))
 
+    def filter(
+        self,
+        items: typing.Optional[typing.Iterable] = None,
+        like: typing.Optional[str] = None,
+        regex: typing.Optional[str] = None,
+        axis: typing.Optional[typing.Union[str, int]] = None,
+    ) -> Series:
+        if (axis is not None) and utils.get_axis_number(axis) != 0:
+            raise ValueError(f"Invalid axis for series: {axis}")
+        if sum([(items is not None), (like is not None), (regex is not None)]) != 1:
+            raise ValueError(
+                "Need to provide exactly one of 'items', 'like', or 'regex'"
+            )
+        if len(self._block.index_columns) > 1:
+            raise NotImplementedError(
+                "Method filter does not support rows multiindex. {constants.FEEDBACK_LINK}"
+            )
+        if (like is not None) or (regex is not None):
+            block = self._block
+            block, label_string_id = block.apply_unary_op(
+                self._block.index_columns[0],
+                ops.AsTypeOp(pandas.StringDtype(storage="pyarrow")),
+            )
+            if like is not None:
+                block, mask_id = block.apply_unary_op(
+                    label_string_id, ops.ContainsStringOp(pat=like)
+                )
+            else:  # regex
+                assert regex is not None
+                block, mask_id = block.apply_unary_op(
+                    label_string_id, ops.ContainsRegexOp(pat=regex)
+                )
+
+            block = block.filter(mask_id)
+            block = block.select_columns([self._value_column])
+            return Series(block)
+        elif items is not None:
+            # Behavior matches pandas 2.1+, older pandas versions would reindex
+            block = self._block
+            block, mask_id = block.apply_unary_op(
+                self._block.index_columns[0], ops.IsInOp(values=list(items))
+            )
+            block = block.filter(mask_id)
+            block = block.select_columns([self._value_column])
+            return Series(block)
+        else:
+            raise ValueError("Need to provide 'items', 'like', or 'regex'")
+
+    def reindex(self, index=None, *, validate: typing.Optional[bool] = None):
+        if validate and not self.index.is_unique:
+            raise ValueError("Original index must be unique to reindex")
+        keep_original_names = False
+        if isinstance(index, indexes.Index):
+            new_indexer = bigframes.dataframe.DataFrame(data=index._data._get_block())[
+                []
+            ]
+        else:
+            if not isinstance(index, pandas.Index):
+                keep_original_names = True
+                index = pandas.Index(index)
+            if index.nlevels != self.index.nlevels:
+                raise NotImplementedError(
+                    "Cannot reindex with index with different nlevels"
+                )
+            new_indexer = bigframes.dataframe.DataFrame(index=index)[[]]
+        # multiindex join is senstive to index names, so we will set all these
+        result = new_indexer.rename_axis(range(new_indexer.index.nlevels)).join(
+            self.to_frame().rename_axis(range(self.index.nlevels)),
+            how="left",
+        )
+        # and then reset the names after the join
+        result_block = result.rename_axis(
+            self.index.names if keep_original_names else index.names
+        )._block
+        return Series(result_block)
+
+    def reindex_like(self, other: Series, *, validate: typing.Optional[bool] = None):
+        return self.reindex(other.index, validate=validate)
+
     def drop_duplicates(self, *, keep: str = "first") -> Series:
         block = block_ops.drop_duplicates(self._block, (self._value_column,), keep)
         return Series(block)
@@ -1216,14 +1323,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def _throw_if_index_contains_duplicates(
         self, error_message: typing.Optional[str] = None
     ) -> None:
-        duplicates_block, _ = block_ops.indicate_duplicates(
-            self._get_block(), self._get_block().index_columns
-        )
-        duplicates_block = duplicates_block.with_column_labels(
-            ["values", "is_duplicate"]
-        )
-        duplicates_df = bigframes.dataframe.DataFrame(duplicates_block)
-        if duplicates_df["is_duplicate"].any():
+        if not self.index.is_unique:
             error_message = (
                 error_message
                 if error_message

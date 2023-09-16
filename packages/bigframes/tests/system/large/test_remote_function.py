@@ -61,16 +61,32 @@ def get_remote_function_endpoints(bigquery_client, dataset_id):
     return endpoints
 
 
-def get_cloud_functions(functions_client, project, location, name_prefix="bigframes-"):
+def get_cloud_functions(
+    functions_client, project, location, name=None, name_prefix=None
+):
     """Get the cloud functions in the given project and location."""
+
+    assert (
+        not name or not name_prefix
+    ), f"At most one of the {name.__name__} or {name_prefix.__name__} can be passed."
+
     _, location = get_remote_function_locations(location)
     parent = f"projects/{project}/locations/{location}"
     request = functions_v2.ListFunctionsRequest(parent=parent)
     page_result = functions_client.list_functions(request=request)
-    full_name_prefix = parent + f"/functions/{name_prefix}"
     for response in page_result:
-        if not name_prefix or response.name.startswith(full_name_prefix):
-            yield response
+        # If name is provided and it does not match then skip
+        if bool(name):
+            full_name = parent + f"/functions/{name}"
+            if response.name != full_name:
+                continue
+        # If name prefix is provided and it does not match then skip
+        elif bool(name_prefix):
+            full_name_prefix = parent + f"/functions/{name_prefix}"
+            if not response.name.startswith(full_name_prefix):
+                continue
+
+        yield response
 
 
 def delete_cloud_function(functions_client, full_name):
@@ -84,8 +100,17 @@ def cleanup_remote_function_assets(
     bigquery_client, functions_client, remote_udf, ignore_failures=True
 ):
     """Clean up the GCP assets behind a bigframes remote function."""
+
+    # Clean up BQ remote function
     try:
         bigquery_client.delete_routine(remote_udf.bigframes_remote_function)
+    except Exception:
+        # By default don't raise exception in cleanup
+        if not ignore_failures:
+            raise
+
+    # Clean up cloud function
+    try:
         delete_cloud_function(functions_client, remote_udf.bigframes_cloud_function)
     except Exception:
         # By default don't raise exception in cleanup
@@ -94,7 +119,15 @@ def cleanup_remote_function_assets(
 
 
 def make_uniq_udf(udf):
-    """Transform a udf to another with same behavior but a unique name."""
+    """Transform a udf to another with same behavior but a unique name.
+    Use this to test remote functions with reuse=True, in which case parallel
+    instances of the same tests may evaluate same named cloud functions and BQ
+    remote functions, therefore interacting with each other and causing unwanted
+    failures. With this method one can transform a udf into another with the
+    same behavior but a different name which will remain unique for the
+    lifetime of one test instance.
+    """
+
     prefixer = test_utils.prefixer.Prefixer(udf.__name__, "")
     udf_uniq_name = prefixer.create_prefix()
     udf_file_name = f"{udf_uniq_name}.py"
@@ -111,7 +144,18 @@ def make_uniq_udf(udf):
         target_code = source_code.replace(source_key, target_key, 1)
         f.write(target_code)
     spec = importlib.util.spec_from_file_location(udf_file_name, udf_file_path)
-    return getattr(spec.loader.load_module(), udf_uniq_name), tmpdir
+    udf_uniq = getattr(spec.loader.load_module(), udf_uniq_name)
+
+    # This is a bit of a hack but we need to remove the reference to a foreign
+    # module, otherwise the serialization would keep the foreign module
+    # reference and deserialization would fail with error like following:
+    #     ModuleNotFoundError: No module named 'add_one_2nxcmd9j'
+    # TODO(shobs): Figure out if there is a better way of generating the unique
+    # function object, but for now let's just set it to same module as the
+    # original udf.
+    udf_uniq.__module__ = udf.__module__
+
+    return udf_uniq, tmpdir
 
 
 @pytest.fixture(scope="module")
@@ -136,7 +180,10 @@ def cleanup_cloud_functions(session, functions_client, dataset_id_permanent):
     )
     delete_count = 0
     for cloud_function in get_cloud_functions(
-        functions_client, session.bqclient.project, session.bqclient.location
+        functions_client,
+        session.bqclient.project,
+        session.bqclient.location,
+        name_prefix="bigframes-",
     ):
         # Ignore bigframes cloud functions referred by the remote functions in
         # the permanent dataset
@@ -524,15 +571,6 @@ def test_remote_function_restore_with_bigframes_series(
         # Make a unique udf
         add_one_uniq, add_one_uniq_dir = make_uniq_udf(add_one)
 
-        # This is a bit of a hack but we need to remove the reference to a foreign
-        # module, otherwise the serialization would keep the foreign module
-        # reference and deserialization would fail with error like following:
-        #     ModuleNotFoundError: No module named 'add_one_2nxcmd9j'
-        # TODO(shobs): Figure out if there is a better way of generating the unique
-        # function object, but for now let's just set it to same module as the
-        # original udf.
-        add_one_uniq.__module__ = add_one.__module__
-
         # Expected cloud function name for the unique udf
         add_one_uniq_cf_name = get_cloud_function_name(add_one_uniq)
 
@@ -542,7 +580,7 @@ def test_remote_function_restore_with_bigframes_series(
                 functions_client,
                 session.bqclient.project,
                 session.bqclient.location,
-                name_prefix=add_one_uniq_cf_name,
+                name=add_one_uniq_cf_name,
             )
         )
         assert len(cloud_functions) == 0
@@ -563,7 +601,7 @@ def test_remote_function_restore_with_bigframes_series(
                 functions_client,
                 session.bqclient.project,
                 session.bqclient.location,
-                name_prefix=add_one_uniq_cf_name,
+                name=add_one_uniq_cf_name,
             )
         )
         assert len(cloud_functions) == 1
@@ -611,7 +649,7 @@ def test_remote_function_restore_with_bigframes_series(
                 functions_client,
                 session.bqclient.project,
                 session.bqclient.location,
-                name_prefix=add_one_uniq_cf_name,
+                name=add_one_uniq_cf_name,
             )
         )
         assert len(cloud_functions) == 0
@@ -633,7 +671,7 @@ def test_remote_function_restore_with_bigframes_series(
                 functions_client,
                 session.bqclient.project,
                 session.bqclient.location,
-                name_prefix=add_one_uniq_cf_name,
+                name=add_one_uniq_cf_name,
             )
         )
         assert len(cloud_functions) == 1
@@ -776,3 +814,221 @@ def test_remote_udf_lambda(
         cleanup_remote_function_assets(
             session.bqclient, functions_client, add_one_lambda_remote
         )
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_with_explicit_name(
+    session, scalars_dfs, dataset_id, bq_cf_connection, functions_client
+):
+    try:
+
+        def square(x):
+            return x * x
+
+        prefixer = test_utils.prefixer.Prefixer(square.__name__, "")
+        rf_name = prefixer.create_prefix()
+        expected_remote_function = f"{dataset_id}.{rf_name}"
+
+        # Initially the expected BQ remote function should not exist
+        with pytest.raises(NotFound):
+            session.bqclient.get_routine(expected_remote_function)
+
+        # Create the remote function with the name provided explicitly
+        square_remote = session.remote_function(
+            [int],
+            int,
+            dataset_id,
+            bq_cf_connection,
+            reuse=False,
+            name=rf_name,
+        )(square)
+
+        # The remote function should reflect the explicitly provided name
+        assert square_remote.bigframes_remote_function == expected_remote_function
+
+        # Now the expected BQ remote function should exist
+        session.bqclient.get_routine(expected_remote_function)
+
+        # The behavior of the created remote function should be as expected
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        bf_int64_col = scalars_df["int64_too"]
+        bf_result_col = bf_int64_col.apply(square_remote)
+        bf_result = bf_int64_col.to_frame().assign(result=bf_result_col).to_pandas()
+
+        pd_int64_col = scalars_pandas_df["int64_too"]
+        pd_result_col = pd_int64_col.apply(square)
+        # TODO(shobs): Figure why pandas .apply() changes the dtype, i.e.
+        # pd_int64_col.dtype is Int64Dtype()
+        # pd_int64_col.apply(square).dtype is int64.
+        # For this test let's force the pandas dtype to be same as bigframes' dtype.
+        pd_result_col = pd_result_col.astype(pandas.Int64Dtype())
+        pd_result = pd_int64_col.to_frame().assign(result=pd_result_col)
+
+        assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            session.bqclient, functions_client, square_remote
+        )
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_with_explicit_name_reuse(
+    session, scalars_dfs, dataset_id, bq_cf_connection, functions_client
+):
+    try:
+
+        dirs_to_cleanup = []
+
+        # Define a user code
+        def square(x):
+            return x * x
+
+        # Make it a unique udf
+        square_uniq, square_uniq_dir = make_uniq_udf(square)
+        dirs_to_cleanup.append(square_uniq_dir)
+
+        # Define a common routine which accepts a remote function and the
+        # corresponding user defined function and tests that bigframes bahavior
+        # on the former is in parity with the pandas behaviour on the latter
+        def test_internal(rf, udf):
+            # The behavior of the created remote function should be as expected
+            scalars_df, scalars_pandas_df = scalars_dfs
+
+            bf_int64_col = scalars_df["int64_too"]
+            bf_result_col = bf_int64_col.apply(rf)
+            bf_result = bf_int64_col.to_frame().assign(result=bf_result_col).to_pandas()
+
+            pd_int64_col = scalars_pandas_df["int64_too"]
+            pd_result_col = pd_int64_col.apply(udf)
+            # TODO(shobs): Figure why pandas .apply() changes the dtype, i.e.
+            # pd_int64_col.dtype is Int64Dtype()
+            # pd_int64_col.apply(square).dtype is int64.
+            # For this test let's force the pandas dtype to be same as bigframes' dtype.
+            pd_result_col = pd_result_col.astype(pandas.Int64Dtype())
+            pd_result = pd_int64_col.to_frame().assign(result=pd_result_col)
+
+            assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+
+        # Create an explicit name for the remote function
+        prefixer = test_utils.prefixer.Prefixer("foo", "")
+        rf_name = prefixer.create_prefix()
+        expected_remote_function = f"{dataset_id}.{rf_name}"
+
+        # Initially the expected BQ remote function should not exist
+        with pytest.raises(NotFound):
+            session.bqclient.get_routine(expected_remote_function)
+
+        # Create a new remote function with the name provided explicitly
+        square_remote1 = session.remote_function(
+            [int],
+            int,
+            dataset_id,
+            bq_cf_connection,
+            name=rf_name,
+        )(square_uniq)
+
+        # The remote function should reflect the explicitly provided name
+        assert square_remote1.bigframes_remote_function == expected_remote_function
+
+        # Now the expected BQ remote function should exist
+        routine = session.bqclient.get_routine(expected_remote_function)
+        square_remote1_created = routine.created
+        square_remote1_cf_updated = session.cloudfunctionsclient.get_function(
+            name=square_remote1.bigframes_cloud_function
+        ).update_time
+
+        # Test pandas parity with square udf
+        test_internal(square_remote1, square)
+
+        # Now Create another remote function with the same name provided
+        # explicitly. Since reuse is True by default, the previously created
+        # remote function with the same name will be reused.
+        square_remote2 = session.remote_function(
+            [int],
+            int,
+            dataset_id,
+            bq_cf_connection,
+            name=rf_name,
+        )(square_uniq)
+
+        # The new remote function should still reflect the explicitly provided name
+        assert square_remote2.bigframes_remote_function == expected_remote_function
+
+        # The expected BQ remote function should still exist
+        routine = session.bqclient.get_routine(expected_remote_function)
+        square_remote2_created = routine.created
+        square_remote2_cf_updated = session.cloudfunctionsclient.get_function(
+            name=square_remote2.bigframes_cloud_function
+        ).update_time
+
+        # The new remote function should reflect that the previous BQ remote
+        # function and the cloud function were reused instead of creating anew
+        assert square_remote2_created == square_remote1_created
+        assert (
+            square_remote2.bigframes_cloud_function
+            == square_remote1.bigframes_cloud_function
+        )
+        assert square_remote2_cf_updated == square_remote1_cf_updated
+
+        # Test again that the new remote function is actually same as the
+        # previous remote function
+        test_internal(square_remote2, square)
+
+        # Now define a different user code
+        def plusone(x):
+            return x + 1
+
+        # Make it a unique udf
+        plusone_uniq, plusone_uniq_dir = make_uniq_udf(plusone)
+        dirs_to_cleanup.append(plusone_uniq_dir)
+
+        # Now Create a third remote function with the same name provided
+        # explicitly. Even though reuse is True by default, the previously
+        # created remote function with the same name should not be reused since
+        # this time it is a different user code.
+        plusone_remote = session.remote_function(
+            [int],
+            int,
+            dataset_id,
+            bq_cf_connection,
+            name=rf_name,
+        )(plusone_uniq)
+
+        # The new remote function should still reflect the explicitly provided name
+        assert plusone_remote.bigframes_remote_function == expected_remote_function
+
+        # The expected BQ remote function should still exist
+        routine = session.bqclient.get_routine(expected_remote_function)
+        plusone_remote_created = routine.created
+        plusone_remote_cf_updated = session.cloudfunctionsclient.get_function(
+            name=plusone_remote.bigframes_cloud_function
+        ).update_time
+
+        # The new remote function should reflect that the previous BQ remote
+        # function and the cloud function were NOT reused, instead were created
+        # anew
+        assert plusone_remote_created > square_remote2_created
+        assert (
+            plusone_remote.bigframes_cloud_function
+            != square_remote2.bigframes_cloud_function
+        )
+        assert plusone_remote_cf_updated > square_remote2_cf_updated
+
+        # Test again that the new remote function is equivalent to the new user
+        # defined function
+        test_internal(plusone_remote, plusone)
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            session.bqclient, functions_client, square_remote1
+        )
+        cleanup_remote_function_assets(
+            session.bqclient, functions_client, square_remote2
+        )
+        cleanup_remote_function_assets(
+            session.bqclient, functions_client, plusone_remote
+        )
+        for dir_ in dirs_to_cleanup:
+            shutil.rmtree(dir_)

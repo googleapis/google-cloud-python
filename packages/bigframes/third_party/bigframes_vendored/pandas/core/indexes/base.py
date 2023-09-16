@@ -21,6 +21,16 @@ class Index:
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    @property
+    def nlevels(self) -> int:
+        """Number of levels."""
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def is_unique(self) -> bool:
+        """Return if the index has unique values."""
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def to_numpy(self, dtype):
         """
         A NumPy ndarray representing the values in this Series or Index.

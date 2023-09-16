@@ -27,7 +27,7 @@ import bigframes.pandas as bpd
 _PREDICT_OUTPUT_COLUMNS = ["forecast_timestamp", "forecast_value"]
 
 
-class ARIMAPlus(base.TrainablePredictor):
+class ARIMAPlus(base.SupervisedTrainablePredictor):
     """Time Series ARIMA Plus model."""
 
     def __init__(self):
@@ -48,7 +48,7 @@ class ARIMAPlus(base.TrainablePredictor):
         """The model options as they will be set for BQML."""
         return {"model_type": "ARIMA_PLUS"}
 
-    def fit(
+    def _fit(
         self,
         X: Union[bpd.DataFrame, bpd.Series],
         y: Union[bpd.DataFrame, bpd.Series],

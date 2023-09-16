@@ -117,6 +117,25 @@ def value_counts(
     return block.select_column(count_id).with_column_labels(["count"])
 
 
+def pct_change(block: blocks.Block, periods: int = 1) -> blocks.Block:
+    column_labels = block.column_labels
+    window_spec = core.WindowSpec(
+        preceding=periods if periods > 0 else None,
+        following=-periods if periods < 0 else None,
+    )
+
+    original_columns = block.value_columns
+    block, shift_columns = block.multi_apply_window_op(
+        original_columns, agg_ops.ShiftOp(periods), window_spec=window_spec
+    )
+    result_ids = []
+    for original_col, shifted_col in zip(original_columns, shift_columns):
+        block, change_id = block.apply_binary_op(original_col, shifted_col, ops.sub_op)
+        block, pct_change_id = block.apply_binary_op(change_id, shifted_col, ops.div_op)
+        result_ids.append(pct_change_id)
+    return block.select_columns(result_ids).with_column_labels(column_labels)
+
+
 def rank(
     block: blocks.Block,
     method: str = "average",
@@ -229,3 +248,160 @@ def dropna(block: blocks.Block, how: typing.Literal["all", "any"] = "any"):
             filtered_block = filtered_block.filter(predicate)
         filtered_block = filtered_block.select_columns(block.value_columns)
         return filtered_block
+
+
+def nsmallest(
+    block: blocks.Block,
+    n: int,
+    column_ids: typing.Sequence[str],
+    keep: str,
+) -> blocks.Block:
+    if keep not in ("first", "last", "all"):
+        raise ValueError("'keep must be one of 'first', 'last', or 'all'")
+    if keep == "last":
+        block = block.reversed()
+    order_refs = [
+        ordering.OrderingColumnReference(
+            col_id, direction=ordering.OrderingDirection.ASC
+        )
+        for col_id in column_ids
+    ]
+    block = block.order_by(order_refs, stable=True)
+    if keep in ("first", "last"):
+        return block.slice(0, n)
+    else:  # keep == "all":
+        block, counter = block.apply_window_op(
+            column_ids[0],
+            agg_ops.rank_op,
+            window_spec=core.WindowSpec(ordering=order_refs),
+        )
+        block, condition = block.apply_unary_op(
+            counter, ops.partial_right(ops.le_op, n)
+        )
+        block = block.filter(condition)
+        return block.drop_columns([counter, condition])
+
+
+def nlargest(
+    block: blocks.Block,
+    n: int,
+    column_ids: typing.Sequence[str],
+    keep: str,
+) -> blocks.Block:
+    if keep not in ("first", "last", "all"):
+        raise ValueError("'keep must be one of 'first', 'last', or 'all'")
+    if keep == "last":
+        block = block.reversed()
+    order_refs = [
+        ordering.OrderingColumnReference(
+            col_id, direction=ordering.OrderingDirection.DESC
+        )
+        for col_id in column_ids
+    ]
+    block = block.order_by(order_refs, stable=True)
+    if keep in ("first", "last"):
+        return block.slice(0, n)
+    else:  # keep == "all":
+        block, counter = block.apply_window_op(
+            column_ids[0],
+            agg_ops.rank_op,
+            window_spec=core.WindowSpec(ordering=order_refs),
+        )
+        block, condition = block.apply_unary_op(
+            counter, ops.partial_right(ops.le_op, n)
+        )
+        block = block.filter(condition)
+        return block.drop_columns([counter, condition])
+
+
+def skew(
+    block: blocks.Block,
+    skew_column_ids: typing.Sequence[str],
+    grouping_column_ids: typing.Sequence[str] = (),
+) -> blocks.Block:
+
+    original_columns = skew_column_ids
+    column_labels = block.select_columns(original_columns).column_labels
+
+    block, delta3_ids = _mean_delta_to_power(
+        block, 3, original_columns, grouping_column_ids
+    )
+    # counts, moment3 for each column
+    aggregations = []
+    for i, col in enumerate(original_columns):
+        count_agg = (col, agg_ops.count_op)
+        moment3_agg = (delta3_ids[i], agg_ops.mean_op)
+        variance_agg = (col, agg_ops.PopVarOp())
+        aggregations.extend([count_agg, moment3_agg, variance_agg])
+
+    block, agg_ids = block.aggregate(
+        by_column_ids=grouping_column_ids, aggregations=aggregations
+    )
+
+    skew_ids = []
+    for i, col in enumerate(original_columns):
+        # Corresponds to order of aggregations in preceding loop
+        count_id, moment3_id, var_id = agg_ids[i * 3 : (i * 3) + 3]
+        block, skew_id = _skew_from_moments_and_count(
+            block, count_id, moment3_id, var_id
+        )
+        skew_ids.append(skew_id)
+
+    block = block.select_columns(skew_ids).with_column_labels(column_labels)
+    if not grouping_column_ids:
+        # When ungrouped, stack everything into single column so can be returned as series
+        block = block.stack()
+        block = block.drop_levels([block.index_columns[0]])
+    return block
+
+
+def _mean_delta_to_power(
+    block: blocks.Block,
+    n_power,
+    column_ids: typing.Sequence[str],
+    grouping_column_ids: typing.Sequence[str],
+) -> typing.Tuple[blocks.Block, typing.Sequence[str]]:
+    """Calculate (x-mean(x))^n. Useful for calculating moment statistics such as skew and kurtosis."""
+    window = core.WindowSpec(grouping_keys=grouping_column_ids)
+    block, mean_ids = block.multi_apply_window_op(column_ids, agg_ops.mean_op, window)
+    delta_ids = []
+    cube_op = ops.partial_right(ops.pow_op, n_power)
+    for val_id, mean_val_id in zip(column_ids, mean_ids):
+        block, delta_id = block.apply_binary_op(val_id, mean_val_id, ops.sub_op)
+        block, delta_power_id = block.apply_unary_op(delta_id, cube_op)
+        block = block.drop_columns(delta_id)
+        delta_ids.append(delta_power_id)
+    return block, delta_ids
+
+
+def _skew_from_moments_and_count(
+    block: blocks.Block, count_id: str, moment3_id: str, var_id: str
+) -> typing.Tuple[blocks.Block, str]:
+    # Calculate skew using count, third moment and population variance
+    # See G1 estimator:
+    # https://en.wikipedia.org/wiki/Skewness#Sample_skewness
+    block, denominator_id = block.apply_unary_op(
+        var_id, ops.partial_right(ops.pow_op, 3 / 2)
+    )
+    block, base_id = block.apply_binary_op(moment3_id, denominator_id, ops.div_op)
+    block, countminus1_id = block.apply_unary_op(
+        count_id, ops.partial_right(ops.sub_op, 1)
+    )
+    block, countminus2_id = block.apply_unary_op(
+        count_id, ops.partial_right(ops.sub_op, 2)
+    )
+    block, adjustment_id = block.apply_binary_op(count_id, countminus1_id, ops.mul_op)
+    block, adjustment_id = block.apply_unary_op(
+        adjustment_id, ops.partial_right(ops.pow_op, 1 / 2)
+    )
+    block, adjustment_id = block.apply_binary_op(
+        adjustment_id, countminus2_id, ops.div_op
+    )
+    block, skew_id = block.apply_binary_op(base_id, adjustment_id, ops.mul_op)
+
+    # Need to produce NA if have less than 3 data points
+    block, na_cond_id = block.apply_unary_op(count_id, ops.partial_right(ops.ge_op, 3))
+    block, skew_id = block.apply_binary_op(
+        skew_id, na_cond_id, ops.partial_arg3(ops.where_op, None)
+    )
+    return block, skew_id

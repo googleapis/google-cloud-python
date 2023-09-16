@@ -49,7 +49,6 @@ class KMeans(_BaseKMeans):
         self,
         X,
         y=None,
-        transforms: Optional[List[str]] = None,
     ):
         """Compute k-means clustering.
 
@@ -58,10 +57,6 @@ class KMeans(_BaseKMeans):
                 DataFrame of shape (n_samples, n_features). Training data.
             y (default None):
                 Not used, present here for API consistency by convention.
-            transforms (Optional[List[str]], default None):
-                Do not use. Internal param to be deprecated.
-                Use bigframes.ml.pipeline instead.
-
 
         Returns:
             KMeans: Fitted Estimator.

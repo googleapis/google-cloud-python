@@ -455,7 +455,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             raise AttributeError(key)
 
     def __repr__(self) -> str:
-        """Converts a DataFrame to a string. Calls compute.
+        """Converts a DataFrame to a string. Calls to_pandas.
 
         Only represents the first `bigframes.options.display.max_rows`.
         """
@@ -532,13 +532,14 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         other: float | int | bigframes.series.Series | DataFrame,
         op,
         axis: str | int = "columns",
+        how: str = "outer",
     ):
         if isinstance(other, (float, int)):
             return self._apply_scalar_binop(other, op)
         elif isinstance(other, bigframes.series.Series):
-            return self._apply_series_binop(other, op, axis=axis)
+            return self._apply_series_binop(other, op, axis=axis, how=how)
         elif isinstance(other, DataFrame):
-            return self._apply_dataframe_binop(other, op)
+            return self._apply_dataframe_binop(other, op, how=how)
         raise NotImplementedError(
             f"binary operation is not implemented on the second operand of type {type(other).__name__}."
             f"{constants.FEEDBACK_LINK}"
@@ -559,6 +560,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         other: bigframes.series.Series,
         op: ops.BinaryOp,
         axis: str | int = "columns",
+        how: str = "outer",
     ) -> DataFrame:
         if axis not in ("columns", "index", 0, 1):
             raise ValueError(f"Invalid input: axis {axis}.")
@@ -569,7 +571,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             )
 
         joined_index, (get_column_left, get_column_right) = self._block.index.join(
-            other._block.index, how="outer"
+            other._block.index, how=how
         )
 
         series_column_id = other._value.get_name()
@@ -591,22 +593,27 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return DataFrame(block)
 
     def _apply_dataframe_binop(
-        self,
-        other: DataFrame,
-        op: ops.BinaryOp,
+        self, other: DataFrame, op: ops.BinaryOp, how: str = "outer"
     ) -> DataFrame:
         # Join rows
         joined_index, (get_column_left, get_column_right) = self._block.index.join(
-            other._block.index, how="outer"
+            other._block.index, how=how
         )
         # join columns schema
+        # indexers will be none for exact match
         columns, lcol_indexer, rcol_indexer = self.columns.join(
-            other.columns, how="outer", return_indexers=True
+            other.columns, how=how, return_indexers=True
         )
 
         binop_result_ids = []
         block = joined_index._block
-        for left_index, right_index in zip(lcol_indexer, rcol_indexer):
+
+        column_indices = zip(
+            lcol_indexer if (lcol_indexer is not None) else range(len(columns)),
+            rcol_indexer if (lcol_indexer is not None) else range(len(columns)),
+        )
+
+        for left_index, right_index in column_indices:
             if left_index >= 0 and right_index >= 0:  # -1 indices indicate missing
                 left_col_id = self._block.value_columns[left_index]
                 right_col_id = other._block.value_columns[right_index]
@@ -617,13 +624,19 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 )
                 binop_result_ids.append(result_col_id)
             elif left_index >= 0:
-                dtype = self.dtypes[left_index]
-                block, null_col_id = block.create_constant(None, dtype=dtype)
-                binop_result_ids.append(null_col_id)
+                left_col_id = self._block.value_columns[left_index]
+                block, result_col_id = block.apply_unary_op(
+                    get_column_left(left_col_id),
+                    ops.partial_right(op, None),
+                )
+                binop_result_ids.append(result_col_id)
             elif right_index >= 0:
-                dtype = other.dtypes[right_index]
-                block, null_col_id = block.create_constant(None, dtype=dtype)
-                binop_result_ids.append(null_col_id)
+                right_col_id = other._block.value_columns[right_index]
+                block, result_col_id = block.apply_unary_op(
+                    get_column_right(right_col_id),
+                    ops.partial_left(op, None),
+                )
+                binop_result_ids.append(result_col_id)
             else:
                 # Should not be possible
                 raise ValueError("No right or left index.")
@@ -759,6 +772,75 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     __rpow__ = rpow
 
+    def combine(
+        self,
+        other: DataFrame,
+        func: typing.Callable[
+            [bigframes.series.Series, bigframes.series.Series], bigframes.series.Series
+        ],
+        fill_value=None,
+        overwrite: bool = True,
+    ) -> DataFrame:
+        # Join rows
+        joined_index, (get_column_left, get_column_right) = self._block.index.join(
+            other._block.index, how="outer"
+        )
+        columns, lcol_indexer, rcol_indexer = self.columns.join(
+            other.columns, how="outer", return_indexers=True
+        )
+
+        column_indices = zip(
+            lcol_indexer if (lcol_indexer is not None) else range(len(columns)),
+            rcol_indexer if (lcol_indexer is not None) else range(len(columns)),
+        )
+
+        block = joined_index._block
+        results = []
+        for left_index, right_index in column_indices:
+            if left_index >= 0 and right_index >= 0:  # -1 indices indicate missing
+                left_col_id = get_column_left(self._block.value_columns[left_index])
+                right_col_id = get_column_right(other._block.value_columns[right_index])
+                left_series = bigframes.series.Series(block.select_column(left_col_id))
+                right_series = bigframes.series.Series(
+                    block.select_column(right_col_id)
+                )
+                if fill_value is not None:
+                    left_series = left_series.fillna(fill_value)
+                    right_series = right_series.fillna(fill_value)
+                results.append(func(left_series, right_series))
+            elif left_index >= 0:
+                # Does not exist in other
+                if overwrite:
+                    dtype = self.dtypes[left_index]
+                    block, null_col_id = block.create_constant(None, dtype=dtype)
+                    result = bigframes.series.Series(block.select_column(null_col_id))
+                    results.append(result)
+                else:
+                    left_col_id = get_column_left(self._block.value_columns[left_index])
+                    result = bigframes.series.Series(block.select_column(left_col_id))
+                    if fill_value is not None:
+                        result = result.fillna(fill_value)
+                    results.append(result)
+            elif right_index >= 0:
+                right_col_id = get_column_right(other._block.value_columns[right_index])
+                result = bigframes.series.Series(block.select_column(right_col_id))
+                if fill_value is not None:
+                    result = result.fillna(fill_value)
+                results.append(result)
+            else:
+                # Should not be possible
+                raise ValueError("No right or left index.")
+
+        if all([isinstance(val, bigframes.series.Series) for val in results]):
+            import bigframes.core.reshape as rs
+
+            return rs.concat(results, axis=1)
+        else:
+            raise ValueError("'func' must return Series")
+
+    def combine_first(self, other: DataFrame):
+        return self._apply_dataframe_binop(other, ops.fillna_op)
+
     def to_pandas(
         self,
         max_download_size: Optional[int] = None,
@@ -810,6 +892,28 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def tail(self, n: int = 5) -> DataFrame:
         return typing.cast(DataFrame, self.iloc[-n:])
 
+    def nlargest(
+        self,
+        n: int,
+        columns: typing.Union[blocks.Label, typing.Sequence[blocks.Label]],
+        keep: str = "first",
+    ) -> DataFrame:
+        if keep not in ("first", "last", "all"):
+            raise ValueError("'keep must be one of 'first', 'last', or 'all'")
+        column_ids = self._sql_names(columns)
+        return DataFrame(block_ops.nlargest(self._block, n, column_ids, keep=keep))
+
+    def nsmallest(
+        self,
+        n: int,
+        columns: typing.Union[blocks.Label, typing.Sequence[blocks.Label]],
+        keep: str = "first",
+    ) -> DataFrame:
+        if keep not in ("first", "last", "all"):
+            raise ValueError("'keep must be one of 'first', 'last', or 'all'")
+        column_ids = self._sql_names(columns)
+        return DataFrame(block_ops.nsmallest(self._block, n, column_ids, keep=keep))
+
     def drop(
         self,
         labels: typing.Any = None,
@@ -852,13 +956,50 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             raise ValueError("Must specify 'labels' or 'index'/'columns")
         return DataFrame(block)
 
-    def droplevel(self, level: LevelsType):
-        resolved_level_ids = self._resolve_levels(level)
-        return DataFrame(self._block.drop_levels(resolved_level_ids))
+    def droplevel(self, level: LevelsType, axis: int | str = 0):
+        axis_n = utils.get_axis_number(axis)
+        if axis_n == 0:
+            resolved_level_ids = self._resolve_levels(level)
+            return DataFrame(self._block.drop_levels(resolved_level_ids))
+        else:
+            if isinstance(self.columns, pandas.MultiIndex):
+                new_df = self.copy()
+                new_df.columns = self.columns.droplevel(level)
+                return new_df
+            else:
+                raise ValueError("Columns must be a multiindex to drop levels.")
 
-    def reorder_levels(self, order: LevelsType):
-        resolved_level_ids = self._resolve_levels(order)
-        return DataFrame(self._block.reorder_levels(resolved_level_ids))
+    def swaplevel(self, i: int = -2, j: int = -1, axis: int | str = 0):
+        axis_n = utils.get_axis_number(axis)
+        if axis_n == 0:
+            level_i = self._block.index_columns[i]
+            level_j = self._block.index_columns[j]
+            mapping = {level_i: level_j, level_j: level_i}
+            reordering = [
+                mapping.get(index_id, index_id)
+                for index_id in self._block.index_columns
+            ]
+            return DataFrame(self._block.reorder_levels(reordering))
+        else:
+            if isinstance(self.columns, pandas.MultiIndex):
+                new_df = self.copy()
+                new_df.columns = self.columns.swaplevel(i, j)
+                return new_df
+            else:
+                raise ValueError("Columns must be a multiindex to reorder levels.")
+
+    def reorder_levels(self, order: LevelsType, axis: int | str = 0):
+        axis_n = utils.get_axis_number(axis)
+        if axis_n == 0:
+            resolved_level_ids = self._resolve_levels(order)
+            return DataFrame(self._block.reorder_levels(resolved_level_ids))
+        else:
+            if isinstance(self.columns, pandas.MultiIndex):
+                new_df = self.copy()
+                new_df.columns = self.columns.reorder_levels(order)
+                return new_df
+            else:
+                raise ValueError("Columns must be a multiindex to reorder levels.")
 
     def _resolve_levels(self, level: LevelsType) -> typing.Sequence[str]:
         if utils.is_list_like(level):
@@ -1096,8 +1237,177 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         axis = 1 if axis is None else axis
         return DataFrame(self._get_block().add_suffix(suffix, axis))
 
+    def filter(
+        self,
+        items: typing.Optional[typing.Iterable] = None,
+        like: typing.Optional[str] = None,
+        regex: typing.Optional[str] = None,
+        axis: int | str | None = None,
+    ) -> DataFrame:
+        if sum([(items is not None), (like is not None), (regex is not None)]) != 1:
+            raise ValueError(
+                "Need to provide exactly one of 'items', 'like', or 'regex'"
+            )
+        axis_n = utils.get_axis_number(axis) if (axis is not None) else 1
+        if axis_n == 0:  # row labels
+            return self._filter_rows(items, like, regex)
+        else:  # column labels
+            return self._filter_columns(items, like, regex)
+
+    def _filter_rows(
+        self,
+        items: typing.Optional[typing.Iterable] = None,
+        like: typing.Optional[str] = None,
+        regex: typing.Optional[str] = None,
+    ) -> DataFrame:
+        if len(self._block.index_columns) > 1:
+            raise NotImplementedError(
+                "Method filter does not support rows multiindex. {constants.FEEDBACK_LINK}"
+            )
+        if (like is not None) or (regex is not None):
+            block = self._block
+            block, label_string_id = block.apply_unary_op(
+                self._block.index_columns[0],
+                ops.AsTypeOp(pandas.StringDtype(storage="pyarrow")),
+            )
+            if like is not None:
+                block, mask_id = block.apply_unary_op(
+                    label_string_id, ops.ContainsStringOp(pat=like)
+                )
+            else:  # regex
+                assert regex is not None
+                block, mask_id = block.apply_unary_op(
+                    label_string_id, ops.ContainsRegexOp(pat=regex)
+                )
+
+            block = block.filter(mask_id)
+            block = block.select_columns(self._block.value_columns)
+            return DataFrame(block)
+        elif items is not None:
+            # Behavior matches pandas 2.1+, older pandas versions would reindex
+            block = self._block
+            block, mask_id = block.apply_unary_op(
+                self._block.index_columns[0], ops.IsInOp(values=list(items))
+            )
+            block = block.filter(mask_id)
+            block = block.select_columns(self._block.value_columns)
+            return DataFrame(block)
+        else:
+            raise ValueError("Need to provide 'items', 'like', or 'regex'")
+
+    def _filter_columns(
+        self,
+        items: typing.Optional[typing.Iterable] = None,
+        like: typing.Optional[str] = None,
+        regex: typing.Optional[str] = None,
+    ) -> DataFrame:
+        if (like is not None) or (regex is not None):
+
+            def label_filter(label):
+                label_str = label if isinstance(label, str) else str(label)
+                if like:
+                    return like in label_str
+                else:  # regex
+                    return re.match(regex, label_str) is not None
+
+            cols = [
+                col_id
+                for col_id, label in zip(self._block.value_columns, self.columns)
+                if label_filter(label)
+            ]
+            return DataFrame(self._block.select_columns(cols))
+        if items is not None:
+            # Behavior matches pandas 2.1+, older pandas versions would reorder using order of items
+            new_columns = self.columns.intersection(pandas.Index(items))
+            return self.reindex(columns=new_columns)
+        else:
+            raise ValueError("Need to provide 'items', 'like', or 'regex'")
+
+    def reindex(
+        self,
+        labels=None,
+        *,
+        index=None,
+        columns=None,
+        axis: typing.Optional[typing.Union[str, int]] = None,
+        validate: typing.Optional[bool] = None,
+    ):
+        if labels:
+            if index or columns:
+                raise ValueError("Cannot specify both 'labels' and 'index'/'columns")
+            axis_n = utils.get_axis_number(axis) if (axis is not None) else 0
+            if axis_n == 0:
+                index = labels
+            else:
+                columns = labels
+        if (index is not None) and (columns is not None):
+            return self._reindex_columns(columns)._reindex_rows(
+                index, validate=validate or False
+            )
+        if index is not None:
+            return self._reindex_rows(index, validate=validate or False)
+        if columns is not None:
+            return self._reindex_columns(columns)
+
+    def _reindex_rows(
+        self,
+        index,
+        *,
+        validate: typing.Optional[bool] = None,
+    ):
+        if validate and not self.index.is_unique:
+            raise ValueError("Original index must be unique to reindex")
+        keep_original_names = False
+        if isinstance(index, indexes.Index):
+            new_indexer = DataFrame(data=index._data._get_block())[[]]
+        else:
+            if not isinstance(index, pandas.Index):
+                keep_original_names = True
+                index = pandas.Index(index)
+            if index.nlevels != self.index.nlevels:
+                raise NotImplementedError(
+                    "Cannot reindex with index with different nlevels"
+                )
+            new_indexer = DataFrame(index=index)[[]]
+        # multiindex join is senstive to index names, so we will set all these
+        result = new_indexer.rename_axis(range(new_indexer.index.nlevels)).join(
+            self.rename_axis(range(self.index.nlevels)),
+            how="left",
+        )
+        # and then reset the names after the join
+        return result.rename_axis(
+            self.index.names if keep_original_names else index.names
+        )
+
+    def _reindex_columns(self, columns):
+        block = self._block
+        new_column_index, indexer = self.columns.reindex(columns)
+        result_cols = []
+        for label, index in zip(columns, indexer):
+            if index >= 0:
+                result_cols.append(self._block.value_columns[index])
+            else:
+                block, null_col = block.create_constant(
+                    pandas.NA, label, dtype=pandas.Float64Dtype()
+                )
+                result_cols.append(null_col)
+        result_df = DataFrame(block.select_columns(result_cols))
+        result_df.columns = new_column_index
+        return result_df
+
+    def reindex_like(self, other: DataFrame, *, validate: typing.Optional[bool] = None):
+        return self.reindex(index=other.index, columns=other.columns, validate=validate)
+
     def fillna(self, value=None) -> DataFrame:
-        return self._apply_binop(value, ops.fillna_op)
+        return self._apply_binop(value, ops.fillna_op, how="left")
+
+    def ffill(self, *, limit: typing.Optional[int] = None) -> DataFrame:
+        window = bigframes.core.WindowSpec(preceding=limit, following=0)
+        return self._apply_window_op(agg_ops.LastNonNullOp(), window)
+
+    def bfill(self, *, limit: typing.Optional[int] = None) -> DataFrame:
+        window = bigframes.core.WindowSpec(preceding=0, following=limit)
+        return self._apply_window_op(agg_ops.FirstNonNullOp(), window)
 
     def isin(self, values) -> DataFrame:
         if utils.is_dict_like(values):
@@ -1308,6 +1618,14 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             ["count", "mean", "std", "min", "25%", "50%", "75%", "max"]
         )
         return typing.cast(DataFrame, result)
+
+    def skew(self, *, numeric_only: bool = False):
+        if not numeric_only:
+            frame = self._raise_on_non_numeric("skew")
+        else:
+            frame = self._drop_non_numeric()
+        result_block = block_ops.skew(frame._block, frame._block.value_columns)
+        return bigframes.series.Series(result_block)
 
     def pivot(
         self,
@@ -1702,17 +2020,29 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         )
         return self._apply_window_op(agg_ops.ShiftOp(periods), window)
 
+    def diff(self, periods: int = 1) -> DataFrame:
+        window = bigframes.core.WindowSpec(
+            preceding=periods if periods > 0 else None,
+            following=-periods if periods < 0 else None,
+        )
+        return self._apply_window_op(agg_ops.DiffOp(periods), window)
+
+    def pct_change(self, periods: int = 1) -> DataFrame:
+        # Future versions of pandas will not perfrom ffill automatically
+        df = self.ffill()
+        return DataFrame(block_ops.pct_change(df._block, periods=periods))
+
     def _apply_window_op(
         self,
         op: agg_ops.WindowOp,
         window_spec: bigframes.core.WindowSpec,
     ):
-        block = self._block.multi_apply_window_op(
+        block, result_ids = self._block.multi_apply_window_op(
             self._block.value_columns,
             op,
             window_spec=window_spec,
         )
-        return DataFrame(block)
+        return DataFrame(block.select_columns(result_ids))
 
     def sample(
         self,
@@ -1874,6 +2204,98 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         )
         _, query_job = self._block.expr._session._start_query(export_data_statement)
         self._set_internal_query_job(query_job)
+
+    def to_dict(
+        self,
+        orient: Literal[
+            "dict", "list", "series", "split", "tight", "records", "index"
+        ] = "dict",
+        into: type[dict] = dict,
+        **kwargs,
+    ) -> dict | list[dict]:
+        return self.to_pandas().to_dict(orient, into, **kwargs)  # type: ignore
+
+    def to_excel(self, excel_writer, sheet_name: str = "Sheet1", **kwargs) -> None:
+        return self.to_pandas().to_excel(excel_writer, sheet_name, **kwargs)
+
+    def to_latex(
+        self,
+        buf=None,
+        columns: Sequence | None = None,
+        header: bool | Sequence[str] = True,
+        index: bool = True,
+        **kwargs,
+    ) -> str | None:
+        return self.to_pandas().to_latex(
+            buf, columns=columns, header=header, index=index, **kwargs  # type: ignore
+        )
+
+    def to_records(
+        self, index: bool = True, column_dtypes=None, index_dtypes=None
+    ) -> numpy.recarray:
+        return self.to_pandas().to_records(index, column_dtypes, index_dtypes)
+
+    def to_string(
+        self,
+        buf=None,
+        columns: Sequence[str] | None = None,
+        col_space=None,
+        header: bool | Sequence[str] = True,
+        index: bool = True,
+        na_rep: str = "NaN",
+        formatters=None,
+        float_format=None,
+        sparsify: bool | None = None,
+        index_names: bool = True,
+        justify: str | None = None,
+        max_rows: int | None = None,
+        max_cols: int | None = None,
+        show_dimensions: bool = False,
+        decimal: str = ".",
+        line_width: int | None = None,
+        min_rows: int | None = None,
+        max_colwidth: int | None = None,
+        encoding: str | None = None,
+    ) -> str | None:
+        return self.to_pandas().to_string(
+            buf,
+            columns,  # type: ignore
+            col_space,
+            header,  # type: ignore
+            index,
+            na_rep,
+            formatters,
+            float_format,
+            sparsify,
+            index_names,
+            justify,
+            max_rows,
+            max_cols,
+            show_dimensions,
+            decimal,
+            line_width,
+            min_rows,
+            max_colwidth,
+            encoding,
+        )
+
+    def to_markdown(
+        self,
+        buf=None,
+        mode: str = "wt",
+        index: bool = True,
+        **kwargs,
+    ) -> str | None:
+        return self.to_pandas().to_markdown(buf, mode, index, **kwargs)  # type: ignore
+
+    def to_pickle(self, path, **kwargs) -> None:
+        return self.to_pandas().to_pickle(path, **kwargs)
+
+    def to_orc(self, path=None, **kwargs) -> bytes | None:
+        as_pandas = self.to_pandas()
+        # to_orc only works with default index
+        as_pandas_default_index = as_pandas.reset_index()
+        return as_pandas_default_index.to_orc(path, **kwargs)
 
     def _apply_unary_op(self, operation: ops.UnaryOp) -> DataFrame:
         block = self._block.multi_apply_unary_op(self._block.value_columns, operation)

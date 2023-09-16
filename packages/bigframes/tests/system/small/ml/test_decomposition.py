@@ -16,33 +16,14 @@ import pandas as pd
 
 from bigframes.ml import decomposition
 
-_PD_NEW_PENGUINS = pd.DataFrame(
-    {
-        "tag_number": [1633, 1672, 1690],
-        "species": [
-            "Adelie Penguin (Pygoscelis adeliae)",
-            "Gentoo penguin (Pygoscelis papua)",
-            "Adelie Penguin (Pygoscelis adeliae)",
-        ],
-        "island": ["Dream", "Biscoe", "Torgersen"],
-        "culmen_length_mm": [37.8, 46.5, 41.1],
-        "culmen_depth_mm": [18.1, 14.8, 18.6],
-        "flipper_length_mm": [193.0, 217.0, 189.0],
-        "body_mass_g": [3750.0, 5200.0, 3325.0],
-        "sex": ["MALE", "FEMALE", "MALE"],
-    }
-).set_index("tag_number")
 
-
-def test_pca_predict(session, penguins_pca_model: decomposition.PCA):
-    new_penguins = session.read_pandas(_PD_NEW_PENGUINS)
-
-    predictions = penguins_pca_model.predict(new_penguins).to_pandas()
+def test_pca_predict(penguins_pca_model, new_penguins_df):
+    predictions = penguins_pca_model.predict(new_penguins_df).to_pandas()
     expected = pd.DataFrame(
         {
-            "principal_component_1": [-1.459, 2.258, -1.685],
-            "principal_component_2": [-1.120, -1.351, -0.874],
-            "principal_component_3": [-0.646, 0.443, -0.704],
+            "principal_component_1": [-1.314041, -0.855813, -1.848786],
+            "principal_component_2": [-0.889106, -1.259753, -0.983304],
+            "principal_component_3": [-0.704345, 0.322555, -0.095759],
         },
         dtype="Float64",
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),

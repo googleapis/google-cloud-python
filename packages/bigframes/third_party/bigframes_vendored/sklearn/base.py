@@ -144,6 +144,7 @@ class TransformerMixin:
             bigframes.dataframe.DataFrame: DataFrame of shape (n_samples, n_features_new)
                 Transformed DataFrame.
         """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
 
 class MetaEstimatorMixin:

@@ -37,10 +37,6 @@ class XGBModel(XGBModelBase):
                 DataFrame of shape (n_samples,) or (n_samples, n_targets).
                 Target values. Will be cast to X's dtype if necessary.
 
-            transforms (Optional[List[str]], default None):
-                Do not use. Internal param to be deprecated.
-                Use bigframes.ml.pipeline instead.
-
         Returns:
             XGBModel: Fitted Estimator.
         """

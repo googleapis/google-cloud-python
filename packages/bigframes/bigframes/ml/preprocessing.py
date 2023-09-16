@@ -29,8 +29,8 @@ import third_party.bigframes_vendored.sklearn.preprocessing._encoder
 
 
 class StandardScaler(
-    third_party.bigframes_vendored.sklearn.preprocessing._data.StandardScaler,
     base.Transformer,
+    third_party.bigframes_vendored.sklearn.preprocessing._data.StandardScaler,
 ):
     __doc__ = (
         third_party.bigframes_vendored.sklearn.preprocessing._data.StandardScaler.__doc__
@@ -105,8 +105,8 @@ class StandardScaler(
 
 
 class OneHotEncoder(
-    third_party.bigframes_vendored.sklearn.preprocessing._encoder.OneHotEncoder,
     base.Transformer,
+    third_party.bigframes_vendored.sklearn.preprocessing._encoder.OneHotEncoder,
 ):
     # BQML max value https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-one-hot-encoder#syntax
     TOP_K_DEFAULT = 1000000

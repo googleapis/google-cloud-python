@@ -49,10 +49,6 @@ class PCA(BaseEstimator, metaclass=ABCMeta):
             y (default None):
                 Ignored.
 
-            transforms (Optional[List[str]], default None):
-                Do not use. Internal param to be deprecated.
-                Use bigframes.ml.pipeline instead.
-
         Returns:
             PCA: Fitted estimator.
         """

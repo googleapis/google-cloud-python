@@ -70,7 +70,7 @@ def test_xgbregressor_dart_booster_multiple_params(
 ):
     model = bigframes.ml.ensemble.XGBRegressor(
         booster="dart",
-        tree_method="AUTO",
+        tree_method="auto",
         min_tree_child_weight=2,
         colsample_bytree=0.95,
         colsample_bylevel=0.95,
@@ -121,7 +121,7 @@ def test_xgbregressor_dart_booster_multiple_params(
         in reloaded_model._bqml_model.model_name
     )
     assert reloaded_model.booster == "DART"
-    assert reloaded_model.dart_normalized_type == "TREE"
+    assert reloaded_model.dart_normalized_type == "tree"
     assert reloaded_model.tree_method == "AUTO"
     assert reloaded_model.colsample_bytree == 0.95
     assert reloaded_model.colsample_bylevel == 0.95
@@ -185,7 +185,7 @@ def test_xgbclassifier_dart_booster_multiple_params(
 ):
     model = bigframes.ml.ensemble.XGBClassifier(
         booster="dart",
-        tree_method="AUTO",
+        tree_method="auto",
         min_tree_child_weight=2,
         colsample_bytree=0.95,
         colsample_bylevel=0.95,
@@ -235,7 +235,7 @@ def test_xgbclassifier_dart_booster_multiple_params(
         in reloaded_model._bqml_model.model_name
     )
     assert reloaded_model.booster == "DART"
-    assert reloaded_model.dart_normalized_type == "TREE"
+    assert reloaded_model.dart_normalized_type == "tree"
     assert reloaded_model.tree_method == "AUTO"
     assert reloaded_model.colsample_bytree == 0.95
     assert reloaded_model.colsample_bylevel == 0.95
@@ -297,7 +297,7 @@ def test_randomforestregressor_default_params(penguins_df_default_index, dataset
 @pytest.mark.flaky(retries=2, delay=120)
 def test_randomforestregressor_multiple_params(penguins_df_default_index, dataset_id):
     model = bigframes.ml.ensemble.RandomForestRegressor(
-        tree_method="AUTO",
+        tree_method="auto",
         min_tree_child_weight=2,
         colsample_bytree=0.95,
         colsample_bylevel=0.95,

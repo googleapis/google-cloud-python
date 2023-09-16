@@ -47,6 +47,7 @@ dependencies = [
     "ibis-framework[bigquery] >=6.0.0,<=6.1.0",
     "pandas >=1.5.0",
     "pydata-google-auth >=1.8.2",
+    "requests >=2.27.1",
     "scikit-learn >=1.2.2",
     "sqlalchemy >=1.4,<3.0",
     "ipywidgets >=7.7.1",
@@ -58,7 +59,7 @@ extras = {
         "pandas-gbq >=0.19.0",
     ],
     # Packages required for basic development flow.
-    "dev": ["pytest", "pre-commit", "nox", "google-cloud-testutils"],
+    "dev": ["pytest", "pytest-mock", "pre-commit", "nox", "google-cloud-testutils"],
 }
 extras["all"] = list(sorted(frozenset(itertools.chain.from_iterable(extras.values()))))
 

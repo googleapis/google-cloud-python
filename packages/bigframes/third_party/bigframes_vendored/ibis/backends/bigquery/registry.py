@@ -12,8 +12,20 @@ def _approx_quantiles(translator, op: vendored_ibis_ops.ApproximateMultiQuantile
     return f"APPROX_QUANTILES({arg}, {num_bins})"
 
 
+def _first_non_null_value(translator, op: vendored_ibis_ops.FirstNonNullValue):
+    arg = translator.translate(op.arg)
+    return f"FIRST_VALUE({arg} IGNORE NULLS)"
+
+
+def _last_non_null_value(translator, op: vendored_ibis_ops.LastNonNullValue):
+    arg = translator.translate(op.arg)
+    return f"LAST_VALUE({arg} IGNORE NULLS)"
+
+
 patched_ops = {
     vendored_ibis_ops.ApproximateMultiQuantile: _approx_quantiles,
+    vendored_ibis_ops.FirstNonNullValue: _first_non_null_value,
+    vendored_ibis_ops.LastNonNullValue: _last_non_null_value,
 }
 
 OPERATION_REGISTRY.update(patched_ops)

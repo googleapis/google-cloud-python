@@ -186,6 +186,54 @@ def test_fillna(scalars_dfs):
     )
 
 
+def test_series_replace_scalar_scalar(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_name = "string_col"
+    bf_result = (
+        scalars_df[col_name].replace("Hello, World!", "Howdy, Planet!").to_pandas()
+    )
+    pd_result = scalars_pandas_df[col_name].replace("Hello, World!", "Howdy, Planet!")
+
+    pd.testing.assert_series_equal(
+        pd_result,
+        bf_result,
+    )
+
+
+def test_series_replace_regex_scalar(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_name = "string_col"
+    bf_result = (
+        scalars_df[col_name].replace("^H.l", "Howdy, Planet!", regex=True).to_pandas()
+    )
+    pd_result = scalars_pandas_df[col_name].replace(
+        "^H.l", "Howdy, Planet!", regex=True
+    )
+
+    pd.testing.assert_series_equal(
+        pd_result,
+        bf_result,
+    )
+
+
+def test_series_replace_list_scalar(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_name = "string_col"
+    bf_result = (
+        scalars_df[col_name]
+        .replace(["Hello, World!", "T"], "Howdy, Planet!")
+        .to_pandas()
+    )
+    pd_result = scalars_pandas_df[col_name].replace(
+        ["Hello, World!", "T"], "Howdy, Planet!"
+    )
+
+    pd.testing.assert_series_equal(
+        pd_result,
+        bf_result,
+    )
+
+
 @pytest.mark.parametrize(
     ("ignore_index",),
     (
@@ -759,7 +807,6 @@ def test_isin_raise_error(scalars_df_index, scalars_pandas_df_index):
 )
 def test_isin(scalars_dfs, col_name, test_set):
     scalars_df, scalars_pandas_df = scalars_dfs
-    print(type(scalars_pandas_df["datetime_col"].iloc[0]))
     bf_result = scalars_df[col_name].isin(test_set).to_pandas()
     pd_result = scalars_pandas_df[col_name].isin(test_set).astype("boolean")
     pd.testing.assert_series_equal(
@@ -1506,6 +1553,28 @@ def test_shift(scalars_df_index, scalars_pandas_df_index):
     )
 
 
+def test_series_ffill(scalars_df_index, scalars_pandas_df_index):
+    col_name = "numeric_col"
+    bf_result = scalars_df_index[col_name].ffill(limit=1).to_pandas()
+    pd_result = scalars_pandas_df_index[col_name].ffill(limit=1)
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
+    )
+
+
+def test_series_bfill(scalars_df_index, scalars_pandas_df_index):
+    col_name = "numeric_col"
+    bf_result = scalars_df_index[col_name].bfill(limit=2).to_pandas()
+    pd_result = scalars_pandas_df_index[col_name].bfill(limit=2)
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
+    )
+
+
 def test_cumsum_int(scalars_df_index, scalars_pandas_df_index):
     if pd.__version__.startswith("1."):
         pytest.skip("Series.cumsum NA mask are different in pandas 1.x.")
@@ -1588,7 +1657,7 @@ def test_rank_with_nulls(scalars_df_index, scalars_pandas_df_index, na_option, m
         ("all",),
     ],
 )
-def test_nlargest(scalars_df_index, scalars_pandas_df_index, keep):
+def test_series_nlargest(scalars_df_index, scalars_pandas_df_index, keep):
     col_name = "bool_col"
     bf_result = scalars_df_index[col_name].nlargest(4, keep=keep).to_pandas()
     pd_result = scalars_pandas_df_index[col_name].nlargest(4, keep=keep)
@@ -1623,6 +1692,25 @@ def test_diff(scalars_df_index, scalars_pandas_df_index, periods):
 
 
 @pytest.mark.parametrize(
+    ("periods",),
+    [
+        (1,),
+        (2,),
+        (-1,),
+    ],
+)
+def test_series_pct_change(scalars_df_index, scalars_pandas_df_index, periods):
+    bf_result = scalars_df_index["int64_col"].pct_change(periods=periods).to_pandas()
+    # cumsum does not behave well on nullable ints in pandas, produces object type and never ignores NA
+    pd_result = scalars_pandas_df_index["int64_col"].pct_change(periods=periods)
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
+    )
+
+
+@pytest.mark.parametrize(
     ("keep",),
     [
         ("first",),
@@ -1630,7 +1718,7 @@ def test_diff(scalars_df_index, scalars_pandas_df_index, periods):
         ("all",),
     ],
 )
-def test_nsmallest(scalars_df_index, scalars_pandas_df_index, keep):
+def test_series_nsmallest(scalars_df_index, scalars_pandas_df_index, keep):
     col_name = "bool_col"
     bf_result = scalars_df_index[col_name].nsmallest(2, keep=keep).to_pandas()
     pd_result = scalars_pandas_df_index[col_name].nsmallest(2, keep=keep)
@@ -1850,6 +1938,91 @@ def test_series_add_suffix(scalars_df_index, scalars_pandas_df_index):
         bf_result,
         pd_result,
         check_index_type=False,
+    )
+
+
+def test_series_filter_items(scalars_df_index, scalars_pandas_df_index):
+    if pd.__version__.startswith("2.0") or pd.__version__.startswith("1."):
+        pytest.skip("pandas filter items behavior different pre-2.1")
+    bf_result = scalars_df_index["float64_col"].filter(items=[5, 1, 3]).to_pandas()
+
+    pd_result = scalars_pandas_df_index["float64_col"].filter(items=[5, 1, 3])
+
+    # Pandas uses int64 instead of Int64 (nullable) dtype.
+    pd_result.index = pd_result.index.astype(pd.Int64Dtype())
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
+    )
+
+
+def test_series_filter_like(scalars_df_index, scalars_pandas_df_index):
+    scalars_df_index = scalars_df_index.copy().set_index("string_col")
+    scalars_pandas_df_index = scalars_pandas_df_index.copy().set_index("string_col")
+
+    bf_result = scalars_df_index["float64_col"].filter(like="ello").to_pandas()
+
+    pd_result = scalars_pandas_df_index["float64_col"].filter(like="ello")
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
+    )
+
+
+def test_series_filter_regex(scalars_df_index, scalars_pandas_df_index):
+    scalars_df_index = scalars_df_index.copy().set_index("string_col")
+    scalars_pandas_df_index = scalars_pandas_df_index.copy().set_index("string_col")
+
+    bf_result = scalars_df_index["float64_col"].filter(regex="^[GH].*").to_pandas()
+
+    pd_result = scalars_pandas_df_index["float64_col"].filter(regex="^[GH].*")
+
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
+    )
+
+
+def test_series_reindex(scalars_df_index, scalars_pandas_df_index):
+    bf_result = (
+        scalars_df_index["float64_col"].reindex(index=[5, 1, 3, 99, 1]).to_pandas()
+    )
+
+    pd_result = scalars_pandas_df_index["float64_col"].reindex(index=[5, 1, 3, 99, 1])
+
+    # Pandas uses int64 instead of Int64 (nullable) dtype.
+    pd_result.index = pd_result.index.astype(pd.Int64Dtype())
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
+    )
+
+
+def test_series_reindex_nonunique(scalars_df_index):
+    with pytest.raises(ValueError):
+        # int64_too is non-unique
+        scalars_df_index.set_index("int64_too")["float64_col"].reindex(
+            index=[5, 1, 3, 99, 1], validate=True
+        )
+
+
+def test_series_reindex_like(scalars_df_index, scalars_pandas_df_index):
+    bf_reindex_target = scalars_df_index["float64_col"].reindex(index=[5, 1, 3, 99, 1])
+    bf_result = (
+        scalars_df_index["int64_too"].reindex_like(bf_reindex_target).to_pandas()
+    )
+
+    pd_reindex_target = scalars_pandas_df_index["float64_col"].reindex(
+        index=[5, 1, 3, 99, 1]
+    )
+    pd_result = scalars_pandas_df_index["int64_too"].reindex_like(pd_reindex_target)
+
+    # Pandas uses int64 instead of Int64 (nullable) dtype.
+    pd_result.index = pd_result.index.astype(pd.Int64Dtype())
+    pd.testing.assert_series_equal(
+        bf_result,
+        pd_result,
     )
 
 

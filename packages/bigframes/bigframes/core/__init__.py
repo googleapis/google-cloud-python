@@ -518,8 +518,8 @@ class ArrayValue:
         """
         Apply aggregations to the expression.
         Arguments:
-            by_column_id: column id of the aggregation key, this is preserved through the transform
             aggregations: input_column_id, operation, output_column_id tuples
+            by_column_id: column id of the aggregation key, this is preserved through the transform
             dropna: whether null keys should be dropped
         """
         table = self.to_ibis_expr(ordering_mode="unordered")

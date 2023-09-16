@@ -758,6 +758,41 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def reindex(self, index=None):
+        """
+        Conform Series to new index with optional filling logic.
+
+        Places NA/NaN in locations having no value in the previous index. A new object
+        is produced unless the new index is equivalent to the current one and
+        ``copy=False``.
+
+        Args:
+            index (array-like, optional):
+                New labels for the index. Preferably an Index object to avoid
+                duplicating data.
+
+        Returns:
+            Series: Series with changed index.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def reindex_like(self, other):
+        """Return an object with matching indices as other object.
+
+        Conform the object to the same index on all axes. Optional
+        filling logic, placing Null in locations having no value
+        in the previous index.
+
+        Args:
+            other (Object of the same data type):
+                Its row and column indices are used to define the new indices
+                of this object.
+
+        Returns:
+            Series or DataFrame: Same type as caller, but with changed indices on each axis.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def drop(
         self, labels=None, *, axis=0, index=None, columns=None, level=None
     ) -> Series | None:
@@ -790,7 +825,7 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def reorder_levels(self, order: Sequence) -> Series:
+    def reorder_levels(self, order: Sequence, axis) -> Series:
         """
         Rearrange index levels using input order.
 
@@ -800,12 +835,31 @@ class Series(NDFrame):  # type: ignore[misc]
             order (list of int representing new level order):
                 Reference level by number or key.
 
+            axis ({0 or 'index', 1 or 'columns'}, default 0):
+                For `Series` this parameter is unused and defaults to 0.
+
+
         Returns:
             type of caller (new object)
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def droplevel(self, level):
+    def swaplevel(self, i, j):
+        """
+        Swap levels i and j in a `MultiIndex`.
+
+        Default is to swap the two innermost levels of the index.
+
+        Args:
+            i, j (int or str):
+                Levels of the indices to be swapped. Can pass level name as string.
+
+        Returns:
+            Series: Series with levels swapped in MultiIndex
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def droplevel(self, level, axis):
         """
         Return Series with requested index / column level(s) removed.
 
@@ -814,6 +868,9 @@ class Series(NDFrame):  # type: ignore[misc]
                 If a string is given, must be the name of a level
                 If list-like, elements must be names or positional indexes
                 of levels.
+
+            axis ({0 or 'index', 1 or 'columns'}, default 0):
+                For `Series` this parameter is unused and defaults to 0.
 
         Returns:
             Series with requested index / column level(s) removed.
@@ -833,6 +890,69 @@ class Series(NDFrame):  # type: ignore[misc]
 
         Returns:
             Series or None: Object with missing values filled or None.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def replace(
+        self,
+        to_replace,
+        value=None,
+    ) -> Series | None:
+        """
+        Replace values given in `to_replace` with `value`.
+
+        Values of the Series/DataFrame are replaced with other values dynamically.
+        This differs from updating with ``.loc`` or ``.iloc``, which require
+        you to specify a location to update with some value.
+
+        Args:
+            to_replace (str, regex, list, int, float or None):
+                How to find the values that will be replaced.
+
+                * numeric, str or regex:
+
+                    - numeric: numeric values equal to `to_replace` will be
+                      replaced with `value`
+                    - str: string exactly matching `to_replace` will be replaced
+                      with `value`
+                    - regex: regexs matching `to_replace` will be replaced with
+                      `value`
+
+                * list of str, regex, or numeric:
+
+                    - First, if `to_replace` and `value` are both lists, they
+                      **must** be the same length.
+                    - Second, if ``regex=True`` then all of the strings in **both**
+                      lists will be interpreted as regexs otherwise they will match
+                      directly. This doesn't matter much for `value` since there
+                      are only a few possible substitution regexes you can use.
+                    - str, regex and numeric rules apply as above.
+
+            value (scalar, default None):
+                Value to replace any values matching `to_replace` with.
+                For a DataFrame a dict of values can be used to specify which
+                value to use for each column (columns not in the dict will not be
+                filled). Regular expressions, strings and lists or dicts of such
+                objects are also allowed.
+            regex (bool, default False):
+                Whether to interpret `to_replace` and/or `value` as regular
+                expressions. If this is ``True`` then `to_replace` *must* be a
+                string.
+
+        Returns:
+            Series/DataFrame: Object after replacement.
+
+        Raises:
+            TypeError:
+                * If `to_replace` is not a scalar, array-like, ``dict``, or ``None``
+                * If `to_replace` is a ``dict`` and `value` is not a ``list``,
+                  ``dict``, ``ndarray``, or ``Series``
+                * If `to_replace` is ``None`` and `regex` is not compilable
+                  into a regular expression or is a list, dict, ndarray, or
+                  Series.
+                * When replacing multiple ``bool`` or ``datetime64`` objects and
+                  the arguments to `to_replace` does not match the type of the
+                  value being replaced
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

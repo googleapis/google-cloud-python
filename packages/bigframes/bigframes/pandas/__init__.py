@@ -399,6 +399,7 @@ def remote_function(
     dataset: Optional[str] = None,
     bigquery_connection: Optional[str] = None,
     reuse: bool = True,
+    name: Optional[str] = None,
 ):
     return global_session.with_default_session(
         bigframes.session.Session.remote_function,
@@ -407,6 +408,7 @@ def remote_function(
         dataset=dataset,
         bigquery_connection=bigquery_connection,
         reuse=reuse,
+        name=name,
     )
 
 

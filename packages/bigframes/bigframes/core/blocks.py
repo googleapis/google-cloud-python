@@ -709,8 +709,9 @@ class Block:
         window_spec: core.WindowSpec,
         *,
         skip_null_groups: bool = False,
-    ) -> Block:
+    ) -> typing.Tuple[Block, typing.Sequence[str]]:
         block = self
+        result_ids = []
         for i, col_id in enumerate(columns):
             label = self.col_id_to_label[col_id]
             block, result_id = block.apply_window_op(
@@ -721,9 +722,8 @@ class Block:
                 result_label=label,
                 skip_null_groups=skip_null_groups,
             )
-            block = block.copy_values(result_id, col_id)
-            block = block.drop_columns([result_id])
-        return block
+            result_ids.append(result_id)
+        return block, result_ids
 
     def multi_apply_unary_op(
         self,
@@ -1123,7 +1123,9 @@ class Block:
         )
 
     def add_prefix(self, prefix: str, axis: str | int | None = None) -> Block:
-        axis_number = bigframes.core.utils.get_axis_number(axis)
+        axis_number = bigframes.core.utils.get_axis_number(
+            "rows" if (axis is None) else axis
+        )
         if axis_number == 0:
             expr = self._expr
             for index_col in self._index_columns:
@@ -1140,7 +1142,9 @@ class Block:
             return self.rename(columns=lambda label: f"{prefix}{label}")
 
     def add_suffix(self, suffix: str, axis: str | int | None = None) -> Block:
-        axis_number = bigframes.core.utils.get_axis_number(axis)
+        axis_number = bigframes.core.utils.get_axis_number(
+            "rows" if (axis is None) else axis
+        )
         if axis_number == 0:
             expr = self._expr
             for index_col in self._index_columns:

@@ -210,12 +210,14 @@ def test_dataframe_groupby_multi_sum(
         (lambda x: x.cummax(numeric_only=True)),
         (lambda x: x.cummin(numeric_only=True)),
         (lambda x: x.cumprod()),
+        (lambda x: x.shift(periods=2)),
     ],
     ids=[
         "cumsum",
         "cummax",
         "cummin",
         "cumprod",
+        "shift",
     ],
 )
 def test_dataframe_groupby_analytic(
@@ -224,6 +226,30 @@ def test_dataframe_groupby_analytic(
     col_names = ["float64_col", "int64_col", "bool_col", "string_col"]
     bf_result = operator(scalars_df_index[col_names].groupby("string_col"))
     pd_result = operator(scalars_pandas_df_index[col_names].groupby("string_col"))
+    bf_result_computed = bf_result.to_pandas()
+
+    pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)
+
+
+def test_series_groupby_skew(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index.groupby("bool_col")["int64_too"].skew().to_pandas()
+    pd_result = scalars_pandas_df_index.groupby("bool_col")["int64_too"].skew()
+
+    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+
+def test_dataframe_groupby_skew(scalars_df_index, scalars_pandas_df_index):
+    col_names = ["float64_col", "int64_col", "bool_col"]
+    bf_result = scalars_df_index[col_names].groupby("bool_col").skew().to_pandas()
+    pd_result = scalars_pandas_df_index[col_names].groupby("bool_col").skew()
+
+    pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+
+
+def test_dataframe_groupby_diff(scalars_df_index, scalars_pandas_df_index):
+    col_names = ["float64_col", "int64_col", "string_col"]
+    bf_result = scalars_df_index[col_names].groupby("string_col").diff(-1)
+    pd_result = scalars_pandas_df_index[col_names].groupby("string_col").diff(-1)
     bf_result_computed = bf_result.to_pandas()
 
     pd.testing.assert_frame_equal(pd_result, bf_result_computed, check_dtype=False)

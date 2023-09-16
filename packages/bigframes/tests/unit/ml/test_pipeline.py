@@ -18,38 +18,35 @@ import sklearn.linear_model as sklearn_linear_model  # type: ignore
 import sklearn.pipeline as sklearn_pipeline  # type: ignore
 import sklearn.preprocessing as sklearn_preprocessing  # type: ignore
 
-import bigframes.ml.compose
-import bigframes.ml.linear_model
-import bigframes.ml.pipeline
-import bigframes.ml.preprocessing
+from bigframes.ml import compose, forecasting, linear_model, pipeline, preprocessing
 
 
 def test_pipeline_repr():
-    pipeline = bigframes.ml.pipeline.Pipeline(
+    pl = pipeline.Pipeline(
         [
             (
                 "preproc",
-                bigframes.ml.compose.ColumnTransformer(
+                compose.ColumnTransformer(
                     [
                         (
                             "onehot",
-                            bigframes.ml.preprocessing.OneHotEncoder(),
+                            preprocessing.OneHotEncoder(),
                             "species",
                         ),
                         (
                             "scale",
-                            bigframes.ml.preprocessing.StandardScaler(),
+                            preprocessing.StandardScaler(),
                             ["culmen_length_mm", "flipper_length_mm"],
                         ),
                     ]
                 ),
             ),
-            ("linreg", bigframes.ml.linear_model.LinearRegression()),
+            ("linreg", linear_model.LinearRegression()),
         ]
     )
 
     assert (
-        pipeline.__repr__()
+        pl.__repr__()
         == """Pipeline(steps=[('preproc',
                  ColumnTransformer(transformers=[('onehot', OneHotEncoder(),
                                                   'species'),
@@ -62,29 +59,29 @@ def test_pipeline_repr():
 
 @pytest.mark.skipif(sklearn_pipeline is None, reason="requires sklearn")
 def test_pipeline_repr_matches_sklearn():
-    bf_pipeline = bigframes.ml.pipeline.Pipeline(
+    bf_pl = pipeline.Pipeline(
         [
             (
                 "preproc",
-                bigframes.ml.compose.ColumnTransformer(
+                compose.ColumnTransformer(
                     [
                         (
                             "onehot",
-                            bigframes.ml.preprocessing.OneHotEncoder(),
+                            preprocessing.OneHotEncoder(),
                             "species",
                         ),
                         (
                             "scale",
-                            bigframes.ml.preprocessing.StandardScaler(),
+                            preprocessing.StandardScaler(),
                             ["culmen_length_mm", "flipper_length_mm"],
                         ),
                     ]
                 ),
             ),
-            ("linreg", bigframes.ml.linear_model.LinearRegression()),
+            ("linreg", linear_model.LinearRegression()),
         ]
     )
-    sk_pipeline = sklearn_pipeline.Pipeline(
+    sk_pl = sklearn_pipeline.Pipeline(
         [
             (
                 "preproc",
@@ -107,4 +104,17 @@ def test_pipeline_repr_matches_sklearn():
         ]
     )
 
-    assert bf_pipeline.__repr__() == sk_pipeline.__repr__()
+    assert bf_pl.__repr__() == sk_pl.__repr__()
+
+
+def test_pipeline_arima_plus_not_implemented():
+    with pytest.raises(NotImplementedError):
+        pipeline.Pipeline(
+            [
+                (
+                    "transform",
+                    preprocessing.StandardScaler(),
+                ),
+                ("estimator", forecasting.ARIMAPlus()),
+            ]
+        )

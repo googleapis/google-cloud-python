@@ -48,8 +48,8 @@ _BQML_PARAMS_MAPPING = {
 
 
 class XGBRegressor(
+    base.SupervisedTrainablePredictor,
     third_party.bigframes_vendored.xgboost.sklearn.XGBRegressor,
-    base.TrainablePredictor,
 ):
     __doc__ = third_party.bigframes_vendored.xgboost.sklearn.XGBRegressor.__doc__
 
@@ -57,22 +57,22 @@ class XGBRegressor(
         self,
         num_parallel_tree: int = 1,
         booster: Literal["gbtree", "dart"] = "gbtree",
-        dart_normalized_type: Literal["TREE", "FOREST"] = "TREE",
+        dart_normalized_type: Literal["tree", "forest"] = "tree",
         tree_method: Literal["auto", "exact", "approx", "hist"] = "auto",
         min_tree_child_weight: int = 1,
-        colsample_bytree=1.0,
-        colsample_bylevel=1.0,
-        colsample_bynode=1.0,
-        gamma=0.0,
+        colsample_bytree: float = 1.0,
+        colsample_bylevel: float = 1.0,
+        colsample_bynode: float = 1.0,
+        gamma: float = 0.0,
         max_depth: int = 6,
-        subsample=1.0,
-        reg_alpha=0.0,
-        reg_lambda=1.0,
-        early_stop=True,
-        learning_rate=0.3,
+        subsample: float = 1.0,
+        reg_alpha: float = 0.0,
+        reg_lambda: float = 1.0,
+        early_stop: float = True,
+        learning_rate: float = 0.3,
         max_iterations: int = 20,
-        min_rel_progress=0.01,
-        enable_global_explain=False,
+        min_rel_progress: float = 0.01,
+        enable_global_explain: bool = False,
         xgboost_version: Literal["0.9", "1.1"] = "0.9",
     ):
         self.num_parallel_tree = num_parallel_tree
@@ -143,7 +143,7 @@ class XGBRegressor(
             "xgboost_version": self.xgboost_version,
         }
 
-    def fit(
+    def _fit(
         self,
         X: Union[bpd.DataFrame, bpd.Series],
         y: Union[bpd.DataFrame, bpd.Series],
@@ -211,8 +211,8 @@ class XGBRegressor(
 
 
 class XGBClassifier(
+    base.SupervisedTrainablePredictor,
     third_party.bigframes_vendored.xgboost.sklearn.XGBClassifier,
-    base.TrainablePredictor,
 ):
 
     __doc__ = third_party.bigframes_vendored.xgboost.sklearn.XGBClassifier.__doc__
@@ -221,22 +221,22 @@ class XGBClassifier(
         self,
         num_parallel_tree: int = 1,
         booster: Literal["gbtree", "dart"] = "gbtree",
-        dart_normalized_type: Literal["TREE", "FOREST"] = "TREE",
+        dart_normalized_type: Literal["tree", "forest"] = "tree",
         tree_method: Literal["auto", "exact", "approx", "hist"] = "auto",
         min_tree_child_weight: int = 1,
-        colsample_bytree=1.0,
-        colsample_bylevel=1.0,
-        colsample_bynode=1.0,
-        gamma=0.0,
+        colsample_bytree: float = 1.0,
+        colsample_bylevel: float = 1.0,
+        colsample_bynode: float = 1.0,
+        gamma: float = 0.0,
         max_depth: int = 6,
-        subsample=1.0,
-        reg_alpha=0.0,
-        reg_lambda=1.0,
-        early_stop=True,
-        learning_rate=0.3,
+        subsample: float = 1.0,
+        reg_alpha: float = 0.0,
+        reg_lambda: float = 1.0,
+        early_stop: bool = True,
+        learning_rate: float = 0.3,
         max_iterations: int = 20,
-        min_rel_progress=0.01,
-        enable_global_explain=False,
+        min_rel_progress: float = 0.01,
+        enable_global_explain: bool = False,
         xgboost_version: Literal["0.9", "1.1"] = "0.9",
     ):
         self.num_parallel_tree = num_parallel_tree
@@ -307,7 +307,7 @@ class XGBClassifier(
             "xgboost_version": self.xgboost_version,
         }
 
-    def fit(
+    def _fit(
         self,
         X: Union[bpd.DataFrame, bpd.Series],
         y: Union[bpd.DataFrame, bpd.Series],
@@ -374,8 +374,8 @@ class XGBClassifier(
 
 
 class RandomForestRegressor(
+    base.SupervisedTrainablePredictor,
     third_party.bigframes_vendored.sklearn.ensemble._forest.RandomForestRegressor,
-    base.TrainablePredictor,
 ):
 
     __doc__ = (
@@ -461,7 +461,7 @@ class RandomForestRegressor(
             "xgboost_version": self.xgboost_version,
         }
 
-    def fit(
+    def _fit(
         self,
         X: Union[bpd.DataFrame, bpd.Series],
         y: Union[bpd.DataFrame, bpd.Series],
@@ -542,8 +542,8 @@ class RandomForestRegressor(
 
 
 class RandomForestClassifier(
+    base.SupervisedTrainablePredictor,
     third_party.bigframes_vendored.sklearn.ensemble._forest.RandomForestClassifier,
-    base.TrainablePredictor,
 ):
 
     __doc__ = (
@@ -629,7 +629,7 @@ class RandomForestClassifier(
             "xgboost_version": self.xgboost_version,
         }
 
-    def fit(
+    def _fit(
         self,
         X: Union[bpd.DataFrame, bpd.Series],
         y: Union[bpd.DataFrame, bpd.Series],

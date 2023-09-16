@@ -24,14 +24,14 @@ from google.cloud import bigquery
 
 import bigframes
 import bigframes.constants as constants
-from bigframes.ml import base, compose, loader, preprocessing, utils
+from bigframes.ml import base, compose, forecasting, loader, preprocessing, utils
 import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.pipeline
 
 
 class Pipeline(
-    third_party.bigframes_vendored.sklearn.pipeline.Pipeline,
     base.BaseEstimator,
+    third_party.bigframes_vendored.sklearn.pipeline.Pipeline,
 ):
     __doc__ = third_party.bigframes_vendored.sklearn.pipeline.Pipeline.__doc__
 
@@ -55,7 +55,7 @@ class Pipeline(
             self._transform = transform
         else:
             raise NotImplementedError(
-                f"Transform {transform} is not yet supported by Pipeline. {constants.FEEDBACK_LINK}"
+                f"Transformer type {type(transform)} is not yet supported by Pipeline. {constants.FEEDBACK_LINK}"
             )
 
         if not isinstance(
@@ -63,7 +63,13 @@ class Pipeline(
             base.TrainablePredictor,
         ):
             raise NotImplementedError(
-                f"Estimator {estimator} is not supported by Pipeline. {constants.FEEDBACK_LINK}"
+                f"Estimator type {type(estimator)} is not supported by Pipeline. {constants.FEEDBACK_LINK}"
+            )
+
+        # BQML doesn't support ARIMA_PLUS with transformers. b/298676367
+        if isinstance(estimator, forecasting.ARIMAPlus):
+            raise NotImplementedError(
+                f"Estimator type {type(estimator)} is not supported by Pipeline. {constants.FEEDBACK_LINK}"
             )
 
         self._transform = transform
@@ -92,7 +98,7 @@ class Pipeline(
             (y,) = utils.convert_to_dataframe(y)
             transform_sqls.extend(y.columns.tolist())
 
-        self._estimator.fit(X=X, y=y, transforms=transform_sqls)
+        self._estimator._fit(X=X, y=y, transforms=transform_sqls)
         return self
 
     def predict(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:

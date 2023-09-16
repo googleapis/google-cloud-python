@@ -23,8 +23,8 @@ UNNAMED_COLUMN_ID = "bigframes_unnamed_column"
 UNNAMED_INDEX_ID = "bigframes_unnamed_index"
 
 
-def get_axis_number(axis: typing.Union[str, int, None]) -> typing.Literal[0, 1]:
-    if axis in {0, "index", "rows", None}:
+def get_axis_number(axis: typing.Union[str, int]) -> typing.Literal[0, 1]:
+    if axis in {0, "index", "rows"}:
         return 0
     elif axis in {1, "columns"}:
         return 1

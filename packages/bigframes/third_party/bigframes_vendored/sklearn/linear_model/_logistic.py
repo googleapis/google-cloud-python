@@ -37,7 +37,6 @@ class LogisticRegression(LinearClassifierMixin, BaseEstimator):
         self,
         X,
         y,
-        transforms: Optional[List[str]] = None,
     ):
         """Fit the model according to the given training data.
 
@@ -49,10 +48,6 @@ class LogisticRegression(LinearClassifierMixin, BaseEstimator):
 
             y (bigframes.dataframe.DataFrame or bigframes.series.Series):
                 DataFrame of shape (n_samples,). Target vector relative to X.
-
-            transforms (Optional[List[str]], default None):
-                Do not use. Internal param to be deprecated.
-                Use bigframes.ml.pipeline instead.
 
 
         Returns:

@@ -30,8 +30,8 @@ import third_party.bigframes_vendored.sklearn.linear_model._logistic
 
 
 class LinearRegression(
+    base.SupervisedTrainablePredictor,
     third_party.bigframes_vendored.sklearn.linear_model._base.LinearRegression,
-    base.TrainablePredictor,
 ):
     __doc__ = (
         third_party.bigframes_vendored.sklearn.linear_model._base.LinearRegression.__doc__
@@ -39,7 +39,7 @@ class LinearRegression(
 
     def __init__(
         self,
-        fit_intercept=True,
+        fit_intercept: bool = True,
     ):
         self.fit_intercept = fit_intercept
         self._bqml_model: Optional[core.BqmlModel] = None
@@ -71,7 +71,7 @@ class LinearRegression(
             "fit_intercept": self.fit_intercept,
         }
 
-    def fit(
+    def _fit(
         self,
         X: Union[bpd.DataFrame, bpd.Series],
         y: Union[bpd.DataFrame, bpd.Series],
@@ -136,8 +136,8 @@ class LinearRegression(
 
 
 class LogisticRegression(
+    base.SupervisedTrainablePredictor,
     third_party.bigframes_vendored.sklearn.linear_model._logistic.LogisticRegression,
-    base.TrainablePredictor,
 ):
     __doc__ = (
         third_party.bigframes_vendored.sklearn.linear_model._logistic.LogisticRegression.__doc__
@@ -189,12 +189,13 @@ class LogisticRegression(
             # "class_weights": self.class_weights,
         }
 
-    def fit(
+    def _fit(
         self,
         X: Union[bpd.DataFrame, bpd.Series],
         y: Union[bpd.DataFrame, bpd.Series],
         transforms: Optional[List[str]] = None,
     ) -> LogisticRegression:
+        """Fit model with transforms."""
         X, y = utils.convert_to_dataframe(X, y)
 
         self._bqml_model = core.create_bqml_model(

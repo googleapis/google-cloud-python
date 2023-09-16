@@ -28,6 +28,8 @@ import tempfile
 import textwrap
 from typing import List, NamedTuple, Optional, Sequence, TYPE_CHECKING
 
+import requests
+
 if TYPE_CHECKING:
     from bigframes.session import Session
 
@@ -99,7 +101,7 @@ def get_remote_function_locations(bq_location):
 
 
 def _get_hash(def_):
-    "Get hash of a function."
+    "Get hash (32 digits alphanumeric) of a function."
     def_repr = cloudpickle.dumps(def_, protocol=_pickle_protocol_version)
     return hashlib.md5(def_repr).hexdigest()
 
@@ -128,7 +130,7 @@ class IbisSignature(NamedTuple):
 
 
 def get_cloud_function_name(def_, uniq_suffix=None):
-    """Get the name of the cloud function."""
+    "Get a name for the cloud function for the given user defined function."
     cf_name = _get_hash(def_)
     cf_name = f"bigframes-{cf_name}"  # for identification
     if uniq_suffix:
@@ -137,7 +139,7 @@ def get_cloud_function_name(def_, uniq_suffix=None):
 
 
 def get_remote_function_name(def_, uniq_suffix=None):
-    """Get the name for the BQ remote function."""
+    "Get a name for the BQ remote function for the given user defined function."
     bq_rf_name = _get_hash(def_)
     bq_rf_name = f"bigframes_{bq_rf_name}"  # for identification
     if uniq_suffix:
@@ -206,9 +208,15 @@ class RemoteFunctionClient:
         query_job.result()  # Wait for the job to complete.
         logger.info(f"Created remote function {query_job.ddl_target_routine}")
 
+    def get_cloud_function_fully_qualified_parent(self):
+        "Get the fully qualilfied parent for a cloud function."
+        return self._cloud_functions_client.common_location_path(
+            self._gcp_project_id, self._cloud_function_region
+        )
+
     def get_cloud_function_fully_qualified_name(self, name):
         "Get the fully qualilfied name for a cloud function."
-        return "projects/{}/locations/{}/functions/{}".format(
+        return self._cloud_functions_client.function_path(
             self._gcp_project_id, self._cloud_function_region, name
         )
 
@@ -319,6 +327,7 @@ class RemoteFunctionClient:
         # Build and deploy folder structure containing cloud function
         with tempfile.TemporaryDirectory() as dir:
             entry_point = self.generate_cloud_function_code(def_, dir)
+            archive_path = shutil.make_archive(dir, "zip", dir)
 
             # We are creating cloud function source code from the currently running
             # python version. Use the same version to deploy. This is necessary
@@ -331,50 +340,56 @@ class RemoteFunctionClient:
                 sys.version_info.major, sys.version_info.minor
             )
 
-            # deploy/redeploy the cloud function
-            # TODO(shobs): Figure out a way to skip this step if a cloud function
-            # already exists with the same name and source code
-            command = (
-                "gcloud functions deploy"
-                + f" {cf_name} --gen2"
-                + f" --runtime={python_version}"
-                + f" --project={self._gcp_project_id}"
-                + f" --region={self._cloud_function_region}"
-                + f" --source={dir}"
-                + f" --entry-point={entry_point}"
-                + " --trigger-http"
+            # Determine an upload URL for user code
+            upload_url_request = functions_v2.GenerateUploadUrlRequest()
+            upload_url_request.parent = self.get_cloud_function_fully_qualified_parent()
+            upload_url_response = self._cloud_functions_client.generate_upload_url(
+                request=upload_url_request
             )
 
-            # If the cloud function is being created for the first time, then let's
-            # make it not allow unauthenticated calls. If it was previously created
-            # then this invocation will update it, in which case do not touch that
-            # aspect and let the previous policy hold. The reason we do this is to
-            # avoid an IAM permission needed to update the invocation policy.
-            # For example, when a cloud function is being created for the first
-            # time, i.e.
-            # $ gcloud functions deploy python-foo-http --gen2 --runtime=python310
-            #       --region=us-central1
-            #       --source=/source/code/dir
-            #       --entry-point=foo_http
-            #       --trigger-http
-            #       --no-allow-unauthenticated
-            # It works. When an invocation of the same command is done for the
-            # second time, it may run into an error like:
-            # ERROR: (gcloud.functions.deploy) PERMISSION_DENIED: Permission
-            # 'run.services.setIamPolicy' denied on resource
-            # 'projects/my_project/locations/us-central1/services/python-foo-http' (or resource may not exist)
-            # But when --no-allow-unauthenticated is omitted then it goes through.
-            # It suggests that in the second invocation the command is trying to set
-            # the IAM policy of the service, and the user running BigQuery
-            # DataFrame may not have privilege to do so, so better avoid this
-            # if we can.
-            if self.get_cloud_function_endpoint(cf_name):
-                logger.info(f"Updating existing cloud function: {command}")
-            else:
-                command = f"{command} --no-allow-unauthenticated"
-                logger.info(f"Creating new cloud function: {command}")
+            # Upload the code to GCS
+            with open(archive_path, "rb") as f:
+                response = requests.put(
+                    upload_url_response.upload_url,
+                    data=f,
+                    headers={"content-type": "application/zip"},
+                )
+                if response.status_code != 200:
+                    raise RuntimeError(
+                        "Failed to upload user code. code={}, reason={}, text={}".format(
+                            response.status_code, response.reason, response.text
+                        )
+                    )
 
-            _run_system_command(command)
+            # Deploy Cloud Function
+            create_function_request = functions_v2.CreateFunctionRequest()
+            create_function_request.parent = (
+                self.get_cloud_function_fully_qualified_parent()
+            )
+            create_function_request.function_id = cf_name
+            function = functions_v2.Function()
+            function.name = self.get_cloud_function_fully_qualified_name(cf_name)
+            function.build_config = functions_v2.BuildConfig()
+            function.build_config.runtime = python_version
+            function.build_config.entry_point = entry_point
+            function.build_config.source = functions_v2.Source()
+            function.build_config.source.storage_source = functions_v2.StorageSource()
+            function.build_config.source.storage_source.bucket = (
+                upload_url_response.storage_source.bucket
+            )
+            function.build_config.source.storage_source.object_ = (
+                upload_url_response.storage_source.object_
+            )
+            create_function_request.function = function
+
+            # Create the cloud function and wait for it to be ready to use
+            operation = self._cloud_functions_client.create_function(
+                request=create_function_request
+            )
+            operation.result()
+
+            # Cleanup
+            os.remove(archive_path)
 
         # Fetch the endpoint of the just created function
         endpoint = self.get_cloud_function_endpoint(cf_name)
@@ -389,23 +404,47 @@ class RemoteFunctionClient:
         return endpoint
 
     def provision_bq_remote_function(
-        self, def_, input_types, output_type, uniq_suffix=None
+        self,
+        def_,
+        input_types,
+        output_type,
+        reuse,
+        name,
     ):
         """Provision a BigQuery remote function."""
-        # Derive the name of the underlying cloud function and first create
-        # it if it does not exist
+        # If reuse of any existing function with the same name (indicated by the
+        # same hash of its source code) is not intended, then attach a unique
+        # suffix to the intended function name to make it unique.
+        uniq_suffix = None
+        if not reuse:
+            uniq_suffix = "".join(
+                random.choices(string.ascii_lowercase + string.digits, k=8)
+            )
+
+        # Derive the name of the cloud function underlying the intended BQ
+        # remote function
         cloud_function_name = get_cloud_function_name(def_, uniq_suffix)
         cf_endpoint = self.get_cloud_function_endpoint(cloud_function_name)
+
+        # Create the cloud function if it does not exist
         if not cf_endpoint:
-            self.check_cloud_function_tools_and_permissions()
             cf_endpoint = self.create_cloud_function(def_, cloud_function_name)
         else:
             logger.info(f"Cloud function {cloud_function_name} already exists.")
 
-        # Derive the name of the remote function and create/replace it if needed
-        remote_function_name = get_remote_function_name(def_, uniq_suffix)
+        # Derive the name of the remote function
+        remote_function_name = name
+        if not remote_function_name:
+            remote_function_name = get_remote_function_name(def_, uniq_suffix)
         rf_endpoint, rf_conn = self.get_remote_function_specs(remote_function_name)
-        if rf_endpoint != cf_endpoint or rf_conn != self._bq_connection_id:
+
+        # Create the BQ remote function in following circumstances:
+        # 1. It does not exist
+        # 2. It exists but the existing remote function has different
+        #    configuration than intended
+        if not rf_endpoint or (
+            rf_endpoint != cf_endpoint or rf_conn != self._bq_connection_id
+        ):
             input_args = inspect.getargs(def_.__code__).args
             if len(input_args) != len(input_types):
                 raise ValueError(
@@ -438,27 +477,6 @@ class RemoteFunctionClient:
                         bq_connection = os.path.basename(bq_connection)
                 break
         return (http_endpoint, bq_connection)
-
-    def check_cloud_function_tools_and_permissions(self):
-        """Check if the necessary tools and permissions are in place for creating remote function"""
-        # gcloud CLI comes with bq CLI and they are required for creating google
-        # cloud function and BigQuery remote function respectively
-        if not shutil.which("gcloud"):
-            raise ValueError(
-                "gcloud tool not installed, install it from https://cloud.google.com/sdk/docs/install. "
-                f"{constants.FEEDBACK_LINK}"
-            )
-
-        # TODO(shobs): Check for permissions too
-        # I (shobs) tried the following method
-        # $ gcloud asset search-all-iam-policies \
-        #   --format=json \
-        #   --scope=projects/{gcp_project_id} \
-        #   --query='policy.role.permissions:cloudfunctions.functions.create'
-        # as a proxy to all the privilges necessary to create cloud function
-        # https://cloud.google.com/functions/docs/reference/iam/roles#cloudfunctions.developer
-        # but that itself required the runner to have the permission to enable
-        # `cloudasset.googleapis.com`
 
 
 def remote_function_node(
@@ -583,6 +601,7 @@ def remote_function(
     dataset: Optional[str] = None,
     bigquery_connection: Optional[str] = None,
     reuse: bool = True,
+    name: Optional[str] = None,
 ):
     """Decorator to turn a user defined function into a BigQuery remote function.
 
@@ -613,7 +632,7 @@ def remote_function(
             * BigQuery Data Editor (roles/bigquery.dataEditor)
             * BigQuery Connection Admin (roles/bigquery.connectionAdmin)
             * Cloud Functions Developer (roles/cloudfunctions.developer)
-            * Service Account User (roles/iam.serviceAccountUser)
+            * Service Account User (roles/iam.serviceAccountUser) on the service account `PROJECT_NUMBER-compute@developer.gserviceaccount.com`
             * Storage Object Viewer (roles/storage.objectViewer)
             * Project IAM Admin (roles/resourcemanager.projectIamAdmin) (Only required if the bigquery connection being used is not pre-created and is created dynamically with user credentials.)
 
@@ -664,10 +683,16 @@ def remote_function(
         reuse (bool, Optional):
             Reuse the remote function if is already exists.
             `True` by default, which results in reusing an existing remote
-            function (if any) that was previously created for the same udf.
-            Setting it to false forces the creation of creating a unique remote function.
+            function and corresponding cloud function (if any) that was
+            previously created for the same udf.
+            Setting it to `False` forces the creation of a unique remote function.
             If the required remote function does not exist then it would be
             created irrespective of this param.
+        name (str, Optional):
+            Explicit name of the persisted BigQuery remote function. Use it with
+            caution, because two users working in the same project and dataset
+            could overwrite each other's remote functions if they use the same
+            persistent name.
 
     """
 
@@ -739,12 +764,6 @@ def remote_function(
             f"{constants.FEEDBACK_LINK}"
         )
 
-    uniq_suffix = None
-    if not reuse:
-        uniq_suffix = "".join(
-            random.choices(string.ascii_lowercase + string.digits, k=8)
-        )
-
     # Check connection_id with `LOCATION.CONNECTION_ID` or `PROJECT_ID.LOCATION.CONNECTION_ID` format.
     if bigquery_connection.count(".") == 1:
         bq_connection_location, bq_connection_id = bigquery_connection.split(".")
@@ -792,8 +811,13 @@ def remote_function(
             bigquery_connection,
             resource_manager_client,
         )
+
         rf_name, cf_name = remote_function_client.provision_bq_remote_function(
-            f, ibis_signature.input_types, ibis_signature.output_type, uniq_suffix
+            f,
+            ibis_signature.input_types,
+            ibis_signature.output_type,
+            reuse,
+            name,
         )
 
         node = remote_function_node(dataset_ref.routine(rf_name), ibis_signature)

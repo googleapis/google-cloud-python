@@ -145,22 +145,40 @@ class LocDataFrameIndexer:
         value: bigframes.dataframe.SingleItemValue,
     ):
         if (
-            not isinstance(key, tuple)
-            or len(key) != 2
-            or not isinstance(key[0], slice)
-            or (key[0].start is not None and key[0].start != 0)
-            or (key[0].step is not None and key[0].step != 1)
-            or key[0].stop is not None
+            isinstance(key, tuple)
+            and len(key) == 2
+            and isinstance(key[0], slice)
+            and (key[0].start is None or key[0].start == 0)
+            and (key[0].step is None or key[0].step == 1)
+            and key[0].stop is None
         ):
+            # TODO(swast): Support setting multiple columns with key[1] as a list
+            # of labels and value as a DataFrame.
+            df = self._dataframe.assign(**{key[1]: value})
+            self._dataframe._set_block(df._get_block())
+        elif (
+            isinstance(key, tuple)
+            and len(key) == 2
+            and isinstance(key[0], bigframes.series.Series)
+            and key[0].dtype == "boolean"
+        ) and pd.api.types.is_scalar(value):
+            new_column = key[0].map({True: value, False: None})
+            try:
+                original_column = self._dataframe[key[1]]
+            except KeyError:
+                self._dataframe[key[1]] = new_column
+                return
+            try:
+                self._dataframe[key[1]] = new_column.fillna(original_column)
+            except ibis.common.exceptions.IbisTypeError:
+                raise TypeError(
+                    f"Cannot assign scalar of type {type(value)} to column of type {original_column.dtype}, or index type of series argument does not match dataframe."
+                )
+        else:
             raise NotImplementedError(
-                "Only setting a column by DataFrame.loc[:, 'column'] is supported."
+                "Only DataFrame.loc[:, 'column'] and DataFrame.loc[bool series, 'column'] = Scalar are supported."
                 f"{constants.FEEDBACK_LINK}"
             )
-
-        # TODO(swast): Support setting multiple columns with key[1] as a list
-        # of labels and value as a DataFrame.
-        df = self._dataframe.assign(**{key[1]: value})
-        self._dataframe._set_block(df._get_block())
 
 
 class ILocDataFrameIndexer:

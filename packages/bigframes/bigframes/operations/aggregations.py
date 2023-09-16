@@ -19,8 +19,10 @@ import typing
 import ibis
 import ibis.expr.datatypes as ibis_dtypes
 import ibis.expr.types as ibis_types
+from pandas import Int64Dtype
 
 import bigframes.constants as constants
+import bigframes.dtypes as dtypes
 import third_party.bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
 
 
@@ -202,6 +204,16 @@ class VarOp(AggregateOp):
         )
 
 
+class PopVarOp(AggregateOp):
+    name = "popvar"
+
+    @numeric_op
+    def _as_ibis(self, x: ibis_types.Column, window=None) -> ibis_types.Value:
+        return _apply_window_if_present(
+            typing.cast(ibis_types.NumericColumn, x).var(how="pop"), window
+        )
+
+
 class CountOp(AggregateOp):
     name = "count"
 
@@ -217,16 +229,20 @@ class CountOp(AggregateOp):
 
 class CutOp(WindowOp):
     def __init__(self, bins: int):
-        self._bins = bins
+        self._bins_ibis = dtypes.literal_to_ibis_scalar(bins, force_dtype=Int64Dtype())
+        self._bins_int = bins
 
     def _as_ibis(self, x: ibis_types.Column, window=None):
         col_min = _apply_window_if_present(x.min(), window)
         col_max = _apply_window_if_present(x.max(), window)
-        bin_width = (col_max - col_min) / self._bins
+        bin_width = (col_max - col_min) / self._bins_ibis
         out = ibis.case()
-        for bin in range(self._bins - 1):
-            out = out.when(x <= (col_min + (bin + 1) * bin_width), bin)
-        out = out.when(x.notnull(), self._bins - 1)
+        for this_bin in range(self._bins_int - 1):
+            out = out.when(
+                x <= (col_min + (this_bin + 1) * bin_width),
+                dtypes.literal_to_ibis_scalar(this_bin, force_dtype=Int64Dtype()),
+            )
+        out = out.when(x.notnull(), self._bins_ibis - 1)
         return out.end()
 
     @property
@@ -305,6 +321,28 @@ class FirstOp(WindowOp):
         return _apply_window_if_present(column.first(), window)
 
 
+class FirstNonNullOp(WindowOp):
+    @property
+    def skips_nulls(self):
+        return False
+
+    def _as_ibis(self, column: ibis_types.Column, window=None) -> ibis_types.Value:
+        return _apply_window_if_present(
+            vendored_ibis_ops.FirstNonNullValue(column).to_expr(), window  # type: ignore
+        )
+
+
+class LastNonNullOp(WindowOp):
+    @property
+    def skips_nulls(self):
+        return False
+
+    def _as_ibis(self, column: ibis_types.Column, window=None) -> ibis_types.Value:
+        return _apply_window_if_present(
+            vendored_ibis_ops.LastNonNullValue(column).to_expr(), window  # type: ignore
+        )
+
+
 class ShiftOp(WindowOp):
     def __init__(self, periods: int):
         self._periods = periods
@@ -315,6 +353,28 @@ class ShiftOp(WindowOp):
         if self._periods > 0:
             return _apply_window_if_present(column.lag(self._periods), window)
         return _apply_window_if_present(column.lead(-self._periods), window)
+
+    @property
+    def skips_nulls(self):
+        return False
+
+
+class DiffOp(WindowOp):
+    def __init__(self, periods: int):
+        self._periods = periods
+
+    def _as_ibis(self, column: ibis_types.Column, window=None) -> ibis_types.Value:
+        shifted = ShiftOp(self._periods)._as_ibis(column, window)
+        if column.type().is_boolean():
+            return typing.cast(ibis_types.BooleanColumn, column) != typing.cast(
+                ibis_types.BooleanColumn, shifted
+            )
+        elif column.type().is_numeric():
+            return typing.cast(ibis_types.NumericColumn, column) - typing.cast(
+                ibis_types.NumericColumn, shifted
+            )
+        else:
+            raise TypeError(f"Cannot perform diff on type{column.type()}")
 
     @property
     def skips_nulls(self):

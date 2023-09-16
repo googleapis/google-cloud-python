@@ -157,7 +157,7 @@ def ibis_dtype_to_bigframes_dtype(
         return IBIS_TO_BIGFRAMES[ibis_dtype]
     else:
         raise ValueError(
-            f"Unexpected Ibis data type {type(ibis_dtype)}. {constants.FEEDBACK_LINK}"
+            f"Unexpected Ibis data type {ibis_dtype}. {constants.FEEDBACK_LINK}"
         )
 
 

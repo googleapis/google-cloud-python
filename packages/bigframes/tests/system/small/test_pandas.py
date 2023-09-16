@@ -209,3 +209,17 @@ def test_merge_series(scalars_dfs, merge_how):
     )
 
     assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+
+
+def test_cut(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    pd_result = pd.cut(scalars_pandas_df["float64_col"], 5, labels=False)
+    bf_result = bpd.cut(scalars_df["float64_col"], 5, labels=False)
+
+    # make sure the result is a supported dtype
+    assert bf_result.dtype == bpd.Int64Dtype()
+
+    bf_result = bf_result.to_pandas()
+    pd_result = pd_result.astype("Int64")
+    pd.testing.assert_series_equal(bf_result, pd_result)

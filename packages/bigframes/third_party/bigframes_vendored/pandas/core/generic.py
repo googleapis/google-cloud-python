@@ -335,6 +335,41 @@ class NDFrame(indexing.IndexingMixin):
     # ----------------------------------------------------------------------
     # Action Methods
 
+    def ffill(self, *, limit: Optional[int] = None):
+        """Fill NA/NaN values by propagating the last valid observation to next valid.
+
+        Args:
+            limit : int, default None
+                If method is specified, this is the maximum number of consecutive
+                NaN values to forward/backward fill. In other words, if there is
+                a gap with more than this number of consecutive NaNs, it will only
+                be partially filled. If method is not specified, this is the
+                maximum number of entries along the entire axis where NaNs will be
+                filled. Must be greater than 0 if not None.
+
+
+        Returns:
+            Series/DataFrame or None: Object with missing values filled.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def bfill(self, *, limit: Optional[int] = None):
+        """Fill NA/NaN values by using the next valid observation to fill the gap.
+
+        Args:
+            limit : int, default None
+                If method is specified, this is the maximum number of consecutive
+                NaN values to forward/backward fill. In other words, if there is
+                a gap with more than this number of consecutive NaNs, it will only
+                be partially filled. If method is not specified, this is the
+                maximum number of entries along the entire axis where NaNs will be
+                filled. Must be greater than 0 if not None.
+
+        Returns:
+            Series/DataFrame or None: Object with missing values filled.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def isna(self) -> NDFrame:
         """Detect missing values.
 
@@ -367,6 +402,36 @@ class NDFrame(indexing.IndexingMixin):
 
     notnull = notna
 
+    def filter(
+        self,
+        items=None,
+        like: str | None = None,
+        regex: str | None = None,
+        axis=None,
+    ) -> NDFrame:
+        """
+        Subset the dataframe rows or columns according to the specified index labels.
+
+        Note that this routine does not filter a dataframe on its
+        contents. The filter is applied to the labels of the index.
+
+        Args:
+            items (list-like):
+                Keep labels from axis which are in items.
+            like (str):
+                Keep labels from axis for which "like in label == True".
+            regex (str (regular expression)):
+                Keep labels from axis for which re.search(regex, label) == True.
+            axis ({0 or 'index', 1 or 'columns', None}, default None):
+                The axis to filter on, expressed either as an index (int)
+                or axis name (str). By default this is the info axis, 'columns' for
+                DataFrame. For `Series` this parameter is unused and defaults to `None`.
+
+        Returns:
+            same type as input object
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def shift(
         self,
         periods: int = 1,
@@ -381,6 +446,30 @@ class NDFrame(indexing.IndexingMixin):
 
         Returns:
             NDFrame:  Copy of input object, shifted.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def pct_change(self, periods: int = 1):
+        """
+        Fractional change between the current and a prior element.
+
+        Computes the fractional change from the immediately previous row by
+        default. This is useful in comparing the fraction of change in a time
+        series of elements.
+
+        .. note::
+
+            Despite the name of this method, it calculates fractional change
+            (also known as per unit change or relative change) and not
+            percentage change. If you need the percentage change, multiply
+            these values by 100.
+
+        Args:
+            periods (int, default 1):
+                Periods to shift for forming percent change.
+
+        Returns:
+            Series or DataFrame: The same type as the calling object.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

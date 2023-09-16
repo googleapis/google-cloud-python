@@ -57,9 +57,13 @@ internally to manage metadata on the service side. This session is tied to a
 BigQuery DataFrames uses the US multi-region as the default location, but you
 can use ``session_options.location`` to set a different location. Every query
 in a session is executed in the location where the session was created.
+BigQuery DataFrames
+auto-populates ``bf.options.bigquery.location`` if the user starts with
+``read_gbq/read_gbq_table/read_gbq_query()`` and specifies a table, either
+directly or in a SQL statement.
 
 If you want to reset the location of the created DataFrame or Series objects,
-can reset the session by executing ``bigframes.pandas.reset_session()``.
+you can reset the session by executing ``bigframes.pandas.reset_session()``.
 After that, you can reuse ``bigframes.pandas.options.bigquery.location`` to
 specify another location.
 
@@ -68,6 +72,11 @@ specify another location.
 querying is not in the US multi-region. If you try to read a table from another
 location, you get a NotFound exception.
 
+Project
+-------
+If ``bf.options.bigquery.project`` is not set, the ``$GOOGLE_CLOUD_PROJECT``
+environment variable is used, which is set in the notebook runtime serving the
+BigQuery Studio/Vertex Notebooks.
 
 ML Capabilities
 ---------------

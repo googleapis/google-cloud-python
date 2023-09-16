@@ -54,6 +54,10 @@ class Index(vendored_pandas_index.Index):
         return self._data._set_block(self._data._get_block().with_index_labels(values))
 
     @property
+    def nlevels(self) -> int:
+        return len(self._data._get_block().index_columns)
+
+    @property
     def shape(self) -> typing.Tuple[int]:
         return (self._data._get_block().shape[0],)
 
@@ -96,6 +100,22 @@ class Index(vendored_pandas_index.Index):
                 self._data._get_block().index_columns
             ),
         )
+
+    @property
+    def is_unique(self) -> bool:
+        # TODO: Cache this at block level
+        # Avoid circular imports
+        import bigframes.core.block_transforms as block_ops
+        import bigframes.dataframe as df
+
+        duplicates_block, _ = block_ops.indicate_duplicates(
+            self._data._get_block(), self._data._get_block().index_columns
+        )
+        duplicates_block = duplicates_block.with_column_labels(
+            ["values", "is_duplicate"]
+        )
+        duplicates_df = df.DataFrame(duplicates_block)
+        return not duplicates_df["is_duplicate"].any()
 
     def __getitem__(self, key: int) -> typing.Any:
         if isinstance(key, int):

@@ -124,6 +124,26 @@ class GroupBy:
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def skew(
+        self,
+        *,
+        numeric_only: bool = False,
+    ):
+        """
+        Return unbiased skew within groups.
+
+        Normalized by N-1.
+
+        Args:
+            numeric_only (bool, default False):
+                Include only `float`, `int` or `boolean` data.
+
+        Returns:
+            Series or DataFrame
+                Variance of values within each group.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def sum(
         self,
         numeric_only: bool = False,

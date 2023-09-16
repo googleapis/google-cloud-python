@@ -18,6 +18,7 @@ from unittest import TestCase
 
 import pandas as pd
 import pyarrow as pa
+import pytest
 import pytz
 
 import bigframes
@@ -278,6 +279,7 @@ def test_model_predict_with_unnamed_index(
     )
 
 
+@pytest.mark.flaky(retries=2, delay=120)
 def test_model_generate_text(
     bqml_palm2_text_generator_model: core.BqmlModel, llm_text_df
 ):

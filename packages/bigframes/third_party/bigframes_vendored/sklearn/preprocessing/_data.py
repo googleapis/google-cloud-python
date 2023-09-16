@@ -8,10 +8,10 @@
 # License: BSD 3 clause
 
 from bigframes import constants
-from third_party.bigframes_vendored.sklearn.base import BaseEstimator
+from third_party.bigframes_vendored.sklearn.base import BaseEstimator, TransformerMixin
 
 
-class StandardScaler(BaseEstimator):
+class StandardScaler(BaseEstimator, TransformerMixin):
     """Standardize features by removing the mean and scaling to unit variance.
 
     The standard score of a sample `x` is calculated as:z = (x - u) / s
@@ -28,30 +28,23 @@ class StandardScaler(BaseEstimator):
     machine learning estimators: they might behave badly if the
     individual features do not more or less look like standard normally
     distributed data (e.g. Gaussian with 0 mean and unit variance).
-    """
 
-    def fit(self, X):
-        """Compute the mean and std to be used for later scaling.
-
-        Examples:
+    Examples:
 
         .. code-block::
 
             from bigframes.ml.preprocessing import StandardScaler
+            import bigframes.pandas as bpd
 
-            enc = StandardScaler()
-            X = [['Male', 1], ['Female', 3], ['Female', 2]]
-            enc.fit(X)
+            scaler = StandardScaler()
+            data = bpd.DataFrame({"a": [0, 0, 1, 1], "b":[0, 0, 1, 1]})
+            scaler.fit(data)
+            print(scaler.transform(data))
+            print(scaler.transform(bpd.DataFrame({"a": [2], "b":[2]})))
+    """
 
-        Examples:
-
-        .. code-block::
-
-            from bigframes.ml import StandardScaler
-
-            enc = StandardScaler()
-            X = [['Male', 1], ['Female', 3], ['Female', 2]]
-            enc.fit(X)
+    def fit(self, X):
+        """Compute the mean and std to be used for later scaling.
 
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series):

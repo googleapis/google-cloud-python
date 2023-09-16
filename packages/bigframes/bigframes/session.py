@@ -424,25 +424,30 @@ class Session(
     ) -> dataframe.DataFrame:
         # TODO(b/281571214): Generate prompt to show the progress of read_gbq.
         if _is_query(query):
-            return self.read_gbq_query(
+            return self._read_gbq_query(
                 query,
                 index_col=index_col,
                 col_order=col_order,
                 max_results=max_results,
+                api_name="read_gbq",
             )
         else:
             # TODO(swast): Query the snapshot table but mark it as a
             # deterministic query so we can avoid serializing if we have a
             # unique index.
-            return self.read_gbq_table(
+            return self._read_gbq_table(
                 query,
                 index_col=index_col,
                 col_order=col_order,
                 max_results=max_results,
+                api_name="read_gbq",
             )
 
     def _query_to_destination(
-        self, query: str, index_cols: List[str]
+        self,
+        query: str,
+        index_cols: List[str],
+        api_name: str,
     ) -> Tuple[Optional[bigquery.TableReference], Optional[bigquery.QueryJob]]:
         # If there are no index columns, then there's no reason to cache to a
         # (clustered) session table, as we'll just have to query it again to
@@ -464,7 +469,7 @@ class Session(
         # operations are as speedy as they can be.
         try:
             ibis_expr = self.ibis_client.sql(query)
-            return self._ibis_to_session_table(ibis_expr, index_cols), None
+            return self._ibis_to_session_table(ibis_expr, index_cols, api_name), None
         except google.api_core.exceptions.BadRequest:
             # Some SELECT statements still aren't compatible with CREATE TEMP
             # TABLE ... AS SELECT ... statements. For example, if the query has
@@ -490,15 +495,33 @@ class Session(
 
         See also: :meth:`Session.read_gbq`.
         """
+        return self._read_gbq_query(
+            query=query,
+            index_col=index_col,
+            col_order=col_order,
+            max_results=max_results,
+            api_name="read_gbq_query",
+        )
+
+    def _read_gbq_query(
+        self,
+        query: str,
+        *,
+        index_col: Iterable[str] | str = (),
+        col_order: Iterable[str] = (),
+        max_results: Optional[int] = None,
+        api_name: str,
+    ) -> dataframe.DataFrame:
         # NOTE: This method doesn't (yet) exist in pandas or pandas-gbq, so
         # these docstrings are inline.
-
         if isinstance(index_col, str):
             index_cols = [index_col]
         else:
             index_cols = list(index_col)
 
-        destination, query_job = self._query_to_destination(query, index_cols)
+        destination, query_job = self._query_to_destination(
+            query, index_cols, api_name="read_gbq_query"
+        )
 
         # If there was no destination table, that means the query must have
         # been DDL or DML. Return some job metadata, instead.
@@ -535,6 +558,23 @@ class Session(
 
         See also: :meth:`Session.read_gbq`.
         """
+        return self._read_gbq_table(
+            query=query,
+            index_col=index_col,
+            col_order=col_order,
+            max_results=max_results,
+            api_name="read_gbq_table",
+        )
+
+    def _read_gbq_table(
+        self,
+        query: str,
+        *,
+        index_col: Iterable[str] | str = (),
+        col_order: Iterable[str] = (),
+        max_results: Optional[int] = None,
+        api_name: str,
+    ) -> dataframe.DataFrame:
         if max_results and max_results <= 0:
             raise ValueError("`max_results` should be a positive number.")
 
@@ -646,7 +686,8 @@ class Session(
                 # rows for which row numbers must be generated
                 table_expression = table_expression.limit(max_results)
             table_expression, ordering = self._create_sequential_ordering(
-                table_expression
+                table=table_expression,
+                api_name=api_name,
             )
             hidden_cols = (
                 (ordering.total_order_col.column_id,)
@@ -667,6 +708,7 @@ class Session(
             hidden_cols=hidden_cols,
             ordering=ordering,
             is_total_ordering=is_total_ordering,
+            api_name=api_name,
         )
 
     def _read_gbq_with_ordering(
@@ -680,6 +722,7 @@ class Session(
         hidden_cols: Iterable[str] = (),
         ordering: core.ExpressionOrdering,
         is_total_ordering: bool = False,
+        api_name: str,
     ) -> dataframe.DataFrame:
         """Internal helper method that loads DataFrame from Google BigQuery given an ordering column.
 
@@ -698,6 +741,8 @@ class Session(
                 Columns that should be hidden. Ordering columns may (not always) be hidden
             ordering:
                 Column name to be used for ordering. If not supplied, a default ordering is generated.
+            api_name:
+                The name of the API method.
 
         Returns:
             A DataFrame representing results of the query or table.
@@ -723,7 +768,9 @@ class Session(
         if not is_total_ordering:
             # Rows are not ordered, we need to generate a default ordering and materialize it
             table_expression, ordering = self._create_sequential_ordering(
-                table_expression, index_cols
+                table=table_expression,
+                index_cols=index_cols,
+                api_name=api_name,
             )
         index_col_values = [table_expression[index_id] for index_id in index_cols]
         if not col_labels:
@@ -846,6 +893,11 @@ class Session(
         Returns:
             bigframes.dataframe.DataFrame: The BigQuery DataFrame.
         """
+        return self._read_pandas(pandas_dataframe, "read_pandas")
+
+    def _read_pandas(
+        self, pandas_dataframe: pandas.DataFrame, api_name: str
+    ) -> dataframe.DataFrame:
         col_labels, idx_labels = (
             pandas_dataframe.columns.to_list(),
             pandas_dataframe.index.names,
@@ -878,6 +930,7 @@ class Session(
 
         job_config = bigquery.LoadJobConfig(schema=schema)
         job_config.clustering_fields = cluster_cols
+        job_config.labels = {"bigframes-api": api_name}
 
         load_table_destination = self._create_session_table()
         load_job = self.bqclient.load_table_from_dataframe(
@@ -910,6 +963,7 @@ class Session(
             hidden_cols=(ordering_col,),
             ordering=ordering,
             is_total_ordering=True,
+            api_name=api_name,
         )
         return df
 
@@ -991,6 +1045,7 @@ class Session(
             job_config.autodetect = True
             job_config.field_delimiter = sep
             job_config.encoding = encoding
+            job_config.labels = {"bigframes-api": "read_csv"}
 
             # We want to match pandas behavior. If header is 0, no rows should be skipped, so we
             # do not need to set `skip_leading_rows`. If header is None, then there is no header.
@@ -1048,7 +1103,7 @@ class Session(
                 pandas_obj.name = "0"
             bigframes_df = self.read_pandas(pandas_obj.to_frame())
             return bigframes_df[bigframes_df.columns[0]]
-        return self.read_pandas(pandas_obj)
+        return self._read_pandas(pandas_obj, "read_pickle")
 
     def read_parquet(
         self,
@@ -1063,6 +1118,7 @@ class Session(
         job_config.create_disposition = bigquery.CreateDisposition.CREATE_IF_NEEDED
         job_config.source_format = bigquery.SourceFormat.PARQUET
         job_config.write_disposition = bigquery.WriteDisposition.WRITE_EMPTY
+        job_config.labels = {"bigframes-api": "read_parquet"}
 
         return self._read_bigquery_load_job(path, table, job_config=job_config)
 
@@ -1109,6 +1165,7 @@ class Session(
             job_config.write_disposition = bigquery.WriteDisposition.WRITE_EMPTY
             job_config.autodetect = True
             job_config.encoding = encoding
+            job_config.labels = {"bigframes-api": "read_json"}
 
             return self._read_bigquery_load_job(
                 path_or_buf,
@@ -1176,7 +1233,10 @@ class Session(
         return dataset.table(table_name)
 
     def _create_sequential_ordering(
-        self, table: ibis_types.Table, index_cols: Iterable[str] = ()
+        self,
+        table: ibis_types.Table,
+        index_cols: Iterable[str] = (),
+        api_name: str = "",
     ) -> Tuple[ibis_types.Table, core.ExpressionOrdering]:
         # Since this might also be used as the index, don't use the default
         # "ordering ID" name.
@@ -1188,6 +1248,7 @@ class Session(
         table_ref = self._ibis_to_session_table(
             table,
             cluster_cols=list(index_cols) + [default_ordering_name],
+            api_name=api_name,
         )
         table = self.ibis_client.sql(f"SELECT * FROM `{table_ref.table_id}`")
         ordering_reference = core.OrderingColumnReference(default_ordering_name)
@@ -1199,7 +1260,10 @@ class Session(
         return table, ordering
 
     def _ibis_to_session_table(
-        self, table: ibis_types.Table, cluster_cols: Iterable[str]
+        self,
+        table: ibis_types.Table,
+        cluster_cols: Iterable[str],
+        api_name: str,
     ) -> bigquery.TableReference:
         clusterable_cols = [
             col for col in cluster_cols if _can_cluster(table[col].type())
@@ -1207,10 +1271,14 @@ class Session(
         return self._query_to_session_table(
             self.ibis_client.compile(table),
             cluster_cols=clusterable_cols,
+            api_name=api_name,
         )
 
     def _query_to_session_table(
-        self, query_text: str, cluster_cols: Iterable[str]
+        self,
+        query_text: str,
+        cluster_cols: Iterable[str],
+        api_name: str,
     ) -> bigquery.TableReference:
         if len(list(cluster_cols)) > _MAX_CLUSTER_COLUMNS:
             raise ValueError(
@@ -1236,6 +1304,7 @@ class Session(
         # otherwise we get `BadRequest: 400 OPTIONS on temporary tables are not
         # supported`.
         job_config.labels = {"source": "bigquery-dataframes-temp"}
+        job_config.labels["bigframes-api"] = api_name
 
         try:
             self._start_query(
@@ -1253,6 +1322,7 @@ class Session(
         dataset: Optional[str] = None,
         bigquery_connection: Optional[str] = None,
         reuse: bool = True,
+        name: Optional[str] = None,
     ):
         """Decorator to turn a user defined function into a BigQuery remote function.
 
@@ -1280,7 +1350,7 @@ class Session(
             * BigQuery Data Editor (roles/bigquery.dataEditor)
             * BigQuery Connection Admin (roles/bigquery.connectionAdmin)
             * Cloud Functions Developer (roles/cloudfunctions.developer)
-            * Service Account User (roles/iam.serviceAccountUser)
+            * Service Account User (roles/iam.serviceAccountUser) on the service account `PROJECT_NUMBER-compute@developer.gserviceaccount.com`
             * Storage Object Viewer (roles/storage.objectViewer)
             * Project IAM Admin (roles/resourcemanager.projectIamAdmin) (Only required if the bigquery connection being used is not pre-created and is created dynamically with user credentials.)
 
@@ -1311,10 +1381,16 @@ class Session(
             reuse (bool, Optional):
                 Reuse the remote function if already exists.
                 `True` by default, which will result in reusing an existing remote
-                function (if any) that was previously created for the same udf.
-                Setting it to false would force creating a unique remote function.
+                function and corresponding cloud function (if any) that was
+                previously created for the same udf.
+                Setting it to `False` would force creating a unique remote function.
                 If the required remote function does not exist then it would be
                 created irrespective of this param.
+            name (str, Optional):
+                Explicit name of the persisted BigQuery remote function. Use it with
+                caution, because two users working in the same project and dataset
+                could overwrite each other's remote functions if they use the same
+                persistent name.
         Returns:
             callable: A remote function object pointing to the cloud assets created
             in the background to support the remote execution. The cloud assets can be
@@ -1331,6 +1407,7 @@ class Session(
             dataset=dataset,
             bigquery_connection=bigquery_connection,
             reuse=reuse,
+            name=name,
         )
 
     def read_gbq_function(

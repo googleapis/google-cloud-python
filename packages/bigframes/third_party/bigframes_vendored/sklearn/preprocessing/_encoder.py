@@ -37,12 +37,8 @@ class OneHotEncoder(BaseEstimator):
             when considering infrequent categories. If there are infrequent categories,
             max_categories includes the category representing the infrequent categories along with the frequent categories.
             Default None, set limit to 1,000,000.
-    """
 
-    def fit(self, X):
-        """Fit OneHotEncoder to X.
-
-        Examples:
+    Examples:
 
         Given a dataset with two features, we let the encoder find the unique
         values per feature and transform the data to a binary one-hot encoding.
@@ -50,10 +46,16 @@ class OneHotEncoder(BaseEstimator):
         .. code-block::
 
             from bigframes.ml.preprocessing import OneHotEncoder
+            import bigframes.pandas as bpd
 
             enc = OneHotEncoder()
-            X = [['Male', 1], ['Female', 3], ['Female', 2]]
+            X = bpd.DataFrame({"a": ["Male", "Female", "Female"], "b": ["1", "3", "2"]})
             enc.fit(X)
+            print(enc.transform(bpd.DataFrame({"a": ["Female", "Male"], "b": ["1", "4"]})))
+    """
+
+    def fit(self, X):
+        """Fit OneHotEncoder to X.
 
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series):

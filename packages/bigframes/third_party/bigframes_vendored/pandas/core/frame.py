@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from typing import Iterable, Literal, Mapping, Optional, Sequence, Union
 
-import numpy
+import numpy as np
 
 from bigframes import constants
 from third_party.bigframes_vendored.pandas.core.generic import NDFrame
@@ -56,7 +56,7 @@ class DataFrame(NDFrame):
         return [self.index, self.columns]
 
     @property
-    def values(self) -> numpy.ndarray:
+    def values(self) -> np.ndarray:
         """Return the values of DataFrame in the form of a NumPy array.
 
         Args:
@@ -72,9 +72,7 @@ class DataFrame(NDFrame):
 
     # ----------------------------------------------------------------------
     # IO methods (to / from other formats)
-    def to_numpy(
-        self, dtype=None, copy=False, na_value=None, **kwargs
-    ) -> numpy.ndarray:
+    def to_numpy(self, dtype=None, copy=False, na_value=None, **kwargs) -> np.ndarray:
         """
         Convert the DataFrame to a NumPy array.
 
@@ -154,6 +152,250 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def to_dict(
+        self,
+        orient: Literal[
+            "dict", "list", "series", "split", "tight", "records", "index"
+        ] = "dict",
+        into: type[dict] = dict,
+        **kwargs,
+    ) -> dict | list[dict]:
+        """
+        Convert the DataFrame to a dictionary.
+
+        The type of the key-value pairs can be customized with the parameters
+        (see below).
+
+        Args:
+            orient (str {'dict', 'list', 'series', 'split', 'tight', 'records', 'index'}):
+                Determines the type of the values of the dictionary.
+                'dict' (default) : dict like {column -> {index -> value}}.
+                'list' : dict like {column -> [values]}.
+                'series' : dict like {column -> Series(values)}.
+                split' : dict like {'index' -> [index], 'columns' -> [columns], 'data' -> [values]}.
+                'tight' : dict like {'index' -> [index], 'columns' -> [columns], 'data' -> [values],
+                'index_names' -> [index.names], 'column_names' -> [column.names]}.
+                'records' : list like [{column -> value}, ... , {column -> value}].
+                'index' : dict like {index -> {column -> value}}.
+            into (class, default dict):
+                The collections.abc.Mapping subclass used for all Mappings
+                in the return value.  Can be the actual class or an empty
+                instance of the mapping type you want.  If you want a
+                collections.defaultdict, you must pass it initialized.
+
+            index (bool, default True):
+                Whether to include the index item (and index_names item if `orient`
+                is 'tight') in the returned dictionary. Can only be ``False``
+                when `orient` is 'split' or 'tight'.
+
+        Returns:
+            dict or list of dict: Return a collections.abc.Mapping object representing the DataFrame.
+            The resulting transformation depends on the `orient` parameter.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def to_excel(self, excel_writer, sheet_name: str = "Sheet1", **kwargs) -> None:
+        """
+        Write DataFrame to an Excel sheet.
+
+        To write a single DataFrame to an Excel .xlsx file it is only necessary to
+        specify a target file name. To write to multiple sheets it is necessary to
+        create an `ExcelWriter` object with a target file name, and specify a sheet
+        in the file to write to.
+
+        Multiple sheets may be written to by specifying unique `sheet_name`.
+        With all data written to the file it is necessary to save the changes.
+        Note that creating an `ExcelWriter` object with a file name that already
+        exists will result in the contents of the existing file being erased.
+
+        Args:
+            excel_writer (path-like, file-like, or ExcelWriter object):
+                File path or existing ExcelWriter.
+            sheet_name (str, default 'Sheet1'):
+                Name of sheet which will contain DataFrame.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def to_latex(
+        self, buf=None, columns=None, header=True, index=True, **kwargs
+    ) -> str | None:
+        r"""
+        Render object to a LaTeX tabular, longtable, or nested table.
+
+        Requires ``\usepackage{{booktabs}}``.  The output can be copy/pasted
+        into a main LaTeX document or read from an external file
+        with ``\input{{table.tex}}``.
+
+        Args:
+            buf (str, Path or StringIO-like, optional, default None):
+                Buffer to write to. If None, the output is returned as a string.
+            columns (list of label, optional):
+                The subset of columns to write. Writes all columns by default.
+            header (bool or list of str, default True):
+                Write out the column names. If a list of strings is given,
+                it is assumed to be aliases for the column names.
+            index (bool, default True):
+                Write row names (index).
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def to_records(
+        self, index: bool = True, column_dtypes=None, index_dtypes=None
+    ) -> np.recarray:
+        """
+        Convert DataFrame to a NumPy record array.
+
+        Index will be included as the first field of the record array if
+        requested.
+
+        Args:
+            index (bool, default True):
+                Include index in resulting record array, stored in 'index'
+                field or using the index label, if set.
+            column_dtypes (str, type, dict, default None):
+                If a string or type, the data type to store all columns. If
+                a dictionary, a mapping of column names and indices (zero-indexed)
+                to specific data types.
+            index_dtypes (str, type, dict, default None):
+                If a string or type, the data type to store all index levels. If
+                a dictionary, a mapping of index level names and indices
+                (zero-indexed) to specific data types.
+
+                This mapping is applied only if `index=True`.
+
+        Returns:
+            np.recarray: NumPy ndarray with the DataFrame labels as fields and each row
+            of the DataFrame as entries.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def to_string(
+        self,
+        buf=None,
+        columns: Sequence[str] | None = None,
+        col_space=None,
+        header: bool | Sequence[str] = True,
+        index: bool = True,
+        na_rep: str = "NaN",
+        formatters=None,
+        float_format=None,
+        sparsify: bool | None = None,
+        index_names: bool = True,
+        justify: str | None = None,
+        max_rows: int | None = None,
+        max_cols: int | None = None,
+        show_dimensions: bool = False,
+        decimal: str = ".",
+        line_width: int | None = None,
+        min_rows: int | None = None,
+        max_colwidth: int | None = None,
+        encoding: str | None = None,
+    ):
+        """Render a DataFrame to a console-friendly tabular output.
+
+        Args:
+            buf (str, Path or StringIO-like, optional, default None):
+                Buffer to write to. If None, the output is returned as a string.
+            columns (sequence, optional, default None):
+                The subset of columns to write. Writes all columns by default.
+            col_space (int, list or dict of int, optional):
+                The minimum width of each column.
+            header (bool or sequence, optional):
+                Write out the column names. If a list of strings is given, it is assumed to be aliases for the column names.
+            index (bool, optional, default True):
+                Whether to print index (row) labels.
+            na_rep (str, optional, default 'NaN'):
+                String representation of NAN to use.
+            formatters (list, tuple or dict of one-param. functions, optional):
+                Formatter functions to apply to columns' elements by position or
+                name.
+                The result of each function must be a unicode string.
+                List/tuple must be of length equal to the number of columns.
+            float_format (one-parameter function, optional, default None):
+                Formatter function to apply to columns' elements if they are
+                floats. The result of this function must be a unicode string.
+            sparsify (bool, optional, default True):
+                Set to False for a DataFrame with a hierarchical index to print
+                every multiindex key at each row.
+            index_names (bool, optional, default True):
+                Prints the names of the indexes.
+            justify (str, default None):
+                How to justify the column labels. If None uses the option from
+                the print configuration (controlled by set_option), 'right' out
+                of the box. Valid values are, 'left', 'right', 'center', 'justify',
+                'justify-all', 'start', 'end', 'inherit', 'match-parent', 'initial',
+                'unset'.
+            max_rows (int, optional):
+                Maximum number of rows to display in the console.
+            min_rows (int, optional):
+                The number of rows to display in the console in a truncated repr
+                (when number of rows is above `max_rows`).
+            max_cols (int, optional):
+                Maximum number of columns to display in the console.
+            show_dimensions (bool, default False):
+                Display DataFrame dimensions (number of rows by number of columns).
+            decimal (str, default '.'):
+                Character recognized as decimal separator, e.g. ',' in Europe.
+            line_width (int, optional):
+                Width to wrap a line in characters.
+            max_colwidth (int, optional):
+                Max width to truncate each column in characters. By default, no limit.
+            encoding (str, default "utf-8"):
+                Set character encoding.
+
+        Returns:
+            str or None: If buf is None, returns the result as a string. Otherwise returns
+            None.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def to_markdown(
+        self,
+        buf=None,
+        mode: str = "wt",
+        index: bool = True,
+        **kwargs,
+    ):
+        """Print DataFrame in Markdown-friendly format.
+
+        Args:
+            buf (str, Path or StringIO-like, optional, default None):
+                Buffer to write to. If None, the output is returned as a string.
+            mode (str, optional):
+                Mode in which file is opened.
+            index (bool, optional, default True):
+                Add index (row) labels.
+            **kwargs
+                These parameters will be passed to `tabulate                 <https://pypi.org/project/tabulate>`_.
+
+        Returns:
+            DataFrame in Markdown-friendly format.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def to_pickle(self, path, **kwargs) -> None:
+        """Pickle (serialize) object to file.
+
+        Args:
+            path (str):
+                File path where the pickled object will be stored.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def to_orc(self, path=None, **kwargs) -> bytes | None:
+        """
+        Write a DataFrame to the ORC format.
+
+        Args:
+            path (str, file-like object or None, default None):
+                If a string, it will be used as Root Directory path
+                when writing a partitioned dataset. By file-like object,
+                we refer to objects with a write() method, such as a file handle
+                (e.g. via builtin open function). If path is None,
+                a bytes object is returned.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     # ----------------------------------------------------------------------
     # Unsorted
 
@@ -184,6 +426,53 @@ class DataFrame(NDFrame):
 
     # ----------------------------------------------------------------------
     # Reindexing and alignment
+
+    def reindex(
+        self,
+        labels=None,
+        *,
+        index=None,
+        columns=None,
+        axis=None,
+    ):
+        """Conform DataFrame to new index with optional filling logic.
+
+        Places NA in locations having no value in the previous index. A new object
+        is produced.
+
+        Args:
+            labels (array-like, optional):
+                New labels / index to conform the axis specified by 'axis' to.
+            index (array-like, optional):
+                New labels for the index. Preferably an Index object to avoid
+                duplicating data.
+            columns (array-like, optional):
+                New labels for the columns. Preferably an Index object to avoid
+                duplicating data.
+            axis (int or str, optional):
+                Axis to target. Can be either the axis name ('index', 'columns')
+                or number (0, 1).
+        Returns:
+            DataFrame: DataFrame with changed index.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def reindex_like(self, other):
+        """Return an object with matching indices as other object.
+
+        Conform the object to the same index on all axes. Optional
+        filling logic, placing Null in locations having no value
+        in the previous index.
+
+        Args:
+            other (Object of the same data type):
+                Its row and column indices are used to define the new indices
+                of this object.
+
+        Returns:
+            Series or DataFrame: Same type as caller, but with changed indices on each axis.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def drop(
         self, labels=None, *, axis=0, index=None, columns=None, level=None
@@ -276,7 +565,9 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def reorder_levels(self, order: Sequence[int | str]) -> DataFrame:
+    def reorder_levels(
+        self, order: Sequence[int | str], axis: str | int = 0
+    ) -> DataFrame:
         """
         Rearrange index levels using input order. May not drop or duplicate levels.
 
@@ -284,13 +575,33 @@ class DataFrame(NDFrame):
             order (list of int or list of str):
                 List representing new level order. Reference level by number
                 (position) or by key (label).
+            axis ({0 or 'index', 1 or 'columns'}, default 0):
+                Where to reorder levels.
 
         Returns:
             DataFrame: DataFrame of rearranged index.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def droplevel(self, level):
+    def swaplevel(self, i, j, axis: str | int = 0) -> DataFrame:
+        """
+        Swap levels i and j in a :class:`MultiIndex`.
+
+        Default is to swap the two innermost levels of the index.
+
+        Args:
+            i, j (int or str):
+                Levels of the indices to be swapped. Can pass level name as string.
+            axis ({0 or 'index', 1 or 'columns'}, default 0):
+                The axis to swap levels on. 0 or 'index' for row-wise, 1 or
+                'columns' for column-wise.
+
+        Returns:
+            DataFrame: DataFrame with levels swapped in MultiIndex.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def droplevel(self, level, axis: str | int = 0):
         """
         Return DataFrame with requested index / column level(s) removed.
 
@@ -299,6 +610,11 @@ class DataFrame(NDFrame):
                 If a string is given, must be the name of a level
                 If list-like, elements must be names or positional indexes
                 of levels.
+            axis ({0 or 'index', 1 or 'columns'}, default 0):
+                Axis along which the level(s) is removed:
+
+                * 0 or 'index': remove level(s) in column.
+                * 1 or 'columns': remove level(s) in row.
         Returns:
             DataFrame: DataFrame with requested index / column level(s) removed.
         """
@@ -889,6 +1205,54 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def combine(
+        self, other, func, fill_value=None, overwrite: bool = True
+    ) -> DataFrame:
+        """Perform column-wise combine with another DataFrame.
+
+        Combines a DataFrame with `other` DataFrame using `func`
+        to element-wise combine columns. The row and column indexes of the
+        resulting DataFrame will be the union of the two.
+
+        Args:
+            other (DataFrame):
+                The DataFrame to merge column-wise.
+            func (function):
+                Function that takes two series as inputs and return a Series or a
+                scalar. Used to merge the two dataframes column by columns.
+            fill_value (scalar value, default None):
+                The value to fill NaNs with prior to passing any column to the
+                merge func.
+            overwrite (bool, default True):
+                If True, columns in `self` that do not exist in `other` will be
+                overwritten with NaNs.
+
+        Returns:
+            DataFrame: Combination of the provided DataFrames.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def combine_first(self, other) -> DataFrame:
+        """
+        Update null elements with value in the same location in `other`.
+
+        Combine two DataFrame objects by filling null values in one DataFrame
+        with non-null values from other DataFrame. The row and column indexes
+        of the resulting DataFrame will be the union of the two. The resulting
+        dataframe contains the 'first' dataframe values and overrides the
+        second one values where both first.loc[index, col] and
+        second.loc[index, col] are not missing values, upon calling
+        first.combine_first(second).
+
+        Args:
+            other (DataFrame):
+                Provided DataFrame to use to fill null values.
+
+        Returns:
+            DataFrame: The result of combining the provided DataFrame with the other object.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     # ----------------------------------------------------------------------
     # Data reshaping
 
@@ -1191,6 +1555,20 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def skew(self, *, numeric_only: bool = False):
+        """Return unbiased skew over requested axis.
+
+        Normalized by N-1.
+
+        Args:
+            numeric_only (bool, default False):
+                Include only float, int, boolean columns.
+
+        Returns:
+            Series
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def std(self, *, numeric_only: bool = False):
         """Return sample standard deviation over requested axis.
 
@@ -1219,6 +1597,76 @@ class DataFrame(NDFrame):
         Returns:
             bigframes.series.Series: For each column/row the number of
                 non-NA/null entries. If `level` is specified returns a `DataFrame`.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def nlargest(self, n: int, columns, keep: str = "first"):
+        """
+        Return the first `n` rows ordered by `columns` in descending order.
+
+        Return the first `n` rows with the largest values in `columns`, in
+        descending order. The columns that are not specified are returned as
+        well, but not used for ordering.
+
+        This method is equivalent to
+        ``df.sort_values(columns, ascending=False).head(n)``, but more
+        performant.
+
+        Args:
+            n (int):
+                Number of rows to return.
+            columns (label or list of labels):
+                Column label(s) to order by.
+            keep ({'first', 'last', 'all'}, default 'first'):
+                Where there are duplicate values:
+
+                - ``first`` : prioritize the first occurrence(s)
+                - ``last`` : prioritize the last occurrence(s)
+                - ``all`` : do not drop any duplicates, even it means
+                  selecting more than `n` items.
+
+        Returns:
+            DataFrame: The first `n` rows ordered by the given columns in descending order.
+
+        .. note::
+            This function cannot be used with all column types. For example, when
+            specifying columns with `object` or `category` dtypes, ``TypeError`` is
+            raised.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def nsmallest(self, n: int, columns, keep: str = "first"):
+        """
+        Return the first `n` rows ordered by `columns` in ascending order.
+
+        Return the first `n` rows with the smallest values in `columns`, in
+        ascending order. The columns that are not specified are returned as
+        well, but not used for ordering.
+
+        This method is equivalent to
+        ``df.sort_values(columns, ascending=True).head(n)``, but more
+        performant.
+
+        Args:
+            n (int):
+                Number of rows to return.
+            columns (label or list of labels):
+                Column label(s) to order by.
+            keep ({'first', 'last', 'all'}, default 'first'):
+                Where there are duplicate values:
+
+                - ``first`` : prioritize the first occurrence(s)
+                - ``last`` : prioritize the last occurrence(s)
+                - ``all`` : do not drop any duplicates, even it means
+                  selecting more than `n` items.
+
+        Returns:
+            DataFrame: The first `n` rows ordered by the given columns in ascending order.
+
+        .. note::
+            This function cannot be used with all column types. For example, when
+            specifying columns with `object` or `category` dtypes, ``TypeError`` is
+            raised.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1268,6 +1716,25 @@ class DataFrame(NDFrame):
 
         Returns:
             bigframes.dataframe.DataFrame: Return cumulative product of DataFrame.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def diff(
+        self,
+        periods: int = 1,
+    ) -> NDFrame:
+        """First discrete difference of element.
+
+        Calculates the difference of a DataFrame element compared with another
+        element in the DataFrame (default is element in previous row).
+
+        Args:
+            periods (int, default 1):
+                Periods to shift for calculating difference, accepts negative
+                values.
+
+        Returns:
+            bigframes.dataframe.DataFrame: First differences of the Series.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

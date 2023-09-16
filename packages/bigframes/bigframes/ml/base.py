@@ -133,7 +133,7 @@ class TrainablePredictor(Predictor):
     Also the predictor can be attached to a pipeline with transformers."""
 
     @abc.abstractmethod
-    def fit(self, X, y, transforms):
+    def _fit(self, X, y, transforms=None):
         pass
 
     @abc.abstractmethod
@@ -144,6 +144,36 @@ class TrainablePredictor(Predictor):
     @abc.abstractmethod
     def to_gbq(self, model_name, replace):
         pass
+
+
+class SupervisedTrainablePredictor(TrainablePredictor):
+    """A BigQuery DataFrames ML Supervised Model base class that can be used to fit and predict outputs.
+
+    Need to provide both X and y in supervised tasks."""
+
+    _T = TypeVar("_T", bound="SupervisedTrainablePredictor")
+
+    def fit(
+        self: _T,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Union[bpd.DataFrame, bpd.Series],
+    ) -> _T:
+        return self._fit(X, y)
+
+
+class UnsupervisedTrainablePredictor(TrainablePredictor):
+    """A BigQuery DataFrames ML Unsupervised Model base class that can be used to fit and predict outputs.
+
+    Only need to provide both X (y is optional and ignored) in unsupervised tasks."""
+
+    _T = TypeVar("_T", bound="UnsupervisedTrainablePredictor")
+
+    def fit(
+        self: _T,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y: Optional[Union[bpd.DataFrame, bpd.Series]] = None,
+    ) -> _T:
+        return self._fit(X, y)
 
 
 class Transformer(BaseEstimator):

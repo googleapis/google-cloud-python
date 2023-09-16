@@ -39,11 +39,19 @@ def run_remote_function_and_read_gbq_function(project_id: str):
     # already created, BigQuery DataFrames will attempt to create one assuming
     # the necessary APIs and IAM permissions are setup in the project. In our
     # examples we would be using a pre-created connection named
-    # `bigframes-rf-conn`. Let's try a `pandas`-like use case in which we want
-    # to apply a user defined scalar function to every value in a `Series`, more
-    # specifically bucketize the `body_mass_g` value of the penguins, which is a
-    # real number, into a category, which is a string.
-    @bpd.remote_function([float], str, bigquery_connection="bigframes-rf-conn")
+    # `bigframes-rf-conn`. We will also set `reuse=False` to make sure we don't
+    # step over someone else creating remote function in the same project from
+    # the exact same source code at the same time. Let's try a `pandas`-like use
+    # case in which we want to apply a user defined scalar function to every
+    # value in a `Series`, more specifically bucketize the `body_mass_g` value
+    # of the penguins, which is a real number, into a category, which is a
+    # string.
+    @bpd.remote_function(
+        [float],
+        str,
+        bigquery_connection="bigframes-rf-conn",
+        reuse=False,
+    )
     def get_bucket(num):
         if not num:
             return "NA"
@@ -80,9 +88,11 @@ def run_remote_function_and_read_gbq_function(project_id: str):
     # Let's continue trying other potential use cases of remote functions. Let's
     # say we consider the `species`, `island` and `sex` of the penguins
     # sensitive information and want to redact that by replacing with their hash
-    # code instead. Let's define another scalar custom function and decorated it
+    # code instead. Let's define another scalar custom function and decorate it
     # as a remote function
-    @bpd.remote_function([str], str, bigquery_connection="bigframes-rf-conn")
+    @bpd.remote_function(
+        [str], str, bigquery_connection="bigframes-rf-conn", reuse=False
+    )
     def get_hash(input):
         import hashlib
 

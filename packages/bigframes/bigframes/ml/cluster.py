@@ -28,13 +28,13 @@ import third_party.bigframes_vendored.sklearn.cluster._kmeans
 
 
 class KMeans(
+    base.UnsupervisedTrainablePredictor,
     third_party.bigframes_vendored.sklearn.cluster._kmeans.KMeans,
-    base.TrainablePredictor,
 ):
 
     __doc__ = third_party.bigframes_vendored.sklearn.cluster._kmeans.KMeans.__doc__
 
-    def __init__(self, n_clusters=8):
+    def __init__(self, n_clusters: int = 8):
         self.n_clusters = n_clusters
         self._bqml_model: Optional[core.BqmlModel] = None
 
@@ -58,7 +58,7 @@ class KMeans(
         """The model options as they will be set for BQML"""
         return {"model_type": "KMEANS", "num_clusters": self.n_clusters}
 
-    def fit(
+    def _fit(
         self,
         X: Union[bpd.DataFrame, bpd.Series],
         y=None,  # ignored
