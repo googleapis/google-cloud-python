@@ -696,6 +696,11 @@ class NodeConfig(proto.Message):
             HostMaintenancePolicy contains the desired
             maintenance policy for the Google Compute Engine
             hosts.
+        enable_confidential_storage (bool):
+            Optional. Enable confidential storage on Hyperdisk.
+            boot_disk_kms_key is required when
+            enable_confidential_storage is true. This is only available
+            for private preview.
     """
 
     machine_type: str = proto.Field(
@@ -865,6 +870,10 @@ class NodeConfig(proto.Message):
         proto.MESSAGE,
         number=44,
         message="HostMaintenancePolicy",
+    )
+    enable_confidential_storage: bool = proto.Field(
+        proto.BOOL,
+        number=46,
     )
 
 
@@ -3046,8 +3055,9 @@ class Cluster(proto.Message):
             clusters and node auto-provisioning enabled
             clusters.
         protect_config (google.cloud.container_v1beta1.types.ProtectConfig):
-            Enable/Disable Protect API features for the
-            cluster.
+            Deprecated: Use SecurityPostureConfig
+            instead. Enable/Disable Protect API features for
+            the cluster.
 
             This field is a member of `oneof`_ ``_protect_config``.
         etag (str):
@@ -3615,10 +3625,14 @@ class SecurityPostureConfig(proto.Message):
             VULNERABILITY_BASIC (2):
                 Applies basic vulnerability scanning on the
                 cluster.
+            VULNERABILITY_ENTERPRISE (3):
+                Applies the Security Posture's vulnerability
+                on cluster Enterprise level features.
         """
         VULNERABILITY_MODE_UNSPECIFIED = 0
         VULNERABILITY_DISABLED = 1
         VULNERABILITY_BASIC = 2
+        VULNERABILITY_ENTERPRISE = 3
 
     mode: Mode = proto.Field(
         proto.ENUM,
@@ -3895,8 +3909,9 @@ class ClusterUpdate(proto.Message):
             clusters and node auto-provisioning enabled
             clusters.
         desired_protect_config (google.cloud.container_v1beta1.types.ProtectConfig):
-            Enable/Disable Protect API features for the
-            cluster.
+            Deprecated: Use DesiredSecurityPostureConfig
+            instead. Enable/Disable Protect API features for
+            the cluster.
 
             This field is a member of `oneof`_ ``_desired_protect_config``.
         desired_gateway_api_config (google.cloud.container_v1beta1.types.GatewayAPIConfig):
