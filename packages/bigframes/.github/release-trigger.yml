@@ -1,2 +1,2 @@
 enabled: true
-multiScmName: bigframes
+multiScmName: python-bigquery-dataframes
