@@ -968,7 +968,22 @@
                 "google/cloud/iam_credentials/gapic_version.py",
                 "google/cloud/iam_credentials_v1/gapic_version.py",
                 "google/cloud/iam_v2/gapic_version.py",
-                "google/cloud/iam_v2beta/gapic_version.py"
+                "google/cloud/iam_v2beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.iam.credentials.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.iam.v2.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.iam.v2beta.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
