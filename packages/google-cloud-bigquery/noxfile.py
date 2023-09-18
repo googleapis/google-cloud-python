@@ -375,9 +375,7 @@ def lint(session):
     serious code quality issues.
     """
 
-    # Pin flake8 to 6.0.0
-    # See https://github.com/googleapis/python-bigquery/issues/1635
-    session.install("flake8==6.0.0", BLACK_VERSION)
+    session.install("flake8", BLACK_VERSION)
     session.install("-e", ".")
     session.run("flake8", os.path.join("google", "cloud", "bigquery"))
     session.run("flake8", "tests")

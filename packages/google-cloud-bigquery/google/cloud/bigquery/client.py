@@ -1895,7 +1895,7 @@ class Client(ClientWithProject):
         extra_params: Dict[str, Any] = {"maxResults": 0}
 
         if timeout is not None:
-            if type(timeout) == object:
+            if not isinstance(timeout, (int, float)):
                 timeout = _MIN_GET_QUERY_RESULTS_TIMEOUT
             else:
                 timeout = max(timeout, _MIN_GET_QUERY_RESULTS_TIMEOUT)
@@ -3927,7 +3927,7 @@ class Client(ClientWithProject):
         }
 
         if timeout is not None:
-            if type(timeout) == object:
+            if not isinstance(timeout, (int, float)):
                 timeout = _MIN_GET_QUERY_RESULTS_TIMEOUT
             else:
                 timeout = max(timeout, _MIN_GET_QUERY_RESULTS_TIMEOUT)
