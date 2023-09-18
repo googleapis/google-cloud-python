@@ -105,7 +105,7 @@ class RapidMigrationAssessmentClientMeta(type):
 
 
 class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMeta):
-    """Rapid Migration Assessment service"""
+    """Service describing handlers for resources."""
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
@@ -1203,7 +1203,8 @@ class RapidMigrationAssessmentClient(metaclass=RapidMigrationAssessmentClientMet
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Deletes a single Collector - changes state of
-        collector to "Deleting".
+        collector to "Deleting". Background jobs does final
+        deletion thorugh producer api.
 
         .. code-block:: python
 
