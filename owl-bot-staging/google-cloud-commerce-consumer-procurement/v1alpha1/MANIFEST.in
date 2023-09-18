@@ -1,2 +1,0 @@
-recursive-include google/cloud/commerce/consumer/procurement *.py
-recursive-include google/cloud/commerce/consumer/procurement_v1alpha1 *.py
