@@ -617,48 +617,6 @@ def test_client_query_total_rows(client, capsys):
     assert "Got 100 rows." in out
 
 
-def test_query_external_gcs_permanent_table(client, to_delete):
-    dataset_id = "query_external_gcs_{}".format(_millis())
-    project = client.project
-    dataset_ref = bigquery.DatasetReference(project, dataset_id)
-    dataset = bigquery.Dataset(dataset_ref)
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    # [START bigquery_query_external_gcs_perm]
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # dataset_id = 'my_dataset'
-
-    # Configure the external data source
-    dataset_ref = bigquery.DatasetReference(project, dataset_id)
-    table_id = "us_states"
-    schema = [
-        bigquery.SchemaField("name", "STRING"),
-        bigquery.SchemaField("post_abbr", "STRING"),
-    ]
-    table = bigquery.Table(dataset_ref.table(table_id), schema=schema)
-    external_config = bigquery.ExternalConfig("CSV")
-    external_config.source_uris = [
-        "gs://cloud-samples-data/bigquery/us-states/us-states.csv"
-    ]
-    external_config.options.skip_leading_rows = 1  # optionally skip header row
-    table.external_data_configuration = external_config
-
-    # Create a permanent table linked to the GCS file
-    table = client.create_table(table)  # API request
-
-    # Example query to find states starting with 'W'
-    sql = 'SELECT * FROM `{}.{}` WHERE name LIKE "W%"'.format(dataset_id, table_id)
-
-    query_job = client.query(sql)  # API request
-
-    w_states = list(query_job)  # Waits for query to finish
-    print("There are {} states with names starting with W.".format(len(w_states)))
-    # [END bigquery_query_external_gcs_perm]
-    assert len(w_states) == 4
-
-
 def test_ddl_create_view(client, to_delete, capsys):
     """Create a view via a DDL query."""
     project = client.project
