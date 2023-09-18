@@ -1,6 +1,8 @@
 {
     "packages": {
         "packages/google-ai-generativelanguage": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-ai-generativelanguage",
             "extra-files": [
                 "google/ai/generativelanguage/gapic_version.py",
@@ -14,6 +16,8 @@
             "release-type": "python"
         },
         "packages/google-apps-script-type": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-apps-script-type",
             "extra-files": [
                 "google/apps/script/type/calendar/gapic_version.py",
@@ -27,6 +31,8 @@
             "release-type": "python"
         },
         "packages/google-area120-tables": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-area120-tables",
             "extra-files": [
                 "google/area120/tables/gapic_version.py",
@@ -40,6 +46,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-access-approval": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-access-approval",
             "extra-files": [
                 "google/cloud/accessapproval/gapic_version.py",
@@ -53,6 +61,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-advisorynotifications": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-advisorynotifications",
             "extra-files": [
                 "google/cloud/advisorynotifications/gapic_version.py",
@@ -66,6 +76,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-alloydb": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-alloydb",
             "extra-files": [
                 "google/cloud/alloydb/gapic_version.py",
@@ -91,6 +103,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-api-gateway": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-api-gateway",
             "extra-files": [
                 "google/cloud/apigateway/gapic_version.py",
@@ -104,6 +118,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-api-keys": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-api-keys",
             "extra-files": [
                 "google/cloud/api_keys/gapic_version.py",
@@ -117,6 +133,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-apigee-connect": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-apigee-connect",
             "extra-files": [
                 "google/cloud/apigeeconnect/gapic_version.py",
@@ -130,6 +148,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-apigee-registry": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-apigee-registry",
             "extra-files": [
                 "google/cloud/apigee_registry/gapic_version.py",
@@ -143,6 +163,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-appengine-logging": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-appengine-logging",
             "extra-files": [
                 "google/cloud/appengine_logging/gapic_version.py",
@@ -151,6 +173,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-artifact-registry": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-artifact-registry",
             "extra-files": [
                 "google/cloud/artifactregistry/gapic_version.py",
@@ -170,25 +194,19 @@
             "release-type": "python"
         },
         "packages/google-cloud-assured-workloads": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-assured-workloads",
             "extra-files": [
                 "google/cloud/assuredworkloads/gapic_version.py",
                 "google/cloud/assuredworkloads_v1/gapic_version.py",
-                "google/cloud/assuredworkloads_v1beta1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.assuredworkloads.v1beta1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.assuredworkloads.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/assuredworkloads_v1beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-bare-metal-solution": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-bare-metal-solution",
             "extra-files": [
                 "google/cloud/bare_metal_solution/gapic_version.py",
@@ -202,6 +220,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-batch": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-batch",
             "extra-files": [
                 "google/cloud/batch/gapic_version.py",
@@ -221,6 +241,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-beyondcorp-appconnections": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-beyondcorp-appconnections",
             "extra-files": [
                 "google/cloud/beyondcorp_appconnections/gapic_version.py",
@@ -234,6 +256,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-beyondcorp-appconnectors": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-beyondcorp-appconnectors",
             "extra-files": [
                 "google/cloud/beyondcorp_appconnectors/gapic_version.py",
@@ -247,6 +271,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-beyondcorp-appgateways": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-beyondcorp-appgateways",
             "extra-files": [
                 "google/cloud/beyondcorp_appgateways/gapic_version.py",
@@ -260,6 +286,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-beyondcorp-clientconnectorservices": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-beyondcorp-clientconnectorservices",
             "extra-files": [
                 "google/cloud/beyondcorp_clientconnectorservices/gapic_version.py",
@@ -273,6 +301,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-beyondcorp-clientgateways": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-beyondcorp-clientgateways",
             "extra-files": [
                 "google/cloud/beyondcorp_clientgateways/gapic_version.py",
@@ -286,6 +316,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-bigquery-analyticshub": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-bigquery-analyticshub",
             "extra-files": [
                 "google/cloud/bigquery_analyticshub/gapic_version.py",
@@ -299,6 +331,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-bigquery-biglake": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-bigquery-biglake",
             "extra-files": [
                 "google/cloud/bigquery_biglake/gapic_version.py",
@@ -318,6 +352,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-bigquery-data-exchange": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-bigquery-data-exchange",
             "extra-files": [
                 "google/cloud/bigquery_data_exchange/gapic_version.py",
@@ -331,6 +367,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-bigquery-datapolicies": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-bigquery-datapolicies",
             "extra-files": [
                 "google/cloud/bigquery_datapolicies/gapic_version.py",
@@ -350,6 +388,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-bigquery-logging": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-bigquery-logging",
             "extra-files": [
                 "google/cloud/bigquery_logging/gapic_version.py",
@@ -358,15 +398,29 @@
             "release-type": "python"
         },
         "packages/google-cloud-bigquery-migration": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-bigquery-migration",
             "extra-files": [
                 "google/cloud/bigquery_migration/gapic_version.py",
                 "google/cloud/bigquery_migration_v2/gapic_version.py",
-                "google/cloud/bigquery_migration_v2alpha/gapic_version.py"
+                "google/cloud/bigquery_migration_v2alpha/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.migration.v2.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.migration.v2alpha.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
         "packages/google-cloud-billing": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-billing",
             "extra-files": [
                 "google/cloud/billing/gapic_version.py",
@@ -380,6 +434,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-billing-budgets": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-billing-budgets",
             "extra-files": [
                 "google/cloud/billing/budgets/gapic_version.py",
@@ -399,6 +455,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-certificate-manager": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-certificate-manager",
             "extra-files": [
                 "google/cloud/certificate_manager/gapic_version.py",
@@ -412,6 +470,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-channel": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-channel",
             "extra-files": [
                 "google/cloud/channel/gapic_version.py",
@@ -425,6 +485,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-confidentialcomputing": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-confidentialcomputing",
             "extra-files": [
                 "google/cloud/confidentialcomputing/gapic_version.py",
@@ -438,6 +500,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-config": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-config",
             "extra-files": [
                 "google/cloud/config/gapic_version.py",
@@ -451,6 +515,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-contact-center-insights": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-contact-center-insights",
             "extra-files": [
                 "google/cloud/contact_center_insights/gapic_version.py",
@@ -464,6 +530,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-contentwarehouse": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-contentwarehouse",
             "extra-files": [
                 "google/cloud/contentwarehouse/gapic_version.py",
@@ -477,6 +545,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-data-fusion": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-data-fusion",
             "extra-files": [
                 "google/cloud/data_fusion/gapic_version.py",
@@ -490,6 +560,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-data-qna": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-data-qna",
             "extra-files": [
                 "google/cloud/dataqna/gapic_version.py",
@@ -503,6 +575,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-datacatalog": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-datacatalog",
             "extra-files": [
                 "google/cloud/datacatalog/gapic_version.py",
@@ -522,6 +596,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-datacatalog-lineage": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-datacatalog-lineage",
             "extra-files": [
                 "google/cloud/datacatalog/lineage/gapic_version.py",
@@ -535,6 +611,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-dataform": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-dataform",
             "extra-files": [
                 "google/cloud/dataform/gapic_version.py",
@@ -548,6 +626,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-datalabeling": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-datalabeling",
             "extra-files": [
                 "google/cloud/datalabeling/gapic_version.py",
@@ -561,6 +641,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-dataplex": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-dataplex",
             "extra-files": [
                 "google/cloud/dataplex/gapic_version.py",
@@ -574,6 +656,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-dataproc-metastore": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-dataproc-metastore",
             "extra-files": [
                 "google/cloud/metastore/gapic_version.py",
@@ -599,6 +683,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-datastream": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-datastream",
             "extra-files": [
                 "google/cloud/datastream/gapic_version.py",
@@ -618,6 +704,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-deploy": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-deploy",
             "extra-files": [
                 "google/cloud/deploy/gapic_version.py",
@@ -631,6 +719,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-dialogflow-cx": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-dialogflow-cx",
             "extra-files": [
                 "google/cloud/dialogflowcx/gapic_version.py",
@@ -650,6 +740,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-discoveryengine": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-discoveryengine",
             "extra-files": [
                 "google/cloud/discoveryengine/gapic_version.py",
@@ -669,6 +761,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-dms": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-dms",
             "extra-files": [
                 "google/cloud/clouddms/gapic_version.py",
@@ -682,6 +776,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-documentai": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-documentai",
             "extra-files": [
                 "google/cloud/documentai/gapic_version.py",
@@ -707,6 +803,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-domains": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-domains",
             "extra-files": [
                 "google/cloud/domains/gapic_version.py",
@@ -726,6 +824,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-edgecontainer": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-edgecontainer",
             "extra-files": [
                 "google/cloud/edgecontainer/gapic_version.py",
@@ -739,6 +839,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-enterpriseknowledgegraph": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-enterpriseknowledgegraph",
             "extra-files": [
                 "google/cloud/enterpriseknowledgegraph/gapic_version.py",
@@ -752,6 +854,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-essential-contacts": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-essential-contacts",
             "extra-files": [
                 "google/cloud/essential_contacts/gapic_version.py",
@@ -765,6 +869,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-eventarc": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-eventarc",
             "extra-files": [
                 "google/cloud/eventarc/gapic_version.py",
@@ -778,6 +884,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-eventarc-publishing": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-eventarc-publishing",
             "extra-files": [
                 "google/cloud/eventarc_publishing/gapic_version.py",
@@ -791,6 +899,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-functions": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-functions",
             "extra-files": [
                 "google/cloud/functions/gapic_version.py",
@@ -810,19 +920,18 @@
             "release-type": "python"
         },
         "packages/google-cloud-gke-backup": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-gke-backup",
             "extra-files": [
-                "google/cloud/gke_backup_v1/gapic_version.py",
                 "google/cloud/gke_backup/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.gkebackup.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/gke_backup_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-gke-connect-gateway": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-gke-connect-gateway",
             "extra-files": [
                 "google/cloud/gkeconnect/gateway/gapic_version.py",
@@ -836,6 +945,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-gke-multicloud": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-gke-multicloud",
             "extra-files": [
                 "google/cloud/gke_multicloud/gapic_version.py",
@@ -849,6 +960,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-iam": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-iam",
             "extra-files": [
                 "google/cloud/iam/gapic_version.py",
@@ -860,6 +973,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-iam-logging": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-iam-logging",
             "extra-files": [
                 "google/cloud/iam_logging/gapic_version.py",
@@ -868,6 +983,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-iap": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-iap",
             "extra-files": [
                 "google/cloud/iap/gapic_version.py",
@@ -881,6 +998,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-ids": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-ids",
             "extra-files": [
                 "google/cloud/ids/gapic_version.py",
@@ -894,6 +1013,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-kms-inventory": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-kms-inventory",
             "extra-files": [
                 "google/cloud/kms_inventory/gapic_version.py",
@@ -907,6 +1028,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-language": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-language",
             "extra-files": [
                 "google/cloud/language/gapic_version.py",
@@ -932,6 +1055,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-life-sciences": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-life-sciences",
             "extra-files": [
                 "google/cloud/lifesciences/gapic_version.py",
@@ -945,6 +1070,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-managed-identities": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-managed-identities",
             "extra-files": [
                 "google/cloud/managedidentities/gapic_version.py",
@@ -958,6 +1085,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-media-translation": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-media-translation",
             "extra-files": [
                 "google/cloud/mediatranslation/gapic_version.py",
@@ -971,6 +1100,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-memcache": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-memcache",
             "extra-files": [
                 "google/cloud/memcache/gapic_version.py",
@@ -990,6 +1121,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-migrationcenter": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-migrationcenter",
             "extra-files": [
                 "google/cloud/migrationcenter/gapic_version.py",
@@ -1003,6 +1136,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-monitoring-metrics-scopes": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-monitoring-metrics-scopes",
             "extra-files": [
                 "google/cloud/monitoring_metrics_scope/gapic_version.py",
@@ -1016,6 +1151,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-netapp": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-netapp",
             "extra-files": [
                 "google/cloud/netapp/gapic_version.py",
@@ -1029,6 +1166,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-network-connectivity": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-network-connectivity",
             "extra-files": [
                 "google/cloud/networkconnectivity/gapic_version.py",
@@ -1048,6 +1187,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-network-management": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-network-management",
             "extra-files": [
                 "google/cloud/network_management/gapic_version.py",
@@ -1061,6 +1202,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-network-security": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-network-security",
             "extra-files": [
                 "google/cloud/network_security/gapic_version.py",
@@ -1080,19 +1223,18 @@
             "release-type": "python"
         },
         "packages/google-cloud-network-services": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-network-services",
             "extra-files": [
                 "google/cloud/network_services/gapic_version.py",
-                "google/cloud/network_services_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.networkservices.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/network_services_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-notebooks": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-notebooks",
             "extra-files": [
                 "google/cloud/notebooks/gapic_version.py",
@@ -1118,24 +1260,18 @@
             "release-type": "python"
         },
         "packages/google-cloud-optimization": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-optimization",
             "extra-files": [
                 "google/cloud/optimization/gapic_version.py",
-                "google/cloud/optimization_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.optimization.v1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_optimization_v1.json",
-                    "type": "json"
-                }
+                "google/cloud/optimization_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
         "packages/google-cloud-orchestration-airflow": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-orchestration-airflow",
             "extra-files": [
                 "google/cloud/orchestration/airflow/service/gapic_version.py",
@@ -1155,6 +1291,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-phishing-protection": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-phishing-protection",
             "extra-files": [
                 "google/cloud/phishingprotection/gapic_version.py",
@@ -1168,6 +1306,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-policy-troubleshooter": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-policy-troubleshooter",
             "extra-files": [
                 "google/cloud/policytroubleshooter/gapic_version.py",
@@ -1181,6 +1321,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-policysimulator": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-policysimulator",
             "extra-files": [
                 "google/cloud/policysimulator/gapic_version.py",
@@ -1194,6 +1336,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-private-ca": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-private-ca",
             "extra-files": [
                 "google/cloud/security/privateca/gapic_version.py",
@@ -1213,6 +1357,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-private-catalog": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-private-catalog",
             "extra-files": [
                 "google/cloud/privatecatalog/gapic_version.py",
@@ -1226,6 +1372,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-public-ca": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-public-ca",
             "extra-files": [
                 "google/cloud/security/publicca/gapic_version.py",
@@ -1239,6 +1387,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-rapidmigrationassessment": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-rapidmigrationassessment",
             "extra-files": [
                 "google/cloud/rapidmigrationassessment/gapic_version.py",
@@ -1252,6 +1402,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-recaptcha-enterprise": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-recaptcha-enterprise",
             "extra-files": [
                 "google/cloud/recaptchaenterprise/gapic_version.py",
@@ -1265,6 +1417,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-recommendations-ai": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-recommendations-ai",
             "extra-files": [
                 "google/cloud/recommendationengine/gapic_version.py",
@@ -1278,6 +1432,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-recommender": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-recommender",
             "extra-files": [
                 "google/cloud/recommender/gapic_version.py",
@@ -1297,6 +1453,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-redis": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-redis",
             "extra-files": [
                 "google/cloud/redis/gapic_version.py",
@@ -1316,6 +1474,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-resource-manager": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-resource-manager",
             "extra-files": [
                 "google/cloud/resourcemanager/gapic_version.py",
@@ -1329,6 +1489,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-resource-settings": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-resource-settings",
             "extra-files": [
                 "google/cloud/resourcesettings/gapic_version.py",
@@ -1342,6 +1504,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-secret-manager": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-secret-manager",
             "extra-files": [
                 "google/cloud/secretmanager/gapic_version.py",
@@ -1361,6 +1525,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-securitycenter": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-securitycenter",
             "extra-files": [
                 "google/cloud/securitycenter/gapic_version.py",
@@ -1386,6 +1552,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-service-control": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-service-control",
             "extra-files": [
                 "google/cloud/servicecontrol/gapic_version.py",
@@ -1405,6 +1573,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-service-directory": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-service-directory",
             "extra-files": [
                 "google/cloud/servicedirectory/gapic_version.py",
@@ -1424,6 +1594,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-service-usage": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-service-usage",
             "extra-files": [
                 "google/cloud/service_usage/gapic_version.py",
@@ -1437,6 +1609,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-shell": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-shell",
             "extra-files": [
                 "google/cloud/shell/gapic_version.py",
@@ -1450,6 +1624,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-source-context": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-source-context",
             "extra-files": [
                 "google/cloud/source_context/gapic_version.py",
@@ -1458,6 +1634,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-storageinsights": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-storageinsights",
             "extra-files": [
                 "google/cloud/storageinsights/gapic_version.py",
@@ -1471,6 +1649,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-support": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-support",
             "extra-files": [
                 "google/cloud/support/gapic_version.py",
@@ -1484,6 +1664,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-talent": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-talent",
             "extra-files": [
                 "google/cloud/talent/gapic_version.py",
@@ -1503,6 +1685,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-tpu": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-tpu",
             "extra-files": [
                 "google/cloud/tpu/gapic_version.py",
@@ -1528,6 +1712,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-vm-migration": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-vm-migration",
             "extra-files": [
                 "google/cloud/vmmigration/gapic_version.py",
@@ -1541,6 +1727,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-vmwareengine": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-vmwareengine",
             "extra-files": [
                 "google/cloud/vmwareengine/gapic_version.py",
@@ -1554,6 +1742,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-vpc-access": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-vpc-access",
             "extra-files": [
                 "google/cloud/vpcaccess/gapic_version.py",
@@ -1567,6 +1757,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-webrisk": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-webrisk",
             "extra-files": [
                 "google/cloud/webrisk/gapic_version.py",
@@ -1586,6 +1778,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-websecurityscanner": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-websecurityscanner",
             "extra-files": [
                 "google/cloud/websecurityscanner/gapic_version.py",
@@ -1611,6 +1805,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-workflows": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-workflows",
             "extra-files": [
                 "google/cloud/workflows/executions/gapic_version.py",
@@ -1643,6 +1839,8 @@
             "release-type": "python"
         },
         "packages/google-cloud-workstations": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-workstations",
             "extra-files": [
                 "google/cloud/workstations/gapic_version.py",
@@ -1662,6 +1860,8 @@
             "release-type": "python"
         },
         "packages/google-geo-type": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-geo-type",
             "extra-files": [
                 "google/geo/type/gapic_version.py"
@@ -1669,6 +1869,8 @@
             "release-type": "python"
         },
         "packages/google-maps-addressvalidation": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-maps-addressvalidation",
             "extra-files": [
                 "google/maps/addressvalidation/gapic_version.py",
@@ -1682,6 +1884,8 @@
             "release-type": "python"
         },
         "packages/google-maps-mapsplatformdatasets": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-maps-mapsplatformdatasets",
             "extra-files": [
                 "google/maps/mapsplatformdatasets/gapic_version.py",
@@ -1701,6 +1905,8 @@
             "release-type": "python"
         },
         "packages/google-maps-places": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-maps-places",
             "extra-files": [
                 "google/maps/places/gapic_version.py",
@@ -1714,6 +1920,8 @@
             "release-type": "python"
         },
         "packages/google-maps-routing": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-maps-routing",
             "extra-files": [
                 "google/maps/routing/gapic_version.py",
