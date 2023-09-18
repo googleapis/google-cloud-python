@@ -859,6 +859,7 @@ class QueryInput(proto.Message):
     1. A conversational query in the form of text.
 
     2. An intent query that specifies which intent to trigger.
+
     3. Natural language speech audio to be processed.
 
     4. An event to be triggered.

@@ -228,8 +228,10 @@ class ListFederationsRequest(proto.Message):
             Optional. A page token, received from a
             previous ListFederationServices call. Provide
             this token to retrieve the subsequent page.
+
             To retrieve the first page, supply an empty page
             token.
+
             When paginating, other parameters provided to
             ListFederationServices must match the call that
             provided the page token.
@@ -329,6 +331,7 @@ class CreateFederationRequest(proto.Message):
             Required. The ID of the metastore federation,
             which is used as the final component of the
             metastore federation's name.
+
             This value must be between 2 and 63 characters
             long inclusive, begin with a letter, end with a
             letter or number, and consist of alpha-numeric

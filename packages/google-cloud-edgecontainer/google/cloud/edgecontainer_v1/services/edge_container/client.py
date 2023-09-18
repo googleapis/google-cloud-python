@@ -49,7 +49,7 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -626,6 +626,7 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
         Returns:
             google.cloud.edgecontainer_v1.services.edge_container.pagers.ListClustersPager:
                 List of clusters in a location.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1335,6 +1336,7 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
         Returns:
             google.cloud.edgecontainer_v1.services.edge_container.pagers.ListNodePoolsPager:
                 List of node pools in a cluster.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1941,6 +1943,7 @@ class EdgeContainerClient(metaclass=EdgeContainerClientMeta):
         Returns:
             google.cloud.edgecontainer_v1.services.edge_container.pagers.ListMachinesPager:
                 List of machines in a site.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

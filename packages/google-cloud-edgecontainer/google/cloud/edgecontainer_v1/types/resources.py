@@ -183,6 +183,7 @@ class ClusterNetworking(proto.Message):
 
 class Fleet(proto.Message):
     r"""Fleet related configuration.
+
     Fleets are a Google Cloud concept for logically organizing
     clusters, letting you use and manage multi-cluster capabilities
     and apply consistent policies across your systems.

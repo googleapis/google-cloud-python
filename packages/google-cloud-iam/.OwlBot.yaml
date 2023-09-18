@@ -16,14 +16,12 @@
 deep-remove-regex:
   - /owl-bot-staging
 
-deep-preserve-regex:
-  - /owl-bot-staging/google-cloud-iam/iam/v1
-  - /owl-bot-staging/google-cloud-iam/iam/v1beta
-
 deep-copy-regex:
   - source: /google/iam/credentials/(v.*)/.*-py
     dest: /owl-bot-staging/google-cloud-iam/$1
-  - source: /google/iam/(v.*)/.*-py
+  - source: /google/iam/v2beta/.*-py
+    dest: /owl-bot-staging/google-cloud-iam/$1
+  - source: /google/iam/v2/.*-py
     dest: /owl-bot-staging/google-cloud-iam/$1
 
 begin-after-commit-hash: 130ce904e5d546c312943d10f48799590f9c0f66

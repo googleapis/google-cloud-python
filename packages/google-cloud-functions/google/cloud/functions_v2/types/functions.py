@@ -300,6 +300,7 @@ class RepoSource(proto.Message):
     Attributes:
         branch_name (str):
             Regex matching branches to build.
+
             The syntax of the regular expressions accepted
             is the syntax accepted by RE2 and described at
             https://github.com/google/re2/wiki/Syntax
@@ -307,6 +308,7 @@ class RepoSource(proto.Message):
             This field is a member of `oneof`_ ``revision``.
         tag_name (str):
             Regex matching tags to build.
+
             The syntax of the regular expressions accepted
             is the syntax accepted by RE2 and described at
             https://github.com/google/re2/wiki/Syntax
