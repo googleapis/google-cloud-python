@@ -105,6 +105,7 @@ class AwsCluster(proto.Message):
             Allows clients to perform consistent
             read-modify-writes through optimistic
             concurrency control.
+
             Can be sent on update and delete requests to
             ensure the client has an up-to-date value before
             proceeding.
@@ -279,6 +280,7 @@ class AwsControlPlane(proto.Message):
             [GetAwsServerConfig][google.cloud.gkemulticloud.v1.AwsClusters.GetAwsServerConfig].
         instance_type (str):
             Optional. The AWS instance type.
+
             When unspecified, it uses a default based on the
             cluster's version.
         ssh_config (google.cloud.gke_multicloud_v1.types.AwsSshConfig):
@@ -305,6 +307,7 @@ class AwsControlPlane(proto.Message):
             Optional. Configuration related to the root
             volume provisioned for each control plane
             replica.
+
             Volumes will be provisioned in the availability
             zone associated with the corresponding subnet.
 
@@ -315,6 +318,7 @@ class AwsControlPlane(proto.Message):
             volume provisioned for each control plane
             replica. The main volume is in charge of storing
             all of the cluster's etcd state.
+
             Volumes will be provisioned in the availability
             zone associated with the corresponding subnet.
 
@@ -496,11 +500,13 @@ class AwsVolumeTemplate(proto.Message):
     Attributes:
         size_gib (int):
             Optional. The size of the volume, in GiBs.
+
             When unspecified, a default value is provided.
             See the specific reference in the parent
             resource.
         volume_type (google.cloud.gke_multicloud_v1.types.AwsVolumeTemplate.VolumeType):
             Optional. Type of the EBS volume.
+
             When unspecified, it defaults to GP2 volume.
         iops (int):
             Optional. The number of I/O operations per
@@ -509,6 +515,7 @@ class AwsVolumeTemplate(proto.Message):
             Optional. The Amazon Resource Name (ARN) of
             the Customer Managed Key (CMK) used to encrypt
             AWS EBS volumes.
+
             If not specified, the default Amazon managed key
             associated to the AWS region where this cluster
             runs will be used.
@@ -563,6 +570,7 @@ class AwsClusterNetworking(proto.Message):
             Required. The VPC associated with the
             cluster. All component clusters (i.e. control
             plane and node pools) run on a single VPC.
+
             This field cannot be changed after creation.
         pod_address_cidr_blocks (MutableSequence[str]):
             Required. All pods in the cluster are
@@ -637,6 +645,7 @@ class AwsNodePool(proto.Message):
             Allows clients to perform consistent
             read-modify-writes through optimistic
             concurrency control.
+
             Can be sent on update and delete requests to
             ensure the client has an up-to-date value before
             proceeding.
@@ -765,6 +774,7 @@ class AwsNodeConfig(proto.Message):
     Attributes:
         instance_type (str):
             Optional. The AWS instance type.
+
             When unspecified, it uses a default based on the
             node pool's version.
         root_volume (google.cloud.gke_multicloud_v1.types.AwsVolumeTemplate):
@@ -818,6 +828,7 @@ class AwsNodeConfig(proto.Message):
             Optional. Configuration related to CloudWatch
             metrics collection on the Auto Scaling group of
             the node pool.
+
             When unspecified, metrics collection is
             disabled.
     """

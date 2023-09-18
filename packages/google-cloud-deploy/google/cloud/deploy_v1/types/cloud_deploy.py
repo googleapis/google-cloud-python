@@ -919,8 +919,7 @@ class ListDeliveryPipelinesRequest(proto.Message):
             call that provided the page token.
         filter (str):
             Filter pipelines to be returned. See
-            https://google.aip.dev/160 for more
-            details.
+            https://google.aip.dev/160 for more details.
         order_by (str):
             Field to sort by. See
             https://google.aip.dev/132#ordering for more
@@ -1016,6 +1015,7 @@ class CreateDeliveryPipelineRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -1024,6 +1024,7 @@ class CreateDeliveryPipelineRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -1076,6 +1077,7 @@ class UpdateDeliveryPipelineRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -1084,6 +1086,7 @@ class UpdateDeliveryPipelineRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -1136,6 +1139,7 @@ class DeleteDeliveryPipelineRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -1144,6 +1148,7 @@ class DeleteDeliveryPipelineRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -1633,12 +1638,11 @@ class ListTargetsRequest(proto.Message):
             call that provided the page token.
         filter (str):
             Optional. Filter targets to be returned. See
-            https://google.aip.dev/160 for
-            more details.
+            https://google.aip.dev/160 for more details.
         order_by (str):
             Optional. Field to sort by. See
-            https://google.aip.dev/132#ordering for
-            more details.
+            https://google.aip.dev/132#ordering for more
+            details.
     """
 
     parent: str = proto.Field(
@@ -1730,6 +1734,7 @@ class CreateTargetRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -1738,6 +1743,7 @@ class CreateTargetRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -1790,6 +1796,7 @@ class UpdateTargetRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -1798,6 +1805,7 @@ class UpdateTargetRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -1849,6 +1857,7 @@ class DeleteTargetRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes after the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -1857,6 +1866,7 @@ class DeleteTargetRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -2467,12 +2477,11 @@ class ListReleasesRequest(proto.Message):
             call that provided the page token.
         filter (str):
             Optional. Filter releases to be returned. See
-            https://google.aip.dev/160
-            for more details.
+            https://google.aip.dev/160 for more details.
         order_by (str):
             Optional. Field to sort by. See
-            https://google.aip.dev/132#ordering for
-            more details.
+            https://google.aip.dev/132#ordering for more
+            details.
     """
 
     parent: str = proto.Field(
@@ -2564,6 +2573,7 @@ class CreateReleaseRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -2572,6 +2582,7 @@ class CreateReleaseRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -3298,12 +3309,11 @@ class ListRolloutsRequest(proto.Message):
             call that provided the page token.
         filter (str):
             Optional. Filter rollouts to be returned. See
-            https://google.aip.dev/160
-            for more details.
+            https://google.aip.dev/160 for more details.
         order_by (str):
             Optional. Field to sort by. See
-            https://google.aip.dev/132#ordering for
-            more details.
+            https://google.aip.dev/132#ordering for more
+            details.
     """
 
     parent: str = proto.Field(
@@ -3397,6 +3407,7 @@ class CreateRolloutRequest(proto.Message):
             ignore the request if it has already been
             completed. The server will guarantee that for at
             least 60 minutes since the first request.
+
             For example, consider a situation where you make
             an initial request and the request times out. If
             you make the request again with the same request
@@ -3405,6 +3416,7 @@ class CreateRolloutRequest(proto.Message):
             so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
+
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -4188,12 +4200,11 @@ class ListJobRunsRequest(proto.Message):
             call that provided the page token.
         filter (str):
             Optional. Filter results to be returned. See
-            https://google.aip.dev/160 for
-            more details.
+            https://google.aip.dev/160 for more details.
         order_by (str):
             Optional. Field to sort by. See
-            https://google.aip.dev/132#ordering for
-            more details.
+            https://google.aip.dev/132#ordering for more
+            details.
     """
 
     parent: str = proto.Field(

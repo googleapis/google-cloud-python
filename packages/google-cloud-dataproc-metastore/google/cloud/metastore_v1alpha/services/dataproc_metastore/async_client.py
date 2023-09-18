@@ -47,7 +47,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -552,6 +552,7 @@ class DataprocMetastoreAsyncClient:
                 service, which is used as the final
                 component of the metastore service's
                 name.
+
                 This value must be between 2 and 63
                 characters long inclusive, begin with a
                 letter, end with a letter or number, and
@@ -1184,6 +1185,7 @@ class DataprocMetastoreAsyncClient:
                 Required. The ID of the metadata
                 import, which is used as the final
                 component of the metadata import's name.
+
                 This value must be between 1 and 64
                 characters long, begin with a letter,
                 end with a letter or number, and consist
@@ -1914,6 +1916,7 @@ class DataprocMetastoreAsyncClient:
                 Required. The ID of the backup, which
                 is used as the final component of the
                 backup's name.
+
                 This value must be between 1 and 64
                 characters long, begin with a letter,
                 end with a letter or number, and consist

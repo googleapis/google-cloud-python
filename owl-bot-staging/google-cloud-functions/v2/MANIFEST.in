@@ -1,2 +1,0 @@
-recursive-include google/cloud/functions *.py
-recursive-include google/cloud/functions_v2 *.py

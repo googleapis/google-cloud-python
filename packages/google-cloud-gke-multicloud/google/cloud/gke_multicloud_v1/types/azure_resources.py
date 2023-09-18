@@ -128,6 +128,7 @@ class AzureCluster(proto.Message):
             Allows clients to perform consistent
             read-modify-writes through optimistic
             concurrency control.
+
             Can be sent on update and delete requests to
             ensure the client has an up-to-date value before
             proceeding.
@@ -407,6 +408,7 @@ class AzureControlPlane(proto.Message):
             Optional. Configuration related to the root
             volume provisioned for each control plane
             replica.
+
             When unspecified, it defaults to 32-GiB Azure
             Disk.
         main_volume (google.cloud.gke_multicloud_v1.types.AzureDiskTemplate):
@@ -414,6 +416,7 @@ class AzureControlPlane(proto.Message):
             volume provisioned for each control plane
             replica. The main volume is in charge of storing
             all of the cluster's etcd state.
+
             When unspecified, it defaults to a 8-GiB Azure
             Disk.
         database_encryption (google.cloud.gke_multicloud_v1.types.AzureDatabaseEncryption):
@@ -584,6 +587,7 @@ class AzureDatabaseEncryption(proto.Message):
 
 class AzureConfigEncryption(proto.Message):
     r"""Configuration related to config data encryption.
+
     Azure VM bootstrap secret is envelope encrypted with the
     provided key vault key.
 
@@ -620,6 +624,7 @@ class AzureDiskTemplate(proto.Message):
     Attributes:
         size_gib (int):
             Optional. The size of the disk, in GiBs.
+
             When unspecified, a default value is provided.
             See the specific reference in the parent
             resource.
@@ -836,6 +841,7 @@ class AzureNodePool(proto.Message):
             Allows clients to perform consistent
             read-modify-writes through optimistic
             concurrency control.
+
             Can be sent on update and delete requests to
             ensure the client has an up-to-date value before
             proceeding.
@@ -984,6 +990,7 @@ class AzureNodeConfig(proto.Message):
         root_volume (google.cloud.gke_multicloud_v1.types.AzureDiskTemplate):
             Optional. Configuration related to the root
             volume provisioned for each node pool machine.
+
             When unspecified, it defaults to a 32-GiB Azure
             Disk.
         tags (MutableMapping[str, str]):
@@ -1066,6 +1073,7 @@ class AzureNodeConfig(proto.Message):
 
 class AzureNodePoolAutoscaling(proto.Message):
     r"""Configuration related to Kubernetes cluster autoscaler.
+
     The Kubernetes cluster autoscaler will automatically adjust the
     size of the node pool based on the cluster load.
 
@@ -1159,6 +1167,7 @@ class AzureSshConfig(proto.Message):
 
 class AzureClusterResources(proto.Message):
     r"""Managed Azure resources for the cluster.
+
     The values could change and be empty, depending on the state of
     the cluster.
 
