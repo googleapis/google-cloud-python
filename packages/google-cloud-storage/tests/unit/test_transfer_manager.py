@@ -18,6 +18,7 @@ with pytest.warns(UserWarning):
     from google.cloud.storage import transfer_manager
 
 from google.cloud.storage import Blob
+from google.cloud.storage import Client
 
 from google.api_core import exceptions
 
@@ -33,6 +34,9 @@ FAKE_RESULT = "nothing to see here"
 FAKE_ENCODING = "fake_gzip"
 DOWNLOAD_KWARGS = {"accept-encoding": FAKE_ENCODING}
 CHUNK_SIZE = 8
+HOSTNAME = "https://example.com"
+URL = "https://example.com/bucket/blob"
+USER_AGENT = "agent"
 
 
 # Used in subprocesses only, so excluded from coverage
@@ -529,7 +533,7 @@ def test_download_chunks_concurrently():
 
     blob_mock.download_to_filename.return_value = FAKE_RESULT
 
-    with mock.patch("__main__.open", mock.mock_open()):
+    with mock.patch("google.cloud.storage.transfer_manager.open", mock.mock_open()):
         result = transfer_manager.download_chunks_concurrently(
             blob_mock,
             FILENAME,
@@ -554,7 +558,7 @@ def test_download_chunks_concurrently_raises_on_start_and_end():
     MULTIPLE = 4
     blob_mock.size = CHUNK_SIZE * MULTIPLE
 
-    with mock.patch("__main__.open", mock.mock_open()):
+    with mock.patch("google.cloud.storage.transfer_manager.open", mock.mock_open()):
         with pytest.raises(ValueError):
             transfer_manager.download_chunks_concurrently(
                 blob_mock,
@@ -587,7 +591,9 @@ def test_download_chunks_concurrently_passes_concurrency_options():
 
     with mock.patch("concurrent.futures.ThreadPoolExecutor") as pool_patch, mock.patch(
         "concurrent.futures.wait"
-    ) as wait_patch, mock.patch("__main__.open", mock.mock_open()):
+    ) as wait_patch, mock.patch(
+        "google.cloud.storage.transfer_manager.open", mock.mock_open()
+    ):
         transfer_manager.download_chunks_concurrently(
             blob_mock,
             FILENAME,
@@ -598,6 +604,182 @@ def test_download_chunks_concurrently_passes_concurrency_options():
         )
         pool_patch.assert_called_with(max_workers=MAX_WORKERS)
         wait_patch.assert_called_with(mock.ANY, timeout=DEADLINE, return_when=mock.ANY)
+
+
+def test_upload_chunks_concurrently():
+    bucket = mock.Mock()
+    bucket.name = "bucket"
+    bucket.client = _PickleableMockClient(identify_as_client=True)
+    transport = bucket.client._http
+    bucket.user_project = None
+
+    blob = Blob("blob", bucket)
+    blob.content_type = FAKE_CONTENT_TYPE
+
+    FILENAME = "file_a.txt"
+    SIZE = 2048
+
+    container_mock = mock.Mock()
+    container_mock.upload_id = "abcd"
+    part_mock = mock.Mock()
+    ETAG = "efgh"
+    part_mock.etag = ETAG
+
+    with mock.patch("os.path.getsize", return_value=SIZE), mock.patch(
+        "google.cloud.storage.transfer_manager.XMLMPUContainer",
+        return_value=container_mock,
+    ), mock.patch(
+        "google.cloud.storage.transfer_manager.XMLMPUPart", return_value=part_mock
+    ):
+        transfer_manager.upload_chunks_concurrently(
+            FILENAME,
+            blob,
+            chunk_size=SIZE // 2,
+            worker_type=transfer_manager.THREAD,
+        )
+        container_mock.initiate.assert_called_once_with(
+            transport=transport, content_type=blob.content_type
+        )
+        container_mock.register_part.assert_any_call(1, ETAG)
+        container_mock.register_part.assert_any_call(2, ETAG)
+        container_mock.finalize.assert_called_once_with(bucket.client._http)
+        part_mock.upload.assert_called_with(transport)
+
+
+def test_upload_chunks_concurrently_passes_concurrency_options():
+    bucket = mock.Mock()
+    bucket.name = "bucket"
+    bucket.client = _PickleableMockClient(identify_as_client=True)
+    transport = bucket.client._http
+    bucket.user_project = None
+
+    blob = Blob("blob", bucket)
+
+    FILENAME = "file_a.txt"
+    SIZE = 2048
+
+    container_mock = mock.Mock()
+    container_mock.upload_id = "abcd"
+
+    MAX_WORKERS = 7
+    DEADLINE = 10
+
+    with mock.patch("os.path.getsize", return_value=SIZE), mock.patch(
+        "google.cloud.storage.transfer_manager.XMLMPUContainer",
+        return_value=container_mock,
+    ), mock.patch("concurrent.futures.ThreadPoolExecutor") as pool_patch, mock.patch(
+        "concurrent.futures.wait"
+    ) as wait_patch:
+        try:
+            transfer_manager.upload_chunks_concurrently(
+                FILENAME,
+                blob,
+                chunk_size=SIZE // 2,
+                worker_type=transfer_manager.THREAD,
+                max_workers=MAX_WORKERS,
+                deadline=DEADLINE,
+            )
+        except ValueError:
+            pass  # The futures don't actually work, so we expect this to abort.
+            # Conveniently, that gives us a chance to test the auto-delete
+            # exception handling feature.
+        container_mock.cancel.assert_called_once_with(transport)
+        pool_patch.assert_called_with(max_workers=MAX_WORKERS)
+        wait_patch.assert_called_with(mock.ANY, timeout=DEADLINE, return_when=mock.ANY)
+
+
+def test_upload_chunks_concurrently_with_metadata_and_encryption():
+    import datetime
+    from google.cloud._helpers import UTC
+    from google.cloud._helpers import _RFC3339_MICROS
+
+    now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+    now_str = now.strftime(_RFC3339_MICROS)
+
+    custom_metadata = {"key_a": "value_a", "key_b": "value_b"}
+    encryption_key = "b23ff11bba187db8c37077e6af3b25b8"
+    kms_key_name = "sample_key_name"
+
+    METADATA = {
+        "cache_control": "private",
+        "content_disposition": "inline",
+        "content_language": "en-US",
+        "custom_time": now,
+        "metadata": custom_metadata,
+        "storage_class": "NEARLINE",
+    }
+
+    bucket = mock.Mock()
+    bucket.name = "bucket"
+    bucket.client = _PickleableMockClient(identify_as_client=True)
+    transport = bucket.client._http
+    user_project = "my_project"
+    bucket.user_project = user_project
+
+    blob = Blob("blob", bucket, kms_key_name=kms_key_name)
+    blob.content_type = FAKE_CONTENT_TYPE
+
+    for key, value in METADATA.items():
+        setattr(blob, key, value)
+    blob.metadata = {**custom_metadata}
+    blob.encryption_key = encryption_key
+
+    FILENAME = "file_a.txt"
+    SIZE = 2048
+
+    container_mock = mock.Mock()
+    container_mock.upload_id = "abcd"
+    part_mock = mock.Mock()
+    ETAG = "efgh"
+    part_mock.etag = ETAG
+    container_cls_mock = mock.Mock(return_value=container_mock)
+
+    invocation_id = "b9f8cbb0-6456-420c-819d-3f4ee3c0c455"
+
+    with mock.patch("os.path.getsize", return_value=SIZE), mock.patch(
+        "google.cloud.storage.transfer_manager.XMLMPUContainer", new=container_cls_mock
+    ), mock.patch(
+        "google.cloud.storage.transfer_manager.XMLMPUPart", return_value=part_mock
+    ), mock.patch(
+        "google.cloud.storage._helpers._get_invocation_id",
+        return_value="gccl-invocation-id/" + invocation_id,
+    ):
+        transfer_manager.upload_chunks_concurrently(
+            FILENAME,
+            blob,
+            chunk_size=SIZE // 2,
+            worker_type=transfer_manager.THREAD,
+        )
+        expected_headers = {
+            "Accept": "application/json",
+            "Accept-Encoding": "gzip, deflate",
+            "User-Agent": "agent",
+            "X-Goog-API-Client": "agent gccl-invocation-id/{}".format(invocation_id),
+            "content-type": FAKE_CONTENT_TYPE,
+            "x-upload-content-type": FAKE_CONTENT_TYPE,
+            "X-Goog-Encryption-Algorithm": "AES256",
+            "X-Goog-Encryption-Key": "YjIzZmYxMWJiYTE4N2RiOGMzNzA3N2U2YWYzYjI1Yjg=",
+            "X-Goog-Encryption-Key-Sha256": "B25Y4hgVlNXDliAklsNz9ykLk7qvgqDrSbdds5iu8r4=",
+            "Cache-Control": "private",
+            "Content-Disposition": "inline",
+            "Content-Language": "en-US",
+            "x-goog-storage-class": "NEARLINE",
+            "x-goog-custom-time": now_str,
+            "x-goog-meta-key_a": "value_a",
+            "x-goog-meta-key_b": "value_b",
+            "x-goog-user-project": "my_project",
+            "x-goog-encryption-kms-key-name": "sample_key_name",
+        }
+        container_cls_mock.assert_called_once_with(
+            URL, FILENAME, headers=expected_headers
+        )
+        container_mock.initiate.assert_called_once_with(
+            transport=transport, content_type=blob.content_type
+        )
+        container_mock.register_part.assert_any_call(1, ETAG)
+        container_mock.register_part.assert_any_call(2, ETAG)
+        container_mock.finalize.assert_called_once_with(transport)
+        part_mock.upload.assert_called_with(blob.client._http)
 
 
 class _PickleableMockBlob:
@@ -623,6 +805,28 @@ class _PickleableMockBlob:
         return "SUCCESS"
 
 
+class _PickleableMockConnection:
+    @staticmethod
+    def get_api_base_url_for_mtls():
+        return HOSTNAME
+
+    user_agent = USER_AGENT
+
+
+class _PickleableMockClient:
+    def __init__(self, identify_as_client=False):
+        self._http = "my_transport"  # used as an identifier for "called_with"
+        self._connection = _PickleableMockConnection()
+        self.identify_as_client = identify_as_client
+
+    @property
+    def __class__(self):
+        if self.identify_as_client:
+            return Client
+        else:
+            return _PickleableMockClient
+
+
 # Used in subprocesses only, so excluded from coverage
 def _validate_blob_token_in_subprocess_for_chunk(
     maybe_pickled_blob, filename, **kwargs
@@ -642,7 +846,7 @@ def test_download_chunks_concurrently_with_processes():
     with mock.patch(
         "google.cloud.storage.transfer_manager._download_and_write_chunk_in_place",
         new=_validate_blob_token_in_subprocess_for_chunk,
-    ), mock.patch("__main__.open", mock.mock_open()):
+    ), mock.patch("google.cloud.storage.transfer_manager.open", mock.mock_open()):
         result = transfer_manager.download_chunks_concurrently(
             blob,
             FILENAME,
@@ -665,24 +869,42 @@ def test__LazyClient():
         assert len(fake_cache) == 1
 
 
-def test__pickle_blob():
+def test__pickle_client():
     # This test nominally has coverage, but doesn't assert that the essential
-    # copyreg behavior in _pickle_blob works. Unfortunately there doesn't seem
+    # copyreg behavior in _pickle_client works. Unfortunately there doesn't seem
     # to be a good way to check that without actually creating a Client, which
     # will spin up HTTP connections undesirably. This is more fully checked in
-    # the system tests, though.
-    pkl = transfer_manager._pickle_blob(FAKE_RESULT)
+    # the system tests.
+    pkl = transfer_manager._pickle_client(FAKE_RESULT)
     assert pickle.loads(pkl) == FAKE_RESULT
 
 
 def test__download_and_write_chunk_in_place():
     pickled_mock = pickle.dumps(_PickleableMockBlob())
     FILENAME = "file_a.txt"
-    with mock.patch("__main__.open", mock.mock_open()):
+    with mock.patch("google.cloud.storage.transfer_manager.open", mock.mock_open()):
         result = transfer_manager._download_and_write_chunk_in_place(
             pickled_mock, FILENAME, 0, 8, {}
         )
     assert result == "SUCCESS"
+
+
+def test__upload_part():
+    pickled_mock = pickle.dumps(_PickleableMockClient())
+    FILENAME = "file_a.txt"
+    UPLOAD_ID = "abcd"
+    ETAG = "efgh"
+
+    part = mock.Mock()
+    part.etag = ETAG
+    with mock.patch(
+        "google.cloud.storage.transfer_manager.XMLMPUPart", return_value=part
+    ):
+        result = transfer_manager._upload_part(
+            pickled_mock, URL, UPLOAD_ID, FILENAME, 0, 256, 1, None, {"key", "value"}
+        )
+        part.upload.assert_called_once()
+        assert result == (1, ETAG)
 
 
 def test__get_pool_class_and_requirements_error():

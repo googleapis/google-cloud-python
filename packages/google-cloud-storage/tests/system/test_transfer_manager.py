@@ -16,12 +16,24 @@
 import tempfile
 import os
 
+import pytest
+
 from google.cloud.storage import transfer_manager
 from google.cloud.storage._helpers import _base64_md5hash
 
 from google.api_core import exceptions
 
 DEADLINE = 30
+
+encryption_key = "b23ff11bba187db8c37077e6af3b25b8"
+
+
+def _check_blob_hash(blob, info):
+    md5_hash = blob.md5_hash
+    if not isinstance(md5_hash, bytes):
+        md5_hash = md5_hash.encode("utf-8")
+
+    assert md5_hash == info["hash"]
 
 
 def test_upload_many(shared_bucket, file_data, blobs_to_delete):
@@ -171,3 +183,208 @@ def test_download_chunks_concurrently(shared_bucket, file_data):
         )
         with open(threaded_filename, "rb") as file_obj:
             assert _base64_md5hash(file_obj) == source_file["hash"]
+
+
+def test_upload_chunks_concurrently(shared_bucket, file_data, blobs_to_delete):
+    source_file = file_data["big"]
+    filename = source_file["path"]
+    blob_name = "mpu_file"
+    upload_blob = shared_bucket.blob(blob_name)
+    chunk_size = 5 * 1024 * 1024  # Minimum supported by XML MPU API
+    assert os.path.getsize(filename) > chunk_size  # Won't make a good test otherwise
+
+    blobs_to_delete.append(upload_blob)
+
+    transfer_manager.upload_chunks_concurrently(
+        filename, upload_blob, chunk_size=chunk_size, deadline=DEADLINE
+    )
+
+    with tempfile.NamedTemporaryFile() as tmp:
+        download_blob = shared_bucket.blob(blob_name)
+        download_blob.download_to_file(tmp)
+        tmp.seek(0)
+
+        with open(source_file["path"], "rb") as sf:
+            source_contents = sf.read()
+            temp_contents = tmp.read()
+            assert source_contents == temp_contents
+
+    # Also test threaded mode
+    blob_name = "mpu_threaded"
+    upload_blob = shared_bucket.blob(blob_name)
+    chunk_size = 5 * 1024 * 1024  # Minimum supported by XML MPU API
+    assert os.path.getsize(filename) > chunk_size  # Won't make a good test otherwise
+
+    transfer_manager.upload_chunks_concurrently(
+        filename,
+        upload_blob,
+        chunk_size=chunk_size,
+        deadline=DEADLINE,
+        worker_type=transfer_manager.THREAD,
+    )
+
+    with tempfile.NamedTemporaryFile() as tmp:
+        download_blob = shared_bucket.blob(blob_name)
+        download_blob.download_to_file(tmp)
+        tmp.seek(0)
+
+        with open(source_file["path"], "rb") as sf:
+            source_contents = sf.read()
+            temp_contents = tmp.read()
+            assert source_contents == temp_contents
+
+
+def test_upload_chunks_concurrently_with_metadata(
+    shared_bucket, file_data, blobs_to_delete
+):
+    import datetime
+    from google.cloud._helpers import UTC
+
+    now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+    custom_metadata = {"key_a": "value_a", "key_b": "value_b"}
+
+    METADATA = {
+        "cache_control": "private",
+        "content_disposition": "inline",
+        "content_language": "en-US",
+        "custom_time": now,
+        "metadata": custom_metadata,
+        "storage_class": "NEARLINE",
+    }
+
+    source_file = file_data["big"]
+    filename = source_file["path"]
+    blob_name = "mpu_file_with_metadata"
+    upload_blob = shared_bucket.blob(blob_name)
+
+    for key, value in METADATA.items():
+        setattr(upload_blob, key, value)
+
+    chunk_size = 5 * 1024 * 1024  # Minimum supported by XML MPU API
+    assert os.path.getsize(filename) > chunk_size  # Won't make a good test otherwise
+
+    transfer_manager.upload_chunks_concurrently(
+        filename, upload_blob, chunk_size=chunk_size, deadline=DEADLINE
+    )
+    blobs_to_delete.append(upload_blob)
+
+    with tempfile.NamedTemporaryFile() as tmp:
+        download_blob = shared_bucket.get_blob(blob_name)
+
+        for key, value in METADATA.items():
+            assert getattr(download_blob, key) == value
+
+        download_blob.download_to_file(tmp)
+        tmp.seek(0)
+
+        with open(source_file["path"], "rb") as sf:
+            source_contents = sf.read()
+            temp_contents = tmp.read()
+            assert source_contents == temp_contents
+
+
+def test_upload_chunks_concurrently_with_content_encoding(
+    shared_bucket, file_data, blobs_to_delete
+):
+    import gzip
+
+    METADATA = {
+        "content_encoding": "gzip",
+    }
+
+    source_file = file_data["big"]
+    filename = source_file["path"]
+    blob_name = "mpu_file_encoded"
+    upload_blob = shared_bucket.blob(blob_name)
+
+    for key, value in METADATA.items():
+        setattr(upload_blob, key, value)
+
+    chunk_size = 5 * 1024 * 1024  # Minimum supported by XML MPU API
+
+    with tempfile.NamedTemporaryFile() as tmp_gzip:
+        with open(filename, "rb") as f:
+            compressed_bytes = gzip.compress(f.read())
+
+        tmp_gzip.write(compressed_bytes)
+        tmp_gzip.seek(0)
+        transfer_manager.upload_chunks_concurrently(
+            tmp_gzip.name, upload_blob, chunk_size=chunk_size, deadline=DEADLINE
+        )
+        blobs_to_delete.append(upload_blob)
+
+    with tempfile.NamedTemporaryFile() as tmp:
+        download_blob = shared_bucket.get_blob(blob_name)
+
+        for key, value in METADATA.items():
+            assert getattr(download_blob, key) == value
+
+        download_blob.download_to_file(tmp)
+        tmp.seek(0)
+
+        with open(source_file["path"], "rb") as sf:
+            source_contents = sf.read()
+            temp_contents = tmp.read()
+            assert source_contents == temp_contents
+
+
+def test_upload_chunks_concurrently_with_encryption_key(
+    shared_bucket, file_data, blobs_to_delete
+):
+    source_file = file_data["big"]
+    filename = source_file["path"]
+    blob_name = "mpu_file_encrypted"
+    upload_blob = shared_bucket.blob(blob_name, encryption_key=encryption_key)
+
+    chunk_size = 5 * 1024 * 1024  # Minimum supported by XML MPU API
+    assert os.path.getsize(filename) > chunk_size  # Won't make a good test otherwise
+
+    transfer_manager.upload_chunks_concurrently(
+        filename, upload_blob, chunk_size=chunk_size, deadline=DEADLINE
+    )
+    blobs_to_delete.append(upload_blob)
+
+    with tempfile.NamedTemporaryFile() as tmp:
+        download_blob = shared_bucket.get_blob(blob_name, encryption_key=encryption_key)
+
+        download_blob.download_to_file(tmp)
+        tmp.seek(0)
+
+        with open(source_file["path"], "rb") as sf:
+            source_contents = sf.read()
+            temp_contents = tmp.read()
+            assert source_contents == temp_contents
+
+    with tempfile.NamedTemporaryFile() as tmp:
+        keyless_blob = shared_bucket.get_blob(blob_name)
+
+        with pytest.raises(exceptions.BadRequest):
+            keyless_blob.download_to_file(tmp)
+
+
+def test_upload_chunks_concurrently_with_kms(
+    kms_bucket, file_data, blobs_to_delete, kms_key_name
+):
+    source_file = file_data["big"]
+    filename = source_file["path"]
+    blob_name = "mpu_file_kms"
+    blob = kms_bucket.blob(blob_name, kms_key_name=kms_key_name)
+
+    chunk_size = 5 * 1024 * 1024  # Minimum supported by XML MPU API
+    assert os.path.getsize(filename) > chunk_size  # Won't make a good test otherwise
+
+    transfer_manager.upload_chunks_concurrently(
+        filename, blob, chunk_size=chunk_size, deadline=DEADLINE
+    )
+    blobs_to_delete.append(blob)
+    blob.reload()
+    assert blob.kms_key_name.startswith(kms_key_name)
+
+    with tempfile.NamedTemporaryFile() as tmp:
+        blob.download_to_file(tmp)
+        tmp.seek(0)
+
+        with open(source_file["path"], "rb") as sf:
+            source_contents = sf.read()
+            temp_contents = tmp.read()
+            assert source_contents == temp_contents

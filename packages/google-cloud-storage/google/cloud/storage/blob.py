@@ -1697,7 +1697,7 @@ class Blob(_PropertyMixin):
 
         return object_metadata
 
-    def _get_upload_arguments(self, client, content_type):
+    def _get_upload_arguments(self, client, content_type, filename=None):
         """Get required arguments for performing an upload.
 
         The content type returned will be determined in order of precedence:
@@ -1716,7 +1716,7 @@ class Blob(_PropertyMixin):
                   * An object metadata dictionary
                   * The ``content_type`` as a string (according to precedence)
         """
-        content_type = self._get_content_type(content_type)
+        content_type = self._get_content_type(content_type, filename=filename)
         headers = {
             **_get_default_headers(client._connection.user_agent, content_type),
             **_get_encryption_headers(self._encryption_key),
