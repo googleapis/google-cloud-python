@@ -35,6 +35,7 @@ __protobuf__ = proto.module(
         "LicenseType",
         "SizingOptimizationStrategy",
         "CommitmentPlan",
+        "ComputeMigrationTargetProduct",
         "ReportView",
         "Asset",
         "PreferenceSet",
@@ -157,10 +158,12 @@ __protobuf__ = proto.module(
         "DailyResourceUsageAggregation",
         "InsightList",
         "Insight",
+        "GenericInsight",
         "MigrationInsight",
         "ComputeEngineMigrationTarget",
-        "FitDescriptor",
         "ComputeEngineShapeDescriptor",
+        "ComputeStorageDescriptor",
+        "FitDescriptor",
         "Aggregation",
         "AggregationResult",
         "FileValidationReport",
@@ -175,6 +178,9 @@ __protobuf__ = proto.module(
         "ComputeEnginePreferences",
         "MachinePreferences",
         "MachineSeries",
+        "VmwareEnginePreferences",
+        "SoleTenancyPreferences",
+        "SoleTenantNodeType",
         "RegionPreferences",
         "Settings",
         "ReportSummary",
@@ -382,6 +388,28 @@ class CommitmentPlan(proto.Enum):
     COMMITMENT_PLAN_NONE = 1
     COMMITMENT_PLAN_ONE_YEAR = 2
     COMMITMENT_PLAN_THREE_YEARS = 3
+
+
+class ComputeMigrationTargetProduct(proto.Enum):
+    r"""The preference for a specific Google Cloud product platform.
+
+    Values:
+        COMPUTE_MIGRATION_TARGET_PRODUCT_UNSPECIFIED (0):
+            Unspecified (default value).
+        COMPUTE_MIGRATION_TARGET_PRODUCT_COMPUTE_ENGINE (1):
+            Prefer to migrate to Google Cloud Compute
+            Engine.
+        COMPUTE_MIGRATION_TARGET_PRODUCT_VMWARE_ENGINE (2):
+            Prefer to migrate to Google Cloud VMware
+            Engine.
+        COMPUTE_MIGRATION_TARGET_PRODUCT_SOLE_TENANCY (3):
+            Prefer to migrate to Google Cloud Sole Tenant
+            Nodes.
+    """
+    COMPUTE_MIGRATION_TARGET_PRODUCT_UNSPECIFIED = 0
+    COMPUTE_MIGRATION_TARGET_PRODUCT_COMPUTE_ENGINE = 1
+    COMPUTE_MIGRATION_TARGET_PRODUCT_VMWARE_ENGINE = 2
+    COMPUTE_MIGRATION_TARGET_PRODUCT_SOLE_TENANCY = 3
 
 
 class ReportView(proto.Enum):
@@ -3452,6 +3480,8 @@ class AssetFrame(proto.Message):
             Generic asset attributes.
         performance_samples (MutableSequence[google.cloud.migrationcenter_v1.types.PerformanceSample]):
             Asset performance data samples.
+            Samples that are from more than 40 days ago or
+            after tomorrow are ignored.
         trace_token (str):
             Optional. Trace token is optionally provided
             to assist with debugging and traceability.
@@ -3703,7 +3733,8 @@ class BiosDetails(proto.Message):
 
     Attributes:
         bios_name (str):
-            BIOS name.
+            BIOS name. This fields is deprecated. Please use the ``id``
+            field instead.
         id (str):
             BIOS ID.
         manufacturer (str):
@@ -5142,6 +5173,7 @@ class PerformanceSample(proto.Message):
     Attributes:
         sample_time (google.protobuf.timestamp_pb2.Timestamp):
             Time the sample was collected.
+            If omitted, the frame report time will be used.
         memory (google.cloud.migrationcenter_v1.types.MemoryUsageSample):
             Memory usage sample.
         cpu (google.cloud.migrationcenter_v1.types.CpuUsageSample):
@@ -5363,12 +5395,21 @@ class InsightList(proto.Message):
 class Insight(proto.Message):
     r"""An insight about an asset.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         migration_insight (google.cloud.migrationcenter_v1.types.MigrationInsight):
             Output only. An insight about potential
             migrations for an asset.
+
+            This field is a member of `oneof`_ ``insight``.
+        generic_insight (google.cloud.migrationcenter_v1.types.GenericInsight):
+            Output only. A generic insight about an asset
 
             This field is a member of `oneof`_ ``insight``.
     """
@@ -5378,6 +5419,47 @@ class Insight(proto.Message):
         number=1,
         oneof="insight",
         message="MigrationInsight",
+    )
+    generic_insight: "GenericInsight" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="insight",
+        message="GenericInsight",
+    )
+
+
+class GenericInsight(proto.Message):
+    r"""A generic insight about an asset.
+
+    Attributes:
+        message_id (int):
+            Output only. Represents a globally unique message id for
+            this insight, can be used for localization purposes, in case
+            message_code is not yet known by the client use
+            default_message instead.
+        default_message (str):
+            Output only. In case message_code is not yet known by the
+            client default_message will be the message to be used
+            instead.
+        additional_information (MutableSequence[str]):
+            Output only. Additional information about the
+            insight, each entry can be a logical entry and
+            must make sense if it is displayed with line
+            breaks between each entry. Text can contain md
+            style links.
+    """
+
+    message_id: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    default_message: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    additional_information: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -5426,6 +5508,72 @@ class ComputeEngineMigrationTarget(proto.Message):
     )
 
 
+class ComputeEngineShapeDescriptor(proto.Message):
+    r"""Compute Engine target shape descriptor.
+
+    Attributes:
+        memory_mb (int):
+            Memory in mebibytes.
+        physical_core_count (int):
+            Number of physical cores.
+        logical_core_count (int):
+            Number of logical cores.
+        series (str):
+            Compute Engine machine series.
+        machine_type (str):
+            Compute Engine machine type.
+        storage (MutableSequence[google.cloud.migrationcenter_v1.types.ComputeStorageDescriptor]):
+            Compute Engine storage. Never empty.
+    """
+
+    memory_mb: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    physical_core_count: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    logical_core_count: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    series: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    machine_type: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    storage: MutableSequence["ComputeStorageDescriptor"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="ComputeStorageDescriptor",
+    )
+
+
+class ComputeStorageDescriptor(proto.Message):
+    r"""Compute Engine storage option descriptor.
+
+    Attributes:
+        type_ (google.cloud.migrationcenter_v1.types.PersistentDiskType):
+            Disk type backing the storage.
+        size_gb (int):
+            Disk size in GiB.
+    """
+
+    type_: "PersistentDiskType" = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="PersistentDiskType",
+    )
+    size_gb: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+
+
 class FitDescriptor(proto.Message):
     r"""Describes the fit level of an asset for migration to a
     specific target.
@@ -5457,44 +5605,6 @@ class FitDescriptor(proto.Message):
         proto.ENUM,
         number=1,
         enum=FitLevel,
-    )
-
-
-class ComputeEngineShapeDescriptor(proto.Message):
-    r"""Compute Engine target shape descriptor.
-
-    Attributes:
-        memory_mb (int):
-            Memory in mebibytes.
-        physical_core_count (int):
-            Number of physical cores.
-        logical_core_count (int):
-            Number of logical cores.
-        series (str):
-            Compute Engine machine series.
-        machine_type (str):
-            Compute Engine machine type.
-    """
-
-    memory_mb: int = proto.Field(
-        proto.INT32,
-        number=1,
-    )
-    physical_core_count: int = proto.Field(
-        proto.INT32,
-        number=2,
-    )
-    logical_core_count: int = proto.Field(
-        proto.INT32,
-        number=3,
-    )
-    series: str = proto.Field(
-        proto.STRING,
-        number=4,
-    )
-    machine_type: str = proto.Field(
-        proto.STRING,
-        number=5,
     )
 
 
@@ -5806,7 +5916,8 @@ class ExecutionReport(proto.Message):
             Validation errors encountered during the
             execution of the import job.
         total_rows_count (int):
-            Total number of rows in the import job.
+            Output only. Total number of rows in the
+            import job.
     """
 
     frames_reported: int = proto.Field(
@@ -5972,6 +6083,10 @@ class VirtualMachinePreferences(proto.Message):
     machine assets.
 
     Attributes:
+        target_product (google.cloud.migrationcenter_v1.types.ComputeMigrationTargetProduct):
+            Target product for assets using this
+            preference set. Specify either target product or
+            business goal, but not both.
         region_preferences (google.cloud.migrationcenter_v1.types.RegionPreferences):
             Region preferences for assets using this
             preference set. If you are unsure which value to
@@ -5994,8 +6109,19 @@ class VirtualMachinePreferences(proto.Message):
         compute_engine_preferences (google.cloud.migrationcenter_v1.types.ComputeEnginePreferences):
             Compute Engine preferences concern insights
             and recommendations for Compute Engine target.
+        vmware_engine_preferences (google.cloud.migrationcenter_v1.types.VmwareEnginePreferences):
+            Preferences concerning insights and
+            recommendations for Google Cloud VMware Engine.
+        sole_tenancy_preferences (google.cloud.migrationcenter_v1.types.SoleTenancyPreferences):
+            Preferences concerning Sole Tenant nodes and
+            virtual machines.
     """
 
+    target_product: "ComputeMigrationTargetProduct" = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="ComputeMigrationTargetProduct",
+    )
     region_preferences: "RegionPreferences" = proto.Field(
         proto.MESSAGE,
         number=3,
@@ -6015,6 +6141,16 @@ class VirtualMachinePreferences(proto.Message):
         proto.MESSAGE,
         number=6,
         message="ComputeEnginePreferences",
+    )
+    vmware_engine_preferences: "VmwareEnginePreferences" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="VmwareEnginePreferences",
+    )
+    sole_tenancy_preferences: "SoleTenancyPreferences" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="SoleTenancyPreferences",
     )
 
 
@@ -6075,6 +6211,178 @@ class MachineSeries(proto.Message):
     """
 
     code: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class VmwareEnginePreferences(proto.Message):
+    r"""The user preferences relating to Google Cloud VMware Engine
+    target platform.
+
+    Attributes:
+        cpu_overcommit_ratio (float):
+            CPU overcommit ratio.
+            Acceptable values are between 1.0 and 8.0, with
+            0.1 increment.
+        memory_overcommit_ratio (float):
+            Memory overcommit ratio.
+            Acceptable values are 1.0, 1.25, 1.5, 1.75 and
+            2.0.
+        storage_deduplication_compression_ratio (float):
+            The Deduplication and Compression ratio is
+            based on the logical (Used Before) space
+            required to store data before applying
+            deduplication and compression, in relation to
+            the physical (Used After) space required after
+            applying deduplication and compression.
+            Specifically, the ratio is the Used Before space
+            divided by the Used After space. For example, if
+            the Used Before space is 3 GB, but the physical
+            Used After space is 1 GB, the deduplication and
+            compression ratio is 3x. Acceptable values are
+            between 1.0 and 4.0.
+        commitment_plan (google.cloud.migrationcenter_v1.types.VmwareEnginePreferences.CommitmentPlan):
+            Commitment plan to consider when calculating
+            costs for virtual machine insights and
+            recommendations. If you are unsure which value
+            to set, a 3 year commitment plan is often a good
+            value to start with.
+    """
+
+    class CommitmentPlan(proto.Enum):
+        r"""Type of committed use discount.
+
+        Values:
+            COMMITMENT_PLAN_UNSPECIFIED (0):
+                Unspecified commitment plan.
+            ON_DEMAND (1):
+                No commitment plan (on-demand usage).
+            COMMITMENT_1_YEAR_MONTHLY_PAYMENTS (2):
+                1 year commitment (monthly payments).
+            COMMITMENT_3_YEAR_MONTHLY_PAYMENTS (3):
+                3 year commitment (monthly payments).
+            COMMITMENT_1_YEAR_UPFRONT_PAYMENT (4):
+                1 year commitment (upfront payment).
+            COMMITMENT_3_YEAR_UPFRONT_PAYMENT (5):
+                3 years commitment (upfront payment).
+        """
+        COMMITMENT_PLAN_UNSPECIFIED = 0
+        ON_DEMAND = 1
+        COMMITMENT_1_YEAR_MONTHLY_PAYMENTS = 2
+        COMMITMENT_3_YEAR_MONTHLY_PAYMENTS = 3
+        COMMITMENT_1_YEAR_UPFRONT_PAYMENT = 4
+        COMMITMENT_3_YEAR_UPFRONT_PAYMENT = 5
+
+    cpu_overcommit_ratio: float = proto.Field(
+        proto.DOUBLE,
+        number=1,
+    )
+    memory_overcommit_ratio: float = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
+    storage_deduplication_compression_ratio: float = proto.Field(
+        proto.DOUBLE,
+        number=3,
+    )
+    commitment_plan: CommitmentPlan = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=CommitmentPlan,
+    )
+
+
+class SoleTenancyPreferences(proto.Message):
+    r"""Preferences concerning Sole Tenancy nodes and VMs.
+
+    Attributes:
+        cpu_overcommit_ratio (float):
+            CPU overcommit ratio.
+            Acceptable values are between 1.0 and 2.0
+            inclusive.
+        host_maintenance_policy (google.cloud.migrationcenter_v1.types.SoleTenancyPreferences.HostMaintenancePolicy):
+            Sole Tenancy nodes maintenance policy.
+        commitment_plan (google.cloud.migrationcenter_v1.types.SoleTenancyPreferences.CommitmentPlan):
+            Commitment plan to consider when calculating
+            costs for virtual machine insights and
+            recommendations. If you are unsure which value
+            to set, a 3 year commitment plan is often a good
+            value to start with.
+        node_types (MutableSequence[google.cloud.migrationcenter_v1.types.SoleTenantNodeType]):
+            A list of sole tenant node types.
+            An empty list means that all possible node types
+            will be considered.
+    """
+
+    class HostMaintenancePolicy(proto.Enum):
+        r"""Sole Tenancy nodes maintenance policy.
+
+        Values:
+            HOST_MAINTENANCE_POLICY_UNSPECIFIED (0):
+                Unspecified host maintenance policy.
+            HOST_MAINTENANCE_POLICY_DEFAULT (1):
+                Default host maintenance policy.
+            HOST_MAINTENANCE_POLICY_RESTART_IN_PLACE (2):
+                Restart in place host maintenance policy.
+            HOST_MAINTENANCE_POLICY_MIGRATE_WITHIN_NODE_GROUP (3):
+                Migrate within node group host maintenance
+                policy.
+        """
+        HOST_MAINTENANCE_POLICY_UNSPECIFIED = 0
+        HOST_MAINTENANCE_POLICY_DEFAULT = 1
+        HOST_MAINTENANCE_POLICY_RESTART_IN_PLACE = 2
+        HOST_MAINTENANCE_POLICY_MIGRATE_WITHIN_NODE_GROUP = 3
+
+    class CommitmentPlan(proto.Enum):
+        r"""Type of committed use discount.
+
+        Values:
+            COMMITMENT_PLAN_UNSPECIFIED (0):
+                Unspecified commitment plan.
+            ON_DEMAND (1):
+                No commitment plan (on-demand usage).
+            COMMITMENT_1_YEAR (2):
+                1 year commitment.
+            COMMITMENT_3_YEAR (3):
+                3 years commitment.
+        """
+        COMMITMENT_PLAN_UNSPECIFIED = 0
+        ON_DEMAND = 1
+        COMMITMENT_1_YEAR = 2
+        COMMITMENT_3_YEAR = 3
+
+    cpu_overcommit_ratio: float = proto.Field(
+        proto.DOUBLE,
+        number=1,
+    )
+    host_maintenance_policy: HostMaintenancePolicy = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=HostMaintenancePolicy,
+    )
+    commitment_plan: CommitmentPlan = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=CommitmentPlan,
+    )
+    node_types: MutableSequence["SoleTenantNodeType"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="SoleTenantNodeType",
+    )
+
+
+class SoleTenantNodeType(proto.Message):
+    r"""A Sole Tenant node type.
+
+    Attributes:
+        node_name (str):
+            Name of the Sole Tenant node. Consult
+            https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes
+    """
+
+    node_name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -6387,6 +6695,136 @@ class ReportSummary(proto.Message):
             enum="PersistentDiskType",
         )
 
+    class VmwareEngineFinding(proto.Message):
+        r"""A set of findings that applies to assets destined for VMWare
+        Engine.
+
+        Attributes:
+            allocated_regions (MutableSequence[str]):
+                Set of regions in which the assets were
+                allocated
+            allocated_asset_count (int):
+                Count of assets which are allocated
+            node_allocations (MutableSequence[google.cloud.migrationcenter_v1.types.ReportSummary.VmwareNodeAllocation]):
+                Set of per-nodetype allocation records
+        """
+
+        allocated_regions: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        allocated_asset_count: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        node_allocations: MutableSequence[
+            "ReportSummary.VmwareNodeAllocation"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="ReportSummary.VmwareNodeAllocation",
+        )
+
+    class VmwareNodeAllocation(proto.Message):
+        r"""Represents assets allocated to a specific VMWare Node type.
+
+        Attributes:
+            vmware_node (google.cloud.migrationcenter_v1.types.ReportSummary.VmwareNode):
+                VMWare node type, e.g. "ve1-standard-72".
+            node_count (int):
+                Count of this node type to be provisioned
+            allocated_asset_count (int):
+                Count of assets allocated to these nodes
+        """
+
+        vmware_node: "ReportSummary.VmwareNode" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="ReportSummary.VmwareNode",
+        )
+        node_count: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        allocated_asset_count: int = proto.Field(
+            proto.INT64,
+            number=3,
+        )
+
+    class VmwareNode(proto.Message):
+        r"""A VMWare Engine Node
+
+        Attributes:
+            code (str):
+                Code to identify VMware Engine node series,
+                e.g. "ve1-standard-72". Based on the displayName
+                of
+                cloud.google.com/vmware-engine/docs/reference/rest/v1/projects.locations.nodeTypes
+        """
+
+        code: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class SoleTenantFinding(proto.Message):
+        r"""A set of findings that applies to assets destined for
+        Sole-Tenant nodes.
+
+        Attributes:
+            allocated_regions (MutableSequence[str]):
+                Set of regions in which the assets are
+                allocated
+            allocated_asset_count (int):
+                Count of assets which are allocated
+            node_allocations (MutableSequence[google.cloud.migrationcenter_v1.types.ReportSummary.SoleTenantNodeAllocation]):
+                Set of per-nodetype allocation records
+        """
+
+        allocated_regions: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        allocated_asset_count: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        node_allocations: MutableSequence[
+            "ReportSummary.SoleTenantNodeAllocation"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="ReportSummary.SoleTenantNodeAllocation",
+        )
+
+    class SoleTenantNodeAllocation(proto.Message):
+        r"""Represents the assets allocated to a specific Sole-Tenant
+        node type.
+
+        Attributes:
+            node (google.cloud.migrationcenter_v1.types.SoleTenantNodeType):
+                Sole Tenant node type, e.g.
+                "m3-node-128-3904".
+            node_count (int):
+                Count of this node type to be provisioned
+            allocated_asset_count (int):
+                Count of assets allocated to these nodes
+        """
+
+        node: "SoleTenantNodeType" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="SoleTenantNodeType",
+        )
+        node_count: int = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        allocated_asset_count: int = proto.Field(
+            proto.INT64,
+            number=3,
+        )
+
     class GroupPreferenceSetFinding(proto.Message):
         r"""Summary Findings for a specific Group/PreferenceSet
         combination.
@@ -6417,6 +6855,12 @@ class ReportSummary(proto.Message):
             compute_engine_finding (google.cloud.migrationcenter_v1.types.ReportSummary.ComputeEngineFinding):
                 A set of findings that applies to Compute
                 Engine machines in the input.
+            vmware_engine_finding (google.cloud.migrationcenter_v1.types.ReportSummary.VmwareEngineFinding):
+                A set of findings that applies to VMWare
+                machines in the input.
+            sole_tenant_finding (google.cloud.migrationcenter_v1.types.ReportSummary.SoleTenantFinding):
+                A set of findings that applies to Sole-Tenant
+                machines in the input.
         """
 
         display_name: str = proto.Field(
@@ -6467,6 +6911,16 @@ class ReportSummary(proto.Message):
             number=10,
             message="ReportSummary.ComputeEngineFinding",
         )
+        vmware_engine_finding: "ReportSummary.VmwareEngineFinding" = proto.Field(
+            proto.MESSAGE,
+            number=11,
+            message="ReportSummary.VmwareEngineFinding",
+        )
+        sole_tenant_finding: "ReportSummary.SoleTenantFinding" = proto.Field(
+            proto.MESSAGE,
+            number=12,
+            message="ReportSummary.SoleTenantFinding",
+        )
 
     class GroupFinding(proto.Message):
         r"""Summary Findings for a specific Group.
@@ -6480,9 +6934,8 @@ class ReportSummary(proto.Message):
                 Summary statistics for all the assets in this
                 group.
             overlapping_asset_count (int):
-                Count of the number of assets in this group
-                which are also included in another group within
-                the same report.
+                This field is deprecated, do not rely on it
+                having a value.
             preference_set_findings (MutableSequence[google.cloud.migrationcenter_v1.types.ReportSummary.GroupPreferenceSetFinding]):
                 Findings for each of the PreferenceSets for
                 this group.
