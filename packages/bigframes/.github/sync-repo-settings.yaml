@@ -7,6 +7,7 @@ branchProtectionRules:
   requiresCodeOwnerReviews: true
   requiresStrictStatusChecks: true
   requiredStatusCheckContexts:
+    - 'conventionalcommits.org'
     - 'cla/google'
     - 'OwlBot Post Processor'
     - 'docs'
