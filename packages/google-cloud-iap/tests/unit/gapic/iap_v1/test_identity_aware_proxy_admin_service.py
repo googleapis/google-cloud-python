@@ -3950,7 +3950,13 @@ def test_update_iap_settings_rest(request_type):
                 "login_page_uri": {"value": "value_value"},
             },
             "cors_settings": {"allow_http_options": {"value": True}},
-            "oauth_settings": {"login_hint": {}},
+            "oauth_settings": {
+                "login_hint": {},
+                "programmatic_clients": [
+                    "programmatic_clients_value1",
+                    "programmatic_clients_value2",
+                ],
+            },
             "reauth_settings": {
                 "method": 1,
                 "max_age": {"seconds": 751, "nanos": 543},
@@ -4159,7 +4165,13 @@ def test_update_iap_settings_rest_bad_request(
                 "login_page_uri": {"value": "value_value"},
             },
             "cors_settings": {"allow_http_options": {"value": True}},
-            "oauth_settings": {"login_hint": {}},
+            "oauth_settings": {
+                "login_hint": {},
+                "programmatic_clients": [
+                    "programmatic_clients_value1",
+                    "programmatic_clients_value2",
+                ],
+            },
             "reauth_settings": {
                 "method": 1,
                 "max_age": {"seconds": 751, "nanos": 543},
