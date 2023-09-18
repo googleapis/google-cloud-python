@@ -95,11 +95,15 @@ class PublisherClient(metaclass=PublisherClientMeta):
 
     An event provider is a software-as-a-service (SaaS) system or
     product that can generate and deliver events through Eventarc.
+
     A third-party event provider is an event provider from outside
     of Google.
+
     A partner is a third-party event provider that is integrated
     with Eventarc.
+
     A subscriber is a GCP customer interested in receiving events.
+
     Channel is a first-class Eventarc resource that is created and
     managed by the subscriber in their GCP project. A Channel
     represents a subscriber's intent to receive events from an event

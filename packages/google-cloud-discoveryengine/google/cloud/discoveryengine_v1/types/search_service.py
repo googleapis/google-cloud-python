@@ -190,8 +190,7 @@ class SearchRequest(proto.Message):
         Attributes:
             image_bytes (str):
                 Base64 encoded image bytes. Supported image
-                formats: JPEG, PNG, and
-                BMP.
+                formats: JPEG, PNG, and BMP.
 
                 This field is a member of `oneof`_ ``image``.
         """
@@ -959,6 +958,7 @@ class SearchResponse(proto.Message):
                     is set to ``true``.
                 OUT_OF_DOMAIN_QUERY_IGNORED (3):
                     The out-of-domain query ignored case.
+
                     Google skips the summary if there are no
                     high-relevance search results. For example, the
                     data store contains facts about company A but
@@ -966,11 +966,13 @@ class SearchResponse(proto.Message):
                     B.
                 POTENTIAL_POLICY_VIOLATION (4):
                     The potential policy violation case.
+
                     Google skips the summary if there is a potential
                     policy violation detected. This includes content
                     that may be violent or toxic.
                 LLM_ADDON_NOT_ENABLED (5):
                     The LLM addon not enabled case.
+
                     Google skips the summary if the LLM addon is not
                     enabled.
             """
