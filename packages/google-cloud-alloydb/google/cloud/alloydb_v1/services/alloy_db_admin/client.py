@@ -51,7 +51,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -3627,6 +3627,7 @@ class AlloyDBAdminClient(metaclass=AlloyDBAdminClientMeta):
         Returns:
             google.cloud.alloydb_v1.services.alloy_db_admin.pagers.ListUsersPager:
                 Message for response to listing Users
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
