@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-logging-v1.2.2...google-cloud-bigquery-logging-v1.3.0) (2023-09-19)
+
+
+### Features
+
+* add the name of the reservation the job was submitted to as a field ([#11643](https://github.com/googleapis/google-cloud-python/issues/11643)) ([b736f9a](https://github.com/googleapis/google-cloud-python/commit/b736f9a2440cad0cb01538b415ab034d908c4716))
+
+
+### Documentation
+
+* Minor formatting ([9487380](https://github.com/googleapis/google-cloud-python/commit/94873808ece8059b07644a0a49dedf8e2906900a))
+
 ## [1.2.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-logging-v1.2.1...google-cloud-bigquery-logging-v1.2.2) (2023-07-05)
 
 

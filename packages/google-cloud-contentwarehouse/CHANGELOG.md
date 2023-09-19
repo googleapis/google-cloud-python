@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.7.0...google-cloud-contentwarehouse-v0.7.1) (2023-09-19)
+
+
+### Features
+
+* add `cloud_function`fields to support new ingestion option in Document Warehouse API v1 ([61a2c29](https://github.com/googleapis/google-cloud-python/commit/61a2c2902dedd1668534310220e0e53a36718d2d))
+* add `ROOT_FOLDER` field to Document Warehouse API v1 ([61a2c29](https://github.com/googleapis/google-cloud-python/commit/61a2c2902dedd1668534310220e0e53a36718d2d))
+
+
+### Documentation
+
+* Minor formatting ([9487380](https://github.com/googleapis/google-cloud-python/commit/94873808ece8059b07644a0a49dedf8e2906900a))
+
 ## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.6.0...google-cloud-contentwarehouse-v0.7.0) (2023-08-16)
 
 

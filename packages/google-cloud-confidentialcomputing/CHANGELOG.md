@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.4.0...google-cloud-confidentialcomputing-v0.4.1) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([9487380](https://github.com/googleapis/google-cloud-python/commit/94873808ece8059b07644a0a49dedf8e2906900a))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-confidentialcomputing-v0.3.0...google-cloud-confidentialcomputing-v0.4.0) (2023-08-10)
 
 
