@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.0...google-cloud-netapp-v0.3.1) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([1ae610b](https://github.com/googleapis/google-cloud-python/commit/1ae610bb3b321ceac7bd23a455a002e39645d84f))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.2.0...google-cloud-netapp-v0.3.0) (2023-08-09)
 
 

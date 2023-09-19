@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.9.1...google-cloud-orchestration-airflow-v1.9.2) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([1ae610b](https://github.com/googleapis/google-cloud-python/commit/1ae610bb3b321ceac7bd23a455a002e39645d84f))
+
 ## [1.9.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.9.0...google-cloud-orchestration-airflow-v1.9.1) (2023-07-05)
 
 

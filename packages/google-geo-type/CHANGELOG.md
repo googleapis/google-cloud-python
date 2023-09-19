@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/googleapis/google-cloud-python/compare/google-geo-type-v0.3.2...google-geo-type-v0.3.3) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([77bf61a](https://github.com/googleapis/google-cloud-python/commit/77bf61a36539bc2e6317dca1f954189d5241e4f1))
+
 ## [0.3.2](https://github.com/googleapis/google-cloud-python/compare/google-geo-type-v0.3.1...google-geo-type-v0.3.2) (2023-07-05)
 
 

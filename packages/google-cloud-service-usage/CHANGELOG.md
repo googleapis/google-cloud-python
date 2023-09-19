@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-usage-v1.7.2...google-cloud-service-usage-v1.8.0) (2023-09-19)
+
+
+### Features
+
+* added ConsumerQuotaLimit.supported_locations ([be7f5e4](https://github.com/googleapis/google-cloud-python/commit/be7f5e4d31c7dd3b3d32bce66310400d729f58ae))
+* added ProducerQuotaPolicy message and QuotaBucket.producer_quota_policy field ([be7f5e4](https://github.com/googleapis/google-cloud-python/commit/be7f5e4d31c7dd3b3d32bce66310400d729f58ae))
+* introduce resource class serviceusage.googleapis.com/Service ([be7f5e4](https://github.com/googleapis/google-cloud-python/commit/be7f5e4d31c7dd3b3d32bce66310400d729f58ae))
+
+
+### Documentation
+
+* Minor formatting ([025219f](https://github.com/googleapis/google-cloud-python/commit/025219f5c04803651e20eae4c0186b87608f4db4))
+
 ## [1.7.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-service-usage-v1.7.1...google-cloud-service-usage-v1.7.2) (2023-07-05)
 
 

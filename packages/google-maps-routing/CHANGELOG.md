@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.1...google-maps-routing-v0.6.2) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([77bf61a](https://github.com/googleapis/google-cloud-python/commit/77bf61a36539bc2e6317dca1f954189d5241e4f1))
+
 ## [0.6.1](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.0...google-maps-routing-v0.6.1) (2023-07-05)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-data-exchange-v0.5.5...google-cloud-bigquery-data-exchange-v0.5.6) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([9487380](https://github.com/googleapis/google-cloud-python/commit/94873808ece8059b07644a0a49dedf8e2906900a))
+
 ## [0.5.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-data-exchange-v0.5.4...google-cloud-bigquery-data-exchange-v0.5.5) (2023-08-03)
 
 

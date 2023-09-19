@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.1.1...google-cloud-support-v0.1.2) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([025219f](https://github.com/googleapis/google-cloud-python/commit/025219f5c04803651e20eae4c0186b87608f4db4))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-support-v0.1.0...google-cloud-support-v0.1.1) (2023-07-05)
 
 

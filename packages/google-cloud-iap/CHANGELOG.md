@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iap-v1.10.3...google-cloud-iap-v1.11.0) (2023-09-19)
+
+
+### Features
+
+* Adding programmatic_clients attribute to UpdateIapSettings API request ([#11649](https://github.com/googleapis/google-cloud-python/issues/11649)) ([269241b](https://github.com/googleapis/google-cloud-python/commit/269241b45b2a83618fe7eebaa72550db548aa2af))
+
+
+### Documentation
+
+* Fixing Oauth typo ([#11662](https://github.com/googleapis/google-cloud-python/issues/11662)) ([e6fcc93](https://github.com/googleapis/google-cloud-python/commit/e6fcc93562d9f9c0ef84c2aaa268178fc1789cb9))
+
 ## [1.10.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iap-v1.10.2...google-cloud-iap-v1.10.3) (2023-08-03)
 
 

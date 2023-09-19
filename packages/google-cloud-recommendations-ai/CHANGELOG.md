@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommendations-ai-v0.10.4...google-cloud-recommendations-ai-v0.10.5) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([025219f](https://github.com/googleapis/google-cloud-python/commit/025219f5c04803651e20eae4c0186b87608f4db4))
+
 ## [0.10.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommendations-ai-v0.10.3...google-cloud-recommendations-ai-v0.10.4) (2023-07-05)
 
 

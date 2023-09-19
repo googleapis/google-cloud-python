@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.23.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.23.2...google-cloud-securitycenter-v1.23.3) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([025219f](https://github.com/googleapis/google-cloud-python/commit/025219f5c04803651e20eae4c0186b87608f4db4))
+
 ## [1.23.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.23.1...google-cloud-securitycenter-v1.23.2) (2023-08-03)
 
 

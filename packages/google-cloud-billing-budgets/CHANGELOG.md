@@ -1,4 +1,11 @@
 # Changelog
+## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-budgets-v1.12.0...google-cloud-billing-budgets-v1.12.1) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([9487380](https://github.com/googleapis/google-cloud-python/commit/94873808ece8059b07644a0a49dedf8e2906900a))
+
 ## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-budgets-v1.11.1...google-cloud-billing-budgets-v1.12.0) (2023-08-31)
 
 

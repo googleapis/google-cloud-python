@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+## [2.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-redis-v2.13.1...google-cloud-redis-v2.13.2) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([025219f](https://github.com/googleapis/google-cloud-python/commit/025219f5c04803651e20eae4c0186b87608f4db4))
+
 ## [2.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-redis-v2.13.0...google-cloud-redis-v2.13.1) (2023-07-05)
 
 
