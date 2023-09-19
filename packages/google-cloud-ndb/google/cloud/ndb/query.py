@@ -100,9 +100,10 @@ Some other methods to run a query and access its results::
         has_more)
 
 All of the above methods take a standard set of additional query options,
-either in the form of keyword arguments such as keys_only=True, or as
-QueryOptions object passed with options=QueryOptions(...). The most important
-query options are:
+in the form of keyword arguments such as keys_only=True. You can also pass
+a QueryOptions object options=QueryOptions(...), but this is deprecated.
+
+The most important query options are:
 
 - keys_only: bool, if set the results are keys instead of entities.
 - limit: int, limits the number of results returned.
@@ -1304,7 +1305,8 @@ class Query(object):
         distinct_on (list[str]): The field names used to group query
             results.
         group_by (list[str]): Deprecated. Synonym for distinct_on.
-        default_options (QueryOptions): QueryOptions object.
+        default_options (QueryOptions): Deprecated. QueryOptions object.
+            Prefer passing explicit keyword arguments to the relevant method directly.
 
     Raises:
         TypeError: If any of the arguments are invalid.
