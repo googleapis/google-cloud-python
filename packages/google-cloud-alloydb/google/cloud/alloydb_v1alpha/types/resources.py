@@ -108,10 +108,13 @@ class DatabaseVersion(proto.Enum):
             13.
         POSTGRES_14 (2):
             The database version is Postgres 14.
+        POSTGRES_15 (3):
+            The database version is Postgres 15.
     """
     DATABASE_VERSION_UNSPECIFIED = 0
     POSTGRES_13 = 1
     POSTGRES_14 = 2
+    POSTGRES_15 = 3
 
 
 class UserPassword(proto.Message):
@@ -689,9 +692,9 @@ class Cluster(proto.Message):
             cluster resources are created and from which they are
             accessible via Private IP. The network must belong to the
             same project as the cluster. It is specified in the form:
-            "projects/{project_number}/global/networks/{network_id}".
-            This is required to create a cluster. It can be updated, but
-            it cannot be removed.
+            "projects/{project}/global/networks/{network_id}". This is
+            required to create a cluster. Deprecated, use
+            network_config.network instead.
         etag (str):
             For Resource freshness validation
             (https://google.aip.dev/154)
@@ -827,11 +830,10 @@ class Cluster(proto.Message):
                 accessible via Private IP. The network must belong to the
                 same project as the cluster. It is specified in the form:
                 "projects/{project_number}/global/networks/{network_id}".
-                This is required to create a cluster. It can be updated, but
-                it cannot be removed.
+                This is required to create a cluster.
             allocated_ip_range (str):
-                Optional. The name of the allocated IP range for the private
-                IP AlloyDB cluster. For example:
+                Optional. Name of the allocated IP range for the private IP
+                AlloyDB cluster, for example:
                 "google-managed-services-default". If set, the instance IPs
                 for this cluster will be created in the allocated range. The
                 range name must comply with RFC 1035. Specifically, the name
@@ -1128,6 +1130,9 @@ class Instance(proto.Message):
             non-default update policy, you must
             specify explicitly specify the value in each
             update request.
+        client_connection_config (google.cloud.alloydb_v1alpha.types.Instance.ClientConnectionConfig):
+            Optional. Client connection specific
+            configurations
         satisfies_pzs (bool):
             Reserved for future use.
     """
@@ -1369,6 +1374,29 @@ class Instance(proto.Message):
             enum="Instance.UpdatePolicy.Mode",
         )
 
+    class ClientConnectionConfig(proto.Message):
+        r"""Client connection configuration
+
+        Attributes:
+            require_connectors (bool):
+                Optional. Configuration to enforce connectors
+                only (ex: AuthProxy) connections to the
+                database.
+            ssl_config (google.cloud.alloydb_v1alpha.types.SslConfig):
+                Optional. SSL config option for this
+                instance.
+        """
+
+        require_connectors: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        ssl_config: "SslConfig" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="SslConfig",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -1472,6 +1500,11 @@ class Instance(proto.Message):
         number=22,
         message=UpdatePolicy,
     )
+    client_connection_config: ClientConnectionConfig = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        message=ClientConnectionConfig,
+    )
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,
         number=24,
@@ -1488,9 +1521,10 @@ class ConnectionInfo(proto.Message):
             projects/{project}/locations/{location}/clusters/\ */instances/*/connectionInfo
             This field currently has no semantic meaning.
         ip_address (str):
-            Output only. The IP address for the Instance.
-            This is the connection endpoint for an end-user
-            application.
+            Output only. The private network IP address for the
+            Instance. This is the default IP for the instance and is
+            always created (even if enable_public_ip is set). This is
+            the connection endpoint for an end-user application.
         pem_certificate_chain (MutableSequence[str]):
             Output only. The pem-encoded chain that may
             be used to verify the X.509 certificate.
@@ -1604,6 +1638,11 @@ class Backup(proto.Message):
             collected.
         satisfies_pzs (bool):
             Reserved for future use.
+        database_version (google.cloud.alloydb_v1alpha.types.DatabaseVersion):
+            Output only. The database engine major
+            version of the cluster this backup was created
+            from. Any restored cluster created from this
+            backup will have the same database version.
     """
 
     class State(proto.Enum):
@@ -1779,6 +1818,11 @@ class Backup(proto.Message):
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,
         number=21,
+    )
+    database_version: "DatabaseVersion" = proto.Field(
+        proto.ENUM,
+        number=22,
+        enum="DatabaseVersion",
     )
 
 
