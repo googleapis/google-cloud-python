@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -52,6 +52,7 @@ from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.logging_v2.services.logging_service_v2 import pagers
 from google.cloud.logging_v2.types import log_entry
 from google.cloud.logging_v2.types import logging
+from google.longrunning import operations_pb2  # type: ignore
 from .transports.base import LoggingServiceV2Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc import LoggingServiceV2GrpcTransport
 from .transports.grpc_asyncio import LoggingServiceV2GrpcAsyncIOTransport
@@ -796,21 +797,19 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 -  ``folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]``
 
                 Projects listed in the ``project_ids`` field are added
-                to this list.
+                to this list. A maximum of 100 resources may be
+                specified in a single request.
 
                 This corresponds to the ``resource_names`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             filter (str):
-                Optional. A filter that chooses which log entries to
-                return. See `Advanced Logs
-                Queries <https://cloud.google.com/logging/docs/view/advanced-queries>`__.
-                Only log entries that match the filter are returned. An
-                empty filter matches all log entries in the resources
-                listed in ``resource_names``. Referencing a parent
-                resource that is not listed in ``resource_names`` will
-                cause the filter to return no results. The maximum
-                length of the filter is 20000 characters.
+                Optional. Only log entries that match the filter are
+                returned. An empty filter matches all log entries in the
+                resources listed in ``resource_names``. Referencing a
+                parent resource that is not listed in ``resource_names``
+                will cause the filter to return no results. The maximum
+                length of a filter is 20,000 characters.
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1027,7 +1026,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             request (Union[google.cloud.logging_v2.types.ListLogsRequest, dict]):
                 The request object. The parameters to ListLogs.
             parent (str):
-                Required. The resource name that owns the logs:
+                Required. The resource name to list logs for:
 
                 -  ``projects/[PROJECT_ID]``
                 -  ``organizations/[ORGANIZATION_ID]``
@@ -1046,6 +1045,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         Returns:
             google.cloud.logging_v2.services.logging_service_v2.pagers.ListLogsPager:
                 Result returned from ListLogs.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1192,6 +1192,168 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             and may cause errors in other clients!
         """
         self.transport.close()
+
+    def list_operations(
+        self,
+        request: Optional[operations_pb2.ListOperationsRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.ListOperationsResponse:
+        r"""Lists operations that match the specified filter in the request.
+
+        Args:
+            request (:class:`~.operations_pb2.ListOperationsRequest`):
+                The request object. Request message for
+                `ListOperations` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.ListOperationsResponse:
+                Response message for ``ListOperations`` method.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.ListOperationsRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.list_operations,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_operation(
+        self,
+        request: Optional[operations_pb2.GetOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operations_pb2.Operation:
+        r"""Gets the latest state of a long-running operation.
+
+        Args:
+            request (:class:`~.operations_pb2.GetOperationRequest`):
+                The request object. Request message for
+                `GetOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            ~.operations_pb2.Operation:
+                An ``Operation`` object.
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.GetOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.get_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def cancel_operation(
+        self,
+        request: Optional[operations_pb2.CancelOperationRequest] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Starts asynchronous cancellation on a long-running operation.
+
+        The server makes a best effort to cancel the operation, but success
+        is not guaranteed.  If the server doesn't support this method, it returns
+        `google.rpc.Code.UNIMPLEMENTED`.
+
+        Args:
+            request (:class:`~.operations_pb2.CancelOperationRequest`):
+                The request object. Request message for
+                `CancelOperation` method.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                    if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        Returns:
+            None
+        """
+        # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
+        if isinstance(request, dict):
+            request = operations_pb2.CancelOperationRequest(**request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method.wrap_method(
+            self._transport.cancel_operation,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

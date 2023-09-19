@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -141,6 +141,16 @@ class ConfigServiceV2Transport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_bucket_async: gapic_v1.method.wrap_method(
+                self.create_bucket_async,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_bucket_async: gapic_v1.method.wrap_method(
+                self.update_bucket_async,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_bucket: gapic_v1.method.wrap_method(
                 self.create_bucket,
                 default_timeout=None,
@@ -253,6 +263,26 @@ class ConfigServiceV2Transport(abc.ABC):
                     deadline=60.0,
                 ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.create_link: gapic_v1.method.wrap_method(
+                self.create_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_link: gapic_v1.method.wrap_method(
+                self.delete_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_links: gapic_v1.method.wrap_method(
+                self.list_links,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_link: gapic_v1.method.wrap_method(
+                self.get_link,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_exclusions: gapic_v1.method.wrap_method(
@@ -372,6 +402,24 @@ class ConfigServiceV2Transport(abc.ABC):
     ) -> Callable[
         [logging_config.GetBucketRequest],
         Union[logging_config.LogBucket, Awaitable[logging_config.LogBucket]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_bucket_async(
+        self,
+    ) -> Callable[
+        [logging_config.CreateBucketRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_bucket_async(
+        self,
+    ) -> Callable[
+        [logging_config.UpdateBucketRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -508,6 +556,45 @@ class ConfigServiceV2Transport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def create_link(
+        self,
+    ) -> Callable[
+        [logging_config.CreateLinkRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_link(
+        self,
+    ) -> Callable[
+        [logging_config.DeleteLinkRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_links(
+        self,
+    ) -> Callable[
+        [logging_config.ListLinksRequest],
+        Union[
+            logging_config.ListLinksResponse,
+            Awaitable[logging_config.ListLinksResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_link(
+        self,
+    ) -> Callable[
+        [logging_config.GetLinkRequest],
+        Union[logging_config.Link, Awaitable[logging_config.Link]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_exclusions(
         self,
     ) -> Callable[
@@ -598,6 +685,33 @@ class ConfigServiceV2Transport(abc.ABC):
         [logging_config.CopyLogEntriesRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
         raise NotImplementedError()
 
     @property
