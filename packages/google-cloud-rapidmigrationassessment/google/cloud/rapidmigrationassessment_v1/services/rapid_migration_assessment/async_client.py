@@ -63,7 +63,7 @@ from .transports.grpc_asyncio import RapidMigrationAssessmentGrpcAsyncIOTranspor
 
 
 class RapidMigrationAssessmentAsyncClient:
-    """Rapid Migration Assessment service"""
+    """Service describing handlers for resources."""
 
     _client: RapidMigrationAssessmentClient
 
@@ -991,7 +991,8 @@ class RapidMigrationAssessmentAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Collector - changes state of
-        collector to "Deleting".
+        collector to "Deleting". Background jobs does final
+        deletion thorugh producer api.
 
         .. code-block:: python
 
