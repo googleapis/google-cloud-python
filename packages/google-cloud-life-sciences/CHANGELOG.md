@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-life-sciences-v0.9.3...google-cloud-life-sciences-v0.9.4) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([1ae610b](https://github.com/googleapis/google-cloud-python/commit/1ae610bb3b321ceac7bd23a455a002e39645d84f))
+
 ## [0.9.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-life-sciences-v0.9.2...google-cloud-life-sciences-v0.9.3) (2023-07-05)
 
 
