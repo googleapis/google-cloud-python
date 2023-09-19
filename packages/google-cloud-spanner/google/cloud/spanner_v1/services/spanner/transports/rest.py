@@ -493,6 +493,7 @@ class SpannerRestTransport(SpannerTransport):
     """REST backend transport for Spanner.
 
     Cloud Spanner API
+
     The Cloud Spanner API can be used to manage sessions and execute
     transactions on data stored in Cloud Spanner databases.
 

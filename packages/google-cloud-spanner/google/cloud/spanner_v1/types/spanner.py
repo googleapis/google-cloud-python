@@ -390,6 +390,7 @@ class ExecuteSqlRequest(proto.Message):
             should be performed.
         transaction (google.cloud.spanner_v1.types.TransactionSelector):
             The transaction to use.
+
             For queries, if none is provided, the default is
             a temporary read-only transaction with strong
             concurrency.
@@ -399,6 +400,7 @@ class ExecuteSqlRequest(proto.Message):
             single-use transactions are not supported.  The
             caller must either supply an existing
             transaction ID or begin a new transaction.
+
             Partitioned DML requires an existing Partitioned
             DML transaction ID.
         sql (str):
@@ -469,6 +471,7 @@ class ExecuteSqlRequest(proto.Message):
             sequence number, the transaction may be aborted.
             Replays of previously handled requests will
             yield the same response as the first execution.
+
             Required for DML statements. Ignored for
             queries.
         query_options (google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryOptions):

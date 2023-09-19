@@ -131,6 +131,7 @@ class Database(proto.Message):
             the encryption information for the database,
             such as encryption state and the Cloud KMS key
             versions that are in use.
+
             For databases that are using Google default or
             other types of encryption, this field is empty.
 

@@ -37,10 +37,12 @@ class InstanceAdminGrpcTransport(InstanceAdminTransport):
     """gRPC backend transport for InstanceAdmin.
 
     Cloud Spanner Instance Admin API
+
     The Cloud Spanner Instance Admin API can be used to create,
     delete, modify and list instances. Instances are dedicated Cloud
     Spanner serving and storage resources to be used by Cloud
     Spanner databases.
+
     Each instance has a "configuration", which dictates where the
     serving resources for the Cloud Spanner instance are located
     (e.g., US-central, Europe). Configurations are created by Google

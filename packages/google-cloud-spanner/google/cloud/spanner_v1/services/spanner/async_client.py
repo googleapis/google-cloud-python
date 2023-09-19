@@ -60,6 +60,7 @@ from .client import SpannerClient
 
 class SpannerAsyncClient:
     """Cloud Spanner API
+
     The Cloud Spanner API can be used to manage sessions and execute
     transactions on data stored in Cloud Spanner databases.
     """
@@ -357,6 +358,7 @@ class SpannerAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> spanner.BatchCreateSessionsResponse:
         r"""Creates multiple new sessions.
+
         This API can be used to initialize a session cache on
         the clients. See https://goo.gl/TgSFN2 for best
         practices on session cache management.
