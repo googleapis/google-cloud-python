@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.12.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-websecurityscanner-v1.12.2...google-cloud-websecurityscanner-v1.12.3) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([77bf61a](https://github.com/googleapis/google-cloud-python/commit/77bf61a36539bc2e6317dca1f954189d5241e4f1))
+
 ## [1.12.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-websecurityscanner-v1.12.1...google-cloud-websecurityscanner-v1.12.2) (2023-07-05)
 
 

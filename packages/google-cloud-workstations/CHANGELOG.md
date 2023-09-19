@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.5.0...google-cloud-workstations-v0.5.1) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([77bf61a](https://github.com/googleapis/google-cloud-python/commit/77bf61a36539bc2e6317dca1f954189d5241e4f1))
+
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.4.1...google-cloud-workstations-v0.5.0) (2023-08-31)
 
 
