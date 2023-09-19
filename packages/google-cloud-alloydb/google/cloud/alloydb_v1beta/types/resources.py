@@ -1292,7 +1292,7 @@ class Instance(proto.Message):
             query_string_length (int):
                 Query string length. The default value is
                 1024. Any integer between 256 and 4500 is
-                    considered valid.
+                considered valid.
             query_plans_per_minute (int):
                 Number of query execution plans captured by
                 Insights per minute for all queries combined.
