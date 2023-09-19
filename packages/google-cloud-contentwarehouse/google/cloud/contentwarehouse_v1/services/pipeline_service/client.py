@@ -181,6 +181,28 @@ class PipelineServiceClient(metaclass=PipelineServiceClientMeta):
         return self._transport
 
     @staticmethod
+    def cloud_function_path(
+        project: str,
+        location: str,
+        function: str,
+    ) -> str:
+        """Returns a fully-qualified cloud_function string."""
+        return "projects/{project}/locations/{location}/functions/{function}".format(
+            project=project,
+            location=location,
+            function=function,
+        )
+
+    @staticmethod
+    def parse_cloud_function_path(path: str) -> Dict[str, str]:
+        """Parses a cloud_function path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/functions/(?P<function>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def location_path(
         project: str,
         location: str,

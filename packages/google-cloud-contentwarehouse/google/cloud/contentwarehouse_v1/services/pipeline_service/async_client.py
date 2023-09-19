@@ -61,6 +61,10 @@ class PipelineServiceAsyncClient:
     DEFAULT_ENDPOINT = PipelineServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = PipelineServiceClient.DEFAULT_MTLS_ENDPOINT
 
+    cloud_function_path = staticmethod(PipelineServiceClient.cloud_function_path)
+    parse_cloud_function_path = staticmethod(
+        PipelineServiceClient.parse_cloud_function_path
+    )
     location_path = staticmethod(PipelineServiceClient.location_path)
     parse_location_path = staticmethod(PipelineServiceClient.parse_location_path)
     common_billing_account_path = staticmethod(

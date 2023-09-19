@@ -367,11 +367,14 @@ class FileTypeFilter(proto.Message):
                 Returns only folders.
             DOCUMENT (3):
                 Returns only non-folder documents.
+            ROOT_FOLDER (4):
+                Returns only root folders
         """
         FILE_TYPE_UNSPECIFIED = 0
         ALL = 1
         FOLDER = 2
         DOCUMENT = 3
+        ROOT_FOLDER = 4
 
     file_type: FileType = proto.Field(
         proto.ENUM,
