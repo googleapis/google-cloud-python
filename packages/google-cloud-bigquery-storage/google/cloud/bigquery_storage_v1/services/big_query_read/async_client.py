@@ -56,6 +56,7 @@ from .client import BigQueryReadClient
 
 class BigQueryReadAsyncClient:
     """BigQuery Read API.
+
     The Read API can be used to read data from BigQuery.
     """
 

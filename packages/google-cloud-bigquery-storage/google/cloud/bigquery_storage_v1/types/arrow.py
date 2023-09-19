@@ -36,6 +36,7 @@ class ArrowSchema(proto.Message):
     serialized to bytes using IPC:
 
     https://arrow.apache.org/docs/format/Columnar.html#serialization-and-interprocess-communication-ipc
+
     See code samples on how this message can be deserialized.
 
     Attributes:

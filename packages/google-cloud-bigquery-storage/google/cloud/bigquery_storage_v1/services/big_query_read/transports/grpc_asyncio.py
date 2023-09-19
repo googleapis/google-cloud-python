@@ -34,6 +34,7 @@ class BigQueryReadGrpcAsyncIOTransport(BigQueryReadTransport):
     """gRPC AsyncIO backend transport for BigQueryRead.
 
     BigQuery Read API.
+
     The Read API can be used to read data from BigQuery.
 
     This class defines the same methods as the primary client, so the

@@ -94,7 +94,9 @@ class BigQueryWriteClientMeta(type):
 
 class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
     """BigQuery Write API.
+
     The Write API can be used to write data to BigQuery.
+
     For supplementary information about the Write API, see:
 
     https://cloud.google.com/bigquery/docs/write-api

@@ -155,6 +155,7 @@ class ReadSession(proto.Message):
             (e.g. All using the same ID for all sessions
             needed to complete a Spark SQL query is
             reasonable).
+
             Maximum length is 256 bytes.
     """
 

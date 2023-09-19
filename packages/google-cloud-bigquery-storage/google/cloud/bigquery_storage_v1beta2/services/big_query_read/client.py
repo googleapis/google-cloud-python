@@ -93,7 +93,9 @@ class BigQueryReadClientMeta(type):
 
 class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
     """BigQuery Read API.
+
     The Read API can be used to read data from BigQuery.
+
     New code should use the v1 Read API going forward, if they don't
     use Write API at the same time.
     """
