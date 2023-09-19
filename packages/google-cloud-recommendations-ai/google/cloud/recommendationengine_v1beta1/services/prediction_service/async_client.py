@@ -329,6 +329,7 @@ class PredictionServiceAsyncClient:
         Returns:
             google.cloud.recommendationengine_v1beta1.services.prediction_service.pagers.PredictAsyncPager:
                 Response message for predict method.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

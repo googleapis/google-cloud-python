@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.12.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-iam-v2.12.1...google-cloud-iam-v2.12.2) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([#11632](https://github.com/googleapis/google-cloud-python/issues/11632)) ([dbee08f](https://github.com/googleapis/google-cloud-python/commit/dbee08f2df63e1906ba13b0d3060eec5a80c79e2))
+
 ## [2.12.1](https://github.com/googleapis/python-iam/compare/v2.12.0...v2.12.1) (2023-07-04)
 
 

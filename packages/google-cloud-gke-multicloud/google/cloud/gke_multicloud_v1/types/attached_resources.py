@@ -94,6 +94,7 @@ class AttachedCluster(proto.Message):
             Allows clients to perform consistent
             read-modify-writes through optimistic
             concurrency control.
+
             Can be sent on update and delete requests to
             ensure the client has an up-to-date value before
             proceeding.

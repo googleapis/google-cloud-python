@@ -74,11 +74,10 @@ class Service(proto.Message):
             was created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the service
-            was last updated. Note:
-
-            endpoints being created/deleted/updated within
-            the service are not considered service updates
-            for the purpose of this timestamp.
+            was last updated. Note: endpoints being
+            created/deleted/updated within the service are
+            not considered service updates for the purpose
+            of this timestamp.
         uid (str):
             Output only. A globally unique identifier (in
             UUID4 format) for this service.

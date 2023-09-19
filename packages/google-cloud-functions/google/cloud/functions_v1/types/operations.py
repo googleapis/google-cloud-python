@@ -73,8 +73,8 @@ class OperationMetadataV1(proto.Message):
             populated for Create and Update operations.
         source_token (str):
             An identifier for Firebase function sources.
-            Disclaimer: This field is only
-            supported for Firebase function deployments.
+            Disclaimer: This field is only supported for
+            Firebase function deployments.
         build_name (str):
             The Cloud Build Name of the function deployment. This field
             is only populated for Create and Update operations.

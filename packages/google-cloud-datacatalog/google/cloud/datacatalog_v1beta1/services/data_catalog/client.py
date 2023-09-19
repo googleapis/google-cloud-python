@@ -48,7 +48,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.datacatalog_v1beta1.services.data_catalog import pagers
@@ -3730,8 +3730,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 The request object. Request message for ``SetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
-                policy is being specified.
-                See the operation documentation for the
+                policy is being specified. See the
+                operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field
@@ -3881,8 +3881,8 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
                 The request object. Request message for ``GetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
-                policy is being requested.
-                See the operation documentation for the
+                policy is being requested. See the
+                operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field

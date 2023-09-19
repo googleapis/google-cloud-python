@@ -1060,6 +1060,7 @@ class MapsPlatformDatasetsV1AlphaClient(
         Args:
             request (Union[google.maps.mapsplatformdatasets_v1alpha.types.DeleteDatasetRequest, dict]):
                 The request object. Request to delete a dataset.
+
                 The dataset to be deleted.
             name (str):
                 Required. Format:

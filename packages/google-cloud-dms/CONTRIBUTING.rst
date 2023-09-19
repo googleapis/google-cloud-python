@@ -236,7 +236,7 @@ We support:
 
 Supported versions can be found in our ``noxfile.py`` `config`_.
 
-.. _config: https://github.com/googleapis/google-cloud-python/blob/main/noxfile.py
+.. _config: https://github.com/googleapis/google-cloud-python/blob/main/packages/google-cloud-dms/noxfile.py
 
 
 **********

@@ -2863,6 +2863,7 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         Returns:
             google.cloud.datastream_v1alpha1.services.datastream.pagers.ListRoutesPager:
                 route list response
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

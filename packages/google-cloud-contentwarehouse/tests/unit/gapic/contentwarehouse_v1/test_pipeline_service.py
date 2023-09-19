@@ -42,7 +42,7 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import json_format
 from google.type import expr_pb2  # type: ignore
@@ -1812,9 +1812,35 @@ def test_pipeline_service_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_location_path():
+def test_cloud_function_path():
     project = "squid"
     location = "clam"
+    function = "whelk"
+    expected = "projects/{project}/locations/{location}/functions/{function}".format(
+        project=project,
+        location=location,
+        function=function,
+    )
+    actual = PipelineServiceClient.cloud_function_path(project, location, function)
+    assert expected == actual
+
+
+def test_parse_cloud_function_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "function": "nudibranch",
+    }
+    path = PipelineServiceClient.cloud_function_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = PipelineServiceClient.parse_cloud_function_path(path)
+    assert expected == actual
+
+
+def test_location_path():
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -1825,8 +1851,8 @@ def test_location_path():
 
 def test_parse_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = PipelineServiceClient.location_path(**expected)
 
@@ -1836,7 +1862,7 @@ def test_parse_location_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -1846,7 +1872,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "abalone",
     }
     path = PipelineServiceClient.common_billing_account_path(**expected)
 
@@ -1856,7 +1882,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -1866,7 +1892,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "clam",
     }
     path = PipelineServiceClient.common_folder_path(**expected)
 
@@ -1876,7 +1902,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -1886,7 +1912,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "octopus",
     }
     path = PipelineServiceClient.common_organization_path(**expected)
 
@@ -1896,7 +1922,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -1906,7 +1932,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "nudibranch",
     }
     path = PipelineServiceClient.common_project_path(**expected)
 
@@ -1916,8 +1942,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -1928,8 +1954,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = PipelineServiceClient.common_location_path(**expected)
 

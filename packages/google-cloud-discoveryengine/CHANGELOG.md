@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.0...google-cloud-discoveryengine-v0.11.1) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([#11632](https://github.com/googleapis/google-cloud-python/issues/11632)) ([dbee08f](https://github.com/googleapis/google-cloud-python/commit/dbee08f2df63e1906ba13b0d3060eec5a80c79e2))
+
+## [0.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.10.0...google-cloud-discoveryengine-v0.11.0) (2023-08-31)
+
+
+### Features
+
+* added more options for search extractive content support ([1b1f1b3](https://github.com/googleapis/google-cloud-python/commit/1b1f1b3a0f6775443658bcf129e396a68dbde097))
+* added more skip reasons and details for search summarization ([1b1f1b3](https://github.com/googleapis/google-cloud-python/commit/1b1f1b3a0f6775443658bcf129e396a68dbde097))
+* added query expansion details in search response ([1b1f1b3](https://github.com/googleapis/google-cloud-python/commit/1b1f1b3a0f6775443658bcf129e396a68dbde097))
+* allow uri in user events ([1b1f1b3](https://github.com/googleapis/google-cloud-python/commit/1b1f1b3a0f6775443658bcf129e396a68dbde097))
+* support bring your own embedding feature ([1b1f1b3](https://github.com/googleapis/google-cloud-python/commit/1b1f1b3a0f6775443658bcf129e396a68dbde097))
+* support conversational / multi-turn search ([1b1f1b3](https://github.com/googleapis/google-cloud-python/commit/1b1f1b3a0f6775443658bcf129e396a68dbde097))
+* support image search ([1b1f1b3](https://github.com/googleapis/google-cloud-python/commit/1b1f1b3a0f6775443658bcf129e396a68dbde097))
+* support search summarization ([1b1f1b3](https://github.com/googleapis/google-cloud-python/commit/1b1f1b3a0f6775443658bcf129e396a68dbde097))
+* support structural search features ([1b1f1b3](https://github.com/googleapis/google-cloud-python/commit/1b1f1b3a0f6775443658bcf129e396a68dbde097))
+* support tail suggestions in completion API ([1b1f1b3](https://github.com/googleapis/google-cloud-python/commit/1b1f1b3a0f6775443658bcf129e396a68dbde097))
+* updated summarization interface for multi-turn search ([1b1f1b3](https://github.com/googleapis/google-cloud-python/commit/1b1f1b3a0f6775443658bcf129e396a68dbde097))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([1b1f1b3](https://github.com/googleapis/google-cloud-python/commit/1b1f1b3a0f6775443658bcf129e396a68dbde097))
+
 ## [0.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.9.1...google-cloud-discoveryengine-v0.10.0) (2023-08-03)
 
 

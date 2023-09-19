@@ -98,7 +98,6 @@ class GetEnvironmentRequest(proto.Message):
         name (str):
             The resource name of the environment to get,
             in the form:
-
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
     """
 
@@ -115,7 +114,6 @@ class ListEnvironmentsRequest(proto.Message):
         parent (str):
             List environments in the given project and
             location, in the form:
-
             "projects/{projectId}/locations/{locationId}".
         page_size (int):
             The maximum number of environments to return.
@@ -188,7 +186,6 @@ class UpdateEnvironmentRequest(proto.Message):
         name (str):
             The relative resource name of the environment
             to update, in the form:
-
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
         environment (google.cloud.orchestration.airflow.service_v1beta1.types.Environment):
             A patch environment. Fields specified by the ``updateMask``
@@ -439,7 +436,6 @@ class ExecuteAirflowCommandRequest(proto.Message):
         environment (str):
             The resource name of the environment in the
             form:
-
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
         command (str):
             Airflow command.
@@ -513,7 +509,6 @@ class StopAirflowCommandRequest(proto.Message):
         environment (str):
             The resource name of the environment in the
             form:
-
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
         execution_id (str):
             The unique ID of the command execution.
@@ -579,7 +574,6 @@ class PollAirflowCommandRequest(proto.Message):
         environment (str):
             The resource name of the environment in the
             form:
-
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
         execution_id (str):
             The unique ID of the command execution.
@@ -692,12 +686,10 @@ class SaveSnapshotRequest(proto.Message):
         environment (str):
             The resource name of the source environment
             in the form:
-
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
         snapshot_location (str):
             Location in a Cloud Storage where the
             snapshot is going to be stored, e.g.:
-
             "gs://my-bucket/snapshots".
     """
 
@@ -736,7 +728,6 @@ class LoadSnapshotRequest(proto.Message):
         environment (str):
             The resource name of the target environment
             in the form:
-
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
         snapshot_path (str):
             A Cloud Storage path to a snapshot to load, e.g.:
@@ -813,7 +804,6 @@ class FetchDatabasePropertiesRequest(proto.Message):
         environment (str):
             Required. The resource name of the
             environment, in the form:
-
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
     """
 
@@ -922,6 +912,7 @@ class EnvironmentConfig(proto.Message):
             undergo maintenance. It is defined so that
             maintenance is not executed during peak hours or
             critical time periods.
+
             The system will not be under maintenance for
             every occurrence of this window, but when
             maintenance is planned, it will be scheduled
@@ -1498,6 +1489,7 @@ class NodeConfig(proto.Message):
             nonMasqueradeCIDRs equals to pod IP range so IP
             masquerading is used for all destination
             addresses, except between pods traffic.
+
             See:
 
             https://cloud.google.com/kubernetes-engine/docs/how-to/ip-masquerade-agent
@@ -2141,8 +2133,8 @@ class Environment(proto.Message):
         name (str):
             The resource name of the environment, in the
             form:
-
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
+
             EnvironmentId must start with a lowercase letter
             followed by up to 63 lowercase letters, numbers,
             or hyphens, and cannot end with a hyphen.

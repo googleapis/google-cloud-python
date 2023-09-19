@@ -45,7 +45,7 @@ except AttributeError:  # pragma: NO COVER
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dataplex_v1.services.metadata_service import pagers
@@ -700,6 +700,7 @@ class MetadataServiceAsyncClient:
         Returns:
             google.cloud.dataplex_v1.services.metadata_service.pagers.ListEntitiesAsyncPager:
                 List metadata entities response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1141,6 +1142,7 @@ class MetadataServiceAsyncClient:
         Returns:
             google.cloud.dataplex_v1.services.metadata_service.pagers.ListPartitionsAsyncPager:
                 List metadata partitions response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

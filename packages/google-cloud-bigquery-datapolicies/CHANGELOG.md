@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.6.0...google-cloud-bigquery-datapolicies-v0.6.1) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([9487380](https://github.com/googleapis/google-cloud-python/commit/94873808ece8059b07644a0a49dedf8e2906900a))
+
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.5.3...google-cloud-bigquery-datapolicies-v0.6.0) (2023-08-31)
+
+
+### Features
+
+* support using custom UDF in the data policy ([#11602](https://github.com/googleapis/google-cloud-python/issues/11602)) ([f1f0e58](https://github.com/googleapis/google-cloud-python/commit/f1f0e58667bbe4558b87101983cdd245fcdf71d9))
+
 ## [0.5.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.5.2...google-cloud-bigquery-datapolicies-v0.5.3) (2023-08-11)
 
 

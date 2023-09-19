@@ -44,7 +44,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.orchestration.airflow.service_v1beta1.services.image_versions import (
     pagers,
@@ -262,7 +262,6 @@ class ImageVersionsAsyncClient:
             parent (:class:`str`):
                 List ImageVersions in the given
                 project and location, in the form:
-
                 "projects/{projectId}/locations/{locationId}"
 
                 This corresponds to the ``parent`` field

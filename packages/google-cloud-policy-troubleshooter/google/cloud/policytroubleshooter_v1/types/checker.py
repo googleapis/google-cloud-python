@@ -69,6 +69,7 @@ class TroubleshootIamPolicyResponse(proto.Message):
             policies that are inherited from higher levels
             of the resource hierarchy, including the
             organization, the folder, and the project.
+
             To learn more about the resource hierarchy, see
             https://cloud.google.com/iam/help/resource-hierarchy.
         errors (MutableSequence[google.rpc.status_pb2.Status]):

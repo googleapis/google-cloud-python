@@ -35,6 +35,11 @@
                 "create_conversion_workspace"
               ]
             },
+            "CreateMappingRule": {
+              "methods": [
+                "create_mapping_rule"
+              ]
+            },
             "CreateMigrationJob": {
               "methods": [
                 "create_migration_job"
@@ -53,6 +58,11 @@
             "DeleteConversionWorkspace": {
               "methods": [
                 "delete_conversion_workspace"
+              ]
+            },
+            "DeleteMappingRule": {
+              "methods": [
+                "delete_mapping_rule"
               ]
             },
             "DeleteMigrationJob": {
@@ -85,6 +95,11 @@
                 "generate_ssh_script"
               ]
             },
+            "GenerateTcpProxyScript": {
+              "methods": [
+                "generate_tcp_proxy_script"
+              ]
+            },
             "GetConnectionProfile": {
               "methods": [
                 "get_connection_profile"
@@ -93,6 +108,11 @@
             "GetConversionWorkspace": {
               "methods": [
                 "get_conversion_workspace"
+              ]
+            },
+            "GetMappingRule": {
+              "methods": [
+                "get_mapping_rule"
               ]
             },
             "GetMigrationJob": {
@@ -118,6 +138,11 @@
             "ListConversionWorkspaces": {
               "methods": [
                 "list_conversion_workspaces"
+              ]
+            },
+            "ListMappingRules": {
+              "methods": [
+                "list_mapping_rules"
               ]
             },
             "ListMigrationJobs": {
@@ -220,6 +245,11 @@
                 "create_conversion_workspace"
               ]
             },
+            "CreateMappingRule": {
+              "methods": [
+                "create_mapping_rule"
+              ]
+            },
             "CreateMigrationJob": {
               "methods": [
                 "create_migration_job"
@@ -238,6 +268,11 @@
             "DeleteConversionWorkspace": {
               "methods": [
                 "delete_conversion_workspace"
+              ]
+            },
+            "DeleteMappingRule": {
+              "methods": [
+                "delete_mapping_rule"
               ]
             },
             "DeleteMigrationJob": {
@@ -270,6 +305,11 @@
                 "generate_ssh_script"
               ]
             },
+            "GenerateTcpProxyScript": {
+              "methods": [
+                "generate_tcp_proxy_script"
+              ]
+            },
             "GetConnectionProfile": {
               "methods": [
                 "get_connection_profile"
@@ -278,6 +318,11 @@
             "GetConversionWorkspace": {
               "methods": [
                 "get_conversion_workspace"
+              ]
+            },
+            "GetMappingRule": {
+              "methods": [
+                "get_mapping_rule"
               ]
             },
             "GetMigrationJob": {
@@ -303,6 +348,11 @@
             "ListConversionWorkspaces": {
               "methods": [
                 "list_conversion_workspaces"
+              ]
+            },
+            "ListMappingRules": {
+              "methods": [
+                "list_mapping_rules"
               ]
             },
             "ListMigrationJobs": {

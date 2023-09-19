@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-essential-contacts-v1.5.3...google-cloud-essential-contacts-v1.5.4) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([#11632](https://github.com/googleapis/google-cloud-python/issues/11632)) ([dbee08f](https://github.com/googleapis/google-cloud-python/commit/dbee08f2df63e1906ba13b0d3060eec5a80c79e2))
+
 ## [1.5.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-essential-contacts-v1.5.2...google-cloud-essential-contacts-v1.5.3) (2023-07-05)
 
 

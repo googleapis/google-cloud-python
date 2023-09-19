@@ -244,6 +244,11 @@
                 "provision_cloud_identity"
               ]
             },
+            "QueryEligibleBillingAccounts": {
+              "methods": [
+                "query_eligible_billing_accounts"
+              ]
+            },
             "RegisterSubscriber": {
               "methods": [
                 "register_subscriber"
@@ -487,6 +492,11 @@
             "ProvisionCloudIdentity": {
               "methods": [
                 "provision_cloud_identity"
+              ]
+            },
+            "QueryEligibleBillingAccounts": {
+              "methods": [
+                "query_eligible_billing_accounts"
               ]
             },
             "RegisterSubscriber": {

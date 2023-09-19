@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .billing_accounts import BillingAccount
 from .channel_partner_links import (
     ChannelPartnerLink,
     ChannelPartnerLinkState,
@@ -81,6 +82,7 @@ from .repricing import (
 from .service import (
     ActivateEntitlementRequest,
     BillableSku,
+    BillingAccountPurchaseInfo,
     CancelEntitlementRequest,
     ChangeOfferRequest,
     ChangeParametersRequest,
@@ -138,9 +140,12 @@ from .service import (
     ProvisionCloudIdentityRequest,
     PurchasableOffer,
     PurchasableSku,
+    QueryEligibleBillingAccountsRequest,
+    QueryEligibleBillingAccountsResponse,
     RegisterSubscriberRequest,
     RegisterSubscriberResponse,
     SkuGroup,
+    SkuPurchaseGroup,
     StartPaidServiceRequest,
     SuspendEntitlementRequest,
     TransferableOffer,
@@ -157,6 +162,7 @@ from .service import (
 from .subscriber_event import CustomerEvent, EntitlementEvent, SubscriberEvent
 
 __all__ = (
+    "BillingAccount",
     "ChannelPartnerLink",
     "ChannelPartnerLinkState",
     "ChannelPartnerLinkView",
@@ -222,6 +228,7 @@ __all__ = (
     "RebillingBasis",
     "ActivateEntitlementRequest",
     "BillableSku",
+    "BillingAccountPurchaseInfo",
     "CancelEntitlementRequest",
     "ChangeOfferRequest",
     "ChangeParametersRequest",
@@ -279,9 +286,12 @@ __all__ = (
     "ProvisionCloudIdentityRequest",
     "PurchasableOffer",
     "PurchasableSku",
+    "QueryEligibleBillingAccountsRequest",
+    "QueryEligibleBillingAccountsResponse",
     "RegisterSubscriberRequest",
     "RegisterSubscriberResponse",
     "SkuGroup",
+    "SkuPurchaseGroup",
     "StartPaidServiceRequest",
     "SuspendEntitlementRequest",
     "TransferableOffer",

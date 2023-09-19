@@ -33,7 +33,6 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
 from google.protobuf import json_format
 import grpc  # type: ignore
 from requests import __version__ as requests_version
@@ -612,6 +611,7 @@ class TpuRestTransport(TpuTransport):
     """REST backend transport for Tpu.
 
     Manages TPU nodes and other resources
+
     TPU API v2
 
     This class defines the same methods as the primary client, so the

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-data-qna-v0.10.3...google-cloud-data-qna-v0.10.4) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([9487380](https://github.com/googleapis/google-cloud-python/commit/94873808ece8059b07644a0a49dedf8e2906900a))
+
 ## [0.10.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-data-qna-v0.10.2...google-cloud-data-qna-v0.10.3) (2023-07-05)
 
 

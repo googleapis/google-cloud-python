@@ -46,7 +46,7 @@ from google.api import httpbody_pb2  # type: ignore
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -325,6 +325,7 @@ class UserEventServiceAsyncClient:
         r"""Writes a single user event from the browser. This
         uses a GET request to due to browser restriction of
         POST-ing to a third-party domain.
+
         This method is used only by the Discovery Engine API
         JavaScript pixel and Google Tag Manager. Users should
         not call this method directly.
@@ -455,6 +456,7 @@ class UserEventServiceAsyncClient:
         r"""Bulk import of User events. Request processing might
         be synchronous. Events that already exist are skipped.
         Use this method for backfilling historical user events.
+
         Operation.response is of type ImportResponse. Note that
         it is possible for a subset of the items to be
         successfully inserted. Operation.metadata is of type

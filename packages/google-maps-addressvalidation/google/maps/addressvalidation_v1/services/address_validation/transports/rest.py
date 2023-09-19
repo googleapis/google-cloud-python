@@ -271,6 +271,7 @@ class AddressValidationRestTransport(AddressValidationTransport):
                 Returns:
                     ~.address_validation_service.ProvideValidationFeedbackResponse:
                         The response for validation feedback.
+
                     The response is empty if the feedback is
                     sent successfully.
 

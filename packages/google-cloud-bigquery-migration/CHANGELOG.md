@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.11.1...google-cloud-bigquery-migration-v0.11.2) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([9487380](https://github.com/googleapis/google-cloud-python/commit/94873808ece8059b07644a0a49dedf8e2906900a))
+
 ## [0.11.1](https://github.com/googleapis/python-bigquery-migration/compare/v0.11.0...v0.11.1) (2023-07-04)
 
 

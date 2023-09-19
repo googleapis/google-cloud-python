@@ -614,10 +614,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
             contact (google.cloud.essential_contacts_v1.types.Contact):
                 Required. The contact resource to
                 replace the existing saved contact.
-                Note:
-
-                the email address of the contact cannot
-                be modified.
+                Note: the email address of the contact
+                cannot be modified.
 
                 This corresponds to the ``contact`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -39,6 +39,7 @@ class TimeSeries(proto.Message):
     Attributes:
         metric (str):
             Required. The name of the metric.
+
             If the metric is not known by the service yet,
             it will be auto-created.
         value_type (google.api.metric_pb2.ValueType):

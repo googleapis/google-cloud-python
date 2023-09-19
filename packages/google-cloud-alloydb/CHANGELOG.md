@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.0...google-cloud-alloydb-v0.3.1) (2023-09-19)
+
+
+### Features
+
+* Added ClientConnectionConfig ([c76e881](https://github.com/googleapis/google-cloud-python/commit/c76e88194ea5ae3851cdd61071bc9e8106ae1571))
+* Added DatabaseVersion ([c76e881](https://github.com/googleapis/google-cloud-python/commit/c76e88194ea5ae3851cdd61071bc9e8106ae1571))
+* Added enum value for PG15 ([c76e881](https://github.com/googleapis/google-cloud-python/commit/c76e88194ea5ae3851cdd61071bc9e8106ae1571))
+* Added QuantityBasedExpiry ([c76e881](https://github.com/googleapis/google-cloud-python/commit/c76e88194ea5ae3851cdd61071bc9e8106ae1571))
+* Changed description for recovery_window_days in ContinuousBackupConfig ([c76e881](https://github.com/googleapis/google-cloud-python/commit/c76e88194ea5ae3851cdd61071bc9e8106ae1571))
+* Deprecate network field in favor of network_config.network ([c76e881](https://github.com/googleapis/google-cloud-python/commit/c76e88194ea5ae3851cdd61071bc9e8106ae1571))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.2.1...google-cloud-alloydb-v0.3.0) (2023-07-17)
 
 

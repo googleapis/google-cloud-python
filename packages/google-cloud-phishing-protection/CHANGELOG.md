@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
+## [1.9.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-phishing-protection-v1.9.1...google-cloud-phishing-protection-v1.9.2) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([1ae610b](https://github.com/googleapis/google-cloud-python/commit/1ae610bb3b321ceac7bd23a455a002e39645d84f))
+
 ## [1.9.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-phishing-protection-v1.9.0...google-cloud-phishing-protection-v1.9.1) (2023-07-05)
 
 

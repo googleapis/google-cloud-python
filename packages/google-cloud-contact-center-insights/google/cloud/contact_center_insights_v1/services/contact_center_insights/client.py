@@ -48,7 +48,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -1568,6 +1568,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         Returns:
             google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListAnalysesPager:
                 The response to list analyses.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -4552,6 +4553,7 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         Returns:
             google.cloud.contact_center_insights_v1.services.contact_center_insights.pagers.ListViewsPager:
                 The response of listing views.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

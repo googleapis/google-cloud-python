@@ -30,6 +30,7 @@ from google.cloud.channel_v1.services.cloud_channel_service.async_client import 
 from google.cloud.channel_v1.services.cloud_channel_service.client import (
     CloudChannelServiceClient,
 )
+from google.cloud.channel_v1.types.billing_accounts import BillingAccount
 from google.cloud.channel_v1.types.channel_partner_links import (
     ChannelPartnerLink,
     ChannelPartnerLinkState,
@@ -109,6 +110,7 @@ from google.cloud.channel_v1.types.repricing import (
 from google.cloud.channel_v1.types.service import (
     ActivateEntitlementRequest,
     BillableSku,
+    BillingAccountPurchaseInfo,
     CancelEntitlementRequest,
     ChangeOfferRequest,
     ChangeParametersRequest,
@@ -166,9 +168,12 @@ from google.cloud.channel_v1.types.service import (
     ProvisionCloudIdentityRequest,
     PurchasableOffer,
     PurchasableSku,
+    QueryEligibleBillingAccountsRequest,
+    QueryEligibleBillingAccountsResponse,
     RegisterSubscriberRequest,
     RegisterSubscriberResponse,
     SkuGroup,
+    SkuPurchaseGroup,
     StartPaidServiceRequest,
     SuspendEntitlementRequest,
     TransferableOffer,
@@ -193,6 +198,7 @@ __all__ = (
     "CloudChannelReportsServiceAsyncClient",
     "CloudChannelServiceClient",
     "CloudChannelServiceAsyncClient",
+    "BillingAccount",
     "ChannelPartnerLink",
     "ChannelPartnerLinkState",
     "ChannelPartnerLinkView",
@@ -258,6 +264,7 @@ __all__ = (
     "RebillingBasis",
     "ActivateEntitlementRequest",
     "BillableSku",
+    "BillingAccountPurchaseInfo",
     "CancelEntitlementRequest",
     "ChangeOfferRequest",
     "ChangeParametersRequest",
@@ -315,9 +322,12 @@ __all__ = (
     "ProvisionCloudIdentityRequest",
     "PurchasableOffer",
     "PurchasableSku",
+    "QueryEligibleBillingAccountsRequest",
+    "QueryEligibleBillingAccountsResponse",
     "RegisterSubscriberRequest",
     "RegisterSubscriberResponse",
     "SkuGroup",
+    "SkuPurchaseGroup",
     "StartPaidServiceRequest",
     "SuspendEntitlementRequest",
     "TransferableOffer",

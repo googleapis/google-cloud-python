@@ -437,11 +437,13 @@ class DateRange(proto.Message):
             ``usage_start_date_time`` in Pacific time.
         invoice_start_date (google.type.date_pb2.Date):
             The earliest invoice date (inclusive).
+
             If this value is not the first day of a month,
             this will move it back to the first day of the
             given month.
         invoice_end_date (google.type.date_pb2.Date):
             The latest invoice date (inclusive).
+
             If this value is not the last day of a month,
             this will move it forward to the last day of the
             given month.

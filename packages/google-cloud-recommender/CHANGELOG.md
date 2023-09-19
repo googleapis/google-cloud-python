@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommender-v2.12.0...google-cloud-recommender-v2.12.1) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([025219f](https://github.com/googleapis/google-cloud-python/commit/025219f5c04803651e20eae4c0186b87608f4db4))
+
+## [2.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommender-v2.11.2...google-cloud-recommender-v2.12.0) (2023-08-31)
+
+
+### Features
+
+* Add MarkRecommendationDismissed method ([6a1b00f](https://github.com/googleapis/google-cloud-python/commit/6a1b00f1482fcf9a017f9ca21a5f71cddd36f83f))
+* Add Sustainability and Reliability impact ([6a1b00f](https://github.com/googleapis/google-cloud-python/commit/6a1b00f1482fcf9a017f9ca21a5f71cddd36f83f))
+* Billing account scoped Recommender/InsightType config ([6a1b00f](https://github.com/googleapis/google-cloud-python/commit/6a1b00f1482fcf9a017f9ca21a5f71cddd36f83f))
+* ListRecommenders and ListInsightTypes RPC methods ([#11623](https://github.com/googleapis/google-cloud-python/issues/11623)) ([200e07d](https://github.com/googleapis/google-cloud-python/commit/200e07dbfae9e3555a8788caf25ba54ff0391ce7))
+
 ## [2.11.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommender-v2.11.1...google-cloud-recommender-v2.11.2) (2023-07-05)
 
 

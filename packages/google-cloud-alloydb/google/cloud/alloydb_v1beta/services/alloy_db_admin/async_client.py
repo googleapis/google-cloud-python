@@ -47,7 +47,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -3291,11 +3291,12 @@ class AlloyDBAdminAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.GenerateClientCertificateResponse:
         r"""Generate a client certificate signed by a Cluster CA.
-        The sole purpose of this endpoint is to support the Auth
-        Proxy client and the endpoint's behavior is subject to
-        change without notice, so do not rely on its behavior
-        remaining constant. Future changes will not break the
-        Auth Proxy client.
+        The sole purpose of this endpoint is to support AlloyDB
+        connectors and the Auth Proxy client. The endpoint's
+        behavior is subject to change without notice, so do not
+        rely on its behavior remaining constant. Future changes
+        will not break AlloyDB connectors or the Auth Proxy
+        client.
 
         .. code-block:: python
 
@@ -3444,7 +3445,6 @@ class AlloyDBAdminAsyncClient:
             parent (:class:`str`):
                 Required. The name of the parent
                 resource. The required format is:
-
                 projects/{project}/locations/{location}/clusters/{cluster}/instances/{instance}
 
                 This corresponds to the ``parent`` field
@@ -3570,6 +3570,7 @@ class AlloyDBAdminAsyncClient:
         Returns:
             google.cloud.alloydb_v1beta.services.alloy_db_admin.pagers.ListUsersAsyncPager:
                 Message for response to listing Users
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

@@ -322,6 +322,7 @@ class Entity(proto.Message):
                 -  ``day`` - two digit day number, if detected
             NUMBER (12):
                 Number
+
                 The metadata is the number itself.
             PRICE (13):
                 Price

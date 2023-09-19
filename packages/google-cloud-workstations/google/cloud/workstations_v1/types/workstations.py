@@ -62,6 +62,7 @@ __protobuf__ = proto.module(
 
 class WorkstationCluster(proto.Message):
     r"""A workstation cluster resource in the Cloud Workstations API.
+
     Defines a group of workstations in a particular region and the
     VPC network they're attached to.
 
@@ -344,12 +345,14 @@ class WorkstationConfig(proto.Message):
             Immutable. Encrypts resources of this
             workstation configuration using a
             customer-managed encryption key (CMEK).
+
             If specified, the boot disk of the Compute
             Engine instance and the persistent disk are
             encrypted using this encryption key. If this
             field is not set, the disks are encrypted using
             a generated key. Customer-managed encryption
             keys do not protect disk metadata.
+
             If the customer-managed encryption key is
             rotated, when the workstation instance is
             stopped, the system attempts to recreate the
@@ -357,6 +360,7 @@ class WorkstationConfig(proto.Message):
             Be sure to keep older versions of the key until
             the persistent disk is recreated. Otherwise,
             data on the persistent disk might be lost.
+
             If the encryption key is revoked, the
             workstation session automatically stops within 7
             hours.

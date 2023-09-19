@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.15.1...google-cloud-channel-v1.16.0) (2023-09-19)
+
+
+### Features
+
+* Launch QueryEligibleBillingAccounts API ([8de7cc7](https://github.com/googleapis/google-cloud-python/commit/8de7cc7a4ad8f2968cf432b978f5f5234f427937))
+* mark ChannelPartnerGranularity as deprecated and offer alternatives ([8de7cc7](https://github.com/googleapis/google-cloud-python/commit/8de7cc7a4ad8f2968cf432b978f5f5234f427937))
+
+
+### Documentation
+
+* Add clarification for the additional_apks field of TestSetup ([8de7cc7](https://github.com/googleapis/google-cloud-python/commit/8de7cc7a4ad8f2968cf432b978f5f5234f427937))
+
 ## [1.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.15.0...google-cloud-channel-v1.15.1) (2023-07-05)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.2...google-maps-places-v0.1.3) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([77bf61a](https://github.com/googleapis/google-cloud-python/commit/77bf61a36539bc2e6317dca1f954189d5241e4f1))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.1...google-maps-places-v0.1.2) (2023-07-05)
 
 

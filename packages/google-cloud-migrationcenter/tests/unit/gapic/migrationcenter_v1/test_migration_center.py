@@ -42,7 +42,7 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -14895,9 +14895,18 @@ def test_update_asset_rest(request_type):
                                 "logical_core_count": 1899,
                                 "series": "series_value",
                                 "machine_type": "machine_type_value",
+                                "storage": [{"type_": 1, "size_gb": 739}],
                             }
                         },
-                    }
+                    },
+                    "generic_insight": {
+                        "message_id": 1041,
+                        "default_message": "default_message_value",
+                        "additional_information": [
+                            "additional_information_value1",
+                            "additional_information_value2",
+                        ],
+                    },
                 }
             ],
             "update_time": {},
@@ -15351,9 +15360,18 @@ def test_update_asset_rest_bad_request(
                                 "logical_core_count": 1899,
                                 "series": "series_value",
                                 "machine_type": "machine_type_value",
+                                "storage": [{"type_": 1, "size_gb": 739}],
                             }
                         },
-                    }
+                    },
+                    "generic_insight": {
+                        "message_id": 1041,
+                        "default_message": "default_message_value",
+                        "additional_information": [
+                            "additional_information_value1",
+                            "additional_information_value2",
+                        ],
+                    },
                 }
             ],
             "update_time": {},
@@ -25418,6 +25436,7 @@ def test_create_preference_set_rest(request_type):
         "display_name": "display_name_value",
         "description": "description_value",
         "virtual_machine_preferences": {
+            "target_product": 1,
             "region_preferences": {
                 "preferred_regions": [
                     "preferred_regions_value1",
@@ -25431,6 +25450,18 @@ def test_create_preference_set_rest(request_type):
                     "allowed_machine_series": [{"code": "code_value"}]
                 },
                 "license_type": 1,
+            },
+            "vmware_engine_preferences": {
+                "cpu_overcommit_ratio": 0.2154,
+                "memory_overcommit_ratio": 0.24910000000000002,
+                "storage_deduplication_compression_ratio": 0.4168,
+                "commitment_plan": 1,
+            },
+            "sole_tenancy_preferences": {
+                "cpu_overcommit_ratio": 0.2154,
+                "host_maintenance_policy": 1,
+                "commitment_plan": 1,
+                "node_types": [{"node_name": "node_name_value"}],
             },
         },
     }
@@ -25649,6 +25680,7 @@ def test_create_preference_set_rest_bad_request(
         "display_name": "display_name_value",
         "description": "description_value",
         "virtual_machine_preferences": {
+            "target_product": 1,
             "region_preferences": {
                 "preferred_regions": [
                     "preferred_regions_value1",
@@ -25662,6 +25694,18 @@ def test_create_preference_set_rest_bad_request(
                     "allowed_machine_series": [{"code": "code_value"}]
                 },
                 "license_type": 1,
+            },
+            "vmware_engine_preferences": {
+                "cpu_overcommit_ratio": 0.2154,
+                "memory_overcommit_ratio": 0.24910000000000002,
+                "storage_deduplication_compression_ratio": 0.4168,
+                "commitment_plan": 1,
+            },
+            "sole_tenancy_preferences": {
+                "cpu_overcommit_ratio": 0.2154,
+                "host_maintenance_policy": 1,
+                "commitment_plan": 1,
+                "node_types": [{"node_name": "node_name_value"}],
             },
         },
     }
@@ -25770,6 +25814,7 @@ def test_update_preference_set_rest(request_type):
         "display_name": "display_name_value",
         "description": "description_value",
         "virtual_machine_preferences": {
+            "target_product": 1,
             "region_preferences": {
                 "preferred_regions": [
                     "preferred_regions_value1",
@@ -25783,6 +25828,18 @@ def test_update_preference_set_rest(request_type):
                     "allowed_machine_series": [{"code": "code_value"}]
                 },
                 "license_type": 1,
+            },
+            "vmware_engine_preferences": {
+                "cpu_overcommit_ratio": 0.2154,
+                "memory_overcommit_ratio": 0.24910000000000002,
+                "storage_deduplication_compression_ratio": 0.4168,
+                "commitment_plan": 1,
+            },
+            "sole_tenancy_preferences": {
+                "cpu_overcommit_ratio": 0.2154,
+                "host_maintenance_policy": 1,
+                "commitment_plan": 1,
+                "node_types": [{"node_name": "node_name_value"}],
             },
         },
     }
@@ -25986,6 +26043,7 @@ def test_update_preference_set_rest_bad_request(
         "display_name": "display_name_value",
         "description": "description_value",
         "virtual_machine_preferences": {
+            "target_product": 1,
             "region_preferences": {
                 "preferred_regions": [
                     "preferred_regions_value1",
@@ -25999,6 +26057,18 @@ def test_update_preference_set_rest_bad_request(
                     "allowed_machine_series": [{"code": "code_value"}]
                 },
                 "license_type": 1,
+            },
+            "vmware_engine_preferences": {
+                "cpu_overcommit_ratio": 0.2154,
+                "memory_overcommit_ratio": 0.24910000000000002,
+                "storage_deduplication_compression_ratio": 0.4168,
+                "commitment_plan": 1,
+            },
+            "sole_tenancy_preferences": {
+                "cpu_overcommit_ratio": 0.2154,
+                "host_maintenance_policy": 1,
+                "commitment_plan": 1,
+                "node_types": [{"node_name": "node_name_value"}],
             },
         },
     }
@@ -28187,6 +28257,7 @@ def test_create_report_rest(request_type):
                             "display_name": "display_name_value",
                             "description": "description_value",
                             "machine_preferences": {
+                                "target_product": 1,
                                 "region_preferences": {
                                     "preferred_regions": [
                                         "preferred_regions_value1",
@@ -28202,6 +28273,18 @@ def test_create_report_rest(request_type):
                                         ]
                                     },
                                     "license_type": 1,
+                                },
+                                "vmware_engine_preferences": {
+                                    "cpu_overcommit_ratio": 0.2154,
+                                    "memory_overcommit_ratio": 0.24910000000000002,
+                                    "storage_deduplication_compression_ratio": 0.4168,
+                                    "commitment_plan": 1,
+                                },
+                                "sole_tenancy_preferences": {
+                                    "cpu_overcommit_ratio": 0.2154,
+                                    "host_maintenance_policy": 1,
+                                    "commitment_plan": 1,
+                                    "node_types": [{"node_name": "node_name_value"}],
                                 },
                             },
                             "monthly_cost_total": {
@@ -28227,6 +28310,34 @@ def test_create_report_rest(request_type):
                                     }
                                 ],
                                 "allocated_disk_types": [1],
+                            },
+                            "vmware_engine_finding": {
+                                "allocated_regions": [
+                                    "allocated_regions_value1",
+                                    "allocated_regions_value2",
+                                ],
+                                "allocated_asset_count": 2224,
+                                "node_allocations": [
+                                    {
+                                        "vmware_node": {"code": "code_value"},
+                                        "node_count": 1070,
+                                        "allocated_asset_count": 2224,
+                                    }
+                                ],
+                            },
+                            "sole_tenant_finding": {
+                                "allocated_regions": [
+                                    "allocated_regions_value1",
+                                    "allocated_regions_value2",
+                                ],
+                                "allocated_asset_count": 2224,
+                                "node_allocations": [
+                                    {
+                                        "node": {},
+                                        "node_count": 1070,
+                                        "allocated_asset_count": 2224,
+                                    }
+                                ],
                             },
                         }
                     ],
@@ -28482,6 +28593,7 @@ def test_create_report_rest_bad_request(
                             "display_name": "display_name_value",
                             "description": "description_value",
                             "machine_preferences": {
+                                "target_product": 1,
                                 "region_preferences": {
                                     "preferred_regions": [
                                         "preferred_regions_value1",
@@ -28497,6 +28609,18 @@ def test_create_report_rest_bad_request(
                                         ]
                                     },
                                     "license_type": 1,
+                                },
+                                "vmware_engine_preferences": {
+                                    "cpu_overcommit_ratio": 0.2154,
+                                    "memory_overcommit_ratio": 0.24910000000000002,
+                                    "storage_deduplication_compression_ratio": 0.4168,
+                                    "commitment_plan": 1,
+                                },
+                                "sole_tenancy_preferences": {
+                                    "cpu_overcommit_ratio": 0.2154,
+                                    "host_maintenance_policy": 1,
+                                    "commitment_plan": 1,
+                                    "node_types": [{"node_name": "node_name_value"}],
                                 },
                             },
                             "monthly_cost_total": {
@@ -28522,6 +28646,34 @@ def test_create_report_rest_bad_request(
                                     }
                                 ],
                                 "allocated_disk_types": [1],
+                            },
+                            "vmware_engine_finding": {
+                                "allocated_regions": [
+                                    "allocated_regions_value1",
+                                    "allocated_regions_value2",
+                                ],
+                                "allocated_asset_count": 2224,
+                                "node_allocations": [
+                                    {
+                                        "vmware_node": {"code": "code_value"},
+                                        "node_count": 1070,
+                                        "allocated_asset_count": 2224,
+                                    }
+                                ],
+                            },
+                            "sole_tenant_finding": {
+                                "allocated_regions": [
+                                    "allocated_regions_value1",
+                                    "allocated_regions_value2",
+                                ],
+                                "allocated_asset_count": 2224,
+                                "node_allocations": [
+                                    {
+                                        "node": {},
+                                        "node_count": 1070,
+                                        "allocated_asset_count": 2224,
+                                    }
+                                ],
                             },
                         }
                     ],

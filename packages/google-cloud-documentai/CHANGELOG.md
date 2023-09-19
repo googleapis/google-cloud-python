@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.18.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.18.0...google-cloud-documentai-v2.18.1) (2023-09-19)
+
+
+### Documentation
+
+* update client libraries for Enterprise OCR add-ons ([#11642](https://github.com/googleapis/google-cloud-python/issues/11642)) ([09cf3ae](https://github.com/googleapis/google-cloud-python/commit/09cf3aefee6c1d51027e324add331ff9c13e237e))
+
 ## [2.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.17.0...google-cloud-documentai-v2.18.0) (2023-07-25)
 
 

@@ -36,7 +36,7 @@ from .grpc import RapidMigrationAssessmentGrpcTransport
 class RapidMigrationAssessmentGrpcAsyncIOTransport(RapidMigrationAssessmentTransport):
     """gRPC AsyncIO backend transport for RapidMigrationAssessment.
 
-    Rapid Migration Assessment service
+    Service describing handlers for resources.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -438,7 +438,8 @@ class RapidMigrationAssessmentGrpcAsyncIOTransport(RapidMigrationAssessmentTrans
         r"""Return a callable for the delete collector method over gRPC.
 
         Deletes a single Collector - changes state of
-        collector to "Deleting".
+        collector to "Deleting". Background jobs does final
+        deletion thorugh producer api.
 
         Returns:
             Callable[[~.DeleteCollectorRequest],

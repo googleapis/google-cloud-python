@@ -76,6 +76,7 @@ class Company(proto.Message):
             The URI representing the company's primary
             web site or home page, for example,
             "https://www.google.com".
+
             The maximum number of allowed characters is 255.
         career_site_uri (str):
             The URI to employer's career site or careers

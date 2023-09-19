@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.11.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-talent-v2.11.1...google-cloud-talent-v2.11.2) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([025219f](https://github.com/googleapis/google-cloud-python/commit/025219f5c04803651e20eae4c0186b87608f4db4))
+
 ## [2.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-talent-v2.11.0...google-cloud-talent-v2.11.1) (2023-07-05)
 
 

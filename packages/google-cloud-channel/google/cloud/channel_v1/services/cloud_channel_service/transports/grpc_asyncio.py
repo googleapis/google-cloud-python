@@ -419,8 +419,13 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The reseller account making the request is
-           different from the reseller account in the API request.
+        -  PERMISSION_DENIED:
+
+           -  The reseller account making the request is different from
+              the reseller account in the API request.
+           -  You are not authorized to create a customer. See
+              https://support.google.com/channelservices/answer/9759265
+
         -  INVALID_ARGUMENT:
 
            -  Required request parameters are missing or invalid.
@@ -537,8 +542,13 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The reseller account making the request is
-           different from the reseller account in the API request.
+        -  PERMISSION_DENIED:
+
+           -  The reseller account making the request is different from
+              the reseller account in the API request.
+           -  You are not authorized to import the customer. See
+              https://support.google.com/channelservices/answer/9759265
+
         -  NOT_FOUND: Cloud Identity doesn't exist or was deleted.
         -  INVALID_ARGUMENT: Required parameters are missing, or the
            auth_token is expired or invalid.
@@ -578,8 +588,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The customer doesn't belong to the
-           reseller.
+        -  PERMISSION_DENIED:
+
+           -  The customer doesn't belong to the reseller.
+           -  You are not authorized to provision cloud identity id. See
+              https://support.google.com/channelservices/answer/9759265
+
         -  INVALID_ARGUMENT: Required request parameters are missing or
            invalid.
         -  NOT_FOUND: The customer was not found.
@@ -733,6 +747,9 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
               generating auth token.
            -  The reseller account making the request is different from
               the reseller account in the query.
+           -  The reseller is not authorized to transact on this
+              Product. See
+              https://support.google.com/channelservices/answer/9759265
 
         -  INVALID_ARGUMENT: Required request parameters are missing or
            invalid.
@@ -809,8 +826,13 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The customer doesn't belong to the
-           reseller.
+        -  PERMISSION_DENIED:
+
+           -  The customer doesn't belong to the reseller.
+           -  The reseller is not authorized to transact on this
+              Product. See
+              https://support.google.com/channelservices/answer/9759265
+
         -  INVALID_ARGUMENT:
 
            -  Required request parameters are missing or invalid.
@@ -1250,8 +1272,13 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The customer doesn't belong to the
-           reseller.
+        -  PERMISSION_DENIED:
+
+           -  The customer doesn't belong to the reseller.
+           -  The reseller is not authorized to transact on this
+              Product. See
+              https://support.google.com/channelservices/answer/9759265
+
         -  INVALID_ARGUMENT: Required request parameters are missing or
            invalid.
         -  NOT_FOUND: The customer or offer resource was not found.
@@ -1694,12 +1721,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
            configs. Changes to the config may be immediate, but may take
            up to 24 hours.
         -  There is a limit of ten configs for any
-           [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement]
-           or
+           [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement],
+           for any
            [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
         -  The contained
            [CustomerRepricingConfig.repricing_config][google.cloud.channel.v1.CustomerRepricingConfig.repricing_config]
-           vaule must be different from the value used in the current
+           value must be different from the value used in the current
            config for a
            [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement].
 
@@ -1986,10 +2013,12 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
            configs. Changes to the config may be immediate, but may take
            up to 24 hours.
         -  There is a limit of ten configs for any ChannelPartner or
+           [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement],
+           for any
            [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
         -  The contained
            [ChannelPartnerRepricingConfig.repricing_config][google.cloud.channel.v1.ChannelPartnerRepricingConfig.repricing_config]
-           vaule must be different from the value used in the current
+           value must be different from the value used in the current
            config for a ChannelPartner.
 
         Possible Error Codes:
@@ -2423,8 +2452,13 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
 
         Possible error codes:
 
-        -  PERMISSION_DENIED: The customer doesn't belong to the
-           reseller
+        -  PERMISSION_DENIED:
+
+           -  The customer doesn't belong to the reseller
+           -  The reseller is not authorized to transact on this
+              Product. See
+              https://support.google.com/channelservices/answer/9759265
+
         -  INVALID_ARGUMENT: Required request parameters are missing or
            invalid.
 
@@ -2445,6 +2479,51 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
                 response_deserializer=service.ListPurchasableOffersResponse.deserialize,
             )
         return self._stubs["list_purchasable_offers"]
+
+    @property
+    def query_eligible_billing_accounts(
+        self,
+    ) -> Callable[
+        [service.QueryEligibleBillingAccountsRequest],
+        Awaitable[service.QueryEligibleBillingAccountsResponse],
+    ]:
+        r"""Return a callable for the query eligible billing
+        accounts method over gRPC.
+
+        Lists the billing accounts that are eligible to purchase
+        particular SKUs for a given customer.
+
+        Possible error codes:
+
+        -  PERMISSION_DENIED: The customer doesn't belong to the
+           reseller.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
+
+        Return value: Based on the provided list of SKUs, returns a list
+        of SKU groups that must be purchased using the same billing
+        account and the billing accounts eligible to purchase each SKU
+        group.
+
+        Returns:
+            Callable[[~.QueryEligibleBillingAccountsRequest],
+                    Awaitable[~.QueryEligibleBillingAccountsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_eligible_billing_accounts" not in self._stubs:
+            self._stubs[
+                "query_eligible_billing_accounts"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/QueryEligibleBillingAccounts",
+                request_serializer=service.QueryEligibleBillingAccountsRequest.serialize,
+                response_deserializer=service.QueryEligibleBillingAccountsResponse.deserialize,
+            )
+        return self._stubs["query_eligible_billing_accounts"]
 
     @property
     def register_subscriber(

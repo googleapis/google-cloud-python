@@ -374,8 +374,7 @@ class Cluster(proto.Message):
                 The Cluster is being deleted.
             REPAIRING (5):
                 The Cluster is undergoing maintenance, for
-                example: a failed node is
-                getting replaced.
+                example: a failed node is getting replaced.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1

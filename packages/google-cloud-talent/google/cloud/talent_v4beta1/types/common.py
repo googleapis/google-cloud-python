@@ -481,6 +481,7 @@ class PostingRegion(proto.Enum):
 
 class Visibility(proto.Enum):
     r"""Deprecated. All resources are only visible to the owner.
+
     An enum that represents who has view access to the resource.
 
     Values:
@@ -924,6 +925,7 @@ class SpellingCorrection(proto.Message):
             Corrected output with html tags to highlight
             the corrected words. Corrected words are called
             out with the "<b><i>...</i></b>" html tags.
+
             For example, the user input query is "software
             enginear", where the second word, "enginear," is
             incorrect. It should be "engineer". When
@@ -1012,11 +1014,10 @@ class CompensationInfo(proto.Message):
                 Default value.
             BASE (1):
                 Base compensation: Refers to the fixed amount
-                of money paid to an
-                employee by an employer in return for work
-                performed. Base compensation does not include
-                benefits, bonuses or any other potential
-                compensation from an employer.
+                of money paid to an employee by an employer in
+                return for work performed. Base compensation
+                does not include benefits, bonuses or any other
+                potential compensation from an employer.
             BONUS (2):
                 Bonus.
             SIGNING_BONUS (3):

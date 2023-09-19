@@ -55,6 +55,7 @@ __protobuf__ = proto.module(
 
 class Finding(proto.Message):
     r"""Security Command Center finding.
+
     A finding is a record of assessment data like security, risk,
     health, or privacy, that is ingested into Security Command
     Center for presentation, notification, analysis, policy testing,
@@ -295,6 +296,7 @@ class Finding(proto.Message):
                 accessible internally. This database could
                 easily be compromised by an actor that had
                 access to the internal network.
+
                 Threat:
 
                 Indicates a threat that is able to create new
@@ -315,6 +317,7 @@ class Finding(proto.Message):
                 they could potentially use that access to
                 manipulate a project the service account was not
                 intended to.
+
                 Threat:
 
                 Indicates a threat that is able to cause
@@ -330,6 +333,7 @@ class Finding(proto.Message):
                 security issues. An example is monitoring and
                 logs being disabled for resource configurations
                 and access.
+
                 Threat:
 
                 Indicates a threat that has obtained minimal

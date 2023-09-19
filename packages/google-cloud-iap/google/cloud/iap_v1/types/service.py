@@ -438,12 +438,19 @@ class OAuthSettings(proto.Message):
             Note: IAP does not verify that the id token's hd
             claim matches this value since access behavior
             is managed by IAM policies.
+        programmatic_clients (MutableSequence[str]):
+            List of OAuth client IDs allowed to
+            programmatically authenticate with IAP.
     """
 
     login_hint: wrappers_pb2.StringValue = proto.Field(
         proto.MESSAGE,
         number=2,
         message=wrappers_pb2.StringValue,
+    )
+    programmatic_clients: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
     )
 
 

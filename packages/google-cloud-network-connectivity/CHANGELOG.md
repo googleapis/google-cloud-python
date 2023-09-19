@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.0.2...google-cloud-network-connectivity-v2.1.0) (2023-09-19)
+
+
+### Features
+
+* add PolicyBasedRouting APIs ([#11640](https://github.com/googleapis/google-cloud-python/issues/11640)) ([0976a4c](https://github.com/googleapis/google-cloud-python/commit/0976a4c3ad149cc6f6f22ac60b3ff1cd04c2e145))
+
+
+### Documentation
+
+* Minor formatting ([1ae610b](https://github.com/googleapis/google-cloud-python/commit/1ae610bb3b321ceac7bd23a455a002e39645d84f))
+
 ## [2.0.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.0.1...google-cloud-network-connectivity-v2.0.2) (2023-07-05)
 
 

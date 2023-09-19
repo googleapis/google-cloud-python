@@ -241,9 +241,8 @@ class SpeechTranslationServiceGrpcAsyncIOTransport(SpeechTranslationServiceTrans
         r"""Return a callable for the streaming translate speech method over gRPC.
 
         Performs bidirectional streaming speech translation:
-        receive results while
-        sending audio. This method is only available via the
-        gRPC API (not REST).
+        receive results while sending audio. This method is only
+        available via the gRPC API (not REST).
 
         Returns:
             Callable[[~.StreamingTranslateSpeechRequest],

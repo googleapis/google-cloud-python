@@ -45,7 +45,7 @@ from google.cloud.location import locations_pb2
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
@@ -5741,6 +5741,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
             reconciling=True,
             etag="etag_value",
             size_bytes=1089,
+            database_version=resources.DatabaseVersion.POSTGRES_13,
         )
         response = client.get_backup(request)
 
@@ -5762,6 +5763,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.size_bytes == 1089
+    assert response.database_version == resources.DatabaseVersion.POSTGRES_13
 
 
 def test_get_backup_empty_call():
@@ -5809,6 +5811,7 @@ async def test_get_backup_async(
                 reconciling=True,
                 etag="etag_value",
                 size_bytes=1089,
+                database_version=resources.DatabaseVersion.POSTGRES_13,
             )
         )
         response = await client.get_backup(request)
@@ -5831,6 +5834,7 @@ async def test_get_backup_async(
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.size_bytes == 1089
+    assert response.database_version == resources.DatabaseVersion.POSTGRES_13
 
 
 @pytest.mark.asyncio
@@ -9179,6 +9183,10 @@ def test_create_cluster_rest(request_type):
         "state": 1,
         "cluster_type": 1,
         "database_version": 1,
+        "network_config": {
+            "network": "network_value",
+            "allocated_ip_range": "allocated_ip_range_value",
+        },
         "network": "network_value",
         "etag": "etag_value",
         "annotations": {},
@@ -9452,6 +9460,10 @@ def test_create_cluster_rest_bad_request(
         "state": 1,
         "cluster_type": 1,
         "database_version": 1,
+        "network_config": {
+            "network": "network_value",
+            "allocated_ip_range": "allocated_ip_range_value",
+        },
         "network": "network_value",
         "etag": "etag_value",
         "annotations": {},
@@ -9618,6 +9630,10 @@ def test_update_cluster_rest(request_type):
         "state": 1,
         "cluster_type": 1,
         "database_version": 1,
+        "network_config": {
+            "network": "network_value",
+            "allocated_ip_range": "allocated_ip_range_value",
+        },
         "network": "network_value",
         "etag": "etag_value",
         "annotations": {},
@@ -9871,6 +9887,10 @@ def test_update_cluster_rest_bad_request(
         "state": 1,
         "cluster_type": 1,
         "database_version": 1,
+        "network_config": {
+            "network": "network_value",
+            "allocated_ip_range": "allocated_ip_range_value",
+        },
         "network": "network_value",
         "etag": "etag_value",
         "annotations": {},
@@ -10795,6 +10815,10 @@ def test_create_secondary_cluster_rest(request_type):
         "state": 1,
         "cluster_type": 1,
         "database_version": 1,
+        "network_config": {
+            "network": "network_value",
+            "allocated_ip_range": "allocated_ip_range_value",
+        },
         "network": "network_value",
         "etag": "etag_value",
         "annotations": {},
@@ -11072,6 +11096,10 @@ def test_create_secondary_cluster_rest_bad_request(
         "state": 1,
         "cluster_type": 1,
         "database_version": 1,
+        "network_config": {
+            "network": "network_value",
+            "allocated_ip_range": "allocated_ip_range_value",
+        },
         "network": "network_value",
         "etag": "etag_value",
         "annotations": {},
@@ -11881,6 +11909,10 @@ def test_create_instance_rest(request_type):
         "reconciling": True,
         "etag": "etag_value",
         "annotations": {},
+        "client_connection_config": {
+            "require_connectors": True,
+            "ssl_config": {"ssl_mode": 1, "ca_source": 1},
+        },
     }
     request = request_type(**request_init)
 
@@ -12122,6 +12154,10 @@ def test_create_instance_rest_bad_request(
         "reconciling": True,
         "etag": "etag_value",
         "annotations": {},
+        "client_connection_config": {
+            "require_connectors": True,
+            "ssl_config": {"ssl_mode": 1, "ca_source": 1},
+        },
     }
     request = request_type(**request_init)
 
@@ -12251,6 +12287,10 @@ def test_create_secondary_instance_rest(request_type):
         "reconciling": True,
         "etag": "etag_value",
         "annotations": {},
+        "client_connection_config": {
+            "require_connectors": True,
+            "ssl_config": {"ssl_mode": 1, "ca_source": 1},
+        },
     }
     request = request_type(**request_init)
 
@@ -12494,6 +12534,10 @@ def test_create_secondary_instance_rest_bad_request(
         "reconciling": True,
         "etag": "etag_value",
         "annotations": {},
+        "client_connection_config": {
+            "require_connectors": True,
+            "ssl_config": {"ssl_mode": 1, "ca_source": 1},
+        },
     }
     request = request_type(**request_init)
 
@@ -12628,6 +12672,10 @@ def test_batch_create_instances_rest(request_type):
                     "reconciling": True,
                     "etag": "etag_value",
                     "annotations": {},
+                    "client_connection_config": {
+                        "require_connectors": True,
+                        "ssl_config": {"ssl_mode": 1, "ca_source": 1},
+                    },
                 },
                 "request_id": "request_id_value",
                 "validate_only": True,
@@ -12855,6 +12903,10 @@ def test_batch_create_instances_rest_bad_request(
                     "reconciling": True,
                     "etag": "etag_value",
                     "annotations": {},
+                    "client_connection_config": {
+                        "require_connectors": True,
+                        "ssl_config": {"ssl_mode": 1, "ca_source": 1},
+                    },
                 },
                 "request_id": "request_id_value",
                 "validate_only": True,
@@ -12932,6 +12984,10 @@ def test_update_instance_rest(request_type):
         "reconciling": True,
         "etag": "etag_value",
         "annotations": {},
+        "client_connection_config": {
+            "require_connectors": True,
+            "ssl_config": {"ssl_mode": 1, "ca_source": 1},
+        },
     }
     request = request_type(**request_init)
 
@@ -13155,6 +13211,10 @@ def test_update_instance_rest_bad_request(
         "reconciling": True,
         "etag": "etag_value",
         "annotations": {},
+        "client_connection_config": {
+            "require_connectors": True,
+            "ssl_config": {"ssl_mode": 1, "ca_source": 1},
+        },
     }
     request = request_type(**request_init)
 
@@ -14706,6 +14766,7 @@ def test_get_backup_rest(request_type):
             reconciling=True,
             etag="etag_value",
             size_bytes=1089,
+            database_version=resources.DatabaseVersion.POSTGRES_13,
         )
 
         # Wrap the value into a proper Response obj
@@ -14731,6 +14792,7 @@ def test_get_backup_rest(request_type):
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.size_bytes == 1089
+    assert response.database_version == resources.DatabaseVersion.POSTGRES_13
 
 
 def test_get_backup_rest_required_fields(request_type=service.GetBackupRequest):
@@ -14993,6 +15055,8 @@ def test_create_backup_rest(request_type):
         "annotations": {},
         "size_bytes": 1089,
         "expiry_time": {},
+        "expiry_quantity": {"retention_count": 1632, "total_retention_count": 2275},
+        "database_version": 1,
     }
     request = request_type(**request_init)
 
@@ -15223,6 +15287,8 @@ def test_create_backup_rest_bad_request(
         "annotations": {},
         "size_bytes": 1089,
         "expiry_time": {},
+        "expiry_quantity": {"retention_count": 1632, "total_retention_count": 2275},
+        "database_version": 1,
     }
     request = request_type(**request_init)
 
@@ -15342,6 +15408,8 @@ def test_update_backup_rest(request_type):
         "annotations": {},
         "size_bytes": 1089,
         "expiry_time": {},
+        "expiry_quantity": {"retention_count": 1632, "total_retention_count": 2275},
+        "database_version": 1,
     }
     request = request_type(**request_init)
 
@@ -15552,6 +15620,8 @@ def test_update_backup_rest_bad_request(
         "annotations": {},
         "size_bytes": 1089,
         "expiry_time": {},
+        "expiry_quantity": {"retention_count": 1632, "total_retention_count": 2275},
+        "database_version": 1,
     }
     request = request_type(**request_init)
 

@@ -2558,6 +2558,7 @@ class DatastreamAsyncClient:
         Returns:
             google.cloud.datastream_v1alpha1.services.datastream.pagers.ListRoutesAsyncPager:
                 route list response
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

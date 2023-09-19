@@ -45,7 +45,7 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -63,7 +63,7 @@ from .transports.grpc_asyncio import RapidMigrationAssessmentGrpcAsyncIOTranspor
 
 
 class RapidMigrationAssessmentAsyncClient:
-    """Rapid Migration Assessment service"""
+    """Service describing handlers for resources."""
 
     _client: RapidMigrationAssessmentClient
 
@@ -991,7 +991,8 @@ class RapidMigrationAssessmentAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Deletes a single Collector - changes state of
-        collector to "Deleting".
+        collector to "Deleting". Background jobs does final
+        deletion thorugh producer api.
 
         .. code-block:: python
 

@@ -425,6 +425,7 @@ class CreateHubRequest(proto.Message):
             server ignores the second request. This behavior
             prevents clients from mistakenly creating
             duplicate commitments.
+
             The request ID must be a valid UUID, with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -482,6 +483,7 @@ class UpdateHubRequest(proto.Message):
             server ignores the second request. This behavior
             prevents clients from mistakenly creating
             duplicate commitments.
+
             The request ID must be a valid UUID, with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -527,6 +529,7 @@ class DeleteHubRequest(proto.Message):
             server ignores the second request. This behavior
             prevents clients from mistakenly creating
             duplicate commitments.
+
             The request ID must be a valid UUID, with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -660,6 +663,7 @@ class CreateSpokeRequest(proto.Message):
             server ignores the second request. This behavior
             prevents clients from mistakenly creating
             duplicate commitments.
+
             The request ID must be a valid UUID, with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -717,6 +721,7 @@ class UpdateSpokeRequest(proto.Message):
             server ignores the second request. This behavior
             prevents clients from mistakenly creating
             duplicate commitments.
+
             The request ID must be a valid UUID, with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
@@ -762,6 +767,7 @@ class DeleteSpokeRequest(proto.Message):
             server ignores the second request. This behavior
             prevents clients from mistakenly creating
             duplicate commitments.
+
             The request ID must be a valid UUID, with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
