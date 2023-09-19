@@ -34,6 +34,7 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
     """gRPC AsyncIO backend transport for CompletionService.
 
     Autocomplete service for retail.
+
     This feature is only available for users who have Retail Search
     enabled. Enable Retail Search on Cloud Console before using this
     feature.
@@ -295,11 +296,14 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         r"""Return a callable for the import completion data method over gRPC.
 
         Bulk import of processed completion dataset.
+
         Request processing is asynchronous. Partial updating is
         not supported.
+
         The operation is successfully finished only after the
         imported suggestions are indexed successfully and ready
         for serving. The process takes hours.
+
         This feature is only available for users who have Retail
         Search enabled. Enable Retail Search on Cloud Console
         before using this feature.

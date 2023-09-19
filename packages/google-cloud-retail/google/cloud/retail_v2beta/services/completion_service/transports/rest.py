@@ -33,7 +33,6 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
 from google.protobuf import json_format
 import grpc  # type: ignore
 from requests import __version__ as requests_version
@@ -199,6 +198,7 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
     """REST backend transport for CompletionService.
 
     Autocomplete service for retail.
+
     This feature is only available for users who have Retail Search
     enabled. Enable Retail Search on Cloud Console before using this
     feature.

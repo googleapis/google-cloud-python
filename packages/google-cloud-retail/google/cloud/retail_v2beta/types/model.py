@@ -47,6 +47,7 @@ class Model(proto.Message):
             char limit of 40.
         display_name (str):
             Required. The display name of the model.
+
             Should be human readable, used to display
             Recommendation Models in the Retail Cloud
             Console Dashboard. UTF-8 encoded string with

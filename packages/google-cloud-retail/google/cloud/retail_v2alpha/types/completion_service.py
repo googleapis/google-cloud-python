@@ -227,6 +227,7 @@ class CompleteQueryResponse(proto.Message):
                 Facet information for the suggestion term.
                 Gives the number of items resulting from a
                 search with this suggestion term for each facet.
+
                 This is an experimental feature for limited
                 customers. Please reach out to the support team
                 if you would like to receive this information.

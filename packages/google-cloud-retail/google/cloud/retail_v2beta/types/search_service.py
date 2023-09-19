@@ -154,6 +154,7 @@ class SearchRequest(proto.Message):
             Deprecated. Refer to
             https://cloud.google.com/retail/docs/configs#dynamic
             to enable dynamic facets. Do not set this field.
+
             The specification for dynamically generated
             facets. Notice that only textual facets can be
             dynamically generated.

@@ -43,7 +43,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.retail_v2alpha.services.serving_config_service import pagers
@@ -379,6 +379,7 @@ class ServingConfigServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes a ServingConfig.
+
         Returns a NotFound error if the ServingConfig does not
         exist.
 
@@ -601,6 +602,7 @@ class ServingConfigServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> serving_config.ServingConfig:
         r"""Gets a ServingConfig.
+
         Returns a NotFound error if the ServingConfig does not
         exist.
 

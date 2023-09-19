@@ -43,7 +43,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.retail_v2beta.services.search_service import pagers
 from google.cloud.retail_v2beta.types import search_service
@@ -55,6 +55,7 @@ from .transports.grpc_asyncio import SearchServiceGrpcAsyncIOTransport
 
 class SearchServiceAsyncClient:
     """Service for search.
+
     This feature is only available for users who have Retail Search
     enabled. Enable Retail Search on Cloud Console before using this
     feature.
@@ -238,6 +239,7 @@ class SearchServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.SearchAsyncPager:
         r"""Performs a search.
+
         This feature is only available for users who have Retail
         Search enabled. Enable Retail Search on Cloud Console
         before using this feature.

@@ -274,6 +274,7 @@ class UserEvent(proto.Message):
             5,000 characters.
         referrer_uri (str):
             The referrer URL of the current page.
+
             When using the client side event reporting with
             JavaScript pixel and Google Tag Manager, this
             value is filled in automatically.

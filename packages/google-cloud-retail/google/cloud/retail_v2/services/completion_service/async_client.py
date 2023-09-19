@@ -45,7 +45,7 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.retail_v2.types import completion_service, import_config
 
@@ -56,6 +56,7 @@ from .transports.grpc_asyncio import CompletionServiceGrpcAsyncIOTransport
 
 class CompletionServiceAsyncClient:
     """Autocomplete service for retail.
+
     This feature is only available for users who have Retail Search
     enabled. Enable Retail Search on Cloud Console before using this
     feature.
@@ -315,11 +316,14 @@ class CompletionServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Bulk import of processed completion dataset.
+
         Request processing is asynchronous. Partial updating is
         not supported.
+
         The operation is successfully finished only after the
         imported suggestions are indexed successfully and ready
         for serving. The process takes hours.
+
         This feature is only available for users who have Retail
         Search enabled. Enable Retail Search on Cloud Console
         before using this feature.

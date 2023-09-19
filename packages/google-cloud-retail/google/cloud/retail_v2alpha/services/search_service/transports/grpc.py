@@ -21,7 +21,7 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 
 from google.cloud.retail_v2alpha.types import search_service
@@ -33,6 +33,7 @@ class SearchServiceGrpcTransport(SearchServiceTransport):
     """gRPC backend transport for SearchService.
 
     Service for search.
+
     This feature is only available for users who have Retail Search
     enabled. Enable Retail Search on Cloud Console before using this
     feature.
@@ -240,6 +241,7 @@ class SearchServiceGrpcTransport(SearchServiceTransport):
         r"""Return a callable for the search method over gRPC.
 
         Performs a search.
+
         This feature is only available for users who have Retail
         Search enabled. Enable Retail Search on Cloud Console
         before using this feature.

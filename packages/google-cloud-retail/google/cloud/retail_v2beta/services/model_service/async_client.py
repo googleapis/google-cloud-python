@@ -45,7 +45,7 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -838,6 +838,7 @@ class ModelServiceAsyncClient:
         Returns:
             google.cloud.retail_v2beta.services.model_service.pagers.ListModelsAsyncPager:
                 Response to a ListModelRequest.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
