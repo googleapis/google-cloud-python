@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.11.0](https://github.com/googleapis/python-storage/compare/v2.10.0...v2.11.0) (2023-09-19)
+
+
+### Features
+
+* Add gccl-gcs-cmd field to X-Goog-API-Client header for Transfer Manager calls ([#1119](https://github.com/googleapis/python-storage/issues/1119)) ([14a1909](https://github.com/googleapis/python-storage/commit/14a1909963cfa41208f4e25b82b7c84c5e02452f))
+* Add transfer_manager.upload_chunks_concurrently using the XML MPU API ([#1115](https://github.com/googleapis/python-storage/issues/1115)) ([56aeb87](https://github.com/googleapis/python-storage/commit/56aeb8778d25fe245ac2e1e96ef71f0dad1fec0f))
+* Support configurable retries in upload_chunks_concurrently ([#1120](https://github.com/googleapis/python-storage/issues/1120)) ([1271686](https://github.com/googleapis/python-storage/commit/1271686428c0faffd3dd1b4fd57bfe467d2817d4))
+
+
+### Bug Fixes
+
+* Split retention period tests due to caching change ([#1068](https://github.com/googleapis/python-storage/issues/1068)) ([cc191b0](https://github.com/googleapis/python-storage/commit/cc191b070c520e85030cd4cef6d7d9a7b1dd0bf4))
+
+
+### Documentation
+
+* Add Transfer Manager documentation in c.g.c ([#1109](https://github.com/googleapis/python-storage/issues/1109)) ([c1f8724](https://github.com/googleapis/python-storage/commit/c1f8724dc1c5dc180f36424324def74a5daec620))
+
 ## [2.10.0](https://github.com/googleapis/python-storage/compare/v2.9.0...v2.10.0) (2023-06-14)
 
 
