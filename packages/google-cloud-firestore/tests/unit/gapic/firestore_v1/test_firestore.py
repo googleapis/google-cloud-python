@@ -56,7 +56,7 @@ from google.cloud.firestore_v1.types import firestore
 from google.cloud.firestore_v1.types import query
 from google.cloud.firestore_v1.types import write as gf_write
 from google.cloud.location import locations_pb2
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore

@@ -54,7 +54,7 @@ from google.cloud.firestore_v1.types import firestore
 from google.cloud.firestore_v1.types import query
 from google.cloud.firestore_v1.types import write as gf_write
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from .transports.base import FirestoreTransport, DEFAULT_CLIENT_INFO
@@ -64,6 +64,7 @@ from .client import FirestoreClient
 
 class FirestoreAsyncClient:
     """The Cloud Firestore service.
+
     Cloud Firestore is a fast, fully managed, serverless,
     cloud-native NoSQL document database that simplifies storing,
     syncing, and querying data for your mobile, web, and IoT apps at
@@ -276,6 +277,7 @@ class FirestoreAsyncClient:
         Returns:
             google.cloud.firestore_v1.types.Document:
                 A Firestore document.
+
                 Must not exceed 1 MiB - 4 bytes.
 
         """
@@ -483,6 +485,7 @@ class FirestoreAsyncClient:
                 The fields to update.
                 None of the field paths in the mask may
                 contain a reserved name.
+
                 If the document exists on the server and
                 has fields not referenced in the mask,
                 they are left unchanged.
@@ -502,6 +505,7 @@ class FirestoreAsyncClient:
         Returns:
             google.cloud.firestore_v1.types.Document:
                 A Firestore document.
+
                 Must not exceed 1 MiB - 4 bytes.
 
         """
@@ -673,6 +677,7 @@ class FirestoreAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Awaitable[AsyncIterable[firestore.BatchGetDocumentsResponse]]:
         r"""Gets multiple documents.
+
         Documents returned by this method are not guaranteed to
         be returned in the same order that they were requested.
 
@@ -926,6 +931,7 @@ class FirestoreAsyncClient:
                 should not be set.
             writes (:class:`MutableSequence[google.cloud.firestore_v1.types.Write]`):
                 The writes to apply.
+
                 Always executed atomically and in order.
 
                 This corresponds to the ``writes`` field
@@ -1906,6 +1912,7 @@ class FirestoreAsyncClient:
         Returns:
             google.cloud.firestore_v1.types.Document:
                 A Firestore document.
+
                 Must not exceed 1 MiB - 4 bytes.
 
         """

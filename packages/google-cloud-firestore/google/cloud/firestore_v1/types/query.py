@@ -763,6 +763,7 @@ class Cursor(proto.Message):
             The values that represent a position, in the
             order they appear in the order by clause of a
             query.
+
             Can contain fewer values than specified in the
             order by clause.
         before (bool):

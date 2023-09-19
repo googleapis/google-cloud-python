@@ -57,7 +57,7 @@ from google.cloud.firestore_v1.types import firestore
 from google.cloud.firestore_v1.types import query
 from google.cloud.firestore_v1.types import write as gf_write
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from .transports.base import FirestoreTransport, DEFAULT_CLIENT_INFO
@@ -103,6 +103,7 @@ class FirestoreClientMeta(type):
 
 class FirestoreClient(metaclass=FirestoreClientMeta):
     """The Cloud Firestore service.
+
     Cloud Firestore is a fast, fully managed, serverless,
     cloud-native NoSQL document database that simplifies storing,
     syncing, and querying data for your mobile, web, and IoT apps at
@@ -488,6 +489,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         Returns:
             google.cloud.firestore_v1.types.Document:
                 A Firestore document.
+
                 Must not exceed 1 MiB - 4 bytes.
 
         """
@@ -673,6 +675,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                 The fields to update.
                 None of the field paths in the mask may
                 contain a reserved name.
+
                 If the document exists on the server and
                 has fields not referenced in the mask,
                 they are left unchanged.
@@ -692,6 +695,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         Returns:
             google.cloud.firestore_v1.types.Document:
                 A Firestore document.
+
                 Must not exceed 1 MiB - 4 bytes.
 
         """
@@ -841,6 +845,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> Iterable[firestore.BatchGetDocumentsResponse]:
         r"""Gets multiple documents.
+
         Documents returned by this method are not guaranteed to
         be returned in the same order that they were requested.
 
@@ -1071,6 +1076,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
                 should not be set.
             writes (MutableSequence[google.cloud.firestore_v1.types.Write]):
                 The writes to apply.
+
                 Always executed atomically and in order.
 
                 This corresponds to the ``writes`` field
@@ -1954,6 +1960,7 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         Returns:
             google.cloud.firestore_v1.types.Document:
                 A Firestore document.
+
                 Must not exceed 1 MiB - 4 bytes.
 
         """

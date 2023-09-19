@@ -189,6 +189,7 @@ class ListDocumentsRequest(proto.Message):
             This field is a member of `oneof`_ ``consistency_selector``.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Perform the read at the provided time.
+
             This must be a microsecond precision timestamp
             within the past one hour, or if Point-in-Time
             Recovery is enabled, can additionally be a whole
@@ -347,6 +348,7 @@ class UpdateDocumentRequest(proto.Message):
             The fields to update.
             None of the field paths in the mask may contain
             a reserved name.
+
             If the document exists on the server and has
             fields not referenced in the mask, they are left
             unchanged.
@@ -599,6 +601,7 @@ class CommitRequest(proto.Message):
             ``projects/{project_id}/databases/{database_id}``.
         writes (MutableSequence[google.cloud.firestore_v1.types.Write]):
             The writes to apply.
+
             Always executed atomically and in order.
         transaction (bytes):
             If set, applies all writes in this
@@ -627,6 +630,7 @@ class CommitResponse(proto.Message):
     Attributes:
         write_results (MutableSequence[google.cloud.firestore_v1.types.WriteResult]):
             The result of applying the writes.
+
             This i-th write result corresponds to the i-th
             write in the request.
         commit_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -850,6 +854,7 @@ class RunAggregationQueryRequest(proto.Message):
             This field is a member of `oneof`_ ``consistency_selector``.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Executes the query at the given timestamp.
+
             This must be a microsecond precision timestamp
             within the past one hour, or if Point-in-Time
             Recovery is enabled, can additionally be a whole
@@ -894,6 +899,7 @@ class RunAggregationQueryResponse(proto.Message):
     Attributes:
         result (google.cloud.firestore_v1.types.AggregationResult):
             A single aggregation result.
+
             Not present when reporting partial progress.
         transaction (bytes):
             The transaction that was started as part of
@@ -1098,6 +1104,7 @@ class WriteRequest(proto.Message):
             left empty, a new write stream will be created.
         writes (MutableSequence[google.cloud.firestore_v1.types.Write]):
             The writes to apply.
+
             Always executed atomically and in order.
             This must be empty on the first request.
             This may be empty on the last request.
@@ -1160,9 +1167,11 @@ class WriteResponse(proto.Message):
             A token that represents the position of this
             response in the stream. This can be used by a
             client to resume the stream at this point.
+
             This field is always set.
         write_results (MutableSequence[google.cloud.firestore_v1.types.WriteResult]):
             The result of applying the writes.
+
             This i-th write result corresponds to the i-th
             write in the request.
         commit_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -1462,6 +1471,7 @@ class TargetChange(proto.Message):
             The type of change that occurred.
         target_ids (MutableSequence[int]):
             The target IDs of targets that have changed.
+
             If empty, the change applies to all targets.
 
             The order of the target IDs is not defined.
@@ -1633,6 +1643,7 @@ class BatchWriteRequest(proto.Message):
             ``projects/{project_id}/databases/{database_id}``.
         writes (MutableSequence[google.cloud.firestore_v1.types.Write]):
             The writes to apply.
+
             Method does not apply writes atomically and does
             not guarantee ordering. Each write succeeds or
             fails independently. You cannot write to the
@@ -1664,10 +1675,12 @@ class BatchWriteResponse(proto.Message):
     Attributes:
         write_results (MutableSequence[google.cloud.firestore_v1.types.WriteResult]):
             The result of applying the writes.
+
             This i-th write result corresponds to the i-th
             write in the request.
         status (MutableSequence[google.rpc.status_pb2.Status]):
             The status of applying the writes.
+
             This i-th write status corresponds to the i-th
             write in the request.
     """

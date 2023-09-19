@@ -83,6 +83,7 @@ class Write(proto.Message):
             and in order.
         current_document (google.cloud.firestore_v1.types.Precondition):
             An optional precondition on the document.
+
             The write will fail if this is set and not met
             by the target document.
     """

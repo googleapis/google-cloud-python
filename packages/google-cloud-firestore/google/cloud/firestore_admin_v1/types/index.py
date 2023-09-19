@@ -44,6 +44,7 @@ class Index(proto.Message):
             that is the child of a specific document,
             specified at query time, and that has the same
             collection id.
+
             Indexes with a collection group query scope
             specified allow queries against all collections
             descended from a specific document, specified at

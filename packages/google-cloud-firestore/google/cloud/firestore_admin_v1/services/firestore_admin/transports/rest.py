@@ -29,7 +29,6 @@ from google.api_core import gapic_v1
 from google.protobuf import json_format
 from google.api_core import operations_v1
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
 from requests import __version__ as requests_version
 import dataclasses
 import re
@@ -46,8 +45,8 @@ from google.cloud.firestore_admin_v1.types import database
 from google.cloud.firestore_admin_v1.types import field
 from google.cloud.firestore_admin_v1.types import firestore_admin
 from google.cloud.firestore_admin_v1.types import index
-from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .base import (
     FirestoreAdminTransport,

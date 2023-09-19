@@ -28,7 +28,7 @@ from google.cloud.firestore_v1.types import document
 from google.cloud.firestore_v1.types import document as gf_document
 from google.cloud.firestore_v1.types import firestore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from .base import FirestoreTransport, DEFAULT_CLIENT_INFO
 
@@ -37,6 +37,7 @@ class FirestoreGrpcTransport(FirestoreTransport):
     """gRPC backend transport for Firestore.
 
     The Cloud Firestore service.
+
     Cloud Firestore is a fast, fully managed, serverless,
     cloud-native NoSQL document database that simplifies storing,
     syncing, and querying data for your mobile, web, and IoT apps at
@@ -354,6 +355,7 @@ class FirestoreGrpcTransport(FirestoreTransport):
         r"""Return a callable for the batch get documents method over gRPC.
 
         Gets multiple documents.
+
         Documents returned by this method are not guaranteed to
         be returned in the same order that they were requested.
 
