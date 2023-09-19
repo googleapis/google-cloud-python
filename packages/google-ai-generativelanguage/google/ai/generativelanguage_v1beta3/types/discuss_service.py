@@ -19,10 +19,10 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.ai.generativelanguage_v1beta2.types import citation, safety
+from google.ai.generativelanguage_v1beta3.types import citation, safety
 
 __protobuf__ = proto.module(
-    package="google.ai.generativelanguage.v1beta2",
+    package="google.ai.generativelanguage.v1beta3",
     manifest={
         "GenerateMessageRequest",
         "GenerateMessageResponse",
@@ -45,7 +45,7 @@ class GenerateMessageRequest(proto.Message):
             Required. The name of the model to use.
 
             Format: ``name=models/{model}``.
-        prompt (google.ai.generativelanguage_v1beta2.types.MessagePrompt):
+        prompt (google.ai.generativelanguage_v1beta3.types.MessagePrompt):
             Required. The structured textual input given
             to the model as a prompt.
             Given a
@@ -129,11 +129,11 @@ class GenerateMessageResponse(proto.Message):
     messages.
 
     Attributes:
-        candidates (MutableSequence[google.ai.generativelanguage_v1beta2.types.Message]):
+        candidates (MutableSequence[google.ai.generativelanguage_v1beta3.types.Message]):
             Candidate response messages from the model.
-        messages (MutableSequence[google.ai.generativelanguage_v1beta2.types.Message]):
+        messages (MutableSequence[google.ai.generativelanguage_v1beta3.types.Message]):
             The conversation history used by the model.
-        filters (MutableSequence[google.ai.generativelanguage_v1beta2.types.ContentFilter]):
+        filters (MutableSequence[google.ai.generativelanguage_v1beta3.types.ContentFilter]):
             A set of content filtering metadata for the prompt and
             response text.
 
@@ -183,7 +183,7 @@ class Message(proto.Message):
             The author can be any alphanumeric string.
         content (str):
             Required. The text content of the structured ``Message``.
-        citation_metadata (google.ai.generativelanguage_v1beta2.types.CitationMetadata):
+        citation_metadata (google.ai.generativelanguage_v1beta3.types.CitationMetadata):
             Output only. Citation information for model-generated
             ``content`` in this ``Message``.
 
@@ -239,7 +239,7 @@ class MessagePrompt(proto.Message):
             Anything included in this field will take precedence over
             message history if the total input size exceeds the model's
             ``input_token_limit`` and the input request is truncated.
-        examples (MutableSequence[google.ai.generativelanguage_v1beta2.types.Example]):
+        examples (MutableSequence[google.ai.generativelanguage_v1beta3.types.Example]):
             Optional. Examples of what the model should generate.
 
             This includes both user input and the response that the
@@ -250,7 +250,7 @@ class MessagePrompt(proto.Message):
             in ``messages``: If the total input size exceeds the model's
             ``input_token_limit`` the input will be truncated. Items
             will be dropped from ``messages`` before ``examples``.
-        messages (MutableSequence[google.ai.generativelanguage_v1beta2.types.Message]):
+        messages (MutableSequence[google.ai.generativelanguage_v1beta3.types.Message]):
             Required. A snapshot of the recent conversation history
             sorted chronologically.
 
@@ -284,9 +284,9 @@ class Example(proto.Message):
     response.
 
     Attributes:
-        input (google.ai.generativelanguage_v1beta2.types.Message):
+        input (google.ai.generativelanguage_v1beta3.types.Message):
             Required. An example of an input ``Message`` from the user.
-        output (google.ai.generativelanguage_v1beta2.types.Message):
+        output (google.ai.generativelanguage_v1beta3.types.Message):
             Required. An example of what the model should
             output given the input.
     """
@@ -318,7 +318,7 @@ class CountMessageTokensRequest(proto.Message):
             ``ListModels`` method.
 
             Format: ``models/{model}``
-        prompt (google.ai.generativelanguage_v1beta2.types.MessagePrompt):
+        prompt (google.ai.generativelanguage_v1beta3.types.MessagePrompt):
             Required. The prompt, whose token count is to
             be returned.
     """

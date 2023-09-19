@@ -20,7 +20,7 @@ from typing import MutableMapping, MutableSequence
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package="google.ai.generativelanguage.v1beta2",
+    package="google.ai.generativelanguage.v1beta3",
     manifest={
         "HarmCategory",
         "ContentFilter",
@@ -78,7 +78,7 @@ class ContentFilter(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        reason (google.ai.generativelanguage_v1beta2.types.ContentFilter.BlockedReason):
+        reason (google.ai.generativelanguage_v1beta3.types.ContentFilter.BlockedReason):
             The reason content was blocked during request
             processing.
         message (str):
@@ -127,9 +127,9 @@ class SafetyFeedback(proto.Message):
     result.
 
     Attributes:
-        rating (google.ai.generativelanguage_v1beta2.types.SafetyRating):
+        rating (google.ai.generativelanguage_v1beta3.types.SafetyRating):
             Safety rating evaluated from content.
-        setting (google.ai.generativelanguage_v1beta2.types.SafetySetting):
+        setting (google.ai.generativelanguage_v1beta3.types.SafetySetting):
             Safety settings applied to the request.
     """
 
@@ -155,9 +155,9 @@ class SafetyRating(proto.Message):
     included here.
 
     Attributes:
-        category (google.ai.generativelanguage_v1beta2.types.HarmCategory):
+        category (google.ai.generativelanguage_v1beta3.types.HarmCategory):
             Required. The category for this rating.
-        probability (google.ai.generativelanguage_v1beta2.types.SafetyRating.HarmProbability):
+        probability (google.ai.generativelanguage_v1beta3.types.SafetyRating.HarmProbability):
             Required. The probability of harm for this
             content.
     """
@@ -207,9 +207,9 @@ class SafetySetting(proto.Message):
     proability that content is blocked.
 
     Attributes:
-        category (google.ai.generativelanguage_v1beta2.types.HarmCategory):
+        category (google.ai.generativelanguage_v1beta3.types.HarmCategory):
             Required. The category for this setting.
-        threshold (google.ai.generativelanguage_v1beta2.types.SafetySetting.HarmBlockThreshold):
+        threshold (google.ai.generativelanguage_v1beta3.types.SafetySetting.HarmBlockThreshold):
             Required. Controls the probability threshold
             at which harm is blocked.
     """
@@ -228,11 +228,14 @@ class SafetySetting(proto.Message):
             BLOCK_ONLY_HIGH (3):
                 Content with NEGLIGIBLE, LOW, and MEDIUM will
                 be allowed.
+            BLOCK_NONE (4):
+                All content will be allowed.
         """
         HARM_BLOCK_THRESHOLD_UNSPECIFIED = 0
         BLOCK_LOW_AND_ABOVE = 1
         BLOCK_MEDIUM_AND_ABOVE = 2
         BLOCK_ONLY_HIGH = 3
+        BLOCK_NONE = 4
 
     category: "HarmCategory" = proto.Field(
         proto.ENUM,

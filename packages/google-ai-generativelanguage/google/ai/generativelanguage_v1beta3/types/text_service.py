@@ -19,10 +19,10 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.ai.generativelanguage_v1beta2.types import citation, safety
+from google.ai.generativelanguage_v1beta3.types import citation, safety
 
 __protobuf__ = proto.module(
-    package="google.ai.generativelanguage.v1beta2",
+    package="google.ai.generativelanguage.v1beta3",
     manifest={
         "GenerateTextRequest",
         "GenerateTextResponse",
@@ -30,7 +30,11 @@ __protobuf__ = proto.module(
         "TextCompletion",
         "EmbedTextRequest",
         "EmbedTextResponse",
+        "BatchEmbedTextRequest",
+        "BatchEmbedTextResponse",
         "Embedding",
+        "CountTextTokensRequest",
+        "CountTextTokensResponse",
     },
 )
 
@@ -44,17 +48,18 @@ class GenerateTextRequest(proto.Message):
 
     Attributes:
         model (str):
-            Required. The model name to use with the
-            format name=models/{model}.
-        prompt (google.ai.generativelanguage_v1beta2.types.TextPrompt):
+            Required. The name of the ``Model`` or ``TunedModel`` to use
+            for generating the completion. Examples:
+            models/text-bison-001 tunedModels/sentence-translator-u3b7m
+        prompt (google.ai.generativelanguage_v1beta3.types.TextPrompt):
             Required. The free-form input text given to
             the model as a prompt.
             Given a prompt, the model will generate a
             TextCompletion response it predicts as the
             completion of the input text.
         temperature (float):
-            Controls the randomness of the output. Note: The default
-            value varies by model, see the ``Model.temperature``
+            Optional. Controls the randomness of the output. Note: The
+            default value varies by model, see the ``Model.temperature``
             attribute of the ``Model`` returned the ``getModel``
             function.
 
@@ -65,26 +70,28 @@ class GenerateTextRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_temperature``.
         candidate_count (int):
-            Number of generated responses to return.
+            Optional. Number of generated responses to return.
 
             This value must be between [1, 8], inclusive. If unset, this
             will default to 1.
 
             This field is a member of `oneof`_ ``_candidate_count``.
         max_output_tokens (int):
-            The maximum number of tokens to include in a
+            Optional. The maximum number of tokens to include in a
             candidate.
-            If unset, this will default to 64.
+
+            If unset, this will default to output_token_limit specified
+            in the ``Model`` specification.
 
             This field is a member of `oneof`_ ``_max_output_tokens``.
         top_p (float):
-            The maximum cumulative probability of tokens to consider
-            when sampling.
+            Optional. The maximum cumulative probability of tokens to
+            consider when sampling.
 
             The model uses combined Top-k and nucleus sampling.
 
             Tokens are sorted based on their assigned probabilities so
-            that only the most liekly tokens are considered. Top-k
+            that only the most likely tokens are considered. Top-k
             sampling directly limits the maximum number of tokens to
             consider, while Nucleus sampling limits number of tokens
             based on the cumulative probability.
@@ -95,7 +102,8 @@ class GenerateTextRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_top_p``.
         top_k (int):
-            The maximum number of tokens to consider when sampling.
+            Optional. The maximum number of tokens to consider when
+            sampling.
 
             The model uses combined Top-k and nucleus sampling.
 
@@ -107,7 +115,7 @@ class GenerateTextRequest(proto.Message):
             ``getModel`` function.
 
             This field is a member of `oneof`_ ``_top_k``.
-        safety_settings (MutableSequence[google.ai.generativelanguage_v1beta2.types.SafetySetting]):
+        safety_settings (MutableSequence[google.ai.generativelanguage_v1beta3.types.SafetySetting]):
             A list of unique ``SafetySetting`` instances for blocking
             unsafe content.
 
@@ -177,9 +185,9 @@ class GenerateTextResponse(proto.Message):
     r"""The response from the model, including candidate completions.
 
     Attributes:
-        candidates (MutableSequence[google.ai.generativelanguage_v1beta2.types.TextCompletion]):
+        candidates (MutableSequence[google.ai.generativelanguage_v1beta3.types.TextCompletion]):
             Candidate responses from the model.
-        filters (MutableSequence[google.ai.generativelanguage_v1beta2.types.ContentFilter]):
+        filters (MutableSequence[google.ai.generativelanguage_v1beta3.types.ContentFilter]):
             A set of content filtering metadata for the prompt and
             response text.
 
@@ -192,7 +200,7 @@ class GenerateTextResponse(proto.Message):
 
             The blocking is configured by the ``SafetySettings`` in the
             request (or the default ``SafetySettings`` of the API).
-        safety_feedback (MutableSequence[google.ai.generativelanguage_v1beta2.types.SafetyFeedback]):
+        safety_feedback (MutableSequence[google.ai.generativelanguage_v1beta3.types.SafetyFeedback]):
             Returns any safety feedback related to
             content filtering.
     """
@@ -240,11 +248,11 @@ class TextCompletion(proto.Message):
         output (str):
             Output only. The generated text returned from
             the model.
-        safety_ratings (MutableSequence[google.ai.generativelanguage_v1beta2.types.SafetyRating]):
+        safety_ratings (MutableSequence[google.ai.generativelanguage_v1beta3.types.SafetyRating]):
             Ratings for the safety of a response.
 
             There is at most one rating per category.
-        citation_metadata (google.ai.generativelanguage_v1beta2.types.CitationMetadata):
+        citation_metadata (google.ai.generativelanguage_v1beta3.types.CitationMetadata):
             Output only. Citation information for model-generated
             ``output`` in this ``TextCompletion``.
 
@@ -299,7 +307,7 @@ class EmbedTextResponse(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        embedding (google.ai.generativelanguage_v1beta2.types.Embedding):
+        embedding (google.ai.generativelanguage_v1beta3.types.Embedding):
             Output only. The embedding generated from the
             input text.
 
@@ -314,6 +322,46 @@ class EmbedTextResponse(proto.Message):
     )
 
 
+class BatchEmbedTextRequest(proto.Message):
+    r"""Batch request to get a text embedding from the model.
+
+    Attributes:
+        model (str):
+            Required. The name of the ``Model`` to use for generating
+            the embedding. Examples: models/embedding-gecko-001
+        texts (MutableSequence[str]):
+            Required. The free-form input texts that the
+            model will turn into an embedding.  The current
+            limit is 100 texts, over which an error will be
+            thrown.
+    """
+
+    model: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    texts: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchEmbedTextResponse(proto.Message):
+    r"""The response to a EmbedTextRequest.
+
+    Attributes:
+        embeddings (MutableSequence[google.ai.generativelanguage_v1beta3.types.Embedding]):
+            Output only. The embeddings generated from
+            the input text.
+    """
+
+    embeddings: MutableSequence["Embedding"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Embedding",
+    )
+
+
 class Embedding(proto.Message):
     r"""A list of floats representing the embedding.
 
@@ -324,6 +372,56 @@ class Embedding(proto.Message):
 
     value: MutableSequence[float] = proto.RepeatedField(
         proto.FLOAT,
+        number=1,
+    )
+
+
+class CountTextTokensRequest(proto.Message):
+    r"""Counts the number of tokens in the ``prompt`` sent to a model.
+
+    Models may tokenize text differently, so each model may return a
+    different ``token_count``.
+
+    Attributes:
+        model (str):
+            Required. The model's resource name. This serves as an ID
+            for the Model to use.
+
+            This name should match a model name returned by the
+            ``ListModels`` method.
+
+            Format: ``models/{model}``
+        prompt (google.ai.generativelanguage_v1beta3.types.TextPrompt):
+            Required. The free-form input text given to
+            the model as a prompt.
+    """
+
+    model: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    prompt: "TextPrompt" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="TextPrompt",
+    )
+
+
+class CountTextTokensResponse(proto.Message):
+    r"""A response from ``CountTextTokens``.
+
+    It returns the model's ``token_count`` for the ``prompt``.
+
+    Attributes:
+        token_count (int):
+            The number of tokens that the ``model`` tokenizes the
+            ``prompt`` into.
+
+            Always non-negative.
+    """
+
+    token_count: int = proto.Field(
+        proto.INT32,
         number=1,
     )
 

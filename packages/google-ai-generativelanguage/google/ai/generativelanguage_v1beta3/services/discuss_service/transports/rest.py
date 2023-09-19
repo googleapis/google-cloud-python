@@ -36,7 +36,9 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 
-from google.ai.generativelanguage_v1beta2.types import discuss_service
+from google.longrunning import operations_pb2  # type: ignore
+
+from google.ai.generativelanguage_v1beta3.types import discuss_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .base import DiscussServiceTransport
@@ -280,7 +282,7 @@ class DiscussServiceRestTransport(DiscussServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1beta2/{model=models/*}:countMessageTokens",
+                    "uri": "/v1beta3/{model=models/*}:countMessageTokens",
                     "body": "*",
                 },
             ]
@@ -383,7 +385,7 @@ class DiscussServiceRestTransport(DiscussServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "post",
-                    "uri": "/v1beta2/{model=models/*}:generateMessage",
+                    "uri": "/v1beta3/{model=models/*}:generateMessage",
                     "body": "*",
                 },
             ]

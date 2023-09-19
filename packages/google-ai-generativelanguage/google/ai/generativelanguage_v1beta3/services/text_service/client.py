@@ -39,40 +39,40 @@ from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.ai.generativelanguage_v1beta2 import gapic_version as package_version
+from google.ai.generativelanguage_v1beta3 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.ai.generativelanguage_v1beta2.types import discuss_service, safety
+from google.longrunning import operations_pb2  # type: ignore
 
-from .transports.base import DEFAULT_CLIENT_INFO, DiscussServiceTransport
-from .transports.grpc import DiscussServiceGrpcTransport
-from .transports.grpc_asyncio import DiscussServiceGrpcAsyncIOTransport
-from .transports.rest import DiscussServiceRestTransport
+from google.ai.generativelanguage_v1beta3.types import safety, text_service
+
+from .transports.base import DEFAULT_CLIENT_INFO, TextServiceTransport
+from .transports.grpc import TextServiceGrpcTransport
+from .transports.grpc_asyncio import TextServiceGrpcAsyncIOTransport
+from .transports.rest import TextServiceRestTransport
 
 
-class DiscussServiceClientMeta(type):
-    """Metaclass for the DiscussService client.
+class TextServiceClientMeta(type):
+    """Metaclass for the TextService client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[DiscussServiceTransport]]
-    _transport_registry["grpc"] = DiscussServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = DiscussServiceGrpcAsyncIOTransport
-    _transport_registry["rest"] = DiscussServiceRestTransport
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[TextServiceTransport]]
+    _transport_registry["grpc"] = TextServiceGrpcTransport
+    _transport_registry["grpc_asyncio"] = TextServiceGrpcAsyncIOTransport
+    _transport_registry["rest"] = TextServiceRestTransport
 
     def get_transport_class(
         cls,
         label: Optional[str] = None,
-    ) -> Type[DiscussServiceTransport]:
+    ) -> Type[TextServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -91,11 +91,11 @@ class DiscussServiceClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
-    """An API for using Generative Language Models (GLMs) in dialog
-    applications.
-    Also known as large language models (LLMs), this API provides
-    models that are trained for multi-turn dialog.
+class TextServiceClient(metaclass=TextServiceClientMeta):
+    """API for using Generative Language Models (GLMs) trained to
+    generate text.
+    Also known as Large Language Models (LLM)s, these generate text
+    given an input prompt from the user.
     """
 
     @staticmethod
@@ -144,7 +144,7 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            DiscussServiceClient: The constructed client.
+            TextServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -162,7 +162,7 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            DiscussServiceClient: The constructed client.
+            TextServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -171,11 +171,11 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> DiscussServiceTransport:
+    def transport(self) -> TextServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            DiscussServiceTransport: The transport used by the client
+            TextServiceTransport: The transport used by the client
                 instance.
         """
         return self._transport
@@ -343,11 +343,11 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[Union[str, DiscussServiceTransport]] = None,
+        transport: Optional[Union[str, TextServiceTransport]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the discuss service client.
+        """Instantiates the text service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -355,7 +355,7 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, DiscussServiceTransport]): The
+            transport (Union[str, TextServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]): Custom options for the
@@ -403,8 +403,8 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, DiscussServiceTransport):
-            # transport is a DiscussServiceTransport instance.
+        if isinstance(transport, TextServiceTransport):
+            # transport is a TextServiceTransport instance.
             if credentials or client_options.credentials_file or api_key_value:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -439,22 +439,23 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
                 api_audience=client_options.api_audience,
             )
 
-    def generate_message(
+    def generate_text(
         self,
-        request: Optional[Union[discuss_service.GenerateMessageRequest, dict]] = None,
+        request: Optional[Union[text_service.GenerateTextRequest, dict]] = None,
         *,
         model: Optional[str] = None,
-        prompt: Optional[discuss_service.MessagePrompt] = None,
+        prompt: Optional[text_service.TextPrompt] = None,
         temperature: Optional[float] = None,
         candidate_count: Optional[int] = None,
+        max_output_tokens: Optional[int] = None,
         top_p: Optional[float] = None,
         top_k: Optional[int] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> discuss_service.GenerateMessageResponse:
+    ) -> text_service.GenerateTextResponse:
         r"""Generates a response from the model given an input
-        ``MessagePrompt``.
+        message.
 
         .. code-block:: python
 
@@ -465,69 +466,82 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.ai import generativelanguage_v1beta2
+            from google.ai import generativelanguage_v1beta3
 
-            def sample_generate_message():
+            def sample_generate_text():
                 # Create a client
-                client = generativelanguage_v1beta2.DiscussServiceClient()
+                client = generativelanguage_v1beta3.TextServiceClient()
 
                 # Initialize request argument(s)
-                prompt = generativelanguage_v1beta2.MessagePrompt()
-                prompt.messages.content = "content_value"
+                prompt = generativelanguage_v1beta3.TextPrompt()
+                prompt.text = "text_value"
 
-                request = generativelanguage_v1beta2.GenerateMessageRequest(
+                request = generativelanguage_v1beta3.GenerateTextRequest(
                     model="model_value",
                     prompt=prompt,
                 )
 
                 # Make the request
-                response = client.generate_message(request=request)
+                response = client.generate_text(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.ai.generativelanguage_v1beta2.types.GenerateMessageRequest, dict]):
-                The request object. Request to generate a message
+            request (Union[google.ai.generativelanguage_v1beta3.types.GenerateTextRequest, dict]):
+                The request object. Request to generate a text completion
                 response from the model.
             model (str):
-                Required. The name of the model to use.
-
-                Format: ``name=models/{model}``.
+                Required. The name of the ``Model`` or ``TunedModel`` to
+                use for generating the completion. Examples:
+                models/text-bison-001
+                tunedModels/sentence-translator-u3b7m
 
                 This corresponds to the ``model`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            prompt (google.ai.generativelanguage_v1beta2.types.MessagePrompt):
-                Required. The structured textual
-                input given to the model as a prompt.
-                Given a
-                prompt, the model will return what it
-                predicts is the next message in the
-                discussion.
+            prompt (google.ai.generativelanguage_v1beta3.types.TextPrompt):
+                Required. The free-form input text
+                given to the model as a prompt.
+                Given a prompt, the model will generate
+                a TextCompletion response it predicts as
+                the completion of the input text.
 
                 This corresponds to the ``prompt`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             temperature (float):
-                Optional. Controls the randomness of the output.
+                Optional. Controls the randomness of the output. Note:
+                The default value varies by model, see the
+                ``Model.temperature`` attribute of the ``Model``
+                returned the ``getModel`` function.
 
-                Values can range over ``[0.0,1.0]``, inclusive. A value
-                closer to ``1.0`` will produce responses that are more
-                varied, while a value closer to ``0.0`` will typically
-                result in less surprising responses from the model.
+                Values can range from [0.0,1.0], inclusive. A value
+                closer to 1.0 will produce responses that are more
+                varied and creative, while a value closer to 0.0 will
+                typically result in more straightforward responses from
+                the model.
 
                 This corresponds to the ``temperature`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             candidate_count (int):
-                Optional. The number of generated response messages to
-                return.
+                Optional. Number of generated responses to return.
 
-                This value must be between ``[1, 8]``, inclusive. If
-                unset, this will default to ``1``.
+                This value must be between [1, 8], inclusive. If unset,
+                this will default to 1.
 
                 This corresponds to the ``candidate_count`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            max_output_tokens (int):
+                Optional. The maximum number of tokens to include in a
+                candidate.
+
+                If unset, this will default to output_token_limit
+                specified in the ``Model`` specification.
+
+                This corresponds to the ``max_output_tokens`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             top_p (float):
@@ -536,8 +550,15 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
 
                 The model uses combined Top-k and nucleus sampling.
 
-                Nucleus sampling considers the smallest set of tokens
-                whose probability sum is at least ``top_p``.
+                Tokens are sorted based on their assigned probabilities
+                so that only the most likely tokens are considered.
+                Top-k sampling directly limits the maximum number of
+                tokens to consider, while Nucleus sampling limits number
+                of tokens based on the cumulative probability.
+
+                Note: The default value varies by model, see the
+                ``Model.top_p`` attribute of the ``Model`` returned the
+                ``getModel`` function.
 
                 This corresponds to the ``top_p`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -549,7 +570,11 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
                 The model uses combined Top-k and nucleus sampling.
 
                 Top-k sampling considers the set of ``top_k`` most
-                probable tokens.
+                probable tokens. Defaults to 40.
+
+                Note: The default value varies by model, see the
+                ``Model.top_k`` attribute of the ``Model`` returned the
+                ``getModel`` function.
 
                 This corresponds to the ``top_k`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -561,19 +586,24 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.ai.generativelanguage_v1beta2.types.GenerateMessageResponse:
-                The response from the model.
-
-                This includes candidate messages and
-                conversation history in the form of
-                chronologically-ordered messages.
+            google.ai.generativelanguage_v1beta3.types.GenerateTextResponse:
+                The response from the model,
+                including candidate completions.
 
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any(
-            [model, prompt, temperature, candidate_count, top_p, top_k]
+            [
+                model,
+                prompt,
+                temperature,
+                candidate_count,
+                max_output_tokens,
+                top_p,
+                top_k,
+            ]
         )
         if request is not None and has_flattened_params:
             raise ValueError(
@@ -582,11 +612,11 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a discuss_service.GenerateMessageRequest.
+        # in a text_service.GenerateTextRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, discuss_service.GenerateMessageRequest):
-            request = discuss_service.GenerateMessageRequest(request)
+        if not isinstance(request, text_service.GenerateTextRequest):
+            request = text_service.GenerateTextRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if model is not None:
@@ -597,6 +627,8 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
                 request.temperature = temperature
             if candidate_count is not None:
                 request.candidate_count = candidate_count
+            if max_output_tokens is not None:
+                request.max_output_tokens = max_output_tokens
             if top_p is not None:
                 request.top_p = top_p
             if top_k is not None:
@@ -604,7 +636,7 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.generate_message]
+        rpc = self._transport._wrapped_methods[self._transport.generate_text]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -623,19 +655,246 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
         # Done; return the response.
         return response
 
-    def count_message_tokens(
+    def embed_text(
         self,
-        request: Optional[
-            Union[discuss_service.CountMessageTokensRequest, dict]
-        ] = None,
+        request: Optional[Union[text_service.EmbedTextRequest, dict]] = None,
         *,
         model: Optional[str] = None,
-        prompt: Optional[discuss_service.MessagePrompt] = None,
+        text: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> discuss_service.CountMessageTokensResponse:
-        r"""Runs a model's tokenizer on a string and returns the
+    ) -> text_service.EmbedTextResponse:
+        r"""Generates an embedding from the model given an input
+        message.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ai import generativelanguage_v1beta3
+
+            def sample_embed_text():
+                # Create a client
+                client = generativelanguage_v1beta3.TextServiceClient()
+
+                # Initialize request argument(s)
+                request = generativelanguage_v1beta3.EmbedTextRequest(
+                    model="model_value",
+                    text="text_value",
+                )
+
+                # Make the request
+                response = client.embed_text(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ai.generativelanguage_v1beta3.types.EmbedTextRequest, dict]):
+                The request object. Request to get a text embedding from
+                the model.
+            model (str):
+                Required. The model name to use with
+                the format model=models/{model}.
+
+                This corresponds to the ``model`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            text (str):
+                Required. The free-form input text
+                that the model will turn into an
+                embedding.
+
+                This corresponds to the ``text`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.ai.generativelanguage_v1beta3.types.EmbedTextResponse:
+                The response to a EmbedTextRequest.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([model, text])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a text_service.EmbedTextRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, text_service.EmbedTextRequest):
+            request = text_service.EmbedTextRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if model is not None:
+                request.model = model
+            if text is not None:
+                request.text = text
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.embed_text]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("model", request.model),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def batch_embed_text(
+        self,
+        request: Optional[Union[text_service.BatchEmbedTextRequest, dict]] = None,
+        *,
+        model: Optional[str] = None,
+        texts: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> text_service.BatchEmbedTextResponse:
+        r"""Generates multiple embeddings from the model given
+        input text in a synchronous call.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.ai import generativelanguage_v1beta3
+
+            def sample_batch_embed_text():
+                # Create a client
+                client = generativelanguage_v1beta3.TextServiceClient()
+
+                # Initialize request argument(s)
+                request = generativelanguage_v1beta3.BatchEmbedTextRequest(
+                    model="model_value",
+                    texts=['texts_value1', 'texts_value2'],
+                )
+
+                # Make the request
+                response = client.batch_embed_text(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.ai.generativelanguage_v1beta3.types.BatchEmbedTextRequest, dict]):
+                The request object. Batch request to get a text embedding
+                from the model.
+            model (str):
+                Required. The name of the ``Model`` to use for
+                generating the embedding. Examples:
+                models/embedding-gecko-001
+
+                This corresponds to the ``model`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            texts (MutableSequence[str]):
+                Required. The free-form input texts
+                that the model will turn into an
+                embedding.  The current limit is 100
+                texts, over which an error will be
+                thrown.
+
+                This corresponds to the ``texts`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.ai.generativelanguage_v1beta3.types.BatchEmbedTextResponse:
+                The response to a EmbedTextRequest.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([model, texts])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a text_service.BatchEmbedTextRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, text_service.BatchEmbedTextRequest):
+            request = text_service.BatchEmbedTextRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if model is not None:
+                request.model = model
+            if texts is not None:
+                request.texts = texts
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.batch_embed_text]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("model", request.model),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def count_text_tokens(
+        self,
+        request: Optional[Union[text_service.CountTextTokensRequest, dict]] = None,
+        *,
+        model: Optional[str] = None,
+        prompt: Optional[text_service.TextPrompt] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> text_service.CountTextTokensResponse:
+        r"""Runs a model's tokenizer on a text and returns the
         token count.
 
         .. code-block:: python
@@ -647,29 +906,29 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.ai import generativelanguage_v1beta2
+            from google.ai import generativelanguage_v1beta3
 
-            def sample_count_message_tokens():
+            def sample_count_text_tokens():
                 # Create a client
-                client = generativelanguage_v1beta2.DiscussServiceClient()
+                client = generativelanguage_v1beta3.TextServiceClient()
 
                 # Initialize request argument(s)
-                prompt = generativelanguage_v1beta2.MessagePrompt()
-                prompt.messages.content = "content_value"
+                prompt = generativelanguage_v1beta3.TextPrompt()
+                prompt.text = "text_value"
 
-                request = generativelanguage_v1beta2.CountMessageTokensRequest(
+                request = generativelanguage_v1beta3.CountTextTokensRequest(
                     model="model_value",
                     prompt=prompt,
                 )
 
                 # Make the request
-                response = client.count_message_tokens(request=request)
+                response = client.count_text_tokens(request=request)
 
                 # Handle the response
                 print(response)
 
         Args:
-            request (Union[google.ai.generativelanguage_v1beta2.types.CountMessageTokensRequest, dict]):
+            request (Union[google.ai.generativelanguage_v1beta3.types.CountTextTokensRequest, dict]):
                 The request object. Counts the number of tokens in the ``prompt`` sent to a
                 model.
 
@@ -687,9 +946,9 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
                 This corresponds to the ``model`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            prompt (google.ai.generativelanguage_v1beta2.types.MessagePrompt):
-                Required. The prompt, whose token
-                count is to be returned.
+            prompt (google.ai.generativelanguage_v1beta3.types.TextPrompt):
+                Required. The free-form input text
+                given to the model as a prompt.
 
                 This corresponds to the ``prompt`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -701,8 +960,8 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.ai.generativelanguage_v1beta2.types.CountMessageTokensResponse:
-                A response from CountMessageTokens.
+            google.ai.generativelanguage_v1beta3.types.CountTextTokensResponse:
+                A response from CountTextTokens.
 
                    It returns the model's token_count for the prompt.
 
@@ -718,11 +977,11 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a discuss_service.CountMessageTokensRequest.
+        # in a text_service.CountTextTokensRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, discuss_service.CountMessageTokensRequest):
-            request = discuss_service.CountMessageTokensRequest(request)
+        if not isinstance(request, text_service.CountTextTokensRequest):
+            request = text_service.CountTextTokensRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if model is not None:
@@ -732,7 +991,7 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.count_message_tokens]
+        rpc = self._transport._wrapped_methods[self._transport.count_text_tokens]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -751,7 +1010,7 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self) -> "DiscussServiceClient":
+    def __enter__(self) -> "TextServiceClient":
         return self
 
     def __exit__(self, type, value, traceback):
@@ -770,4 +1029,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("DiscussServiceClient",)
+__all__ = ("TextServiceClient",)
