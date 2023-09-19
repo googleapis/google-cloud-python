@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -92,6 +92,7 @@ class LogEntry(proto.Message):
             protocol buffer. Some Google Cloud Platform
             services use this field for their log entry
             payloads.
+
             The following protocol buffer types are
             supported; user-defined types are not supported:
 
@@ -169,18 +170,54 @@ class LogEntry(proto.Message):
             Optional. Information about an operation
             associated with the log entry, if applicable.
         trace (str):
-            Optional. Resource name of the trace associated with the log
-            entry, if any. If it contains a relative resource name, the
-            name is assumed to be relative to
-            ``//tracing.googleapis.com``. Example:
-            ``projects/my-projectid/traces/06796866738c859f2f19b7cfb3214824``
-        span_id (str):
-            Optional. The span ID within the trace associated with the
-            log entry.
+            Optional. The REST resource name of the trace being written
+            to `Cloud Trace <https://cloud.google.com/trace>`__ in
+            association with this log entry. For example, if your trace
+            data is stored in the Cloud project "my-trace-project" and
+            if the service that is creating the log entry receives a
+            trace header that includes the trace ID "12345", then the
+            service should use
+            "projects/my-tracing-project/traces/12345".
 
-            For Trace spans, this is the same format that the Trace API
-            v2 uses: a 16-character hexadecimal encoding of an 8-byte
-            array, such as ``000000000000004a``.
+            The ``trace`` field provides the link between logs and
+            traces. By using this field, you can navigate from a log
+            entry to a trace.
+        span_id (str):
+            Optional. The ID of the `Cloud
+            Trace <https://cloud.google.com/trace>`__ span associated
+            with the current operation in which the log is being
+            written. For example, if a span has the REST resource name
+            of
+            "projects/some-project/traces/some-trace/spans/some-span-id",
+            then the ``span_id`` field is "some-span-id".
+
+            A
+            `Span <https://cloud.google.com/trace/docs/reference/v2/rest/v2/projects.traces/batchWrite#Span>`__
+            represents a single operation within a trace. Whereas a
+            trace may involve multiple different microservices running
+            on multiple different machines, a span generally corresponds
+            to a single logical operation being performed in a single
+            instance of a microservice on one specific machine. Spans
+            are the nodes within the tree that is a trace.
+
+            Applications that are `instrumented for
+            tracing <https://cloud.google.com/trace/docs/setup>`__ will
+            generally assign a new, unique span ID on each incoming
+            request. It is also common to create and record additional
+            spans corresponding to internal processing elements as well
+            as issuing requests to dependencies.
+
+            The span ID is expected to be a 16-character, hexadecimal
+            encoding of an 8-byte array and should not be zero. It
+            should be unique within the trace and should, ideally, be
+            generated in a manner that is uniformly random.
+
+            Example values:
+
+            -  ``000000000000004a``
+            -  ``7a2190356c3fc94b``
+            -  ``0000f00300090021``
+            -  ``d39223e101960076``
         trace_sampled (bool):
             Optional. The sampling decision of the trace associated with
             the log entry.

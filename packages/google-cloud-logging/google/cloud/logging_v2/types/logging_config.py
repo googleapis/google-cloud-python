@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2022 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,11 +26,15 @@ from google.protobuf import timestamp_pb2  # type: ignore
 __protobuf__ = proto.module(
     package="google.logging.v2",
     manifest={
-        "LifecycleState",
         "OperationState",
+        "LifecycleState",
+        "IndexType",
+        "IndexConfig",
         "LogBucket",
         "LogView",
         "LogSink",
+        "BigQueryDataset",
+        "Link",
         "BigQueryOptions",
         "ListBucketsRequest",
         "ListBucketsResponse",
@@ -51,6 +55,11 @@ __protobuf__ = proto.module(
         "CreateSinkRequest",
         "UpdateSinkRequest",
         "DeleteSinkRequest",
+        "CreateLinkRequest",
+        "DeleteLinkRequest",
+        "ListLinksRequest",
+        "ListLinksResponse",
+        "GetLinkRequest",
         "LogExclusion",
         "ListExclusionsRequest",
         "ListExclusionsResponse",
@@ -67,27 +76,11 @@ __protobuf__ = proto.module(
         "CopyLogEntriesRequest",
         "CopyLogEntriesMetadata",
         "CopyLogEntriesResponse",
+        "BucketMetadata",
+        "LinkMetadata",
+        "LocationMetadata",
     },
 )
-
-
-class LifecycleState(proto.Enum):
-    r"""LogBucket lifecycle states.
-
-    Values:
-        LIFECYCLE_STATE_UNSPECIFIED (0):
-            Unspecified state. This is only used/useful
-            for distinguishing unset values.
-        ACTIVE (1):
-            The normal and active state.
-        DELETE_REQUESTED (2):
-            The resource has been marked for deletion by
-            the user. For some resources (e.g. buckets),
-            this can be reversed by an un-delete operation.
-    """
-    LIFECYCLE_STATE_UNSPECIFIED = 0
-    ACTIVE = 1
-    DELETE_REQUESTED = 2
 
 
 class OperationState(proto.Enum):
@@ -121,6 +114,93 @@ class OperationState(proto.Enum):
     OPERATION_STATE_SUCCEEDED = 4
     OPERATION_STATE_FAILED = 5
     OPERATION_STATE_CANCELLED = 6
+
+
+class LifecycleState(proto.Enum):
+    r"""LogBucket lifecycle states.
+
+    Values:
+        LIFECYCLE_STATE_UNSPECIFIED (0):
+            Unspecified state. This is only used/useful
+            for distinguishing unset values.
+        ACTIVE (1):
+            The normal and active state.
+        DELETE_REQUESTED (2):
+            The resource has been marked for deletion by
+            the user. For some resources (e.g. buckets),
+            this can be reversed by an un-delete operation.
+        UPDATING (3):
+            The resource has been marked for an update by
+            the user. It will remain in this state until the
+            update is complete.
+        CREATING (4):
+            The resource has been marked for creation by
+            the user. It will remain in this state until the
+            creation is complete.
+        FAILED (5):
+            The resource is in an INTERNAL error state.
+    """
+    LIFECYCLE_STATE_UNSPECIFIED = 0
+    ACTIVE = 1
+    DELETE_REQUESTED = 2
+    UPDATING = 3
+    CREATING = 4
+    FAILED = 5
+
+
+class IndexType(proto.Enum):
+    r"""IndexType is used for custom indexing. It describes the type
+    of an indexed field.
+
+    Values:
+        INDEX_TYPE_UNSPECIFIED (0):
+            The index's type is unspecified.
+        INDEX_TYPE_STRING (1):
+            The index is a string-type index.
+        INDEX_TYPE_INTEGER (2):
+            The index is a integer-type index.
+    """
+    INDEX_TYPE_UNSPECIFIED = 0
+    INDEX_TYPE_STRING = 1
+    INDEX_TYPE_INTEGER = 2
+
+
+class IndexConfig(proto.Message):
+    r"""Configuration for an indexed field.
+
+    Attributes:
+        field_path (str):
+            Required. The LogEntry field path to index.
+
+            Note that some paths are automatically indexed, and other
+            paths are not eligible for indexing. See `indexing
+            documentation <https://cloud.google.com/logging/docs/view/advanced-queries#indexed-fields>`__
+            for details.
+
+            For example: ``jsonPayload.request.status``
+        type_ (google.cloud.logging_v2.types.IndexType):
+            Required. The type of data in this index.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the index was
+            last modified.
+            This is used to return the timestamp, and will
+            be ignored if supplied during update.
+    """
+
+    field_path: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_: "IndexType" = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="IndexType",
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class LogBucket(proto.Message):
@@ -160,11 +240,17 @@ class LogBucket(proto.Message):
             days will be used.
         locked (bool):
             Whether the bucket is locked.
+
             The retention period on a locked bucket cannot
             be changed. Locked buckets may only be deleted
             if they are empty.
         lifecycle_state (google.cloud.logging_v2.types.LifecycleState):
             Output only. The bucket lifecycle state.
+        analytics_enabled (bool):
+            Whether log analytics is enabled for this
+            bucket.
+            Once enabled, log analytics features cannot be
+            disabled.
         restricted_fields (MutableSequence[str]):
             Log entry field paths that are denied access in this bucket.
 
@@ -175,6 +261,9 @@ class LogBucket(proto.Message):
             Restricting a repeated field will restrict all values.
             Adding a parent will block all child fields. (e.g.
             ``foo.bar`` will block ``foo.bar.baz``)
+        index_configs (MutableSequence[google.cloud.logging_v2.types.IndexConfig]):
+            A list of indexed fields and related
+            configuration data.
         cmek_settings (google.cloud.logging_v2.types.CmekSettings):
             The CMEK settings of the log bucket. If
             present, new log entries written to this log
@@ -216,9 +305,18 @@ class LogBucket(proto.Message):
         number=12,
         enum="LifecycleState",
     )
+    analytics_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=14,
+    )
     restricted_fields: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=15,
+    )
+    index_configs: MutableSequence["IndexConfig"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=17,
+        message="IndexConfig",
     )
     cmek_settings: "CmekSettings" = proto.Field(
         proto.MESSAGE,
@@ -332,6 +430,7 @@ class LogSink(proto.Message):
             ``logName="projects/[PROJECT_ID]/logs/[LOG_ID]" AND severity>=ERROR``
         description (str):
             Optional. A description of this sink.
+
             The maximum length of the description is 8000
             characters.
         disabled (bool):
@@ -348,7 +447,9 @@ class LogSink(proto.Message):
         writer_identity (str):
             Output only. An IAM identity—a service account or
             group—under which Cloud Logging writes the exported log
-            entries to the sink's destination. This field is set by
+            entries to the sink's destination. This field is either set
+            by specifying ``custom_writer_identity`` or set
+            automatically by
             [sinks.create][google.logging.v2.ConfigServiceV2.CreateSink]
             and
             [sinks.update][google.logging.v2.ConfigServiceV2.UpdateSink]
@@ -363,7 +464,7 @@ class LogSink(proto.Message):
             the appropriate IAM roles to assign to the identity.
 
             Sinks that have a destination that is a log bucket in the
-            same project as the sink do not have a writer_identity and
+            same project as the sink cannot have a writer_identity and
             no additional permissions are required.
         include_children (bool):
             Optional. This field applies only to sinks owned by
@@ -469,6 +570,90 @@ class LogSink(proto.Message):
         proto.MESSAGE,
         number=14,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class BigQueryDataset(proto.Message):
+    r"""Describes a BigQuery dataset that was created by a link.
+
+    Attributes:
+        dataset_id (str):
+            Output only. The full resource name of the BigQuery dataset.
+            The DATASET_ID will match the ID of the link, so the link
+            must match the naming restrictions of BigQuery datasets
+            (alphanumeric characters and underscores only).
+
+            The dataset will have a resource path of
+            "bigquery.googleapis.com/projects/[PROJECT_ID]/datasets/[DATASET_ID]".
+    """
+
+    dataset_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class Link(proto.Message):
+    r"""Describes a link connected to an analytics enabled bucket.
+
+    Attributes:
+        name (str):
+            The resource name of the link. The name can have up to 100
+            characters. A valid link id (at the end of the link name)
+            must only have alphanumeric characters and underscores
+            within it.
+
+            ::
+
+                "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
+                "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
+                "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
+                "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
+
+            For example:
+
+            \`projects/my-project/locations/global/buckets/my-bucket/links/my_link
+        description (str):
+            Describes this link.
+
+            The maximum length of the description is 8000
+            characters.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The creation timestamp of the
+            link.
+        lifecycle_state (google.cloud.logging_v2.types.LifecycleState):
+            Output only. The resource lifecycle state.
+        bigquery_dataset (google.cloud.logging_v2.types.BigQueryDataset):
+            The information of a BigQuery Dataset. When a
+            link is created, a BigQuery dataset is created
+            along with it, in the same project as the
+            LogBucket it's linked to. This dataset will also
+            have BigQuery Views corresponding to the
+            LogViews in the bucket.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    lifecycle_state: "LifecycleState" = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="LifecycleState",
+    )
+    bigquery_dataset: "BigQueryDataset" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="BigQueryDataset",
     )
 
 
@@ -827,7 +1012,10 @@ class CreateViewRequest(proto.Message):
 
             ``"projects/my-project/locations/global/buckets/my-bucket"``
         view_id (str):
-            Required. The id to use for this view.
+            Required. A client-assigned identifier such as
+            ``"my-view"``. Identifiers are limited to 100 characters and
+            can include only letters, digits, underscores, hyphens, and
+            periods.
         view (google.cloud.logging_v2.types.LogView):
             Required. The new view.
     """
@@ -1181,6 +1369,144 @@ class DeleteSinkRequest(proto.Message):
     """
 
     sink_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateLinkRequest(proto.Message):
+    r"""The parameters to CreateLink.
+
+    Attributes:
+        parent (str):
+            Required. The full resource name of the bucket to create a
+            link for.
+
+            ::
+
+                "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+                "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+                "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+                "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]".
+        link (google.cloud.logging_v2.types.Link):
+            Required. The new link.
+        link_id (str):
+            Required. The ID to use for the link. The link_id can have
+            up to 100 characters. A valid link_id must only have
+            alphanumeric characters and underscores within it.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    link: "Link" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Link",
+    )
+    link_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class DeleteLinkRequest(proto.Message):
+    r"""The parameters to DeleteLink.
+
+    Attributes:
+        name (str):
+            Required. The full resource name of the link to delete.
+
+            "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
+            "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
+            "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
+            "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListLinksRequest(proto.Message):
+    r"""The parameters to ListLinks.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource whose links are to be listed:
+
+            "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/"
+            "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/"
+            "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/"
+            "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/
+        page_token (str):
+            Optional. If present, then retrieve the next batch of
+            results from the preceding call to this method.
+            ``pageToken`` must be the value of ``nextPageToken`` from
+            the previous response.
+        page_size (int):
+            Optional. The maximum number of results to
+            return from this request.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+
+
+class ListLinksResponse(proto.Message):
+    r"""The response from ListLinks.
+
+    Attributes:
+        links (MutableSequence[google.cloud.logging_v2.types.Link]):
+            A list of links.
+        next_page_token (str):
+            If there might be more results than those appearing in this
+            response, then ``nextPageToken`` is included. To get the
+            next set of results, call the same method again using the
+            value of ``nextPageToken`` as ``pageToken``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    links: MutableSequence["Link"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Link",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetLinkRequest(proto.Message):
+    r"""The parameters to GetLink.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the link:
+
+            "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
+            "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
+            "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]"
+            "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/links/[LINK_ID]
+    """
+
+    name: str = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -1611,6 +1937,27 @@ class CmekSettings(proto.Message):
             See `Enabling CMEK for Log
             Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
             for more information.
+        kms_key_version_name (str):
+            The CryptoKeyVersion resource name for the configured Cloud
+            KMS key.
+
+            KMS key name format:
+
+            ::
+
+                "projects/[PROJECT_ID]/locations/[LOCATION]/keyRings/[KEYRING]/cryptoKeys/[KEY]/cryptoKeyVersions/[VERSION]"
+
+            For example:
+
+            ``"projects/my-project/locations/us-central1/keyRings/my-ring/cryptoKeys/my-key/cryptoKeyVersions/1"``
+
+            This is a read-only field used to convey the specific
+            configured CryptoKeyVersion of ``kms_key`` that has been
+            configured. It will be populated in cases where the CMEK
+            settings are bound to a single key version.
+
+            If this field is populated, the ``kms_key`` is tied to a
+            specific CryptoKeyVersion.
         service_account_id (str):
             Output only. The service account that will be used by the
             Log Router to access your Cloud KMS key.
@@ -1634,6 +1981,10 @@ class CmekSettings(proto.Message):
     kms_key_name: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    kms_key_version_name: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
     service_account_id: str = proto.Field(
         proto.STRING,
@@ -1933,6 +2284,133 @@ class CopyLogEntriesResponse(proto.Message):
 
     log_entries_copied_count: int = proto.Field(
         proto.INT64,
+        number=1,
+    )
+
+
+class BucketMetadata(proto.Message):
+    r"""Metadata for LongRunningUpdateBucket Operations.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The create time of an operation.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The end time of an operation.
+        state (google.cloud.logging_v2.types.OperationState):
+            State of an operation.
+        create_bucket_request (google.cloud.logging_v2.types.CreateBucketRequest):
+            LongRunningCreateBucket RPC request.
+
+            This field is a member of `oneof`_ ``request``.
+        update_bucket_request (google.cloud.logging_v2.types.UpdateBucketRequest):
+            LongRunningUpdateBucket RPC request.
+
+            This field is a member of `oneof`_ ``request``.
+    """
+
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    state: "OperationState" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="OperationState",
+    )
+    create_bucket_request: "CreateBucketRequest" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="request",
+        message="CreateBucketRequest",
+    )
+    update_bucket_request: "UpdateBucketRequest" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="request",
+        message="UpdateBucketRequest",
+    )
+
+
+class LinkMetadata(proto.Message):
+    r"""Metadata for long running Link operations.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The start time of an operation.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            The end time of an operation.
+        state (google.cloud.logging_v2.types.OperationState):
+            State of an operation.
+        create_link_request (google.cloud.logging_v2.types.CreateLinkRequest):
+            CreateLink RPC request.
+
+            This field is a member of `oneof`_ ``request``.
+        delete_link_request (google.cloud.logging_v2.types.DeleteLinkRequest):
+            DeleteLink RPC request.
+
+            This field is a member of `oneof`_ ``request``.
+    """
+
+    start_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    state: "OperationState" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="OperationState",
+    )
+    create_link_request: "CreateLinkRequest" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="request",
+        message="CreateLinkRequest",
+    )
+    delete_link_request: "DeleteLinkRequest" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="request",
+        message="DeleteLinkRequest",
+    )
+
+
+class LocationMetadata(proto.Message):
+    r"""Cloud Logging specific location metadata.
+
+    Attributes:
+        log_analytics_enabled (bool):
+            Indicates whether or not Log Analytics
+            features are supported in the given location.
+    """
+
+    log_analytics_enabled: bool = proto.Field(
+        proto.BOOL,
         number=1,
     )
 
