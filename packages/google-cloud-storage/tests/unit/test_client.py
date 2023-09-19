@@ -1639,9 +1639,16 @@ class TestClient(unittest.TestCase):
             _target_object=bucket,
         )
 
+    @staticmethod
+    def _make_blob(*args, **kw):
+        from google.cloud.storage.blob import Blob
+
+        blob = Blob(*args, **kw)
+
+        return blob
+
     def test_download_blob_to_file_with_failure(self):
         from google.resumable_media import InvalidResponse
-        from google.cloud.storage.blob import Blob
         from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 
         project = "PROJECT"
@@ -1652,7 +1659,7 @@ class TestClient(unittest.TestCase):
         grmp_response = InvalidResponse(raw_response)
         credentials = _make_credentials(project=project)
         client = self._make_one(credentials=credentials)
-        blob = mock.create_autospec(Blob)
+        blob = self._make_blob(name="blob_name", bucket=None)
         blob._encryption_key = None
         blob._get_download_url = mock.Mock()
         blob._do_download = mock.Mock()
@@ -1689,7 +1696,7 @@ class TestClient(unittest.TestCase):
         project = "PROJECT"
         credentials = _make_credentials(project=project)
         client = self._make_one(project=project, credentials=credentials)
-        blob = mock.Mock()
+        blob = self._make_blob(name="blob_name", bucket=None)
         file_obj = io.BytesIO()
         blob._encryption_key = None
         blob._get_download_url = mock.Mock()
@@ -1787,13 +1794,12 @@ class TestClient(unittest.TestCase):
     def _download_blob_to_file_helper(
         self, use_chunks, raw_download, expect_condition_fail=False, **extra_kwargs
     ):
-        from google.cloud.storage.blob import Blob
         from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 
         project = "PROJECT"
         credentials = _make_credentials(project=project)
         client = self._make_one(credentials=credentials)
-        blob = mock.create_autospec(Blob)
+        blob = self._make_blob(name="blob_name", bucket=None)
         blob._encryption_key = None
         blob._get_download_url = mock.Mock()
         if use_chunks:
@@ -1863,14 +1869,13 @@ class TestClient(unittest.TestCase):
         self._download_blob_to_file_helper(use_chunks=True, raw_download=True)
 
     def test_download_blob_have_different_uuid(self):
-        from google.cloud.storage.blob import Blob
-
         project = "PROJECT"
         credentials = _make_credentials(project=project)
         client = self._make_one(credentials=credentials)
-        blob = mock.create_autospec(Blob)
+        blob = self._make_blob(name="blob_name", bucket=None)
         blob._encryption_key = None
         blob._do_download = mock.Mock()
+        blob._get_download_url = mock.Mock()
         file_obj = io.BytesIO()
         client.download_blob_to_file(blob, file_obj)
         client.download_blob_to_file(blob, file_obj)

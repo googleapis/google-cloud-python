@@ -25,18 +25,16 @@ import google.api_core.client_options
 
 from google.auth.credentials import AnonymousCredentials
 
-from google import resumable_media
-
 from google.api_core import page_iterator
 from google.cloud._helpers import _LocalStack, _NOW
 from google.cloud.client import ClientWithProject
 from google.cloud.exceptions import NotFound
-from google.cloud.storage._helpers import _get_default_headers
+
 from google.cloud.storage._helpers import _get_environ_project
 from google.cloud.storage._helpers import _get_storage_host
 from google.cloud.storage._helpers import _DEFAULT_STORAGE_HOST
 from google.cloud.storage._helpers import _bucket_bound_hostname_url
-from google.cloud.storage._helpers import _add_etag_match_headers
+
 from google.cloud.storage._http import Connection
 from google.cloud.storage._signing import (
     get_expiration_seconds_v4,
@@ -46,17 +44,12 @@ from google.cloud.storage._signing import (
 )
 from google.cloud.storage.batch import Batch
 from google.cloud.storage.bucket import Bucket, _item_to_blob, _blobs_page_start
-from google.cloud.storage.blob import (
-    Blob,
-    _get_encryption_headers,
-    _raise_from_invalid_response,
-)
+from google.cloud.storage.blob import Blob
 from google.cloud.storage.hmac_key import HMACKeyMetadata
 from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY
-from google.cloud.storage.retry import ConditionalRetryPolicy
 
 
 _marker = object()
@@ -1064,52 +1057,25 @@ class Client(ClientWithProject):
                 are respected.
         """
 
-        # Handle ConditionalRetryPolicy.
-        if isinstance(retry, ConditionalRetryPolicy):
-            # Conditional retries are designed for non-media calls, which change
-            # arguments into query_params dictionaries. Media operations work
-            # differently, so here we make a "fake" query_params to feed to the
-            # ConditionalRetryPolicy.
-            query_params = {
-                "ifGenerationMatch": if_generation_match,
-                "ifMetagenerationMatch": if_metageneration_match,
-            }
-            retry = retry.get_retry_policy_if_conditions_met(query_params=query_params)
-
         if not isinstance(blob_or_uri, Blob):
             blob_or_uri = Blob.from_string(blob_or_uri)
-        download_url = blob_or_uri._get_download_url(
-            self,
+
+        blob_or_uri._prep_and_do_download(
+            file_obj,
+            client=self,
+            start=start,
+            end=end,
+            raw_download=raw_download,
+            if_etag_match=if_etag_match,
+            if_etag_not_match=if_etag_not_match,
             if_generation_match=if_generation_match,
             if_generation_not_match=if_generation_not_match,
             if_metageneration_match=if_metageneration_match,
             if_metageneration_not_match=if_metageneration_not_match,
+            timeout=timeout,
+            checksum=checksum,
+            retry=retry,
         )
-        headers = _get_encryption_headers(blob_or_uri._encryption_key)
-        headers["accept-encoding"] = "gzip"
-        _add_etag_match_headers(
-            headers,
-            if_etag_match=if_etag_match,
-            if_etag_not_match=if_etag_not_match,
-        )
-        headers = {**_get_default_headers(self._connection.user_agent), **headers}
-
-        transport = self._http
-        try:
-            blob_or_uri._do_download(
-                transport,
-                file_obj,
-                download_url,
-                headers,
-                start,
-                end,
-                raw_download,
-                timeout=timeout,
-                checksum=checksum,
-                retry=retry,
-            )
-        except resumable_media.InvalidResponse as exc:
-            _raise_from_invalid_response(exc)
 
     def list_blobs(
         self,

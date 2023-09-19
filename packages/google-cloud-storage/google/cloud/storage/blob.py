@@ -904,7 +904,7 @@ class Blob(_PropertyMixin):
     ):
         """Perform a download without any error handling.
 
-        This is intended to be called by :meth:`download_to_file` so it can
+        This is intended to be called by :meth:`_prep_and_do_download` so it can
         be wrapped with error handling / remapping.
 
         :type transport:
@@ -957,7 +957,7 @@ class Blob(_PropertyMixin):
 
             This private method does not accept ConditionalRetryPolicy values
             because the information necessary to evaluate the policy is instead
-            evaluated in client.download_blob_to_file().
+            evaluated in blob._prep_and_do_download().
 
             See the retry.py source code and docstrings in this package
             (google.cloud.storage.retry) for information on retry types and how
@@ -1124,11 +1124,10 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
-        client = self._require_client(client)
 
-        client.download_blob_to_file(
-            self,
-            file_obj=file_obj,
+        self._prep_and_do_download(
+            file_obj,
+            client=client,
             start=start,
             end=end,
             raw_download=raw_download,
@@ -1142,6 +1141,33 @@ class Blob(_PropertyMixin):
             checksum=checksum,
             retry=retry,
         )
+
+    def _handle_filename_and_download(self, filename, *args, **kwargs):
+        """Download the contents of this blob into a named file.
+
+        :type filename: str
+        :param filename: A filename to be passed to ``open``.
+
+        For *args and **kwargs, refer to the documentation for download_to_filename() for more information.
+        """
+
+        try:
+            with open(filename, "wb") as file_obj:
+                self._prep_and_do_download(
+                    file_obj,
+                    *args,
+                    **kwargs,
+                )
+
+        except resumable_media.DataCorruption:
+            # Delete the corrupt downloaded file.
+            os.remove(filename)
+            raise
+
+        updated = self.updated
+        if updated is not None:
+            mtime = updated.timestamp()
+            os.utime(file_obj.name, (mtime, mtime))
 
     def download_to_filename(
         self,
@@ -1250,34 +1276,23 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
-        client = self._require_client(client)
-        try:
-            with open(filename, "wb") as file_obj:
-                client.download_blob_to_file(
-                    self,
-                    file_obj,
-                    start=start,
-                    end=end,
-                    raw_download=raw_download,
-                    if_etag_match=if_etag_match,
-                    if_etag_not_match=if_etag_not_match,
-                    if_generation_match=if_generation_match,
-                    if_generation_not_match=if_generation_not_match,
-                    if_metageneration_match=if_metageneration_match,
-                    if_metageneration_not_match=if_metageneration_not_match,
-                    timeout=timeout,
-                    checksum=checksum,
-                    retry=retry,
-                )
-        except resumable_media.DataCorruption:
-            # Delete the corrupt downloaded file.
-            os.remove(filename)
-            raise
 
-        updated = self.updated
-        if updated is not None:
-            mtime = updated.timestamp()
-            os.utime(file_obj.name, (mtime, mtime))
+        self._handle_filename_and_download(
+            filename,
+            client=client,
+            start=start,
+            end=end,
+            raw_download=raw_download,
+            if_etag_match=if_etag_match,
+            if_etag_not_match=if_etag_not_match,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+            timeout=timeout,
+            checksum=checksum,
+            retry=retry,
+        )
 
     def download_as_bytes(
         self,
@@ -1382,11 +1397,12 @@ class Blob(_PropertyMixin):
 
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
-        client = self._require_client(client)
+
         string_buffer = BytesIO()
-        client.download_blob_to_file(
-            self,
+
+        self._prep_and_do_download(
             string_buffer,
+            client=client,
             start=start,
             end=end,
             raw_download=raw_download,
@@ -1697,7 +1713,7 @@ class Blob(_PropertyMixin):
 
         return object_metadata
 
-    def _get_upload_arguments(self, client, content_type, filename=None):
+    def _get_upload_arguments(self, client, content_type, filename=None, command=None):
         """Get required arguments for performing an upload.
 
         The content type returned will be determined in order of precedence:
@@ -1709,6 +1725,12 @@ class Blob(_PropertyMixin):
         :type content_type: str
         :param content_type: Type of content being uploaded (or :data:`None`).
 
+        :type command: str
+        :param command:
+            (Optional) Information about which interface for upload was used,
+            to be included in the X-Goog-API-Client header. Please leave as None
+            unless otherwise directed.
+
         :rtype: tuple
         :returns: A triple of
 
@@ -1718,7 +1740,9 @@ class Blob(_PropertyMixin):
         """
         content_type = self._get_content_type(content_type, filename=filename)
         headers = {
-            **_get_default_headers(client._connection.user_agent, content_type),
+            **_get_default_headers(
+                client._connection.user_agent, content_type, command=command
+            ),
             **_get_encryption_headers(self._encryption_key),
         }
         object_metadata = self._get_writable_metadata()
@@ -1739,6 +1763,7 @@ class Blob(_PropertyMixin):
         timeout=_DEFAULT_TIMEOUT,
         checksum=None,
         retry=None,
+        command=None,
     ):
         """Perform a multipart upload.
 
@@ -1822,6 +1847,12 @@ class Blob(_PropertyMixin):
             (google.cloud.storage.retry) for information on retry types and how
             to configure them.
 
+        :type command: str
+        :param command:
+            (Optional) Information about which interface for upload was used,
+            to be included in the X-Goog-API-Client header. Please leave as None
+            unless otherwise directed.
+
         :rtype: :class:`~requests.Response`
         :returns: The "200 OK" response object returned after the multipart
                   upload request.
@@ -1840,7 +1871,7 @@ class Blob(_PropertyMixin):
         transport = self._get_transport(client)
         if "metadata" in self._properties and "metadata" not in self._changes:
             self._changes.add("metadata")
-        info = self._get_upload_arguments(client, content_type)
+        info = self._get_upload_arguments(client, content_type, command=command)
         headers, object_metadata, content_type = info
 
         hostname = _get_host_name(client._connection)
@@ -1910,6 +1941,7 @@ class Blob(_PropertyMixin):
         timeout=_DEFAULT_TIMEOUT,
         checksum=None,
         retry=None,
+        command=None,
     ):
         """Initiate a resumable upload.
 
@@ -2008,6 +2040,12 @@ class Blob(_PropertyMixin):
             (google.cloud.storage.retry) for information on retry types and how
             to configure them.
 
+        :type command: str
+        :param command:
+            (Optional) Information about which interface for upload was used,
+            to be included in the X-Goog-API-Client header. Please leave as None
+            unless otherwise directed.
+
         :rtype: tuple
         :returns:
             Pair of
@@ -2025,7 +2063,7 @@ class Blob(_PropertyMixin):
         transport = self._get_transport(client)
         if "metadata" in self._properties and "metadata" not in self._changes:
             self._changes.add("metadata")
-        info = self._get_upload_arguments(client, content_type)
+        info = self._get_upload_arguments(client, content_type, command=command)
         headers, object_metadata, content_type = info
         if extra_headers is not None:
             headers.update(extra_headers)
@@ -2103,6 +2141,7 @@ class Blob(_PropertyMixin):
         timeout=_DEFAULT_TIMEOUT,
         checksum=None,
         retry=None,
+        command=None,
     ):
         """Perform a resumable upload.
 
@@ -2191,6 +2230,12 @@ class Blob(_PropertyMixin):
             (google.cloud.storage.retry) for information on retry types and how
             to configure them.
 
+        :type command: str
+        :param command:
+            (Optional) Information about which interface for upload was used,
+            to be included in the X-Goog-API-Client header. Please leave as None
+            unless otherwise directed.
+
         :rtype: :class:`~requests.Response`
         :returns: The "200 OK" response object returned after the final chunk
                   is uploaded.
@@ -2209,6 +2254,7 @@ class Blob(_PropertyMixin):
             timeout=timeout,
             checksum=checksum,
             retry=retry,
+            command=command,
         )
         while not upload.finished:
             try:
@@ -2234,6 +2280,7 @@ class Blob(_PropertyMixin):
         timeout=_DEFAULT_TIMEOUT,
         checksum=None,
         retry=None,
+        command=None,
     ):
         """Determine an upload strategy and then perform the upload.
 
@@ -2333,6 +2380,12 @@ class Blob(_PropertyMixin):
             configuration changes for Retry objects such as delays and deadlines
             are respected.
 
+        :type command: str
+        :param command:
+            (Optional) Information about which interface for upload was used,
+            to be included in the X-Goog-API-Client header. Please leave as None
+            unless otherwise directed.
+
         :rtype: dict
         :returns: The parsed JSON from the "200 OK" response. This will be the
                   **only** response in the multipart case and it will be the
@@ -2366,6 +2419,7 @@ class Blob(_PropertyMixin):
                 timeout=timeout,
                 checksum=checksum,
                 retry=retry,
+                command=command,
             )
         else:
             response = self._do_resumable_upload(
@@ -2382,9 +2436,188 @@ class Blob(_PropertyMixin):
                 timeout=timeout,
                 checksum=checksum,
                 retry=retry,
+                command=command,
             )
 
         return response.json()
+
+    def _prep_and_do_upload(
+        self,
+        file_obj,
+        rewind=False,
+        size=None,
+        content_type=None,
+        num_retries=None,
+        client=None,
+        predefined_acl=None,
+        if_generation_match=None,
+        if_generation_not_match=None,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+        timeout=_DEFAULT_TIMEOUT,
+        checksum=None,
+        retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+        command=None,
+    ):
+        """Upload the contents of this blob from a file-like object.
+
+        The content type of the upload will be determined in order
+        of precedence:
+
+        - The value passed in to this method (if not :data:`None`)
+        - The value stored on the current blob
+        - The default value ('application/octet-stream')
+
+        .. note::
+           The effect of uploading to an existing blob depends on the
+           "versioning" and "lifecycle" policies defined on the blob's
+           bucket.  In the absence of those policies, upload will
+           overwrite any existing contents.
+
+           See the [`object versioning`](https://cloud.google.com/storage/docs/object-versioning)
+           and [`lifecycle`](https://cloud.google.com/storage/docs/lifecycle)
+           API documents for details.
+
+        If the size of the data to be uploaded exceeds 8 MB a resumable media
+        request will be used, otherwise the content and the metadata will be
+        uploaded in a single multipart upload request.
+
+        For more fine-grained over the upload process, check out
+        [`google-resumable-media`](https://googleapis.dev/python/google-resumable-media/latest/index.html).
+
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
+
+        :type file_obj: file
+        :param file_obj: A file handle opened in binary mode for reading.
+
+        :type rewind: bool
+        :param rewind:
+            If True, seek to the beginning of the file handle before writing
+            the file to Cloud Storage.
+
+        :type size: int
+        :param size:
+            The number of bytes to be uploaded (which will be read from
+            ``file_obj``). If not provided, the upload will be concluded once
+            ``file_obj`` is exhausted.
+
+        :type content_type: str
+        :param content_type: (Optional) Type of content being uploaded.
+
+        :type num_retries: int
+        :param num_retries:
+            Number of upload retries. By default, only uploads with
+            if_generation_match set will be retried, as uploads without the
+            argument are not guaranteed to be idempotent. Setting num_retries
+            will override this default behavior and guarantee retries even when
+            if_generation_match is not set.  (Deprecated: This argument
+            will be removed in a future release.)
+
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use.  If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
+
+        :type predefined_acl: str
+        :param predefined_acl: (Optional) Predefined access control list
+
+        :type if_generation_match: long
+        :param if_generation_match:
+            (Optional) See :ref:`using-if-generation-match`
+
+        :type if_generation_not_match: long
+        :param if_generation_not_match:
+            (Optional) See :ref:`using-if-generation-not-match`
+
+        :type if_metageneration_match: long
+        :param if_metageneration_match:
+            (Optional) See :ref:`using-if-metageneration-match`
+
+        :type if_metageneration_not_match: long
+        :param if_metageneration_not_match:
+            (Optional) See :ref:`using-if-metageneration-not-match`
+
+        :type timeout: float or tuple
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
+
+        :type checksum: str
+        :param checksum:
+            (Optional) The type of checksum to compute to verify
+            the integrity of the object. If the upload is completed in a single
+            request, the checksum will be entirely precomputed and the remote
+            server will handle verification and error handling. If the upload
+            is too large and must be transmitted in multiple requests, the
+            checksum will be incrementally computed and the client will handle
+            verification and error handling, raising
+            google.resumable_media.common.DataCorruption on a mismatch and
+            attempting to delete the corrupted file. Supported values are
+            "md5", "crc32c" and None. The default is None.
+
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable
+            retries. A google.api_core.retry.Retry value will enable retries,
+            and the object will define retriable response codes and errors and
+            configure backoff and timeout options.
+
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a
+            Retry object and activates it only if certain conditions are met.
+            This class exists to provide safe defaults for RPC calls that are
+            not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a
+            condition such as if_generation_match is set.
+
+            See the retry.py source code and docstrings in this package
+            (google.cloud.storage.retry) for information on retry types and how
+            to configure them.
+
+            Media operations (downloads and uploads) do not support non-default
+            predicates in a Retry object. The default will always be used. Other
+            configuration changes for Retry objects such as delays and deadlines
+            are respected.
+
+        :type command: str
+        :param command:
+            (Optional) Information about which interface for upload was used,
+            to be included in the X-Goog-API-Client header. Please leave as None
+            unless otherwise directed.
+
+        :raises: :class:`~google.cloud.exceptions.GoogleCloudError`
+                 if the upload response returns an error status.
+        """
+        if num_retries is not None:
+            warnings.warn(_NUM_RETRIES_MESSAGE, DeprecationWarning, stacklevel=2)
+            # num_retries and retry are mutually exclusive. If num_retries is
+            # set and retry is exactly the default, then nullify retry for
+            # backwards compatibility.
+            if retry is DEFAULT_RETRY_IF_GENERATION_SPECIFIED:
+                retry = None
+
+        _maybe_rewind(file_obj, rewind=rewind)
+        predefined_acl = ACL.validate_predefined(predefined_acl)
+
+        try:
+            created_json = self._do_upload(
+                client,
+                file_obj,
+                content_type,
+                size,
+                num_retries,
+                predefined_acl,
+                if_generation_match,
+                if_generation_not_match,
+                if_metageneration_match,
+                if_metageneration_not_match,
+                timeout=timeout,
+                checksum=checksum,
+                retry=retry,
+                command=command,
+            )
+            self._set_properties(created_json)
+        except resumable_media.InvalidResponse as exc:
+            _raise_from_invalid_response(exc)
 
     def upload_from_file(
         self,
@@ -2525,36 +2758,46 @@ class Blob(_PropertyMixin):
         :raises: :class:`~google.cloud.exceptions.GoogleCloudError`
                  if the upload response returns an error status.
         """
-        if num_retries is not None:
-            warnings.warn(_NUM_RETRIES_MESSAGE, DeprecationWarning, stacklevel=2)
-            # num_retries and retry are mutually exclusive. If num_retries is
-            # set and retry is exactly the default, then nullify retry for
-            # backwards compatibility.
-            if retry is DEFAULT_RETRY_IF_GENERATION_SPECIFIED:
-                retry = None
+        self._prep_and_do_upload(
+            file_obj,
+            rewind=rewind,
+            size=size,
+            content_type=content_type,
+            num_retries=num_retries,
+            client=client,
+            predefined_acl=predefined_acl,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+            timeout=timeout,
+            checksum=checksum,
+            retry=retry,
+        )
 
-        _maybe_rewind(file_obj, rewind=rewind)
-        predefined_acl = ACL.validate_predefined(predefined_acl)
+    def _handle_filename_and_upload(self, filename, content_type=None, *args, **kwargs):
+        """Upload this blob's contents from the content of a named file.
 
-        try:
-            created_json = self._do_upload(
-                client,
+        :type filename: str
+        :param filename: The path to the file.
+
+        :type content_type: str
+        :param content_type: (Optional) Type of content being uploaded.
+
+        For *args and **kwargs, refer to the documentation for upload_from_filename() for more information.
+        """
+
+        content_type = self._get_content_type(content_type, filename=filename)
+
+        with open(filename, "rb") as file_obj:
+            total_bytes = os.fstat(file_obj.fileno()).st_size
+            self._prep_and_do_upload(
                 file_obj,
-                content_type,
-                size,
-                num_retries,
-                predefined_acl,
-                if_generation_match,
-                if_generation_not_match,
-                if_metageneration_match,
-                if_metageneration_not_match,
-                timeout=timeout,
-                checksum=checksum,
-                retry=retry,
+                content_type=content_type,
+                size=total_bytes,
+                *args,
+                **kwargs,
             )
-            self._set_properties(created_json)
-        except resumable_media.InvalidResponse as exc:
-            _raise_from_invalid_response(exc)
 
     def upload_from_filename(
         self,
@@ -2677,25 +2920,21 @@ class Blob(_PropertyMixin):
             configuration changes for Retry objects such as delays and deadlines
             are respected.
         """
-        content_type = self._get_content_type(content_type, filename=filename)
 
-        with open(filename, "rb") as file_obj:
-            total_bytes = os.fstat(file_obj.fileno()).st_size
-            self.upload_from_file(
-                file_obj,
-                content_type=content_type,
-                num_retries=num_retries,
-                client=client,
-                size=total_bytes,
-                predefined_acl=predefined_acl,
-                if_generation_match=if_generation_match,
-                if_generation_not_match=if_generation_not_match,
-                if_metageneration_match=if_metageneration_match,
-                if_metageneration_not_match=if_metageneration_not_match,
-                timeout=timeout,
-                checksum=checksum,
-                retry=retry,
-            )
+        self._handle_filename_and_upload(
+            filename,
+            content_type=content_type,
+            num_retries=num_retries,
+            client=client,
+            predefined_acl=predefined_acl,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+            timeout=timeout,
+            checksum=checksum,
+            retry=retry,
+        )
 
     def upload_from_string(
         self,
@@ -3935,6 +4174,168 @@ class Blob(_PropertyMixin):
 
     :rtype: str or ``NoneType``
     """
+
+    def _prep_and_do_download(
+        self,
+        file_obj,
+        client=None,
+        start=None,
+        end=None,
+        raw_download=False,
+        if_etag_match=None,
+        if_etag_not_match=None,
+        if_generation_match=None,
+        if_generation_not_match=None,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+        timeout=_DEFAULT_TIMEOUT,
+        checksum="md5",
+        retry=DEFAULT_RETRY,
+        command=None,
+    ):
+        """Download the contents of a blob object into a file-like object.
+
+        See https://cloud.google.com/storage/docs/downloading-objects
+
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
+
+        :type file_obj: file
+        :param file_obj: A file handle to which to write the blob's data.
+
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client:
+            (Optional) The client to use. If not passed, falls back to the
+            ``client`` stored on the blob's bucket.
+
+        :type start: int
+        :param start: (Optional) The first byte in a range to be downloaded.
+
+        :type end: int
+        :param end: (Optional) The last byte in a range to be downloaded.
+
+        :type raw_download: bool
+        :param raw_download:
+            (Optional) If true, download the object without any expansion.
+
+        :type if_etag_match: Union[str, Set[str]]
+        :param if_etag_match:
+            (Optional) See :ref:`using-if-etag-match`
+
+        :type if_etag_not_match: Union[str, Set[str]]
+        :param if_etag_not_match:
+            (Optional) See :ref:`using-if-etag-not-match`
+
+        :type if_generation_match: long
+        :param if_generation_match:
+            (Optional) See :ref:`using-if-generation-match`
+
+        :type if_generation_not_match: long
+        :param if_generation_not_match:
+            (Optional) See :ref:`using-if-generation-not-match`
+
+        :type if_metageneration_match: long
+        :param if_metageneration_match:
+            (Optional) See :ref:`using-if-metageneration-match`
+
+        :type if_metageneration_not_match: long
+        :param if_metageneration_not_match:
+            (Optional) See :ref:`using-if-metageneration-not-match`
+
+        :type timeout: float or tuple
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
+
+        :type checksum: str
+        :param checksum:
+            (Optional) The type of checksum to compute to verify the integrity
+            of the object. The response headers must contain a checksum of the
+            requested type. If the headers lack an appropriate checksum (for
+            instance in the case of transcoded or ranged downloads where the
+            remote service does not know the correct checksum, including
+            downloads where chunk_size is set) an INFO-level log will be
+            emitted. Supported values are "md5", "crc32c" and None. The default
+            is "md5".
+
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable
+            retries. A google.api_core.retry.Retry value will enable retries,
+            and the object will define retriable response codes and errors and
+            configure backoff and timeout options.
+
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a
+            Retry object and activates it only if certain conditions are met.
+            This class exists to provide safe defaults for RPC calls that are
+            not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a
+            condition such as if_metageneration_match is set.
+
+            See the retry.py source code and docstrings in this package
+            (google.cloud.storage.retry) for information on retry types and how
+            to configure them.
+
+            Media operations (downloads and uploads) do not support non-default
+            predicates in a Retry object. The default will always be used. Other
+            configuration changes for Retry objects such as delays and deadlines
+            are respected.
+
+        :type command: str
+        :param command:
+            (Optional) Information about which interface for download was used,
+            to be included in the X-Goog-API-Client header. Please leave as None
+            unless otherwise directed.
+        """
+        # Handle ConditionalRetryPolicy.
+        if isinstance(retry, ConditionalRetryPolicy):
+            # Conditional retries are designed for non-media calls, which change
+            # arguments into query_params dictionaries. Media operations work
+            # differently, so here we make a "fake" query_params to feed to the
+            # ConditionalRetryPolicy.
+            query_params = {
+                "ifGenerationMatch": if_generation_match,
+                "ifMetagenerationMatch": if_metageneration_match,
+            }
+            retry = retry.get_retry_policy_if_conditions_met(query_params=query_params)
+
+        client = self._require_client(client)
+
+        download_url = self._get_download_url(
+            client,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+        )
+        headers = _get_encryption_headers(self._encryption_key)
+        headers["accept-encoding"] = "gzip"
+        _add_etag_match_headers(
+            headers,
+            if_etag_match=if_etag_match,
+            if_etag_not_match=if_etag_not_match,
+        )
+        headers = {
+            **_get_default_headers(client._connection.user_agent, command=command),
+            **headers,
+        }
+
+        transport = client._http
+
+        try:
+            self._do_download(
+                transport,
+                file_obj,
+                download_url,
+                headers,
+                start,
+                end,
+                raw_download,
+                timeout=timeout,
+                checksum=checksum,
+                retry=retry,
+            )
+        except resumable_media.InvalidResponse as exc:
+            _raise_from_invalid_response(exc)
 
     @property
     def component_count(self):

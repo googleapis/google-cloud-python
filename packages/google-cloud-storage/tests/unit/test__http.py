@@ -18,7 +18,8 @@ from unittest.mock import patch
 import mock
 
 from google.cloud.storage import _helpers
-from tests.unit.test__helpers import GCCL_INVOCATION_TEST_CONST
+
+GCCL_INVOCATION_TEST_CONST = "gccl-invocation-id/test-invocation-123"
 
 
 class TestConnection(unittest.TestCase):

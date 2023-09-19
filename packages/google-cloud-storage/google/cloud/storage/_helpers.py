@@ -599,19 +599,32 @@ def _get_default_headers(
     user_agent,
     content_type="application/json; charset=UTF-8",
     x_upload_content_type=None,
+    command=None,
 ):
     """Get the headers for a request.
 
-    Args:
-        user_agent (str): The user-agent for requests.
-    Returns:
-        Dict: The headers to be used for the request.
+    :type user_agent: str
+    :param user_agent: The user-agent for requests.
+
+    :type command: str
+    :param command:
+        (Optional) Information about which interface for the operation was
+        used, to be included in the X-Goog-API-Client header. Please leave
+        as None unless otherwise directed.
+
+    :rtype: dict
+    :returns: The headers to be used for the request.
     """
+    x_goog_api_client = f"{user_agent} {_get_invocation_id()}"
+
+    if command:
+        x_goog_api_client += f" gccl-gcs-cmd/{command}"
+
     return {
         "Accept": "application/json",
         "Accept-Encoding": "gzip, deflate",
         "User-Agent": user_agent,
-        "X-Goog-API-Client": f"{user_agent} {_get_invocation_id()}",
+        "X-Goog-API-Client": x_goog_api_client,
         "content-type": content_type,
         "x-upload-content-type": x_upload_content_type or content_type,
     }
