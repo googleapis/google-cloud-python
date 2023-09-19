@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of .
+This package includes clients for multiple versions of Cloud Commerce Consumer Procurement API.
 By default, you will get version ``commerce_consumer_procurement_v1``.
 
 
