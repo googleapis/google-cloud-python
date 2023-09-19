@@ -28,6 +28,8 @@ from google.cloud.storage import Client
 from google.cloud.storage import Blob
 from google.cloud.storage.blob import _get_host_name
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
+from google.cloud.storage._helpers import _api_core_retry_to_resumable_media_retry
+from google.cloud.storage.retry import DEFAULT_RETRY
 
 from google.resumable_media.requests.upload import XMLMPUContainer
 from google.resumable_media.requests.upload import XMLMPUPart
@@ -871,6 +873,7 @@ def upload_chunks_concurrently(
     *,
     checksum="md5",
     timeout=_DEFAULT_TIMEOUT,
+    retry=DEFAULT_RETRY,
 ):
     """Upload a single file in chunks, concurrently.
 
@@ -966,6 +969,20 @@ def upload_chunks_concurrently(
         (Optional) The amount of time, in seconds, to wait
         for the server response.  See: :ref:`configuring_timeouts`
 
+    :type retry: google.api_core.retry.Retry
+    :param retry: (Optional) How to retry the RPC. A None value will disable
+        retries. A google.api_core.retry.Retry value will enable retries,
+        and the object will configure backoff and timeout options. Custom
+        predicates (customizable error codes) are not supported for media
+        operations such as this one.
+
+        This function does not accept ConditionalRetryPolicy values because
+        preconditions are not supported by the underlying API call.
+
+        See the retry.py source code and docstrings in this package
+        (google.cloud.storage.retry) for information on retry types and how
+        to configure them.
+
     :raises: :exc:`concurrent.futures.TimeoutError` if deadline is exceeded.
     """
 
@@ -995,6 +1012,8 @@ def upload_chunks_concurrently(
         headers["x-goog-encryption-kms-key-name"] = blob.kms_key_name
 
     container = XMLMPUContainer(url, filename, headers=headers)
+    container._retry_strategy = _api_core_retry_to_resumable_media_retry(retry)
+
     container.initiate(transport=transport, content_type=content_type)
     upload_id = container.upload_id
 
@@ -1025,6 +1044,7 @@ def upload_chunks_concurrently(
                     part_number=part_number,
                     checksum=checksum,
                     headers=headers,
+                    retry=retry,
                 )
             )
 
@@ -1054,6 +1074,7 @@ def _upload_part(
     part_number,
     checksum,
     headers,
+    retry,
 ):
     """Helper function that runs inside a thread or subprocess to upload a part.
 
@@ -1075,6 +1096,7 @@ def _upload_part(
         checksum=checksum,
         headers=headers,
     )
+    part._retry_strategy = _api_core_retry_to_resumable_media_retry(retry)
     part.upload(client._http)
     return (part_number, part.etag)
 

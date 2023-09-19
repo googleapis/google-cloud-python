@@ -658,6 +658,11 @@ def test_upload_chunks_concurrently():
         container_mock.register_part.assert_any_call(1, ETAG)
         container_mock.register_part.assert_any_call(2, ETAG)
         container_mock.finalize.assert_called_once_with(bucket.client._http)
+
+        assert container_mock._retry_strategy.max_sleep == 60.0
+        assert container_mock._retry_strategy.max_cumulative_retry == 120.0
+        assert container_mock._retry_strategy.max_retries is None
+
         part_mock.upload.assert_called_with(transport)
 
 
@@ -693,12 +698,15 @@ def test_upload_chunks_concurrently_passes_concurrency_options():
                 worker_type=transfer_manager.THREAD,
                 max_workers=MAX_WORKERS,
                 deadline=DEADLINE,
+                retry=None,
             )
         except ValueError:
             pass  # The futures don't actually work, so we expect this to abort.
             # Conveniently, that gives us a chance to test the auto-delete
             # exception handling feature.
         container_mock.cancel.assert_called_once_with(transport)
+        assert container_mock._retry_strategy.max_retries == 0
+
         pool_patch.assert_called_with(max_workers=MAX_WORKERS)
         wait_patch.assert_called_with(mock.ANY, timeout=DEADLINE, return_when=mock.ANY)
 
@@ -905,6 +913,8 @@ def test__download_and_write_chunk_in_place():
 
 
 def test__upload_part():
+    from google.cloud.storage.retry import DEFAULT_RETRY
+
     pickled_mock = pickle.dumps(_PickleableMockClient())
     FILENAME = "file_a.txt"
     UPLOAD_ID = "abcd"
@@ -916,9 +926,22 @@ def test__upload_part():
         "google.cloud.storage.transfer_manager.XMLMPUPart", return_value=part
     ):
         result = transfer_manager._upload_part(
-            pickled_mock, URL, UPLOAD_ID, FILENAME, 0, 256, 1, None, {"key", "value"}
+            pickled_mock,
+            URL,
+            UPLOAD_ID,
+            FILENAME,
+            0,
+            256,
+            1,
+            None,
+            {"key", "value"},
+            retry=DEFAULT_RETRY,
         )
         part.upload.assert_called_once()
+        assert part._retry_strategy.max_sleep == 60.0
+        assert part._retry_strategy.max_cumulative_retry == 120.0
+        assert part._retry_strategy.max_retries is None
+
         assert result == (1, ETAG)
 
 
