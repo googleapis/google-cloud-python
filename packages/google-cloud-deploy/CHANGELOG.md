@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.12.0...google-cloud-deploy-v1.12.1) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([#11632](https://github.com/googleapis/google-cloud-python/issues/11632)) ([dbee08f](https://github.com/googleapis/google-cloud-python/commit/dbee08f2df63e1906ba13b0d3060eec5a80c79e2))
+
 ## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-deploy-v1.11.1...google-cloud-deploy-v1.12.0) (2023-08-03)
 
 

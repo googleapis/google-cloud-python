@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dms-v1.7.1...google-cloud-dms-v1.7.2) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([5888064](https://github.com/googleapis/google-cloud-python/commit/5888064b1f1ef3428baaabed235d98371329df91))
+
 ## [1.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dms-v1.7.0...google-cloud-dms-v1.7.1) (2023-07-05)
 
 
