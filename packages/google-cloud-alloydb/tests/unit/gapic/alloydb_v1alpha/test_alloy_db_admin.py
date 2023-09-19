@@ -5750,6 +5750,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
             etag="etag_value",
             size_bytes=1089,
             satisfies_pzs=True,
+            database_version=resources.DatabaseVersion.POSTGRES_13,
         )
         response = client.get_backup(request)
 
@@ -5772,6 +5773,7 @@ def test_get_backup(request_type, transport: str = "grpc"):
     assert response.etag == "etag_value"
     assert response.size_bytes == 1089
     assert response.satisfies_pzs is True
+    assert response.database_version == resources.DatabaseVersion.POSTGRES_13
 
 
 def test_get_backup_empty_call():
@@ -5820,6 +5822,7 @@ async def test_get_backup_async(
                 etag="etag_value",
                 size_bytes=1089,
                 satisfies_pzs=True,
+                database_version=resources.DatabaseVersion.POSTGRES_13,
             )
         )
         response = await client.get_backup(request)
@@ -5843,6 +5846,7 @@ async def test_get_backup_async(
     assert response.etag == "etag_value"
     assert response.size_bytes == 1089
     assert response.satisfies_pzs is True
+    assert response.database_version == resources.DatabaseVersion.POSTGRES_13
 
 
 @pytest.mark.asyncio
@@ -12445,6 +12449,10 @@ def test_create_instance_rest(request_type):
         "etag": "etag_value",
         "annotations": {},
         "update_policy": {"mode": 1},
+        "client_connection_config": {
+            "require_connectors": True,
+            "ssl_config": {"ssl_mode": 1, "ca_source": 1},
+        },
         "satisfies_pzs": True,
     }
     request = request_type(**request_init)
@@ -12688,6 +12696,10 @@ def test_create_instance_rest_bad_request(
         "etag": "etag_value",
         "annotations": {},
         "update_policy": {"mode": 1},
+        "client_connection_config": {
+            "require_connectors": True,
+            "ssl_config": {"ssl_mode": 1, "ca_source": 1},
+        },
         "satisfies_pzs": True,
     }
     request = request_type(**request_init)
@@ -12819,6 +12831,10 @@ def test_create_secondary_instance_rest(request_type):
         "etag": "etag_value",
         "annotations": {},
         "update_policy": {"mode": 1},
+        "client_connection_config": {
+            "require_connectors": True,
+            "ssl_config": {"ssl_mode": 1, "ca_source": 1},
+        },
         "satisfies_pzs": True,
     }
     request = request_type(**request_init)
@@ -13064,6 +13080,10 @@ def test_create_secondary_instance_rest_bad_request(
         "etag": "etag_value",
         "annotations": {},
         "update_policy": {"mode": 1},
+        "client_connection_config": {
+            "require_connectors": True,
+            "ssl_config": {"ssl_mode": 1, "ca_source": 1},
+        },
         "satisfies_pzs": True,
     }
     request = request_type(**request_init)
@@ -13200,6 +13220,10 @@ def test_batch_create_instances_rest(request_type):
                     "etag": "etag_value",
                     "annotations": {},
                     "update_policy": {"mode": 1},
+                    "client_connection_config": {
+                        "require_connectors": True,
+                        "ssl_config": {"ssl_mode": 1, "ca_source": 1},
+                    },
                     "satisfies_pzs": True,
                 },
                 "request_id": "request_id_value",
@@ -13429,6 +13453,10 @@ def test_batch_create_instances_rest_bad_request(
                     "etag": "etag_value",
                     "annotations": {},
                     "update_policy": {"mode": 1},
+                    "client_connection_config": {
+                        "require_connectors": True,
+                        "ssl_config": {"ssl_mode": 1, "ca_source": 1},
+                    },
                     "satisfies_pzs": True,
                 },
                 "request_id": "request_id_value",
@@ -13508,6 +13536,10 @@ def test_update_instance_rest(request_type):
         "etag": "etag_value",
         "annotations": {},
         "update_policy": {"mode": 1},
+        "client_connection_config": {
+            "require_connectors": True,
+            "ssl_config": {"ssl_mode": 1, "ca_source": 1},
+        },
         "satisfies_pzs": True,
     }
     request = request_type(**request_init)
@@ -13733,6 +13765,10 @@ def test_update_instance_rest_bad_request(
         "etag": "etag_value",
         "annotations": {},
         "update_policy": {"mode": 1},
+        "client_connection_config": {
+            "require_connectors": True,
+            "ssl_config": {"ssl_mode": 1, "ca_source": 1},
+        },
         "satisfies_pzs": True,
     }
     request = request_type(**request_init)
@@ -15287,6 +15323,7 @@ def test_get_backup_rest(request_type):
             etag="etag_value",
             size_bytes=1089,
             satisfies_pzs=True,
+            database_version=resources.DatabaseVersion.POSTGRES_13,
         )
 
         # Wrap the value into a proper Response obj
@@ -15313,6 +15350,7 @@ def test_get_backup_rest(request_type):
     assert response.etag == "etag_value"
     assert response.size_bytes == 1089
     assert response.satisfies_pzs is True
+    assert response.database_version == resources.DatabaseVersion.POSTGRES_13
 
 
 def test_get_backup_rest_required_fields(request_type=service.GetBackupRequest):
@@ -15578,6 +15616,7 @@ def test_create_backup_rest(request_type):
         "expiry_time": {},
         "expiry_quantity": {"retention_count": 1632, "total_retention_count": 2275},
         "satisfies_pzs": True,
+        "database_version": 1,
     }
     request = request_type(**request_init)
 
@@ -15810,6 +15849,7 @@ def test_create_backup_rest_bad_request(
         "expiry_time": {},
         "expiry_quantity": {"retention_count": 1632, "total_retention_count": 2275},
         "satisfies_pzs": True,
+        "database_version": 1,
     }
     request = request_type(**request_init)
 
@@ -15932,6 +15972,7 @@ def test_update_backup_rest(request_type):
         "expiry_time": {},
         "expiry_quantity": {"retention_count": 1632, "total_retention_count": 2275},
         "satisfies_pzs": True,
+        "database_version": 1,
     }
     request = request_type(**request_init)
 
@@ -16144,6 +16185,7 @@ def test_update_backup_rest_bad_request(
         "expiry_time": {},
         "expiry_quantity": {"retention_count": 1632, "total_retention_count": 2275},
         "satisfies_pzs": True,
+        "database_version": 1,
     }
     request = request_type(**request_init)
 
