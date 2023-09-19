@@ -108,10 +108,13 @@ class DatabaseVersion(proto.Enum):
             13.
         POSTGRES_14 (2):
             The database version is Postgres 14.
+        POSTGRES_15 (3):
+            The database version is Postgres 15.
     """
     DATABASE_VERSION_UNSPECIFIED = 0
     POSTGRES_13 = 1
     POSTGRES_14 = 2
+    POSTGRES_15 = 3
 
 
 class UserPassword(proto.Message):
@@ -142,8 +145,7 @@ class MigrationSource(proto.Message):
     Attributes:
         host_port (str):
             Output only. The host and port of the
-            on-premises instance in host:port
-            format
+            on-premises instance in host:port format
         reference_id (str):
             Output only. Place holder for the external
             source identifier(e.g DMS job name) that created
@@ -367,6 +369,7 @@ class AutomatedBackupPolicy(proto.Message):
             The location where the backup will be stored.
             Currently, the only supported option is to store
             the backup in the same region as the cluster.
+
             If empty, defaults to the region of the cluster.
         labels (MutableMapping[str, str]):
             Labels to apply to backups created using this
@@ -388,10 +391,12 @@ class AutomatedBackupPolicy(proto.Message):
                 The times during the day to start a backup.
                 The start times are assumed to be in UTC and to
                 be an exact hour (e.g., 04:00:00).
+
                 If no start times are provided, a single fixed
                 start time is chosen arbitrarily.
             days_of_week (MutableSequence[google.type.dayofweek_pb2.DayOfWeek]):
                 The days of the week to perform a backup.
+
                 If this field is left empty, the default of
                 every day of the week is used.
         """
@@ -493,10 +498,11 @@ class ContinuousBackupConfig(proto.Message):
 
             This field is a member of `oneof`_ ``_enabled``.
         recovery_window_days (int):
-            The number of days backups and logs will be
-            retained, which determines the window of time
-            that data is recoverable for. If not set, it
-            defaults to 14 days.
+            The number of days that are eligible to
+            restore from using PITR. To support the entire
+            recovery window, backups and logs are retained
+            for one day more than the recovery window. If
+            not set, defaults to 14 days.
         encryption_config (google.cloud.alloydb_v1beta.types.EncryptionConfig):
             The encryption config can be specified to
             encrypt the backups with a customer-managed
@@ -674,10 +680,11 @@ class Cluster(proto.Message):
             which RPC was used to create the cluster (i.e.
             ``CreateCluster`` vs. ``CreateSecondaryCluster``
         database_version (google.cloud.alloydb_v1beta.types.DatabaseVersion):
-            Output only. The database engine major
-            version. This is an output-only field and it's
-            populated at the Cluster creation time. This
-            field cannot be changed after cluster creation.
+            Optional. The database engine major version.
+            This is an optional field and it is populated at
+            the Cluster creation time. If a database version
+            is not supplied at cluster creation time, then a
+            default database version will be used.
         network_config (google.cloud.alloydb_v1beta.types.Cluster.NetworkConfig):
 
         network (str):
@@ -685,9 +692,9 @@ class Cluster(proto.Message):
             cluster resources are created and from which they are
             accessible via Private IP. The network must belong to the
             same project as the cluster. It is specified in the form:
-            "projects/{project_number}/global/networks/{network_id}".
-            This is required to create a cluster. It can be updated, but
-            it cannot be removed.
+            "projects/{project}/global/networks/{network_id}". This is
+            required to create a cluster. Deprecated, use
+            network_config.network instead.
         etag (str):
             For Resource freshness validation
             (https://google.aip.dev/154)
@@ -697,18 +704,19 @@ class Cluster(proto.Message):
             from labels. https://google.aip.dev/128
         reconciling (bool):
             Output only. Reconciling
-            (https://google.aip.dev/128#reconciliation).
-            Set to true if the current state of Cluster does
-            not match the user's intended state, and the
-            service is actively updating the resource to
-            reconcile them. This can happen due to
-            user-triggered updates or system actions like
-            failover or maintenance.
+            (https://google.aip.dev/128#reconciliation). Set
+            to true if the current state of Cluster does not
+            match the user's intended state, and the service
+            is actively updating the resource to reconcile
+            them. This can happen due to user-triggered
+            updates or system actions like failover or
+            maintenance.
         initial_user (google.cloud.alloydb_v1beta.types.UserPassword):
             Input only. Initial user to setup during cluster creation.
             Required. If used in ``RestoreCluster`` this is ignored.
         automated_backup_policy (google.cloud.alloydb_v1beta.types.AutomatedBackupPolicy):
             The automated backup policy for this cluster.
+
             If no policy is provided then the default policy
             will be used. If backups are supported for the
             cluster, the default policy takes one backup a
@@ -820,11 +828,10 @@ class Cluster(proto.Message):
                 accessible via Private IP. The network must belong to the
                 same project as the cluster. It is specified in the form:
                 "projects/{project_number}/global/networks/{network_id}".
-                This is required to create a cluster. It can be updated, but
-                it cannot be removed.
+                This is required to create a cluster.
             allocated_ip_range (str):
-                Optional. The name of the allocated IP range for the private
-                IP AlloyDB cluster. For example:
+                Optional. Name of the allocated IP range for the private IP
+                AlloyDB cluster, for example:
                 "google-managed-services-default". If set, the instance IPs
                 for this cluster will be created in the allocated range. The
                 range name must comply with RFC 1035. Specifically, the name
@@ -1096,10 +1103,10 @@ class Instance(proto.Message):
             application.
         reconciling (bool):
             Output only. Reconciling
-            (https://google.aip.dev/128#reconciliation).
-            Set to true if the current state of Instance
-            does not match the user's intended state, and
-            the service is actively updating the resource to
+            (https://google.aip.dev/128#reconciliation). Set
+            to true if the current state of Instance does
+            not match the user's intended state, and the
+            service is actively updating the resource to
             reconcile them. This can happen due to
             user-triggered updates or system actions like
             failover or maintenance.
@@ -1117,6 +1124,9 @@ class Instance(proto.Message):
             non-default update policy, you must
             specify explicitly specify the value in each
             update request.
+        client_connection_config (google.cloud.alloydb_v1beta.types.Instance.ClientConnectionConfig):
+            Optional. Client connection specific
+            configurations
     """
 
     class State(proto.Enum):
@@ -1356,6 +1366,29 @@ class Instance(proto.Message):
             enum="Instance.UpdatePolicy.Mode",
         )
 
+    class ClientConnectionConfig(proto.Message):
+        r"""Client connection configuration
+
+        Attributes:
+            require_connectors (bool):
+                Optional. Configuration to enforce connectors
+                only (ex: AuthProxy) connections to the
+                database.
+            ssl_config (google.cloud.alloydb_v1beta.types.SslConfig):
+                Optional. SSL config option for this
+                instance.
+        """
+
+        require_connectors: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        ssl_config: "SslConfig" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="SslConfig",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -1459,6 +1492,11 @@ class Instance(proto.Message):
         number=22,
         message=UpdatePolicy,
     )
+    client_connection_config: ClientConnectionConfig = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        message=ClientConnectionConfig,
+    )
 
 
 class ConnectionInfo(proto.Message):
@@ -1471,9 +1509,10 @@ class ConnectionInfo(proto.Message):
             projects/{project}/locations/{location}/clusters/\ */instances/*/connectionInfo
             This field currently has no semantic meaning.
         ip_address (str):
-            Output only. The IP address for the Instance.
-            This is the connection endpoint for an end-user
-            application.
+            Output only. The private network IP address for the
+            Instance. This is the default IP for the instance and is
+            always created (even if enable_public_ip is set). This is
+            the connection endpoint for an end-user application.
         pem_certificate_chain (MutableSequence[str]):
             Output only. The pem-encoded chain that may
             be used to verify the X.509 certificate.
@@ -1579,6 +1618,17 @@ class Backup(proto.Message):
             to be garbage collected. It is the duration specified by the
             backup's retention policy, added to the backup's
             create_time.
+        expiry_quantity (google.cloud.alloydb_v1beta.types.Backup.QuantityBasedExpiry):
+            Output only. The QuantityBasedExpiry of the
+            backup, specified by the backup's retention
+            policy. Once the expiry quantity is over
+            retention, the backup is eligible to be garbage
+            collected.
+        database_version (google.cloud.alloydb_v1beta.types.DatabaseVersion):
+            Output only. The database engine major
+            version of the cluster this backup was created
+            from. Any restored cluster created from this
+            backup will have the same database version.
     """
 
     class State(proto.Enum):
@@ -1624,6 +1674,41 @@ class Backup(proto.Message):
         ON_DEMAND = 1
         AUTOMATED = 2
         CONTINUOUS = 3
+
+    class QuantityBasedExpiry(proto.Message):
+        r"""A backup's position in a quantity-based retention queue, of backups
+        with the same source cluster and type, with length, retention,
+        specified by the backup's retention policy. Once the position is
+        greater than the retention, the backup is eligible to be garbage
+        collected.
+
+        Example: 5 backups from the same source cluster and type with a
+        quantity-based retention of 3 and denoted by backup_id (position,
+        retention).
+
+        Safe: backup_5 (1, 3), backup_4, (2, 3), backup_3 (3, 3). Awaiting
+        garbage collection: backup_2 (4, 3), backup_1 (5, 3)
+
+        Attributes:
+            retention_count (int):
+                Output only. The backup's position among its
+                backups with the same source cluster and type,
+                by descending chronological order create
+                time(i.e. newest first).
+            total_retention_count (int):
+                Output only. The length of the quantity-based
+                queue, specified by the backup's retention
+                policy.
+        """
+
+        retention_count: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        total_retention_count: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -1710,6 +1795,16 @@ class Backup(proto.Message):
         proto.MESSAGE,
         number=19,
         message=timestamp_pb2.Timestamp,
+    )
+    expiry_quantity: QuantityBasedExpiry = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        message=QuantityBasedExpiry,
+    )
+    database_version: "DatabaseVersion" = proto.Field(
+        proto.ENUM,
+        number=22,
+        enum="DatabaseVersion",
     )
 
 

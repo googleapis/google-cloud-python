@@ -142,8 +142,7 @@ class MigrationSource(proto.Message):
     Attributes:
         host_port (str):
             Output only. The host and port of the
-            on-premises instance in host:port
-            format
+            on-premises instance in host:port format
         reference_id (str):
             Output only. Place holder for the external
             source identifier(e.g DMS job name) that created
@@ -367,6 +366,7 @@ class AutomatedBackupPolicy(proto.Message):
             The location where the backup will be stored.
             Currently, the only supported option is to store
             the backup in the same region as the cluster.
+
             If empty, defaults to the region of the cluster.
         labels (MutableMapping[str, str]):
             Labels to apply to backups created using this
@@ -388,10 +388,12 @@ class AutomatedBackupPolicy(proto.Message):
                 The times during the day to start a backup.
                 The start times are assumed to be in UTC and to
                 be an exact hour (e.g., 04:00:00).
+
                 If no start times are provided, a single fixed
                 start time is chosen arbitrarily.
             days_of_week (MutableSequence[google.type.dayofweek_pb2.DayOfWeek]):
                 The days of the week to perform a backup.
+
                 If this field is left empty, the default of
                 every day of the week is used.
         """
@@ -699,18 +701,19 @@ class Cluster(proto.Message):
             from labels. https://google.aip.dev/128
         reconciling (bool):
             Output only. Reconciling
-            (https://google.aip.dev/128#reconciliation).
-            Set to true if the current state of Cluster does
-            not match the user's intended state, and the
-            service is actively updating the resource to
-            reconcile them. This can happen due to
-            user-triggered updates or system actions like
-            failover or maintenance.
+            (https://google.aip.dev/128#reconciliation). Set
+            to true if the current state of Cluster does not
+            match the user's intended state, and the service
+            is actively updating the resource to reconcile
+            them. This can happen due to user-triggered
+            updates or system actions like failover or
+            maintenance.
         initial_user (google.cloud.alloydb_v1alpha.types.UserPassword):
             Input only. Initial user to setup during cluster creation.
             Required. If used in ``RestoreCluster`` this is ignored.
         automated_backup_policy (google.cloud.alloydb_v1alpha.types.AutomatedBackupPolicy):
             The automated backup policy for this cluster.
+
             If no policy is provided then the default policy
             will be used. If backups are supported for the
             cluster, the default policy takes one backup a
@@ -1104,10 +1107,10 @@ class Instance(proto.Message):
             application.
         reconciling (bool):
             Output only. Reconciling
-            (https://google.aip.dev/128#reconciliation).
-            Set to true if the current state of Instance
-            does not match the user's intended state, and
-            the service is actively updating the resource to
+            (https://google.aip.dev/128#reconciliation). Set
+            to true if the current state of Instance does
+            not match the user's intended state, and the
+            service is actively updating the resource to
             reconcile them. This can happen due to
             user-triggered updates or system actions like
             failover or maintenance.
