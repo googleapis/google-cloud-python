@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.11.0...google-cloud-network-management-v1.11.1) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([1ae610b](https://github.com/googleapis/google-cloud-python/commit/1ae610bb3b321ceac7bd23a455a002e39645d84f))
+
 ## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.10.0...google-cloud-network-management-v1.11.0) (2023-08-11)
 
 

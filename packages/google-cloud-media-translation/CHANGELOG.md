@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-media-translation-v0.11.3...google-cloud-media-translation-v0.11.4) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([1ae610b](https://github.com/googleapis/google-cloud-python/commit/1ae610bb3b321ceac7bd23a455a002e39645d84f))
+
 ## [0.11.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-media-translation-v0.11.2...google-cloud-media-translation-v0.11.3) (2023-07-05)
 
 
