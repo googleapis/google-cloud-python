@@ -439,7 +439,7 @@ class OAuthSettings(proto.Message):
             claim matches this value since access behavior
             is managed by IAM policies.
         programmatic_clients (MutableSequence[str]):
-            List of Oauth client IDs allowed to
+            List of OAuth client IDs allowed to
             programmatically authenticate with IAP.
     """
 
