@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-shell-v1.7.2...google-cloud-shell-v1.7.3) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([025219f](https://github.com/googleapis/google-cloud-python/commit/025219f5c04803651e20eae4c0186b87608f4db4))
+
 ## [1.7.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-shell-v1.7.1...google-cloud-shell-v1.7.2) (2023-07-05)
 
 

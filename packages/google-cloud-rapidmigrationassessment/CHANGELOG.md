@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-rapidmigrationassessment-v0.1.1...google-cloud-rapidmigrationassessment-v0.1.2) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([1ae610b](https://github.com/googleapis/google-cloud-python/commit/1ae610bb3b321ceac7bd23a455a002e39645d84f))
+* update comments ([#11661](https://github.com/googleapis/google-cloud-python/issues/11661)) ([77c7f3c](https://github.com/googleapis/google-cloud-python/commit/77c7f3c5062a4aacf62dabf616c1e2caeeb444e3))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-rapidmigrationassessment-v0.1.0...google-cloud-rapidmigrationassessment-v0.1.1) (2023-07-05)
 
 

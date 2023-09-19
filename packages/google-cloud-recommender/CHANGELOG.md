@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommender-v2.12.0...google-cloud-recommender-v2.12.1) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([025219f](https://github.com/googleapis/google-cloud-python/commit/025219f5c04803651e20eae4c0186b87608f4db4))
+
 ## [2.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommender-v2.11.2...google-cloud-recommender-v2.12.0) (2023-08-31)
 
 

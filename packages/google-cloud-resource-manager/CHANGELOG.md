@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.10.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-resource-manager-v1.10.3...google-cloud-resource-manager-v1.10.4) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([025219f](https://github.com/googleapis/google-cloud-python/commit/025219f5c04803651e20eae4c0186b87608f4db4))
+
 ## [1.10.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-resource-manager-v1.10.2...google-cloud-resource-manager-v1.10.3) (2023-08-03)
 
 
