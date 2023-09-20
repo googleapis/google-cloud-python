@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tpu-v1.15.1...google-cloud-tpu-v1.16.0) (2023-09-20)
+
+
+### Features
+
+* **v2alpha1:** added new WAITING_FOR_RESOURCES state for QueuedResourceState ([#11673](https://github.com/googleapis/google-cloud-python/issues/11673)) ([f108e9b](https://github.com/googleapis/google-cloud-python/commit/f108e9b8235dba344f80171fd058b959c4eeed0b))
+
 ## [1.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tpu-v1.15.0...google-cloud-tpu-v1.15.1) (2023-09-19)
 
 
