@@ -21,54 +21,57 @@ import bigframes.core.blocks as blocks
 import bigframes.operations.aggregations as agg_ops
 import third_party.bigframes_vendored.pandas.core.window.rolling as vendored_pandas_rolling
 
-if typing.TYPE_CHECKING:
-    from bigframes.series import Series
-
 
 class Window(vendored_pandas_rolling.Window):
     __doc__ = vendored_pandas_rolling.Window.__doc__
-
-    # TODO(tbergeron): Windows with groupings should create multi-indexed results
 
     def __init__(
         self,
         block: blocks.Block,
         window_spec: core.WindowSpec,
-        value_column_id: str,
+        value_column_ids: typing.Sequence[str],
+        drop_null_groups: bool = True,
+        is_series: bool = False,
     ):
         self._block = block
         self._window_spec = window_spec
-        self._value_column_id = value_column_id
+        self._value_column_ids = value_column_ids
+        self._drop_null_groups = drop_null_groups
+        self._is_series = is_series
 
-    def count(self) -> Series:
+    def count(self):
         return self._apply_aggregate(agg_ops.count_op)
 
-    def sum(self) -> Series:
+    def sum(self):
         return self._apply_aggregate(agg_ops.sum_op)
 
-    def mean(self) -> Series:
+    def mean(self):
         return self._apply_aggregate(agg_ops.mean_op)
 
-    def var(self) -> Series:
+    def var(self):
         return self._apply_aggregate(agg_ops.var_op)
 
-    def std(self) -> Series:
+    def std(self):
         return self._apply_aggregate(agg_ops.std_op)
 
-    def max(self) -> Series:
+    def max(self):
         return self._apply_aggregate(agg_ops.max_op)
 
-    def min(self) -> Series:
+    def min(self):
         return self._apply_aggregate(agg_ops.min_op)
 
     def _apply_aggregate(
         self,
         op: agg_ops.AggregateOp,
-    ) -> Series:
+    ):
         block = self._block
-        label = block.col_id_to_label[self._value_column_id]
-        block, result_id = block.apply_window_op(
-            self._value_column_id, op, self._window_spec, result_label=label
+        labels = [block.col_id_to_label[col] for col in self._value_column_ids]
+        block, result_ids = block.multi_apply_window_op(
+            self._value_column_ids,
+            op,
+            self._window_spec,
+            skip_null_groups=self._drop_null_groups,
+            never_skip_nulls=True,
         )
 
         if self._window_spec.grouping_keys:
@@ -80,6 +83,13 @@ class Window(vendored_pandas_rolling.Window):
             )
             block = block.set_index(col_ids=index_ids)
 
-        from bigframes.series import Series
+        if self._is_series:
+            from bigframes.series import Series
 
-        return Series(block.select_column(result_id))
+            return Series(block.select_columns(result_ids).with_column_labels(labels))
+        else:
+            from bigframes.dataframe import DataFrame
+
+            return DataFrame(
+                block.select_columns(result_ids).with_column_labels(labels)
+            )

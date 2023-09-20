@@ -238,10 +238,34 @@ def test_series_groupby_skew(scalars_df_index, scalars_pandas_df_index):
     pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
 
 
+def test_series_groupby_kurt(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index.groupby("bool_col")["int64_too"].kurt().to_pandas()
+    # Pandas doesn't have groupby.kurt yet: https://github.com/pandas-dev/pandas/issues/40139
+    pd_result = scalars_pandas_df_index.groupby("bool_col")["int64_too"].apply(
+        pd.Series.kurt
+    )
+
+    pd.testing.assert_series_equal(pd_result, bf_result, check_dtype=False)
+
+
 def test_dataframe_groupby_skew(scalars_df_index, scalars_pandas_df_index):
     col_names = ["float64_col", "int64_col", "bool_col"]
     bf_result = scalars_df_index[col_names].groupby("bool_col").skew().to_pandas()
     pd_result = scalars_pandas_df_index[col_names].groupby("bool_col").skew()
+
+    pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
+
+
+def test_dataframe_groupby_kurt(scalars_df_index, scalars_pandas_df_index):
+    col_names = ["float64_col", "int64_col", "bool_col"]
+    bf_result = scalars_df_index[col_names].groupby("bool_col").kurt().to_pandas()
+    # Pandas doesn't have groupby.kurt yet: https://github.com/pandas-dev/pandas/issues/40139
+    pd_result = (
+        scalars_pandas_df_index[col_names]
+        .groupby("bool_col")
+        .apply(pd.Series.kurt)
+        .drop("bool_col", axis=1)
+    )
 
     pd.testing.assert_frame_equal(pd_result, bf_result, check_dtype=False)
 

@@ -156,6 +156,18 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         block = block_ops.skew(self._block, self._selected_cols, self._by_col_ids)
         return df.DataFrame(block)
 
+    def kurt(
+        self,
+        *,
+        numeric_only: bool = False,
+    ) -> df.DataFrame:
+        if not numeric_only:
+            self._raise_on_non_numeric("kurt")
+        block = block_ops.kurt(self._block, self._selected_cols, self._by_col_ids)
+        return df.DataFrame(block)
+
+    kurtosis = kurt
+
     def all(self) -> df.DataFrame:
         return self._aggregate_all(agg_ops.all_op)
 
@@ -194,6 +206,36 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
             following=-periods if periods < 0 else None,
         )
         return self._apply_window_op(agg_ops.DiffOp(periods), window=window)
+
+    def rolling(self, window: int, min_periods=None) -> windows.Window:
+        # To get n size window, need current row and n-1 preceding rows.
+        window_spec = core.WindowSpec(
+            grouping_keys=self._by_col_ids,
+            preceding=window - 1,
+            following=0,
+            min_periods=min_periods or window,
+        )
+        block = self._block.order_by(
+            [order.OrderingColumnReference(col) for col in self._by_col_ids],
+            stable=True,
+        )
+        return windows.Window(
+            block, window_spec, self._selected_cols, drop_null_groups=self._dropna
+        )
+
+    def expanding(self, min_periods: int = 1) -> windows.Window:
+        window_spec = core.WindowSpec(
+            grouping_keys=self._by_col_ids,
+            following=0,
+            min_periods=min_periods,
+        )
+        block = self._block.order_by(
+            [order.OrderingColumnReference(col) for col in self._by_col_ids],
+            stable=True,
+        )
+        return windows.Window(
+            block, window_spec, self._selected_cols, drop_null_groups=self._dropna
+        )
 
     def agg(self, func=None, **kwargs) -> df.DataFrame:
         if func:
@@ -351,7 +393,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         )
         columns = self._aggregated_columns(numeric_only=numeric_only)
         block, result_ids = self._block.multi_apply_window_op(
-            columns, op, window_spec=window_spec, skip_null_groups=self._dropna
+            columns, op, window_spec=window_spec
         )
         block = block.select_columns(result_ids)
         return df.DataFrame(block)
@@ -421,6 +463,12 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
     def skew(self, *args, **kwargs) -> series.Series:
         block = block_ops.skew(self._block, [self._value_column], self._by_col_ids)
         return series.Series(block)
+
+    def kurt(self, *args, **kwargs) -> series.Series:
+        block = block_ops.kurt(self._block, [self._value_column], self._by_col_ids)
+        return series.Series(block)
+
+    kurtosis = kurt
 
     def prod(self, *args) -> series.Series:
         return self._aggregate(agg_ops.product_op)
@@ -510,7 +558,13 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
             [order.OrderingColumnReference(col) for col in self._by_col_ids],
             stable=True,
         )
-        return windows.Window(block, window_spec, self._value_column)
+        return windows.Window(
+            block,
+            window_spec,
+            [self._value_column],
+            drop_null_groups=self._dropna,
+            is_series=True,
+        )
 
     def expanding(self, min_periods: int = 1) -> windows.Window:
         window_spec = core.WindowSpec(
@@ -522,10 +576,13 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
             [order.OrderingColumnReference(col) for col in self._by_col_ids],
             stable=True,
         )
-        return windows.Window(block, window_spec, self._value_column)
-
-    def _ungroup(self) -> series.Series:
-        return series.Series(self._block.select_column(self._value_column))
+        return windows.Window(
+            block,
+            window_spec,
+            [self._value_column],
+            drop_null_groups=self._dropna,
+            is_series=True,
+        )
 
     def _aggregate(self, aggregate_op: agg_ops.AggregateOp) -> series.Series:
         result_block, _ = self._block.aggregate(
@@ -553,6 +610,5 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
             op,
             result_label=label,
             window_spec=window_spec,
-            skip_null_groups=self._dropna,
         )
         return series.Series(block.select_column(result_id))

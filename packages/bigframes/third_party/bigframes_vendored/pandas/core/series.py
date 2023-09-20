@@ -1673,61 +1673,6 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def rolling(
-        self,
-        window,
-        min_periods: int | None = None,
-    ):
-        """
-        Provide rolling window calculations.
-
-        Args:
-            window (int, timedelta, str, offset, or BaseIndexer subclass):
-                Size of the moving window.
-
-                If an integer, the fixed number of observations used for
-                each window.
-
-                If a timedelta, str, or offset, the time period of each window. Each
-                window will be a variable sized based on the observations included in
-                the time-period. This is only valid for datetime-like indexes.
-                To learn more about the offsets & frequency strings, please see `this link
-                <https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases>`__.
-
-                If a BaseIndexer subclass, the window boundaries
-                based on the defined ``get_window_bounds`` method. Additional rolling
-                keyword arguments, namely ``min_periods``, ``center``, ``closed`` and
-                ``step`` will be passed to ``get_window_bounds``.
-
-            min_periods (int, default None):
-                Minimum number of observations in window required to have a value;
-                otherwise, result is ``np.nan``.
-
-                For a window that is specified by an offset, ``min_periods`` will default to 1.
-
-                For a window that is specified by an integer, ``min_periods`` will default
-                to the size of the window.
-
-        Returns:
-            bigframes.core.window.Window: ``Window`` subclass if a ``win_type`` is passed.
-                ``Rolling`` subclass if ``win_type`` is not passed.
-        """
-        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
-
-    def expanding(self, min_periods=1):
-        """
-        Provide expanding window calculations.
-
-        Args:
-            min_periods (int, default 1):
-                Minimum number of observations in window required to have a value;
-                otherwise, result is ``np.nan``.
-
-        Returns:
-            bigframes.core.window.Window: ``Expanding`` subclass.
-        """
-        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
-
     def value_counts(
         self,
         normalize: bool = False,

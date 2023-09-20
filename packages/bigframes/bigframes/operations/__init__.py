@@ -773,6 +773,17 @@ def pow_op(
         return _float_pow_op(x, y)
 
 
+@short_circuit_nulls(ibis_dtypes.float)
+def unsafe_pow_op(
+    x: ibis_types.Value,
+    y: ibis_types.Value,
+):
+    """For internal use only - where domain and overflow checks are not needed."""
+    return typing.cast(ibis_types.NumericValue, x) ** typing.cast(
+        ibis_types.NumericValue, y
+    )
+
+
 def _int_pow_op(
     x: ibis_types.Value,
     y: ibis_types.Value,

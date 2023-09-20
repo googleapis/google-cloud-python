@@ -49,6 +49,7 @@ import bigframes.core.io
 import bigframes.core.joins as joins
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
+import bigframes.core.window
 import bigframes.dtypes
 import bigframes.formatting_helpers as formatter
 import bigframes.operations as ops
@@ -281,6 +282,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     @property
     def values(self) -> numpy.ndarray:
         return self.to_numpy()
+
+    @property
+    def _session(self) -> bigframes.Session:
+        return self._get_block().expr._session
 
     def __len__(self):
         rows, _ = self.shape
@@ -1056,6 +1061,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         if isinstance(v, bigframes.series.Series):
             return self._assign_series_join_on_index(k, v)
+        elif isinstance(v, bigframes.dataframe.DataFrame):
+            v_df_col_count = len(v._block.value_columns)
+            if v_df_col_count != 1:
+                raise ValueError(
+                    f"Cannot set a DataFrame with {v_df_col_count} columns to the single column {k}"
+                )
+            return self._assign_series_join_on_index(k, v[v.columns[0]])
         elif callable(v):
             copy = self.copy()
             copy[k] = v(copy)
@@ -1627,6 +1639,16 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         result_block = block_ops.skew(frame._block, frame._block.value_columns)
         return bigframes.series.Series(result_block)
 
+    def kurt(self, *, numeric_only: bool = False):
+        if not numeric_only:
+            frame = self._raise_on_non_numeric("kurt")
+        else:
+            frame = self._drop_non_numeric()
+        result_block = block_ops.kurt(frame._block, frame._block.value_columns)
+        return bigframes.series.Series(result_block)
+
+    kurtosis = kurt
+
     def pivot(
         self,
         *,
@@ -1881,6 +1903,21 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             other._block.index, how=how, block_identity_join=True
         )
         return DataFrame(combined_index._block)
+
+    def rolling(self, window: int, min_periods=None) -> bigframes.core.window.Window:
+        # To get n size window, need current row and n-1 preceding rows.
+        window_spec = bigframes.core.WindowSpec(
+            preceding=window - 1, following=0, min_periods=min_periods or window
+        )
+        return bigframes.core.window.Window(
+            self._block, window_spec, self._block.value_columns
+        )
+
+    def expanding(self, min_periods: int = 1) -> bigframes.core.window.Window:
+        window_spec = bigframes.core.WindowSpec(following=0, min_periods=min_periods)
+        return bigframes.core.window.Window(
+            self._block, window_spec, self._block.value_columns
+        )
 
     def groupby(
         self,

@@ -241,7 +241,9 @@ Remote functions
 BigQuery DataFrames gives you the ability to turn your custom scalar functions
 into `BigQuery remote functions
 <https://cloud.google.com/bigquery/docs/remote-functions>`_ . Creating a remote
-function in BigQuery DataFrames creates a BigQuery remote function, a `BigQuery
+function in BigQuery DataFrames (See `code samples
+<https://cloud.google.com/bigquery/docs/remote-functions#bigquery-dataframes>`_)
+creates a BigQuery remote function, a `BigQuery
 connection
 <https://cloud.google.com/bigquery/docs/create-cloud-resource-connection>`_ ,
 and a `Cloud Functions (2nd gen) function

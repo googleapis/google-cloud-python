@@ -110,7 +110,7 @@ class XGBRegressor(
         dummy_regressor = cls()
         for bf_param, bf_value in dummy_regressor.__dict__.items():
             bqml_param = _BQML_PARAMS_MAPPING.get(bf_param)
-            if bqml_param is not None:
+            if bqml_param in last_fitting:
                 kwargs[bf_param] = type(bf_value)(last_fitting[bqml_param])
 
         new_xgb_regressor = cls(**kwargs)
@@ -431,7 +431,7 @@ class RandomForestRegressor(
         dummy_model = cls()
         for bf_param, bf_value in dummy_model.__dict__.items():
             bqml_param = _BQML_PARAMS_MAPPING.get(bf_param)
-            if bqml_param is not None:
+            if bqml_param in last_fitting:
                 kwargs[bf_param] = type(bf_value)(last_fitting[bqml_param])
 
         new_random_forest_regressor = cls(**kwargs)

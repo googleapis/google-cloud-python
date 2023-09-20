@@ -355,6 +355,46 @@ def skew(
     return block
 
 
+def kurt(
+    block: blocks.Block,
+    skew_column_ids: typing.Sequence[str],
+    grouping_column_ids: typing.Sequence[str] = (),
+) -> blocks.Block:
+    original_columns = skew_column_ids
+    column_labels = block.select_columns(original_columns).column_labels
+
+    block, delta4_ids = _mean_delta_to_power(
+        block, 4, original_columns, grouping_column_ids
+    )
+    # counts, moment4 for each column
+    aggregations = []
+    for i, col in enumerate(original_columns):
+        count_agg = (col, agg_ops.count_op)
+        moment4_agg = (delta4_ids[i], agg_ops.mean_op)
+        variance_agg = (col, agg_ops.PopVarOp())
+        aggregations.extend([count_agg, moment4_agg, variance_agg])
+
+    block, agg_ids = block.aggregate(
+        by_column_ids=grouping_column_ids, aggregations=aggregations
+    )
+
+    kurt_ids = []
+    for i, col in enumerate(original_columns):
+        # Corresponds to order of aggregations in preceding loop
+        count_id, moment4_id, var_id = agg_ids[i * 3 : (i * 3) + 3]
+        block, kurt_id = _kurt_from_moments_and_count(
+            block, count_id, moment4_id, var_id
+        )
+        kurt_ids.append(kurt_id)
+
+    block = block.select_columns(kurt_ids).with_column_labels(column_labels)
+    if not grouping_column_ids:
+        # When ungrouped, stack everything into single column so can be returned as series
+        block = block.stack()
+        block = block.drop_levels([block.index_columns[0]])
+    return block
+
+
 def _mean_delta_to_power(
     block: blocks.Block,
     n_power,
@@ -375,13 +415,13 @@ def _mean_delta_to_power(
 
 
 def _skew_from_moments_and_count(
-    block: blocks.Block, count_id: str, moment3_id: str, var_id: str
+    block: blocks.Block, count_id: str, moment3_id: str, moment2_id: str
 ) -> typing.Tuple[blocks.Block, str]:
     # Calculate skew using count, third moment and population variance
     # See G1 estimator:
     # https://en.wikipedia.org/wiki/Skewness#Sample_skewness
     block, denominator_id = block.apply_unary_op(
-        var_id, ops.partial_right(ops.pow_op, 3 / 2)
+        moment2_id, ops.partial_right(ops.unsafe_pow_op, 3 / 2)
     )
     block, base_id = block.apply_binary_op(moment3_id, denominator_id, ops.div_op)
     block, countminus1_id = block.apply_unary_op(
@@ -392,7 +432,7 @@ def _skew_from_moments_and_count(
     )
     block, adjustment_id = block.apply_binary_op(count_id, countminus1_id, ops.mul_op)
     block, adjustment_id = block.apply_unary_op(
-        adjustment_id, ops.partial_right(ops.pow_op, 1 / 2)
+        adjustment_id, ops.partial_right(ops.unsafe_pow_op, 1 / 2)
     )
     block, adjustment_id = block.apply_binary_op(
         adjustment_id, countminus2_id, ops.div_op
@@ -405,3 +445,58 @@ def _skew_from_moments_and_count(
         skew_id, na_cond_id, ops.partial_arg3(ops.where_op, None)
     )
     return block, skew_id
+
+
+def _kurt_from_moments_and_count(
+    block: blocks.Block, count_id: str, moment4_id: str, moment2_id: str
+) -> typing.Tuple[blocks.Block, str]:
+    # Kurtosis is often defined as the second standardize moment: moment(4)/moment(2)**2
+    # Pandas however uses Fisher’s estimator, implemented below
+    # numerator = (count + 1) * (count - 1) * moment4
+    # denominator = (count - 2) * (count - 3) * moment2**2
+    # adjustment = 3 * (count - 1) ** 2 / ((count - 2) * (count - 3))
+    # kurtosis = (numerator / denominator) - adjustment
+
+    # Numerator
+    block, countminus1_id = block.apply_unary_op(
+        count_id, ops.partial_right(ops.sub_op, 1)
+    )
+    block, countplus1_id = block.apply_unary_op(
+        count_id, ops.partial_right(ops.add_op, 1)
+    )
+    block, num_adj = block.apply_binary_op(countplus1_id, countminus1_id, ops.mul_op)
+    block, numerator_id = block.apply_binary_op(moment4_id, num_adj, ops.mul_op)
+
+    # Denominator
+    block, countminus2_id = block.apply_unary_op(
+        count_id, ops.partial_right(ops.sub_op, 2)
+    )
+    block, countminus3_id = block.apply_unary_op(
+        count_id, ops.partial_right(ops.sub_op, 3)
+    )
+    block, denom_adj = block.apply_binary_op(countminus2_id, countminus3_id, ops.mul_op)
+    block, popvar_squared = block.apply_unary_op(
+        moment2_id, ops.partial_right(ops.unsafe_pow_op, 2)
+    )
+    block, denominator_id = block.apply_binary_op(popvar_squared, denom_adj, ops.mul_op)
+
+    # Adjustment
+    block, countminus1_square = block.apply_unary_op(
+        countminus1_id, ops.partial_right(ops.unsafe_pow_op, 2)
+    )
+    block, adj_num = block.apply_unary_op(
+        countminus1_square, ops.partial_right(ops.mul_op, 3)
+    )
+    block, adj_denom = block.apply_binary_op(countminus2_id, countminus3_id, ops.mul_op)
+    block, adjustment_id = block.apply_binary_op(adj_num, adj_denom, ops.div_op)
+
+    # Combine
+    block, base_id = block.apply_binary_op(numerator_id, denominator_id, ops.div_op)
+    block, kurt_id = block.apply_binary_op(base_id, adjustment_id, ops.sub_op)
+
+    # Need to produce NA if have less than 4 data points
+    block, na_cond_id = block.apply_unary_op(count_id, ops.partial_right(ops.ge_op, 4))
+    block, kurt_id = block.apply_binary_op(
+        kurt_id, na_cond_id, ops.partial_arg3(ops.where_op, None)
+    )
+    return block, kurt_id

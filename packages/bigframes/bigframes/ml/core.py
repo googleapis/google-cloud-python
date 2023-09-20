@@ -221,7 +221,7 @@ def create_bqml_model(
         input_data = X_train.join(y_train, how="outer")
         options.update({"INPUT_LABEL_COLS": y_train.columns.tolist()})
 
-    session = X_train._get_block().expr._session
+    session = X_train._session
 
     source_sql = input_data.sql
     options_sql = ml_sql.options(**options)
@@ -255,7 +255,7 @@ def create_bqml_time_series_model(
     options.update({"TIME_SERIES_TIMESTAMP_COL": X_train.columns.tolist()[0]})
     options.update({"TIME_SERIES_DATA_COL": y_train.columns.tolist()[0]})
 
-    session = X_train._get_block().expr._session
+    session = X_train._session
 
     source_sql = input_data.sql
     options_sql = ml_sql.options(**options)

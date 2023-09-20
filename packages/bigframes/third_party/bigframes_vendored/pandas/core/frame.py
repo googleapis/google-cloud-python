@@ -1569,6 +1569,21 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def kurt(self, *, numeric_only: bool = False):
+        """Return unbiased kurtosis over requested axis.
+
+        Kurtosis obtained using Fisher's definition of
+        kurtosis (kurtosis of normal == 0.0). Normalized by N-1.
+
+        Args:
+            numeric_only (bool, default False):
+                Include only float, int, boolean columns.
+
+        Returns:
+            Series
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def std(self, *, numeric_only: bool = False):
         """Return sample standard deviation over requested axis.
 

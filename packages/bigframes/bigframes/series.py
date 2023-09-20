@@ -1016,13 +1016,13 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             preceding=window - 1, following=0, min_periods=min_periods or window
         )
         return bigframes.core.window.Window(
-            self._block, window_spec, self._value_column
+            self._block, window_spec, self._block.value_columns, is_series=True
         )
 
     def expanding(self, min_periods: int = 1) -> bigframes.core.window.Window:
         window_spec = WindowSpec(following=0, min_periods=min_periods)
         return bigframes.core.window.Window(
-            self._block, window_spec, self._value_column
+            self._block, window_spec, self._block.value_columns, is_series=True
         )
 
     def groupby(

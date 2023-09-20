@@ -709,6 +709,7 @@ class Block:
         window_spec: core.WindowSpec,
         *,
         skip_null_groups: bool = False,
+        never_skip_nulls: bool = False,
     ) -> typing.Tuple[Block, typing.Sequence[str]]:
         block = self
         result_ids = []
@@ -721,6 +722,7 @@ class Block:
                 skip_reproject_unsafe=(i + 1) < len(columns),
                 result_label=label,
                 skip_null_groups=skip_null_groups,
+                never_skip_nulls=never_skip_nulls,
             )
             result_ids.append(result_id)
         return block, result_ids
@@ -751,15 +753,21 @@ class Block:
         result_label: Label = None,
         skip_null_groups: bool = False,
         skip_reproject_unsafe: bool = False,
+        never_skip_nulls: bool = False,
     ) -> typing.Tuple[Block, str]:
+        block = self
+        if skip_null_groups:
+            for key in window_spec.grouping_keys:
+                block, not_null_id = block.apply_unary_op(key, ops.notnull_op)
+                block = block.filter(not_null_id).drop_columns([not_null_id])
         result_id = guid.generate_guid()
-        expr = self._expr.project_window_op(
+        expr = block._expr.project_window_op(
             column,
             op,
             window_spec,
             result_id,
-            skip_null_groups=skip_null_groups,
             skip_reproject_unsafe=skip_reproject_unsafe,
+            never_skip_nulls=never_skip_nulls,
         )
         block = Block(
             expr,

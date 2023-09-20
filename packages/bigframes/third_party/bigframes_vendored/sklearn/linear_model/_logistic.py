@@ -28,9 +28,14 @@ class LogisticRegression(LinearClassifierMixin, BaseEstimator):
         fit_intercept (default True):
             Default True. Specifies if a constant (a.k.a. bias or intercept)
             should be added to the decision function.
-        auto_class_weights (default False):
-            Default False. If True, balance class labels using weights for each
-            class in inverse proportion to the frequency of that class.
+        class_weights (dict or 'balanced', default None):
+            Default None. Weights associated with classes in the form
+            ``{class_label: weight}``.If not given, all classes are supposed
+            to have weight one. The "balanced" mode uses the values of y to
+            automatically adjust weights inversely proportional to class
+            frequencies in the input data as
+            ``n_samples / (n_classes * np.bincount(y))``. Dict isn't
+            supported now.
     """
 
     def fit(

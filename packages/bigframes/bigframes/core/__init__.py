@@ -600,7 +600,7 @@ class ArrayValue:
         window_spec: WindowSpec,
         output_name=None,
         *,
-        skip_null_groups=False,
+        never_skip_nulls=False,
         skip_reproject_unsafe: bool = False,
     ) -> ArrayValue:
         """
@@ -609,7 +609,7 @@ class ArrayValue:
         op: the windowable operator to apply to the input column
         window_spec: a specification of the window over which to apply the operator
         output_name: the id to assign to the output of the operator, by default will replace input col if distinct output id not provided
-        skip_null_groups: will filter out any rows where any of the grouping keys is null
+        never_skip_nulls: will disable null skipping for operators that would otherwise do so
         skip_reproject_unsafe: skips the reprojection step, can be used when performing many non-dependent window operations, user responsible for not nesting window expressions, or using outputs as join, filter or aggregation keys before a reprojection
         """
         column = typing.cast(ibis_types.Column, self.get_column(column_name))
@@ -618,20 +618,23 @@ class ArrayValue:
         window_op = op._as_ibis(column, window)
 
         clauses = []
-        if op.skips_nulls:
+        if op.skips_nulls and not never_skip_nulls:
             clauses.append((column.isnull(), ibis.NA))
-        if skip_null_groups:
-            for key in window_spec.grouping_keys:
-                clauses.append((self.get_column(key).isnull(), ibis.NA))
         if window_spec.min_periods:
+            if op.skips_nulls:
+                # Most operations do not count NULL values towards min_periods
+                observation_count = agg_ops.count_op._as_ibis(column, window)
+            else:
+                # Operations like count treat even NULLs as valid observations for the sake of min_periods
+                # notnull is just used to convert null values to non-null (FALSE) values to be counted
+                denulled_value = typing.cast(ibis_types.BooleanColumn, column.notnull())
+                observation_count = agg_ops.count_op._as_ibis(denulled_value, window)
             clauses.append(
                 (
-                    agg_ops.count_op._as_ibis(column, window)
-                    < ibis_types.literal(window_spec.min_periods),
+                    observation_count < ibis_types.literal(window_spec.min_periods),
                     ibis.NA,
                 )
             )
-
         if clauses:
             case_statement = ibis.case()
             for clause in clauses:
