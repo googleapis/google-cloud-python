@@ -1,9 +1,9 @@
-Python Client for Transcoder API
-================================
+Python Client for Transcoder
+============================
 
 |stable| |pypi| |versions|
 
-`Transcoder API`_: allows you to transcode videos into a variety of formats. The Transcoder API benefits broadcasters, production companies, businesses, and individuals looking to transform their video content for use across a variety of user devices.
+`Transcoder`_: allows you to transcode videos into a variety of formats. The Transcoder API benefits broadcasters, production companies, businesses, and individuals looking to transform their video content for use across a variety of user devices.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Transcoder API
    :target: https://pypi.org/project/google-cloud-video-transcoder/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-video-transcoder.svg
    :target: https://pypi.org/project/google-cloud-video-transcoder/
-.. _Transcoder API: https://cloud.google.com/transcoder
+.. _Transcoder: https://cloud.google.com/transcoder
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/transcoder/latest
 .. _Product Documentation:  https://cloud.google.com/transcoder
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Transcoder API.`_
+3. `Enable the Transcoder.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Transcoder API.:  https://cloud.google.com/transcoder
+.. _Enable the Transcoder.:  https://cloud.google.com/transcoder
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/python-video-transcoder/tree/main/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-video-transcoder/samples
 
 
 Supported Python Versions
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Transcoder API
+-  Read the `Client Library Documentation`_ for Transcoder
    to see other available methods on the client.
--  Read the `Transcoder API Product documentation`_ to learn
+-  Read the `Transcoder Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Transcoder API Product documentation:  https://cloud.google.com/transcoder
+.. _Transcoder Product documentation:  https://cloud.google.com/transcoder
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
