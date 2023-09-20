@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.2](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.3.1...google-ai-generativelanguage-v0.3.2) (2023-09-20)
+
+
+### Features
+
+* Add BatchEmbedText and CountTextTokens to the text service ([38f2ca3](https://github.com/googleapis/google-cloud-python/commit/38f2ca3b3356c0fb42ebdf341dd548836c0896f3))
+* Add google/ai/generativelanguage_v1beta3  ([38f2ca3](https://github.com/googleapis/google-cloud-python/commit/38f2ca3b3356c0fb42ebdf341dd548836c0896f3))
+* Add model tuning ([38f2ca3](https://github.com/googleapis/google-cloud-python/commit/38f2ca3b3356c0fb42ebdf341dd548836c0896f3))
+* Add permissions service ([38f2ca3](https://github.com/googleapis/google-cloud-python/commit/38f2ca3b3356c0fb42ebdf341dd548836c0896f3))
+
 ## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.3.0...google-ai-generativelanguage-v0.3.1) (2023-07-05)
 
 
