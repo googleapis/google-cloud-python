@@ -305,11 +305,11 @@ class PermissionServiceAsyncClient:
                 role is a superset of the previous
                 role's permitted operations:
 
-                 - reader can use the resource (e.g.
+                - reader can use the resource (e.g.
                   tuned model) for inference
-                 - writer has reader's permissions and
+                - writer has reader's permissions and
                   additionally can edit and share
-                 - owner has writer's permissions and
+                - owner has writer's permissions and
                   additionally can delete
 
         """
@@ -432,11 +432,11 @@ class PermissionServiceAsyncClient:
                 role is a superset of the previous
                 role's permitted operations:
 
-                 - reader can use the resource (e.g.
+                - reader can use the resource (e.g.
                   tuned model) for inference
-                 - writer has reader's permissions and
+                - writer has reader's permissions and
                   additionally can edit and share
-                 - owner has writer's permissions and
+                - owner has writer's permissions and
                   additionally can delete
 
         """
@@ -682,11 +682,11 @@ class PermissionServiceAsyncClient:
                 role is a superset of the previous
                 role's permitted operations:
 
-                 - reader can use the resource (e.g.
+                - reader can use the resource (e.g.
                   tuned model) for inference
-                 - writer has reader's permissions and
+                - writer has reader's permissions and
                   additionally can edit and share
-                 - owner has writer's permissions and
+                - owner has writer's permissions and
                   additionally can delete
 
         """
