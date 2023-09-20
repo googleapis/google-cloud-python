@@ -1,9 +1,9 @@
-Python Client for Live Stream API
-=================================
+Python Client for Live Stream
+=============================
 
 |stable| |pypi| |versions|
 
-`Live Stream API`_: transcodes mezzanine live signals into direct-to-consumer streaming formats, including Dynamic Adaptive Streaming over HTTP (DASH/MPEG-DASH), and HTTP Live Streaming (HLS), for multiple device platforms.
+`Live Stream`_: transcodes mezzanine live signals into direct-to-consumer streaming formats, including Dynamic Adaptive Streaming over HTTP (DASH/MPEG-DASH), and HTTP Live Streaming (HLS), for multiple device platforms.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Live Stream API
    :target: https://pypi.org/project/google-cloud-video-live-stream/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-video-live-stream.svg
    :target: https://pypi.org/project/google-cloud-video-live-stream/
-.. _Live Stream API: https://cloud.google.com/livestream/docs
+.. _Live Stream: https://cloud.google.com/livestream/docs
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/livestream/latest
 .. _Product Documentation:  https://cloud.google.com/livestream/docs
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Live Stream API.`_
+3. `Enable the Live Stream.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Live Stream API.:  https://cloud.google.com/livestream/docs
+.. _Enable the Live Stream.:  https://cloud.google.com/livestream/docs
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/python-video-live-stream/tree/main/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-video-live-stream/samples
 
 
 Supported Python Versions
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Live Stream API
+-  Read the `Client Library Documentation`_ for Live Stream
    to see other available methods on the client.
--  Read the `Live Stream API Product documentation`_ to learn
+-  Read the `Live Stream Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Live Stream API Product documentation:  https://cloud.google.com/livestream/docs
+.. _Live Stream Product documentation:  https://cloud.google.com/livestream/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
