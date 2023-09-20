@@ -484,6 +484,27 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-commerce-consumer-procurement": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-commerce-consumer-procurement",
+            "extra-files": [
+                "google/cloud/commerce_consumer_procurement/gapic_version.py",
+                "google/cloud/commerce_consumer_procurement_v1/gapic_version.py",
+                "google/cloud/commerce_consumer_procurement_v1alpha1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.commerce.consumer.procurement.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.commerce.consumer.procurement.v1alpha1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-confidentialcomputing": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,

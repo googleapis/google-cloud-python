@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.1...google-cloud-alloydb-v0.3.2) (2023-09-19)
+
+
+### Features
+
+* **v1alpha:** Added ClientConnectionConfig ([899c388](https://github.com/googleapis/google-cloud-python/commit/899c388ff5cc6986c4e18fa82babb57f66bb38ce))
+* **v1alpha:** Added DatabaseVersion ([899c388](https://github.com/googleapis/google-cloud-python/commit/899c388ff5cc6986c4e18fa82babb57f66bb38ce))
+* **v1alpha:** Added enum value for PG15 ([899c388](https://github.com/googleapis/google-cloud-python/commit/899c388ff5cc6986c4e18fa82babb57f66bb38ce))
+* **v1alpha:** Deprecate network field in favor of network_config.network ([899c388](https://github.com/googleapis/google-cloud-python/commit/899c388ff5cc6986c4e18fa82babb57f66bb38ce))
+
 ## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.0...google-cloud-alloydb-v0.3.1) (2023-09-19)
 
 
