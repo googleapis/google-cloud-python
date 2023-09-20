@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.10.1](https://github.com/googleapis/python-video-transcoder/compare/v1.10.0...v1.10.1) (2023-09-18)
+
+
+### Documentation
+
+* Minor formatting ([180aca1](https://github.com/googleapis/python-video-transcoder/commit/180aca14aca091cb5705451e164f2b9466481ea2))
+* Remove migrated samples ([#333](https://github.com/googleapis/python-video-transcoder/issues/333)) ([27b99fb](https://github.com/googleapis/python-video-transcoder/commit/27b99fb757e206f13062ca69c3b752d256351397))
+
 ## [1.10.0](https://github.com/googleapis/python-video-transcoder/compare/v1.9.1...v1.10.0) (2023-07-11)
 
 
