@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-live-stream-v1.5.2...google-cloud-video-live-stream-v1.6.0) (2023-09-20)
+
+
+### Features
+
+* added support for slate events which allow users to create and insert a slate into a live stream to replace the main live stream content ([#171](https://github.com/googleapis/google-cloud-python/issues/171)) ([987edab](https://github.com/googleapis/google-cloud-python/commit/987edab4e36beea42384286b27b699d1cc83f8b2))
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#167](https://github.com/googleapis/google-cloud-python/issues/167)) ([5666e7a](https://github.com/googleapis/google-cloud-python/commit/5666e7a18afebe27794f5c594150525e900efc2d))
+
+
+### Documentation
+
+* Minor formatting ([#185](https://github.com/googleapis/google-cloud-python/issues/185)) ([b87da48](https://github.com/googleapis/google-cloud-python/commit/b87da48f5ceb0dbe3095971eba08e248020b803b))
+* remove migrated samples ([#187](https://github.com/googleapis/google-cloud-python/issues/187)) ([1cfd024](https://github.com/googleapis/google-cloud-python/commit/1cfd024248849ae296c43b904706fe06b7ede428))
+* **samples:** add samples and tests for pools and assets ([#180](https://github.com/googleapis/google-cloud-python/issues/180)) ([5649d1c](https://github.com/googleapis/google-cloud-python/commit/5649d1ce2f74b2949afa49edfe094422021fb255))
+
 ## [1.5.2](https://github.com/googleapis/python-video-live-stream/compare/v1.5.1...v1.5.2) (2023-09-19)
 
 

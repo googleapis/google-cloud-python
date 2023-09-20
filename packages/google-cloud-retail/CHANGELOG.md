@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.16.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v1.16.3...google-cloud-retail-v1.16.4) (2023-09-20)
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#421](https://github.com/googleapis/google-cloud-python/issues/421)) ([a1aa850](https://github.com/googleapis/google-cloud-python/commit/a1aa85062d52e5c6a3c4a651621c6b9d5bbd75bc))
+
+
+### Documentation
+
+* Minor formatting ([#433](https://github.com/googleapis/google-cloud-python/issues/433)) ([d1ef7d3](https://github.com/googleapis/google-cloud-python/commit/d1ef7d3cbc14cd5ea0759ce5c17d79e2a20ddcc9))
+* remove migrated samples ([#434](https://github.com/googleapis/google-cloud-python/issues/434)) ([64776b3](https://github.com/googleapis/google-cloud-python/commit/64776b3a65709b872b655a4242198cef3a310279))
+
 ## [1.16.3](https://github.com/googleapis/python-retail/compare/v1.16.2...v1.16.3) (2023-09-19)
 
 

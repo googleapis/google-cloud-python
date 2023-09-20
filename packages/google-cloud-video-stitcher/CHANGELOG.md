@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.4...google-cloud-video-stitcher-v0.8.0) (2023-09-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* use correct child_type annotation ([#177](https://github.com/googleapis/google-cloud-python/issues/177))
+
+### Bug Fixes
+
+* Add async context manager return types ([#161](https://github.com/googleapis/google-cloud-python/issues/161)) ([adbf6fb](https://github.com/googleapis/google-cloud-python/commit/adbf6fbaf6db7075e9ddebb3436f5f425b65ed8e))
+* use correct child_type annotation ([#177](https://github.com/googleapis/google-cloud-python/issues/177)) ([d2b5bf3](https://github.com/googleapis/google-cloud-python/commit/d2b5bf3960d895644bf76f916d039c0a1704fb97))
+
+
+### Documentation
+
+* Minor formatting ([#179](https://github.com/googleapis/google-cloud-python/issues/179)) ([208def2](https://github.com/googleapis/google-cloud-python/commit/208def2e5d628c8add7cedc82113fec0e0ce52f0))
+* remove migrated samples ([#180](https://github.com/googleapis/google-cloud-python/issues/180)) ([3cfbf57](https://github.com/googleapis/google-cloud-python/commit/3cfbf57491baac76470901a3161af984237779b6))
+
 ## [0.7.4](https://github.com/googleapis/python-video-stitcher/compare/v0.7.3...v0.7.4) (2023-09-19)
 
 

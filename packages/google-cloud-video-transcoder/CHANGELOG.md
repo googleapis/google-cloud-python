@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-transcoder-v1.10.1...google-cloud-video-transcoder-v1.11.0) (2023-09-20)
+
+
+### Features
+
+* added support for segment template manifest generation with DASH ([#318](https://github.com/googleapis/google-cloud-python/issues/318)) ([6ea2d38](https://github.com/googleapis/google-cloud-python/commit/6ea2d387bfd2e830f1f336fd3c177e2bda2e040c))
+
+
+### Bug Fixes
+
+* Add async context manager return types ([#314](https://github.com/googleapis/google-cloud-python/issues/314)) ([db9c1ab](https://github.com/googleapis/google-cloud-python/commit/db9c1abafb31f585f27c445ecfe62b2ae2cd5b14))
+
+
+### Documentation
+
+* Minor formatting ([#332](https://github.com/googleapis/google-cloud-python/issues/332)) ([78fc705](https://github.com/googleapis/google-cloud-python/commit/78fc7050eb3b5d16619d8c5d8972b4efbf00d45b))
+* remove migrated samples ([#333](https://github.com/googleapis/google-cloud-python/issues/333)) ([03be3e5](https://github.com/googleapis/google-cloud-python/commit/03be3e5708b899717b53f956605b8db6efa0ab77))
+
 ## [1.10.1](https://github.com/googleapis/python-video-transcoder/compare/v1.10.0...v1.10.1) (2023-09-18)
 
 
