@@ -1816,7 +1816,12 @@
             "component": "google-cloud-video-transcoder",
             "extra-files": [
                 "google/cloud/video/transcoder/gapic_version.py",
-                "google/cloud/video/transcoder_v1/gapic_version.py"
+                "google/cloud/video/transcoder_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.video.transcoder.v1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },
