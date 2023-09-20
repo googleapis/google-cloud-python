@@ -563,6 +563,7 @@ class DiscussServiceClient(metaclass=DiscussServiceClientMeta):
         Returns:
             google.ai.generativelanguage_v1beta2.types.GenerateMessageResponse:
                 The response from the model.
+
                 This includes candidate messages and
                 conversation history in the form of
                 chronologically-ordered messages.

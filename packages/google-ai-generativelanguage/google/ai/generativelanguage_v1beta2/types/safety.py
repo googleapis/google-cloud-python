@@ -33,6 +33,7 @@ __protobuf__ = proto.module(
 
 class HarmCategory(proto.Enum):
     r"""The category of a rating.
+
     These categories cover various kinds of harms that developers
     may wish to adjust.
 
@@ -117,6 +118,7 @@ class ContentFilter(proto.Message):
 
 class SafetyFeedback(proto.Message):
     r"""Safety feedback for an entire request.
+
     This field is populated if content in the input and/or response
     is blocked due to safety settings. SafetyFeedback may not exist
     for every HarmCategory. Each SafetyFeedback will return the
@@ -145,6 +147,7 @@ class SafetyFeedback(proto.Message):
 
 class SafetyRating(proto.Message):
     r"""Safety rating for a piece of content.
+
     The safety rating contains the category of harm and the harm
     probability level in that category for a piece of content.
     Content is classified for safety across a number of harm
@@ -161,6 +164,7 @@ class SafetyRating(proto.Message):
 
     class HarmProbability(proto.Enum):
         r"""The probability that a piece of content is harmful.
+
         The classification system gives the probability of the content
         being unsafe. This does not indicate the severity of harm for a
         piece of content.
@@ -198,6 +202,7 @@ class SafetyRating(proto.Message):
 
 class SafetySetting(proto.Message):
     r"""Safety setting, affecting the safety-blocking behavior.
+
     Passing a safety setting for a category changes the allowed
     proability that content is blocked.
 

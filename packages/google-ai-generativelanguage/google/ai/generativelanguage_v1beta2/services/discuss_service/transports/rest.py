@@ -373,6 +373,7 @@ class DiscussServiceRestTransport(DiscussServiceTransport):
             Returns:
                 ~.discuss_service.GenerateMessageResponse:
                     The response from the model.
+
                 This includes candidate messages and
                 conversation history in the form of
                 chronologically-ordered messages.

@@ -53,6 +53,7 @@ class Model(proto.Message):
             -  ``chat-bison``
         version (str):
             Required. The version number of the model.
+
             This represents the major version
         display_name (str):
             The human-readable name of the model. E.g.

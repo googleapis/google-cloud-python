@@ -216,6 +216,7 @@ class GenerateTextResponse(proto.Message):
 
 class TextPrompt(proto.Message):
     r"""Text given to the model as a prompt.
+
     The Model will use this TextPrompt to Generate a text
     completion.
 
@@ -241,6 +242,7 @@ class TextCompletion(proto.Message):
             the model.
         safety_ratings (MutableSequence[google.ai.generativelanguage_v1beta2.types.SafetyRating]):
             Ratings for the safety of a response.
+
             There is at most one rating per category.
         citation_metadata (google.ai.generativelanguage_v1beta2.types.CitationMetadata):
             Output only. Citation information for model-generated

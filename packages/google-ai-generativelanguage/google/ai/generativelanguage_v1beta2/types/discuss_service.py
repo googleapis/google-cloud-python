@@ -123,6 +123,7 @@ class GenerateMessageRequest(proto.Message):
 
 class GenerateMessageResponse(proto.Message):
     r"""The response from the model.
+
     This includes candidate messages and
     conversation history in the form of chronologically-ordered
     messages.
@@ -174,9 +175,11 @@ class Message(proto.Message):
     Attributes:
         author (str):
             Optional. The author of this Message.
+
             This serves as a key for tagging
             the content of this Message when it is fed to
             the model as text.
+
             The author can be any alphanumeric string.
         content (str):
             Required. The text content of the structured ``Message``.
@@ -276,6 +279,7 @@ class MessagePrompt(proto.Message):
 
 class Example(proto.Message):
     r"""An input/output example used to instruct the Model.
+
     It demonstrates how the model should respond or format its
     response.
 
