@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.2](https://github.com/googleapis/python-video-live-stream/compare/v1.5.1...v1.5.2) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([39eb5b3](https://github.com/googleapis/python-video-live-stream/commit/39eb5b313967dfeb47cbaeb99e5b64030c53afae))
+* Remove migrated samples ([#187](https://github.com/googleapis/python-video-live-stream/issues/187)) ([0988a81](https://github.com/googleapis/python-video-live-stream/commit/0988a81ddc2f7bab18186604d28c030be646bf09))
+
 ## [1.5.1](https://github.com/googleapis/python-video-live-stream/compare/v1.5.0...v1.5.1) (2023-08-11)
 
 
