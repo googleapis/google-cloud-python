@@ -7,9 +7,15 @@
             "extra-files": [
                 "google/ai/generativelanguage/gapic_version.py",
                 "google/ai/generativelanguage_v1beta2/gapic_version.py",
+                "google/ai/generativelanguage_v1beta3/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.ai.generativelanguage.v1beta2.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.ai.generativelanguage.v1beta3.json",
                     "type": "json"
                 }
             ],
