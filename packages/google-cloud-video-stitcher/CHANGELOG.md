@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.7.4](https://github.com/googleapis/python-video-stitcher/compare/v0.7.3...v0.7.4) (2023-09-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* use correct child_type annotation
+
+### Bug Fixes
+
+* Use correct child_type annotation ([bd0af89](https://github.com/googleapis/python-video-stitcher/commit/bd0af892653db462b0c2b3389faf03ebe0d4d49c))
+
+
+### Documentation
+
+* Minor formatting ([88e37ed](https://github.com/googleapis/python-video-stitcher/commit/88e37edab40affdd8a9e9dfe83d24a615a422643))
+* Remove migrated samples ([#180](https://github.com/googleapis/python-video-stitcher/issues/180)) ([73af7e9](https://github.com/googleapis/python-video-stitcher/commit/73af7e90d9f71aa322cb940b3b1c1e995aa72484))
+
 ## [0.7.3](https://github.com/googleapis/python-video-stitcher/compare/v0.7.2...v0.7.3) (2023-07-04)
 
 
