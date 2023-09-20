@@ -13,7 +13,7 @@ Pandas Data Types for SQL systems (BigQuery, Spanner)
    :target: https://pypi.org/project/db-dtypes/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/db-dtypes.svg
    :target: https://pypi.org/project/db-dtypes/
-.. _Pandas extension data types: https://pandas.pydata.org/pandas-docs/stable/ecosystem.html#ecosystem-extensions
+.. _Pandas extension data types: https://pandas.pydata.org/docs/development/extending.html#extension-types
 .. _BigQuery: https://cloud.google.com/bigquery/docs/
 .. _Library Documentation: https://googleapis.dev/python/db-dtypes/latest
 
