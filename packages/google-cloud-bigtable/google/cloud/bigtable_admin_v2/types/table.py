@@ -311,6 +311,7 @@ class ColumnFamily(proto.Message):
         gc_rule (google.cloud.bigtable_admin_v2.types.GcRule):
             Garbage collection rule specified as a
             protobuf. Must serialize to at most 500 bytes.
+
             NOTE: Garbage collection executes
             opportunistically in the background, and so it's
             possible for reads to return a cell even if it
@@ -481,6 +482,7 @@ class Snapshot(proto.Message):
     r"""A snapshot of a table at a particular time. A snapshot can be
     used as a checkpoint for data restoration or a data source for a
     new table.
+
     Note: This is a private alpha release of Cloud Bigtable
     snapshots. This feature is not currently available to most Cloud
     Bigtable customers. This feature might be changed in

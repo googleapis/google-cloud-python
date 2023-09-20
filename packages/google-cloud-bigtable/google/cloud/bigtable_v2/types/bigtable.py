@@ -756,8 +756,7 @@ class ReadModifyWriteRowResponse(proto.Message):
 
 class GenerateInitialChangeStreamPartitionsRequest(proto.Message):
     r"""NOTE: This API is intended to be used by Apache Beam
-    BigtableIO.
-    Request message for
+    BigtableIO. Request message for
     Bigtable.GenerateInitialChangeStreamPartitions.
 
     Attributes:
@@ -785,8 +784,7 @@ class GenerateInitialChangeStreamPartitionsRequest(proto.Message):
 
 class GenerateInitialChangeStreamPartitionsResponse(proto.Message):
     r"""NOTE: This API is intended to be used by Apache Beam
-    BigtableIO.
-    Response message for
+    BigtableIO. Response message for
     Bigtable.GenerateInitialChangeStreamPartitions.
 
     Attributes:
@@ -803,8 +801,7 @@ class GenerateInitialChangeStreamPartitionsResponse(proto.Message):
 
 class ReadChangeStreamRequest(proto.Message):
     r"""NOTE: This API is intended to be used by Apache Beam
-    BigtableIO.
-    Request message for Bigtable.ReadChangeStream.
+    BigtableIO. Request message for Bigtable.ReadChangeStream.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -900,8 +897,7 @@ class ReadChangeStreamRequest(proto.Message):
 
 class ReadChangeStreamResponse(proto.Message):
     r"""NOTE: This API is intended to be used by Apache Beam
-    BigtableIO.
-    Response message for Bigtable.ReadChangeStream.
+    BigtableIO. Response message for Bigtable.ReadChangeStream.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.

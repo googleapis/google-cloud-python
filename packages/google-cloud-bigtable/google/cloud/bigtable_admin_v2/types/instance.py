@@ -117,8 +117,8 @@ class Instance(proto.Message):
                 be set on the cluster.
             DEVELOPMENT (2):
                 DEPRECATED: Prefer PRODUCTION for all use
-                cases, as it no longer enforces
-                a higher minimum node count than DEVELOPMENT.
+                cases, as it no longer enforces a higher minimum
+                node count than DEVELOPMENT.
         """
         TYPE_UNSPECIFIED = 0
         PRODUCTION = 1

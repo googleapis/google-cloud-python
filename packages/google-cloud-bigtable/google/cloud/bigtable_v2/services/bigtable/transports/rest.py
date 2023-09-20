@@ -571,8 +571,8 @@ class BigtableRestTransport(BigtableTransport):
                 Args:
                     request (~.bigtable.GenerateInitialChangeStreamPartitionsRequest):
                         The request object. NOTE: This API is intended to be used
-                    by Apache Beam BigtableIO.
-                    Request message for
+                    by Apache Beam BigtableIO. Request
+                    message for
                     Bigtable.GenerateInitialChangeStreamPartitions.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -583,8 +583,8 @@ class BigtableRestTransport(BigtableTransport):
                 Returns:
                     ~.bigtable.GenerateInitialChangeStreamPartitionsResponse:
                         NOTE: This API is intended to be used
-                    by Apache Beam BigtableIO.
-                    Response message for
+                    by Apache Beam BigtableIO. Response
+                    message for
                     Bigtable.GenerateInitialChangeStreamPartitions.
 
             """
@@ -975,9 +975,8 @@ class BigtableRestTransport(BigtableTransport):
             Args:
                 request (~.bigtable.ReadChangeStreamRequest):
                     The request object. NOTE: This API is intended to be used
-                by Apache Beam BigtableIO.
-                Request message for
-                Bigtable.ReadChangeStream.
+                by Apache Beam BigtableIO. Request
+                message for Bigtable.ReadChangeStream.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -987,9 +986,8 @@ class BigtableRestTransport(BigtableTransport):
             Returns:
                 ~.bigtable.ReadChangeStreamResponse:
                     NOTE: This API is intended to be used
-                by Apache Beam BigtableIO.
-                Response message for
-                Bigtable.ReadChangeStream.
+                by Apache Beam BigtableIO. Response
+                message for Bigtable.ReadChangeStream.
 
             """
 

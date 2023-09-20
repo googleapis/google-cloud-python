@@ -302,6 +302,7 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
         Creates a new table from the specified snapshot. The
         target table must not exist. The snapshot and the table
         must be in the same instance.
+
         Note: This is a private alpha release of Cloud Bigtable
         snapshots. This feature is not currently available to
         most Cloud Bigtable customers. This feature might be
@@ -607,6 +608,7 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
         Creates a new snapshot in the specified cluster from
         the specified source table. The cluster and the table
         must be in the same instance.
+
         Note: This is a private alpha release of Cloud Bigtable
         snapshots. This feature is not currently available to
         most Cloud Bigtable customers. This feature might be
@@ -710,6 +712,7 @@ class BigtableTableAdminGrpcAsyncIOTransport(BigtableTableAdminTransport):
         r"""Return a callable for the delete snapshot method over gRPC.
 
         Permanently deletes the specified snapshot.
+
         Note: This is a private alpha release of Cloud Bigtable
         snapshots. This feature is not currently available to
         most Cloud Bigtable customers. This feature might be

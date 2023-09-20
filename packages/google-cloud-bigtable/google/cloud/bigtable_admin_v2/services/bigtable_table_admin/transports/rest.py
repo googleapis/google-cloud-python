@@ -45,8 +45,8 @@ from google.cloud.bigtable_admin_v2.types import table
 from google.cloud.bigtable_admin_v2.types import table as gba_table
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from .base import (
     BigtableTableAdminTransport,
@@ -2172,6 +2172,7 @@ class BigtableTableAdminRestTransport(BigtableTableAdminTransport):
                 time. A snapshot can be used as a
                 checkpoint for data restoration or a
                 data source for a new table.
+
                 Note: This is a private alpha release of
                 Cloud Bigtable snapshots. This feature
                 is not currently available to most Cloud

@@ -685,6 +685,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         r"""Creates a new table from the specified snapshot. The
         target table must not exist. The snapshot and the table
         must be in the same instance.
+
         Note: This is a private alpha release of Cloud Bigtable
         snapshots. This feature is not currently available to
         most Cloud Bigtable customers. This feature might be
@@ -1587,6 +1588,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         r"""Creates a new snapshot in the specified cluster from
         the specified source table. The cluster and the table
         must be in the same instance.
+
         Note: This is a private alpha release of Cloud Bigtable
         snapshots. This feature is not currently available to
         most Cloud Bigtable customers. This feature might be
@@ -1763,6 +1765,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 time. A snapshot can be used as a
                 checkpoint for data restoration or a
                 data source for a new table.
+
                 Note: This is a private alpha release of
                 Cloud Bigtable snapshots. This feature
                 is not currently available to most Cloud
@@ -1942,6 +1945,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Permanently deletes the specified snapshot.
+
         Note: This is a private alpha release of Cloud Bigtable
         snapshots. This feature is not currently available to
         most Cloud Bigtable customers. This feature might be
@@ -2690,8 +2694,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 The request object. Request message for ``GetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
-                policy is being requested.
-                See the operation documentation for the
+                policy is being requested. See the
+                operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field
@@ -2795,8 +2799,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 The request object. Request message for ``SetIamPolicy`` method.
             resource (str):
                 REQUIRED: The resource for which the
-                policy is being specified.
-                See the operation documentation for the
+                policy is being specified. See the
+                operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field
@@ -2901,8 +2905,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 The request object. Request message for ``TestIamPermissions`` method.
             resource (str):
                 REQUIRED: The resource for which the
-                policy detail is being requested.
-                See the operation documentation for the
+                policy detail is being requested. See
+                the operation documentation for the
                 appropriate value for this field.
 
                 This corresponds to the ``resource`` field

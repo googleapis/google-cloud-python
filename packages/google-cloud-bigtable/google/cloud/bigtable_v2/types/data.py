@@ -639,11 +639,10 @@ class RowFilter(proto.Message):
         Attributes:
             filters (MutableSequence[google.cloud.bigtable_v2.types.RowFilter]):
                 The elements of "filters" are chained
-                together to process the input row:
-
-                in row -> f(0) -> intermediate row -> f(1) ->
-                ... -> f(N) -> out row The full chain is
-                executed atomically.
+                together to process the input row: in row ->
+                f(0) -> intermediate row -> f(1) -> ... -> f(N)
+                -> out row The full chain is executed
+                atomically.
         """
 
         filters: MutableSequence["RowFilter"] = proto.RepeatedField(
@@ -698,6 +697,7 @@ class RowFilter(proto.Message):
         r"""A RowFilter which evaluates one of two possible RowFilters,
         depending on whether or not a predicate RowFilter outputs any
         cells from the input row.
+
         IMPORTANT NOTE: The predicate filter does not execute atomically
         with the true and false filters, which may lead to inconsistent
         or unexpected results. Additionally, Condition filters have poor
@@ -1042,8 +1042,7 @@ class ReadModifyWriteRule(proto.Message):
 
 class StreamPartition(proto.Message):
     r"""NOTE: This API is intended to be used by Apache Beam
-    BigtableIO.
-    A partition of a change stream.
+    BigtableIO. A partition of a change stream.
 
     Attributes:
         row_range (google.cloud.bigtable_v2.types.RowRange):

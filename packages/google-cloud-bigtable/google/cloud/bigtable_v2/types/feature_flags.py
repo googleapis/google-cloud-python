@@ -29,14 +29,14 @@ __protobuf__ = proto.module(
 
 
 class FeatureFlags(proto.Message):
-    r"""Feature flags supported by a client. This is intended to be sent as
-    part of request metadata to assure the server that certain behaviors
-    are safe to enable. This proto is meant to be serialized and
-    websafe-base64 encoded under the ``bigtable-features`` metadata key.
-    The value will remain constant for the lifetime of a client and due
-    to HTTP2's HPACK compression, the request overhead will be tiny.
-    This is an internal implementation detail and should not be used by
-    endusers directly.
+    r"""Feature flags supported or enabled by a client. This is intended to
+    be sent as part of request metadata to assure the server that
+    certain behaviors are safe to enable. This proto is meant to be
+    serialized and websafe-base64 encoded under the
+    ``bigtable-features`` metadata key. The value will remain constant
+    for the lifetime of a client and due to HTTP2's HPACK compression,
+    the request overhead will be tiny. This is an internal
+    implementation detail and should not be used by end users directly.
 
     Attributes:
         reverse_scans (bool):
@@ -47,11 +47,18 @@ class FeatureFlags(proto.Message):
         mutate_rows_rate_limit (bool):
             Notify the server that the client enables
             batch write flow control by requesting
-            RateLimitInfo from MutateRowsResponse.
+            RateLimitInfo from MutateRowsResponse. Due to
+            technical reasons, this disables partial
+            retries.
+        mutate_rows_rate_limit2 (bool):
+            Notify the server that the client enables
+            batch write flow control by requesting
+            RateLimitInfo from MutateRowsResponse. With
+            partial retries enabled.
         last_scanned_row_responses (bool):
             Notify the server that the client supports the
             last_scanned_row field in ReadRowsResponse for long-running
-            sparse scans.
+            scans.
     """
 
     reverse_scans: bool = proto.Field(
@@ -61,6 +68,10 @@ class FeatureFlags(proto.Message):
     mutate_rows_rate_limit: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    mutate_rows_rate_limit2: bool = proto.Field(
+        proto.BOOL,
+        number=5,
     )
     last_scanned_row_responses: bool = proto.Field(
         proto.BOOL,

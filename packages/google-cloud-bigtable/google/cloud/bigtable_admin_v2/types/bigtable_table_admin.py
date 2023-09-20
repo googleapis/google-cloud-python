@@ -918,6 +918,7 @@ class DeleteSnapshotRequest(proto.Message):
 
 class SnapshotTableMetadata(proto.Message):
     r"""The metadata for the Operation returned by SnapshotTable.
+
     Note: This is a private alpha release of Cloud Bigtable
     snapshots. This feature is not currently available to most Cloud
     Bigtable customers. This feature might be changed in
