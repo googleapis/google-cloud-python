@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.16.3](https://github.com/googleapis/python-retail/compare/v1.16.2...v1.16.3) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([4866c1b](https://github.com/googleapis/python-retail/commit/4866c1b92089bd36b043d1286fc94cb0ab36a231))
+* Remove migrated samples ([#434](https://github.com/googleapis/python-retail/issues/434)) ([cab6042](https://github.com/googleapis/python-retail/commit/cab6042952ac9cae4d634f518a6ef2214ce0106e))
+
 ## [1.16.2](https://github.com/googleapis/python-retail/compare/v1.16.1...v1.16.2) (2023-07-04)
 
 
