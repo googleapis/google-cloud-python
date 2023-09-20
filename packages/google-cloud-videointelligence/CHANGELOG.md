@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.11.4](https://github.com/googleapis/python-videointelligence/compare/v2.11.3...v2.11.4) (2023-09-19)
+
+
+### Documentation
+
+* Minor formatting ([10422c3](https://github.com/googleapis/python-videointelligence/commit/10422c3d5b9efb281ff11f45d84b5e9bfde8ab59))
+
 ## [2.11.3](https://github.com/googleapis/python-videointelligence/compare/v2.11.2...v2.11.3) (2023-07-04)
 
 
