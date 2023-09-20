@@ -1545,6 +1545,18 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-retail": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-retail",
+            "extra-files": [
+                "google/cloud/retail/gapic_version.py",
+                "google/cloud/retail_v2/gapic_version.py",
+                "google/cloud/retail_v2alpha/gapic_version.py",
+                "google/cloud/retail_v2beta/gapic_version.py"
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-secret-manager": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -1750,6 +1762,36 @@
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.tpu.v2alpha1.json",
                     "type": "json"
                 }
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-video-live-stream": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-video-live-stream",
+            "extra-files": [
+                "google/cloud/video/live_stream/gapic_version.py",
+                "google/cloud/video/live_stream_v1/gapic_version.py"
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-video-stitcher": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-video-stitcher",
+            "extra-files": [
+                "google/cloud/video/stitcher/gapic_version.py",
+                "google/cloud/video/stitcher_v1/gapic_version.py"
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-video-transcoder": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-video-transcoder",
+            "extra-files": [
+                "google/cloud/video/transcoder/gapic_version.py",
+                "google/cloud/video/transcoder_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
