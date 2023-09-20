@@ -63,7 +63,6 @@ def join_by_column(
         allow_row_identity_join (bool):
             If True, allow matching by row identity. Set to False to always
             perform a true JOIN in generated SQL.
-
     Returns:
         The joined expression and the objects needed to interpret it.
 
@@ -123,13 +122,13 @@ def join_by_column(
             ),
         )
     else:
-        # Generate offsets if non-default ordering is applied
-        # Assumption, both sides are totally ordered, otherwise offsets will be nondeterministic
         left_table = left.to_ibis_expr(
-            ordering_mode="string_encoded", order_col_name=core.ORDER_ID_COLUMN
+            ordering_mode="unordered",
+            expose_hidden_cols=True,
         )
         right_table = right.to_ibis_expr(
-            ordering_mode="string_encoded", order_col_name=core.ORDER_ID_COLUMN
+            ordering_mode="unordered",
+            expose_hidden_cols=True,
         )
         join_conditions = [
             value_to_join_key(left_table[left_index])
@@ -178,41 +177,13 @@ def join_by_column(
 
             return key
 
-        left_ordering_encoding_size = (
-            left._ordering.string_encoding.length
-            if left._ordering.is_string_encoded
-            else bigframes.core.ordering.DEFAULT_ORDERING_ID_LENGTH
-        )
-        right_ordering_encoding_size = (
-            right._ordering.string_encoding.length
-            if right._ordering.is_string_encoded
-            else bigframes.core.ordering.DEFAULT_ORDERING_ID_LENGTH
-        )
-
-        # Preserve original ordering accross joins.
-        left_order_id = get_column_left(core.ORDER_ID_COLUMN)
-        right_order_id = get_column_right(core.ORDER_ID_COLUMN)
-        new_order_id_col = _merge_order_ids(
-            typing.cast(ibis_types.StringColumn, combined_table[left_order_id]),
-            left_ordering_encoding_size,
-            typing.cast(ibis_types.StringColumn, combined_table[right_order_id]),
-            right_ordering_encoding_size,
-            how,
-        )
-        new_order_id = new_order_id_col.get_name()
-        if new_order_id is None:
-            raise ValueError("new_order_id unexpectedly has no name")
-
-        hidden_columns = (new_order_id_col,)
-        ordering = core.ExpressionOrdering(
-            # Order id is non-nullable but na_last=False generates simpler sql with current impl
-            ordering_value_columns=[
-                core.OrderingColumnReference(new_order_id, na_last=False)
-            ],
-            total_ordering_columns=frozenset([new_order_id]),
-            string_encoding=core.StringEncoding(
-                True, left_ordering_encoding_size + right_ordering_encoding_size
-            ),
+        # Preserve ordering accross joins.
+        ordering = join_orderings(
+            left._ordering,
+            right._ordering,
+            get_column_left,
+            get_column_right,
+            left_order_dominates=(how != "right"),
         )
 
         left_join_keys = [
@@ -234,11 +205,21 @@ def join_by_column(
                 for col in right.columns
             ]
         )
+        hidden_ordering_columns = [
+            *[
+                combined_table[get_column_left(col.get_name())]
+                for col in left.hidden_ordering_columns
+            ],
+            *[
+                combined_table[get_column_right(col.get_name())]
+                for col in right.hidden_ordering_columns
+            ],
+        ]
         combined_expr = core.ArrayValue(
             left._session,
             combined_table,
             columns=columns,
-            hidden_ordering_columns=hidden_columns,
+            hidden_ordering_columns=hidden_ordering_columns,
             ordering=ordering,
         )
         if sort:
@@ -313,32 +294,33 @@ def value_to_join_key(value: ibis_types.Value):
     return value.fillna(ibis_types.literal("$NULL_SENTINEL$"))
 
 
-def _merge_order_ids(
-    left_id: ibis_types.StringColumn,
-    left_encoding_size: int,
-    right_id: ibis_types.StringColumn,
-    right_encoding_size: int,
-    how: str,
-) -> ibis_types.StringColumn:
-    if how == "right":
-        return _merge_order_ids(
-            right_id, right_encoding_size, left_id, left_encoding_size, "left"
-        )
+def join_orderings(
+    left: core.ExpressionOrdering,
+    right: core.ExpressionOrdering,
+    left_id_mapping: Callable[[str], str],
+    right_id_mapping: Callable[[str], str],
+    left_order_dominates: bool = True,
+) -> core.ExpressionOrdering:
+    left_ordering_refs = [
+        ref.with_name(left_id_mapping(ref.column_id))
+        for ref in left.all_ordering_columns
+    ]
+    right_ordering_refs = [
+        ref.with_name(right_id_mapping(ref.column_id))
+        for ref in right.all_ordering_columns
+    ]
+    if left_order_dominates:
+        joined_refs = [*left_ordering_refs, *right_ordering_refs]
+    else:
+        joined_refs = [*right_ordering_refs, *left_ordering_refs]
 
-    if how == "left":
-        right_id = typing.cast(
-            ibis_types.StringColumn,
-            right_id.fillna(ibis_types.literal(":" * right_encoding_size)),
-        )
-    elif how != "inner":  # outer join
-        left_id = typing.cast(
-            ibis_types.StringColumn,
-            left_id.fillna(ibis_types.literal(":" * left_encoding_size)),
-        )
-        right_id = typing.cast(
-            ibis_types.StringColumn,
-            right_id.fillna(ibis_types.literal(":" * right_encoding_size)),
-        )
-    return (left_id + right_id).name(
-        bigframes.core.guid.generate_guid(prefix="bigframes_ordering_id_")
+    left_total_order_cols = frozenset(
+        [left_id_mapping(id) for id in left.total_ordering_columns]
+    )
+    right_total_order_cols = frozenset(
+        [right_id_mapping(id) for id in right.total_ordering_columns]
+    )
+    return core.ExpressionOrdering(
+        ordering_value_columns=joined_refs,
+        total_ordering_columns=left_total_order_cols | right_total_order_cols,
     )
