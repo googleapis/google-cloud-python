@@ -124,7 +124,7 @@ git filter-branch \
   --force \
   --prune-empty \
   --tree-filter \
-    "shopt -s dotglob; mkdir -p ${WORKDIR}/migrated-source; mv * ${WORKDIR}/migrated-source; mkdir -p ${TARGET_PATH}; mv ${WORKDIR}/migrated-source/* ${TARGET_PATH}"
+    "shopt -s dotglob; mkdir -p ${WORKDIR}/migrated-source; mv * ${WORKDIR}/migrated-source; mkdir -p ${TARGET_PATH}; { mv ${WORKDIR}/migrated-source/* ${TARGET_PATH} || echo 'No files to move' ; }"
 
 # back to workdir
 popd
