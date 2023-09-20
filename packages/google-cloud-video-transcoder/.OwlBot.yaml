@@ -12,15 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-docker:
-  image: gcr.io/cloud-devrel-public-resources/owlbot-python:latest
 
 deep-remove-regex:
   - /owl-bot-staging
 
 deep-copy-regex:
-  - source: /google/cloud/video/transcoder/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/$1/$2
+  - source: /google/cloud/video/transcoder/(v.*)/.*-py
+    dest: /owl-bot-staging/google-cloud-video-transcoder/$1
 
 begin-after-commit-hash: 19c469f0eefe7735eb3d6438773f12dd88060da1
 
