@@ -1,9 +1,9 @@
-Python Client for Video Stitcher API
-====================================
+Python Client for Video Stitcher
+================================
 
 |preview| |pypi| |versions|
 
-`Video Stitcher API`_: The Video Stitcher API helps you generate dynamic content for delivery to client devices. You can call the Video Stitcher API from your servers to dynamically insert ads into video-on-demand and livestreams for your users.
+`Video Stitcher`_: The Video Stitcher API helps you generate dynamic content for delivery to client devices. You can call the Video Stitcher API from your servers to dynamically insert ads into video-on-demand and livestreams for your users.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Video Stitcher API
    :target: https://pypi.org/project/google-cloud-video-stitcher/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-video-stitcher.svg
    :target: https://pypi.org/project/google-cloud-video-stitcher/
-.. _Video Stitcher API: https://cloud.google.com/video-stitcher
+.. _Video Stitcher: https://cloud.google.com/video-stitcher
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/videostitcher/latest
 .. _Product Documentation:  https://cloud.google.com/video-stitcher
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Video Stitcher API.`_
+3. `Enable the Video Stitcher.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Video Stitcher API.:  https://cloud.google.com/video-stitcher
+.. _Enable the Video Stitcher.:  https://cloud.google.com/video-stitcher
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/python-video-stitcher/tree/main/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-video-stitcher/samples
 
 
 Supported Python Versions
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Video Stitcher API
+-  Read the `Client Library Documentation`_ for Video Stitcher
    to see other available methods on the client.
--  Read the `Video Stitcher API Product documentation`_ to learn
+-  Read the `Video Stitcher Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Video Stitcher API Product documentation:  https://cloud.google.com/video-stitcher
+.. _Video Stitcher Product documentation:  https://cloud.google.com/video-stitcher
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
