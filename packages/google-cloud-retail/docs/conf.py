@@ -156,7 +156,7 @@ html_theme = "alabaster"
 html_theme_options = {
     "description": "Google Cloud Client Libraries for google-cloud-retail",
     "github_user": "googleapis",
-    "github_repo": "python-retail",
+    "github_repo": "google-cloud-python",
     "github_banner": True,
     "font_family": "'Roboto', Georgia, sans",
     "head_font_family": "'Roboto', Georgia, serif",
