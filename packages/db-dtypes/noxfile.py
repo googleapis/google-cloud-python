@@ -26,10 +26,7 @@ import warnings
 
 import nox
 
-# Pin flake8 to 6.0.0
-# See https://github.com/googleapis/python-db-dtypes-pandas/issues/199
-FLAKE8_VERSION = "flake8==6.0.0"
-
+FLAKE8_VERSION = "flake8==6.1.0"
 BLACK_VERSION = "black==22.3.0"
 ISORT_VERSION = "isort==5.10.1"
 LINT_PATHS = ["docs", "db_dtypes", "tests", "noxfile.py", "setup.py"]
