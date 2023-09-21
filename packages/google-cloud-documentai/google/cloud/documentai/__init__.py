@@ -95,7 +95,11 @@ from google.cloud.documentai_v1.types.geometry import (
     Vertex,
 )
 from google.cloud.documentai_v1.types.operation_metadata import CommonOperationMetadata
-from google.cloud.documentai_v1.types.processor import Processor, ProcessorVersion
+from google.cloud.documentai_v1.types.processor import (
+    Processor,
+    ProcessorVersion,
+    ProcessorVersionAlias,
+)
 from google.cloud.documentai_v1.types.processor_type import ProcessorType
 
 __all__ = (
@@ -169,5 +173,6 @@ __all__ = (
     "CommonOperationMetadata",
     "Processor",
     "ProcessorVersion",
+    "ProcessorVersionAlias",
     "ProcessorType",
 )

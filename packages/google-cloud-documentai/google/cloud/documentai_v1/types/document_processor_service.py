@@ -1124,8 +1124,8 @@ class TrainProcessorVersionRequest(proto.Message):
         """
 
         class TrainingMethod(proto.Enum):
-            r"""Training Method for CDE. TRAINING_METHOD_UNSPECIFIED will fallback
-            to MODEL_BASED.
+            r"""Training Method for CDE. ``TRAINING_METHOD_UNSPECIFIED`` will fall
+            back to ``MODEL_BASED``.
 
             Values:
                 TRAINING_METHOD_UNSPECIFIED (0):
