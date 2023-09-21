@@ -22,7 +22,7 @@ from typing import cast, Dict, List, Literal, Optional, Union
 from google.cloud import bigquery
 
 import bigframes
-from bigframes.ml import base, core, utils
+from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.ensemble._forest
 import third_party.bigframes_vendored.xgboost.sklearn
@@ -95,6 +95,7 @@ class XGBRegressor(
         self.enable_global_explain = enable_global_explain
         self.xgboost_version = xgboost_version
         self._bqml_model: Optional[core.BqmlModel] = None
+        self._bqml_model_factory = globals.bqml_model_factory()
 
     @classmethod
     def _from_bq(
@@ -151,7 +152,7 @@ class XGBRegressor(
     ) -> XGBRegressor:
         X, y = utils.convert_to_dataframe(X, y)
 
-        self._bqml_model = core.create_bqml_model(
+        self._bqml_model = self._bqml_model_factory.create_model(
             X,
             y,
             transforms=transforms,
@@ -259,6 +260,7 @@ class XGBClassifier(
         self.enable_global_explain = enable_global_explain
         self.xgboost_version = xgboost_version
         self._bqml_model: Optional[core.BqmlModel] = None
+        self._bqml_model_factory = globals.bqml_model_factory()
 
     @classmethod
     def _from_bq(
@@ -315,7 +317,7 @@ class XGBClassifier(
     ) -> XGBClassifier:
         X, y = utils.convert_to_dataframe(X, y)
 
-        self._bqml_model = core.create_bqml_model(
+        self._bqml_model = self._bqml_model_factory.create_model(
             X,
             y,
             transforms=transforms,
@@ -416,6 +418,7 @@ class RandomForestRegressor(
         self.enable_global_explain = enable_global_explain
         self.xgboost_version = xgboost_version
         self._bqml_model: Optional[core.BqmlModel] = None
+        self._bqml_model_factory = globals.bqml_model_factory()
 
     @classmethod
     def _from_bq(
@@ -469,7 +472,7 @@ class RandomForestRegressor(
     ) -> RandomForestRegressor:
         X, y = utils.convert_to_dataframe(X, y)
 
-        self._bqml_model = core.create_bqml_model(
+        self._bqml_model = self._bqml_model_factory.create_model(
             X,
             y,
             transforms=transforms,
@@ -584,6 +587,7 @@ class RandomForestClassifier(
         self.enable_global_explain = enable_global_explain
         self.xgboost_version = xgboost_version
         self._bqml_model: Optional[core.BqmlModel] = None
+        self._bqml_model_factory = globals.bqml_model_factory()
 
     @classmethod
     def _from_bq(
@@ -637,7 +641,7 @@ class RandomForestClassifier(
     ) -> RandomForestClassifier:
         X, y = utils.convert_to_dataframe(X, y)
 
-        self._bqml_model = core.create_bqml_model(
+        self._bqml_model = self._bqml_model_factory.create_model(
             X,
             y,
             transforms=transforms,

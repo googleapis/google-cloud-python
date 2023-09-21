@@ -21,7 +21,7 @@ from typing import cast, Dict, List, Optional, Union
 from google.cloud import bigquery
 
 import bigframes
-from bigframes.ml import base, core, utils
+from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 
 _PREDICT_OUTPUT_COLUMNS = ["forecast_timestamp", "forecast_value"]
@@ -32,6 +32,7 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
 
     def __init__(self):
         self._bqml_model: Optional[core.BqmlModel] = None
+        self._bqml_model_factory = globals.bqml_model_factory()
 
     @classmethod
     def _from_bq(cls, session: bigframes.Session, model: bigquery.Model) -> ARIMAPlus:
@@ -69,9 +70,16 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
         Returns:
             ARIMAPlus: Fitted estimator.
         """
+        if X.columns.size != 1:
+            raise ValueError(
+                "Time series timestamp input X must only contain 1 column."
+            )
+        if y.columns.size != 1:
+            raise ValueError("Time series data input y must only contain 1 column.")
+
         X, y = utils.convert_to_dataframe(X, y)
 
-        self._bqml_model = core.create_bqml_time_series_model(
+        self._bqml_model = self._bqml_model_factory.create_time_series_model(
             X,
             y,
             transforms=transforms,

@@ -62,38 +62,44 @@ def mock_X(mock_y, mock_session):
 
 
 @pytest.fixture
+def bqml_model_factory(mocker: pytest_mock.MockerFixture):
+    mocker.patch(
+        "bigframes.ml.core.BqmlModelFactory._create_temp_model_id",
+        return_value="temp_model_id",
+    )
+    bqml_model_factory = core.BqmlModelFactory()
+
+    return bqml_model_factory
+
+
+@pytest.fixture
 def bqml_model(mock_session):
     bqml_model = core.BqmlModel(
-        mock_session, bigquery.Model("model_project.model_dataset.model_name")
+        mock_session, bigquery.Model("model_project.model_dataset.model_id")
     )
 
     return bqml_model
 
 
-@pytest.fixture
-def ml_mocker(mocker: pytest_mock.MockerFixture):
-    mocker.patch(
-        "bigframes.ml.core._create_temp_model_name", return_value="temp_model_name"
-    )
-
-    return mocker
-
-
-def test_linear_regression_default_fit(ml_mocker, mock_session, mock_X, mock_y):
+def test_linear_regression_default_fit(
+    bqml_model_factory, mock_session, mock_X, mock_y
+):
     model = linear_model.LinearRegression()
+    model._bqml_model_factory = bqml_model_factory
     model.fit(mock_X, mock_y)
 
     mock_session._start_query.assert_called_once_with(
-        'CREATE TEMP MODEL `temp_model_name`\nOPTIONS(\n  model_type="LINEAR_REG",\n  data_split_method="NO_SPLIT",\n  optimize_strategy="normal_equation",\n  fit_intercept=True,\n  l2_reg=0.0,\n  max_iterations=20,\n  learn_rate_strategy="line_search",\n  early_stop=True,\n  min_rel_progress=0.01,\n  ls_init_learn_rate=0.1,\n  calculate_p_values=False,\n  enable_global_explain=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
+        'CREATE TEMP MODEL `temp_model_id`\nOPTIONS(\n  model_type="LINEAR_REG",\n  data_split_method="NO_SPLIT",\n  optimize_strategy="normal_equation",\n  fit_intercept=True,\n  l2_reg=0.0,\n  max_iterations=20,\n  learn_rate_strategy="line_search",\n  early_stop=True,\n  min_rel_progress=0.01,\n  ls_init_learn_rate=0.1,\n  calculate_p_values=False,\n  enable_global_explain=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
     )
 
 
-def test_linear_regression_params_fit(ml_mocker, mock_session, mock_X, mock_y):
+def test_linear_regression_params_fit(bqml_model_factory, mock_session, mock_X, mock_y):
     model = linear_model.LinearRegression(fit_intercept=False)
+    model._bqml_model_factory = bqml_model_factory
     model.fit(mock_X, mock_y)
 
     mock_session._start_query.assert_called_once_with(
-        'CREATE TEMP MODEL `temp_model_name`\nOPTIONS(\n  model_type="LINEAR_REG",\n  data_split_method="NO_SPLIT",\n  optimize_strategy="normal_equation",\n  fit_intercept=False,\n  l2_reg=0.0,\n  max_iterations=20,\n  learn_rate_strategy="line_search",\n  early_stop=True,\n  min_rel_progress=0.01,\n  ls_init_learn_rate=0.1,\n  calculate_p_values=False,\n  enable_global_explain=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
+        'CREATE TEMP MODEL `temp_model_id`\nOPTIONS(\n  model_type="LINEAR_REG",\n  data_split_method="NO_SPLIT",\n  optimize_strategy="normal_equation",\n  fit_intercept=False,\n  l2_reg=0.0,\n  max_iterations=20,\n  learn_rate_strategy="line_search",\n  early_stop=True,\n  min_rel_progress=0.01,\n  ls_init_learn_rate=0.1,\n  calculate_p_values=False,\n  enable_global_explain=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
     )
 
 
@@ -103,7 +109,7 @@ def test_linear_regression_predict(mock_session, bqml_model, mock_X):
     model.predict(mock_X)
 
     mock_session.read_gbq.assert_called_once_with(
-        "SELECT * FROM ML.PREDICT(MODEL `model_project.model_dataset.model_name`,\n  (input_X_sql))",
+        "SELECT * FROM ML.PREDICT(MODEL `model_project.model_dataset.model_id`,\n  (input_X_sql))",
         index_col=["index_column_id"],
     )
 
@@ -114,27 +120,33 @@ def test_linear_regression_score(mock_session, bqml_model, mock_X, mock_y):
     model.score(mock_X, mock_y)
 
     mock_session.read_gbq.assert_called_once_with(
-        "SELECT * FROM ML.EVALUATE(MODEL `model_project.model_dataset.model_name`,\n  (input_X_y_sql))"
+        "SELECT * FROM ML.EVALUATE(MODEL `model_project.model_dataset.model_id`,\n  (input_X_y_sql))"
     )
 
 
-def test_logistic_regression_default_fit(ml_mocker, mock_session, mock_X, mock_y):
+def test_logistic_regression_default_fit(
+    bqml_model_factory, mock_session, mock_X, mock_y
+):
     model = linear_model.LogisticRegression()
+    model._bqml_model_factory = bqml_model_factory
     model.fit(mock_X, mock_y)
 
     mock_session._start_query.assert_called_once_with(
-        'CREATE TEMP MODEL `temp_model_name`\nOPTIONS(\n  model_type="LOGISTIC_REG",\n  data_split_method="NO_SPLIT",\n  fit_intercept=True,\n  auto_class_weights=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
+        'CREATE TEMP MODEL `temp_model_id`\nOPTIONS(\n  model_type="LOGISTIC_REG",\n  data_split_method="NO_SPLIT",\n  fit_intercept=True,\n  auto_class_weights=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
     )
 
 
-def test_logistic_regression_params_fit(ml_mocker, mock_session, mock_X, mock_y):
+def test_logistic_regression_params_fit(
+    bqml_model_factory, mock_session, mock_X, mock_y
+):
     model = linear_model.LogisticRegression(
         fit_intercept=False, class_weights="balanced"
     )
+    model._bqml_model_factory = bqml_model_factory
     model.fit(mock_X, mock_y)
 
     mock_session._start_query.assert_called_once_with(
-        'CREATE TEMP MODEL `temp_model_name`\nOPTIONS(\n  model_type="LOGISTIC_REG",\n  data_split_method="NO_SPLIT",\n  fit_intercept=False,\n  auto_class_weights=True,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
+        'CREATE TEMP MODEL `temp_model_id`\nOPTIONS(\n  model_type="LOGISTIC_REG",\n  data_split_method="NO_SPLIT",\n  fit_intercept=False,\n  auto_class_weights=True,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
     )
 
 
@@ -144,7 +156,7 @@ def test_logistic_regression_predict(mock_session, bqml_model, mock_X):
     model.predict(mock_X)
 
     mock_session.read_gbq.assert_called_once_with(
-        "SELECT * FROM ML.PREDICT(MODEL `model_project.model_dataset.model_name`,\n  (input_X_sql))",
+        "SELECT * FROM ML.PREDICT(MODEL `model_project.model_dataset.model_id`,\n  (input_X_sql))",
         index_col=["index_column_id"],
     )
 
@@ -155,5 +167,5 @@ def test_logistic_regression_score(mock_session, bqml_model, mock_X, mock_y):
     model.score(mock_X, mock_y)
 
     mock_session.read_gbq.assert_called_once_with(
-        "SELECT * FROM ML.EVALUATE(MODEL `model_project.model_dataset.model_name`,\n  (input_X_y_sql))"
+        "SELECT * FROM ML.EVALUATE(MODEL `model_project.model_dataset.model_id`,\n  (input_X_y_sql))"
     )

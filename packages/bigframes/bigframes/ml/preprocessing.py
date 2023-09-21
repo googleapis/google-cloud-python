@@ -20,9 +20,7 @@ from __future__ import annotations
 import typing
 from typing import Any, cast, List, Literal, Optional, Tuple, Union
 
-from bigframes.ml import base, core
-from bigframes.ml import sql as ml_sql
-from bigframes.ml import utils
+from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.preprocessing._data
 import third_party.bigframes_vendored.sklearn.preprocessing._encoder
@@ -38,6 +36,8 @@ class StandardScaler(
 
     def __init__(self):
         self._bqml_model: Optional[core.BqmlModel] = None
+        self._bqml_model_factory = globals.bqml_model_factory()
+        self._base_sql_generator = globals.base_sql_generator()
 
     # TODO(garrettwu): implement __hash__
     def __eq__(self, other: Any) -> bool:
@@ -53,7 +53,7 @@ class StandardScaler(
         Returns: a list of tuples of (sql_expression, output_name)"""
         return [
             (
-                ml_sql.ml_standard_scaler(column, f"scaled_{column}"),
+                self._base_sql_generator.ml_standard_scaler(column, f"scaled_{column}"),
                 f"scaled_{column}",
             )
             for column in columns
@@ -81,7 +81,7 @@ class StandardScaler(
         compiled_transforms = self._compile_to_sql(X.columns.tolist())
         transform_sqls = [transform_sql for transform_sql, _ in compiled_transforms]
 
-        self._bqml_model = core.create_bqml_model(
+        self._bqml_model = self._bqml_model_factory.create_model(
             X,
             options={"model_type": "transform_only"},
             transforms=transform_sqls,
@@ -132,6 +132,8 @@ class OneHotEncoder(
         self.min_frequency = min_frequency
         self.max_categories = max_categories
         self._bqml_model: Optional[core.BqmlModel] = None
+        self._bqml_model_factory = globals.bqml_model_factory()
+        self._base_sql_generator = globals.base_sql_generator()
 
     # TODO(garrettwu): implement __hash__
     def __eq__(self, other: Any) -> bool:
@@ -167,7 +169,7 @@ class OneHotEncoder(
         )
         return [
             (
-                ml_sql.ml_one_hot_encoder(
+                self._base_sql_generator.ml_one_hot_encoder(
                     column, drop, top_k, frequency_threshold, f"onehotencoded_{column}"
                 ),
                 f"onehotencoded_{column}",
@@ -206,7 +208,7 @@ class OneHotEncoder(
         compiled_transforms = self._compile_to_sql(X.columns.tolist())
         transform_sqls = [transform_sql for transform_sql, _ in compiled_transforms]
 
-        self._bqml_model = core.create_bqml_model(
+        self._bqml_model = self._bqml_model_factory.create_model(
             X,
             options={"model_type": "transform_only"},
             transforms=transform_sqls,

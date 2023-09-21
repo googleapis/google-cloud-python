@@ -36,6 +36,9 @@ class BqmlModel:
     def __init__(self, session: bigframes.Session, model: bigquery.Model):
         self._session = session
         self._model = model
+        self._model_manipulation_sql_generator = ml_sql.ModelManipulationSqlGenerator(
+            self.model_name
+        )
 
     @property
     def session(self) -> bigframes.Session:
@@ -85,18 +88,14 @@ class BqmlModel:
         # TODO: validate input data schema
         return self._apply_sql(
             input_data,
-            lambda source_sql: ml_sql.ml_predict(
-                model_name=self.model_name, source_sql=source_sql
-            ),
+            self._model_manipulation_sql_generator.ml_predict,
         )
 
     def transform(self, input_data: bpd.DataFrame) -> bpd.DataFrame:
         # TODO: validate input data schema
         return self._apply_sql(
             input_data,
-            lambda source_sql: ml_sql.ml_transform(
-                model_name=self.model_name, source_sql=source_sql
-            ),
+            self._model_manipulation_sql_generator.ml_transform,
         )
 
     def generate_text(
@@ -107,10 +106,11 @@ class BqmlModel:
         # TODO: validate input data schema
         return self._apply_sql(
             input_data,
-            lambda source_sql: ml_sql.ml_generate_text(
-                model_name=self.model_name,
+            lambda source_sql: self._model_manipulation_sql_generator.ml_generate_text(
                 source_sql=source_sql,
-                struct_options=ml_sql.struct_options(**options),
+                struct_options=self._model_manipulation_sql_generator.struct_options(
+                    **options
+                ),
             ),
         )
 
@@ -122,15 +122,16 @@ class BqmlModel:
         # TODO: validate input data schema
         return self._apply_sql(
             input_data,
-            lambda source_sql: ml_sql.ml_generate_text_embedding(
-                model_name=self.model_name,
+            lambda source_sql: self._model_manipulation_sql_generator.ml_generate_text_embedding(
                 source_sql=source_sql,
-                struct_options=ml_sql.struct_options(**options),
+                struct_options=self._model_manipulation_sql_generator.struct_options(
+                    **options
+                ),
             ),
         )
 
     def forecast(self) -> bpd.DataFrame:
-        sql = ml_sql.ml_forecast(self.model_name)
+        sql = self._model_manipulation_sql_generator.ml_forecast()
         return self._session.read_gbq(sql)
 
     def evaluate(self, input_data: Optional[bpd.DataFrame] = None):
@@ -141,28 +142,28 @@ class BqmlModel:
             if (input_data is not None)
             else (None, None, None)
         )
-        sql = ml_sql.ml_evaluate(self.model_name, source_sql)
+        sql = self._model_manipulation_sql_generator.ml_evaluate(source_sql)
 
         return self._session.read_gbq(sql)
 
-    def centroids(self):
+    def centroids(self) -> bpd.DataFrame:
         assert self._model.model_type == "KMEANS"
 
-        sql = ml_sql.ml_centroids(self.model_name)
+        sql = self._model_manipulation_sql_generator.ml_centroids()
 
         return self._session.read_gbq(sql)
 
-    def principal_components(self):
+    def principal_components(self) -> bpd.DataFrame:
         assert self._model.model_type == "PCA"
 
-        sql = ml_sql.ml_principal_components(self.model_name)
+        sql = self._model_manipulation_sql_generator.ml_principal_components()
 
         return self._session.read_gbq(sql)
 
-    def principal_component_info(self):
+    def principal_component_info(self) -> bpd.DataFrame:
         assert self._model.model_type == "PCA"
 
-        sql = ml_sql.ml_principal_component_info(self.model_name)
+        sql = self._model_manipulation_sql_generator.ml_principal_component_info()
 
         return self._session.read_gbq(sql)
 
@@ -187,8 +188,12 @@ class BqmlModel:
         # truncate as Vertex ID only accepts 63 characters, easily exceeding the limit for temp models.
         # The possibility of conflicts should be low.
         vertex_ai_model_id = vertex_ai_model_id[:63]
-        options_sql = ml_sql.options(**{"vertex_ai_model_id": vertex_ai_model_id})
-        sql = ml_sql.alter_model(self.model_name, options_sql=options_sql)
+        options_sql = self._model_manipulation_sql_generator.options(
+            **{"vertex_ai_model_id": vertex_ai_model_id}
+        )
+        sql = self._model_manipulation_sql_generator.alter_model(
+            options_sql=options_sql
+        )
         # Register the model and wait it to finish
         self._session._start_query(sql)
 
@@ -196,137 +201,149 @@ class BqmlModel:
         return self
 
 
-def create_bqml_model(
-    X_train: bpd.DataFrame,
-    y_train: Optional[bpd.DataFrame] = None,
-    transforms: Optional[Iterable[str]] = None,
-    options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
-) -> BqmlModel:
-    """Create a session-temporary BQML model with the CREATE MODEL statement
+class BqmlModelFactory:
+    def __init__(self):
+        model_id = self._create_temp_model_id()
+        self._model_creation_sql_generator = ml_sql.ModelCreationSqlGenerator(model_id)
 
-    Args:
-        X_train: features columns for training
-        y_train: labels columns for training, if applicable
-        transforms: an optional list of SQL expressions that implement preprocessing
-            on top of the input data. Generates a BQML TRANSFORM clause
-        options: a dict of options to configure the model. Generates a BQML OPTIONS
-            clause
+    def _create_temp_model_id(self) -> str:
+        return uuid.uuid4().hex
 
-    Returns: a BqmlModel, wrapping a trained model in BigQuery
-    """
-    options = dict(options)
-    if y_train is None:
-        input_data = X_train
-    else:
+    def _reset_model_id(self):
+        self._model_creation_sql_generator._model_id = self._create_temp_model_id()
+
+    def _create_model_with_sql(self, session: bigframes.Session, sql: str) -> BqmlModel:
+        # fit the model, synchronously
+        _, job = session._start_query(sql)
+
+        # real model path in the session specific hidden dataset and table prefix
+        model_name_full = f"{job.destination.dataset_id}.{job.destination.table_id}"
+        model = session.bqclient.get_model(model_name_full)
+
+        self._reset_model_id()
+        return BqmlModel(session, model)
+
+    def create_model(
+        self,
+        X_train: bpd.DataFrame,
+        y_train: Optional[bpd.DataFrame] = None,
+        transforms: Optional[Iterable[str]] = None,
+        options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
+    ) -> BqmlModel:
+        """Create a session-temporary BQML model with the CREATE MODEL statement
+
+        Args:
+            X_train: features columns for training
+            y_train: labels columns for training, if applicable
+            transforms: an optional list of SQL expressions that implement preprocessing
+                on top of the input data. Generates a BQML TRANSFORM clause
+            options: a dict of options to configure the model. Generates a BQML OPTIONS
+                clause
+
+        Returns: a BqmlModel, wrapping a trained model in BigQuery
+        """
+        options = dict(options)
+        if y_train is None:
+            input_data = X_train
+        else:
+            input_data = X_train.join(y_train, how="outer")
+            options.update({"INPUT_LABEL_COLS": y_train.columns.tolist()})
+
+        session = X_train._session
+
+        source_sql = input_data.sql
+        options_sql = self._model_creation_sql_generator.options(**options)
+        transform_sql = (
+            self._model_creation_sql_generator.transform(*transforms)
+            if transforms is not None
+            else None
+        )
+        sql = self._model_creation_sql_generator.create_model(
+            source_sql=source_sql,
+            transform_sql=transform_sql,
+            options_sql=options_sql,
+        )
+
+        return self._create_model_with_sql(session=session, sql=sql)
+
+    def create_time_series_model(
+        self,
+        X_train: bpd.DataFrame,
+        y_train: bpd.DataFrame,
+        transforms: Optional[Iterable[str]] = None,
+        options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
+    ) -> BqmlModel:
+        assert (
+            X_train.columns.size == 1
+        ), "Time series timestamp input must only contain 1 column."
+        assert (
+            y_train.columns.size == 1
+        ), "Time stamp data input must only contain 1 column."
+
+        options = dict(options)
         input_data = X_train.join(y_train, how="outer")
-        options.update({"INPUT_LABEL_COLS": y_train.columns.tolist()})
+        options.update({"TIME_SERIES_TIMESTAMP_COL": X_train.columns.tolist()[0]})
+        options.update({"TIME_SERIES_DATA_COL": y_train.columns.tolist()[0]})
 
-    session = X_train._session
+        session = X_train._session
 
-    source_sql = input_data.sql
-    options_sql = ml_sql.options(**options)
-    transform_sql = ml_sql.transform(*transforms) if transforms is not None else None
-    sql = ml_sql.create_model(
-        model_name=_create_temp_model_name(),
-        source_sql=source_sql,
-        transform_sql=transform_sql,
-        options_sql=options_sql,
-    )
+        source_sql = input_data.sql
+        options_sql = self._model_creation_sql_generator.options(**options)
 
-    return _create_bqml_model_with_sql(session=session, sql=sql)
+        transform_sql = (
+            self._model_creation_sql_generator.transform(*transforms)
+            if transforms is not None
+            else None
+        )
+        sql = self._model_creation_sql_generator.create_model(
+            source_sql=source_sql,
+            transform_sql=transform_sql,
+            options_sql=options_sql,
+        )
 
+        return self._create_model_with_sql(session=session, sql=sql)
 
-def create_bqml_time_series_model(
-    X_train: bpd.DataFrame,
-    y_train: bpd.DataFrame,
-    transforms: Optional[Iterable[str]] = None,
-    options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
-) -> BqmlModel:
+    def create_remote_model(
+        self,
+        session: bigframes.Session,
+        connection_name: str,
+        options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
+    ) -> BqmlModel:
+        """Create a session-temporary BQML remote model with the CREATE MODEL statement
 
-    assert (
-        X_train.columns.size == 1
-    ), "Time series timestamp input must only contain 1 column."
-    assert (
-        y_train.columns.size == 1
-    ), "Time stamp data input must only contain 1 column."
+        Args:
+            connection_name:
+                a BQ connection to talk with Vertex AI, of the format <PROJECT_NUMBER>.<REGION>.<CONNECTION_NAME>. https://cloud.google.com/bigquery/docs/create-cloud-resource-connection
+            options:
+                a dict of options to configure the model. Generates a BQML OPTIONS clause
 
-    options = dict(options)
-    input_data = X_train.join(y_train, how="outer")
-    options.update({"TIME_SERIES_TIMESTAMP_COL": X_train.columns.tolist()[0]})
-    options.update({"TIME_SERIES_DATA_COL": y_train.columns.tolist()[0]})
+        Returns:
+            BqmlModel: a BqmlModel wrapping a trained model in BigQuery
+        """
+        options_sql = self._model_creation_sql_generator.options(**options)
+        sql = self._model_creation_sql_generator.create_remote_model(
+            connection_name=connection_name,
+            options_sql=options_sql,
+        )
 
-    session = X_train._session
+        return self._create_model_with_sql(session=session, sql=sql)
 
-    source_sql = input_data.sql
-    options_sql = ml_sql.options(**options)
+    def create_imported_model(
+        self,
+        session: bigframes.Session,
+        options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
+    ) -> BqmlModel:
+        """Create a session-temporary BQML imported model with the CREATE MODEL statement
 
-    transform_sql = ml_sql.transform(*transforms) if transforms is not None else None
-    sql = ml_sql.create_model(
-        model_name=_create_temp_model_name(),
-        source_sql=source_sql,
-        transform_sql=transform_sql,
-        options_sql=options_sql,
-    )
+        Args:
+            options: a dict of options to configure the model. Generates a BQML OPTIONS
+                clause
 
-    return _create_bqml_model_with_sql(session=session, sql=sql)
+        Returns: a BqmlModel, wrapping a trained model in BigQuery
+        """
+        options_sql = self._model_creation_sql_generator.options(**options)
+        sql = self._model_creation_sql_generator.create_imported_model(
+            options_sql=options_sql,
+        )
 
-
-def create_bqml_remote_model(
-    session: bigframes.Session,
-    connection_name: str,
-    options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
-) -> BqmlModel:
-    """Create a session-temporary BQML remote model with the CREATE MODEL statement
-
-    Args:
-        connection_name:
-            a BQ connection to talk with Vertex AI, of the format <PROJECT_NUMBER>.<REGION>.<CONNECTION_NAME>. https://cloud.google.com/bigquery/docs/create-cloud-resource-connection
-        options:
-            a dict of options to configure the model. Generates a BQML OPTIONS clause
-
-    Returns:
-        BqmlModel: a BqmlModel wrapping a trained model in BigQuery
-    """
-    options_sql = ml_sql.options(**options)
-    sql = ml_sql.create_remote_model(
-        model_name=_create_temp_model_name(),
-        connection_name=connection_name,
-        options_sql=options_sql,
-    )
-
-    return _create_bqml_model_with_sql(session=session, sql=sql)
-
-
-def create_bqml_imported_model(
-    session: bigframes.Session,
-    options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
-) -> BqmlModel:
-    """Create a session-temporary BQML imported model with the CREATE MODEL statement
-
-    Args:
-        options: a dict of options to configure the model. Generates a BQML OPTIONS
-            clause
-
-    Returns: a BqmlModel, wrapping a trained model in BigQuery
-    """
-    options_sql = ml_sql.options(**options)
-    sql = ml_sql.create_imported_model(
-        model_name=_create_temp_model_name(),
-        options_sql=options_sql,
-    )
-
-    return _create_bqml_model_with_sql(session=session, sql=sql)
-
-
-def _create_temp_model_name() -> str:
-    return uuid.uuid4().hex
-
-
-def _create_bqml_model_with_sql(session: bigframes.Session, sql: str) -> BqmlModel:
-    # fit the model, synchronously
-    _, job = session._start_query(sql)
-
-    # real model path in the session specific hidden dataset and table prefix
-    model_name_full = f"{job.destination.dataset_id}.{job.destination.table_id}"
-    model = session.bqclient.get_model(model_name_full)
-    return BqmlModel(session, model)
+        return self._create_model_with_sql(session=session, sql=sql)

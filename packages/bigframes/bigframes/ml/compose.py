@@ -22,7 +22,7 @@ import typing
 from typing import List, Optional, Tuple, Union
 
 from bigframes import constants
-from bigframes.ml import base, core, preprocessing, utils
+from bigframes.ml import base, core, globals, preprocessing, utils
 import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.compose._column_transformer
 
@@ -53,6 +53,7 @@ class ColumnTransformer(
         # TODO: if any(transformers) has fitted raise warning
         self.transformers = transformers
         self._bqml_model: Optional[core.BqmlModel] = None
+        self._bqml_model_factory = globals.bqml_model_factory()
         # call self.transformers_ to check chained transformers
         self.transformers_
 
@@ -114,7 +115,7 @@ class ColumnTransformer(
         compiled_transforms = self._compile_to_sql(X.columns.tolist())
         transform_sqls = [transform_sql for transform_sql, _ in compiled_transforms]
 
-        self._bqml_model = core.create_bqml_model(
+        self._bqml_model = self._bqml_model_factory.create_model(
             X,
             options={"model_type": "transform_only"},
             transforms=transform_sqls,

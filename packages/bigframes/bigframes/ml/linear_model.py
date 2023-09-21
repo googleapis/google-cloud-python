@@ -23,7 +23,7 @@ from google.cloud import bigquery
 
 import bigframes
 import bigframes.constants as constants
-from bigframes.ml import base, core, utils
+from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.linear_model._base
 import third_party.bigframes_vendored.sklearn.linear_model._logistic
@@ -80,6 +80,7 @@ class LinearRegression(
         self.calculate_p_values = calculate_p_values
         self.enable_global_explain = enable_global_explain
         self._bqml_model: Optional[core.BqmlModel] = None
+        self._bqml_model_factory = globals.bqml_model_factory()
 
     @classmethod
     def _from_bq(
@@ -130,7 +131,7 @@ class LinearRegression(
     ) -> LinearRegression:
         X, y = utils.convert_to_dataframe(X, y)
 
-        self._bqml_model = core.create_bqml_model(
+        self._bqml_model = self._bqml_model_factory.create_model(
             X,
             y,
             transforms=transforms,
@@ -204,6 +205,7 @@ class LogisticRegression(
         self.class_weights = class_weights
         self._auto_class_weight = class_weights == "balanced"
         self._bqml_model: Optional[core.BqmlModel] = None
+        self._bqml_model_factory = globals.bqml_model_factory()
 
     @classmethod
     def _from_bq(
@@ -248,7 +250,7 @@ class LogisticRegression(
         """Fit model with transforms."""
         X, y = utils.convert_to_dataframe(X, y)
 
-        self._bqml_model = core.create_bqml_model(
+        self._bqml_model = self._bqml_model_factory.create_model(
             X,
             y,
             transforms=transforms,

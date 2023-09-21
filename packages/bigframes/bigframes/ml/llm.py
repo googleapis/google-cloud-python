@@ -21,7 +21,7 @@ from typing import cast, Optional, Union
 import bigframes
 from bigframes import clients, constants
 from bigframes.core import blocks
-from bigframes.ml import base, core, utils
+from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 
 _REMOTE_TEXT_GENERATOR_MODEL_CODE = "CLOUD_AI_LARGE_LANGUAGE_MODEL_V1"
@@ -52,6 +52,7 @@ class PaLM2TextGenerator(base.Predictor):
         self._bq_connection_manager = clients.BqConnectionManager(
             self.session.bqconnectionclient, self.session.resourcemanagerclient
         )
+        self._bqml_model_factory = globals.bqml_model_factory()
         self._bqml_model: core.BqmlModel = self._create_bqml_model()
 
     def _create_bqml_model(self):
@@ -76,7 +77,7 @@ class PaLM2TextGenerator(base.Predictor):
             "remote_service_type": _REMOTE_TEXT_GENERATOR_MODEL_CODE,
         }
 
-        return core.create_bqml_remote_model(
+        return self._bqml_model_factory.create_remote_model(
             session=self.session, connection_name=self.connection_name, options=options
         )
 
@@ -183,6 +184,7 @@ class PaLM2TextEmbeddingGenerator(base.Predictor):
         self._bq_connection_manager = clients.BqConnectionManager(
             self.session.bqconnectionclient, self.session.resourcemanagerclient
         )
+        self._bqml_model_factory = globals.bqml_model_factory()
         self._bqml_model: core.BqmlModel = self._create_bqml_model()
 
     def _create_bqml_model(self):
@@ -207,7 +209,7 @@ class PaLM2TextEmbeddingGenerator(base.Predictor):
             "remote_service_type": _REMOTE_EMBEDDING_GENERATOR_MODEL_CODE,
         }
 
-        return core.create_bqml_remote_model(
+        return self._bqml_model_factory.create_remote_model(
             session=self.session, connection_name=self.connection_name, options=options
         )
 

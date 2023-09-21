@@ -14,8 +14,7 @@
 
 import pandas
 
-import bigframes.ml.core
-import bigframes.ml.sql
+from bigframes.ml import globals
 
 
 def test_bqml_e2e(session, dataset_id, penguins_df_default_index, new_penguins_df):
@@ -32,7 +31,7 @@ def test_bqml_e2e(session, dataset_id, penguins_df_default_index, new_penguins_d
     ]
     y_train = df[["body_mass_g"]]
 
-    model = bigframes.ml.core.create_bqml_model(
+    model = globals.bqml_model_factory().create_model(
         X_train, y_train, options={"model_type": "linear_reg"}
     )
 
@@ -84,6 +83,9 @@ def test_bqml_e2e(session, dataset_id, penguins_df_default_index, new_penguins_d
 def test_bqml_manual_preprocessing_e2e(
     session, dataset_id, penguins_df_default_index, new_penguins_df
 ):
+    base_sql_generator = globals.base_sql_generator()
+    bqml_model_factory = globals.bqml_model_factory()
+
     df = penguins_df_default_index.dropna()
     X_train = df[
         [
@@ -94,12 +96,12 @@ def test_bqml_manual_preprocessing_e2e(
     ]
     y_train = df[["body_mass_g"]]
     transforms = [
-        bigframes.ml.sql.ml_standard_scaler(column, column)
+        base_sql_generator.ml_standard_scaler(column, column)
         for column in X_train.columns.tolist()
     ]
     transforms.extend(y_train.columns.tolist())
     options = {"model_type": "linear_reg"}
-    model = bigframes.ml.core.create_bqml_model(
+    model = bqml_model_factory.create_model(
         X_train, y_train, transforms=transforms, options=options
     )
 
@@ -150,8 +152,10 @@ def test_bqml_manual_preprocessing_e2e(
 
 
 def test_bqml_standalone_transform(penguins_df_default_index, new_penguins_df):
+    bqml_model_factory = globals.bqml_model_factory()
+
     X = penguins_df_default_index[["culmen_length_mm", "species"]]
-    model = bigframes.ml.core.create_bqml_model(
+    model = bqml_model_factory.create_model(
         X,
         options={"model_type": "transform_only"},
         transforms=[

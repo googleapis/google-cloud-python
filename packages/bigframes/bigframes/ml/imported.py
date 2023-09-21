@@ -21,7 +21,7 @@ from typing import cast, Optional, Union
 from google.cloud import bigquery
 
 import bigframes
-from bigframes.ml import base, core, utils
+from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 
 
@@ -42,10 +42,13 @@ class TensorFlowModel(base.Predictor):
         self.session = session or bpd.get_global_session()
         self.model_path = model_path
         self._bqml_model: Optional[core.BqmlModel] = None
+        self._bqml_model_factory = globals.bqml_model_factory()
 
     def _create_bqml_model(self):
         options = {"model_type": "TENSORFLOW", "model_path": self.model_path}
-        return core.create_bqml_imported_model(session=self.session, options=options)
+        return self._bqml_model_factory.create_imported_model(
+            session=self.session, options=options
+        )
 
     @classmethod
     def _from_bq(
@@ -124,10 +127,13 @@ class ONNXModel(base.Predictor):
         self.session = session or bpd.get_global_session()
         self.model_path = model_path
         self._bqml_model: Optional[core.BqmlModel] = None
+        self._bqml_model_factory = globals.bqml_model_factory()
 
     def _create_bqml_model(self):
         options = {"model_type": "ONNX", "model_path": self.model_path}
-        return core.create_bqml_imported_model(session=self.session, options=options)
+        return self._bqml_model_factory.create_imported_model(
+            session=self.session, options=options
+        )
 
     @classmethod
     def _from_bq(cls, session: bigframes.Session, model: bigquery.Model) -> ONNXModel:

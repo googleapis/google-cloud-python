@@ -25,6 +25,7 @@ from bigframes.ml import (
     decomposition,
     ensemble,
     forecasting,
+    globals,
     imported,
     linear_model,
     llm,
@@ -202,7 +203,7 @@ def bqml_palm2_text_generator_model(session, bq_connection) -> core.BqmlModel:
     options = {
         "remote_service_type": "CLOUD_AI_LARGE_LANGUAGE_MODEL_V1",
     }
-    return core.create_bqml_remote_model(
+    return globals.bqml_model_factory().create_remote_model(
         session=session, connection_name=bq_connection, options=options
     )
 

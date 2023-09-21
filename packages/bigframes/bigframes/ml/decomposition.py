@@ -22,7 +22,7 @@ from typing import cast, List, Optional, Union
 from google.cloud import bigquery
 
 import bigframes
-from bigframes.ml import base, core, utils
+from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.decomposition._pca
 
@@ -36,6 +36,7 @@ class PCA(
     def __init__(self, n_components: int = 3):
         self.n_components = n_components
         self._bqml_model: Optional[core.BqmlModel] = None
+        self._bqml_model_factory = globals.bqml_model_factory()
 
     @classmethod
     def _from_bq(cls, session: bigframes.Session, model: bigquery.Model) -> PCA:
@@ -60,7 +61,7 @@ class PCA(
     ) -> PCA:
         (X,) = utils.convert_to_dataframe(X)
 
-        self._bqml_model = core.create_bqml_model(
+        self._bqml_model = self._bqml_model_factory.create_model(
             X_train=X,
             transforms=transforms,
             options={
