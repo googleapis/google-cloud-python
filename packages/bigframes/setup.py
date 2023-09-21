@@ -44,12 +44,12 @@ dependencies = [
     "google-cloud-resource-manager >=1.10.3",
     "google-cloud-storage >=2.0.0",
     # TODO: Relax upper bound once we have fixed `system_prerelease` tests.
-    "ibis-framework[bigquery] >=6.0.0,<=6.1.0",
+    "ibis-framework[bigquery] >=6.2.0,<7.0.0dev",
     "pandas >=1.5.0",
     "pydata-google-auth >=1.8.2",
     "requests >=2.27.1",
     "scikit-learn >=1.2.2",
-    "sqlalchemy >=1.4,<3.0",
+    "sqlalchemy >=1.4,<3.0dev",
     "ipywidgets >=7.7.1",
     "humanize >= 4.6.0",
 ]

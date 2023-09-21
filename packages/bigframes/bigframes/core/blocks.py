@@ -44,6 +44,7 @@ import bigframes.core.utils as utils
 import bigframes.dtypes
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
+import third_party.bigframes_vendored.pandas.io.common as vendored_pandas_io_common
 
 # Type constraint for wherever column labels are used
 Label = typing.Hashable
@@ -1522,37 +1523,35 @@ class Block:
         return result
 
 
-def block_from_local(data, session=None, use_index=True) -> Block:
-    # TODO(tbergeron): Handle duplicate column labels
+def block_from_local(data, session=None) -> Block:
     pd_data = pd.DataFrame(data)
+    columns = pd_data.columns
 
-    column_labels = list(pd_data.columns)
-    if not all((label is None) or isinstance(label, str) for label in column_labels):
-        raise NotImplementedError(
-            f"Only string column labels supported. {constants.FEEDBACK_LINK}"
-        )
+    # Make a flattened version to treat as a table.
+    if len(pd_data.columns.names) > 1:
+        pd_data.columns = columns.to_flat_index()
 
-    if use_index:
-        if pd_data.index.nlevels > 1:
-            raise NotImplementedError(
-                f"multi-indices not supported. {constants.FEEDBACK_LINK}"
-            )
-        index_label = pd_data.index.name
+    index_labels = list(pd_data.index.names)
+    # The ArrayValue layer doesn't know about indexes, so make sure indexes
+    # are real columns with unique IDs.
+    pd_data = pd_data.reset_index(
+        names=[f"level_{level}" for level in range(len(index_labels))]
+    )
+    pd_data = pd_data.set_axis(
+        vendored_pandas_io_common.dedup_names(
+            list(pd_data.columns), is_potential_multiindex=False
+        ),
+        axis="columns",
+    )
+    index_ids = pd_data.columns[: len(index_labels)]
 
-        index_id = guid.generate_guid()
-        pd_data = pd_data.reset_index(names=index_id)
-        keys_expr = core.ArrayValue.mem_expr_from_pandas(pd_data, session)
-        return Block(
-            keys_expr,
-            column_labels=column_labels,
-            index_columns=[index_id],
-            index_labels=[index_label],
-        )
-    else:
-        keys_expr = core.ArrayValue.mem_expr_from_pandas(pd_data, session)
-        keys_expr, offsets_id = keys_expr.promote_offsets()
-        # Constructor will create default range index
-        return Block(keys_expr, index_columns=[offsets_id], column_labels=column_labels)
+    keys_expr = core.ArrayValue.mem_expr_from_pandas(pd_data, session)
+    return Block(
+        keys_expr,
+        column_labels=columns,
+        index_columns=index_ids,
+        index_labels=index_labels,
+    )
 
 
 def _align_block_to_schema(

@@ -144,21 +144,56 @@ class ArrayValue:
         """
         Builds an in-memory only (SQL only) expr from a pandas dataframe.
 
-        Caution: If session is None, only a subset of expr functionality will be available (null Session is usually not supported).
+        Caution: If session is None, only a subset of expr functionality will
+        be available (null Session is usually not supported).
         """
-        # must set non-null column labels. these are not the user-facing labels
-        pd_df = pd_df.set_axis(
-            [column or bigframes.core.guid.generate_guid() for column in pd_df.columns],
-            axis="columns",
-        )
+        # We can't include any hidden columns in the ArrayValue constructor, so
+        # grab the column names before we add the hidden ordering column.
+        column_names = [str(column) for column in pd_df.columns]
+        # Make sure column names are all strings.
+        pd_df = pd_df.set_axis(column_names, axis="columns")
         pd_df = pd_df.assign(**{ORDER_ID_COLUMN: range(len(pd_df))})
+
         # ibis memtable cannot handle NA, must convert to None
         pd_df = pd_df.astype("object")  # type: ignore
         pd_df = pd_df.where(pandas.notnull(pd_df), None)
+
+        # NULL type isn't valid in BigQuery, so retry with an explicit schema in these cases.
         keys_memtable = ibis.memtable(pd_df)
+        schema = keys_memtable.schema()
+        new_schema = []
+        for column_index, column in enumerate(schema):
+            if column == ORDER_ID_COLUMN:
+                new_type: ibis_dtypes.DataType = ibis_dtypes.int64
+            else:
+                column_type = schema[column]
+                # The autodetected type might not be one we can support, such
+                # as NULL type for empty rows, so convert to a type we do
+                # support.
+                new_type = bigframes.dtypes.bigframes_dtype_to_ibis_dtype(
+                    bigframes.dtypes.ibis_dtype_to_bigframes_dtype(column_type)
+                )
+                # TODO(swast): Ibis memtable doesn't use backticks in struct
+                # field names, so spaces and other characters aren't allowed in
+                # the memtable context. Blocked by
+                # https://github.com/ibis-project/ibis/issues/7187
+                column = f"col_{column_index}"
+            new_schema.append((column, new_type))
+
+        # must set non-null column labels. these are not the user-facing labels
+        pd_df = pd_df.set_axis(
+            [column for column, _ in new_schema],
+            axis="columns",
+        )
+        keys_memtable = ibis.memtable(pd_df, schema=ibis.schema(new_schema))
+
         return cls(
             session,  # type: ignore # Session cannot normally be none, see "caution" above
             keys_memtable,
+            columns=[
+                keys_memtable[f"col_{column_index}"].name(column)
+                for column_index, column in enumerate(column_names)
+            ],
             ordering=ExpressionOrdering(
                 ordering_value_columns=[OrderingColumnReference(ORDER_ID_COLUMN)],
                 total_ordering_columns=frozenset([ORDER_ID_COLUMN]),
@@ -426,11 +461,16 @@ class ArrayValue:
         width = len(self.columns)
         count_expr = self._to_ibis_expr(ordering_mode="unordered").count()
         sql = self._session.ibis_client.compile(count_expr)
-        row_iterator, _ = self._session._start_query(
-            sql=sql,
-            max_results=1,
-        )
-        length = next(row_iterator)[0]
+
+        # Support in-memory engines for hermetic unit tests.
+        if not isinstance(sql, str):
+            length = self._session.ibis_client.execute(count_expr)
+        else:
+            row_iterator, _ = self._session._start_query(
+                sql=sql,
+                max_results=1,
+            )
+            length = next(row_iterator)[0]
         return (length, width)
 
     def concat(self, other: typing.Sequence[ArrayValue]) -> ArrayValue:

@@ -30,9 +30,7 @@ import third_party.bigframes_vendored.pandas.pandas._typing as vendored_pandas_t
 
 # BigQuery has 1 MB query size limit, 5000 items shouldn't take more than 10% of this depending on data type.
 # TODO(tbergeron): Convert to bytes-based limit
-# TODO(swast): Address issues with string escaping and empty tables before
-# re-enabling inline data (ibis.memtable) feature.
-MAX_INLINE_SERIES_SIZE = -1
+MAX_INLINE_SERIES_SIZE = 5000
 
 
 class SeriesMethods:
