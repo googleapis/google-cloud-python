@@ -10486,6 +10486,9 @@ def test_create_processor_rest(request_type):
         "display_name": "display_name_value",
         "state": 1,
         "default_processor_version": "default_processor_version_value",
+        "processor_version_aliases": [
+            {"alias": "alias_value", "processor_version": "processor_version_value"}
+        ],
         "process_endpoint": "process_endpoint_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "kms_key_name": "kms_key_name_value",
@@ -10695,6 +10698,9 @@ def test_create_processor_rest_bad_request(
         "display_name": "display_name_value",
         "state": 1,
         "default_processor_version": "default_processor_version_value",
+        "processor_version_aliases": [
+            {"alias": "alias_value", "processor_version": "processor_version_value"}
+        ],
         "process_endpoint": "process_endpoint_value",
         "create_time": {"seconds": 751, "nanos": 543},
         "kms_key_name": "kms_key_name_value",

@@ -346,7 +346,7 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
         parent account, which is typically given to billing account
         `administrators <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
         This method will return an error if the parent account has not
-        been provisioned as a reseller account.
+        been provisioned for subaccounts.
 
         Returns:
             Callable[[~.CreateBillingAccountRequest],

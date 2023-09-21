@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
     package="google.cloud.documentai.v1",
     manifest={
         "ProcessorVersion",
+        "ProcessorVersionAlias",
         "Processor",
     },
 )
@@ -175,6 +176,29 @@ class ProcessorVersion(proto.Message):
     )
 
 
+class ProcessorVersionAlias(proto.Message):
+    r"""Contains the alias and the aliased resource name of processor
+    version.
+
+    Attributes:
+        alias (str):
+            The alias in the form of ``processor_version`` resource
+            name.
+        processor_version (str):
+            The resource name of aliased processor
+            version.
+    """
+
+    alias: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    processor_version: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class Processor(proto.Message):
     r"""The first-class citizen for Document AI. Each processor
     defines how to extract structural information from a document.
@@ -194,6 +218,8 @@ class Processor(proto.Message):
             Output only. The state of the processor.
         default_processor_version (str):
             The default processor version.
+        processor_version_aliases (MutableSequence[google.cloud.documentai_v1.types.ProcessorVersionAlias]):
+            Output only. The processor version aliases.
         process_endpoint (str):
             Output only. Immutable. The http endpoint
             that can be called to invoke processing.
@@ -270,6 +296,13 @@ class Processor(proto.Message):
     default_processor_version: str = proto.Field(
         proto.STRING,
         number=9,
+    )
+    processor_version_aliases: MutableSequence[
+        "ProcessorVersionAlias"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message="ProcessorVersionAlias",
     )
     process_endpoint: str = proto.Field(
         proto.STRING,
