@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.6.0](https://github.com/googleapis/python-dataproc/compare/v5.5.1...v5.6.0) (2023-09-15)
+
+
+### Features
+
+* Add optional parameters (tarball_gcs_dir, diagnosis_interval, jobs, yarn_application_ids) in DiagnoseClusterRequest ([#560](https://github.com/googleapis/python-dataproc/issues/560)) ([59b00aa](https://github.com/googleapis/python-dataproc/commit/59b00aa5559cec35578fe086fab5df726a3b526a))
+
 ## [5.5.1](https://github.com/googleapis/python-dataproc/compare/v5.5.0...v5.5.1) (2023-09-13)
 
 
