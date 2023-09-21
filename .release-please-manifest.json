@@ -100,6 +100,7 @@
     "packages/google-cloud-service-usage": "1.8.0",
     "packages/google-cloud-shell": "1.7.3",
     "packages/google-cloud-source-context": "1.4.3",
+    "packages/google-cloud-storage-transfer": "1.9.2",
     "packages/google-cloud-storageinsights": "0.1.3",
     "packages/google-cloud-support": "0.1.2",
     "packages/google-cloud-talent": "2.11.2",

@@ -1706,6 +1706,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-storage-transfer": {
+            "component": "google-cloud-storage-transfer",
+            "extra-files": [
+                "google/cloud/storage_transfer_v1/gapic_version.py",
+                "google/cloud/storage_transfer/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.storagetransfer.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-storageinsights": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
