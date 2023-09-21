@@ -19,7 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-import google.apps.script.type.types  # type: ignore
+from google.apps.script.type.types import extension_point
 
 __protobuf__ = proto.module(
     package="google.apps.script.type.gmail",
@@ -74,12 +74,10 @@ class GmailAddOnManifest(proto.Message):
             experience.
     """
 
-    homepage_trigger: google.apps.script.type.types.HomepageExtensionPoint = (
-        proto.Field(
-            proto.MESSAGE,
-            number=14,
-            message=google.apps.script.type.types.HomepageExtensionPoint,
-        )
+    homepage_trigger: extension_point.HomepageExtensionPoint = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=extension_point.HomepageExtensionPoint,
     )
     contextual_triggers: MutableSequence["ContextualTrigger"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -183,11 +181,11 @@ class ComposeTrigger(proto.Message):
         METADATA = 2
 
     actions: MutableSequence[
-        google.apps.script.type.types.MenuItemExtensionPoint
+        extension_point.MenuItemExtensionPoint
     ] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
-        message=google.apps.script.type.types.MenuItemExtensionPoint,
+        message=extension_point.MenuItemExtensionPoint,
     )
     draft_access: DraftAccess = proto.Field(
         proto.ENUM,
