@@ -12,15 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-docker:
-  image: gcr.io/cloud-devrel-public-resources/owlbot-python:latest
 
 deep-remove-regex:
   - /owl-bot-staging
 
 deep-copy-regex:
-  - source: /google/cloud/dialogflow/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/$1/$2
+  - source: /google/cloud/dialogflow/(v.*)/.*-py
+    dest: /owl-bot-staging/google-cloud-dialogflow/$1
 
 begin-after-commit-hash: 0a3c7d272d697796db75857bac73905c68e498c3
 
