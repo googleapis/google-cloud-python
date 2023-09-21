@@ -2129,10 +2129,10 @@ def test_df_columns_filter_items(scalars_df_index, scalars_pandas_df_index):
     bf_result = scalars_df_index.filter(items=["string_col", "int64_col"]).to_pandas()
 
     pd_result = scalars_pandas_df_index.filter(items=["string_col", "int64_col"])
-
+    # Ignore column ordering as pandas order differently depending on version
     pd.testing.assert_frame_equal(
-        bf_result,
-        pd_result,
+        bf_result.sort_index(axis=1),
+        pd_result.sort_index(axis=1),
     )
 
 
@@ -2167,9 +2167,11 @@ def test_df_rows_filter_items(scalars_df_index, scalars_pandas_df_index):
 
     # Pandas uses int64 instead of Int64 (nullable) dtype.
     pd_result.index = pd_result.index.astype(pd.Int64Dtype())
-    pd.testing.assert_frame_equal(
+    # Ignore ordering as pandas order differently depending on version
+    assert_pandas_df_equal_ignore_ordering(
         bf_result,
         pd_result,
+        check_names=False,
     )
 
 

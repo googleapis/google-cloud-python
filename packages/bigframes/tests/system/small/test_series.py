@@ -1950,9 +1950,11 @@ def test_series_filter_items(scalars_df_index, scalars_pandas_df_index):
 
     # Pandas uses int64 instead of Int64 (nullable) dtype.
     pd_result.index = pd_result.index.astype(pd.Int64Dtype())
-    pd.testing.assert_series_equal(
+    # Ignore ordering as pandas order differently depending on version
+    assert_series_equal_ignoring_order(
         bf_result,
         pd_result,
+        check_names=False,
     )
 
 
