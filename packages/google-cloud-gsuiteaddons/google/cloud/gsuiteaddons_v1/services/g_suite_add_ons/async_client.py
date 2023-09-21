@@ -54,6 +54,7 @@ from .transports.grpc_asyncio import GSuiteAddOnsGrpcAsyncIOTransport
 
 class GSuiteAddOnsAsyncClient:
     """A service for managing Google Workspace Add-ons deployments.
+
     A Google Workspace Add-on is a third-party embedded component
     that can be installed in Google Workspace Applications like
     Gmail, Calendar, Drive, and the Google Docs, Sheets, and Slides
@@ -63,6 +64,7 @@ class GSuiteAddOnsAsyncClient:
 
     https://developers.google.com/gsuite/add-ons/overview for more
     information).
+
     A Google Workspace Add-on deployment resource specifies metadata
     about the add-on, including a specification of the entry points
     in the host application that trigger add-on executions (see:
@@ -72,6 +74,7 @@ class GSuiteAddOnsAsyncClient:
     define their entrypoints using HTTPS URLs (See:
 
     https://developers.google.com/gsuite/add-ons/guides/alternate-runtimes),
+
     A Google Workspace Add-on deployment can be installed in
     developer mode, which allows an add-on developer to test the
     experience an end-user would see when installing and running the
@@ -745,6 +748,7 @@ class GSuiteAddOnsAsyncClient:
         Returns:
             google.cloud.gsuiteaddons_v1.services.g_suite_add_ons.pagers.ListDeploymentsAsyncPager:
                 Response message to list deployments.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
