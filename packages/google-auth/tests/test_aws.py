@@ -1969,7 +1969,7 @@ class TestCredentials(object):
             "authorization": "Bearer {}".format(self.SUCCESS_RESPONSE["access_token"]),
             "x-goog-user-project": QUOTA_PROJECT_ID,
             "x-goog-api-client": IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
-            "x-identity-trust-boundary": "0",
+            "x-allowed-locations": "0x0",
         }
         impersonation_request_data = {
             "delegates": None,
@@ -2066,7 +2066,7 @@ class TestCredentials(object):
             "authorization": "Bearer {}".format(self.SUCCESS_RESPONSE["access_token"]),
             "x-goog-user-project": QUOTA_PROJECT_ID,
             "x-goog-api-client": IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE,
-            "x-identity-trust-boundary": "0",
+            "x-allowed-locations": "0x0",
         }
         impersonation_request_data = {
             "delegates": None,

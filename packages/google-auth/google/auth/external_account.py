@@ -132,7 +132,10 @@ class Credentials(
         self._default_scopes = default_scopes
         self._workforce_pool_user_project = workforce_pool_user_project
         self._universe_domain = universe_domain or _DEFAULT_UNIVERSE_DOMAIN
-        self._trust_boundary = "0"  # expose a placeholder trust boundary value.
+        self._trust_boundary = {
+            "locations": [],
+            "encoded_locations": "0x0",
+        }  # expose a placeholder trust boundary value.
 
         if self._client_id:
             self._client_auth = utils.ClientAuthentication(
