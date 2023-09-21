@@ -287,7 +287,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         # ignore axis, columns params
         block = self._block
         level_id = self._resolve_levels(level or 0)[0]
-        if _is_list_like(labels):
+        if _is_list_like(index):
             block, inverse_condition_id = block.apply_unary_op(
                 level_id, ops.IsInOp(index, match_nulls=True)
             )
@@ -296,7 +296,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             )
         else:
             block, condition_id = block.apply_unary_op(
-                level_id, ops.partial_right(ops.ne_op, labels)
+                level_id, ops.partial_right(ops.ne_op, index)
             )
         block = block.filter(condition_id, keep_null=True)
         block = block.drop_columns([condition_id])

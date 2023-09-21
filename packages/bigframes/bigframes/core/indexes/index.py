@@ -17,7 +17,7 @@
 from __future__ import annotations
 
 import typing
-from typing import Callable, Tuple
+from typing import Callable, Sequence, Tuple, Union
 
 import numpy as np
 import pandas
@@ -26,7 +26,11 @@ import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.joins as joins
+import bigframes.core.utils as utils
+import bigframes.dtypes
 import bigframes.dtypes as bf_dtypes
+import bigframes.operations as ops
+import bigframes.operations.aggregations as agg_ops
 import third_party.bigframes_vendored.pandas.core.indexes.base as vendored_pandas_index
 
 
@@ -51,15 +55,33 @@ class Index(vendored_pandas_index.Index):
 
     @names.setter
     def names(self, values: typing.Sequence[blocks.Label]):
-        return self._data._set_block(self._data._get_block().with_index_labels(values))
+        return self._data._set_block(self._block.with_index_labels(values))
 
     @property
     def nlevels(self) -> int:
         return len(self._data._get_block().index_columns)
 
     @property
+    def values(self) -> np.ndarray:
+        return self.to_numpy()
+
+    @property
+    def ndim(self) -> int:
+        return 1
+
+    @property
     def shape(self) -> typing.Tuple[int]:
         return (self._data._get_block().shape[0],)
+
+    @property
+    def dtype(self):
+        return self._block.index_dtypes[0] if self.nlevels == 1 else np.dtype("O")
+
+    @property
+    def dtypes(self) -> pandas.Series:
+        return pandas.Series(
+            data=self._block.index_dtypes, index=self._block.index_labels  # type:ignore
+        )
 
     @property
     def size(self) -> int:
@@ -105,21 +127,118 @@ class Index(vendored_pandas_index.Index):
     def is_unique(self) -> bool:
         # TODO: Cache this at block level
         # Avoid circular imports
+        return not self.has_duplicates
+
+    @property
+    def has_duplicates(self) -> bool:
+        # TODO: Cache this at block level
+        # Avoid circular imports
         import bigframes.core.block_transforms as block_ops
         import bigframes.dataframe as df
 
-        duplicates_block, _ = block_ops.indicate_duplicates(
-            self._data._get_block(), self._data._get_block().index_columns
+        duplicates_block, indicator = block_ops.indicate_duplicates(
+            self._block, self._block.index_columns
         )
-        duplicates_block = duplicates_block.with_column_labels(
-            ["values", "is_duplicate"]
-        )
+        duplicates_block = duplicates_block.select_columns(
+            [indicator]
+        ).with_column_labels(["is_duplicate"])
         duplicates_df = df.DataFrame(duplicates_block)
-        return not duplicates_df["is_duplicate"].any()
+        return duplicates_df["is_duplicate"].any()
+
+    @property
+    def _block(self) -> blocks.Block:
+        return self._data._get_block()
+
+    def astype(
+        self,
+        dtype: Union[bigframes.dtypes.DtypeString, bigframes.dtypes.Dtype],
+    ) -> Index:
+        if self.nlevels > 1:
+            raise TypeError("Multiindex does not support 'astype'")
+        return self._apply_unary_op(ops.AsTypeOp(dtype))
+
+    def all(self) -> bool:
+        if self.nlevels > 1:
+            raise TypeError("Multiindex does not support 'all'")
+        return typing.cast(bool, self._apply_aggregation(agg_ops.all_op))
+
+    def any(self) -> bool:
+        if self.nlevels > 1:
+            raise TypeError("Multiindex does not support 'any'")
+        return typing.cast(bool, self._apply_aggregation(agg_ops.any_op))
+
+    def nunique(self) -> int:
+        return typing.cast(int, self._apply_aggregation(agg_ops.nunique_op))
+
+    def max(self) -> typing.Any:
+        return self._apply_aggregation(agg_ops.max_op)
+
+    def min(self) -> typing.Any:
+        return self._apply_aggregation(agg_ops.min_op)
+
+    def fillna(self, value=None) -> Index:
+        if self.nlevels > 1:
+            raise TypeError("Multiindex does not support 'fillna'")
+        return self._apply_unary_op(ops.partial_right(ops.fillna_op, value))
+
+    def rename(self, name: Union[str, Sequence[str]]) -> Index:
+        names = [name] if isinstance(name, str) else list(name)
+        if len(names) != self.nlevels:
+            raise ValueError("'name' must be same length as levels")
+
+        import bigframes.dataframe as df
+
+        return Index(df.DataFrame(self._block.with_index_labels(names)))
+
+    def drop(
+        self,
+        labels: typing.Any,
+    ) -> Index:
+        # ignore axis, columns params
+        block = self._block
+        level_id = self._block.index_columns[0]
+        if utils.is_list_like(labels):
+            block, inverse_condition_id = block.apply_unary_op(
+                level_id, ops.IsInOp(labels, match_nulls=True)
+            )
+            block, condition_id = block.apply_unary_op(
+                inverse_condition_id, ops.invert_op
+            )
+        else:
+            block, condition_id = block.apply_unary_op(
+                level_id, ops.partial_right(ops.ne_op, labels)
+            )
+        block = block.filter(condition_id, keep_null=True)
+        block = block.drop_columns([condition_id])
+        import bigframes.dataframe as df
+
+        return Index(df.DataFrame(block.select_columns([])))
+
+    def _apply_unary_op(
+        self,
+        op: ops.UnaryOp,
+    ) -> Index:
+        """Applies a unary operator to the index."""
+        block = self._block
+        result_ids = []
+        for col in self._block.index_columns:
+            block, result_id = block.apply_unary_op(col, op)
+            result_ids.append(result_id)
+
+        block = block.set_index(result_ids, index_labels=self._block.index_labels)
+        import bigframes.dataframe as df
+
+        return Index(df.DataFrame(block))
+
+    def _apply_aggregation(self, op: agg_ops.AggregateOp) -> typing.Any:
+        if self.nlevels > 1:
+            raise NotImplementedError(f"Multiindex does not yet support {op.name}")
+        column_id = self._block.index_columns[0]
+        return self._block.get_stat(column_id, op)
 
     def __getitem__(self, key: int) -> typing.Any:
         if isinstance(key, int):
-            result_pd_df, _ = self._data._get_block().slice(key, key + 1, 1).to_pandas()
+            result_pd_df, _ = self._block.slice(key, key + 1, 1).to_pandas()
             if result_pd_df.empty:
                 raise IndexError("single positional indexer is out-of-bounds")
             return result_pd_df.index[0]
@@ -133,7 +252,7 @@ class Index(vendored_pandas_index.Index):
             pandas.Index:
                 A pandas Index with all of the labels from this Index.
         """
-        return IndexValue(self._data._get_block()).to_pandas()
+        return IndexValue(self._block).to_pandas()
 
     def to_numpy(self, dtype=None, **kwargs) -> np.ndarray:
         return self.to_pandas().to_numpy(dtype, **kwargs)
@@ -184,13 +303,15 @@ class IndexValue:
     def to_pandas(self) -> pandas.Index:
         """Executes deferred operations and downloads the results."""
         # Project down to only the index column. So the query can be cached to visualize other data.
-        index_column = self._block.index_columns[0]
-        expr = self._expr.projection([self._expr.get_any_column(index_column)])
+        index_columns = list(self._block.index_columns)
+        expr = self._expr.projection(
+            [self._expr.get_any_column(col) for col in index_columns]
+        )
         results, _ = expr.start_query()
         df = expr._session._rows_to_dataframe(results)
-        df.set_index(index_column)
+        df = df.set_index(index_columns)
         index = df.index
-        index.name = self._block._index_labels[0]
+        index.names = list(self._block._index_labels)
         return index
 
     def join(
@@ -234,6 +355,12 @@ class IndexValue:
 
     def is_uniquely_named(self: IndexValue):
         return len(set(self.names)) == len(self.names)
+
+    def _set_block(self, block: blocks.Block):
+        self._block = block
+
+    def _get_block(self) -> blocks.Block:
+        return self._block
 
 
 def join_mono_indexed(
