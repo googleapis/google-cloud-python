@@ -44,6 +44,7 @@
     "packages/google-cloud-dataproc-metastore": "1.12.1",
     "packages/google-cloud-datastream": "1.7.1",
     "packages/google-cloud-deploy": "1.12.1",
+    "packages/google-cloud-dialogflow": "2.24.0",
     "packages/google-cloud-dialogflow-cx": "1.27.1",
     "packages/google-cloud-discoveryengine": "0.11.1",
     "packages/google-cloud-dms": "1.7.2",
