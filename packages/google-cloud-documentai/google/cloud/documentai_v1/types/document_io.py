@@ -44,6 +44,12 @@ class RawDocument(proto.Message):
             An IANA MIME type (RFC6838) indicating the nature and format
             of the
             [content][google.cloud.documentai.v1.RawDocument.content].
+        display_name (str):
+            The display name of the document, it supports all Unicode
+            characters except the following: ``*``, ``?``, ``[``, ``]``,
+            ``%``, ``{``, ``}``,\ ``'``, ``\"``, ``,`` ``~``, ``=`` and
+            ``:`` are reserved. If not specified, a default ID will be
+            generated.
     """
 
     content: bytes = proto.Field(
@@ -53,6 +59,10 @@ class RawDocument(proto.Message):
     mime_type: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -250,8 +260,8 @@ class OcrConfig(proto.Message):
             Includes symbol level OCR information if set
             to true.
         compute_style_info (bool):
-            Turn on font id model and returns font style
-            information.
+            Turn on font id model and returns font style information.
+            Use PremiumFeatures.compute_style_info instead.
     """
 
     class Hints(proto.Message):

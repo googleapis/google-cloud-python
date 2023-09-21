@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.18.1...google-cloud-documentai-v2.19.0) (2023-09-21)
+
+
+### Features
+
+* added field Processor.processor_version_aliases ([c7c3e41](https://github.com/googleapis/google-cloud-python/commit/c7c3e414d56bb7f16353e2a3fdb74aee4ec291ea))
+* added field RawDocument.display_name ([c7c3e41](https://github.com/googleapis/google-cloud-python/commit/c7c3e414d56bb7f16353e2a3fdb74aee4ec291ea))
+
+
+### Bug Fixes
+
+* deprecated OcrConfig.compute_style_info ([c7c3e41](https://github.com/googleapis/google-cloud-python/commit/c7c3e414d56bb7f16353e2a3fdb74aee4ec291ea))
+
 ## [2.18.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.18.0...google-cloud-documentai-v2.18.1) (2023-09-19)
 
 

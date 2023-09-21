@@ -1550,25 +1550,10 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-retail",
             "extra-files": [
-                "google/cloud/retail_v2alpha/gapic_version.py",
                 "google/cloud/retail/gapic_version.py",
-                "google/cloud/retail_v2beta/gapic_version.py",
                 "google/cloud/retail_v2/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.retail.v2.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.retail.v2beta.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.retail.v2alpha.json",
-                    "type": "json"
-                }
+                "google/cloud/retail_v2alpha/gapic_version.py",
+                "google/cloud/retail_v2beta/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -1786,12 +1771,7 @@
             "component": "google-cloud-video-live-stream",
             "extra-files": [
                 "google/cloud/video/live_stream/gapic_version.py",
-                "google/cloud/video/live_stream_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.video.livestream.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/video/live_stream_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -1800,13 +1780,8 @@
             "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-video-stitcher",
             "extra-files": [
-                "google/cloud/video/stitcher_v1/gapic_version.py",
                 "google/cloud/video/stitcher/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.video.stitcher.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/video/stitcher_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -1816,12 +1791,7 @@
             "component": "google-cloud-video-transcoder",
             "extra-files": [
                 "google/cloud/video/transcoder/gapic_version.py",
-                "google/cloud/video/transcoder_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.video.transcoder.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/video/transcoder_v1/gapic_version.py"
             ],
             "release-type": "python"
         },

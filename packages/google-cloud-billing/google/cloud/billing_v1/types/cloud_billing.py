@@ -168,9 +168,9 @@ class ListBillingAccountsRequest(proto.Message):
             of results is returned.
         filter (str):
             Options for how to filter the returned billing accounts.
-            Currently this only supports filtering for
+            This only supports filtering for
             `subaccounts <https://cloud.google.com/billing/docs/concepts>`__
-            under a single provided reseller billing account. (e.g.
+            under a single provided parent billing account. (e.g.
             "master_billing_account=billingAccounts/012345-678901-ABCDEF").
             Boolean algebra and other fields are not currently
             supported.

@@ -18,29 +18,35 @@ from google.ai.generativelanguage import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.ai.generativelanguage_v1beta2.services.discuss_service.async_client import (
+from google.ai.generativelanguage_v1beta3.services.discuss_service.async_client import (
     DiscussServiceAsyncClient,
 )
-from google.ai.generativelanguage_v1beta2.services.discuss_service.client import (
+from google.ai.generativelanguage_v1beta3.services.discuss_service.client import (
     DiscussServiceClient,
 )
-from google.ai.generativelanguage_v1beta2.services.model_service.async_client import (
+from google.ai.generativelanguage_v1beta3.services.model_service.async_client import (
     ModelServiceAsyncClient,
 )
-from google.ai.generativelanguage_v1beta2.services.model_service.client import (
+from google.ai.generativelanguage_v1beta3.services.model_service.client import (
     ModelServiceClient,
 )
-from google.ai.generativelanguage_v1beta2.services.text_service.async_client import (
+from google.ai.generativelanguage_v1beta3.services.permission_service.async_client import (
+    PermissionServiceAsyncClient,
+)
+from google.ai.generativelanguage_v1beta3.services.permission_service.client import (
+    PermissionServiceClient,
+)
+from google.ai.generativelanguage_v1beta3.services.text_service.async_client import (
     TextServiceAsyncClient,
 )
-from google.ai.generativelanguage_v1beta2.services.text_service.client import (
+from google.ai.generativelanguage_v1beta3.services.text_service.client import (
     TextServiceClient,
 )
-from google.ai.generativelanguage_v1beta2.types.citation import (
+from google.ai.generativelanguage_v1beta3.types.citation import (
     CitationMetadata,
     CitationSource,
 )
-from google.ai.generativelanguage_v1beta2.types.discuss_service import (
+from google.ai.generativelanguage_v1beta3.types.discuss_service import (
     CountMessageTokensRequest,
     CountMessageTokensResponse,
     Example,
@@ -49,20 +55,42 @@ from google.ai.generativelanguage_v1beta2.types.discuss_service import (
     Message,
     MessagePrompt,
 )
-from google.ai.generativelanguage_v1beta2.types.model import Model
-from google.ai.generativelanguage_v1beta2.types.model_service import (
+from google.ai.generativelanguage_v1beta3.types.model import Model
+from google.ai.generativelanguage_v1beta3.types.model_service import (
+    CreateTunedModelMetadata,
+    CreateTunedModelRequest,
+    DeleteTunedModelRequest,
     GetModelRequest,
+    GetTunedModelRequest,
     ListModelsRequest,
     ListModelsResponse,
+    ListTunedModelsRequest,
+    ListTunedModelsResponse,
+    UpdateTunedModelRequest,
 )
-from google.ai.generativelanguage_v1beta2.types.safety import (
+from google.ai.generativelanguage_v1beta3.types.permission import Permission
+from google.ai.generativelanguage_v1beta3.types.permission_service import (
+    CreatePermissionRequest,
+    DeletePermissionRequest,
+    GetPermissionRequest,
+    ListPermissionsRequest,
+    ListPermissionsResponse,
+    TransferOwnershipRequest,
+    TransferOwnershipResponse,
+    UpdatePermissionRequest,
+)
+from google.ai.generativelanguage_v1beta3.types.safety import (
     ContentFilter,
     HarmCategory,
     SafetyFeedback,
     SafetyRating,
     SafetySetting,
 )
-from google.ai.generativelanguage_v1beta2.types.text_service import (
+from google.ai.generativelanguage_v1beta3.types.text_service import (
+    BatchEmbedTextRequest,
+    BatchEmbedTextResponse,
+    CountTextTokensRequest,
+    CountTextTokensResponse,
     Embedding,
     EmbedTextRequest,
     EmbedTextResponse,
@@ -71,12 +99,24 @@ from google.ai.generativelanguage_v1beta2.types.text_service import (
     TextCompletion,
     TextPrompt,
 )
+from google.ai.generativelanguage_v1beta3.types.tuned_model import (
+    Dataset,
+    Hyperparameters,
+    TunedModel,
+    TunedModelSource,
+    TuningExample,
+    TuningExamples,
+    TuningSnapshot,
+    TuningTask,
+)
 
 __all__ = (
     "DiscussServiceClient",
     "DiscussServiceAsyncClient",
     "ModelServiceClient",
     "ModelServiceAsyncClient",
+    "PermissionServiceClient",
+    "PermissionServiceAsyncClient",
     "TextServiceClient",
     "TextServiceAsyncClient",
     "CitationMetadata",
@@ -89,14 +129,34 @@ __all__ = (
     "Message",
     "MessagePrompt",
     "Model",
+    "CreateTunedModelMetadata",
+    "CreateTunedModelRequest",
+    "DeleteTunedModelRequest",
     "GetModelRequest",
+    "GetTunedModelRequest",
     "ListModelsRequest",
     "ListModelsResponse",
+    "ListTunedModelsRequest",
+    "ListTunedModelsResponse",
+    "UpdateTunedModelRequest",
+    "Permission",
+    "CreatePermissionRequest",
+    "DeletePermissionRequest",
+    "GetPermissionRequest",
+    "ListPermissionsRequest",
+    "ListPermissionsResponse",
+    "TransferOwnershipRequest",
+    "TransferOwnershipResponse",
+    "UpdatePermissionRequest",
     "ContentFilter",
     "SafetyFeedback",
     "SafetyRating",
     "SafetySetting",
     "HarmCategory",
+    "BatchEmbedTextRequest",
+    "BatchEmbedTextResponse",
+    "CountTextTokensRequest",
+    "CountTextTokensResponse",
     "Embedding",
     "EmbedTextRequest",
     "EmbedTextResponse",
@@ -104,4 +164,12 @@ __all__ = (
     "GenerateTextResponse",
     "TextCompletion",
     "TextPrompt",
+    "Dataset",
+    "Hyperparameters",
+    "TunedModel",
+    "TunedModelSource",
+    "TuningExample",
+    "TuningExamples",
+    "TuningSnapshot",
+    "TuningTask",
 )

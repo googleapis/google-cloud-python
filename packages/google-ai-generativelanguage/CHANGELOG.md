@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.3.2...google-ai-generativelanguage-v0.3.3) (2023-09-21)
+
+
+### Bug Fixes
+
+* set google.ai.generativelanguage_v1beta3 as the default import ([#11677](https://github.com/googleapis/google-cloud-python/issues/11677)) ([39ea699](https://github.com/googleapis/google-cloud-python/commit/39ea699f6c3957f2ae20990555b9f47c1b285f31))
+
 ## [0.3.2](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.3.1...google-ai-generativelanguage-v0.3.2) (2023-09-20)
 
 
