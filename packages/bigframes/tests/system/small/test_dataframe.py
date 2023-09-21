@@ -663,6 +663,57 @@ def test_df_bfill(scalars_dfs):
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
+def test_apply_series_series_callable(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    columns = ["int64_too", "int64_col"]
+
+    def foo(series, arg1, arg2, *, kwarg1=0, kwarg2=0):
+        return series**2 + (arg1 * arg2 % 4) + (kwarg1 * kwarg2 % 7)
+
+    bf_result = (
+        scalars_df_index[columns]
+        .apply(foo, args=(33, 61), kwarg1=52, kwarg2=21)
+        .to_pandas()
+    )
+
+    pd_result = scalars_pandas_df_index[columns].apply(
+        foo, args=(33, 61), kwarg1=52, kwarg2=21
+    )
+
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_apply_series_listlike_callable(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    columns = ["int64_too", "int64_col"]
+    bf_result = (
+        scalars_df_index[columns].apply(lambda x: [len(x), x.min(), 24]).to_pandas()
+    )
+
+    pd_result = scalars_pandas_df_index[columns].apply(lambda x: [len(x), x.min(), 24])
+
+    # Convert default pandas dtypes `int64` to match BigQuery DataFrames dtypes.
+    pd_result.index = pd_result.index.astype("Int64")
+    pd_result = pd_result.astype("Int64")
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_apply_series_scalar_callable(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    columns = ["int64_too", "int64_col"]
+    bf_result = scalars_df_index[columns].apply(lambda x: x.sum())
+
+    pd_result = scalars_pandas_df_index[columns].apply(lambda x: x.sum())
+
+    pandas.testing.assert_series_equal(bf_result, pd_result)
+
+
 def test_df_isin_list(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     values = ["Hello, World!", 55555, 2.51, pd.NA, True]

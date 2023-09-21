@@ -1418,6 +1418,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 f"isin(), you passed a [{type(values).__name__}]"
             )
 
+    def items(self):
+        column_ids = self._block.value_columns
+        column_labels = self._block.column_labels
+        for col_id, col_label in zip(column_ids, column_labels):
+            yield col_label, bigframes.series.Series(self._block.select_column(col_id))
+
     def dropna(
         self,
         *,
@@ -2381,6 +2387,18 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return reprojected_df._apply_unary_op(
             ops.RemoteFunctionOp(func, apply_on_null=(na_action is None))
         )
+
+    def apply(self, func, *, args: typing.Tuple = (), **kwargs):
+        results = {name: func(col, *args, **kwargs) for name, col in self.items()}
+        if all(
+            [
+                isinstance(val, bigframes.series.Series) or utils.is_list_like(val)
+                for val in results.values()
+            ]
+        ):
+            return DataFrame(data=results)
+        else:
+            return pandas.Series(data=results)
 
     def drop_duplicates(
         self,

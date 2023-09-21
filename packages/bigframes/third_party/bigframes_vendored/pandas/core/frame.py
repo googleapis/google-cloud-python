@@ -734,6 +734,18 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def items(self):
+        """
+        Iterate over (column name, Series) pairs.
+
+        Iterates over the DataFrame columns, returning a tuple with
+        the column name and the content as a Series.
+
+        Returns:
+            Iterator: Iterator of label, Series for each column.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     # ----------------------------------------------------------------------
     # Sorting
 
@@ -1417,6 +1429,28 @@ class DataFrame(NDFrame):
 
         Returns:
             bigframes.dataframe.DataFrame: A DataFrame of the two merged objects.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def apply(self, func, *, args=(), **kwargs):
+        """Apply a function along an axis of the DataFrame.
+
+        Objects passed to the function are Series objects whose index is
+        the DataFrame's index (``axis=0``) the final return type
+        is inferred from the return type of the applied function.
+
+        Args:
+            func (function):
+                Function to apply to each column or row.
+            args (tuple):
+                Positional arguments to pass to `func` in addition to the
+                array/series.
+            **kwargs:
+                Additional keyword arguments to pass as keywords arguments to
+                `func`.
+
+        Returns:
+            pandas.Series or bigframes.DataFrame: Result of applying ``func`` along the given axis of the DataFrame.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
