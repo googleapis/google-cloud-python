@@ -269,7 +269,7 @@ class ArrayValue:
         return typing.cast(ibis_types.Column, self._hidden_ordering_column_names[key])
 
     def apply_limit(self, max_results: int) -> ArrayValue:
-        table = self.to_ibis_expr(
+        table = self._to_ibis_expr(
             ordering_mode="order_by",
             expose_hidden_cols=True,
         ).limit(max_results)
@@ -285,11 +285,23 @@ class ArrayValue:
             ordering=self._ordering,
         )
 
-    def filter(self, predicate: ibis_types.BooleanValue) -> ArrayValue:
+    def filter(self, predicate_id: str, keep_null: bool = False) -> ArrayValue:
+        """Filter the table on a given expression, the predicate must be a boolean series aligned with the table expression."""
+        condition = typing.cast(ibis_types.BooleanValue, self.get_column(predicate_id))
+        if keep_null:
+            condition = typing.cast(
+                ibis_types.BooleanValue,
+                condition.fillna(
+                    typing.cast(ibis_types.BooleanScalar, ibis_types.literal(True))
+                ),
+            )
+        return self._filter(condition)
+
+    def _filter(self, predicate_value: ibis_types.BooleanValue) -> ArrayValue:
         """Filter the table on a given expression, the predicate must be a boolean series aligned with the table expression."""
         expr = self.builder()
         expr.ordering = expr.ordering.with_non_sequential()
-        expr.predicates = [*self._predicates, predicate]
+        expr.predicates = [*self._predicates, predicate_value]
         return expr.build()
 
     def order_by(
@@ -310,7 +322,7 @@ class ArrayValue:
         .. warning::
             The row numbers of result is non-deterministic, avoid to use.
         """
-        table = self.to_ibis_expr(
+        table = self._to_ibis_expr(
             ordering_mode="order_by", expose_hidden_cols=True, fraction=fraction
         )
         columns = [table[column_name] for column_name in self._column_names]
@@ -342,7 +354,7 @@ class ArrayValue:
         if self._ordering.is_sequential:
             return self
         # TODO(tbergeron): Enforce total ordering
-        table = self.to_ibis_expr(
+        table = self._to_ibis_expr(
             ordering_mode="offset_col", order_col_name=ORDER_ID_COLUMN
         )
         columns = [table[column_name] for column_name in self._column_names]
@@ -412,7 +424,7 @@ class ArrayValue:
     def shape(self) -> typing.Tuple[int, int]:
         """Returns dimensions as (length, width) tuple."""
         width = len(self.columns)
-        count_expr = self.to_ibis_expr(ordering_mode="unordered").count()
+        count_expr = self._to_ibis_expr(ordering_mode="unordered").count()
         sql = self._session.ibis_client.compile(count_expr)
         row_iterator, _ = self._session._start_query(
             sql=sql,
@@ -435,7 +447,7 @@ class ArrayValue:
         )
         for i, expr in enumerate([self, *other]):
             ordering_prefix = str(i).zfill(prefix_size)
-            table = expr.to_ibis_expr(
+            table = expr._to_ibis_expr(
                 ordering_mode="string_encoded", order_col_name=ORDER_ID_COLUMN
             )
             # Rename the value columns based on horizontal offset before applying union.
@@ -522,7 +534,7 @@ class ArrayValue:
             by_column_id: column id of the aggregation key, this is preserved through the transform
             dropna: whether null keys should be dropped
         """
-        table = self.to_ibis_expr(ordering_mode="unordered")
+        table = self._to_ibis_expr(ordering_mode="unordered")
         stats = {
             col_out: agg_op._as_ibis(table[col_in])
             for col_in, agg_op, col_out in aggregations
@@ -541,7 +553,7 @@ class ArrayValue:
             expr = ArrayValue(self._session, result, columns=columns, ordering=ordering)
             if dropna:
                 for column_id in by_column_ids:
-                    expr = expr.filter(
+                    expr = expr._filter(
                         ops.notnull_op._as_ibis(expr.get_column(column_id))
                     )
             # Can maybe remove this as Ordering id is redundant as by_column is unique after aggregation
@@ -572,7 +584,7 @@ class ArrayValue:
         Arguments:
             corr_aggregations: left_column_id, right_column_id, output_column_id tuples
         """
-        table = self.to_ibis_expr(ordering_mode="unordered")
+        table = self._to_ibis_expr(ordering_mode="unordered")
         stats = {
             col_out: table[col_left].corr(table[col_right], how="pop")
             for col_left, col_right, col_out in corr_aggregations
@@ -646,7 +658,24 @@ class ArrayValue:
         # TODO(tbergeron): Automatically track analytic expression usage and defer reprojection until required for valid query generation.
         return result._reproject_to_table() if not skip_reproject_unsafe else result
 
-    def to_ibis_expr(
+    def to_sql(
+        self,
+        ordering_mode: Literal[
+            "order_by", "string_encoded", "offset_col", "unordered"
+        ] = "order_by",
+        order_col_name: Optional[str] = ORDER_ID_COLUMN,
+        col_id_overrides: typing.Mapping[str, str] = {},
+    ) -> str:
+        sql = self._session.ibis_client.compile(
+            self._to_ibis_expr(
+                ordering_mode=ordering_mode,
+                order_col_name=order_col_name,
+                col_id_overrides=col_id_overrides,
+            )
+        )
+        return typing.cast(str, sql)
+
+    def _to_ibis_expr(
         self,
         ordering_mode: Literal[
             "order_by", "string_encoded", "offset_col", "unordered"
@@ -814,7 +843,7 @@ class ArrayValue:
         # a LocalSession for unit testing.
         # TODO(swast): Add a timeout here? If the query is taking a long time,
         # maybe we just print the job metadata that we have so far?
-        table = self.to_ibis_expr(expose_hidden_cols=expose_extra_columns)
+        table = self._to_ibis_expr(expose_hidden_cols=expose_extra_columns)
         sql = self._session.ibis_client.compile(table)  # type:ignore
         return self._session._start_query(
             sql=sql,
@@ -833,7 +862,7 @@ class ArrayValue:
         some operations such as window operations that cannot be used
         recursively in projections.
         """
-        table = self.to_ibis_expr(
+        table = self._to_ibis_expr(
             ordering_mode="unordered",
             expose_hidden_cols=True,
         )
@@ -912,7 +941,7 @@ class ArrayValue:
         Returns:
             ArrayValue: The unpivoted ArrayValue
         """
-        table = self.to_ibis_expr(ordering_mode="offset_col")
+        table = self._to_ibis_expr(ordering_mode="offset_col")
         sub_expressions = []
 
         # Use ibis memtable to infer type of rowlabels (if possible)
@@ -1054,7 +1083,7 @@ class ArrayValue:
             start = start if (start is not None) else last_offset
             cond_list.append((start - expr_with_offsets.offsets) % (-step) == 0)
 
-        sliced_expr = expr_with_offsets.filter(
+        sliced_expr = expr_with_offsets._filter(
             functools.reduce(lambda x, y: x & y, cond_list)
         )
         return sliced_expr if step > 0 else sliced_expr.reversed()

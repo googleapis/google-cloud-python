@@ -122,11 +122,11 @@ def join_by_column(
             ),
         )
     else:
-        left_table = left.to_ibis_expr(
+        left_table = left._to_ibis_expr(
             ordering_mode="unordered",
             expose_hidden_cols=True,
         )
-        right_table = right.to_ibis_expr(
+        right_table = right._to_ibis_expr(
             ordering_mode="unordered",
             expose_hidden_cols=True,
         )

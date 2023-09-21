@@ -312,37 +312,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 If include_index is set to False, index_column_id_list and index_column_label_list
                 return empty lists.
         """
-        # Has to be unordered as it is impossible to order the sql without
-        # including metadata columns in selection with ibis.
-        ibis_expr = self._block.expr.to_ibis_expr(ordering_mode="unordered")
-        col_labels, idx_labels = list(self._block.column_labels), list(
-            self._block.index_labels
-        )
-        old_col_ids, old_idx_ids = list(self._block.value_columns), list(
-            self._block.index_columns
-        )
-
-        if not include_index:
-            idx_labels, old_idx_ids = [], []
-            ibis_expr = ibis_expr.drop(*self._block.index_columns)
-
-        old_ids = old_idx_ids + old_col_ids
-
-        new_col_ids, new_idx_ids = utils.get_standardized_ids(col_labels, idx_labels)
-        new_ids = new_idx_ids + new_col_ids
-
-        substitutions = {}
-        for old_id, new_id in zip(old_ids, new_ids):
-            # TODO(swast): Do we need to further escape this, or can we rely on
-            # the BigQuery unicode column name feature?
-            substitutions[old_id] = new_id
-
-        ibis_expr = ibis_expr.relabel(substitutions)
-        return (
-            typing.cast(str, ibis_expr.compile()),
-            new_ids[: len(idx_labels)],
-            idx_labels,
-        )
+        return self._block.to_sql_query(include_index)
 
     @property
     def sql(self) -> str:
@@ -2340,8 +2310,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     def _create_io_query(self, index: bool, ordering_id: Optional[str]) -> str:
         """Create query text representing this dataframe for I/O."""
-        expr = self._block.expr
-        session = expr._session
+        array_value = self._block.expr
         columns = list(self._block.value_columns)
         column_labels = list(self._block.column_labels)
         # This code drops unnamed indexes to keep consistent with the behavior of
@@ -2352,7 +2321,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             columns.extend(self._block.index_columns)
             column_labels.extend(self.index.names)
         else:
-            expr = expr.drop_columns(self._block.index_columns)
+            array_value = array_value.drop_columns(self._block.index_columns)
 
         # Make columns in SQL reflect _labels_ not _ids_. Note: This may use
         # the arbitrary unicode column labels feature in BigQuery, which is
@@ -2365,18 +2334,16 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         }
 
         if ordering_id is not None:
-            ibis_expr = expr.to_ibis_expr(
+            return array_value.to_sql(
                 ordering_mode="offset_col",
                 col_id_overrides=id_overrides,
                 order_col_name=ordering_id,
             )
         else:
-            ibis_expr = expr.to_ibis_expr(
+            return array_value.to_sql(
                 ordering_mode="unordered",
                 col_id_overrides=id_overrides,
             )
-
-        return session.ibis_client.compile(ibis_expr)  # type: ignore
 
     def _run_io_query(
         self,
@@ -2457,6 +2424,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         df = self._drop_non_numeric() if numeric_only else self
         return DataFrame(block_ops.rank(df._block, method, na_option, ascending))
+
+    def first_valid_index(self):
+        return
 
     applymap = map
 

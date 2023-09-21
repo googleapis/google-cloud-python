@@ -206,7 +206,7 @@ class IsNullOp(UnaryOp):
 
 class LenOp(UnaryOp):
     def _as_ibis(self, x: ibis_types.Value):
-        return typing.cast(ibis_types.StringValue, x).length()
+        return typing.cast(ibis_types.StringValue, x).length().cast(ibis_dtypes.int64)
 
 
 class NotNullOp(UnaryOp):
@@ -443,7 +443,7 @@ class ZfillOp(UnaryOp):
 ## Datetime Ops
 class DayOp(UnaryOp):
     def _as_ibis(self, x: ibis_types.Value):
-        return typing.cast(ibis_types.TimestampValue, x).day()
+        return typing.cast(ibis_types.TimestampValue, x).day().cast(ibis_dtypes.int64)
 
 
 class DateOp(UnaryOp):
@@ -453,32 +453,42 @@ class DateOp(UnaryOp):
 
 class DayofweekOp(UnaryOp):
     def _as_ibis(self, x: ibis_types.Value):
-        return typing.cast(ibis_types.TimestampValue, x).day_of_week.index()
+        return (
+            typing.cast(ibis_types.TimestampValue, x)
+            .day_of_week.index()
+            .cast(ibis_dtypes.int64)
+        )
 
 
 class HourOp(UnaryOp):
     def _as_ibis(self, x: ibis_types.Value):
-        return typing.cast(ibis_types.TimestampValue, x).hour()
+        return typing.cast(ibis_types.TimestampValue, x).hour().cast(ibis_dtypes.int64)
 
 
 class MinuteOp(UnaryOp):
     def _as_ibis(self, x: ibis_types.Value):
-        return typing.cast(ibis_types.TimestampValue, x).minute()
+        return (
+            typing.cast(ibis_types.TimestampValue, x).minute().cast(ibis_dtypes.int64)
+        )
 
 
 class MonthOp(UnaryOp):
     def _as_ibis(self, x: ibis_types.Value):
-        return typing.cast(ibis_types.TimestampValue, x).month()
+        return typing.cast(ibis_types.TimestampValue, x).month().cast(ibis_dtypes.int64)
 
 
 class QuarterOp(UnaryOp):
     def _as_ibis(self, x: ibis_types.Value):
-        return typing.cast(ibis_types.TimestampValue, x).quarter()
+        return (
+            typing.cast(ibis_types.TimestampValue, x).quarter().cast(ibis_dtypes.int64)
+        )
 
 
 class SecondOp(UnaryOp):
     def _as_ibis(self, x: ibis_types.Value):
-        return typing.cast(ibis_types.TimestampValue, x).second()
+        return (
+            typing.cast(ibis_types.TimestampValue, x).second().cast(ibis_dtypes.int64)
+        )
 
 
 class TimeOp(UnaryOp):
@@ -488,7 +498,7 @@ class TimeOp(UnaryOp):
 
 class YearOp(UnaryOp):
     def _as_ibis(self, x: ibis_types.Value):
-        return typing.cast(ibis_types.TimestampValue, x).year()
+        return typing.cast(ibis_types.TimestampValue, x).year().cast(ibis_dtypes.int64)
 
 
 # Parameterized ops
@@ -967,6 +977,12 @@ def fillna_op(
     y: ibis_types.Value,
 ):
     return x.fillna(typing.cast(ibis_types.Scalar, y))
+
+
+def round_op(x: ibis_types.Value, y: ibis_types.Value):
+    return typing.cast(ibis_types.NumericValue, x).round(
+        digits=typing.cast(ibis_types.IntegerValue, y)
+    )
 
 
 def clip_lower(

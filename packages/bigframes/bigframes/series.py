@@ -22,7 +22,6 @@ import typing
 from typing import Any, Mapping, Optional, Tuple, Union
 
 import google.cloud.bigquery as bigquery
-import ibis.expr.types as ibis_types
 import numpy
 import pandas
 import pandas.core.dtypes.common
@@ -222,14 +221,6 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         self._set_internal_query_job(query_job)
 
         return repr(pandas_df.iloc[:, 0])
-
-    def _to_ibis_expr(self):
-        """Creates an Ibis table expression representing the Series."""
-        expr = self._block.expr.projection([self._value])
-        ibis_expr = expr.to_ibis_expr()[self._value_column]
-        if self._name:
-            return ibis_expr.name(self._name)
-        return ibis_expr
 
     def astype(
         self,
@@ -661,12 +652,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return self._apply_unary_op(ops.abs_op)
 
     def round(self, decimals=0) -> "Series":
-        def round_op(x: ibis_types.Value, y: ibis_types.Value):
-            return typing.cast(ibis_types.NumericValue, x).round(
-                digits=typing.cast(ibis_types.IntegerValue, y)
-            )
-
-        return self._apply_binary_op(decimals, round_op)
+        return self._apply_binary_op(decimals, ops.round_op)
 
     def corr(self, other: Series, method="pearson", min_periods=None) -> float:
         """

@@ -30,8 +30,6 @@ import warnings
 
 import geopandas as gpd  # type: ignore
 import google.cloud.bigquery as bigquery
-import ibis.expr.schema as ibis_schema
-import ibis.expr.types as ibis_types
 import numpy
 import pandas as pd
 import pyarrow as pa  # type: ignore
@@ -42,6 +40,7 @@ import bigframes.core.guid as guid
 import bigframes.core.indexes as indexes
 import bigframes.core.ordering as ordering
 import bigframes.core.utils
+import bigframes.core.utils as utils
 import bigframes.dtypes
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
@@ -368,7 +367,10 @@ class Block:
         level_names = [self.col_id_to_index_name[index_id] for index_id in ids]
         return Block(self.expr, ids, self.column_labels, level_names)
 
-    def _to_dataframe(self, result, schema: ibis_schema.Schema) -> pd.DataFrame:
+    @classmethod
+    def _to_dataframe(
+        cls, result, schema: typing.Mapping[str, bigframes.dtypes.Dtype]
+    ) -> pd.DataFrame:
         """Convert BigQuery data to pandas DataFrame with specific dtypes."""
         df = result.to_dataframe(
             bool_dtype=pd.BooleanDtype(),
@@ -382,8 +384,8 @@ class Block:
         )
 
         # Convert Geography column from StringDType to GeometryDtype.
-        for column_name, ibis_dtype in schema.items():
-            if ibis_dtype.is_geospatial():
+        for column_name, dtype in schema.items():
+            if dtype == gpd.array.GeometryDtype():
                 df[column_name] = gpd.GeoSeries.from_wkt(
                     # https://github.com/geopandas/geopandas/issues/1879
                     df[column_name].replace({numpy.nan: None}),
@@ -473,7 +475,8 @@ class Block:
             if sampling_method == _HEAD:
                 total_rows = int(results_iterator.total_rows * fraction)
                 results_iterator.max_results = total_rows
-                df = self._to_dataframe(results_iterator, expr.to_ibis_expr().schema())
+                schema = dict(zip(self.value_columns, self.dtypes))
+                df = self._to_dataframe(results_iterator, schema)
 
                 if self.index_columns:
                     df.set_index(list(self.index_columns), inplace=True)
@@ -508,7 +511,8 @@ class Block:
                 )
         else:
             total_rows = results_iterator.total_rows
-            df = self._to_dataframe(results_iterator, expr.to_ibis_expr().schema())
+            schema = dict(zip(self.value_columns, self.dtypes))
+            df = self._to_dataframe(results_iterator, schema)
 
             if self.index_columns:
                 df.set_index(list(self.index_columns), inplace=True)
@@ -638,13 +642,6 @@ class Block:
             column_labels=self.column_labels,
             index_labels=tuple(value),
         )
-
-    def get_value_col_exprs(
-        self, column_names: Optional[Sequence[str]] = None
-    ) -> List[ibis_types.Value]:
-        """Retrive value column expressions."""
-        column_names = self.value_columns if column_names is None else column_names
-        return [self._expr.get_column(column_name) for column_name in column_names]
 
     def apply_unary_op(
         self, column: str, op: ops.UnaryOp, result_label: Label = None
@@ -816,20 +813,9 @@ class Block:
         )
         return self.with_column_labels(new_labels)
 
-    def filter(self, column_name: str, keep_null: bool = False):
-        condition = typing.cast(
-            ibis_types.BooleanValue, self._expr.get_column(column_name)
-        )
-        if keep_null:
-            condition = typing.cast(
-                ibis_types.BooleanValue,
-                condition.fillna(
-                    typing.cast(ibis_types.BooleanScalar, ibis_types.literal(True))
-                ),
-            )
-        filtered_expr = self.expr.filter(condition)
+    def filter(self, column_id: str, keep_null: bool = False):
         return Block(
-            filtered_expr,
+            self._expr.filter(column_id, keep_null),
             index_columns=self.index_columns,
             column_labels=self.column_labels,
             index_labels=self.index.names,
@@ -1435,6 +1421,50 @@ class Block:
         self, column_id: typing.Union[str, Sequence[str]]
     ) -> bool:
         return self._is_monotonic(column_id, increasing=False)
+
+    def to_sql_query(
+        self, include_index: bool
+    ) -> typing.Tuple[str, list[str], list[Label]]:
+        """
+        Compiles this DataFrame's expression tree to SQL, optionally
+        including index columns.
+
+        Args:
+            include_index (bool):
+                whether to include index columns.
+
+        Returns:
+            a tuple of (sql_string, index_column_id_list, index_column_label_list).
+                If include_index is set to False, index_column_id_list and index_column_label_list
+                return empty lists.
+        """
+        array_value = self._expr
+        col_labels, idx_labels = list(self.column_labels), list(self.index_labels)
+        old_col_ids, old_idx_ids = list(self.value_columns), list(self.index_columns)
+
+        if not include_index:
+            idx_labels, old_idx_ids = [], []
+            array_value = array_value.drop_columns(self.index_columns)
+
+        old_ids = old_idx_ids + old_col_ids
+
+        new_col_ids, new_idx_ids = utils.get_standardized_ids(col_labels, idx_labels)
+        new_ids = new_idx_ids + new_col_ids
+
+        substitutions = {}
+        for old_id, new_id in zip(old_ids, new_ids):
+            # TODO(swast): Do we need to further escape this, or can we rely on
+            # the BigQuery unicode column name feature?
+            substitutions[old_id] = new_id
+
+        sql = array_value.to_sql(
+            ordering_mode="unordered", col_id_overrides=substitutions
+        )
+        return (
+            sql,
+            new_ids[: len(idx_labels)],
+            idx_labels,
+        )
 
     def _is_monotonic(
         self, column_ids: typing.Union[str, Sequence[str]], increasing: bool

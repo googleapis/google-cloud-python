@@ -103,7 +103,7 @@ def test_arrayvalue_to_ibis_expr_with_projection():
             value.table["col2"].name("string_col"),
         ]
     )
-    actual = expr.to_ibis_expr()
+    actual = expr._to_ibis_expr()
     assert len(actual.columns) == 3
     assert actual.columns[0] == "int64_col"
     assert actual.columns[1] == "literals"
@@ -138,7 +138,7 @@ def test_arrayvalues_to_ibis_expr_with_concat():
         total_ordering_columns=["col1"],
     )
     expr = value.concat([value])
-    actual = expr.to_ibis_expr()
+    actual = expr._to_ibis_expr()
     assert len(actual.columns) == 3
     # TODO(ashleyxu, b/299631930): test out the union expression
     assert actual.columns[0] == "column_0"
@@ -175,7 +175,7 @@ def test_arrayvalues_to_ibis_expr_with_project_binary_op():
     )
     expr = value.project_binary_op("col2", "col3", ops.add_op, "col4")
     assert expr.columns[3].type().is_float64()
-    actual = expr.to_ibis_expr()
+    actual = expr._to_ibis_expr()
     assert len(expr.columns) == 4
     assert actual.columns[3] == "col4"
 
@@ -194,7 +194,7 @@ def test_arrayvalues_to_ibis_expr_with_project_ternary_op():
     )
     expr = value.project_ternary_op("col2", "col3", "col4", ops.where_op, "col5")
     assert expr.columns[4].type().is_float64()
-    actual = expr.to_ibis_expr()
+    actual = expr._to_ibis_expr()
     assert len(expr.columns) == 5
     assert actual.columns[4] == "col5"
 
@@ -215,7 +215,7 @@ def test_arrayvalue_to_ibis_expr_with_aggregate():
         by_column_ids=["col1"],
         dropna=False,
     )
-    actual = expr.to_ibis_expr()
+    actual = expr._to_ibis_expr()
     assert len(expr.columns) == 2
     assert actual.columns[0] == "col1"
     assert actual.columns[1] == "col4"
@@ -234,7 +234,7 @@ def test_arrayvalue_to_ibis_expr_with_corr_aggregate():
         total_ordering_columns=["col1"],
     )
     expr = value.corr_aggregate(corr_aggregations=[("col1", "col3", "col4")])
-    actual = expr.to_ibis_expr()
+    actual = expr._to_ibis_expr()
     assert len(expr.columns) == 1
     assert actual.columns[0] == "col4"
     assert expr.columns[0].type().is_float64()

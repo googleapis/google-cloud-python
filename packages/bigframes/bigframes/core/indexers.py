@@ -21,11 +21,11 @@ import ibis
 import pandas as pd
 
 import bigframes.constants as constants
-import bigframes.core as core
 import bigframes.core.guid as guid
 import bigframes.core.indexes as indexes
 import bigframes.core.scalar
 import bigframes.dataframe
+import bigframes.operations as ops
 import bigframes.series
 
 if typing.TYPE_CHECKING:
@@ -59,35 +59,23 @@ class LocSeriesIndexer:
 
         # Assume the key is for the index label.
         block = self._series._block
-        value_column = self._series._value
-        index_column = block.expr.get_column(block.index_columns[0])
-        new_value = (
-            ibis.case()
-            .when(
-                index_column == ibis.literal(key, index_column.type()),
-                ibis.literal(value, value_column.type()),
-            )
-            .else_(value_column)
-            .end()
-            .name(value_column.get_name())
-        )
-        all_columns = []
-        for column in block.expr.columns:
-            if column.get_name() != value_column.get_name():
-                all_columns.append(column)
-            else:
-                all_columns.append(new_value)
-        new_expr = block.expr.projection(all_columns)
+        value_column = self._series._value_column
+        index_column = block.index_columns[0]
 
-        # TODO(tbergeron): Use block operators rather than directly building desired ibis expressions.
-        self._series._set_block(
-            core.blocks.Block(
-                new_expr,
-                self._series._block.index_columns,
-                self._series._block.column_labels,
-                self._series._block.index.names,
-            )
+        # if index == key return value else value_colum
+        block, insert_cond = block.apply_unary_op(
+            index_column, ops.partial_right(ops.eq_op, key)
         )
+        block, result_id = block.apply_binary_op(
+            insert_cond,
+            self._series._value_column,
+            ops.partial_arg1(ops.where_op, value),
+        )
+        block = block.copy_values(result_id, value_column).drop_columns(
+            [insert_cond, result_id]
+        )
+
+        self._series._set_block(block)
 
 
 class IlocSeriesIndexer:
