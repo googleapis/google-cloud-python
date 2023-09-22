@@ -127,22 +127,6 @@ EOF
 
 pushd "${PATH_MONOREPO}" >& /dev/null
 
-## START system tests check ########################################
-# variable prefix: TST_*
-
-# If there are integration tests, do not proceed with the script.
-
-TST_MONO_TESTDIR="${MONOREPO_PATH_PACKAGE}/tests/"
-TST_MONO_SYSTEM_DIR="${TST_MONO_TESTDIR}system"
-TST_MONO_SYSTEM_FILE="${TST_MONO_TESTDIR}system.py"
-echo "Checking for system tests in ${TST_MONO_TESTDIR}"
-
-[[ ! -f ${TST_MONO_SYSTEM_FILE} ]] || \
-  { echo "ERROR: ${TST_MONO_SYSTEM_FILE} exists. Need to manually deal with that." ; return -10 ; }
-[[ ! -d ${TST_MONO_SYSTEM_DIR} ]] || \
-  { echo "ERROR: ${TST_MONO_SYSTEM_DIR} exists. Need to manually deal with that." ; return -11 ; }
-## END system tests check
-
 ## START owlbot.yaml migration ########################################
 # variable prefix: OWY_*
 # FIXME: KEEP?
