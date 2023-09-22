@@ -156,7 +156,7 @@ html_theme = "alabaster"
 html_theme_options = {
     "description": "Google Cloud Client Libraries for google-cloud-storage-transfer",
     "github_user": "googleapis",
-    "github_repo": "python-storage-transfer",
+    "github_repo": "google-cloud-python",
     "github_banner": True,
     "font_family": "'Roboto', Georgia, sans",
     "head_font_family": "'Roboto', Georgia, serif",
