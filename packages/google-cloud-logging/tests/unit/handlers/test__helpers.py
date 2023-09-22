@@ -242,6 +242,19 @@ class Test_get_request_data_from_django(unittest.TestCase):
         self.assertEqual(http_request["requestUrl"], expected_path)
         self.assertEqual(http_request["protocol"], "HTTP/1.1")
 
+    def test_invalid_host_header(self):
+        from django.test import RequestFactory
+        from google.cloud.logging_v2.handlers.middleware import request
+
+        invalid_http_host = "testserver%7d"
+        django_request = RequestFactory().put("/", HTTP_HOST=invalid_http_host)
+        middleware = request.RequestMiddleware(None)
+        middleware(django_request)
+        http_request, *_ = self._call_fut()
+        self.assertEqual(http_request["requestMethod"], "PUT")
+        self.assertIsNone(http_request["requestUrl"])
+        self.assertEqual(http_request["protocol"], "HTTP/1.1")
+
 
 class Test_get_request_data(unittest.TestCase):
     @staticmethod

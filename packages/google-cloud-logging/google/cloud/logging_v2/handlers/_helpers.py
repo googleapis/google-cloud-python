@@ -104,10 +104,17 @@ def get_request_data_from_django():
     if request is None:
         return None, None, None, False
 
+    # Django can raise django.core.exceptions.DisallowedHost here for a
+    # malformed HTTP_HOST header. But we don't want to import Django modules.
+    try:
+        request_url = request.build_absolute_uri()
+    except Exception:
+        request_url = None
+
     # build http_request
     http_request = {
         "requestMethod": request.method,
-        "requestUrl": request.build_absolute_uri(),
+        "requestUrl": request_url,
         "userAgent": request.META.get(_DJANGO_USERAGENT_HEADER),
         "protocol": request.META.get(_PROTOCOL_HEADER),
     }
