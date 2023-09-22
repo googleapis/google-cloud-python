@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.24.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.24.0...google-cloud-dialogflow-v2.24.1) (2023-09-22)
+
+
+### Bug Fixes
+
+* Delete un-referenced UPGRADING.md to amke docs build pass ([0eebe3e](https://github.com/googleapis/google-cloud-python/commit/0eebe3e9a9fa78319ad294f814c4b48f2dc73e2a))
+
 ## [2.24.0](https://github.com/googleapis/python-dialogflow/compare/v2.23.3...v2.24.0) (2023-09-13)
 
 
