@@ -1,9 +1,9 @@
-Python Client for Google Cloud Dataproc API
-===========================================
+Python Client for Google Cloud Dataproc
+=======================================
 
 |stable| |pypi| |versions|
 
-`Google Cloud Dataproc API`_: is a faster, easier, more cost-effective way to run Apache Spark and Apache Hadoop.
+`Google Cloud Dataproc`_: is a faster, easier, more cost-effective way to run Apache Spark and Apache Hadoop.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Google Cloud Dataproc API
    :target: https://pypi.org/project/google-cloud-dataproc/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dataproc.svg
    :target: https://pypi.org/project/google-cloud-dataproc/
-.. _Google Cloud Dataproc API: https://cloud.google.com/dataproc
+.. _Google Cloud Dataproc: https://cloud.google.com/dataproc
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/dataproc/latest
 .. _Product Documentation:  https://cloud.google.com/dataproc
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Cloud Dataproc API.`_
+3. `Enable the Google Cloud Dataproc.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Cloud Dataproc API.:  https://cloud.google.com/dataproc
+.. _Enable the Google Cloud Dataproc.:  https://cloud.google.com/dataproc
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/python-dataproc/tree/main/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-dataproc/samples
 
 
 Supported Python Versions
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Cloud Dataproc API
+-  Read the `Client Library Documentation`_ for Google Cloud Dataproc
    to see other available methods on the client.
--  Read the `Google Cloud Dataproc API Product documentation`_ to learn
+-  Read the `Google Cloud Dataproc Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google Cloud Dataproc API Product documentation:  https://cloud.google.com/dataproc
+.. _Google Cloud Dataproc Product documentation:  https://cloud.google.com/dataproc
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
