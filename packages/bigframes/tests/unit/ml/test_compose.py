@@ -23,10 +23,12 @@ import bigframes.ml.preprocessing
 def test_columntransformer_init_expectedtransforms():
     onehot_transformer = bigframes.ml.preprocessing.OneHotEncoder()
     scaler_transformer = bigframes.ml.preprocessing.StandardScaler()
+    label_transformer = bigframes.ml.preprocessing.LabelEncoder()
     column_transformer = bigframes.ml.compose.ColumnTransformer(
         [
             ("onehot", onehot_transformer, "species"),
             ("scale", scaler_transformer, ["culmen_length_mm", "flipper_length_mm"]),
+            ("onehot", label_transformer, "species"),
         ]
     )
 
@@ -34,6 +36,7 @@ def test_columntransformer_init_expectedtransforms():
         ("onehot", onehot_transformer, "species"),
         ("scale", scaler_transformer, "culmen_length_mm"),
         ("scale", scaler_transformer, "flipper_length_mm"),
+        ("onehot", label_transformer, "species"),
     ]
 
 

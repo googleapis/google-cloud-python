@@ -24,6 +24,7 @@ from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.preprocessing._data
 import third_party.bigframes_vendored.sklearn.preprocessing._encoder
+import third_party.bigframes_vendored.sklearn.preprocessing._label
 
 
 class StandardScaler(
@@ -203,6 +204,124 @@ class OneHotEncoder(
         X: Union[bpd.DataFrame, bpd.Series],
         y=None,  # ignored
     ) -> OneHotEncoder:
+        (X,) = utils.convert_to_dataframe(X)
+
+        compiled_transforms = self._compile_to_sql(X.columns.tolist())
+        transform_sqls = [transform_sql for transform_sql, _ in compiled_transforms]
+
+        self._bqml_model = self._bqml_model_factory.create_model(
+            X,
+            options={"model_type": "transform_only"},
+            transforms=transform_sqls,
+        )
+
+        # The schema of TRANSFORM output is not available in the model API, so save it during fitting
+        self._output_names = [name for _, name in compiled_transforms]
+        return self
+
+    def transform(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
+        if not self._bqml_model:
+            raise RuntimeError("Must be fitted before transform")
+
+        (X,) = utils.convert_to_dataframe(X)
+
+        df = self._bqml_model.transform(X)
+        return typing.cast(
+            bpd.DataFrame,
+            df[self._output_names],
+        )
+
+
+class LabelEncoder(
+    base.Transformer,
+    third_party.bigframes_vendored.sklearn.preprocessing._label.LabelEncoder,
+):
+    # BQML max value https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-one-hot-encoder#syntax
+    TOP_K_DEFAULT = 1000000
+    FREQUENCY_THRESHOLD_DEFAULT = 0
+
+    __doc__ = (
+        third_party.bigframes_vendored.sklearn.preprocessing._label.LabelEncoder.__doc__
+    )
+
+    # All estimators must implement __init__ to document their parameters, even
+    # if they don't have any
+    def __init__(
+        self,
+        min_frequency: Optional[int] = None,
+        max_categories: Optional[int] = None,
+    ):
+        if max_categories is not None and max_categories < 2:
+            raise ValueError(
+                f"max_categories has to be larger than or equal to 2, input is {max_categories}."
+            )
+        self.min_frequency = min_frequency
+        self.max_categories = max_categories
+        self._bqml_model: Optional[core.BqmlModel] = None
+        self._bqml_model_factory = globals.bqml_model_factory()
+        self._base_sql_generator = globals.base_sql_generator()
+
+    # TODO(garrettwu): implement __hash__
+    def __eq__(self, other: Any) -> bool:
+        return (
+            type(other) is LabelEncoder
+            and self._bqml_model == other._bqml_model
+            and self.min_frequency == other.min_frequency
+            and self.max_categories == other.max_categories
+        )
+
+    def _compile_to_sql(self, columns: List[str]) -> List[Tuple[str, str]]:
+        """Compile this transformer to a list of SQL expressions that can be included in
+        a BQML TRANSFORM clause
+
+        Args:
+            columns:
+                a list of column names to transform
+
+        Returns: a list of tuples of (sql_expression, output_name)"""
+
+        # minus one here since BQML's inplimentation always includes index 0, and top_k is on top of that.
+        top_k = (
+            (self.max_categories - 1)
+            if self.max_categories is not None
+            else LabelEncoder.TOP_K_DEFAULT
+        )
+        frequency_threshold = (
+            self.min_frequency
+            if self.min_frequency is not None
+            else LabelEncoder.FREQUENCY_THRESHOLD_DEFAULT
+        )
+        return [
+            (
+                self._base_sql_generator.ml_label_encoder(
+                    column, top_k, frequency_threshold, f"labelencoded_{column}"
+                ),
+                f"labelencoded_{column}",
+            )
+            for column in columns
+        ]
+
+    @classmethod
+    def _parse_from_sql(cls, sql: str) -> tuple[LabelEncoder, str]:
+        """Parse SQL to tuple(LabelEncoder, column_label).
+
+        Args:
+            sql: SQL string of format "ML.LabelEncoder({col_label}, {top_k}, {frequency_threshold}) OVER() "
+
+        Returns:
+            tuple(LabelEncoder, column_label)"""
+        s = sql[sql.find("(") + 1 : sql.find(")")]
+        col_label, top_k, frequency_threshold = s.split(", ")
+        max_categories = int(top_k) + 1
+        min_frequency = int(frequency_threshold)
+
+        return cls(min_frequency, max_categories), col_label
+
+    def fit(
+        self,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y=None,  # ignored
+    ) -> LabelEncoder:
         (X,) = utils.convert_to_dataframe(X)
 
         compiled_transforms = self._compile_to_sql(X.columns.tolist())

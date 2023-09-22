@@ -50,6 +50,7 @@ class Pipeline(
                 compose.ColumnTransformer,
                 preprocessing.StandardScaler,
                 preprocessing.OneHotEncoder,
+                preprocessing.LabelEncoder,
             ),
         ):
             self._transform = transform
@@ -143,7 +144,11 @@ def _extract_as_column_transformer(
     transformers: List[
         Tuple[
             str,
-            Union[preprocessing.OneHotEncoder, preprocessing.StandardScaler],
+            Union[
+                preprocessing.OneHotEncoder,
+                preprocessing.StandardScaler,
+                preprocessing.LabelEncoder,
+            ],
             Union[str, List[str]],
         ]
     ] = []
@@ -167,6 +172,13 @@ def _extract_as_column_transformer(
                     *preprocessing.OneHotEncoder._parse_from_sql(transform_sql),
                 )
             )
+        elif transform_sql.startswith("ML.LABEL_ENCODER"):
+            transformers.append(
+                (
+                    "label_encoder",
+                    *preprocessing.LabelEncoder._parse_from_sql(transform_sql),
+                )
+            )
         else:
             raise NotImplementedError(
                 f"Unsupported transformer type. {constants.FEEDBACK_LINK}"
@@ -181,6 +193,7 @@ def _merge_column_transformer(
     compose.ColumnTransformer,
     preprocessing.StandardScaler,
     preprocessing.OneHotEncoder,
+    preprocessing.LabelEncoder,
 ]:
     """Try to merge the column transformer to a simple transformer."""
     transformers = column_transformer.transformers_

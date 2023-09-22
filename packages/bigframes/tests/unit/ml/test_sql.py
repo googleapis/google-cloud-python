@@ -51,12 +51,14 @@ def test_transform_produces_correct_sql(base_sql_generator: ml_sql.BaseSqlGenera
     sql = base_sql_generator.transform(
         "ML.STANDARD_SCALER(col_a) OVER(col_a) AS scaled_col_a",
         "ML.ONE_HOT_ENCODER(col_b) OVER(col_b) AS encoded_col_b",
+        "ML.LABEL_ENCODER(col_c) OVER(col_c) AS encoded_col_c",
     )
     assert (
         sql
         == """TRANSFORM(
   ML.STANDARD_SCALER(col_a) OVER(col_a) AS scaled_col_a,
-  ML.ONE_HOT_ENCODER(col_b) OVER(col_b) AS encoded_col_b)"""
+  ML.ONE_HOT_ENCODER(col_b) OVER(col_b) AS encoded_col_b,
+  ML.LABEL_ENCODER(col_c) OVER(col_c) AS encoded_col_c)"""
     )
 
 
@@ -76,6 +78,13 @@ def test_one_hot_encoder_produces_correct_sql(
     assert (
         sql == "ML.ONE_HOT_ENCODER(col_a, 'none', 1000000, 0) OVER() AS encoded_col_a"
     )
+
+
+def test_label_encoder_produces_correct_sql(
+    base_sql_generator: ml_sql.BaseSqlGenerator,
+):
+    sql = base_sql_generator.ml_label_encoder("col_a", 1000000, 0, "encoded_col_a")
+    assert sql == "ML.LABEL_ENCODER(col_a, 1000000, 0) OVER() AS encoded_col_a"
 
 
 def test_create_model_produces_correct_sql(

@@ -264,4 +264,153 @@ def test_one_hot_encoder_different_data(penguins_df_default_index, new_penguins_
     pd.testing.assert_frame_equal(result, expected)
 
 
+def test_label_encoder_default_params(new_penguins_df):
+    encoder = bigframes.ml.preprocessing.LabelEncoder()
+    encoder.fit(new_penguins_df[["species", "sex"]])
+
+    result = encoder.transform(new_penguins_df).to_pandas()
+
+    # TODO: bug? feature columns seem to be in nondeterministic random order
+    # workaround: sort columns by name. Can't repro it in pantheon, so could
+    # be a bigframes issue...
+    result = result.reindex(sorted(result.columns), axis=1)
+
+    expected = pd.DataFrame(
+        {
+            "labelencoded_sex": [
+                2,
+                1,
+                1,
+            ],
+            "labelencoded_species": [
+                1,
+                1,
+                2,
+            ],
+        },
+        dtype="Int64",
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(result, expected)
+
+
+def test_label_encoder_default_params_fit_transform(new_penguins_df):
+    encoder = bigframes.ml.preprocessing.LabelEncoder()
+
+    result = encoder.fit_transform(new_penguins_df[["species", "sex"]]).to_pandas()
+
+    # TODO: bug? feature columns seem to be in nondeterministic random order
+    # workaround: sort columns by name. Can't repro it in pantheon, so could
+    # be a bigframes issue...
+    result = result.reindex(sorted(result.columns), axis=1)
+
+    expected = pd.DataFrame(
+        {
+            "labelencoded_sex": [
+                2,
+                1,
+                1,
+            ],
+            "labelencoded_species": [
+                1,
+                1,
+                2,
+            ],
+        },
+        dtype="Int64",
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(result, expected)
+
+
+def test_label_encoder_series_default_params(new_penguins_df):
+    encoder = bigframes.ml.preprocessing.LabelEncoder()
+    encoder.fit(new_penguins_df["species"])
+
+    result = encoder.transform(new_penguins_df).to_pandas()
+
+    # TODO: bug? feature columns seem to be in nondeterministic random order
+    # workaround: sort columns by name. Can't repro it in pantheon, so could
+    # be a bigframes issue...
+    result = result.reindex(sorted(result.columns), axis=1)
+
+    expected = pd.DataFrame(
+        {
+            "labelencoded_species": [
+                1,
+                1,
+                2,
+            ],
+        },
+        dtype="Int64",
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(result, expected)
+
+
+def test_label_encoder_params(new_penguins_df):
+    encoder = bigframes.ml.preprocessing.LabelEncoder(100, 2)
+    encoder.fit(new_penguins_df[["species", "sex"]])
+
+    result = encoder.transform(new_penguins_df).to_pandas()
+
+    # TODO: bug? feature columns seem to be in nondeterministic random order
+    # workaround: sort columns by name. Can't repro it in pantheon, so could
+    # be a bigframes issue...
+    result = result.reindex(sorted(result.columns), axis=1)
+
+    expected = pd.DataFrame(
+        {
+            "labelencoded_sex": [
+                0,
+                0,
+                0,
+            ],
+            "labelencoded_species": [
+                0,
+                0,
+                0,
+            ],
+        },
+        dtype="Int64",
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(result, expected)
+
+
+def test_label_encoder_different_data(penguins_df_default_index, new_penguins_df):
+    encoder = bigframes.ml.preprocessing.LabelEncoder()
+    encoder.fit(penguins_df_default_index[["species", "sex"]])
+
+    result = encoder.transform(new_penguins_df).to_pandas()
+
+    # TODO: bug? feature columns seem to be in nondeterministic random order
+    # workaround: sort columns by name. Can't repro it in pantheon, so could
+    # be a bigframes issue...
+    result = result.reindex(sorted(result.columns), axis=1)
+
+    expected = pd.DataFrame(
+        {
+            "labelencoded_sex": [
+                3,
+                2,
+                2,
+            ],
+            "labelencoded_species": [
+                1,
+                1,
+                2,
+            ],
+        },
+        dtype="Int64",
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(result, expected)
+
+
 # TODO(garrettwu): add OneHotEncoder tests to compare with sklearn.

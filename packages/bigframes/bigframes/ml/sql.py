@@ -88,6 +88,17 @@ class BaseSqlGenerator:
         https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-one-hot-encoder for params."""
         return f"""ML.ONE_HOT_ENCODER({numeric_expr_sql}, '{drop}', {top_k}, {frequency_threshold}) OVER() AS {name}"""
 
+    def ml_label_encoder(
+        self,
+        numeric_expr_sql: str,
+        top_k: int,
+        frequency_threshold: int,
+        name: str,
+    ) -> str:
+        """Encode ML.LABEL_ENCODER for BQML.
+        https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-label-encoder for params."""
+        return f"""ML.LABEL_ENCODER({numeric_expr_sql}, {top_k}, {frequency_threshold}) OVER() AS {name}"""
+
 
 class ModelCreationSqlGenerator(BaseSqlGenerator):
     """Sql generator for creating a model entity. Model id is the standalone id without project id and dataset id."""
