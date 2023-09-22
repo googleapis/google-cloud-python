@@ -12,15 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-docker:
-  image: gcr.io/cloud-devrel-public-resources/owlbot-python:latest
 
 deep-remove-regex:
   - /owl-bot-staging
 
 deep-copy-regex:
-  - source: /google/cloud/texttospeech/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/$1/$2
+  - source: /google/cloud/texttospeech/(v.*)/.*-py
+    dest: /owl-bot-staging/google-cloud-texttospeech/$1
 
 begin-after-commit-hash: f92897093108f24c013e9c15c3be2709417ba5d6
 
