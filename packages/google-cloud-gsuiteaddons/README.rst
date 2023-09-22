@@ -1,9 +1,9 @@
-Python Client for Google Workspace Add-ons API API
-==================================================
+Python Client for Google Workspace Add-ons API
+==============================================
 
 |preview| |pypi| |versions|
 
-`Google Workspace Add-ons API API`_: Add-ons are customized applications that integrate with Google Workspace applications.
+`Google Workspace Add-ons API`_: Add-ons are customized applications that integrate with Google Workspace applications.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Google Workspace Add-ons API API
    :target: https://pypi.org/project/google-cloud-gsuiteaddons/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-gsuiteaddons.svg
    :target: https://pypi.org/project/google-cloud-gsuiteaddons/
-.. _Google Workspace Add-ons API API: https://developers.google.com/workspace/add-ons/overview
+.. _Google Workspace Add-ons API: https://developers.google.com/workspace/add-ons/overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/gsuiteaddons/latest
 .. _Product Documentation:  https://developers.google.com/workspace/add-ons/overview
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Google Workspace Add-ons API API.`_
+3. `Enable the Google Workspace Add-ons API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Google Workspace Add-ons API API.:  https://developers.google.com/workspace/add-ons/overview
+.. _Enable the Google Workspace Add-ons API.:  https://developers.google.com/workspace/add-ons/overview
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/python-gsuiteaddons/tree/main/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-gsuiteaddons/samples
 
 
 Supported Python Versions
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Google Workspace Add-ons API API
+-  Read the `Client Library Documentation`_ for Google Workspace Add-ons API
    to see other available methods on the client.
--  Read the `Google Workspace Add-ons API API Product documentation`_ to learn
+-  Read the `Google Workspace Add-ons API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Google Workspace Add-ons API API Product documentation:  https://developers.google.com/workspace/add-ons/overview
+.. _Google Workspace Add-ons API Product documentation:  https://developers.google.com/workspace/add-ons/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
