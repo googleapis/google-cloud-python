@@ -56,7 +56,7 @@ for subdir in ${subdirs[@]}; do
   for d in `find 'packages' -type d -wholename 'packages/*/tests/system'`; do
       # Get the path to the package by removing the suffix /tests/system
       package=$(echo $d | cut -f -2 -d '/')
-      echo "Running system tests in package in ${package}"
+      echo "Running system tests for ${package}"
       pushd ${package}
       # Temporarily allow failure.
       set +e
