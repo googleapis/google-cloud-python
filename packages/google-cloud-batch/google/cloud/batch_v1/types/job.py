@@ -421,6 +421,7 @@ class AllocationPolicy(proto.Message):
                 SPOT VM.
             PREEMPTIBLE (3):
                 Preemptible VM (PVM).
+
                 Above SPOT VM is the preferable model for
                 preemptible VM instances: the old preemptible VM
                 model (indicated by this field) is the older

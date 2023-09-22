@@ -672,6 +672,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 Message for response to listing data
                 exchanges in an organization and
                 location.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1721,6 +1722,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analyticshub.SubscribeListingResponse:
         r"""Subscribes to a listing.
+
         Currently, with Analytics Hub, you can create listings
         that reference only BigQuery datasets.
         Upon subscription to a listing for a BigQuery dataset,

@@ -85,11 +85,11 @@ class DataExchange(proto.Message):
             the data exchange.
         icon (bytes):
             Optional. Base64 encoded image representing
-            the data exchange. Max Size: 3.0MiB
-            Expected image dimensions are 512x512 pixels,
-            however the API only performs validation on size
-            of the encoded data. Note: For byte fields, the
-            content of the fields are base64-encoded (which
+            the data exchange. Max Size: 3.0MiB Expected
+            image dimensions are 512x512 pixels, however the
+            API only performs validation on size of the
+            encoded data. Note: For byte fields, the content
+            of the fields are base64-encoded (which
             increases the size of the data by 33-36%) when
             using JSON on the wire.
     """
@@ -286,13 +286,13 @@ class Listing(proto.Message):
             Output only. Current state of the listing.
         icon (bytes):
             Optional. Base64 encoded image representing
-            the listing. Max Size: 3.0MiB
-            Expected image dimensions are 512x512 pixels,
-            however the API only performs validation on size
-            of the encoded data. Note: For byte fields, the
-            contents of the field are base64-encoded (which
-            increases the size of the data by 33-36%) when
-            using JSON on the wire.
+            the listing. Max Size: 3.0MiB Expected image
+            dimensions are 512x512 pixels, however the API
+            only performs validation on size of the encoded
+            data. Note: For byte fields, the contents of the
+            field are base64-encoded (which increases the
+            size of the data by 33-36%) when using JSON on
+            the wire.
         data_provider (google.cloud.bigquery_analyticshub_v1.types.DataProvider):
             Optional. Details of the data provider who
             owns the source data.
