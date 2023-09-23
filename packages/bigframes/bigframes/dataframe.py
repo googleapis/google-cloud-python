@@ -2480,3 +2480,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     def _get_block(self) -> blocks.Block:
         return self._block
+
+    def _cached(self) -> DataFrame:
+        return DataFrame(self._block.cached())

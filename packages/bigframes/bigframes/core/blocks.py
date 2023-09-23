@@ -1467,6 +1467,15 @@ class Block:
             idx_labels,
         )
 
+    def cached(self) -> Block:
+        """Write the block to a session table and create a new block object that references it."""
+        return Block(
+            self.expr.cached(cluster_cols=self.index_columns),
+            index_columns=self.index_columns,
+            column_labels=self.column_labels,
+            index_labels=self.index_labels,
+        )
+
     def _is_monotonic(
         self, column_ids: typing.Union[str, Sequence[str]], increasing: bool
     ) -> bool:

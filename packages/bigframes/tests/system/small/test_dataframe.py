@@ -2717,3 +2717,13 @@ def test_query_job_setters(scalars_df_default_index: dataframe.DataFrame):
     job_ids.add(scalars_df_default_index.query_job.job_id)
 
     assert len(job_ids) == 2
+
+
+def test_df_cached(scalars_df_index):
+    df = scalars_df_index.set_index(["int64_too", "int64_col"]).sort_values(
+        "string_col"
+    )
+    df = df[df["rowindex_2"] % 2 == 0]
+
+    df_cached_copy = df._cached()
+    pandas.testing.assert_frame_equal(df.to_pandas(), df_cached_copy.to_pandas())

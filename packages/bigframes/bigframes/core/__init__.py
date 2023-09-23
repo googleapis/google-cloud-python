@@ -1145,6 +1145,29 @@ class ArrayValue:
         )
         return sliced_expr if step > 0 else sliced_expr.reversed()
 
+    def cached(self, cluster_cols: typing.Sequence[str]) -> ArrayValue:
+        """Write the ArrayValue to a session table and create a new block object that references it."""
+        ibis_expr = self._to_ibis_expr(
+            ordering_mode="unordered", expose_hidden_cols=True
+        )
+        destination = self._session._ibis_to_session_table(
+            ibis_expr, cluster_cols=cluster_cols, api_name="cache"
+        )
+        table_expression = self._session.ibis_client.sql(
+            f"SELECT * FROM `_SESSION`.`{destination.table_id}`"
+        )
+        new_columns = [table_expression[column] for column in self.column_names]
+        new_hidden_columns = [
+            table_expression[column] for column in self._hidden_ordering_column_names
+        ]
+        return ArrayValue(
+            self._session,
+            table_expression,
+            columns=new_columns,
+            hidden_ordering_columns=new_hidden_columns,
+            ordering=self._ordering,
+        )
+
 
 class ArrayValueBuilder:
     """Mutable expression class.
