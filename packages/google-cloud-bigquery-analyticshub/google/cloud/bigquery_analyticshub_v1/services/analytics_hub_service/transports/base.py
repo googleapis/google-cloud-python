@@ -18,12 +18,13 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
@@ -188,6 +189,41 @@ class AnalyticsHubServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.subscribe_data_exchange: gapic_v1.method.wrap_method(
+                self.subscribe_data_exchange,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.refresh_subscription: gapic_v1.method.wrap_method(
+                self.refresh_subscription,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_subscription: gapic_v1.method.wrap_method(
+                self.get_subscription,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_subscriptions: gapic_v1.method.wrap_method(
+                self.list_subscriptions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_shared_resource_subscriptions: gapic_v1.method.wrap_method(
+                self.list_shared_resource_subscriptions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.revoke_subscription: gapic_v1.method.wrap_method(
+                self.revoke_subscription,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_subscription: gapic_v1.method.wrap_method(
+                self.delete_subscription,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy,
                 default_timeout=None,
@@ -212,6 +248,11 @@ class AnalyticsHubServiceTransport(abc.ABC):
              Only call this method if the transport is NOT shared
              with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
         raise NotImplementedError()
 
     @property
@@ -331,6 +372,78 @@ class AnalyticsHubServiceTransport(abc.ABC):
             analyticshub.SubscribeListingResponse,
             Awaitable[analyticshub.SubscribeListingResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def subscribe_data_exchange(
+        self,
+    ) -> Callable[
+        [analyticshub.SubscribeDataExchangeRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def refresh_subscription(
+        self,
+    ) -> Callable[
+        [analyticshub.RefreshSubscriptionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_subscription(
+        self,
+    ) -> Callable[
+        [analyticshub.GetSubscriptionRequest],
+        Union[analyticshub.Subscription, Awaitable[analyticshub.Subscription]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_subscriptions(
+        self,
+    ) -> Callable[
+        [analyticshub.ListSubscriptionsRequest],
+        Union[
+            analyticshub.ListSubscriptionsResponse,
+            Awaitable[analyticshub.ListSubscriptionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_shared_resource_subscriptions(
+        self,
+    ) -> Callable[
+        [analyticshub.ListSharedResourceSubscriptionsRequest],
+        Union[
+            analyticshub.ListSharedResourceSubscriptionsResponse,
+            Awaitable[analyticshub.ListSharedResourceSubscriptionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def revoke_subscription(
+        self,
+    ) -> Callable[
+        [analyticshub.RevokeSubscriptionRequest],
+        Union[
+            analyticshub.RevokeSubscriptionResponse,
+            Awaitable[analyticshub.RevokeSubscriptionResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_subscription(
+        self,
+    ) -> Callable[
+        [analyticshub.DeleteSubscriptionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
