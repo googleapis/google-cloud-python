@@ -13,7 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import Any, AsyncIterator, Awaitable, Callable, Sequence, Tuple, Optional, Iterator
+from typing import (
+    Any,
+    AsyncIterator,
+    Awaitable,
+    Callable,
+    Iterator,
+    Optional,
+    Sequence,
+    Tuple,
+)
 
 from google.cloud.documentai_v1beta3.types import document_service
 
@@ -35,12 +44,15 @@ class ListDocumentsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., document_service.ListDocumentsResponse],
-            request: document_service.ListDocumentsRequest,
-            response: document_service.ListDocumentsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., document_service.ListDocumentsResponse],
+        request: document_service.ListDocumentsRequest,
+        response: document_service.ListDocumentsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiate the pager.
 
         Args:
@@ -74,7 +86,7 @@ class ListDocumentsPager:
             yield from page.document_metadata
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListDocumentsAsyncPager:
@@ -94,12 +106,15 @@ class ListDocumentsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[document_service.ListDocumentsResponse]],
-            request: document_service.ListDocumentsRequest,
-            response: document_service.ListDocumentsResponse,
-            *,
-            metadata: Sequence[Tuple[str, str]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[document_service.ListDocumentsResponse]],
+        request: document_service.ListDocumentsRequest,
+        response: document_service.ListDocumentsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
         """Instantiates the pager.
 
         Args:
@@ -127,6 +142,7 @@ class ListDocumentsAsyncPager:
             self._request.page_token = self._response.next_page_token
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
+
     def __aiter__(self) -> AsyncIterator[document_service.DocumentMetadata]:
         async def async_generator():
             async for page in self.pages:
@@ -136,4 +152,4 @@ class ListDocumentsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
