@@ -822,22 +822,54 @@ class Block:
             index_labels=self.index.names,
         )
 
-    def aggregate_all_and_pivot(
+    def aggregate_all_and_stack(
         self,
         operation: agg_ops.AggregateOp,
         *,
+        axis: int | str = 0,
         value_col_id: str = "values",
         dropna: bool = True,
         dtype=pd.Float64Dtype(),
     ) -> Block:
-        aggregations = [(col_id, operation, col_id) for col_id in self.value_columns]
-        result_expr = self.expr.aggregate(aggregations, dropna=dropna).unpivot(
-            row_labels=self.column_labels.to_list(),
-            index_col_id="index",
-            unpivot_columns=[(value_col_id, self.value_columns)],
-            dtype=dtype,
-        )
-        return Block(result_expr, index_columns=["index"], column_labels=[None])
+        axis_n = utils.get_axis_number(axis)
+        if axis_n == 0:
+            aggregations = [
+                (col_id, operation, col_id) for col_id in self.value_columns
+            ]
+            result_expr = self.expr.aggregate(aggregations, dropna=dropna).unpivot(
+                row_labels=self.column_labels.to_list(),
+                index_col_id="index",
+                unpivot_columns=[(value_col_id, self.value_columns)],
+                dtype=dtype,
+            )
+            return Block(result_expr, index_columns=["index"], column_labels=[None])
+        else:  # axis_n == 1
+            # using offsets as identity to group on.
+            # TODO: Allow to promote identity/total_order columns instead for better perf
+            expr_with_offsets, offset_col = self.expr.promote_offsets()
+            stacked_expr = expr_with_offsets.unpivot(
+                row_labels=self.column_labels.to_list(),
+                index_col_id=guid.generate_guid(),
+                unpivot_columns=[(value_col_id, self.value_columns)],
+                passthrough_columns=[*self.index_columns, offset_col],
+                dtype=dtype,
+            )
+            index_aggregations = [
+                (col_id, agg_ops.AnyValueOp(), col_id)
+                for col_id in [*self.index_columns]
+            ]
+            main_aggregation = (value_col_id, operation, value_col_id)
+            result_expr = stacked_expr.aggregate(
+                [*index_aggregations, main_aggregation],
+                by_column_ids=[offset_col],
+                dropna=dropna,
+            )
+            return Block(
+                result_expr.drop_columns([offset_col]),
+                self.index_columns,
+                column_labels=[None],
+                index_labels=self.index_labels,
+            )
 
     def select_column(self, id: str) -> Block:
         return self.select_columns([id])

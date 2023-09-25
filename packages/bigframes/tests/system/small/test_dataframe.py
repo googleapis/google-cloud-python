@@ -1999,6 +1999,29 @@ def test_dataframe_aggregates(scalars_df_index, scalars_pandas_df_index, op):
     pd.testing.assert_series_equal(pd_series, bf_result, check_index_type=False)
 
 
+@pytest.mark.parametrize(
+    ("op"),
+    [
+        (lambda x: x.sum(axis=1, numeric_only=True)),
+        (lambda x: x.mean(axis=1, numeric_only=True)),
+        (lambda x: x.min(axis=1, numeric_only=True)),
+        (lambda x: x.max(axis=1, numeric_only=True)),
+        (lambda x: x.std(axis=1, numeric_only=True)),
+        (lambda x: x.var(axis=1, numeric_only=True)),
+    ],
+    ids=["sum", "mean", "min", "max", "std", "var"],
+)
+def test_dataframe_aggregates_axis_1(scalars_df_index, scalars_pandas_df_index, op):
+    col_names = ["int64_too", "int64_col", "float64_col", "bool_col", "string_col"]
+    bf_result = op(scalars_df_index[col_names]).to_pandas()
+    pd_result = op(scalars_pandas_df_index[col_names])
+
+    # Pandas may produce narrower numeric types, but bigframes always produces Float64
+    pd_result = pd_result.astype("Float64")
+    # Pandas has object index type
+    pd.testing.assert_series_equal(pd_result, bf_result, check_index_type=False)
+
+
 def test_dataframe_aggregates_median(scalars_df_index, scalars_pandas_df_index):
     col_names = ["int64_too", "float64_col", "int64_col", "bool_col"]
     bf_result = scalars_df_index[col_names].median(numeric_only=True).to_pandas()
@@ -2019,11 +2042,16 @@ def test_dataframe_aggregates_median(scalars_df_index, scalars_pandas_df_index):
     [
         (lambda x: x.all(bool_only=True)),
         (lambda x: x.any(bool_only=True)),
+        (lambda x: x.all(axis=1, bool_only=True)),
+        (lambda x: x.any(axis=1, bool_only=True)),
     ],
-    ids=["all", "any"],
+    ids=["all_axis0", "any_axis0", "all_axis1", "any_axis1"],
 )
 def test_dataframe_bool_aggregates(scalars_df_index, scalars_pandas_df_index, op):
     # Pandas will drop nullable 'boolean' dtype so we convert first to bool, then cast back later
+    scalars_df_index = scalars_df_index.assign(
+        bool_col=scalars_df_index.bool_col.fillna(False)
+    )
     scalars_pandas_df_index = scalars_pandas_df_index.assign(
         bool_col=scalars_pandas_df_index.bool_col.fillna(False).astype("bool")
     )

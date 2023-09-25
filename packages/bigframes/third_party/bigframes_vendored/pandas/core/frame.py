@@ -11,7 +11,7 @@ labeling information
 """
 from __future__ import annotations
 
-from typing import Iterable, Literal, Mapping, Optional, Sequence, Union
+from typing import Literal, Mapping, Optional, Sequence, Union
 
 import numpy as np
 
@@ -1457,7 +1457,7 @@ class DataFrame(NDFrame):
     # ----------------------------------------------------------------------
     # ndarray-like stats methods
 
-    def any(self, *, bool_only: bool = False):
+    def any(self, *, axis=0, bool_only: bool = False):
         """
         Return whether any element is True, potentially over an axis.
 
@@ -1466,6 +1466,9 @@ class DataFrame(NDFrame):
         non-empty).
 
         Args:
+            axis ({index (0), columns (1)}):
+                Axis for the function to be applied on.
+                For Series this parameter is unused and defaults to 0.
             bool_only (bool. default False):
                 Include only boolean columns.
 
@@ -1474,7 +1477,7 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def all(self, *, bool_only: bool = False):
+    def all(self, axis=0, *, bool_only: bool = False):
         """
         Return whether all elements are True, potentially over an axis.
 
@@ -1483,6 +1486,9 @@ class DataFrame(NDFrame):
         empty).
 
         Args:
+            axis ({index (0), columns (1)}):
+                Axis for the function to be applied on.
+                For Series this parameter is unused and defaults to 0.
             bool_only (bool. default False):
                 Include only boolean columns.
 
@@ -1491,11 +1497,14 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def prod(self, *, numeric_only: bool = False):
+    def prod(self, axis=0, *, numeric_only: bool = False):
         """
         Return the product of the values over the requested axis.
 
         Args:
+            aßxis ({index (0), columns (1)}):
+                Axis for the function to be applied on.
+                For Series this parameter is unused and defaults to 0.
             numeric_only (bool. default False):
                 Include only float, int, boolean columns.
 
@@ -1504,13 +1513,16 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def min(self, *, numeric_only: bool = False):
+    def min(self, axis=0, *, numeric_only: bool = False):
         """Return the minimum of the values over the requested axis.
 
         If you want the *index* of the minimum, use ``idxmin``. This is the
         equivalent of the ``numpy.ndarray`` method ``argmin``.
 
         Args:
+            axis ({index (0), columns (1)}):
+                Axis for the function to be applied on.
+                For Series this parameter is unused and defaults to 0.
             numeric_only (bool, default False):
                 Default False. Include only float, int, boolean columns.
 
@@ -1519,13 +1531,16 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def max(self, *, numeric_only: bool = False):
+    def max(self, axis=0, *, numeric_only: bool = False):
         """Return the maximum of the values over the requested axis.
 
         If you want the *index* of the maximum, use ``idxmax``. This is
         the equivalent of the ``numpy.ndarray`` method ``argmax``.
 
         Args:
+            axis ({index (0), columns (1)}):
+                Axis for the function to be applied on.
+                For Series this parameter is unused and defaults to 0.
             numeric_only (bool. default False):
                 Default False. Include only float, int, boolean columns.
 
@@ -1534,12 +1549,15 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def sum(self, *, numeric_only: bool = False):
+    def sum(self, axis=0, *, numeric_only: bool = False):
         """Return the sum of the values over the requested axis.
 
         This is equivalent to the method ``numpy.sum``.
 
         Args:
+            axis ({index (0), columns (1)}):
+                Axis for the function to be applied on.
+                For Series this parameter is unused and defaults to 0.
             numeric_only (bool. default False):
                 Default False. Include only float, int, boolean columns.
 
@@ -1548,10 +1566,13 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def mean(self, *, numeric_only: bool = False):
+    def mean(self, axis=0, *, numeric_only: bool = False):
         """Return the mean of the values over the requested axis.
 
         Args:
+            axis ({index (0), columns (1)}):
+                Axis for the function to be applied on.
+                For Series this parameter is unused and defaults to 0.
             numeric_only (bool. default False):
                 Default False. Include only float, int, boolean columns.
 
@@ -1575,12 +1596,15 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def var(self, *, numeric_only: bool = False):
+    def var(self, axis=0, *, numeric_only: bool = False):
         """Return unbiased variance over requested axis.
 
         Normalized by N-1 by default.
 
         Args:
+            axis ({index (0), columns (1)}):
+                Axis for the function to be applied on.
+                For Series this parameter is unused and defaults to 0.
             numeric_only (bool. default False):
                 Default False. Include only float, int, boolean columns.
 
