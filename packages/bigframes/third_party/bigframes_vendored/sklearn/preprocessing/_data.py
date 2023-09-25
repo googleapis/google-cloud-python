@@ -43,12 +43,15 @@ class StandardScaler(BaseEstimator, TransformerMixin):
             print(scaler.transform(bpd.DataFrame({"a": [2], "b":[2]})))
     """
 
-    def fit(self, X):
+    def fit(self, X, y=None):
         """Compute the mean and std to be used for later scaling.
 
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series):
                 The Dataframe or Series with training data.
+
+            y (default None):
+                Ignored.
 
         Returns:
             StandardScaler: Fitted scaler.
@@ -57,6 +60,43 @@ class StandardScaler(BaseEstimator, TransformerMixin):
 
     def transform(self, X):
         """Perform standardization by centering and scaling.
+
+        Args:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                The DataFrame or Series to be transformed.
+
+        Returns:
+           bigframes.dataframe.DataFrame: Transformed result.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+
+class MaxAbsScaler(BaseEstimator, TransformerMixin):
+    """Scale each feature by its maximum absolute value.
+
+    This estimator scales and translates each feature individually such
+    that the maximal absolute value of each feature in the
+    training set will be 1.0. It does not shift/center the data, and
+    thus does not destroy any sparsity.
+    """
+
+    def fit(self, X, y=None):
+        """Compute the maximum absolute value to be used for later scaling.
+
+        Args:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                The Dataframe or Series with training data.
+
+            y (default None):
+                Ignored.
+
+        Returns:
+            MaxAbsScaler: Fitted scaler.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def transform(self, X):
+        """Scale the data.
 
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series):

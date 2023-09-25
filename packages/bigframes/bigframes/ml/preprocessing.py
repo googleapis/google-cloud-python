@@ -54,8 +54,10 @@ class StandardScaler(
         Returns: a list of tuples of (sql_expression, output_name)"""
         return [
             (
-                self._base_sql_generator.ml_standard_scaler(column, f"scaled_{column}"),
-                f"scaled_{column}",
+                self._base_sql_generator.ml_standard_scaler(
+                    column, f"standard_scaled_{column}"
+                ),
+                f"standard_scaled_{column}",
             )
             for column in columns
         ]
@@ -77,6 +79,86 @@ class StandardScaler(
         X: Union[bpd.DataFrame, bpd.Series],
         y=None,  # ignored
     ) -> StandardScaler:
+        (X,) = utils.convert_to_dataframe(X)
+
+        compiled_transforms = self._compile_to_sql(X.columns.tolist())
+        transform_sqls = [transform_sql for transform_sql, _ in compiled_transforms]
+
+        self._bqml_model = self._bqml_model_factory.create_model(
+            X,
+            options={"model_type": "transform_only"},
+            transforms=transform_sqls,
+        )
+
+        # The schema of TRANSFORM output is not available in the model API, so save it during fitting
+        self._output_names = [name for _, name in compiled_transforms]
+        return self
+
+    def transform(self, X: Union[bpd.DataFrame, bpd.Series]) -> bpd.DataFrame:
+        if not self._bqml_model:
+            raise RuntimeError("Must be fitted before transform")
+
+        (X,) = utils.convert_to_dataframe(X)
+
+        df = self._bqml_model.transform(X)
+        return typing.cast(
+            bpd.DataFrame,
+            df[self._output_names],
+        )
+
+
+class MaxAbsScaler(
+    base.Transformer,
+    third_party.bigframes_vendored.sklearn.preprocessing._data.MaxAbsScaler,
+):
+    __doc__ = (
+        third_party.bigframes_vendored.sklearn.preprocessing._data.MaxAbsScaler.__doc__
+    )
+
+    def __init__(self):
+        self._bqml_model: Optional[core.BqmlModel] = None
+        self._bqml_model_factory = globals.bqml_model_factory()
+        self._base_sql_generator = globals.base_sql_generator()
+
+    # TODO(garrettwu): implement __hash__
+    def __eq__(self, other: Any) -> bool:
+        return type(other) is MaxAbsScaler and self._bqml_model == other._bqml_model
+
+    def _compile_to_sql(self, columns: List[str]) -> List[Tuple[str, str]]:
+        """Compile this transformer to a list of SQL expressions that can be included in
+        a BQML TRANSFORM clause
+
+        Args:
+            columns: a list of column names to transform
+
+        Returns: a list of tuples of (sql_expression, output_name)"""
+        return [
+            (
+                self._base_sql_generator.ml_max_abs_scaler(
+                    column, f"max_abs_scaled_{column}"
+                ),
+                f"max_abs_scaled_{column}",
+            )
+            for column in columns
+        ]
+
+    @classmethod
+    def _parse_from_sql(cls, sql: str) -> tuple[MaxAbsScaler, str]:
+        """Parse SQL to tuple(StandardScaler, column_label).
+
+        Args:
+            sql: SQL string of format "ML.MAX_ABS_SCALER({col_label}) OVER()"
+
+        Returns:
+            tuple(StandardScaler, column_label)"""
+        col_label = sql[sql.find("(") + 1 : sql.find(")")]
+        return cls(), col_label
+
+    def fit(
+        self,
+        X: Union[bpd.DataFrame, bpd.Series],
+        y=None,  # ignored
+    ) -> MaxAbsScaler:
         (X,) = utils.convert_to_dataframe(X)
 
         compiled_transforms = self._compile_to_sql(X.columns.tolist())

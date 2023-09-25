@@ -69,6 +69,13 @@ def test_standard_scaler_produces_correct_sql(
     assert sql == "ML.STANDARD_SCALER(col_a) OVER() AS scaled_col_a"
 
 
+def test_max_abs_scaler_produces_correct_sql(
+    base_sql_generator: ml_sql.BaseSqlGenerator,
+):
+    sql = base_sql_generator.ml_max_abs_scaler("col_a", "scaled_col_a")
+    assert sql == "ML.MAX_ABS_SCALER(col_a) OVER() AS scaled_col_a"
+
+
 def test_one_hot_encoder_produces_correct_sql(
     base_sql_generator: ml_sql.BaseSqlGenerator,
 ):

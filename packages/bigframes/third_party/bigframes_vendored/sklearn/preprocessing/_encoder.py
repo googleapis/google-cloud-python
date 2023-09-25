@@ -54,12 +54,15 @@ class OneHotEncoder(BaseEstimator):
             print(enc.transform(bpd.DataFrame({"a": ["Female", "Male"], "b": ["1", "4"]})))
     """
 
-    def fit(self, X):
+    def fit(self, X, y=None):
         """Fit OneHotEncoder to X.
 
         Args:
             X (bigframes.dataframe.DataFrame or bigframes.series.Series):
                 The DataFrame or Series with training data.
+
+            y (default None):
+                Ignored.
 
         Returns:
             OneHotEncoder: Fitted encoder.

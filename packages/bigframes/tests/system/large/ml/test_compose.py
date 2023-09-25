@@ -56,20 +56,20 @@ def test_columntransformer_standalone_fit_and_transform(
                 [{"index": 1, "value": 1.0}],
                 [{"index": 2, "value": 1.0}],
             ],
-            "scaled_culmen_length_mm": [
+            "standard_scaled_culmen_length_mm": [
                 -0.811119671289163,
                 -0.9945520581113803,
                 -1.104611490204711,
             ],
-            "scaled_flipper_length_mm": [-0.350044, -1.418336, -0.9198],
+            "standard_scaled_flipper_length_mm": [-0.350044, -1.418336, -0.9198],
         },
         index=pandas.Index([1633, 1672, 1690], dtype="Int64", name="tag_number"),
     )
-    expected.scaled_culmen_length_mm = expected.scaled_culmen_length_mm.astype(
-        "Float64"
+    expected.standard_scaled_culmen_length_mm = (
+        expected.standard_scaled_culmen_length_mm.astype("Float64")
     )
-    expected.scaled_flipper_length_mm = expected.scaled_flipper_length_mm.astype(
-        "Float64"
+    expected.standard_scaled_flipper_length_mm = (
+        expected.standard_scaled_flipper_length_mm.astype("Float64")
     )
 
     pandas.testing.assert_frame_equal(result, expected, rtol=1e-3)
@@ -107,20 +107,20 @@ def test_columntransformer_standalone_fit_transform(new_penguins_df):
                 [{"index": 1, "value": 1.0}],
                 [{"index": 2, "value": 1.0}],
             ],
-            "scaled_culmen_length_mm": [
+            "standard_scaled_culmen_length_mm": [
                 1.313249,
                 -0.20198,
                 -1.111118,
             ],
-            "scaled_flipper_length_mm": [1.251098, -1.196588, -0.054338],
+            "standard_scaled_flipper_length_mm": [1.251098, -1.196588, -0.054338],
         },
         index=pandas.Index([1633, 1672, 1690], dtype="Int64", name="tag_number"),
     )
-    expected.scaled_culmen_length_mm = expected.scaled_culmen_length_mm.astype(
-        "Float64"
+    expected.standard_scaled_culmen_length_mm = (
+        expected.standard_scaled_culmen_length_mm.astype("Float64")
     )
-    expected.scaled_flipper_length_mm = expected.scaled_flipper_length_mm.astype(
-        "Float64"
+    expected.standard_scaled_flipper_length_mm = (
+        expected.standard_scaled_flipper_length_mm.astype("Float64")
     )
 
     pandas.testing.assert_frame_equal(result, expected, rtol=1e-3)

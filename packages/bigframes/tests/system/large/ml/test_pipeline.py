@@ -566,8 +566,13 @@ def test_pipeline_columntransformer_fit_predict(session, penguins_df_default_ind
                             "species",
                         ),
                         (
-                            "scale",
+                            "standard_scale",
                             preprocessing.StandardScaler(),
+                            ["culmen_length_mm", "flipper_length_mm"],
+                        ),
+                        (
+                            "max_abs_scale",
+                            preprocessing.MaxAbsScaler(),
                             ["culmen_length_mm", "flipper_length_mm"],
                         ),
                         (
@@ -638,6 +643,11 @@ def test_pipeline_columntransformer_to_gbq(penguins_df_default_index, dataset_id
                             ["culmen_length_mm", "flipper_length_mm"],
                         ),
                         (
+                            "max_abs_scale",
+                            preprocessing.MaxAbsScaler(),
+                            ["culmen_length_mm", "flipper_length_mm"],
+                        ),
+                        (
                             "label",
                             preprocessing.LabelEncoder(),
                             "species",
@@ -660,30 +670,26 @@ def test_pipeline_columntransformer_to_gbq(penguins_df_default_index, dataset_id
 
     assert isinstance(pl_loaded._transform, compose.ColumnTransformer)
     transformers = pl_loaded._transform.transformers_
-    assert len(transformers) == 4
+    expected = [
+        (
+            "ont_hot_encoder",
+            preprocessing.OneHotEncoder(
+                drop="most_frequent", max_categories=100, min_frequency=5
+            ),
+            "species",
+        ),
+        (
+            "label_encoder",
+            preprocessing.LabelEncoder(max_categories=1000001, min_frequency=0),
+            "species",
+        ),
+        ("standard_scaler", preprocessing.StandardScaler(), "culmen_length_mm"),
+        ("max_abs_encoder", preprocessing.MaxAbsScaler(), "culmen_length_mm"),
+        ("standard_scaler", preprocessing.StandardScaler(), "flipper_length_mm"),
+        ("max_abs_encoder", preprocessing.MaxAbsScaler(), "flipper_length_mm"),
+    ]
 
-    assert transformers[0][0] == "ont_hot_encoder"
-    assert isinstance(transformers[0][1], preprocessing.OneHotEncoder)
-    one_hot_encoder = transformers[0][1]
-    assert one_hot_encoder.drop == "most_frequent"
-    assert one_hot_encoder.min_frequency == 5
-    assert one_hot_encoder.max_categories == 100
-    assert transformers[0][2] == "species"
-
-    assert transformers[1][0] == "label_encoder"
-    assert isinstance(transformers[1][1], preprocessing.LabelEncoder)
-    one_hot_encoder = transformers[1][1]
-    assert one_hot_encoder.min_frequency == 0
-    assert one_hot_encoder.max_categories == 1000001
-    assert transformers[1][2] == "species"
-
-    assert transformers[2][0] == "standard_scaler"
-    assert isinstance(transformers[2][1], preprocessing.StandardScaler)
-    assert transformers[2][2] == "culmen_length_mm"
-
-    assert transformers[3][0] == "standard_scaler"
-    assert isinstance(transformers[2][1], preprocessing.StandardScaler)
-    assert transformers[3][2] == "flipper_length_mm"
+    assert transformers == expected
 
     assert isinstance(pl_loaded._estimator, linear_model.LinearRegression)
     assert pl_loaded._estimator.fit_intercept is False
@@ -712,6 +718,34 @@ def test_pipeline_standard_scaler_to_gbq(penguins_df_default_index, dataset_id):
         f"{dataset_id}.test_penguins_pipeline_standard_scaler", replace=True
     )
     assert isinstance(pl_loaded._transform, preprocessing.StandardScaler)
+
+    assert isinstance(pl_loaded._estimator, linear_model.LinearRegression)
+    assert pl_loaded._estimator.fit_intercept is False
+
+
+def test_pipeline_max_abs_scaler_to_gbq(penguins_df_default_index, dataset_id):
+    pl = pipeline.Pipeline(
+        [
+            ("transform", preprocessing.MaxAbsScaler()),
+            ("estimator", linear_model.LinearRegression(fit_intercept=False)),
+        ]
+    )
+
+    df = penguins_df_default_index.dropna()
+    X_train = df[
+        [
+            "culmen_length_mm",
+            "culmen_depth_mm",
+            "flipper_length_mm",
+        ]
+    ]
+    y_train = df[["body_mass_g"]]
+    pl.fit(X_train, y_train)
+
+    pl_loaded = pl.to_gbq(
+        f"{dataset_id}.test_penguins_pipeline_standard_scaler", replace=True
+    )
+    assert isinstance(pl_loaded._transform, preprocessing.MaxAbsScaler)
 
     assert isinstance(pl_loaded._estimator, linear_model.LinearRegression)
     assert pl_loaded._estimator.fit_intercept is False

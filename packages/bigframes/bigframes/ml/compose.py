@@ -29,6 +29,7 @@ import third_party.bigframes_vendored.sklearn.compose._column_transformer
 CompilablePreprocessorType = Union[
     preprocessing.OneHotEncoder,
     preprocessing.StandardScaler,
+    preprocessing.MaxAbsScaler,
     preprocessing.LabelEncoder,
 ]
 

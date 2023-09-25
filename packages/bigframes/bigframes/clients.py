@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import logging
 import time
-from typing import Optional
+from typing import cast, Optional
 
 import google.api_core.exceptions
 from google.cloud import bigquery_connection_v1, resourcemanager_v3
@@ -80,6 +80,7 @@ class BqConnectionManager:
             logger.info(
                 f"Created BQ connection {connection_name} with service account id: {service_account_id}"
             )
+        service_account_id = cast(str, service_account_id)
         # Ensure IAM role on the BQ connection
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#grant_permission_on_function
         self._ensure_iam_binding(project_id, service_account_id, iam_role)

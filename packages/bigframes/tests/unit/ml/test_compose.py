@@ -12,45 +12,60 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import pytest
 import sklearn.compose as sklearn_compose  # type: ignore
 import sklearn.preprocessing as sklearn_preprocessing  # type: ignore
 
-import bigframes.ml.compose
-import bigframes.ml.preprocessing
+from bigframes.ml import compose, preprocessing
 
 
 def test_columntransformer_init_expectedtransforms():
-    onehot_transformer = bigframes.ml.preprocessing.OneHotEncoder()
-    scaler_transformer = bigframes.ml.preprocessing.StandardScaler()
-    label_transformer = bigframes.ml.preprocessing.LabelEncoder()
-    column_transformer = bigframes.ml.compose.ColumnTransformer(
+    onehot_transformer = preprocessing.OneHotEncoder()
+    standard_scaler_transformer = preprocessing.StandardScaler()
+    max_abs_scaler_transformer = preprocessing.MaxAbsScaler()
+    label_transformer = preprocessing.LabelEncoder()
+    column_transformer = compose.ColumnTransformer(
         [
             ("onehot", onehot_transformer, "species"),
-            ("scale", scaler_transformer, ["culmen_length_mm", "flipper_length_mm"]),
-            ("onehot", label_transformer, "species"),
+            (
+                "standard_scale",
+                standard_scaler_transformer,
+                ["culmen_length_mm", "flipper_length_mm"],
+            ),
+            (
+                "max_abs_scale",
+                max_abs_scaler_transformer,
+                ["culmen_length_mm", "flipper_length_mm"],
+            ),
+            ("label", label_transformer, "species"),
         ]
     )
 
     assert column_transformer.transformers_ == [
         ("onehot", onehot_transformer, "species"),
-        ("scale", scaler_transformer, "culmen_length_mm"),
-        ("scale", scaler_transformer, "flipper_length_mm"),
-        ("onehot", label_transformer, "species"),
+        ("standard_scale", standard_scaler_transformer, "culmen_length_mm"),
+        ("standard_scale", standard_scaler_transformer, "flipper_length_mm"),
+        ("max_abs_scale", max_abs_scaler_transformer, "culmen_length_mm"),
+        ("max_abs_scale", max_abs_scaler_transformer, "flipper_length_mm"),
+        ("label", label_transformer, "species"),
     ]
 
 
 def test_columntransformer_repr():
-    column_transformer = bigframes.ml.compose.ColumnTransformer(
+    column_transformer = compose.ColumnTransformer(
         [
             (
                 "onehot",
-                bigframes.ml.preprocessing.OneHotEncoder(),
+                preprocessing.OneHotEncoder(),
                 "species",
             ),
             (
-                "scale",
-                bigframes.ml.preprocessing.StandardScaler(),
+                "standard_scale",
+                preprocessing.StandardScaler(),
+                ["culmen_length_mm", "flipper_length_mm"],
+            ),
+            (
+                "max_abs_scale",
+                preprocessing.MaxAbsScaler(),
                 ["culmen_length_mm", "flipper_length_mm"],
             ),
         ]
@@ -59,23 +74,29 @@ def test_columntransformer_repr():
     assert (
         column_transformer.__repr__()
         == """ColumnTransformer(transformers=[('onehot', OneHotEncoder(), 'species'),
-                                ('scale', StandardScaler(),
+                                ('standard_scale', StandardScaler(),
+                                 ['culmen_length_mm', 'flipper_length_mm']),
+                                ('max_abs_scale', MaxAbsScaler(),
                                  ['culmen_length_mm', 'flipper_length_mm'])])"""
     )
 
 
-@pytest.mark.skipif(sklearn_compose is None, reason="requires sklearn")
 def test_columntransformer_repr_matches_sklearn():
-    bf_column_transformer = bigframes.ml.compose.ColumnTransformer(
+    bf_column_transformer = compose.ColumnTransformer(
         [
             (
                 "onehot",
-                bigframes.ml.preprocessing.OneHotEncoder(),
+                preprocessing.OneHotEncoder(),
                 "species",
             ),
             (
-                "scale",
-                bigframes.ml.preprocessing.StandardScaler(),
+                "standard_scale",
+                preprocessing.StandardScaler(),
+                ["culmen_length_mm", "flipper_length_mm"],
+            ),
+            (
+                "max_abs_scale",
+                preprocessing.MaxAbsScaler(),
                 ["culmen_length_mm", "flipper_length_mm"],
             ),
         ]
@@ -88,8 +109,13 @@ def test_columntransformer_repr_matches_sklearn():
                 "species",
             ),
             (
-                "scale",
+                "standard_scale",
                 sklearn_preprocessing.StandardScaler(),
+                ["culmen_length_mm", "flipper_length_mm"],
+            ),
+            (
+                "max_abs_scale",
+                sklearn_preprocessing.MaxAbsScaler(),
                 ["culmen_length_mm", "flipper_length_mm"],
             ),
         ]

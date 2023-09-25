@@ -50,6 +50,7 @@ class Pipeline(
                 compose.ColumnTransformer,
                 preprocessing.StandardScaler,
                 preprocessing.OneHotEncoder,
+                preprocessing.MaxAbsScaler,
                 preprocessing.LabelEncoder,
             ),
         ):
@@ -147,6 +148,7 @@ def _extract_as_column_transformer(
             Union[
                 preprocessing.OneHotEncoder,
                 preprocessing.StandardScaler,
+                preprocessing.MaxAbsScaler,
                 preprocessing.LabelEncoder,
             ],
             Union[str, List[str]],
@@ -172,6 +174,13 @@ def _extract_as_column_transformer(
                     *preprocessing.OneHotEncoder._parse_from_sql(transform_sql),
                 )
             )
+        elif transform_sql.startswith("ML.MAX_ABS_SCALER"):
+            transformers.append(
+                (
+                    "max_abs_encoder",
+                    *preprocessing.MaxAbsScaler._parse_from_sql(transform_sql),
+                )
+            )
         elif transform_sql.startswith("ML.LABEL_ENCODER"):
             transformers.append(
                 (
@@ -193,6 +202,7 @@ def _merge_column_transformer(
     compose.ColumnTransformer,
     preprocessing.StandardScaler,
     preprocessing.OneHotEncoder,
+    preprocessing.MaxAbsScaler,
     preprocessing.LabelEncoder,
 ]:
     """Try to merge the column transformer to a simple transformer."""
