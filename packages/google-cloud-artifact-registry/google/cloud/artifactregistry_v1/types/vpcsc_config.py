@@ -36,9 +36,11 @@ class VPCSCConfig(proto.Message):
     Attributes:
         name (str):
             The name of the project's VPC SC Config.
+
             Always of the form:
 
             projects/{projectID}/locations/{location}/vpcscConfig
+
             In update request: never set
             In response: always set
         vpcsc_policy (google.cloud.artifactregistry_v1.types.VPCSCConfig.VPCSCPolicy):
