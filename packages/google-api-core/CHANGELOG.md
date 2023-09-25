@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.12.0](https://github.com/googleapis/python-api-core/compare/v2.11.1...v2.12.0) (2023-09-07)
+
+
+### Features
+
+* Add a little bit of typing to google.api_core.retry ([#453](https://github.com/googleapis/python-api-core/issues/453)) ([2477ab9](https://github.com/googleapis/python-api-core/commit/2477ab9ea5c2e863a493fb7ebebaa429a44ea096))
+* Add grpc Compression argument to channels and methods ([#451](https://github.com/googleapis/python-api-core/issues/451)) ([bdebd63](https://github.com/googleapis/python-api-core/commit/bdebd6331f9c0d3d1a8ceaf274f07d2ed75bfe92))
+
+
+### Documentation
+
+* Fix a typo in google/api_core/page_iterator.py ([#511](https://github.com/googleapis/python-api-core/issues/511)) ([c0ce73c](https://github.com/googleapis/python-api-core/commit/c0ce73c4de53ad694fe36d17408998aa1230398f))
+
 ## [2.11.1](https://github.com/googleapis/python-api-core/compare/v2.11.0...v2.11.1) (2023-06-12)
 
 
