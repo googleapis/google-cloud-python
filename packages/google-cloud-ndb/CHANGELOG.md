@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [2.2.2](https://github.com/googleapis/python-ndb/compare/v2.2.1...v2.2.2) (2023-09-19)
+
+
+### Documentation
+
+* **query:** Document deprecation of Query.default_options ([#915](https://github.com/googleapis/python-ndb/issues/915)) ([a656719](https://github.com/googleapis/python-ndb/commit/a656719d8a4f20a8b8dc564a1e3837a2cfb037c4)), closes [#880](https://github.com/googleapis/python-ndb/issues/880)
+
 ## [2.2.1](https://github.com/googleapis/python-ndb/compare/v2.2.0...v2.2.1) (2023-09-15)
 
 
