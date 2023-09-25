@@ -22,11 +22,83 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.documentai.v1beta3",
     manifest={
+        "SummaryOptions",
+        "FieldExtractionMetadata",
         "PropertyMetadata",
         "EntityTypeMetadata",
         "DocumentSchema",
     },
 )
+
+
+class SummaryOptions(proto.Message):
+    r"""Metadata for document summarization.
+
+    Attributes:
+        length (google.cloud.documentai_v1beta3.types.SummaryOptions.Length):
+            How long the summary should be.
+        format_ (google.cloud.documentai_v1beta3.types.SummaryOptions.Format):
+            The format the summary should be in.
+    """
+
+    class Length(proto.Enum):
+        r"""The Length enum.
+
+        Values:
+            LENGTH_UNSPECIFIED (0):
+                Default.
+            BRIEF (1):
+                A brief summary of one or two sentences.
+            MODERATE (2):
+                A paragraph-length summary.
+            COMPREHENSIVE (3):
+                The longest option available.
+        """
+        LENGTH_UNSPECIFIED = 0
+        BRIEF = 1
+        MODERATE = 2
+        COMPREHENSIVE = 3
+
+    class Format(proto.Enum):
+        r"""The Format enum.
+
+        Values:
+            FORMAT_UNSPECIFIED (0):
+                Default.
+            PARAGRAPH (1):
+                Format the output in paragraphs.
+            BULLETS (2):
+                Format the output in bullets.
+        """
+        FORMAT_UNSPECIFIED = 0
+        PARAGRAPH = 1
+        BULLETS = 2
+
+    length: Length = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Length,
+    )
+    format_: Format = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Format,
+    )
+
+
+class FieldExtractionMetadata(proto.Message):
+    r"""Metadata for how this field value is extracted.
+
+    Attributes:
+        summary_options (google.cloud.documentai_v1beta3.types.SummaryOptions):
+            Summary options config.
+    """
+
+    summary_options: "SummaryOptions" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="SummaryOptions",
+    )
 
 
 class PropertyMetadata(proto.Message):
@@ -36,11 +108,18 @@ class PropertyMetadata(proto.Message):
         inactive (bool):
             Whether the property should be considered as
             "inactive".
+        field_extraction_metadata (google.cloud.documentai_v1beta3.types.FieldExtractionMetadata):
+            Field extraction metadata on the property.
     """
 
     inactive: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    field_extraction_metadata: "FieldExtractionMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="FieldExtractionMetadata",
     )
 
 
