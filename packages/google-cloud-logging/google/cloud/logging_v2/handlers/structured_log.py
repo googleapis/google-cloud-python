@@ -79,8 +79,18 @@ class StructuredLogHandler(logging.StreamHandler):
         log_filter = CloudLoggingFilter(project=project_id, default_labels=labels)
         self.addFilter(log_filter)
 
+        class _Formatter(logging.Formatter):
+            """Formatter to format log message without traceback"""
+
+            def format(self, record):
+                """Ignore exception info to avoid duplicating it
+                https://github.com/googleapis/python-logging/issues/382
+                """
+                record.message = record.getMessage()
+                return self.formatMessage(record)
+
         # make logs appear in GCP structured logging format
-        self._gcp_formatter = logging.Formatter(GCP_FORMAT)
+        self._gcp_formatter = _Formatter(GCP_FORMAT)
 
         self._json_encoder_cls = json_encoder_cls or json.JSONEncoder
 
@@ -115,11 +125,7 @@ class StructuredLogHandler(logging.StreamHandler):
             payload = '"message": {},'.format(encoded_message)
 
         record._payload_str = payload or ""
-        # remove exception info to avoid duplicating it
-        # https://github.com/googleapis/python-logging/issues/382
-        record.exc_info = None
-        record.exc_text = None
-        # convert to GCP structred logging format
+        # convert to GCP structured logging format
         gcp_payload = self._gcp_formatter.format(record)
         return gcp_payload
 
