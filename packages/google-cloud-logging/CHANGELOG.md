@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.7.0](https://github.com/googleapis/python-logging/compare/v3.6.0...v3.7.0) (2023-09-25)
+
+
+### Features
+
+* Add ConfigServiceV2.CreateBucketAsync method for creating Log Buckets asynchronously ([30f24a8](https://github.com/googleapis/python-logging/commit/30f24a8bb3b0be2511264a18c3c93bdd3996fc93))
+* Add ConfigServiceV2.CreateLink method for creating linked datasets for Log Analytics Buckets ([30f24a8](https://github.com/googleapis/python-logging/commit/30f24a8bb3b0be2511264a18c3c93bdd3996fc93))
+* Add ConfigServiceV2.DeleteLink method for deleting linked datasets ([30f24a8](https://github.com/googleapis/python-logging/commit/30f24a8bb3b0be2511264a18c3c93bdd3996fc93))
+* Add ConfigServiceV2.GetLink methods for describing linked datasets ([30f24a8](https://github.com/googleapis/python-logging/commit/30f24a8bb3b0be2511264a18c3c93bdd3996fc93))
+* Add ConfigServiceV2.ListLinks method for listing linked datasets ([30f24a8](https://github.com/googleapis/python-logging/commit/30f24a8bb3b0be2511264a18c3c93bdd3996fc93))
+* Add ConfigServiceV2.UpdateBucketAsync method for creating Log Buckets asynchronously ([30f24a8](https://github.com/googleapis/python-logging/commit/30f24a8bb3b0be2511264a18c3c93bdd3996fc93))
+* Add LogBucket.analytics_enabled field that specifies whether Log Bucket's Analytics features are enabled ([30f24a8](https://github.com/googleapis/python-logging/commit/30f24a8bb3b0be2511264a18c3c93bdd3996fc93))
+* Add LogBucket.index_configs field that contains a list of Log Bucket's indexed fields and related configuration data ([30f24a8](https://github.com/googleapis/python-logging/commit/30f24a8bb3b0be2511264a18c3c93bdd3996fc93))
+* Log Analytics features of the Cloud Logging API ([30f24a8](https://github.com/googleapis/python-logging/commit/30f24a8bb3b0be2511264a18c3c93bdd3996fc93))
+
+
+### Bug Fixes
+
+* Add async context manager return types ([30f24a8](https://github.com/googleapis/python-logging/commit/30f24a8bb3b0be2511264a18c3c93bdd3996fc93))
+* Add severity to structured log write ([#783](https://github.com/googleapis/python-logging/issues/783)) ([31a7f69](https://github.com/googleapis/python-logging/commit/31a7f69ed94719546136a3bf1b3ecdb28e369414))
+* Handle exceptions raised when fetching Django request data ([#758](https://github.com/googleapis/python-logging/issues/758)) ([5ecf886](https://github.com/googleapis/python-logging/commit/5ecf88606b4f29b00ff8b18ae71c151d203d5c3b))
+* Unintended exception omittion ([#736](https://github.com/googleapis/python-logging/issues/736)) ([022dc54](https://github.com/googleapis/python-logging/commit/022dc545f781648043296b3ca04d835fcb6f1d7e))
+
+
+### Documentation
+
+* Documentation for the Log Analytics features of the Cloud Logging API ([30f24a8](https://github.com/googleapis/python-logging/commit/30f24a8bb3b0be2511264a18c3c93bdd3996fc93))
+* Minor formatting ([30f24a8](https://github.com/googleapis/python-logging/commit/30f24a8bb3b0be2511264a18c3c93bdd3996fc93))
+
 ## [3.6.0](https://github.com/googleapis/python-logging/compare/v3.5.0...v3.6.0) (2023-07-05)
 
 
