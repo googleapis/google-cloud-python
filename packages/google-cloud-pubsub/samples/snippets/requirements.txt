@@ -1,4 +1,4 @@
 google-cloud-pubsub==2.18.4
-avro==1.11.2
+avro==1.11.3
 protobuf==4.24.3
-avro==1.11.2
+avro==1.11.3
