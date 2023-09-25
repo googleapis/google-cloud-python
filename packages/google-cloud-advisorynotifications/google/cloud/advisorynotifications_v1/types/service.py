@@ -35,6 +35,10 @@ __protobuf__ = proto.module(
         "ListNotificationsRequest",
         "ListNotificationsResponse",
         "GetNotificationRequest",
+        "Settings",
+        "NotificationSettings",
+        "GetSettingsRequest",
+        "UpdateSettingsRequest",
     },
 )
 
@@ -432,6 +436,92 @@ class GetNotificationRequest(proto.Message):
     language_code: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+
+
+class Settings(proto.Message):
+    r"""Settings for Advisory Notifications.
+
+    Attributes:
+        name (str):
+            Output only. The resource name of the
+            settings to retrieve. Format:
+
+            organizations/{organization}/locations/{location}/settings.
+        notification_settings (MutableMapping[str, google.cloud.advisorynotifications_v1.types.NotificationSettings]):
+            Required. Map of each notification type and
+            its settings to get/set all settings at once.
+            The server will validate the value for each
+            notification type.
+        etag (str):
+            Required. Fingerprint for optimistic
+            concurrency returned in Get requests. Must be
+            provided for Update requests. If the value
+            provided does not match the value known to the
+            server, ABORTED will be thrown, and the client
+            should retry the read-modify-write cycle.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    notification_settings: MutableMapping[str, "NotificationSettings"] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=2,
+        message="NotificationSettings",
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class NotificationSettings(proto.Message):
+    r"""Settings for each NotificationType.
+
+    Attributes:
+        enabled (bool):
+            Whether the associated NotificationType is
+            enabled.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
+class GetSettingsRequest(proto.Message):
+    r"""Request of GetSettings endpoint.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the settings
+            to retrieve. Format:
+
+            organizations/{organization}/locations/{location}/settings.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateSettingsRequest(proto.Message):
+    r"""Request of UpdateSettings endpoint.
+
+    Attributes:
+        settings (google.cloud.advisorynotifications_v1.types.Settings):
+            Required. New settings.
+    """
+
+    settings: "Settings" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Settings",
     )
 
 
