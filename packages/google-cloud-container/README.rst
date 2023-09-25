@@ -1,9 +1,9 @@
-Python Client for Kubernetes Engine API
-=======================================
+Python Client for Kubernetes Engine
+===================================
 
 |stable| |pypi| |versions|
 
-`Kubernetes Engine API`_: The Google Kubernetes Engine API is used for building and managing container based applications, powered by the open source Kubernetes technology.
+`Kubernetes Engine`_: The Google Kubernetes Engine API is used for building and managing container based applications, powered by the open source Kubernetes technology.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,7 +14,7 @@ Python Client for Kubernetes Engine API
    :target: https://pypi.org/project/google-cloud-container/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-container.svg
    :target: https://pypi.org/project/google-cloud-container/
-.. _Kubernetes Engine API: https://cloud.google.com/kubernetes-engine/
+.. _Kubernetes Engine: https://cloud.google.com/kubernetes-engine/
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/container/latest
 .. _Product Documentation:  https://cloud.google.com/kubernetes-engine/
 
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Kubernetes Engine API.`_
+3. `Enable the Kubernetes Engine.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Kubernetes Engine API.:  https://cloud.google.com/kubernetes-engine/
+.. _Enable the Kubernetes Engine.:  https://cloud.google.com/kubernetes-engine/
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -53,7 +53,7 @@ Code samples and snippets
 
 Code samples and snippets live in the `samples/`_ folder.
 
-.. _samples/: https://github.com/googleapis/python-container/tree/main/samples
+.. _samples/: https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-container/samples
 
 
 Supported Python Versions
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Kubernetes Engine API
+-  Read the `Client Library Documentation`_ for Kubernetes Engine
    to see other available methods on the client.
--  Read the `Kubernetes Engine API Product documentation`_ to learn
+-  Read the `Kubernetes Engine Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Kubernetes Engine API Product documentation:  https://cloud.google.com/kubernetes-engine/
+.. _Kubernetes Engine Product documentation:  https://cloud.google.com/kubernetes-engine/
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
