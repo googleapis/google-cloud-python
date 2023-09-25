@@ -218,7 +218,10 @@ def get(
 
     if response.status == http_client.OK:
         content = _helpers.from_bytes(response.data)
-        if response.headers["content-type"] == "application/json":
+        if (
+            _helpers.parse_content_type(response.headers["content-type"])
+            == "application/json"
+        ):
             try:
                 return json.loads(content)
             except ValueError as caught_exc:

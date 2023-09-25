@@ -176,6 +176,24 @@ def test_get_success_json():
     assert result[key] == value
 
 
+def test_get_success_json_content_type_charset():
+    key, value = "foo", "bar"
+
+    data = json.dumps({key: value})
+    request = make_request(
+        data, headers={"content-type": "application/json; charset=UTF-8"}
+    )
+
+    result = _metadata.get(request, PATH)
+
+    request.assert_called_once_with(
+        method="GET",
+        url=_metadata._METADATA_ROOT + PATH,
+        headers=_metadata._METADATA_HEADERS,
+    )
+    assert result[key] == value
+
+
 def test_get_success_retry():
     key, value = "foo", "bar"
 
