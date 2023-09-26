@@ -45,7 +45,7 @@ except AttributeError:  # pragma: NO COVER
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -633,6 +633,7 @@ class BatchServiceAsyncClient:
         Returns:
             google.cloud.batch_v1.services.batch_service.pagers.ListJobsAsyncPager:
                 ListJob Response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -862,6 +863,7 @@ class BatchServiceAsyncClient:
         Returns:
             google.cloud.batch_v1.services.batch_service.pagers.ListTasksAsyncPager:
                 ListTasks Response.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
