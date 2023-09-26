@@ -220,6 +220,9 @@ class SearchDocumentsResponse(proto.Message):
                 Experimental.
                 Additional result info if the question-answering
                 feature is enabled.
+            matched_token_page_indices (MutableSequence[int]):
+                Return the 1-based page indices where those
+                pages have one or more matched tokens.
         """
 
         document: gcc_document.Document = proto.Field(
@@ -235,6 +238,10 @@ class SearchDocumentsResponse(proto.Message):
             proto.MESSAGE,
             number=3,
             message="QAResult",
+        )
+        matched_token_page_indices: MutableSequence[int] = proto.RepeatedField(
+            proto.INT64,
+            number=4,
         )
 
     @property
