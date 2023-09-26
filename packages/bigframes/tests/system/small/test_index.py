@@ -14,6 +14,7 @@
 
 import numpy
 import pandas as pd
+import pytest
 
 from tests.system.utils import assert_pandas_index_equal_ignore_index_type
 
@@ -173,4 +174,123 @@ def test_is_monotonic_decreasing(scalars_df_index, scalars_pandas_df_index):
     assert (
         scalars_df_index.index.is_monotonic_increasing
         == scalars_pandas_df_index.index.is_monotonic_increasing
+    )
+
+
+def test_index_argmin(scalars_df_index, scalars_pandas_df_index):
+    if pd.__version__.startswith("1."):
+        pytest.skip("doesn't work in pandas 1.x.")
+    bf_result = scalars_df_index.set_index(["int64_too", "rowindex_2"]).index.argmin()
+    pd_result = scalars_pandas_df_index.set_index(
+        ["int64_too", "rowindex_2"]
+    ).index.argmin()
+    assert bf_result == pd_result
+
+
+def test_index_argmax(scalars_df_index, scalars_pandas_df_index):
+    if pd.__version__.startswith("1."):
+        pytest.skip("doesn't work in pandas 1.x.")
+    bf_result = scalars_df_index.set_index(["int64_too", "rowindex_2"]).index.argmax()
+    pd_result = scalars_pandas_df_index.set_index(
+        ["int64_too", "rowindex_2"]
+    ).index.argmax()
+    assert bf_result == pd_result
+
+
+@pytest.mark.parametrize(
+    ("ascending", "na_position"),
+    [
+        (True, "first"),
+        (True, "last"),
+        (False, "first"),
+        (False, "last"),
+    ],
+)
+def test_index_sort_values(
+    scalars_df_index, scalars_pandas_df_index, ascending, na_position
+):
+    # Test needs values to be unique
+    bf_result = (
+        scalars_df_index.set_index(["int64_too", "rowindex_2"])
+        .index.sort_values(ascending=ascending, na_position=na_position)
+        .to_pandas()
+    )
+    pd_result = scalars_pandas_df_index.set_index(
+        ["int64_too", "rowindex_2"]
+    ).index.sort_values(ascending=ascending, na_position=na_position)
+
+    pd.testing.assert_index_equal(
+        bf_result,
+        pd_result,
+    )
+
+
+def test_index_value_counts(scalars_df_index, scalars_pandas_df_index):
+    if pd.__version__.startswith("1."):
+        pytest.skip("value_counts results different in pandas 1.x.")
+    bf_result = (
+        scalars_df_index.set_index(["int64_too", "rowindex_2"])
+        .index.value_counts()
+        .to_pandas()
+    )
+    pd_result = scalars_pandas_df_index.set_index(
+        ["int64_too", "rowindex_2"]
+    ).index.value_counts()
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+@pytest.mark.parametrize(
+    ("how",),
+    [
+        ("any",),
+        ("all",),
+    ],
+)
+def test_index_dropna(scalars_df_index, scalars_pandas_df_index, how):
+    bf_result = (
+        scalars_df_index.set_index(["int64_col", "float64_col"])
+        .index.dropna(how=how)
+        .to_pandas()
+    )
+    pd_result = scalars_pandas_df_index.set_index(
+        ["int64_col", "float64_col"]
+    ).index.dropna(how=how)
+    pd.testing.assert_index_equal(pd_result, bf_result)
+
+
+@pytest.mark.parametrize(
+    ("keep",),
+    [
+        ("first",),
+        ("last",),
+        (False,),
+    ],
+)
+def test_index_drop_duplicates(scalars_df_index, scalars_pandas_df_index, keep):
+    bf_series = (
+        scalars_df_index.set_index("int64_col")
+        .index.drop_duplicates(keep=keep)
+        .to_pandas()
+    )
+    pd_series = scalars_pandas_df_index.set_index("int64_col").index.drop_duplicates(
+        keep=keep
+    )
+    pd.testing.assert_index_equal(
+        pd_series,
+        bf_series,
+    )
+
+
+def test_index_isin(scalars_df_index, scalars_pandas_df_index):
+    bf_series = (
+        scalars_df_index.set_index("int64_col").index.isin([2, 55555, 4]).to_pandas()
+    )
+    pd_result_array = scalars_pandas_df_index.set_index("int64_col").index.isin(
+        [2, 55555, 4]
+    )
+    pd.testing.assert_index_equal(
+        pd.Index(pd_result_array),
+        bf_series,
+        check_names=False,
     )

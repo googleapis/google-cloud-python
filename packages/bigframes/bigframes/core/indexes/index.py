@@ -24,8 +24,10 @@ import pandas
 
 import bigframes.constants as constants
 import bigframes.core as core
+import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
 import bigframes.core.joins as joins
+import bigframes.core.ordering as order
 import bigframes.core.utils as utils
 import bigframes.dtypes
 import bigframes.dtypes as bf_dtypes
@@ -149,6 +151,27 @@ class Index(vendored_pandas_index.Index):
     def _block(self) -> blocks.Block:
         return self._data._get_block()
 
+    @property
+    def T(self) -> Index:
+        return self.transpose()
+
+    def transpose(self) -> Index:
+        return self
+
+    def sort_values(self, *, ascending: bool = True, na_position: str = "last"):
+        if na_position not in ["first", "last"]:
+            raise ValueError("Param na_position must be one of 'first' or 'last'")
+        direction = (
+            order.OrderingDirection.ASC if ascending else order.OrderingDirection.DESC
+        )
+        na_last = na_position == "last"
+        index_columns = self._block.index_columns
+        ordering = [
+            order.OrderingColumnReference(column, direction=direction, na_last=na_last)
+            for column in index_columns
+        ]
+        return Index._from_block(self._block.order_by(ordering))
+
     def astype(
         self,
         dtype: Union[bigframes.dtypes.DtypeString, bigframes.dtypes.Dtype],
@@ -176,6 +199,57 @@ class Index(vendored_pandas_index.Index):
     def min(self) -> typing.Any:
         return self._apply_aggregation(agg_ops.min_op)
 
+    def argmax(self) -> int:
+        block, row_nums = self._block.promote_offsets()
+        block = block.order_by(
+            [
+                *[
+                    order.OrderingColumnReference(
+                        col, direction=order.OrderingDirection.DESC
+                    )
+                    for col in self._block.index_columns
+                ],
+                order.OrderingColumnReference(row_nums),
+            ]
+        )
+        import bigframes.series as series
+
+        return typing.cast(int, series.Series(block.select_column(row_nums)).iloc[0])
+
+    def argmin(self) -> int:
+        block, row_nums = self._block.promote_offsets()
+        block = block.order_by(
+            [
+                *[
+                    order.OrderingColumnReference(col)
+                    for col in self._block.index_columns
+                ],
+                order.OrderingColumnReference(row_nums),
+            ]
+        )
+        import bigframes.series as series
+
+        return typing.cast(int, series.Series(block.select_column(row_nums)).iloc[0])
+
+    def value_counts(
+        self,
+        normalize: bool = False,
+        sort: bool = True,
+        ascending: bool = False,
+        *,
+        dropna: bool = True,
+    ):
+        block = block_ops.value_counts(
+            self._block,
+            self._block.index_columns,
+            normalize=normalize,
+            ascending=ascending,
+            dropna=dropna,
+        )
+        import bigframes.series as series
+
+        return series.Series(block)
+
     def fillna(self, value=None) -> Index:
         if self.nlevels > 1:
             raise TypeError("Multiindex does not support 'fillna'")
@@ -185,10 +259,7 @@ class Index(vendored_pandas_index.Index):
         names = [name] if isinstance(name, str) else list(name)
         if len(names) != self.nlevels:
             raise ValueError("'name' must be same length as levels")
-
-        import bigframes.dataframe as df
-
-        return Index(df.DataFrame(self._block.with_index_labels(names)))
+        return Index._from_block(self._block.with_index_labels(names))
 
     def drop(
         self,
@@ -210,9 +281,28 @@ class Index(vendored_pandas_index.Index):
             )
         block = block.filter(condition_id, keep_null=True)
         block = block.drop_columns([condition_id])
-        import bigframes.dataframe as df
+        return Index._from_block(block)
 
-        return Index(df.DataFrame(block.select_columns([])))
+    def dropna(self, how: str = "any") -> Index:
+        if how not in ("any", "all"):
+            raise ValueError("'how' must be one of 'any', 'all'")
+        result = block_ops.dropna(self._block, self._block.index_columns, how=how)  # type: ignore
+        return Index._from_block(result)
+
+    def drop_duplicates(self, *, keep: str = "first") -> Index:
+        block = block_ops.drop_duplicates(self._block, self._block.index_columns, keep)
+        return Index._from_block(block)
+
+    def isin(self, values) -> Index:
+        if not utils.is_list_like(values):
+            raise TypeError(
+                "only list-like objects are allowed to be passed to "
+                f"isin(), you passed a [{type(values).__name__}]"
+            )
+
+        return self._apply_unary_op(ops.IsInOp(values, match_nulls=True)).fillna(
+            value=False
+        )
 
     def _apply_unary_op(
         self,
@@ -226,9 +316,7 @@ class Index(vendored_pandas_index.Index):
             result_ids.append(result_id)
 
         block = block.set_index(result_ids, index_labels=self._block.index_labels)
-        import bigframes.dataframe as df
-
-        return Index(df.DataFrame(block))
+        return Index._from_block(block)
 
     def _apply_aggregation(self, op: agg_ops.AggregateOp) -> typing.Any:
         if self.nlevels > 1:
@@ -261,6 +349,12 @@ class Index(vendored_pandas_index.Index):
 
     def __len__(self):
         return self.shape[0]
+
+    @classmethod
+    def _from_block(cls, block: blocks.Block) -> Index:
+        import bigframes.dataframe as df
+
+        return Index(df.DataFrame(block))
 
 
 class IndexValue:
@@ -355,12 +449,6 @@ class IndexValue:
 
     def is_uniquely_named(self: IndexValue):
         return len(set(self.names)) == len(self.names)
-
-    def _set_block(self, block: blocks.Block):
-        self._block = block
-
-    def _get_block(self) -> blocks.Block:
-        return self._block
 
 
 def join_mono_indexed(

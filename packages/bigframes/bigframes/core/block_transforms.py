@@ -218,13 +218,17 @@ def rank(
     return block.select_columns(rownum_col_ids).with_column_labels(labels)
 
 
-def dropna(block: blocks.Block, how: typing.Literal["all", "any"] = "any"):
+def dropna(
+    block: blocks.Block,
+    column_ids: typing.Sequence[str],
+    how: typing.Literal["all", "any"] = "any",
+):
     """
     Drop na entries from block
     """
     if how == "any":
         filtered_block = block
-        for column in block.value_columns:
+        for column in column_ids:
             filtered_block, result_id = filtered_block.apply_unary_op(
                 column, ops.notnull_op
             )
@@ -234,7 +238,7 @@ def dropna(block: blocks.Block, how: typing.Literal["all", "any"] = "any"):
     else:  # "all"
         filtered_block = block
         predicate = None
-        for column in block.value_columns:
+        for column in column_ids:
             filtered_block, partial_predicate = filtered_block.apply_unary_op(
                 column, ops.notnull_op
             )

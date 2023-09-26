@@ -53,6 +53,20 @@ class Index:
         """Return the dtypes as a Series for the underlying MultiIndex."""
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    @property
+    def T(self) -> Index:
+        """Return the transpose, which is by definition self."""
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def transpose(self) -> Index:
+        """
+        Return the transpose, which is by definition self.
+
+        Returns:
+            Index
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def astype(self, dtype):
         """Create an Index with values cast to dtypes.
 
@@ -64,6 +78,23 @@ class Index:
 
         Returns:
             Index: Index with values cast to specified dtype.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def isin(self, values):
+        """
+        Return a boolean array where the index values are in `values`.
+
+        Compute boolean array of whether each index value is found in the
+        passed set of values. The length of the returned boolean array matches
+        the length of the index.
+
+        Args:
+            values (set or list-like):
+                Sought values.
+
+        Returns:
+            Series: Series of boolean values.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -99,6 +130,30 @@ class Index:
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def argmin(self) -> int:
+        """
+        Return int position of the smallest value in the Series.
+
+        If the minimum is achieved in multiple locations,
+        the first row position is returned.
+
+        Returns:
+            int: Row position of the minimum value.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def argmax(self) -> int:
+        """
+        Return int position of the largest value in the Series.
+
+        If the maximum is achieved in multiple locations,
+        the first row position is returned.
+
+        Returns:
+            int: Row position of the maximum value.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def nunique(self) -> int:
         """Return number of unique elements in the object.
 
@@ -106,6 +161,57 @@ class Index:
 
         Returns:
             int
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def sort_values(
+        self, *, ascending: bool = True, na_position: str = "last"
+    ) -> Index:
+        """
+        Return a sorted copy of the index.
+
+        Return a sorted copy of the index, and optionally return the indices
+        that sorted the index itself.
+
+        Args:
+            ascending (bool, default True):
+                Should the index values be sorted in an ascending order.
+            na_position ({'first' or 'last'}, default 'last'):
+                Argument 'first' puts NaNs at the beginning, 'last' puts NaNs at
+                the end.
+
+        Returns:
+            pandas.Index: Sorted copy of the index.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def value_counts(
+        self,
+        normalize: bool = True,
+        sort: bool = True,
+        ascending: bool = False,
+        *,
+        dropna: bool = True,
+    ):
+        """Return a Series containing counts of unique values.
+
+        The resulting object will be in descending order so that the
+        first element is the most frequently-occurring element.
+        Excludes NA values by default.
+
+        Args:
+            normalize (bool, default False):
+                If True then the object returned will contain the relative
+                frequencies of the unique values.
+            sort (bool, default True):
+                Sort by frequencies.
+            ascending (bool, default False):
+                Sort in ascending order.
+            dropna (bool, default True):
+                Don't include counts of NaN.
+
+        Returns:
+            Series
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -148,6 +254,35 @@ class Index:
 
         Returns:
             Index: Will be same type as self
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def dropna(self, how: str = "any"):
+        """Return Index without NA/NaN values.
+
+        Args:
+            how ({'any', 'all'}, default 'any'):
+                If the Index is a MultiIndex, drop the value when any or all levels
+                are NaN.
+
+        Returns:
+            Index
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def drop_duplicates(self, *, keep: str = "first"):
+        """
+        Return Index with duplicate values removed.
+
+        Args:
+            keep ({'first', 'last', ``False``}, default 'first'):
+                One of:
+                'first' : Drop duplicates except for the first occurrence.
+                'last' : Drop duplicates except for the last occurrence.
+                ``False`` : Drop all duplicates.
+
+        Returns:
+            Index
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

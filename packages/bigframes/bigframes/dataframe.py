@@ -1440,7 +1440,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         axis_n = utils.get_axis_number(axis)
 
         if axis_n == 0:
-            result = block_ops.dropna(self._block, how=how)  # type: ignore
+            result = block_ops.dropna(self._block, self._block.value_columns, how=how)  # type: ignore
             if ignore_index:
                 result = result.reset_index()
             return DataFrame(result)
@@ -1674,7 +1674,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def stack(self):
         # TODO: support 'level' param by simply reordering levels such that selected level is last before passing to Block.stack.
         # TODO: match impl to pandas future_stack as described in pandas 2.1 release notes
-        result_block = block_ops.dropna(self._block.stack(), how="all")
+        stack_block = self._block.stack()
+        result_block = block_ops.dropna(
+            stack_block, stack_block.value_columns, how="all"
+        )
         if not isinstance(self.columns, pandas.MultiIndex):
             return bigframes.series.Series(result_block)
         return DataFrame(result_block)
