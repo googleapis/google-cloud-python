@@ -179,7 +179,7 @@ def _make_mutual_tls_http(cert, key):
     return http
 
 
-class AuthorizedHttp(urllib3.request.RequestMethods):
+class AuthorizedHttp(urllib3._request_methods.RequestMethods):  # type: ignore
     """A urllib3 HTTP class with credentials.
 
     This class is used to perform requests to API endpoints that require
