@@ -251,17 +251,10 @@ class BqmlModelFactory:
 
         session = X_train._session
 
-        source_sql = input_data.sql
-        options_sql = self._model_creation_sql_generator.options(**options)
-        transform_sql = (
-            self._model_creation_sql_generator.transform(*transforms)
-            if transforms is not None
-            else None
-        )
         sql = self._model_creation_sql_generator.create_model(
-            source_sql=source_sql,
-            transform_sql=transform_sql,
-            options_sql=options_sql,
+            source=input_data,
+            transforms=transforms,
+            options=options,
         )
 
         return self._create_model_with_sql(session=session, sql=sql)
@@ -287,18 +280,10 @@ class BqmlModelFactory:
 
         session = X_train._session
 
-        source_sql = input_data.sql
-        options_sql = self._model_creation_sql_generator.options(**options)
-
-        transform_sql = (
-            self._model_creation_sql_generator.transform(*transforms)
-            if transforms is not None
-            else None
-        )
         sql = self._model_creation_sql_generator.create_model(
-            source_sql=source_sql,
-            transform_sql=transform_sql,
-            options_sql=options_sql,
+            source=input_data,
+            transforms=transforms,
+            options=options,
         )
 
         return self._create_model_with_sql(session=session, sql=sql)
@@ -320,10 +305,9 @@ class BqmlModelFactory:
         Returns:
             BqmlModel: a BqmlModel wrapping a trained model in BigQuery
         """
-        options_sql = self._model_creation_sql_generator.options(**options)
         sql = self._model_creation_sql_generator.create_remote_model(
             connection_name=connection_name,
-            options_sql=options_sql,
+            options=options,
         )
 
         return self._create_model_with_sql(session=session, sql=sql)
@@ -341,9 +325,8 @@ class BqmlModelFactory:
 
         Returns: a BqmlModel, wrapping a trained model in BigQuery
         """
-        options_sql = self._model_creation_sql_generator.options(**options)
         sql = self._model_creation_sql_generator.create_imported_model(
-            options_sql=options_sql,
+            options=options,
         )
 
         return self._create_model_with_sql(session=session, sql=sql)
