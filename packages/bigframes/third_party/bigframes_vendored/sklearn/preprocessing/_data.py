@@ -106,3 +106,39 @@ class MaxAbsScaler(BaseEstimator, TransformerMixin):
            bigframes.dataframe.DataFrame: Transformed result.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+
+class MinMaxScaler(BaseEstimator, TransformerMixin):
+    """Transform features by scaling each feature to a given range.
+
+    This estimator scales and translates each feature individually such
+    that it is in the given range on the training set, e.g. between
+    zero and one.
+    """
+
+    def fit(self, X, y=None):
+        """Compute the minimum and maximum to be used for later scaling.
+
+        Args:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                The Dataframe or Series with training data.
+
+            y (default None):
+                Ignored.
+
+        Returns:
+            MaxAbsScaler: Fitted scaler.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def transform(self, X):
+        """Scale the data.
+
+        Args:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                The DataFrame or Series to be transformed.
+
+        Returns:
+           bigframes.dataframe.DataFrame: Transformed result.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

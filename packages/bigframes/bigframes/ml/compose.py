@@ -30,6 +30,7 @@ CompilablePreprocessorType = Union[
     preprocessing.OneHotEncoder,
     preprocessing.StandardScaler,
     preprocessing.MaxAbsScaler,
+    preprocessing.MinMaxScaler,
     preprocessing.LabelEncoder,
 ]
 

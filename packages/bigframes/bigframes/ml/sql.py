@@ -81,6 +81,10 @@ class BaseSqlGenerator:
         """Encode ML.MAX_ABS_SCALER for BQML"""
         return f"""ML.MAX_ABS_SCALER({numeric_expr_sql}) OVER() AS {name}"""
 
+    def ml_min_max_scaler(self, numeric_expr_sql: str, name: str) -> str:
+        """Encode ML.MIN_MAX_SCALER for BQML"""
+        return f"""ML.MIN_MAX_SCALER({numeric_expr_sql}) OVER() AS {name}"""
+
     def ml_one_hot_encoder(
         self,
         numeric_expr_sql: str,

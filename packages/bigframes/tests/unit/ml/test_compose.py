@@ -22,6 +22,7 @@ def test_columntransformer_init_expectedtransforms():
     onehot_transformer = preprocessing.OneHotEncoder()
     standard_scaler_transformer = preprocessing.StandardScaler()
     max_abs_scaler_transformer = preprocessing.MaxAbsScaler()
+    min_max_scaler_transformer = preprocessing.MinMaxScaler()
     label_transformer = preprocessing.LabelEncoder()
     column_transformer = compose.ColumnTransformer(
         [
@@ -36,6 +37,11 @@ def test_columntransformer_init_expectedtransforms():
                 max_abs_scaler_transformer,
                 ["culmen_length_mm", "flipper_length_mm"],
             ),
+            (
+                "min_max_scale",
+                min_max_scaler_transformer,
+                ["culmen_length_mm", "flipper_length_mm"],
+            ),
             ("label", label_transformer, "species"),
         ]
     )
@@ -46,6 +52,8 @@ def test_columntransformer_init_expectedtransforms():
         ("standard_scale", standard_scaler_transformer, "flipper_length_mm"),
         ("max_abs_scale", max_abs_scaler_transformer, "culmen_length_mm"),
         ("max_abs_scale", max_abs_scaler_transformer, "flipper_length_mm"),
+        ("min_max_scale", min_max_scaler_transformer, "culmen_length_mm"),
+        ("min_max_scale", min_max_scaler_transformer, "flipper_length_mm"),
         ("label", label_transformer, "species"),
     ]
 
@@ -68,6 +76,11 @@ def test_columntransformer_repr():
                 preprocessing.MaxAbsScaler(),
                 ["culmen_length_mm", "flipper_length_mm"],
             ),
+            (
+                "min_max_scale",
+                preprocessing.MinMaxScaler(),
+                ["culmen_length_mm", "flipper_length_mm"],
+            ),
         ]
     )
 
@@ -77,6 +90,8 @@ def test_columntransformer_repr():
                                 ('standard_scale', StandardScaler(),
                                  ['culmen_length_mm', 'flipper_length_mm']),
                                 ('max_abs_scale', MaxAbsScaler(),
+                                 ['culmen_length_mm', 'flipper_length_mm']),
+                                ('min_max_scale', MinMaxScaler(),
                                  ['culmen_length_mm', 'flipper_length_mm'])])"""
     )
 
@@ -99,6 +114,11 @@ def test_columntransformer_repr_matches_sklearn():
                 preprocessing.MaxAbsScaler(),
                 ["culmen_length_mm", "flipper_length_mm"],
             ),
+            (
+                "min_max_scale",
+                preprocessing.MinMaxScaler(),
+                ["culmen_length_mm", "flipper_length_mm"],
+            ),
         ]
     )
     sk_column_transformer = sklearn_compose.ColumnTransformer(
@@ -116,6 +136,11 @@ def test_columntransformer_repr_matches_sklearn():
             (
                 "max_abs_scale",
                 sklearn_preprocessing.MaxAbsScaler(),
+                ["culmen_length_mm", "flipper_length_mm"],
+            ),
+            (
+                "min_max_scale",
+                sklearn_preprocessing.MinMaxScaler(),
                 ["culmen_length_mm", "flipper_length_mm"],
             ),
         ]

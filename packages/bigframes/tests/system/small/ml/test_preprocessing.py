@@ -211,6 +211,99 @@ def test_max_abs_scaler_series_normalizes(penguins_df_default_index, new_penguin
     pd.testing.assert_frame_equal(result, expected, rtol=1e-3)
 
 
+def test_min_max_scaler_normalizeds_fit_transform(new_penguins_df):
+    scaler = bigframes.ml.preprocessing.MinMaxScaler()
+    result = scaler.fit_transform(
+        new_penguins_df[["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]]
+    ).to_pandas()
+
+    # TODO: bug? feature columns seem to be in nondeterministic random order
+    # workaround: sort columns by name. Can't repro it in pantheon, so could
+    # be a bigframes issue...
+    result = result.reindex(sorted(result.columns), axis=1)
+
+    expected = pd.DataFrame(
+        {
+            "min_max_scaled_culmen_depth_mm": [1.0, 0.0, 0.5625],
+            "min_max_scaled_culmen_length_mm": [1.0, 0.375, 0.0],
+            "min_max_scaled_flipper_length_mm": [1.0, 0.0, 0.466667],
+        },
+        dtype="Float64",
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(result, expected, rtol=1e-3)
+
+
+def test_min_max_scaler_series_normalizes(penguins_df_default_index, new_penguins_df):
+    scaler = bigframes.ml.preprocessing.MinMaxScaler()
+    scaler.fit(penguins_df_default_index["culmen_length_mm"])
+
+    result = scaler.transform(penguins_df_default_index["culmen_length_mm"]).to_pandas()
+
+    # If minmax-scaled correctly, min should be 0 and max should be 1.
+    for column in result.columns:
+        assert math.isclose(result[column].max(), 1.0, abs_tol=1e-3)
+        assert math.isclose(result[column].min(), 0.0, abs_tol=1e-3)
+
+    result = scaler.transform(new_penguins_df).to_pandas()
+
+    # TODO: bug? feature columns seem to be in nondeterministic random order
+    # workaround: sort columns by name. Can't repro it in pantheon, so could
+    # be a bigframes issue...
+    result = result.reindex(sorted(result.columns), axis=1)
+
+    expected = pd.DataFrame(
+        {
+            "min_max_scaled_culmen_length_mm": [0.269091, 0.232727, 0.210909],
+        },
+        dtype="Float64",
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(result, expected, rtol=1e-3)
+
+
+def test_min_max_scaler_normalizes(penguins_df_default_index, new_penguins_df):
+    # TODO(http://b/292431644): add a second test that compares output to sklearn.preprocessing.StandardScaler, when BQML's change is in prod.
+    scaler = bigframes.ml.preprocessing.MinMaxScaler()
+    scaler.fit(
+        penguins_df_default_index[
+            ["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]
+        ]
+    )
+
+    result = scaler.transform(
+        penguins_df_default_index[
+            ["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]
+        ]
+    ).to_pandas()
+
+    # If minmax-scaled correctly, min should be 0 and max should be 1.
+    for column in result.columns:
+        assert math.isclose(result[column].max(), 1.0, abs_tol=1e-3)
+        assert math.isclose(result[column].min(), 0.0, abs_tol=1e-3)
+
+    result = scaler.transform(new_penguins_df).to_pandas()
+
+    # TODO: bug? feature columns seem to be in nondeterministic random order
+    # workaround: sort columns by name. Can't repro it in pantheon, so could
+    # be a bigframes issue...
+    result = result.reindex(sorted(result.columns), axis=1)
+
+    expected = pd.DataFrame(
+        {
+            "min_max_scaled_culmen_depth_mm": [0.678571, 0.4880952, 0.595238],
+            "min_max_scaled_culmen_length_mm": [0.269091, 0.232727, 0.210909],
+            "min_max_scaled_flipper_length_mm": [0.40678, 0.152542, 0.271186],
+        },
+        dtype="Float64",
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(result, expected, rtol=1e-3)
+
+
 def test_one_hot_encoder_default_params(new_penguins_df):
     encoder = bigframes.ml.preprocessing.OneHotEncoder()
     encoder.fit(new_penguins_df[["species", "sex"]])
