@@ -31,6 +31,9 @@ def test_list_approval_requests(project_id: str, transport: str):
     client = accessapproval_v1.AccessApprovalClient(transport=transport)
 
     parent = client.common_project_path(project_id)
-    approval_requests = list(client.list_approval_requests(parent=parent))
+    client.list_approval_requests(parent=parent)
 
-    assert len(approval_requests) >= 0
+    # The purpose of this smoke test is to test the communication with the API,
+    # rather than API-specific functionality.
+    # If the smoke test fails, we won't reach this line.
+    assert True
