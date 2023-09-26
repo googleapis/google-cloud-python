@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.23.1](https://github.com/googleapis/google-auth-library-python/compare/v2.23.0...v2.23.1) (2023-09-26)
+
+
+### Bug Fixes
+
+* Less restrictive content-type header check for google authentication (ignores charset) ([#1382](https://github.com/googleapis/google-auth-library-python/issues/1382)) ([7039beb](https://github.com/googleapis/google-auth-library-python/commit/7039beb63b8644be748cfc2fc79a2b8b643cda9f))
+* Trust boundary meta header renaming and using the schema from backend team. ([#1384](https://github.com/googleapis/google-auth-library-python/issues/1384)) ([2503d4a](https://github.com/googleapis/google-auth-library-python/commit/2503d4a50995d4f2756846a17b33997273ace5f1))
+* Update urllib3 to &gt;= 2.0.5 ([#1389](https://github.com/googleapis/google-auth-library-python/issues/1389)) ([a99f3bb](https://github.com/googleapis/google-auth-library-python/commit/a99f3bbf97c07a87203b7471817cfb2a1662293d))
+
 ## [2.23.0](https://github.com/googleapis/google-auth-library-python/compare/v2.22.0...v2.23.0) (2023-09-11)
 
 
