@@ -313,7 +313,7 @@ def cast_ibis_value(
             ibis_dtypes.string,
         ),
         ibis_dtypes.float64: (ibis_dtypes.string, ibis_dtypes.int64),
-        ibis_dtypes.string: (),
+        ibis_dtypes.string: (ibis_dtypes.int64, ibis_dtypes.float64),
         ibis_dtypes.date: (),
         ibis_dtypes.time: (),
         ibis_dtypes.timestamp: (ibis_dtypes.Timestamp(timezone="UTC"),),

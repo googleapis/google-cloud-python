@@ -2389,6 +2389,29 @@ def test_astype(scalars_df_index, scalars_pandas_df_index, column, to_type):
     pd.testing.assert_series_equal(bf_result, pd_result)
 
 
+def test_string_astype_int():
+    pd_series = pd.Series(["4", "-7", "0", "    -03"])
+    bf_series = series.Series(pd_series)
+
+    pd_result = pd_series.astype("Int64")
+    bf_result = bf_series.astype("Int64").to_pandas()
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_index_type=False)
+
+
+def test_string_astype_float():
+    pd_series = pd.Series(
+        ["1", "-1", "-0", "000", "    -03.235", "naN", "-inf", "INf", ".33", "7.235e-8"]
+    )
+
+    bf_series = series.Series(pd_series)
+
+    pd_result = pd_series.astype("Float64")
+    bf_result = bf_series.astype("Float64").to_pandas()
+
+    pd.testing.assert_series_equal(bf_result, pd_result, check_index_type=False)
+
+
 @pytest.mark.parametrize(
     "index",
     [0, 5, -2],
