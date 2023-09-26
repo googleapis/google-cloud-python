@@ -53,9 +53,9 @@ subdirs=(
 )
 for subdir in ${subdirs[@]}; do
   # Run system tests for each package with directory packages/*/tests/system
-  for d in `find 'packages' -type d -wholename 'packages/*/tests/system'`; do
+  for dir in `find 'packages' -type d -wholename 'packages/*/tests/system'`; do
       # Get the path to the package by removing the suffix /tests/system
-      package=$(echo $d | cut -f -2 -d '/')
+      package=$(echo $dir | cut -f -2 -d '/')
       echo "Running system tests for ${package}"
       pushd ${package}
       # Temporarily allow failure.
