@@ -106,8 +106,8 @@ class ProcessOptions(proto.Message):
 
             This field is a member of `oneof`_ ``page_range``.
         from_start (int):
-            Only process certain pages from the start,
-            process all if the document has less pages.
+            Only process certain pages from the start.
+            Process all if the document has fewer pages.
 
             This field is a member of `oneof`_ ``page_range``.
         from_end (int):
@@ -118,6 +118,13 @@ class ProcessOptions(proto.Message):
         ocr_config (google.cloud.documentai_v1beta3.types.OcrConfig):
             Only applicable to ``OCR_PROCESSOR``. Returns error if set
             on other processor types.
+        schema_override (google.cloud.documentai_v1beta3.types.DocumentSchema):
+            Optional. Override the schema of the
+            [ProcessorVersion][google.cloud.documentai.v1beta3.ProcessorVersion].
+            Will return an Invalid Argument error if this field is set
+            when the underlying
+            [ProcessorVersion][google.cloud.documentai.v1beta3.ProcessorVersion]
+            doesn't support schema override.
     """
 
     class IndividualPageSelector(proto.Message):
@@ -154,6 +161,11 @@ class ProcessOptions(proto.Message):
         proto.MESSAGE,
         number=1,
         message=document_io.OcrConfig,
+    )
+    schema_override: gcd_document_schema.DocumentSchema = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=gcd_document_schema.DocumentSchema,
     )
 
 
@@ -1268,8 +1280,8 @@ class TrainProcessorVersionRequest(proto.Message):
         """
 
         class TrainingMethod(proto.Enum):
-            r"""Training Method for CDE. TRAINING_METHOD_UNSPECIFIED will fallback
-            to MODEL_BASED.
+            r"""Training Method for CDE. ``TRAINING_METHOD_UNSPECIFIED`` will fall
+            back to ``MODEL_BASED``.
 
             Values:
                 TRAINING_METHOD_UNSPECIFIED (0):
@@ -1747,19 +1759,20 @@ class ListEvaluationsResponse(proto.Message):
 class ImportProcessorVersionRequest(proto.Message):
     r"""The request message for the
     [ImportProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.ImportProcessorVersion]
-    method. Requirements:
+    method.
 
-    -  The Document AI `Service
-       Agent <https://cloud.google.com/iam/docs/service-agents>`__ of
-       the destination project must have `Document AI Editor
-       role <https://cloud.google.com/document-ai/docs/access-control/iam-roles>`__
-       on the source project.
+    The Document AI `Service
+    Agent <https://cloud.google.com/iam/docs/service-agents>`__ of the
+    destination project must have `Document AI Editor
+    role <https://cloud.google.com/document-ai/docs/access-control/iam-roles>`__
+    on the source project.
 
     The destination project is specified as part of the
     [parent][google.cloud.documentai.v1beta3.ImportProcessorVersionRequest.parent]
     field. The source project is specified as part of the
-    [source][ImportProcessorVersionRequest.processor_version_source or
-    ImportProcessorVersionRequest.external_processor_version_source]
+    [source][google.cloud.documentai.v1beta3.ImportProcessorVersionRequest.processor_version_source]
+    or
+    [external_processor_version_source][google.cloud.documentai.v1beta3.ImportProcessorVersionRequest.external_processor_version_source]
     field.
 
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -1778,9 +1791,9 @@ class ImportProcessorVersionRequest(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         external_processor_version_source (google.cloud.documentai_v1beta3.types.ImportProcessorVersionRequest.ExternalProcessorVersionSource):
-            The source processor version to import from,
-            and can be from different environment and region
-            than the destination processor.
+            The source processor version to import from.
+            It can be from a different environment and
+            region than the destination processor.
 
             This field is a member of `oneof`_ ``source``.
         parent (str):

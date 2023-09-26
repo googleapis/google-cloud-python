@@ -80,12 +80,20 @@ from .document_processor_service import (
     UndeployProcessorVersionRequest,
     UndeployProcessorVersionResponse,
 )
-from .document_schema import DocumentSchema, EntityTypeMetadata, PropertyMetadata
+from .document_schema import (
+    DocumentSchema,
+    EntityTypeMetadata,
+    FieldExtractionMetadata,
+    PropertyMetadata,
+    SummaryOptions,
+)
 from .document_service import (
     BatchDeleteDocumentsMetadata,
     BatchDeleteDocumentsRequest,
     BatchDeleteDocumentsResponse,
     DatasetSplitType,
+    DocumentLabelingState,
+    DocumentMetadata,
     DocumentPageRange,
     GetDatasetSchemaRequest,
     GetDocumentRequest,
@@ -93,6 +101,8 @@ from .document_service import (
     ImportDocumentsMetadata,
     ImportDocumentsRequest,
     ImportDocumentsResponse,
+    ListDocumentsRequest,
+    ListDocumentsResponse,
     UpdateDatasetOperationMetadata,
     UpdateDatasetRequest,
     UpdateDatasetSchemaRequest,
@@ -100,7 +110,7 @@ from .document_service import (
 from .evaluation import Evaluation, EvaluationReference
 from .geometry import BoundingPoly, NormalizedVertex, Vertex
 from .operation_metadata import CommonOperationMetadata
-from .processor import Processor, ProcessorVersion
+from .processor import Processor, ProcessorVersion, ProcessorVersionAlias
 from .processor_type import ProcessorType
 
 __all__ = (
@@ -173,10 +183,13 @@ __all__ = (
     "UndeployProcessorVersionResponse",
     "DocumentSchema",
     "EntityTypeMetadata",
+    "FieldExtractionMetadata",
     "PropertyMetadata",
+    "SummaryOptions",
     "BatchDeleteDocumentsMetadata",
     "BatchDeleteDocumentsRequest",
     "BatchDeleteDocumentsResponse",
+    "DocumentMetadata",
     "DocumentPageRange",
     "GetDatasetSchemaRequest",
     "GetDocumentRequest",
@@ -184,10 +197,13 @@ __all__ = (
     "ImportDocumentsMetadata",
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
+    "ListDocumentsRequest",
+    "ListDocumentsResponse",
     "UpdateDatasetOperationMetadata",
     "UpdateDatasetRequest",
     "UpdateDatasetSchemaRequest",
     "DatasetSplitType",
+    "DocumentLabelingState",
     "Evaluation",
     "EvaluationReference",
     "BoundingPoly",
@@ -196,5 +212,6 @@ __all__ = (
     "CommonOperationMetadata",
     "Processor",
     "ProcessorVersion",
+    "ProcessorVersionAlias",
     "ProcessorType",
 )
