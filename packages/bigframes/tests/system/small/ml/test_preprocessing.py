@@ -357,9 +357,9 @@ def test_one_hot_encoder_different_data(penguins_df_default_index, new_penguins_
 
 def test_label_encoder_default_params(new_penguins_df):
     encoder = bigframes.ml.preprocessing.LabelEncoder()
-    encoder.fit(new_penguins_df[["species", "sex"]])
+    encoder.fit(new_penguins_df["species"])
 
-    result = encoder.transform(new_penguins_df).to_pandas()
+    result = encoder.transform(new_penguins_df["species"]).to_pandas()
 
     # TODO: bug? feature columns seem to be in nondeterministic random order
     # workaround: sort columns by name. Can't repro it in pantheon, so could
@@ -368,11 +368,6 @@ def test_label_encoder_default_params(new_penguins_df):
 
     expected = pd.DataFrame(
         {
-            "labelencoded_sex": [
-                2,
-                1,
-                1,
-            ],
             "labelencoded_species": [
                 1,
                 1,
@@ -389,7 +384,7 @@ def test_label_encoder_default_params(new_penguins_df):
 def test_label_encoder_default_params_fit_transform(new_penguins_df):
     encoder = bigframes.ml.preprocessing.LabelEncoder()
 
-    result = encoder.fit_transform(new_penguins_df[["species", "sex"]]).to_pandas()
+    result = encoder.fit_transform(new_penguins_df[["species"]]).to_pandas()
 
     # TODO: bug? feature columns seem to be in nondeterministic random order
     # workaround: sort columns by name. Can't repro it in pantheon, so could
@@ -398,11 +393,6 @@ def test_label_encoder_default_params_fit_transform(new_penguins_df):
 
     expected = pd.DataFrame(
         {
-            "labelencoded_sex": [
-                2,
-                1,
-                1,
-            ],
             "labelencoded_species": [
                 1,
                 1,
@@ -444,7 +434,7 @@ def test_label_encoder_series_default_params(new_penguins_df):
 
 def test_label_encoder_params(new_penguins_df):
     encoder = bigframes.ml.preprocessing.LabelEncoder(100, 2)
-    encoder.fit(new_penguins_df[["species", "sex"]])
+    encoder.fit(new_penguins_df[["species"]])
 
     result = encoder.transform(new_penguins_df).to_pandas()
 
@@ -455,11 +445,6 @@ def test_label_encoder_params(new_penguins_df):
 
     expected = pd.DataFrame(
         {
-            "labelencoded_sex": [
-                0,
-                0,
-                0,
-            ],
             "labelencoded_species": [
                 0,
                 0,
@@ -475,7 +460,7 @@ def test_label_encoder_params(new_penguins_df):
 
 def test_label_encoder_different_data(penguins_df_default_index, new_penguins_df):
     encoder = bigframes.ml.preprocessing.LabelEncoder()
-    encoder.fit(penguins_df_default_index[["species", "sex"]])
+    encoder.fit(penguins_df_default_index[["species"]])
 
     result = encoder.transform(new_penguins_df).to_pandas()
 
@@ -486,11 +471,6 @@ def test_label_encoder_different_data(penguins_df_default_index, new_penguins_df
 
     expected = pd.DataFrame(
         {
-            "labelencoded_sex": [
-                3,
-                2,
-                2,
-            ],
             "labelencoded_species": [
                 1,
                 1,

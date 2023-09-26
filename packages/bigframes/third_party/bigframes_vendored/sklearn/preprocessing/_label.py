@@ -28,11 +28,11 @@ class LabelEncoder(BaseEstimator):
             Default None, set limit to 1,000,000.
     """
 
-    def fit(self, X):
-        """Fit LabelEncoder to X.
+    def fit(self, y):
+        """Fit label encoder.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series):
                 The DataFrame or Series with training data.
 
         Returns:
@@ -40,11 +40,11 @@ class LabelEncoder(BaseEstimator):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def transform(self, X):
-        """Transform X using label encoding.
+    def transform(self, y):
+        """Transform y using label encoding.
 
         Args:
-            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+            y (bigframes.dataframe.DataFrame or bigframes.series.Series):
                 The DataFrame or Series to be transformed.
 
         Returns:

@@ -195,3 +195,23 @@ class Transformer(BaseEstimator):
         y: Optional[Union[bpd.DataFrame, bpd.Series]] = None,
     ) -> bpd.DataFrame:
         return self.fit(X, y).transform(X)
+
+
+class LabelTransformer(BaseEstimator):
+    """A BigQuery DataFrames Label Transformer base class that transforms data.
+
+    Also the transformers can be attached to a pipeline with a predictor."""
+
+    @abc.abstractmethod
+    def fit(self, y):
+        pass
+
+    @abc.abstractmethod
+    def transform(self, y):
+        pass
+
+    def fit_transform(
+        self,
+        y: Union[bpd.DataFrame, bpd.Series],
+    ) -> bpd.DataFrame:
+        return self.fit(y).transform(y)
