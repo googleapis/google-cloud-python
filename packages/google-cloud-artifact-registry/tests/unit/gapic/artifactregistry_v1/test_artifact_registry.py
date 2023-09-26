@@ -45,7 +45,7 @@ from google.cloud.location import locations_pb2
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -14089,6 +14089,7 @@ def test_create_repository_rest_required_fields(
 
     request_init = {}
     request_init["parent"] = ""
+    request_init["repository_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -14100,6 +14101,7 @@ def test_create_repository_rest_required_fields(
     )
 
     # verify fields with default values are dropped
+    assert "repositoryId" not in jsonified_request
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -14107,8 +14109,11 @@ def test_create_repository_rest_required_fields(
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
+    assert "repositoryId" in jsonified_request
+    assert jsonified_request["repositoryId"] == request_init["repository_id"]
 
     jsonified_request["parent"] = "parent_value"
+    jsonified_request["repositoryId"] = "repository_id_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -14120,6 +14125,8 @@ def test_create_repository_rest_required_fields(
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
     assert jsonified_request["parent"] == "parent_value"
+    assert "repositoryId" in jsonified_request
+    assert jsonified_request["repositoryId"] == "repository_id_value"
 
     client = ArtifactRegistryClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -14155,7 +14162,13 @@ def test_create_repository_rest_required_fields(
 
             response = client.create_repository(request)
 
-            expected_params = [("$alt", "json;enum-encoding=int")]
+            expected_params = [
+                (
+                    "repositoryId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -14166,7 +14179,16 @@ def test_create_repository_rest_unset_required_fields():
     )
 
     unset_fields = transport.create_repository._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("repositoryId",)) & set(("parent",)))
+    assert set(unset_fields) == (
+        set(("repositoryId",))
+        & set(
+            (
+                "parent",
+                "repositoryId",
+                "repository",
+            )
+        )
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
