@@ -1050,11 +1050,10 @@ class Session(
             # We want to match pandas behavior. If header is 0, no rows should be skipped, so we
             # do not need to set `skip_leading_rows`. If header is None, then there is no header.
             # Setting skip_leading_rows to 0 does that. If header=N and N>0, we want to skip N rows.
-            # `skip_leading_rows` skips N-1 rows, so we set it to header+1.
-            if header is not None and header > 0:
-                job_config.skip_leading_rows = header + 1
-            elif header is None:
+            if header is None:
                 job_config.skip_leading_rows = 0
+            elif header > 0:
+                job_config.skip_leading_rows = header
 
             return self._read_bigquery_load_job(
                 filepath_or_buffer,
