@@ -533,6 +533,7 @@ class AllocationPolicy(proto.Message):
                 SPOT VM.
             PREEMPTIBLE (3):
                 Preemptible VM (PVM).
+
                 Above SPOT VM is the preferable model for
                 preemptible VM instances: the old preemptible VM
                 model (indicated by this field) is the older
@@ -566,6 +567,7 @@ class AllocationPolicy(proto.Message):
                 "us-west1". An error is expected in this case.
             denied_locations (MutableSequence[str]):
                 A list of denied location names.
+
                 Not yet implemented.
         """
 
