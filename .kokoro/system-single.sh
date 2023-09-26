@@ -22,8 +22,7 @@ pwd
 
 # If NOX_SESSION is set, it only runs the specified session,
 # otherwise run all the sessions.
-if [[ -n "${NOX_SESSION:-}" ]]; then
-    python3 -m nox -s ${NOX_SESSION:-}
-else
-    python3 -m nox
-fi
+SESSION_ARG=""
+
+[[ -z "${NOX_SESSION}" ]] || SESSION_ARG="-s ${NOX_SESSION}"
+python3 -m nox ${SESSION_ARG}
