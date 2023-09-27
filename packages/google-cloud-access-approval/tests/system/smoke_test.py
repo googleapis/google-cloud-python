@@ -33,7 +33,7 @@ def test_list_approval_requests(project_id: str, transport: str):
     parent = client.common_project_path(project_id)
     client.list_approval_requests(parent=parent)
 
-    # The purpose of this smoke test is to test the communication with the API,
+    # The purpose of this smoke test is to test the communication with the API server,
     # rather than API-specific functionality.
     # If the smoke test fails, we won't reach this line.
     assert True
