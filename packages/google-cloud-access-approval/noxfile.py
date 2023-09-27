@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ UNIT_TEST_DEPENDENCIES = []
 UNIT_TEST_EXTRAS = []
 UNIT_TEST_EXTRAS_BY_PYTHON = {}
 
-SYSTEM_TEST_PYTHON_VERSIONS = []
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
@@ -405,24 +405,3 @@ def prerelease_deps(session):
     session.run("python", "-c", "import google.auth; print(google.auth.__version__)")
 
     session.run("py.test", "tests/unit")
-
-    system_test_path = os.path.join("tests", "system.py")
-    system_test_folder_path = os.path.join("tests", "system")
-
-    # Only run system tests if found.
-    if os.path.exists(system_test_path):
-        session.run(
-            "py.test",
-            "--verbose",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_path,
-            *session.posargs,
-        )
-    if os.path.exists(system_test_folder_path):
-        session.run(
-            "py.test",
-            "--verbose",
-            f"--junitxml=system_{session.python}_sponge_log.xml",
-            system_test_folder_path,
-            *session.posargs,
-        )
