@@ -24,17 +24,29 @@ except ImportError:  # pragma: NO COVER
 
 import math
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
+from google.api_core import (
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    operation,
+    operations_v1,
+    path_template,
+)
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
+from google.api_core import operation_async  # type: ignore
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 import grpc
@@ -4410,6 +4422,2106 @@ async def test_subscribe_listing_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        analyticshub.SubscribeDataExchangeRequest,
+        dict,
+    ],
+)
+def test_subscribe_data_exchange(request_type, transport: str = "grpc"):
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.subscribe_data_exchange), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.subscribe_data_exchange(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.SubscribeDataExchangeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_subscribe_data_exchange_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.subscribe_data_exchange), "__call__"
+    ) as call:
+        client.subscribe_data_exchange()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.SubscribeDataExchangeRequest()
+
+
+@pytest.mark.asyncio
+async def test_subscribe_data_exchange_async(
+    transport: str = "grpc_asyncio",
+    request_type=analyticshub.SubscribeDataExchangeRequest,
+):
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.subscribe_data_exchange), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.subscribe_data_exchange(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.SubscribeDataExchangeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_subscribe_data_exchange_async_from_dict():
+    await test_subscribe_data_exchange_async(request_type=dict)
+
+
+def test_subscribe_data_exchange_field_headers():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analyticshub.SubscribeDataExchangeRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.subscribe_data_exchange), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.subscribe_data_exchange(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_subscribe_data_exchange_field_headers_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analyticshub.SubscribeDataExchangeRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.subscribe_data_exchange), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.subscribe_data_exchange(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_subscribe_data_exchange_flattened():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.subscribe_data_exchange), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.subscribe_data_exchange(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_subscribe_data_exchange_flattened_error():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.subscribe_data_exchange(
+            analyticshub.SubscribeDataExchangeRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_subscribe_data_exchange_flattened_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.subscribe_data_exchange), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.subscribe_data_exchange(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_subscribe_data_exchange_flattened_error_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.subscribe_data_exchange(
+            analyticshub.SubscribeDataExchangeRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analyticshub.RefreshSubscriptionRequest,
+        dict,
+    ],
+)
+def test_refresh_subscription(request_type, transport: str = "grpc"):
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.refresh_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.RefreshSubscriptionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_refresh_subscription_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_subscription), "__call__"
+    ) as call:
+        client.refresh_subscription()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.RefreshSubscriptionRequest()
+
+
+@pytest.mark.asyncio
+async def test_refresh_subscription_async(
+    transport: str = "grpc_asyncio",
+    request_type=analyticshub.RefreshSubscriptionRequest,
+):
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.refresh_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.RefreshSubscriptionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_refresh_subscription_async_from_dict():
+    await test_refresh_subscription_async(request_type=dict)
+
+
+def test_refresh_subscription_field_headers():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analyticshub.RefreshSubscriptionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_subscription), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.refresh_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_refresh_subscription_field_headers_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analyticshub.RefreshSubscriptionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_subscription), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.refresh_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_refresh_subscription_flattened():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.refresh_subscription(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_refresh_subscription_flattened_error():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.refresh_subscription(
+            analyticshub.RefreshSubscriptionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_refresh_subscription_flattened_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.refresh_subscription(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_refresh_subscription_flattened_error_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.refresh_subscription(
+            analyticshub.RefreshSubscriptionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analyticshub.GetSubscriptionRequest,
+        dict,
+    ],
+)
+def test_get_subscription(request_type, transport: str = "grpc"):
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_subscription), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analyticshub.Subscription(
+            name="name_value",
+            organization_id="organization_id_value",
+            organization_display_name="organization_display_name_value",
+            state=analyticshub.Subscription.State.STATE_ACTIVE,
+            subscriber_contact="subscriber_contact_value",
+            listing="listing_value",
+        )
+        response = client.get_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.GetSubscriptionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analyticshub.Subscription)
+    assert response.name == "name_value"
+    assert response.organization_id == "organization_id_value"
+    assert response.organization_display_name == "organization_display_name_value"
+    assert response.state == analyticshub.Subscription.State.STATE_ACTIVE
+    assert response.subscriber_contact == "subscriber_contact_value"
+
+
+def test_get_subscription_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_subscription), "__call__") as call:
+        client.get_subscription()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.GetSubscriptionRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_subscription_async(
+    transport: str = "grpc_asyncio", request_type=analyticshub.GetSubscriptionRequest
+):
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_subscription), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analyticshub.Subscription(
+                name="name_value",
+                organization_id="organization_id_value",
+                organization_display_name="organization_display_name_value",
+                state=analyticshub.Subscription.State.STATE_ACTIVE,
+                subscriber_contact="subscriber_contact_value",
+            )
+        )
+        response = await client.get_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.GetSubscriptionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analyticshub.Subscription)
+    assert response.name == "name_value"
+    assert response.organization_id == "organization_id_value"
+    assert response.organization_display_name == "organization_display_name_value"
+    assert response.state == analyticshub.Subscription.State.STATE_ACTIVE
+    assert response.subscriber_contact == "subscriber_contact_value"
+
+
+@pytest.mark.asyncio
+async def test_get_subscription_async_from_dict():
+    await test_get_subscription_async(request_type=dict)
+
+
+def test_get_subscription_field_headers():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analyticshub.GetSubscriptionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_subscription), "__call__") as call:
+        call.return_value = analyticshub.Subscription()
+        client.get_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_subscription_field_headers_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analyticshub.GetSubscriptionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_subscription), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analyticshub.Subscription()
+        )
+        await client.get_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_subscription_flattened():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_subscription), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analyticshub.Subscription()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_subscription(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_subscription_flattened_error():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_subscription(
+            analyticshub.GetSubscriptionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_subscription_flattened_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_subscription), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analyticshub.Subscription()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analyticshub.Subscription()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_subscription(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_subscription_flattened_error_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_subscription(
+            analyticshub.GetSubscriptionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analyticshub.ListSubscriptionsRequest,
+        dict,
+    ],
+)
+def test_list_subscriptions(request_type, transport: str = "grpc"):
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subscriptions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analyticshub.ListSubscriptionsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_subscriptions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.ListSubscriptionsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSubscriptionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_subscriptions_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subscriptions), "__call__"
+    ) as call:
+        client.list_subscriptions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.ListSubscriptionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_subscriptions_async(
+    transport: str = "grpc_asyncio", request_type=analyticshub.ListSubscriptionsRequest
+):
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subscriptions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analyticshub.ListSubscriptionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_subscriptions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.ListSubscriptionsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSubscriptionsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_subscriptions_async_from_dict():
+    await test_list_subscriptions_async(request_type=dict)
+
+
+def test_list_subscriptions_field_headers():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analyticshub.ListSubscriptionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subscriptions), "__call__"
+    ) as call:
+        call.return_value = analyticshub.ListSubscriptionsResponse()
+        client.list_subscriptions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_subscriptions_field_headers_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analyticshub.ListSubscriptionsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subscriptions), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analyticshub.ListSubscriptionsResponse()
+        )
+        await client.list_subscriptions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_subscriptions_flattened():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subscriptions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analyticshub.ListSubscriptionsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_subscriptions(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_subscriptions_flattened_error():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_subscriptions(
+            analyticshub.ListSubscriptionsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_subscriptions_flattened_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subscriptions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analyticshub.ListSubscriptionsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analyticshub.ListSubscriptionsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_subscriptions(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_subscriptions_flattened_error_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_subscriptions(
+            analyticshub.ListSubscriptionsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_subscriptions_pager(transport_name: str = "grpc"):
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subscriptions), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analyticshub.ListSubscriptionsResponse(
+                subscriptions=[
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                ],
+                next_page_token="abc",
+            ),
+            analyticshub.ListSubscriptionsResponse(
+                subscriptions=[],
+                next_page_token="def",
+            ),
+            analyticshub.ListSubscriptionsResponse(
+                subscriptions=[
+                    analyticshub.Subscription(),
+                ],
+                next_page_token="ghi",
+            ),
+            analyticshub.ListSubscriptionsResponse(
+                subscriptions=[
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_subscriptions(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, analyticshub.Subscription) for i in results)
+
+
+def test_list_subscriptions_pages(transport_name: str = "grpc"):
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subscriptions), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analyticshub.ListSubscriptionsResponse(
+                subscriptions=[
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                ],
+                next_page_token="abc",
+            ),
+            analyticshub.ListSubscriptionsResponse(
+                subscriptions=[],
+                next_page_token="def",
+            ),
+            analyticshub.ListSubscriptionsResponse(
+                subscriptions=[
+                    analyticshub.Subscription(),
+                ],
+                next_page_token="ghi",
+            ),
+            analyticshub.ListSubscriptionsResponse(
+                subscriptions=[
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_subscriptions(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_subscriptions_async_pager():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subscriptions),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analyticshub.ListSubscriptionsResponse(
+                subscriptions=[
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                ],
+                next_page_token="abc",
+            ),
+            analyticshub.ListSubscriptionsResponse(
+                subscriptions=[],
+                next_page_token="def",
+            ),
+            analyticshub.ListSubscriptionsResponse(
+                subscriptions=[
+                    analyticshub.Subscription(),
+                ],
+                next_page_token="ghi",
+            ),
+            analyticshub.ListSubscriptionsResponse(
+                subscriptions=[
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_subscriptions(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, analyticshub.Subscription) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_subscriptions_async_pages():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_subscriptions),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analyticshub.ListSubscriptionsResponse(
+                subscriptions=[
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                ],
+                next_page_token="abc",
+            ),
+            analyticshub.ListSubscriptionsResponse(
+                subscriptions=[],
+                next_page_token="def",
+            ),
+            analyticshub.ListSubscriptionsResponse(
+                subscriptions=[
+                    analyticshub.Subscription(),
+                ],
+                next_page_token="ghi",
+            ),
+            analyticshub.ListSubscriptionsResponse(
+                subscriptions=[
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_subscriptions(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analyticshub.ListSharedResourceSubscriptionsRequest,
+        dict,
+    ],
+)
+def test_list_shared_resource_subscriptions(request_type, transport: str = "grpc"):
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_shared_resource_subscriptions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analyticshub.ListSharedResourceSubscriptionsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_shared_resource_subscriptions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.ListSharedResourceSubscriptionsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSharedResourceSubscriptionsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_shared_resource_subscriptions_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_shared_resource_subscriptions), "__call__"
+    ) as call:
+        client.list_shared_resource_subscriptions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.ListSharedResourceSubscriptionsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_shared_resource_subscriptions_async(
+    transport: str = "grpc_asyncio",
+    request_type=analyticshub.ListSharedResourceSubscriptionsRequest,
+):
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_shared_resource_subscriptions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analyticshub.ListSharedResourceSubscriptionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_shared_resource_subscriptions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.ListSharedResourceSubscriptionsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListSharedResourceSubscriptionsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_shared_resource_subscriptions_async_from_dict():
+    await test_list_shared_resource_subscriptions_async(request_type=dict)
+
+
+def test_list_shared_resource_subscriptions_field_headers():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analyticshub.ListSharedResourceSubscriptionsRequest()
+
+    request.resource = "resource_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_shared_resource_subscriptions), "__call__"
+    ) as call:
+        call.return_value = analyticshub.ListSharedResourceSubscriptionsResponse()
+        client.list_shared_resource_subscriptions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_shared_resource_subscriptions_field_headers_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analyticshub.ListSharedResourceSubscriptionsRequest()
+
+    request.resource = "resource_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_shared_resource_subscriptions), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analyticshub.ListSharedResourceSubscriptionsResponse()
+        )
+        await client.list_shared_resource_subscriptions(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "resource=resource_value",
+    ) in kw["metadata"]
+
+
+def test_list_shared_resource_subscriptions_flattened():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_shared_resource_subscriptions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analyticshub.ListSharedResourceSubscriptionsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_shared_resource_subscriptions(
+            resource="resource_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].resource
+        mock_val = "resource_value"
+        assert arg == mock_val
+
+
+def test_list_shared_resource_subscriptions_flattened_error():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_shared_resource_subscriptions(
+            analyticshub.ListSharedResourceSubscriptionsRequest(),
+            resource="resource_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_shared_resource_subscriptions_flattened_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_shared_resource_subscriptions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analyticshub.ListSharedResourceSubscriptionsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analyticshub.ListSharedResourceSubscriptionsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_shared_resource_subscriptions(
+            resource="resource_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].resource
+        mock_val = "resource_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_shared_resource_subscriptions_flattened_error_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_shared_resource_subscriptions(
+            analyticshub.ListSharedResourceSubscriptionsRequest(),
+            resource="resource_value",
+        )
+
+
+def test_list_shared_resource_subscriptions_pager(transport_name: str = "grpc"):
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_shared_resource_subscriptions), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analyticshub.ListSharedResourceSubscriptionsResponse(
+                shared_resource_subscriptions=[
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                ],
+                next_page_token="abc",
+            ),
+            analyticshub.ListSharedResourceSubscriptionsResponse(
+                shared_resource_subscriptions=[],
+                next_page_token="def",
+            ),
+            analyticshub.ListSharedResourceSubscriptionsResponse(
+                shared_resource_subscriptions=[
+                    analyticshub.Subscription(),
+                ],
+                next_page_token="ghi",
+            ),
+            analyticshub.ListSharedResourceSubscriptionsResponse(
+                shared_resource_subscriptions=[
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("resource", ""),)),
+        )
+        pager = client.list_shared_resource_subscriptions(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, analyticshub.Subscription) for i in results)
+
+
+def test_list_shared_resource_subscriptions_pages(transport_name: str = "grpc"):
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_shared_resource_subscriptions), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analyticshub.ListSharedResourceSubscriptionsResponse(
+                shared_resource_subscriptions=[
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                ],
+                next_page_token="abc",
+            ),
+            analyticshub.ListSharedResourceSubscriptionsResponse(
+                shared_resource_subscriptions=[],
+                next_page_token="def",
+            ),
+            analyticshub.ListSharedResourceSubscriptionsResponse(
+                shared_resource_subscriptions=[
+                    analyticshub.Subscription(),
+                ],
+                next_page_token="ghi",
+            ),
+            analyticshub.ListSharedResourceSubscriptionsResponse(
+                shared_resource_subscriptions=[
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_shared_resource_subscriptions(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_shared_resource_subscriptions_async_pager():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_shared_resource_subscriptions),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analyticshub.ListSharedResourceSubscriptionsResponse(
+                shared_resource_subscriptions=[
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                ],
+                next_page_token="abc",
+            ),
+            analyticshub.ListSharedResourceSubscriptionsResponse(
+                shared_resource_subscriptions=[],
+                next_page_token="def",
+            ),
+            analyticshub.ListSharedResourceSubscriptionsResponse(
+                shared_resource_subscriptions=[
+                    analyticshub.Subscription(),
+                ],
+                next_page_token="ghi",
+            ),
+            analyticshub.ListSharedResourceSubscriptionsResponse(
+                shared_resource_subscriptions=[
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_shared_resource_subscriptions(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, analyticshub.Subscription) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_shared_resource_subscriptions_async_pages():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_shared_resource_subscriptions),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            analyticshub.ListSharedResourceSubscriptionsResponse(
+                shared_resource_subscriptions=[
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                ],
+                next_page_token="abc",
+            ),
+            analyticshub.ListSharedResourceSubscriptionsResponse(
+                shared_resource_subscriptions=[],
+                next_page_token="def",
+            ),
+            analyticshub.ListSharedResourceSubscriptionsResponse(
+                shared_resource_subscriptions=[
+                    analyticshub.Subscription(),
+                ],
+                next_page_token="ghi",
+            ),
+            analyticshub.ListSharedResourceSubscriptionsResponse(
+                shared_resource_subscriptions=[
+                    analyticshub.Subscription(),
+                    analyticshub.Subscription(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_shared_resource_subscriptions(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analyticshub.RevokeSubscriptionRequest,
+        dict,
+    ],
+)
+def test_revoke_subscription(request_type, transport: str = "grpc"):
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.revoke_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analyticshub.RevokeSubscriptionResponse()
+        response = client.revoke_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.RevokeSubscriptionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analyticshub.RevokeSubscriptionResponse)
+
+
+def test_revoke_subscription_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.revoke_subscription), "__call__"
+    ) as call:
+        client.revoke_subscription()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.RevokeSubscriptionRequest()
+
+
+@pytest.mark.asyncio
+async def test_revoke_subscription_async(
+    transport: str = "grpc_asyncio", request_type=analyticshub.RevokeSubscriptionRequest
+):
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.revoke_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analyticshub.RevokeSubscriptionResponse()
+        )
+        response = await client.revoke_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.RevokeSubscriptionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, analyticshub.RevokeSubscriptionResponse)
+
+
+@pytest.mark.asyncio
+async def test_revoke_subscription_async_from_dict():
+    await test_revoke_subscription_async(request_type=dict)
+
+
+def test_revoke_subscription_field_headers():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analyticshub.RevokeSubscriptionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.revoke_subscription), "__call__"
+    ) as call:
+        call.return_value = analyticshub.RevokeSubscriptionResponse()
+        client.revoke_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_revoke_subscription_field_headers_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analyticshub.RevokeSubscriptionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.revoke_subscription), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analyticshub.RevokeSubscriptionResponse()
+        )
+        await client.revoke_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_revoke_subscription_flattened():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.revoke_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analyticshub.RevokeSubscriptionResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.revoke_subscription(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_revoke_subscription_flattened_error():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.revoke_subscription(
+            analyticshub.RevokeSubscriptionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_revoke_subscription_flattened_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.revoke_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = analyticshub.RevokeSubscriptionResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            analyticshub.RevokeSubscriptionResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.revoke_subscription(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_revoke_subscription_flattened_error_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.revoke_subscription(
+            analyticshub.RevokeSubscriptionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        analyticshub.DeleteSubscriptionRequest,
+        dict,
+    ],
+)
+def test_delete_subscription(request_type, transport: str = "grpc"):
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.DeleteSubscriptionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_subscription_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subscription), "__call__"
+    ) as call:
+        client.delete_subscription()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.DeleteSubscriptionRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_subscription_async(
+    transport: str = "grpc_asyncio", request_type=analyticshub.DeleteSubscriptionRequest
+):
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == analyticshub.DeleteSubscriptionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_subscription_async_from_dict():
+    await test_delete_subscription_async(request_type=dict)
+
+
+def test_delete_subscription_field_headers():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analyticshub.DeleteSubscriptionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subscription), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_subscription_field_headers_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = analyticshub.DeleteSubscriptionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subscription), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_subscription(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_subscription_flattened():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_subscription(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_subscription_flattened_error():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_subscription(
+            analyticshub.DeleteSubscriptionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_subscription_flattened_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_subscription), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_subscription(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_subscription_flattened_error_async():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_subscription(
+            analyticshub.DeleteSubscriptionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         iam_policy_pb2.GetIamPolicyRequest,
         dict,
     ],
@@ -5075,6 +7187,13 @@ def test_analytics_hub_service_base_transport():
         "update_listing",
         "delete_listing",
         "subscribe_listing",
+        "subscribe_data_exchange",
+        "refresh_subscription",
+        "get_subscription",
+        "list_subscriptions",
+        "list_shared_resource_subscriptions",
+        "revoke_subscription",
+        "delete_subscription",
         "get_iam_policy",
         "set_iam_policy",
         "test_iam_permissions",
@@ -5085,6 +7204,11 @@ def test_analytics_hub_service_base_transport():
 
     with pytest.raises(NotImplementedError):
         transport.close()
+
+    # Additionally, the LRO client (a property) should
+    # also raise NotImplementedError
+    with pytest.raises(NotImplementedError):
+        transport.operations_client
 
     # Catch all for all remaining methods and properties
     remainder = [
@@ -5437,6 +7561,40 @@ def test_analytics_hub_service_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_analytics_hub_service_grpc_lro_client():
+    client = AnalyticsHubServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
+def test_analytics_hub_service_grpc_lro_async_client():
+    client = AnalyticsHubServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+    transport = client.transport
+
+    # Ensure that we have a api-core operations client.
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
+
+    # Ensure that subsequent calls to the property send the exact same object.
+    assert transport.operations_client is transport.operations_client
+
+
 def test_data_exchange_path():
     project = "squid"
     location = "clam"
@@ -5521,8 +7679,38 @@ def test_parse_listing_path():
     assert expected == actual
 
 
+def test_subscription_path():
+    project = "cuttlefish"
+    location = "mussel"
+    subscription = "winkle"
+    expected = (
+        "projects/{project}/locations/{location}/subscriptions/{subscription}".format(
+            project=project,
+            location=location,
+            subscription=subscription,
+        )
+    )
+    actual = AnalyticsHubServiceClient.subscription_path(
+        project, location, subscription
+    )
+    assert expected == actual
+
+
+def test_parse_subscription_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "subscription": "abalone",
+    }
+    path = AnalyticsHubServiceClient.subscription_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AnalyticsHubServiceClient.parse_subscription_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5532,7 +7720,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "clam",
     }
     path = AnalyticsHubServiceClient.common_billing_account_path(**expected)
 
@@ -5542,7 +7730,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5552,7 +7740,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "octopus",
     }
     path = AnalyticsHubServiceClient.common_folder_path(**expected)
 
@@ -5562,7 +7750,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5572,7 +7760,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "nudibranch",
     }
     path = AnalyticsHubServiceClient.common_organization_path(**expected)
 
@@ -5582,7 +7770,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5592,7 +7780,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "mussel",
     }
     path = AnalyticsHubServiceClient.common_project_path(**expected)
 
@@ -5602,8 +7790,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5614,8 +7802,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = AnalyticsHubServiceClient.common_location_path(**expected)
 

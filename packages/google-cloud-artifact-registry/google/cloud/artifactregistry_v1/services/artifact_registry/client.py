@@ -51,7 +51,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
@@ -2070,6 +2070,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
                 # Initialize request argument(s)
                 request = artifactregistry_v1.CreateRepositoryRequest(
                     parent="parent_value",
+                    repository_id="repository_id_value",
                 )
 
                 # Make the request
@@ -2472,6 +2473,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         Returns:
             google.cloud.artifactregistry_v1.services.artifact_registry.pagers.ListPackagesPager:
                 The response from listing packages.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -2810,6 +2812,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         Returns:
             google.cloud.artifactregistry_v1.services.artifact_registry.pagers.ListVersionsPager:
                 The response from listing versions.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -3147,6 +3150,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         Returns:
             google.cloud.artifactregistry_v1.services.artifact_registry.pagers.ListFilesPager:
                 The response from listing files.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -3361,6 +3365,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         Returns:
             google.cloud.artifactregistry_v1.services.artifact_registry.pagers.ListTagsPager:
                 The response from listing tags.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.

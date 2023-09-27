@@ -90,12 +90,20 @@ from .types.document_processor_service import (
     UndeployProcessorVersionRequest,
     UndeployProcessorVersionResponse,
 )
-from .types.document_schema import DocumentSchema, EntityTypeMetadata, PropertyMetadata
+from .types.document_schema import (
+    DocumentSchema,
+    EntityTypeMetadata,
+    FieldExtractionMetadata,
+    PropertyMetadata,
+    SummaryOptions,
+)
 from .types.document_service import (
     BatchDeleteDocumentsMetadata,
     BatchDeleteDocumentsRequest,
     BatchDeleteDocumentsResponse,
     DatasetSplitType,
+    DocumentLabelingState,
+    DocumentMetadata,
     DocumentPageRange,
     GetDatasetSchemaRequest,
     GetDocumentRequest,
@@ -103,6 +111,8 @@ from .types.document_service import (
     ImportDocumentsMetadata,
     ImportDocumentsRequest,
     ImportDocumentsResponse,
+    ListDocumentsRequest,
+    ListDocumentsResponse,
     UpdateDatasetOperationMetadata,
     UpdateDatasetRequest,
     UpdateDatasetSchemaRequest,
@@ -110,7 +120,7 @@ from .types.document_service import (
 from .types.evaluation import Evaluation, EvaluationReference
 from .types.geometry import BoundingPoly, NormalizedVertex, Vertex
 from .types.operation_metadata import CommonOperationMetadata
-from .types.processor import Processor, ProcessorVersion
+from .types.processor import Processor, ProcessorVersion, ProcessorVersionAlias
 from .types.processor_type import ProcessorType
 
 __all__ = (
@@ -143,6 +153,8 @@ __all__ = (
     "DisableProcessorResponse",
     "Document",
     "DocumentId",
+    "DocumentLabelingState",
+    "DocumentMetadata",
     "DocumentOutputConfig",
     "DocumentPageRange",
     "DocumentProcessorServiceClient",
@@ -159,6 +171,7 @@ __all__ = (
     "EvaluationReference",
     "FetchProcessorTypesRequest",
     "FetchProcessorTypesResponse",
+    "FieldExtractionMetadata",
     "GcsDocument",
     "GcsDocuments",
     "GcsPrefix",
@@ -176,6 +189,8 @@ __all__ = (
     "ImportProcessorVersionMetadata",
     "ImportProcessorVersionRequest",
     "ImportProcessorVersionResponse",
+    "ListDocumentsRequest",
+    "ListDocumentsResponse",
     "ListEvaluationsRequest",
     "ListEvaluationsResponse",
     "ListProcessorTypesRequest",
@@ -192,6 +207,7 @@ __all__ = (
     "Processor",
     "ProcessorType",
     "ProcessorVersion",
+    "ProcessorVersionAlias",
     "PropertyMetadata",
     "RawDocument",
     "ReviewDocumentOperationMetadata",
@@ -201,6 +217,7 @@ __all__ = (
     "SetDefaultProcessorVersionMetadata",
     "SetDefaultProcessorVersionRequest",
     "SetDefaultProcessorVersionResponse",
+    "SummaryOptions",
     "TrainProcessorVersionMetadata",
     "TrainProcessorVersionRequest",
     "TrainProcessorVersionResponse",

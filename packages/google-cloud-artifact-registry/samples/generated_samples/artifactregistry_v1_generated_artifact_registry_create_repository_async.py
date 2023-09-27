@@ -41,6 +41,7 @@ async def sample_create_repository():
     # Initialize request argument(s)
     request = artifactregistry_v1.CreateRepositoryRequest(
         parent="parent_value",
+        repository_id="repository_id_value",
     )
 
     # Make the request
