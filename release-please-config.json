@@ -746,21 +746,13 @@
             "release-type": "python"
         },
         "packages/google-cloud-dialogflow": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-dialogflow",
             "extra-files": [
-                "google/cloud/dialogflow_v2beta1/gapic_version.py",
                 "google/cloud/dialogflow/gapic_version.py",
                 "google/cloud/dialogflow_v2/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.dialogflow.v2beta1.json",
-                    "type": "json"
-                },
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.cloud.dialogflow.v2.json",
-                    "type": "json"
-                }
+                "google/cloud/dialogflow_v2beta1/gapic_version.py"
             ],
             "release-type": "python"
         },
@@ -1707,15 +1699,12 @@
             "release-type": "python"
         },
         "packages/google-cloud-storage-transfer": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
             "component": "google-cloud-storage-transfer",
             "extra-files": [
-                "google/cloud/storage_transfer_v1/gapic_version.py",
                 "google/cloud/storage_transfer/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.storagetransfer.v1.json",
-                    "type": "json"
-                }
+                "google/cloud/storage_transfer_v1/gapic_version.py"
             ],
             "release-type": "python"
         },
