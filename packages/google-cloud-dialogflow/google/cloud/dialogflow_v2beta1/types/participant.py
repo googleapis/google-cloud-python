@@ -1148,6 +1148,27 @@ class StreamingAnalyzeContentRequest(proto.Message):
 
             Note: this field should only be used if you are connecting
             to a Dialogflow CX agent.
+        enable_extended_streaming (bool):
+            Optional. Enable full bidirectional streaming. You can keep
+            streaming the audio until timeout, and there's no need to
+            half close the stream to get the response.
+
+            Restrictions:
+
+            -  Timeout: 3 mins.
+            -  Audio Encoding: only supports
+               [AudioEncoding.AUDIO_ENCODING_LINEAR_16][google.cloud.dialogflow.v2beta1.AudioEncoding.AUDIO_ENCODING_LINEAR_16]
+               and
+               [AudioEncoding.AUDIO_ENCODING_MULAW][google.cloud.dialogflow.v2beta1.AudioEncoding.AUDIO_ENCODING_MULAW]
+            -  Lifecycle: conversation should be in ``Assist Stage``, go
+               to [Conversation.CreateConversation][] for more
+               information.
+
+            InvalidArgument Error will be returned if the one of
+            restriction checks failed.
+
+            You can find more details in
+            https://cloud.google.com/agent-assist/docs/extended-streaming
         enable_partial_automated_agent_reply (bool):
             Enable partial virtual agent responses. If this flag is not
             enabled, response stream still contains only one final
@@ -1214,6 +1235,10 @@ class StreamingAnalyzeContentRequest(proto.Message):
     cx_current_page: str = proto.Field(
         proto.STRING,
         number=15,
+    )
+    enable_extended_streaming: bool = proto.Field(
+        proto.BOOL,
+        number=11,
     )
     enable_partial_automated_agent_reply: bool = proto.Field(
         proto.BOOL,
