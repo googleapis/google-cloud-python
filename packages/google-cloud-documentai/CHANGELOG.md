@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.19.0...google-cloud-documentai-v2.20.0) (2023-09-25)
+
+
+### Features
+
+* Added `ListDocuments()` method for Document AI Workbench training documents ([2fb9078](https://github.com/googleapis/google-cloud-python/commit/2fb9078ef80ecbcc39c9708d49b7707e4708205a))
+* Added SummaryOptions to ProcessOptions for the Summarizer processor ([2fb9078](https://github.com/googleapis/google-cloud-python/commit/2fb9078ef80ecbcc39c9708d49b7707e4708205a))
+* make page_range field public ([2fb9078](https://github.com/googleapis/google-cloud-python/commit/2fb9078ef80ecbcc39c9708d49b7707e4708205a))
+
+
+### Bug Fixes
+
+* `OcrConfig.compute_style_info` is deprecated. Use `PremiumFeatures.compute_style_info` instead. ([2fb9078](https://github.com/googleapis/google-cloud-python/commit/2fb9078ef80ecbcc39c9708d49b7707e4708205a))
+
 ## [2.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.18.1...google-cloud-documentai-v2.19.0) (2023-09-21)
 
 

@@ -90,12 +90,63 @@ __protobuf__ = proto.module(
 class ProcessOptions(proto.Message):
     r"""Options for Process API
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
+        individual_page_selector (google.cloud.documentai_v1.types.ProcessOptions.IndividualPageSelector):
+            Which pages to process (1-indexed).
+
+            This field is a member of `oneof`_ ``page_range``.
+        from_start (int):
+            Only process certain pages from the start.
+            Process all if the document has fewer pages.
+
+            This field is a member of `oneof`_ ``page_range``.
+        from_end (int):
+            Only process certain pages from the end, same
+            as above.
+
+            This field is a member of `oneof`_ ``page_range``.
         ocr_config (google.cloud.documentai_v1.types.OcrConfig):
             Only applicable to ``OCR_PROCESSOR``. Returns error if set
             on other processor types.
     """
 
+    class IndividualPageSelector(proto.Message):
+        r"""A list of individual page numbers.
+
+        Attributes:
+            pages (MutableSequence[int]):
+                Optional. Indices of the pages (starting from
+                1).
+        """
+
+        pages: MutableSequence[int] = proto.RepeatedField(
+            proto.INT32,
+            number=1,
+        )
+
+    individual_page_selector: IndividualPageSelector = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="page_range",
+        message=IndividualPageSelector,
+    )
+    from_start: int = proto.Field(
+        proto.INT32,
+        number=6,
+        oneof="page_range",
+    )
+    from_end: int = proto.Field(
+        proto.INT32,
+        number=7,
+        oneof="page_range",
+    )
     ocr_config: document_io.OcrConfig = proto.Field(
         proto.MESSAGE,
         number=1,
