@@ -2414,21 +2414,20 @@ class DocumentProcessorServiceRestTransport(DocumentProcessorServiceTransport):
                 request (~.document_processor_service.ImportProcessorVersionRequest):
                     The request object. The request message for the
                 [ImportProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.ImportProcessorVersion]
-                method. Requirements:
+                method.
 
-                -  The Document AI `Service
-                   Agent <https://cloud.google.com/iam/docs/service-agents>`__
-                   of the destination project must have `Document AI
-                   Editor
-                   role <https://cloud.google.com/document-ai/docs/access-control/iam-roles>`__
-                   on the source project.
+                The Document AI `Service
+                Agent <https://cloud.google.com/iam/docs/service-agents>`__
+                of the destination project must have `Document AI Editor
+                role <https://cloud.google.com/document-ai/docs/access-control/iam-roles>`__
+                on the source project.
 
                 The destination project is specified as part of the
                 [parent][google.cloud.documentai.v1beta3.ImportProcessorVersionRequest.parent]
                 field. The source project is specified as part of the
-                [source][ImportProcessorVersionRequest.processor_version_source
+                [source][google.cloud.documentai.v1beta3.ImportProcessorVersionRequest.processor_version_source]
                 or
-                ImportProcessorVersionRequest.external_processor_version_source]
+                [external_processor_version_source][google.cloud.documentai.v1beta3.ImportProcessorVersionRequest.external_processor_version_source]
                 field.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.

@@ -1461,6 +1461,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         Returns:
             google.cloud.artifactregistry_v1beta2.services.artifact_registry.pagers.ListPackagesPager:
                 The response from listing packages.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1793,6 +1794,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         Returns:
             google.cloud.artifactregistry_v1beta2.services.artifact_registry.pagers.ListVersionsPager:
                 The response from listing versions.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -2115,7 +2117,6 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
             parent (str):
                 The name of the repository whose
                 files will be listed. For example:
-
                 "projects/p1/locations/us-central1/repositories/repo1
 
                 This corresponds to the ``parent`` field
@@ -2130,6 +2131,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         Returns:
             google.cloud.artifactregistry_v1beta2.services.artifact_registry.pagers.ListFilesPager:
                 The response from listing files.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -2341,6 +2343,7 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         Returns:
             google.cloud.artifactregistry_v1beta2.services.artifact_registry.pagers.ListTagsPager:
                 The response from listing tags.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
