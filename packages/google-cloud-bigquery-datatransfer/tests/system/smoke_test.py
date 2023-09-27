@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2020 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import os
 
 import pytest
 
-from google.cloud import bigquery_datatransfer
+from google.cloud import bigquery_datatransfer_v1
 
 
 @pytest.fixture(scope="session")
@@ -27,10 +27,13 @@ def project_id():
 
 
 @pytest.mark.parametrize("transport", ["grpc", "rest"])
-def test_list_data_sources(project_id: str, transport: str):
-    client = bigquery_datatransfer.DataTransferServiceClient(transport=transport)
+def test_list_connections(project_id: str, transport: str):
+    client = bigquery_datatransfer_v1.DataTransferServiceClient(transport=transport)
 
-    parent = client.common_project_path(project_id)
-    data_sources = list(client.list_data_sources(parent=parent))
+    parent = client.common_location_path(project_id, location="us-central1")
+    client.list_data_sources(parent=parent)
 
-    assert len(data_sources) >= 0
+    # The purpose of this smoke test is to test the communication with the API server,
+    # rather than API-specific functionality.
+    # If the smoke test fails, we won't reach this line.
+    assert True
