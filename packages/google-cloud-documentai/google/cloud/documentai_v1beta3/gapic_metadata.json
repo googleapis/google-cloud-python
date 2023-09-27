@@ -394,6 +394,11 @@
                 "import_documents"
               ]
             },
+            "ListDocuments": {
+              "methods": [
+                "list_documents"
+              ]
+            },
             "UpdateDataset": {
               "methods": [
                 "update_dataset"
@@ -429,6 +434,11 @@
                 "import_documents"
               ]
             },
+            "ListDocuments": {
+              "methods": [
+                "list_documents"
+              ]
+            },
             "UpdateDataset": {
               "methods": [
                 "update_dataset"
@@ -462,6 +472,11 @@
             "ImportDocuments": {
               "methods": [
                 "import_documents"
+              ]
+            },
+            "ListDocuments": {
+              "methods": [
+                "list_documents"
               ]
             },
             "UpdateDataset": {

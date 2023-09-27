@@ -533,6 +533,7 @@ class AllocationPolicy(proto.Message):
                 SPOT VM.
             PREEMPTIBLE (3):
                 Preemptible VM (PVM).
+
                 Above SPOT VM is the preferable model for
                 preemptible VM instances: the old preemptible VM
                 model (indicated by this field) is the older
@@ -566,6 +567,7 @@ class AllocationPolicy(proto.Message):
                 "us-west1". An error is expected in this case.
             denied_locations (MutableSequence[str]):
                 A list of denied location names.
+
                 Not yet implemented.
         """
 
@@ -641,10 +643,11 @@ class AllocationPolicy(proto.Message):
                 disk size 30 GB, you can only use this field to make the
                 disk larger or equal to 30 GB.
             disk_interface (str):
-                Local SSDs are available through both "SCSI"
-                and "NVMe" interfaces. If not indicated, "NVMe"
-                will be the default one for local ssds. We only
-                support "SCSI" for persistent disks now.
+                Local SSDs are available through both "SCSI" and "NVMe"
+                interfaces. If not indicated, "NVMe" will be the default one
+                for local ssds. This field is ignored for persistent disks
+                as the interface is chosen automatically. See
+                https://cloud.google.com/compute/docs/disks/persistent-disks#choose_an_interface.
         """
 
         image: str = proto.Field(
