@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""``ndb`` is a library for Google Cloud Datastore.
+"""``ndb`` is a library for Google Cloud Firestore in Datastore Mode and Google Cloud Datastore.
 
 It was originally included in the Google App Engine runtime as a "new"
 version of the ``db`` API (hence ``ndb``).
