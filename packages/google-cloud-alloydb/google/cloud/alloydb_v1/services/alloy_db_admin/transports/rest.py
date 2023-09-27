@@ -167,6 +167,14 @@ class AlloyDBAdminRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_generate_client_certificate(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_generate_client_certificate(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_backup(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -180,6 +188,14 @@ class AlloyDBAdminRestInterceptor:
                 return request, metadata
 
             def post_get_cluster(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_connection_info(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_connection_info(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -560,6 +576,29 @@ class AlloyDBAdminRestInterceptor:
         """
         return response
 
+    def pre_generate_client_certificate(
+        self,
+        request: service.GenerateClientCertificateRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[service.GenerateClientCertificateRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for generate_client_certificate
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlloyDBAdmin server.
+        """
+        return request, metadata
+
+    def post_generate_client_certificate(
+        self, response: service.GenerateClientCertificateResponse
+    ) -> service.GenerateClientCertificateResponse:
+        """Post-rpc interceptor for generate_client_certificate
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AlloyDBAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_backup(
         self, request: service.GetBackupRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[service.GetBackupRequest, Sequence[Tuple[str, str]]]:
@@ -591,6 +630,29 @@ class AlloyDBAdminRestInterceptor:
 
     def post_get_cluster(self, response: resources.Cluster) -> resources.Cluster:
         """Post-rpc interceptor for get_cluster
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AlloyDBAdmin server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_connection_info(
+        self,
+        request: service.GetConnectionInfoRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[service.GetConnectionInfoRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_connection_info
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AlloyDBAdmin server.
+        """
+        return request, metadata
+
+    def post_get_connection_info(
+        self, response: resources.ConnectionInfo
+    ) -> resources.ConnectionInfo:
+        """Post-rpc interceptor for get_connection_info
 
         Override in a subclass to manipulate the response
         after it is returned by the AlloyDBAdmin server but before
@@ -2327,6 +2389,108 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
             resp = self._interceptor.post_failover_instance(resp)
             return resp
 
+    class _GenerateClientCertificate(AlloyDBAdminRestStub):
+        def __hash__(self):
+            return hash("GenerateClientCertificate")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.GenerateClientCertificateRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> service.GenerateClientCertificateResponse:
+            r"""Call the generate client
+            certificate method over HTTP.
+
+                Args:
+                    request (~.service.GenerateClientCertificateRequest):
+                        The request object. Message for requests to generate a
+                    client certificate signed by the Cluster
+                    CA.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.service.GenerateClientCertificateResponse:
+                        Message returned by a
+                    GenerateClientCertificate operation.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*}:generateClientCertificate",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_generate_client_certificate(
+                request, metadata
+            )
+            pb_request = service.GenerateClientCertificateRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = service.GenerateClientCertificateResponse()
+            pb_resp = service.GenerateClientCertificateResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_generate_client_certificate(resp)
+            return resp
+
     class _GetBackup(AlloyDBAdminRestStub):
         def __hash__(self):
             return hash("GetBackup")
@@ -2503,6 +2667,97 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_cluster(resp)
+            return resp
+
+    class _GetConnectionInfo(AlloyDBAdminRestStub):
+        def __hash__(self):
+            return hash("GetConnectionInfo")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: service.GetConnectionInfoRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.ConnectionInfo:
+            r"""Call the get connection info method over HTTP.
+
+            Args:
+                request (~.service.GetConnectionInfoRequest):
+                    The request object. Request message for
+                GetConnectionInfo.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.ConnectionInfo:
+                    ConnectionInfo singleton resource.
+                https://google.aip.dev/156
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/clusters/*/instances/*}/connectionInfo",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_connection_info(
+                request, metadata
+            )
+            pb_request = service.GetConnectionInfoRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.ConnectionInfo()
+            pb_resp = resources.ConnectionInfo.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_connection_info(resp)
             return resp
 
     class _GetInstance(AlloyDBAdminRestStub):
@@ -3991,6 +4246,17 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
         return self._FailoverInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def generate_client_certificate(
+        self,
+    ) -> Callable[
+        [service.GenerateClientCertificateRequest],
+        service.GenerateClientCertificateResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GenerateClientCertificate(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_backup(self) -> Callable[[service.GetBackupRequest], resources.Backup]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -4001,6 +4267,14 @@ class AlloyDBAdminRestTransport(AlloyDBAdminTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCluster(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_connection_info(
+        self,
+    ) -> Callable[[service.GetConnectionInfoRequest], resources.ConnectionInfo]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetConnectionInfo(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_instance(

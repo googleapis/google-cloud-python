@@ -70,6 +70,11 @@
                 "failover_instance"
               ]
             },
+            "GenerateClientCertificate": {
+              "methods": [
+                "generate_client_certificate"
+              ]
+            },
             "GetBackup": {
               "methods": [
                 "get_backup"
@@ -78,6 +83,11 @@
             "GetCluster": {
               "methods": [
                 "get_cluster"
+              ]
+            },
+            "GetConnectionInfo": {
+              "methods": [
+                "get_connection_info"
               ]
             },
             "GetInstance": {
@@ -220,6 +230,11 @@
                 "failover_instance"
               ]
             },
+            "GenerateClientCertificate": {
+              "methods": [
+                "generate_client_certificate"
+              ]
+            },
             "GetBackup": {
               "methods": [
                 "get_backup"
@@ -228,6 +243,11 @@
             "GetCluster": {
               "methods": [
                 "get_cluster"
+              ]
+            },
+            "GetConnectionInfo": {
+              "methods": [
+                "get_connection_info"
               ]
             },
             "GetInstance": {
@@ -370,6 +390,11 @@
                 "failover_instance"
               ]
             },
+            "GenerateClientCertificate": {
+              "methods": [
+                "generate_client_certificate"
+              ]
+            },
             "GetBackup": {
               "methods": [
                 "get_backup"
@@ -378,6 +403,11 @@
             "GetCluster": {
               "methods": [
                 "get_cluster"
+              ]
+            },
+            "GetConnectionInfo": {
+              "methods": [
+                "get_connection_info"
               ]
             },
             "GetInstance": {

@@ -924,6 +924,69 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
         return self._stubs["list_supported_database_flags"]
 
     @property
+    def generate_client_certificate(
+        self,
+    ) -> Callable[
+        [service.GenerateClientCertificateRequest],
+        Awaitable[service.GenerateClientCertificateResponse],
+    ]:
+        r"""Return a callable for the generate client certificate method over gRPC.
+
+        Generate a client certificate signed by a Cluster CA.
+        The sole purpose of this endpoint is to support AlloyDB
+        connectors and the Auth Proxy client. The endpoint's
+        behavior is subject to change without notice, so do not
+        rely on its behavior remaining constant. Future changes
+        will not break AlloyDB connectors or the Auth Proxy
+        client.
+
+        Returns:
+            Callable[[~.GenerateClientCertificateRequest],
+                    Awaitable[~.GenerateClientCertificateResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "generate_client_certificate" not in self._stubs:
+            self._stubs["generate_client_certificate"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/GenerateClientCertificate",
+                request_serializer=service.GenerateClientCertificateRequest.serialize,
+                response_deserializer=service.GenerateClientCertificateResponse.deserialize,
+            )
+        return self._stubs["generate_client_certificate"]
+
+    @property
+    def get_connection_info(
+        self,
+    ) -> Callable[
+        [service.GetConnectionInfoRequest], Awaitable[resources.ConnectionInfo]
+    ]:
+        r"""Return a callable for the get connection info method over gRPC.
+
+        Get instance metadata used for a connection.
+
+        Returns:
+            Callable[[~.GetConnectionInfoRequest],
+                    Awaitable[~.ConnectionInfo]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_connection_info" not in self._stubs:
+            self._stubs["get_connection_info"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1.AlloyDBAdmin/GetConnectionInfo",
+                request_serializer=service.GetConnectionInfoRequest.serialize,
+                response_deserializer=resources.ConnectionInfo.deserialize,
+            )
+        return self._stubs["get_connection_info"]
+
+    @property
     def list_users(
         self,
     ) -> Callable[[service.ListUsersRequest], Awaitable[service.ListUsersResponse]]:
