@@ -57,6 +57,7 @@ class documentaiCallTransformer(cst.CSTTransformer):
         'get_processor_version': ('name', ),
         'import_documents': ('dataset', 'batch_documents_import_configs', ),
         'import_processor_version': ('parent', 'processor_version_source', 'external_processor_version_source', ),
+        'list_documents': ('dataset', 'page_size', 'page_token', 'filter', 'return_total_size', 'skip', ),
         'list_evaluations': ('parent', 'page_size', 'page_token', ),
         'list_processors': ('parent', 'page_size', 'page_token', ),
         'list_processor_types': ('parent', 'page_size', 'page_token', ),

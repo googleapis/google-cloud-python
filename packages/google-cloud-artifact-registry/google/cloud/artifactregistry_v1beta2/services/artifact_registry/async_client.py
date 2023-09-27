@@ -1134,6 +1134,7 @@ class ArtifactRegistryAsyncClient:
         Returns:
             google.cloud.artifactregistry_v1beta2.services.artifact_registry.pagers.ListPackagesAsyncPager:
                 The response from listing packages.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1493,6 +1494,7 @@ class ArtifactRegistryAsyncClient:
         Returns:
             google.cloud.artifactregistry_v1beta2.services.artifact_registry.pagers.ListVersionsAsyncPager:
                 The response from listing versions.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1842,7 +1844,6 @@ class ArtifactRegistryAsyncClient:
             parent (:class:`str`):
                 The name of the repository whose
                 files will be listed. For example:
-
                 "projects/p1/locations/us-central1/repositories/repo1
 
                 This corresponds to the ``parent`` field
@@ -1857,6 +1858,7 @@ class ArtifactRegistryAsyncClient:
         Returns:
             google.cloud.artifactregistry_v1beta2.services.artifact_registry.pagers.ListFilesAsyncPager:
                 The response from listing files.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -2086,6 +2088,7 @@ class ArtifactRegistryAsyncClient:
         Returns:
             google.cloud.artifactregistry_v1beta2.services.artifact_registry.pagers.ListTagsAsyncPager:
                 The response from listing tags.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
