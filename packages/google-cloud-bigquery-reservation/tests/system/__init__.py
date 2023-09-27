@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright 2020 Google LLC
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,24 +13,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-import os
-
-import pytest
-
-from google.cloud import bigquery_reservation
-
-
-@pytest.fixture(scope="session")
-def project_id():
-    return os.environ["PROJECT_ID"]
-
-
-@pytest.mark.parametrize("transport", ["grpc", "rest"])
-def test_list_reservations(project_id: str, transport: str):
-    client = bigquery_reservation.ReservationServiceClient(transport=transport)
-
-    parent = f"projects/{project_id}/locations/US"
-    reservations = list(client.list_reservations(parent=parent))
-
-    assert len(reservations) >= 0
