@@ -52,6 +52,14 @@ class AdvancedSettings(proto.Message):
 
             - Agent level
             - Flow level
+        dtmf_settings (google.cloud.dialogflowcx_v3.types.AdvancedSettings.DtmfSettings):
+            Settings for DTMF.
+            Exposed at the following levels:
+
+            - Agent level
+            - Flow level
+            - Page level
+            - Parameter level.
         logging_settings (google.cloud.dialogflowcx_v3.types.AdvancedSettings.LoggingSettings):
             Settings for logging.
             Settings for Dialogflow History, Contact Center
@@ -60,6 +68,39 @@ class AdvancedSettings(proto.Message):
 
             - Agent level.
     """
+
+    class DtmfSettings(proto.Message):
+        r"""Define behaviors for DTMF (dual tone multi frequency).
+
+        Attributes:
+            enabled (bool):
+                If true, incoming audio is processed for DTMF
+                (dual tone multi frequency) events. For example,
+                if the caller presses a button on their
+                telephone keypad and DTMF processing is enabled,
+                Dialogflow will detect the event (e.g. a "3" was
+                pressed) in the incoming audio and pass the
+                event to the bot to drive business logic (e.g.
+                when 3 is pressed, return the account balance).
+            max_digits (int):
+                Max length of DTMF digits.
+            finish_digit (str):
+                The digit that terminates a DTMF digit
+                sequence.
+        """
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        max_digits: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        finish_digit: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
     class LoggingSettings(proto.Message):
         r"""Define behaviors on logging.
@@ -86,6 +127,11 @@ class AdvancedSettings(proto.Message):
         proto.MESSAGE,
         number=2,
         message=gcs.GcsDestination,
+    )
+    dtmf_settings: DtmfSettings = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=DtmfSettings,
     )
     logging_settings: LoggingSettings = proto.Field(
         proto.MESSAGE,

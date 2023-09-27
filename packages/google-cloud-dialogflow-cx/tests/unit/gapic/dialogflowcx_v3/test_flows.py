@@ -63,14 +63,15 @@ from google.cloud.dialogflowcx_v3.services.flows import (
     pagers,
     transports,
 )
+from google.cloud.dialogflowcx_v3.types import advanced_settings, data_store_connection
 from google.cloud.dialogflowcx_v3.types import (
     fulfillment,
+    gcs,
     import_strategy,
     page,
     response_message,
     validation_message,
 )
-from google.cloud.dialogflowcx_v3.types import data_store_connection
 from google.cloud.dialogflowcx_v3.types import flow
 from google.cloud.dialogflowcx_v3.types import flow as gcdc_flow
 
@@ -3067,6 +3068,19 @@ def test_create_flow_rest(request_type):
                             ]
                         }
                     ],
+                    "advanced_settings": {
+                        "audio_export_gcs_destination": {"uri": "uri_value"},
+                        "dtmf_settings": {
+                            "enabled": True,
+                            "max_digits": 1065,
+                            "finish_digit": "finish_digit_value",
+                        },
+                        "logging_settings": {
+                            "enable_stackdriver_logging": True,
+                            "enable_interaction_logging": True,
+                        },
+                    },
+                    "enable_generative_fallback": True,
                 },
                 "target_page": "target_page_value",
                 "target_flow": "target_flow_value",
@@ -3090,6 +3104,7 @@ def test_create_flow_rest(request_type):
             "classification_threshold": 0.25520000000000004,
             "model_training_mode": 1,
         },
+        "advanced_settings": {},
         "knowledge_connector_settings": {
             "enabled": True,
             "trigger_fulfillment": {},
@@ -3361,6 +3376,19 @@ def test_create_flow_rest_bad_request(
                             ]
                         }
                     ],
+                    "advanced_settings": {
+                        "audio_export_gcs_destination": {"uri": "uri_value"},
+                        "dtmf_settings": {
+                            "enabled": True,
+                            "max_digits": 1065,
+                            "finish_digit": "finish_digit_value",
+                        },
+                        "logging_settings": {
+                            "enable_stackdriver_logging": True,
+                            "enable_interaction_logging": True,
+                        },
+                    },
+                    "enable_generative_fallback": True,
                 },
                 "target_page": "target_page_value",
                 "target_flow": "target_flow_value",
@@ -3384,6 +3412,7 @@ def test_create_flow_rest_bad_request(
             "classification_threshold": 0.25520000000000004,
             "model_training_mode": 1,
         },
+        "advanced_settings": {},
         "knowledge_connector_settings": {
             "enabled": True,
             "trigger_fulfillment": {},
@@ -4429,6 +4458,19 @@ def test_update_flow_rest(request_type):
                             ]
                         }
                     ],
+                    "advanced_settings": {
+                        "audio_export_gcs_destination": {"uri": "uri_value"},
+                        "dtmf_settings": {
+                            "enabled": True,
+                            "max_digits": 1065,
+                            "finish_digit": "finish_digit_value",
+                        },
+                        "logging_settings": {
+                            "enable_stackdriver_logging": True,
+                            "enable_interaction_logging": True,
+                        },
+                    },
+                    "enable_generative_fallback": True,
                 },
                 "target_page": "target_page_value",
                 "target_flow": "target_flow_value",
@@ -4452,6 +4494,7 @@ def test_update_flow_rest(request_type):
             "classification_threshold": 0.25520000000000004,
             "model_training_mode": 1,
         },
+        "advanced_settings": {},
         "knowledge_connector_settings": {
             "enabled": True,
             "trigger_fulfillment": {},
@@ -4727,6 +4770,19 @@ def test_update_flow_rest_bad_request(
                             ]
                         }
                     ],
+                    "advanced_settings": {
+                        "audio_export_gcs_destination": {"uri": "uri_value"},
+                        "dtmf_settings": {
+                            "enabled": True,
+                            "max_digits": 1065,
+                            "finish_digit": "finish_digit_value",
+                        },
+                        "logging_settings": {
+                            "enable_stackdriver_logging": True,
+                            "enable_interaction_logging": True,
+                        },
+                    },
+                    "enable_generative_fallback": True,
                 },
                 "target_page": "target_page_value",
                 "target_flow": "target_flow_value",
@@ -4750,6 +4806,7 @@ def test_update_flow_rest_bad_request(
             "classification_threshold": 0.25520000000000004,
             "model_training_mode": 1,
         },
+        "advanced_settings": {},
         "knowledge_connector_settings": {
             "enabled": True,
             "trigger_fulfillment": {},

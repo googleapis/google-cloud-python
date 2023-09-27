@@ -19,31 +19,45 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.dialogflow.cx.v3beta1',
+    package="google.cloud.dialogflow.cx.v3",
     manifest={
-        'GcsDestination',
+        "InlineDestination",
+        "InlineSource",
     },
 )
 
 
-class GcsDestination(proto.Message):
-    r"""Google Cloud Storage location for a Dialogflow operation that
-    writes or exports objects (e.g. exported agent or transcripts)
+class InlineDestination(proto.Message):
+    r"""Inline destination for a Dialogflow operation that writes or exports
+    objects (e.g. [intents][google.cloud.dialogflow.cx.v3.Intent])
     outside of Dialogflow.
 
     Attributes:
-        uri (str):
-            Required. The Google Cloud Storage URI for the exported
-            objects. A URI is of the form:
-            ``gs://bucket/object-name-or-prefix`` Whether a full object
-            name, or just a prefix, its usage depends on the Dialogflow
-            operation.
+        content (bytes):
+            Output only. The uncompressed byte content
+            for the objects. Only populated in responses.
     """
 
-    uri: str = proto.Field(
-        proto.STRING,
+    content: bytes = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+
+
+class InlineSource(proto.Message):
+    r"""Inline source for a Dialogflow operation that reads or imports
+    objects (e.g. [intents][google.cloud.dialogflow.cx.v3.Intent]) into
+    Dialogflow.
+
+    Attributes:
+        content (bytes):
+            The uncompressed byte content for the
+            objects.
+    """
+
+    content: bytes = proto.Field(
+        proto.BYTES,
         number=1,
     )
 
