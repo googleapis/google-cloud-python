@@ -30,7 +30,7 @@ def project_id():
 def test_list_connections(project_id: str, transport: str):
     client = bigquery_connection_v1.ConnectionServiceClient(transport=transport)
 
-    parent = client.common_location_path(project_id, location='us-central1')
+    parent = client.common_location_path(project_id, location="us-central1")
     client.list_connections(parent=parent)
 
     # The purpose of this smoke test is to test the communication with the API server,
