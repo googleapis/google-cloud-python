@@ -118,12 +118,12 @@ class ModelCreationSqlGenerator(BaseSqlGenerator):
     # Model create and alter
     def create_model(
         self,
-        source: bpd.DataFrame,
+        source_df: bpd.DataFrame,
         options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
         transforms: Optional[Iterable[str]] = None,
     ) -> str:
         """Encode the CREATE TEMP MODEL statement for BQML"""
-        source_sql = source.sql
+        source_sql = source_df.sql
         transform_sql = self.transform(*transforms) if transforms is not None else None
         options_sql = self.options(**options)
 
@@ -168,39 +168,58 @@ class ModelManipulationSqlGenerator(BaseSqlGenerator):
     def __init__(self, model_name: str):
         self._model_name = model_name
 
+    def _source_sql(self, source_df: bpd.DataFrame) -> str:
+        """Return DataFrame sql with index columns."""
+        _source_sql, _, _ = source_df._to_sql_query(include_index=True)
+        return _source_sql
+
     # Alter model
     def alter_model(
         self,
-        options_sql: str,
+        options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
     ) -> str:
         """Encode the ALTER MODEL statement for BQML"""
+        options_sql = self.options(**options)
+
         parts = [f"ALTER MODEL `{self._model_name}`"]
         parts.append(f"SET {options_sql}")
         return "\n".join(parts)
 
     # ML prediction TVFs
-    def ml_predict(self, source_sql: str) -> str:
+    def ml_predict(self, source_df: bpd.DataFrame) -> str:
         """Encode ML.PREDICT for BQML"""
         return f"""SELECT * FROM ML.PREDICT(MODEL `{self._model_name}`,
-  ({source_sql}))"""
+  ({self._source_sql(source_df)}))"""
 
     def ml_forecast(self) -> str:
         """Encode ML.FORECAST for BQML"""
         return f"""SELECT * FROM ML.FORECAST(MODEL `{self._model_name}`)"""
 
-    def ml_generate_text(self, source_sql: str, struct_options: str) -> str:
+    def ml_generate_text(
+        self, source_df: bpd.DataFrame, struct_options: Mapping[str, Union[int, float]]
+    ) -> str:
         """Encode ML.GENERATE_TEXT for BQML"""
+        struct_options_sql = self.struct_options(**struct_options)
         return f"""SELECT * FROM ML.GENERATE_TEXT(MODEL `{self._model_name}`,
-  ({source_sql}), {struct_options})"""
+  ({self._source_sql(source_df)}), {struct_options_sql})"""
 
-    def ml_generate_text_embedding(self, source_sql: str, struct_options: str) -> str:
+    def ml_generate_text_embedding(
+        self, source_df: bpd.DataFrame, struct_options: Mapping[str, Union[int, float]]
+    ) -> str:
         """Encode ML.GENERATE_TEXT_EMBEDDING for BQML"""
+        struct_options_sql = self.struct_options(**struct_options)
         return f"""SELECT * FROM ML.GENERATE_TEXT_EMBEDDING(MODEL `{self._model_name}`,
-  ({source_sql}), {struct_options})"""
+  ({self._source_sql(source_df)}), {struct_options_sql})"""
 
     # ML evaluation TVFs
-    def ml_evaluate(self, source_sql: Optional[str] = None) -> str:
+    def ml_evaluate(self, source_df: Optional[bpd.DataFrame] = None) -> str:
         """Encode ML.EVALUATE for BQML"""
+        if source_df is None:
+            source_sql = None
+        else:
+            # Note: don't need index as evaluate returns a new table
+            source_sql, _, _ = source_df._to_sql_query(include_index=False)
+
         if source_sql is None:
             return f"""SELECT * FROM ML.EVALUATE(MODEL `{self._model_name}`)"""
         else:
@@ -222,7 +241,7 @@ class ModelManipulationSqlGenerator(BaseSqlGenerator):
         )
 
     # ML transform TVF, that require a transform_only type model
-    def ml_transform(self, source_sql: str) -> str:
+    def ml_transform(self, source_df: bpd.DataFrame) -> str:
         """Encode ML.TRANSFORM for BQML"""
         return f"""SELECT * FROM ML.TRANSFORM(MODEL `{self._model_name}`,
-  ({source_sql}))"""
+  ({self._source_sql(source_df)}))"""

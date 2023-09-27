@@ -41,6 +41,7 @@ def model_manipulation_sql_generator() -> ml_sql.ModelManipulationSqlGenerator:
 def mock_df():
     mock_df = mock.create_autospec(spec=bpd.DataFrame)
     mock_df.sql = "input_X_y_sql"
+    mock_df._to_sql_query.return_value = "input_X_sql", None, None
 
     return mock_df
 
@@ -117,7 +118,7 @@ def test_create_model_produces_correct_sql(
     mock_df: bpd.DataFrame,
 ):
     sql = model_creation_sql_generator.create_model(
-        source=mock_df,
+        source_df=mock_df,
         options={"option_key1": "option_value1", "option_key2": 2},
     )
     assert (
@@ -135,7 +136,7 @@ def test_create_model_transform_produces_correct_sql(
     mock_df: bpd.DataFrame,
 ):
     sql = model_creation_sql_generator.create_model(
-        source=mock_df,
+        source_df=mock_df,
         options={"option_key1": "option_value1", "option_key2": 2},
         transforms=[
             "ML.STANDARD_SCALER(col_a) OVER(col_a) AS scaled_col_a",
@@ -191,38 +192,38 @@ def test_alter_model_correct_sql(
     model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
 ):
     sql = model_manipulation_sql_generator.alter_model(
-        options_sql="my_options_sql",
+        options={"option_key1": "option_value1", "option_key2": 2},
     )
     assert (
         sql
         == """ALTER MODEL `my_project_id.my_dataset_id.my_model_id`
-SET my_options_sql"""
+SET OPTIONS(
+  option_key1="option_value1",
+  option_key2=2)"""
     )
 
 
 def test_ml_predict_produces_correct_sql(
     model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
+    mock_df: bpd.DataFrame,
 ):
-    sql = model_manipulation_sql_generator.ml_predict(
-        source_sql="SELECT * FROM my_table"
-    )
+    sql = model_manipulation_sql_generator.ml_predict(source_df=mock_df)
     assert (
         sql
         == """SELECT * FROM ML.PREDICT(MODEL `my_project_id.my_dataset_id.my_model_id`,
-  (SELECT * FROM my_table))"""
+  (input_X_sql))"""
     )
 
 
 def test_ml_evaluate_produces_correct_sql(
     model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
+    mock_df: bpd.DataFrame,
 ):
-    sql = model_manipulation_sql_generator.ml_evaluate(
-        source_sql="SELECT * FROM my_table"
-    )
+    sql = model_manipulation_sql_generator.ml_evaluate(source_df=mock_df)
     assert (
         sql
         == """SELECT * FROM ML.EVALUATE(MODEL `my_project_id.my_dataset_id.my_model_id`,
-  (SELECT * FROM my_table))"""
+  (input_X_sql))"""
     )
 
 
@@ -248,15 +249,35 @@ def test_ml_centroids_produces_correct_sql(
 
 def test_ml_generate_text_produces_correct_sql(
     model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
+    mock_df: bpd.DataFrame,
 ):
     sql = model_manipulation_sql_generator.ml_generate_text(
-        source_sql="SELECT * FROM my_table",
-        struct_options="STRUCT(value AS item)",
+        source_df=mock_df,
+        struct_options={"option_key1": 1, "option_key2": 2.2},
     )
     assert (
         sql
         == """SELECT * FROM ML.GENERATE_TEXT(MODEL `my_project_id.my_dataset_id.my_model_id`,
-  (SELECT * FROM my_table), STRUCT(value AS item))"""
+  (input_X_sql), STRUCT(
+  1 AS option_key1,
+  2.2 AS option_key2))"""
+    )
+
+
+def test_ml_generate_text_embedding_produces_correct_sql(
+    model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
+    mock_df: bpd.DataFrame,
+):
+    sql = model_manipulation_sql_generator.ml_generate_text_embedding(
+        source_df=mock_df,
+        struct_options={"option_key1": 1, "option_key2": 2.2},
+    )
+    assert (
+        sql
+        == """SELECT * FROM ML.GENERATE_TEXT_EMBEDDING(MODEL `my_project_id.my_dataset_id.my_model_id`,
+  (input_X_sql), STRUCT(
+  1 AS option_key1,
+  2.2 AS option_key2))"""
     )
 
 
