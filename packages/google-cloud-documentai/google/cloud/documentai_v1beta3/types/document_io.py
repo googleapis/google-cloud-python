@@ -44,6 +44,12 @@ class RawDocument(proto.Message):
             An IANA MIME type (RFC6838) indicating the nature and format
             of the
             [content][google.cloud.documentai.v1beta3.RawDocument.content].
+        display_name (str):
+            The display name of the document, it supports all Unicode
+            characters except the following: ``*``, ``?``, ``[``, ``]``,
+            ``%``, ``{``, ``}``,\ ``'``, ``\"``, ``,`` ``~``, ``=`` and
+            ``:`` are reserved. If not specified, a default ID is
+            generated.
     """
 
     content: bytes = proto.Field(
@@ -53,6 +59,10 @@ class RawDocument(proto.Message):
     mime_type: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -257,7 +267,7 @@ class OcrConfig(proto.Message):
         disable_character_boxes_detection (bool):
             Turn off character box detector in OCR
             engine. Character box detection is enabled by
-            default in OCR 2.0+ processors.
+            default in OCR 2.0 (and later) processors.
         premium_features (google.cloud.documentai_v1beta3.types.OcrConfig.PremiumFeatures):
             Configurations for premium OCR features.
     """
@@ -289,7 +299,8 @@ class OcrConfig(proto.Message):
         Attributes:
             enable_selection_mark_detection (bool):
                 Turn on selection mark detector in OCR
-                engine. Only available in OCR 2.0+ processors.
+                engine. Only available in OCR 2.0 (and later)
+                processors.
             compute_style_info (bool):
                 Turn on font identification model and return
                 font style information.

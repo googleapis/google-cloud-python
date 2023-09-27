@@ -42,9 +42,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.bigquery_analyticshub_v1.services.analytics_hub_service import pagers
 from google.cloud.bigquery_analyticshub_v1.types import analyticshub
@@ -77,6 +82,10 @@ class AnalyticsHubServiceAsyncClient:
     parse_dataset_path = staticmethod(AnalyticsHubServiceClient.parse_dataset_path)
     listing_path = staticmethod(AnalyticsHubServiceClient.listing_path)
     parse_listing_path = staticmethod(AnalyticsHubServiceClient.parse_listing_path)
+    subscription_path = staticmethod(AnalyticsHubServiceClient.subscription_path)
+    parse_subscription_path = staticmethod(
+        AnalyticsHubServiceClient.parse_subscription_path
+    )
     common_billing_account_path = staticmethod(
         AnalyticsHubServiceClient.common_billing_account_path
     )
@@ -411,6 +420,7 @@ class AnalyticsHubServiceAsyncClient:
                 Message for response to listing data
                 exchanges in an organization and
                 location.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1460,6 +1470,7 @@ class AnalyticsHubServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> analyticshub.SubscribeListingResponse:
         r"""Subscribes to a listing.
+
         Currently, with Analytics Hub, you can create listings
         that reference only BigQuery datasets.
         Upon subscription to a listing for a BigQuery dataset,
@@ -1558,6 +1569,820 @@ class AnalyticsHubServiceAsyncClient:
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def subscribe_data_exchange(
+        self,
+        request: Optional[
+            Union[analyticshub.SubscribeDataExchangeRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Creates a Subscription to a Data Exchange. This is a
+        long-running operation as it will create one or more
+        linked datasets.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigquery_analyticshub_v1
+
+            async def sample_subscribe_data_exchange():
+                # Create a client
+                client = bigquery_analyticshub_v1.AnalyticsHubServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = bigquery_analyticshub_v1.SubscribeDataExchangeRequest(
+                    name="name_value",
+                    destination="destination_value",
+                    subscription="subscription_value",
+                )
+
+                # Make the request
+                operation = client.subscribe_data_exchange(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.bigquery_analyticshub_v1.types.SubscribeDataExchangeRequest, dict]]):
+                The request object. Message for subscribing to a Data
+                Exchange.
+            name (:class:`str`):
+                Required. Resource name of the Data Exchange. e.g.
+                ``projects/publisherproject/locations/US/dataExchanges/123``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.bigquery_analyticshub_v1.types.SubscribeDataExchangeResponse`
+                Message for response when you subscribe to a Data
+                Exchange.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analyticshub.SubscribeDataExchangeRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.subscribe_data_exchange,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            analyticshub.SubscribeDataExchangeResponse,
+            metadata_type=analyticshub.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def refresh_subscription(
+        self,
+        request: Optional[Union[analyticshub.RefreshSubscriptionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Refreshes a Subscription to a Data Exchange. A Data
+        Exchange can become stale when a publisher adds or
+        removes data. This is a long-running operation as it may
+        create many linked datasets.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigquery_analyticshub_v1
+
+            async def sample_refresh_subscription():
+                # Create a client
+                client = bigquery_analyticshub_v1.AnalyticsHubServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = bigquery_analyticshub_v1.RefreshSubscriptionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.refresh_subscription(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.bigquery_analyticshub_v1.types.RefreshSubscriptionRequest, dict]]):
+                The request object. Message for refreshing a
+                subscription.
+            name (:class:`str`):
+                Required. Resource name of the Subscription to refresh.
+                e.g.
+                ``projects/subscriberproject/locations/US/subscriptions/123``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.bigquery_analyticshub_v1.types.RefreshSubscriptionResponse`
+                Message for response when you refresh a subscription.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analyticshub.RefreshSubscriptionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.refresh_subscription,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            analyticshub.RefreshSubscriptionResponse,
+            metadata_type=analyticshub.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_subscription(
+        self,
+        request: Optional[Union[analyticshub.GetSubscriptionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analyticshub.Subscription:
+        r"""Gets the details of a Subscription.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigquery_analyticshub_v1
+
+            async def sample_get_subscription():
+                # Create a client
+                client = bigquery_analyticshub_v1.AnalyticsHubServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = bigquery_analyticshub_v1.GetSubscriptionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_subscription(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.bigquery_analyticshub_v1.types.GetSubscriptionRequest, dict]]):
+                The request object. Message for getting a subscription.
+            name (:class:`str`):
+                Required. Resource name of the
+                subscription. e.g.
+                projects/123/locations/US/subscriptions/456
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bigquery_analyticshub_v1.types.Subscription:
+                A subscription represents a
+                subscribers' access to a particular set
+                of published data. It contains
+                references to associated listings, data
+                exchanges, and linked datasets.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analyticshub.GetSubscriptionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_subscription,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_subscriptions(
+        self,
+        request: Optional[Union[analyticshub.ListSubscriptionsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSubscriptionsAsyncPager:
+        r"""Lists all subscriptions in a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigquery_analyticshub_v1
+
+            async def sample_list_subscriptions():
+                # Create a client
+                client = bigquery_analyticshub_v1.AnalyticsHubServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = bigquery_analyticshub_v1.ListSubscriptionsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_subscriptions(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.bigquery_analyticshub_v1.types.ListSubscriptionsRequest, dict]]):
+                The request object. Message for listing subscriptions.
+            parent (:class:`str`):
+                Required. The parent resource path of
+                the subscription. e.g.
+                projects/myproject/locations/US
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bigquery_analyticshub_v1.services.analytics_hub_service.pagers.ListSubscriptionsAsyncPager:
+                Message for response to the listing
+                of subscriptions.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analyticshub.ListSubscriptionsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_subscriptions,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListSubscriptionsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_shared_resource_subscriptions(
+        self,
+        request: Optional[
+            Union[analyticshub.ListSharedResourceSubscriptionsRequest, dict]
+        ] = None,
+        *,
+        resource: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListSharedResourceSubscriptionsAsyncPager:
+        r"""Lists all subscriptions on a given Data Exchange or
+        Listing.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigquery_analyticshub_v1
+
+            async def sample_list_shared_resource_subscriptions():
+                # Create a client
+                client = bigquery_analyticshub_v1.AnalyticsHubServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = bigquery_analyticshub_v1.ListSharedResourceSubscriptionsRequest(
+                    resource="resource_value",
+                )
+
+                # Make the request
+                page_result = client.list_shared_resource_subscriptions(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.bigquery_analyticshub_v1.types.ListSharedResourceSubscriptionsRequest, dict]]):
+                The request object. Message for listing subscriptions of
+                a shared resource.
+            resource (:class:`str`):
+                Required. Resource name of the
+                requested target. This resource may be
+                either a Listing or a DataExchange. e.g.
+                projects/123/locations/US/dataExchanges/456
+                OR e.g.
+                projects/123/locations/US/dataExchanges/456/listings/789
+
+                This corresponds to the ``resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bigquery_analyticshub_v1.services.analytics_hub_service.pagers.ListSharedResourceSubscriptionsAsyncPager:
+                Message for response to the listing
+                of shared resource subscriptions.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([resource])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analyticshub.ListSharedResourceSubscriptionsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if resource is not None:
+            request.resource = resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_shared_resource_subscriptions,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListSharedResourceSubscriptionsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def revoke_subscription(
+        self,
+        request: Optional[Union[analyticshub.RevokeSubscriptionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> analyticshub.RevokeSubscriptionResponse:
+        r"""Revokes a given subscription.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigquery_analyticshub_v1
+
+            async def sample_revoke_subscription():
+                # Create a client
+                client = bigquery_analyticshub_v1.AnalyticsHubServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = bigquery_analyticshub_v1.RevokeSubscriptionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.revoke_subscription(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.bigquery_analyticshub_v1.types.RevokeSubscriptionRequest, dict]]):
+                The request object. Message for revoking a subscription.
+            name (:class:`str`):
+                Required. Resource name of the
+                subscription to revoke. e.g.
+                projects/123/locations/US/subscriptions/456
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bigquery_analyticshub_v1.types.RevokeSubscriptionResponse:
+                Message for response when you revoke
+                a subscription.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analyticshub.RevokeSubscriptionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.revoke_subscription,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_subscription(
+        self,
+        request: Optional[Union[analyticshub.DeleteSubscriptionRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes a subscription.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigquery_analyticshub_v1
+
+            async def sample_delete_subscription():
+                # Create a client
+                client = bigquery_analyticshub_v1.AnalyticsHubServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = bigquery_analyticshub_v1.DeleteSubscriptionRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_subscription(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.bigquery_analyticshub_v1.types.DeleteSubscriptionRequest, dict]]):
+                The request object. Message for deleting a subscription.
+            name (:class:`str`):
+                Required. Resource name of the
+                subscription to delete. e.g.
+                projects/123/locations/US/subscriptions/456
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = analyticshub.DeleteSubscriptionRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_subscription,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=analyticshub.OperationMetadata,
         )
 
         # Done; return the response.
