@@ -139,6 +139,11 @@ class DocumentServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_documents: gapic_v1.method.wrap_method(
+                self.list_documents,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.batch_delete_documents: gapic_v1.method.wrap_method(
                 self.batch_delete_documents,
                 default_timeout=None,
@@ -196,6 +201,18 @@ class DocumentServiceTransport(abc.ABC):
         Union[
             document_service.GetDocumentResponse,
             Awaitable[document_service.GetDocumentResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_documents(
+        self,
+    ) -> Callable[
+        [document_service.ListDocumentsRequest],
+        Union[
+            document_service.ListDocumentsResponse,
+            Awaitable[document_service.ListDocumentsResponse],
         ],
     ]:
         raise NotImplementedError()

@@ -1902,7 +1902,8 @@ class RevisionRef(proto.Message):
 
         Values:
             REVISION_CASE_UNSPECIFIED (0):
-                Unspecified case, fallback to read the LATEST_HUMAN_REVIEW.
+                Unspecified case, fall back to read the
+                ``LATEST_HUMAN_REVIEW``.
             LATEST_HUMAN_REVIEW (1):
                 The latest revision made by a human.
             LATEST_TIMESTAMP (2):
