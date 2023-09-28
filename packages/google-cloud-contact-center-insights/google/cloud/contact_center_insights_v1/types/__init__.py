@@ -119,6 +119,7 @@ from .resources import (
     SilenceData,
     SmartComposeSuggestionData,
     SmartReplyData,
+    SpeechConfig,
     View,
 )
 
@@ -226,5 +227,6 @@ __all__ = (
     "SilenceData",
     "SmartComposeSuggestionData",
     "SmartReplyData",
+    "SpeechConfig",
     "View",
 )
