@@ -93,6 +93,7 @@ class ComputeResource(proto.Message):
             ``memoryMib`` to ``4096`` or less.
         gpu_count (int):
             The GPU count.
+
             Not yet implemented.
         boot_disk_mib (int):
             Extra boot disk size in MiB for each task.

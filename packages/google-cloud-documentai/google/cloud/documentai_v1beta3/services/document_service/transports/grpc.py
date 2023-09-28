@@ -328,6 +328,34 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
         return self._stubs["get_document"]
 
     @property
+    def list_documents(
+        self,
+    ) -> Callable[
+        [document_service.ListDocumentsRequest], document_service.ListDocumentsResponse
+    ]:
+        r"""Return a callable for the list documents method over gRPC.
+
+        Returns a list of documents present in the dataset.
+
+        Returns:
+            Callable[[~.ListDocumentsRequest],
+                    ~.ListDocumentsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_documents" not in self._stubs:
+            self._stubs["list_documents"] = self.grpc_channel.unary_unary(
+                "/google.cloud.documentai.v1beta3.DocumentService/ListDocuments",
+                request_serializer=document_service.ListDocumentsRequest.serialize,
+                response_deserializer=document_service.ListDocumentsResponse.deserialize,
+            )
+        return self._stubs["list_documents"]
+
+    @property
     def batch_delete_documents(
         self,
     ) -> Callable[
