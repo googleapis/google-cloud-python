@@ -503,6 +503,35 @@ class DataFrame(NDFrame):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def align(
+        self,
+        other,
+        join="outer",
+        axis=None,
+    ) -> tuple:
+        """
+        Align two objects on their axes with the specified join method.
+
+        Join method is specified for each axis Index.
+
+        Args:
+            other (DataFrame or Series):
+            join ({{'outer', 'inner', 'left', 'right'}}, default 'outer'):
+                Type of alignment to be performed.
+                left: use only keys from left frame, preserve key order.
+                right: use only keys from right frame, preserve key order.
+                outer: use union of keys from both frames, sort keys lexicographically.
+                inner: use intersection of keys from both frames,
+                preserve the order of the left keys.
+
+            axis (allowed axis of the other object, default None):
+                Align on index (0), columns (1), or both (None).
+
+        Returns:
+            tuple of (DataFrame, type of other): Aligned objects.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def rename(
         self,
         *,
@@ -1262,6 +1291,39 @@ class DataFrame(NDFrame):
 
         Returns:
             DataFrame: The result of combining the provided DataFrame with the other object.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def update(
+        self, other, join: str = "left", overwrite: bool = True, filter_func=None
+    ) -> DataFrame:
+        """
+        Modify in place using non-NA values from another DataFrame.
+
+        Aligns on indices. There is no return value.
+
+        Args:
+            other (DataFrame, or object coercible into a DataFrame):
+                Should have at least one matching index/column label
+                with the original DataFrame. If a Series is passed,
+                its name attribute must be set, and that will be
+                used as the column name to align with the original DataFrame.
+            join ({'left'}, default 'left'):
+                Only left join is implemented, keeping the index and columns of the
+                original object.
+            overwrite (bool, default True):
+                How to handle non-NA values for overlapping keys:
+                True: overwrite original DataFrame's values
+                with values from `other`.
+                False: only update values that are NA in
+                the original DataFrame.
+
+            filter_func (callable(1d-array) -> bool 1d-array, optional):
+                Can choose to replace values other than NA. Return True for values
+                that should be updated.
+
+        Returns:
+            None: This method directly changes calling object.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

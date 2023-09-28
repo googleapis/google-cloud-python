@@ -504,3 +504,75 @@ def _kurt_from_moments_and_count(
         kurt_id, na_cond_id, ops.partial_arg3(ops.where_op, None)
     )
     return block, kurt_id
+
+
+def align(
+    left_block: blocks.Block,
+    right_block: blocks.Block,
+    join: str = "outer",
+    axis: typing.Union[str, int, None] = None,
+) -> typing.Tuple[blocks.Block, blocks.Block]:
+    axis_n = core.utils.get_axis_number(axis) if axis is not None else None
+    # Must align columns first as other way will likely create extra joins
+    if (axis_n is None) or axis_n == 1:
+        left_block, right_block = align_columns(left_block, right_block, join=join)
+    if (axis_n is None) or axis_n == 0:
+        left_block, right_block = align_rows(left_block, right_block, join=join)
+    return left_block, right_block
+
+
+def align_rows(
+    left_block: blocks.Block,
+    right_block: blocks.Block,
+    join: str = "outer",
+):
+    joined_index, (get_column_left, get_column_right) = left_block.index.join(
+        right_block.index, how=join
+    )
+    left_columns = [get_column_left(col) for col in left_block.value_columns]
+    right_columns = [get_column_right(col) for col in right_block.value_columns]
+
+    left_block = joined_index._block.select_columns(left_columns)
+    right_block = joined_index._block.select_columns(right_columns)
+    return left_block, right_block
+
+
+def align_columns(
+    left_block: blocks.Block,
+    right_block: blocks.Block,
+    join: str = "outer",
+):
+    columns, lcol_indexer, rcol_indexer = left_block.column_labels.join(
+        right_block.column_labels, how=join, return_indexers=True
+    )
+    column_indices = zip(
+        lcol_indexer if (lcol_indexer is not None) else range(len(columns)),
+        rcol_indexer if (rcol_indexer is not None) else range(len(columns)),
+    )
+    left_column_ids = []
+    right_column_ids = []
+
+    original_left_block = left_block
+    original_right_block = right_block
+
+    for left_index, right_index in column_indices:
+        if left_index >= 0:
+            left_col_id = original_left_block.value_columns[left_index]
+        else:
+            dtype = right_block.dtypes[right_index]
+            left_block, left_col_id = left_block.create_constant(
+                None, dtype=dtype, label=original_right_block.column_labels[right_index]
+            )
+        left_column_ids.append(left_col_id)
+
+        if right_index >= 0:
+            right_col_id = original_right_block.value_columns[right_index]
+        else:
+            dtype = original_left_block.dtypes[left_index]
+            right_block, right_col_id = right_block.create_constant(
+                None, dtype=dtype, label=left_block.column_labels[left_index]
+            )
+        right_column_ids.append(right_col_id)
+    left_final = left_block.select_columns(left_column_ids)
+    right_final = right_block.select_columns(right_column_ids)
+    return left_final, right_final

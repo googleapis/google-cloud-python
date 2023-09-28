@@ -745,6 +745,55 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     __rpow__ = rpow
 
+    def align(
+        self,
+        other: typing.Union[DataFrame, bigframes.series.Series],
+        join: str = "outer",
+        axis: typing.Union[str, int, None] = None,
+    ) -> typing.Tuple[
+        typing.Union[DataFrame, bigframes.series.Series],
+        typing.Union[DataFrame, bigframes.series.Series],
+    ]:
+        axis_n = utils.get_axis_number(axis) if axis else None
+        if axis_n == 1 and isinstance(other, bigframes.series.Series):
+            raise NotImplementedError(
+                f"align with series and axis=1 not supported. {constants.FEEDBACK_LINK}"
+            )
+        left_block, right_block = block_ops.align(
+            self._block, other._block, join=join, axis=axis
+        )
+        return DataFrame(left_block), other.__class__(right_block)
+
+    def update(self, other, join: str = "left", overwrite=True, filter_func=None):
+        other = other if isinstance(other, DataFrame) else DataFrame(other)
+        if join != "left":
+            raise ValueError("Only 'left' join supported for update")
+
+        if filter_func is not None:  # Will always take other if possible
+
+            def update_func(
+                left: bigframes.series.Series, right: bigframes.series.Series
+            ) -> bigframes.series.Series:
+                return left.mask(right.notna() & filter_func(left), right)
+
+        elif overwrite:
+
+            def update_func(
+                left: bigframes.series.Series, right: bigframes.series.Series
+            ) -> bigframes.series.Series:
+                return left.mask(right.notna(), right)
+
+        else:
+
+            def update_func(
+                left: bigframes.series.Series, right: bigframes.series.Series
+            ) -> bigframes.series.Series:
+                return left.mask(left.isna(), right)
+
+        result = self.combine(other, update_func, how=join)
+
+        self._set_block(result._block)
+
     def combine(
         self,
         other: DataFrame,
@@ -753,56 +802,31 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         ],
         fill_value=None,
         overwrite: bool = True,
+        *,
+        how: str = "outer",
     ) -> DataFrame:
-        # Join rows
-        joined_index, (get_column_left, get_column_right) = self._block.index.join(
-            other._block.index, how="outer"
-        )
-        columns, lcol_indexer, rcol_indexer = self.columns.join(
-            other.columns, how="outer", return_indexers=True
+        l_aligned, r_aligned = block_ops.align(self._block, other._block, join=how)
+
+        other_missing_labels = self._block.column_labels.difference(
+            other._block.column_labels
         )
 
-        column_indices = zip(
-            lcol_indexer if (lcol_indexer is not None) else range(len(columns)),
-            rcol_indexer if (lcol_indexer is not None) else range(len(columns)),
-        )
-
-        block = joined_index._block
+        l_frame = DataFrame(l_aligned)
+        r_frame = DataFrame(r_aligned)
         results = []
-        for left_index, right_index in column_indices:
-            if left_index >= 0 and right_index >= 0:  # -1 indices indicate missing
-                left_col_id = get_column_left(self._block.value_columns[left_index])
-                right_col_id = get_column_right(other._block.value_columns[right_index])
-                left_series = bigframes.series.Series(block.select_column(left_col_id))
-                right_series = bigframes.series.Series(
-                    block.select_column(right_col_id)
-                )
+        for (label, lseries), (_, rseries) in zip(l_frame.items(), r_frame.items()):
+            if not ((label in other_missing_labels) and not overwrite):
                 if fill_value is not None:
-                    left_series = left_series.fillna(fill_value)
-                    right_series = right_series.fillna(fill_value)
-                results.append(func(left_series, right_series))
-            elif left_index >= 0:
-                # Does not exist in other
-                if overwrite:
-                    dtype = self.dtypes[left_index]
-                    block, null_col_id = block.create_constant(None, dtype=dtype)
-                    result = bigframes.series.Series(block.select_column(null_col_id))
-                    results.append(result)
+                    result = func(
+                        lseries.fillna(fill_value), rseries.fillna(fill_value)
+                    )
                 else:
-                    left_col_id = get_column_left(self._block.value_columns[left_index])
-                    result = bigframes.series.Series(block.select_column(left_col_id))
-                    if fill_value is not None:
-                        result = result.fillna(fill_value)
-                    results.append(result)
-            elif right_index >= 0:
-                right_col_id = get_column_right(other._block.value_columns[right_index])
-                result = bigframes.series.Series(block.select_column(right_col_id))
-                if fill_value is not None:
-                    result = result.fillna(fill_value)
-                results.append(result)
+                    result = func(lseries, rseries)
             else:
-                # Should not be possible
-                raise ValueError("No right or left index.")
+                result = (
+                    lseries.fillna(fill_value) if fill_value is not None else lseries
+                )
+            results.append(result)
 
         if all([isinstance(val, bigframes.series.Series) for val in results]):
             import bigframes.core.reshape as rs
