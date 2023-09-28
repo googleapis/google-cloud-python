@@ -56,6 +56,7 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.services.flows import pagers
+from google.cloud.dialogflowcx_v3beta1.types import advanced_settings
 from google.cloud.dialogflowcx_v3beta1.types import flow
 from google.cloud.dialogflowcx_v3beta1.types import flow as gcdc_flow
 from google.cloud.dialogflowcx_v3beta1.types import page, validation_message

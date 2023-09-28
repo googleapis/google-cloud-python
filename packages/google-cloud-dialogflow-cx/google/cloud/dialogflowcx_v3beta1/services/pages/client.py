@@ -51,7 +51,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.services.pages import pagers
-from google.cloud.dialogflowcx_v3beta1.types import fulfillment
+from google.cloud.dialogflowcx_v3beta1.types import advanced_settings, fulfillment
 from google.cloud.dialogflowcx_v3beta1.types import page
 from google.cloud.dialogflowcx_v3beta1.types import page as gcdc_page
 
