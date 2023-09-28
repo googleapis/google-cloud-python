@@ -15,11 +15,7 @@
 
 set -eo pipefail
 
-if [[ -z "${KOKORO_GOB_COMMIT}" ]]; then
-    PROJECT_SCM="github/python-bigquery-dataframes"
-else
-    PROJECT_SCM="git/bigframes"
-fi
+PROJECT_SCM="github/python-bigquery-dataframes"
 
 if [[ -z "${PROJECT_ROOT:-}" ]]; then
     PROJECT_ROOT="${KOKORO_ARTIFACTS_DIR}/${PROJECT_SCM}"
