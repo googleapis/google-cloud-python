@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+import itertools
 import typing
 from typing import Callable, Literal, Tuple
 
@@ -25,7 +26,7 @@ import ibis.expr.types as ibis_types
 
 import bigframes.constants as constants
 import bigframes.core as core
-import bigframes.core.guid
+import bigframes.core.guid as guid
 import bigframes.core.joins.row_identity
 import bigframes.core.ordering
 
@@ -122,17 +123,38 @@ def join_by_column(
             ),
         )
     else:
+        lmapping = {
+            col_id: guid.generate_guid()
+            for col_id in itertools.chain(
+                left.column_names, left._hidden_ordering_column_names
+            )
+        }
+        rmapping = {
+            col_id: guid.generate_guid()
+            for col_id in itertools.chain(
+                right.column_names, right._hidden_ordering_column_names
+            )
+        }
+
+        def get_column_left(col_id):
+            return lmapping[col_id]
+
+        def get_column_right(col_id):
+            return rmapping[col_id]
+
         left_table = left._to_ibis_expr(
             ordering_mode="unordered",
             expose_hidden_cols=True,
+            col_id_overrides=lmapping,
         )
         right_table = right._to_ibis_expr(
             ordering_mode="unordered",
             expose_hidden_cols=True,
+            col_id_overrides=rmapping,
         )
         join_conditions = [
-            value_to_join_key(left_table[left_index])
-            == value_to_join_key(right_table[right_index])
+            value_to_join_key(left_table[lmapping[left_index]])
+            == value_to_join_key(right_table[rmapping[right_index]])
             for left_index, right_index in zip(left_column_ids, right_column_ids)
         ]
 
@@ -144,38 +166,6 @@ def join_by_column(
             lname="{name}_x",
             rname="{name}_y",
         )
-
-        def get_column_left(key: str) -> str:
-            if (
-                how == "inner"
-                and key in left_column_ids
-                and key in combined_table.columns
-            ):
-                # Ibis doesn't rename the column if the values are guaranteed
-                # to be equal on left and right (because they're part of an
-                # inner join condition). See:
-                # https://github.com/ibis-project/ibis/pull/4651
-                pass
-            elif key in right_table.columns:
-                key = f"{key}_x"
-
-            return key
-
-        def get_column_right(key: str) -> str:
-            if (
-                how == "inner"
-                and key in right_column_ids
-                and key in combined_table.columns
-            ):
-                # Ibis doesn't rename the column if the values are guaranteed
-                # to be equal on left and right (because they're part of an
-                # inner join condition). See:
-                # https://github.com/ibis-project/ibis/pull/4651
-                pass
-            elif key in left_table.columns:
-                key = f"{key}_y"
-
-            return key
 
         # Preserve ordering accross joins.
         ordering = join_orderings(
@@ -245,20 +235,14 @@ def get_join_cols(
     join_key_cols: list[ibis_types.Value] = []
     for left_col, right_col in zip(left_join_cols, right_join_cols):
         if not coalesce_join_keys:
-            join_key_cols.append(
-                left_col.name(bigframes.core.guid.generate_guid(prefix="index_"))
-            )
-            join_key_cols.append(
-                right_col.name(bigframes.core.guid.generate_guid(prefix="index_"))
-            )
+            join_key_cols.append(left_col.name(guid.generate_guid(prefix="index_")))
+            join_key_cols.append(right_col.name(guid.generate_guid(prefix="index_")))
         else:
             if how == "left" or how == "inner":
-                join_key_cols.append(
-                    left_col.name(bigframes.core.guid.generate_guid(prefix="index_"))
-                )
+                join_key_cols.append(left_col.name(guid.generate_guid(prefix="index_")))
             elif how == "right":
                 join_key_cols.append(
-                    right_col.name(bigframes.core.guid.generate_guid(prefix="index_"))
+                    right_col.name(guid.generate_guid(prefix="index_"))
                 )
             elif how == "outer":
                 # The left index and the right index might contain null values, for
@@ -269,16 +253,14 @@ def get_join_cols(
                 # Don't need to coalesce if they are exactly the same column.
                 if left_col.name("index").equals(right_col.name("index")):
                     join_key_cols.append(
-                        left_col.name(
-                            bigframes.core.guid.generate_guid(prefix="index_")
-                        )
+                        left_col.name(guid.generate_guid(prefix="index_"))
                     )
                 else:
                     join_key_cols.append(
                         ibis.coalesce(
                             left_col,
                             right_col,
-                        ).name(bigframes.core.guid.generate_guid(prefix="index_"))
+                        ).name(guid.generate_guid(prefix="index_"))
                     )
             else:
                 raise ValueError(
