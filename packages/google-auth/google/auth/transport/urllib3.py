@@ -40,10 +40,17 @@ except ImportError as caught_exc:  # pragma: NO COVER
         "urllib3 package to use the urllib3 transport."
     ) from caught_exc
 
+from packaging import version  # type: ignore
+
 from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import transport
 from google.oauth2 import service_account
+
+if version.parse(urllib3.__version__) >= version.parse("2.0.0"):  # pragma: NO COVER
+    RequestMethods = urllib3._request_methods.RequestMethods  # type: ignore
+else:  # pragma: NO COVER
+    RequestMethods = urllib3.request.RequestMethods  # type: ignore
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -179,7 +186,7 @@ def _make_mutual_tls_http(cert, key):
     return http
 
 
-class AuthorizedHttp(urllib3._request_methods.RequestMethods):  # type: ignore
+class AuthorizedHttp(RequestMethods):  # type: ignore
     """A urllib3 HTTP class with credentials.
 
     This class is used to perform requests to API endpoints that require
