@@ -1081,6 +1081,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-gsuiteaddons": {
+            "component": "google-cloud-gsuiteaddons",
+            "extra-files": [
+                "google/cloud/gsuiteaddons/gapic_version.py",
+                "google/cloud/gsuiteaddons_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.gsuiteaddons.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-iam": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,

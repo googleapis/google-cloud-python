@@ -65,6 +65,7 @@
     "packages/google-cloud-gke-backup": "0.5.2",
     "packages/google-cloud-gke-connect-gateway": "0.8.4",
     "packages/google-cloud-gke-multicloud": "0.6.3",
+    "packages/google-cloud-gsuiteaddons": "0.3.3",
     "packages/google-cloud-iam": "2.12.2",
     "packages/google-cloud-iam-logging": "1.2.2",
     "packages/google-cloud-iap": "1.11.0",
