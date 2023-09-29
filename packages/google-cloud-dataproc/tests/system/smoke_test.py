@@ -30,8 +30,7 @@ def project_id():
 def test_list_clusters(project_id: str, transport: str):
     client = dataproc_v1.ClusterControllerClient(transport=transport)
 
-    parent = client.common_location_path(project_id, location="us-central1")
-    client.list_clusters(parent=parent)
+    client.list_clusters(project_id=project_id, region="global")
 
     # The purpose of this smoke test is to test the communication with the API server,
     # rather than API-specific functionality.
