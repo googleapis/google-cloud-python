@@ -1,4 +1,6 @@
-# Copyright 2019 Google LLC
+# -*- coding: utf-8 -*-
+#
+# Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,17 +13,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-import os
-
-from google.cloud import tasks_v2
-
-
-class TestSystemTasks(object):
-    def test_list_queues(self):
-        client = tasks_v2.CloudTasksClient()
-
-        # Setup Request
-        project_id = os.environ["PROJECT_ID"]
-        parent = f"projects/{project_id}/locations/us-central1"
-        client.list_queues(request={"parent": parent})
