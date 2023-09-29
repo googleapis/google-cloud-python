@@ -406,6 +406,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-bigquery-datatransfer": {
+            "component": "google-cloud-bigquery-datatransfer",
+            "extra-files": [
+                "google/cloud/bigquery_datatransfer_v1/gapic_version.py",
+                "google/cloud/bigquery_datatransfer/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.datatransfer.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-bigquery-logging": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
