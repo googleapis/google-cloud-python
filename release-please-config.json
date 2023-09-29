@@ -357,6 +357,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-bigquery-connection": {
+            "component": "google-cloud-bigquery-connection",
+            "extra-files": [
+                "google/cloud/bigquery_connection/gapic_version.py",
+                "google/cloud/bigquery_connection_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.connection.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-bigquery-data-exchange": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,

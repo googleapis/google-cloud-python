@@ -8,7 +8,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-bigquery-connection",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-bigquery-connection",
     "api_id": "bigqueryconnection.googleapis.com",
     "requires_billing": true,
