@@ -1451,6 +1451,470 @@ async def test_get_notification_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        service.GetSettingsRequest,
+        dict,
+    ],
+)
+def test_get_settings(request_type, transport: str = "grpc"):
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.Settings(
+            name="name_value",
+            etag="etag_value",
+        )
+        response = client.get_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.Settings)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+
+
+def test_get_settings_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        client.get_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetSettingsRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_settings_async(
+    transport: str = "grpc_asyncio", request_type=service.GetSettingsRequest
+):
+    client = AdvisoryNotificationsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.Settings(
+                name="name_value",
+                etag="etag_value",
+            )
+        )
+        response = await client.get_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.Settings)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.asyncio
+async def test_get_settings_async_from_dict():
+    await test_get_settings_async(request_type=dict)
+
+
+def test_get_settings_field_headers():
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.GetSettingsRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        call.return_value = service.Settings()
+        client.get_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_settings_field_headers_async():
+    client = AdvisoryNotificationsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.GetSettingsRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.Settings())
+        await client.get_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_settings_flattened():
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.Settings()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_settings(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_settings_flattened_error():
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_settings(
+            service.GetSettingsRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_settings_flattened_async():
+    client = AdvisoryNotificationsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.Settings()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.Settings())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_settings(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_settings_flattened_error_async():
+    client = AdvisoryNotificationsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_settings(
+            service.GetSettingsRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateSettingsRequest,
+        dict,
+    ],
+)
+def test_update_settings(request_type, transport: str = "grpc"):
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.Settings(
+            name="name_value",
+            etag="etag_value",
+        )
+        response = client.update_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.Settings)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+
+
+def test_update_settings_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        client.update_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateSettingsRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_settings_async(
+    transport: str = "grpc_asyncio", request_type=service.UpdateSettingsRequest
+):
+    client = AdvisoryNotificationsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.Settings(
+                name="name_value",
+                etag="etag_value",
+            )
+        )
+        response = await client.update_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateSettingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.Settings)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+
+
+@pytest.mark.asyncio
+async def test_update_settings_async_from_dict():
+    await test_update_settings_async(request_type=dict)
+
+
+def test_update_settings_field_headers():
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.UpdateSettingsRequest()
+
+    request.settings.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        call.return_value = service.Settings()
+        client.update_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "settings.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_settings_field_headers_async():
+    client = AdvisoryNotificationsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.UpdateSettingsRequest()
+
+    request.settings.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.Settings())
+        await client.update_settings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "settings.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_settings_flattened():
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.Settings()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_settings(
+            settings=service.Settings(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].settings
+        mock_val = service.Settings(name="name_value")
+        assert arg == mock_val
+
+
+def test_update_settings_flattened_error():
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_settings(
+            service.UpdateSettingsRequest(),
+            settings=service.Settings(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_settings_flattened_async():
+    client = AdvisoryNotificationsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_settings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.Settings()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(service.Settings())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_settings(
+            settings=service.Settings(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].settings
+        mock_val = service.Settings(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_settings_flattened_error_async():
+    client = AdvisoryNotificationsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_settings(
+            service.UpdateSettingsRequest(),
+            settings=service.Settings(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         service.ListNotificationsRequest,
         dict,
     ],
@@ -2070,6 +2534,548 @@ def test_get_notification_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetSettingsRequest,
+        dict,
+    ],
+)
+def test_get_settings_rest(request_type):
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/locations/sample2/settings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.Settings(
+            name="name_value",
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.Settings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.Settings)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+
+
+def test_get_settings_rest_required_fields(request_type=service.GetSettingsRequest):
+    transport_class = transports.AdvisoryNotificationsServiceRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.Settings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.Settings.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_settings(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_settings_rest_unset_required_fields():
+    transport = transports.AdvisoryNotificationsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_settings._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_settings_rest_interceptors(null_interceptor):
+    transport = transports.AdvisoryNotificationsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AdvisoryNotificationsServiceRestInterceptor(),
+    )
+    client = AdvisoryNotificationsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AdvisoryNotificationsServiceRestInterceptor, "post_get_settings"
+    ) as post, mock.patch.object(
+        transports.AdvisoryNotificationsServiceRestInterceptor, "pre_get_settings"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.GetSettingsRequest.pb(service.GetSettingsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.Settings.to_json(service.Settings())
+
+        request = service.GetSettingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.Settings()
+
+        client.get_settings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_settings_rest_bad_request(
+    transport: str = "rest", request_type=service.GetSettingsRequest
+):
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "organizations/sample1/locations/sample2/settings"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_settings(request)
+
+
+def test_get_settings_rest_flattened():
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.Settings()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "organizations/sample1/locations/sample2/settings"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.Settings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_settings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=organizations/*/locations/*/settings}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_settings_rest_flattened_error(transport: str = "rest"):
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_settings(
+            service.GetSettingsRequest(),
+            name="name_value",
+        )
+
+
+def test_get_settings_rest_error():
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateSettingsRequest,
+        dict,
+    ],
+)
+def test_update_settings_rest(request_type):
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "settings": {"name": "organizations/sample1/locations/sample2/settings"}
+    }
+    request_init["settings"] = {
+        "name": "organizations/sample1/locations/sample2/settings",
+        "notification_settings": {},
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.Settings(
+            name="name_value",
+            etag="etag_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.Settings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_settings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.Settings)
+    assert response.name == "name_value"
+    assert response.etag == "etag_value"
+
+
+def test_update_settings_rest_required_fields(
+    request_type=service.UpdateSettingsRequest,
+):
+    transport_class = transports.AdvisoryNotificationsServiceRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_settings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.Settings()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = service.Settings.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_settings(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_settings_rest_unset_required_fields():
+    transport = transports.AdvisoryNotificationsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_settings._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("settings",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_settings_rest_interceptors(null_interceptor):
+    transport = transports.AdvisoryNotificationsServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.AdvisoryNotificationsServiceRestInterceptor(),
+    )
+    client = AdvisoryNotificationsServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.AdvisoryNotificationsServiceRestInterceptor, "post_update_settings"
+    ) as post, mock.patch.object(
+        transports.AdvisoryNotificationsServiceRestInterceptor, "pre_update_settings"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = service.UpdateSettingsRequest.pb(service.UpdateSettingsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = service.Settings.to_json(service.Settings())
+
+        request = service.UpdateSettingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.Settings()
+
+        client.update_settings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_settings_rest_bad_request(
+    transport: str = "rest", request_type=service.UpdateSettingsRequest
+):
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "settings": {"name": "organizations/sample1/locations/sample2/settings"}
+    }
+    request_init["settings"] = {
+        "name": "organizations/sample1/locations/sample2/settings",
+        "notification_settings": {},
+        "etag": "etag_value",
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_settings(request)
+
+
+def test_update_settings_rest_flattened():
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.Settings()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "settings": {"name": "organizations/sample1/locations/sample2/settings"}
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            settings=service.Settings(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = service.Settings.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_settings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{settings.name=organizations/*/locations/*/settings}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_settings_rest_flattened_error(transport: str = "rest"):
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_settings(
+            service.UpdateSettingsRequest(),
+            settings=service.Settings(name="name_value"),
+        )
+
+
+def test_update_settings_rest_error():
+    client = AdvisoryNotificationsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.AdvisoryNotificationsServiceGrpcTransport(
@@ -2211,6 +3217,8 @@ def test_advisory_notifications_service_base_transport():
     methods = (
         "list_notifications",
         "get_notification",
+        "get_settings",
+        "update_settings",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -2486,6 +3494,12 @@ def test_advisory_notifications_service_client_transport_session_collision(
     session1 = client1.transport.get_notification._session
     session2 = client2.transport.get_notification._session
     assert session1 != session2
+    session1 = client1.transport.get_settings._session
+    session2 = client2.transport.get_settings._session
+    assert session1 != session2
+    session1 = client1.transport.update_settings._session
+    session2 = client2.transport.update_settings._session
+    assert session1 != session2
 
 
 def test_advisory_notifications_service_grpc_transport_channel():
@@ -2644,8 +3658,31 @@ def test_parse_notification_path():
     assert expected == actual
 
 
+def test_settings_path():
+    organization = "cuttlefish"
+    location = "mussel"
+    expected = "organizations/{organization}/locations/{location}/settings".format(
+        organization=organization,
+        location=location,
+    )
+    actual = AdvisoryNotificationsServiceClient.settings_path(organization, location)
+    assert expected == actual
+
+
+def test_parse_settings_path():
+    expected = {
+        "organization": "winkle",
+        "location": "nautilus",
+    }
+    path = AdvisoryNotificationsServiceClient.settings_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AdvisoryNotificationsServiceClient.parse_settings_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2657,7 +3694,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "abalone",
     }
     path = AdvisoryNotificationsServiceClient.common_billing_account_path(**expected)
 
@@ -2667,7 +3704,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -2677,7 +3714,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "clam",
     }
     path = AdvisoryNotificationsServiceClient.common_folder_path(**expected)
 
@@ -2687,7 +3724,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -2697,7 +3734,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "octopus",
     }
     path = AdvisoryNotificationsServiceClient.common_organization_path(**expected)
 
@@ -2707,7 +3744,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -2717,7 +3754,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "nudibranch",
     }
     path = AdvisoryNotificationsServiceClient.common_project_path(**expected)
 
@@ -2727,8 +3764,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -2739,8 +3776,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = AdvisoryNotificationsServiceClient.common_location_path(**expected)
 

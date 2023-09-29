@@ -150,6 +150,16 @@ class AdvisoryNotificationsServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.get_settings: gapic_v1.method.wrap_method(
+                self.get_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_settings: gapic_v1.method.wrap_method(
+                self.update_settings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -179,6 +189,24 @@ class AdvisoryNotificationsServiceTransport(abc.ABC):
     ) -> Callable[
         [service.GetNotificationRequest],
         Union[service.Notification, Awaitable[service.Notification]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_settings(
+        self,
+    ) -> Callable[
+        [service.GetSettingsRequest],
+        Union[service.Settings, Awaitable[service.Settings]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_settings(
+        self,
+    ) -> Callable[
+        [service.UpdateSettingsRequest],
+        Union[service.Settings, Awaitable[service.Settings]],
     ]:
         raise NotImplementedError()
 
