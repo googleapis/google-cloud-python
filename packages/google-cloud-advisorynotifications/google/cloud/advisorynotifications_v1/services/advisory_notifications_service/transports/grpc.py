@@ -282,6 +282,56 @@ class AdvisoryNotificationsServiceGrpcTransport(AdvisoryNotificationsServiceTran
             )
         return self._stubs["get_notification"]
 
+    @property
+    def get_settings(self) -> Callable[[service.GetSettingsRequest], service.Settings]:
+        r"""Return a callable for the get settings method over gRPC.
+
+        Get notification settings.
+
+        Returns:
+            Callable[[~.GetSettingsRequest],
+                    ~.Settings]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_settings" not in self._stubs:
+            self._stubs["get_settings"] = self.grpc_channel.unary_unary(
+                "/google.cloud.advisorynotifications.v1.AdvisoryNotificationsService/GetSettings",
+                request_serializer=service.GetSettingsRequest.serialize,
+                response_deserializer=service.Settings.deserialize,
+            )
+        return self._stubs["get_settings"]
+
+    @property
+    def update_settings(
+        self,
+    ) -> Callable[[service.UpdateSettingsRequest], service.Settings]:
+        r"""Return a callable for the update settings method over gRPC.
+
+        Update notification settings.
+
+        Returns:
+            Callable[[~.UpdateSettingsRequest],
+                    ~.Settings]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_settings" not in self._stubs:
+            self._stubs["update_settings"] = self.grpc_channel.unary_unary(
+                "/google.cloud.advisorynotifications.v1.AdvisoryNotificationsService/UpdateSettings",
+                request_serializer=service.UpdateSettingsRequest.serialize,
+                response_deserializer=service.Settings.deserialize,
+            )
+        return self._stubs["update_settings"]
+
     def close(self):
         self.grpc_channel.close()
 
