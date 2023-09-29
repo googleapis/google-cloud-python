@@ -44,7 +44,7 @@ from google.cloud.firestore_v1.query import Query
 # Types needed only for Type Hints
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
 from google.cloud.firestore_v1.types import CommitResponse
-from typing import Any, Callable, Generator, Optional
+from typing import Any, Callable, Generator
 
 
 class Transaction(batch.WriteBatch, BaseTransaction):
@@ -108,6 +108,7 @@ class Transaction(batch.WriteBatch, BaseTransaction):
 
         Raises:
             ValueError: If no transaction is in progress.
+            google.api_core.exceptions.GoogleAPICallError: If the rollback fails.
         """
         if not self.in_progress:
             raise ValueError(_CANT_ROLLBACK)
@@ -122,6 +123,7 @@ class Transaction(batch.WriteBatch, BaseTransaction):
                 metadata=self._client._rpc_metadata,
             )
         finally:
+            # clean up, even if rollback fails
             self._clean_up()
 
     def _commit(self) -> list:
@@ -214,10 +216,6 @@ class _Transactional(_BaseTransactional):
     def _pre_commit(self, transaction: Transaction, *args, **kwargs) -> Any:
         """Begin transaction and call the wrapped callable.
 
-        If the callable raises an exception, the transaction will be rolled
-        back. If not, the transaction will be "ready" for ``Commit`` (i.e.
-        it will have staged writes).
-
         Args:
             transaction
                 (:class:`~google.cloud.firestore_v1.transaction.Transaction`):
@@ -241,41 +239,7 @@ class _Transactional(_BaseTransactional):
         self.current_id = transaction._id
         if self.retry_id is None:
             self.retry_id = self.current_id
-        try:
-            return self.to_wrap(transaction, *args, **kwargs)
-        except:  # noqa
-            # NOTE: If ``rollback`` fails this will lose the information
-            #       from the original failure.
-            transaction._rollback()
-            raise
-
-    def _maybe_commit(self, transaction: Transaction) -> Optional[bool]:
-        """Try to commit the transaction.
-
-        If the transaction is read-write and the ``Commit`` fails with the
-        ``ABORTED`` status code, it will be retried. Any other failure will
-        not be caught.
-
-        Args:
-            transaction
-                (:class:`~google.cloud.firestore_v1.transaction.Transaction`):
-                The transaction to be ``Commit``-ed.
-
-        Returns:
-            bool: Indicating if the commit succeeded.
-        """
-        try:
-            transaction._commit()
-            return True
-        except exceptions.GoogleAPICallError as exc:
-            if transaction._read_only:
-                raise
-
-            if isinstance(exc, exceptions.Aborted):
-                # If a read-write transaction returns ABORTED, retry.
-                return False
-            else:
-                raise
+        return self.to_wrap(transaction, *args, **kwargs)
 
     def __call__(self, transaction: Transaction, *args, **kwargs):
         """Execute the wrapped callable within a transaction.
@@ -297,22 +261,34 @@ class _Transactional(_BaseTransactional):
                 ``max_attempts``.
         """
         self._reset()
+        retryable_exceptions = (
+            (exceptions.Aborted) if not transaction._read_only else ()
+        )
+        last_exc = None
 
-        for attempt in range(transaction._max_attempts):
-            result = self._pre_commit(transaction, *args, **kwargs)
-            succeeded = self._maybe_commit(transaction)
-            if succeeded:
-                return result
-
-            # Subsequent requests will use the failed transaction ID as part of
-            # the ``BeginTransactionRequest`` when restarting this transaction
-            # (via ``options.retry_transaction``). This preserves the "spot in
-            # line" of the transaction, so exponential backoff is not required
-            # in this case.
-
-        transaction._rollback()
-        msg = _EXCEED_ATTEMPTS_TEMPLATE.format(transaction._max_attempts)
-        raise ValueError(msg)
+        try:
+            for attempt in range(transaction._max_attempts):
+                result = self._pre_commit(transaction, *args, **kwargs)
+                try:
+                    transaction._commit()
+                    return result
+                except retryable_exceptions as exc:
+                    last_exc = exc
+                # Retry attempts that result in retryable exceptions
+                # Subsequent requests will use the failed transaction ID as part of
+                # the ``BeginTransactionRequest`` when restarting this transaction
+                # (via ``options.retry_transaction``). This preserves the "spot in
+                # line" of the transaction, so exponential backoff is not required
+                # in this case.
+            # retries exhausted
+            # wrap the last exception in a ValueError before raising
+            msg = _EXCEED_ATTEMPTS_TEMPLATE.format(transaction._max_attempts)
+            raise ValueError(msg) from last_exc
+        except BaseException:  # noqa: B901
+            # rollback the transaction on any error
+            # errors raised during _rollback will be chained to the original error through __context__
+            transaction._rollback()
+            raise
 
 
 def transactional(to_wrap: Callable) -> _Transactional:

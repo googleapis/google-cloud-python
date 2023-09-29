@@ -401,7 +401,9 @@ class Watch(object):
 
         error_message = "Error %s:  %s" % (code, message)
 
-        raise RuntimeError(error_message)
+        raise RuntimeError(error_message) from exceptions.from_grpc_status(
+            code, message
+        )
 
     def _on_snapshot_target_change_reset(self, target_change):
         # Whatever changes have happened so far no longer matter.

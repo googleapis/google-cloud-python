@@ -464,220 +464,6 @@ def test__transactional__pre_commit_retry_id_already_set_success(database):
 
 
 @pytest.mark.parametrize("database", [None, "somedb"])
-def test__transactional__pre_commit_failure(database):
-    exc = RuntimeError("Nope not today.")
-    to_wrap = mock.Mock(side_effect=exc, spec=[])
-    wrapped = _make__transactional(to_wrap)
-
-    txn_id = b"gotta-fail"
-    transaction = _make_transaction_pb(txn_id, database=database)
-    with pytest.raises(RuntimeError) as exc_info:
-        wrapped._pre_commit(transaction, 10, 20)
-    assert exc_info.value is exc
-
-    assert transaction._id is None
-    assert wrapped.current_id == txn_id
-    assert wrapped.retry_id == txn_id
-
-    # Verify mocks.
-    to_wrap.assert_called_once_with(transaction, 10, 20)
-    firestore_api = transaction._client._firestore_api
-    firestore_api.begin_transaction.assert_called_once_with(
-        request={"database": transaction._client._database_string, "options": None},
-        metadata=transaction._client._rpc_metadata,
-    )
-    firestore_api.rollback.assert_called_once_with(
-        request={
-            "database": transaction._client._database_string,
-            "transaction": txn_id,
-        },
-        metadata=transaction._client._rpc_metadata,
-    )
-    firestore_api.commit.assert_not_called()
-
-
-@pytest.mark.parametrize("database", [None, "somedb"])
-def test__transactional__pre_commit_failure_with_rollback_failure(database):
-    from google.api_core import exceptions
-
-    exc1 = ValueError("I will not be only failure.")
-    to_wrap = mock.Mock(side_effect=exc1, spec=[])
-    wrapped = _make__transactional(to_wrap)
-
-    txn_id = b"both-will-fail"
-    transaction = _make_transaction_pb(txn_id, database=database)
-    # Actually force the ``rollback`` to fail as well.
-    exc2 = exceptions.InternalServerError("Rollback blues.")
-    firestore_api = transaction._client._firestore_api
-    firestore_api.rollback.side_effect = exc2
-
-    # Try to ``_pre_commit``
-    with pytest.raises(exceptions.InternalServerError) as exc_info:
-        wrapped._pre_commit(transaction, a="b", c="zebra")
-    assert exc_info.value is exc2
-
-    assert transaction._id is None
-    assert wrapped.current_id == txn_id
-    assert wrapped.retry_id == txn_id
-
-    # Verify mocks.
-    to_wrap.assert_called_once_with(transaction, a="b", c="zebra")
-    firestore_api.begin_transaction.assert_called_once_with(
-        request={"database": transaction._client._database_string, "options": None},
-        metadata=transaction._client._rpc_metadata,
-    )
-    firestore_api.rollback.assert_called_once_with(
-        request={
-            "database": transaction._client._database_string,
-            "transaction": txn_id,
-        },
-        metadata=transaction._client._rpc_metadata,
-    )
-    firestore_api.commit.assert_not_called()
-
-
-@pytest.mark.parametrize("database", [None, "somedb"])
-def test__transactional__maybe_commit_success(database):
-    wrapped = _make__transactional(mock.sentinel.callable_)
-
-    txn_id = b"nyet"
-    transaction = _make_transaction_pb(txn_id, database=database)
-    transaction._id = txn_id  # We won't call ``begin()``.
-    succeeded = wrapped._maybe_commit(transaction)
-    assert succeeded
-
-    # On success, _id is reset.
-    assert transaction._id is None
-
-    # Verify mocks.
-    firestore_api = transaction._client._firestore_api
-    firestore_api.begin_transaction.assert_not_called()
-    firestore_api.rollback.assert_not_called()
-    firestore_api.commit.assert_called_once_with(
-        request={
-            "database": transaction._client._database_string,
-            "writes": [],
-            "transaction": txn_id,
-        },
-        metadata=transaction._client._rpc_metadata,
-    )
-
-
-@pytest.mark.parametrize("database", [None, "somedb"])
-def test__transactional__maybe_commit_failure_read_only(database):
-    from google.api_core import exceptions
-
-    wrapped = _make__transactional(mock.sentinel.callable_)
-
-    txn_id = b"failed"
-    transaction = _make_transaction_pb(txn_id, read_only=True, database=database)
-    transaction._id = txn_id  # We won't call ``begin()``.
-    wrapped.current_id = txn_id  # We won't call ``_pre_commit()``.
-    wrapped.retry_id = txn_id  # We won't call ``_pre_commit()``.
-
-    # Actually force the ``commit`` to fail (use ABORTED, but cannot
-    # retry since read-only).
-    exc = exceptions.Aborted("Read-only did a bad.")
-    firestore_api = transaction._client._firestore_api
-    firestore_api.commit.side_effect = exc
-
-    with pytest.raises(exceptions.Aborted) as exc_info:
-        wrapped._maybe_commit(transaction)
-    assert exc_info.value is exc
-
-    assert transaction._id == txn_id
-    assert wrapped.current_id == txn_id
-    assert wrapped.retry_id == txn_id
-
-    # Verify mocks.
-    firestore_api.begin_transaction.assert_not_called()
-    firestore_api.rollback.assert_not_called()
-    firestore_api.commit.assert_called_once_with(
-        request={
-            "database": transaction._client._database_string,
-            "writes": [],
-            "transaction": txn_id,
-        },
-        metadata=transaction._client._rpc_metadata,
-    )
-
-
-@pytest.mark.parametrize("database", [None, "somedb"])
-def test__transactional__maybe_commit_failure_can_retry(database):
-    from google.api_core import exceptions
-
-    wrapped = _make__transactional(mock.sentinel.callable_)
-
-    txn_id = b"failed-but-retry"
-    transaction = _make_transaction_pb(txn_id, database=database)
-    transaction._id = txn_id  # We won't call ``begin()``.
-    wrapped.current_id = txn_id  # We won't call ``_pre_commit()``.
-    wrapped.retry_id = txn_id  # We won't call ``_pre_commit()``.
-
-    # Actually force the ``commit`` to fail.
-    exc = exceptions.Aborted("Read-write did a bad.")
-    firestore_api = transaction._client._firestore_api
-    firestore_api.commit.side_effect = exc
-
-    succeeded = wrapped._maybe_commit(transaction)
-    assert not succeeded
-
-    assert transaction._id == txn_id
-    assert wrapped.current_id == txn_id
-    assert wrapped.retry_id == txn_id
-
-    # Verify mocks.
-    firestore_api.begin_transaction.assert_not_called()
-    firestore_api.rollback.assert_not_called()
-    firestore_api.commit.assert_called_once_with(
-        request={
-            "database": transaction._client._database_string,
-            "writes": [],
-            "transaction": txn_id,
-        },
-        metadata=transaction._client._rpc_metadata,
-    )
-
-
-@pytest.mark.parametrize("database", [None, "somedb"])
-def test__transactional__maybe_commit_failure_cannot_retry(database):
-    from google.api_core import exceptions
-
-    wrapped = _make__transactional(mock.sentinel.callable_)
-
-    txn_id = b"failed-but-not-retryable"
-    transaction = _make_transaction_pb(txn_id, database=database)
-    transaction._id = txn_id  # We won't call ``begin()``.
-    wrapped.current_id = txn_id  # We won't call ``_pre_commit()``.
-    wrapped.retry_id = txn_id  # We won't call ``_pre_commit()``.
-
-    # Actually force the ``commit`` to fail.
-    exc = exceptions.InternalServerError("Real bad thing")
-    firestore_api = transaction._client._firestore_api
-    firestore_api.commit.side_effect = exc
-
-    with pytest.raises(exceptions.InternalServerError) as exc_info:
-        wrapped._maybe_commit(transaction)
-    assert exc_info.value is exc
-
-    assert transaction._id == txn_id
-    assert wrapped.current_id == txn_id
-    assert wrapped.retry_id == txn_id
-
-    # Verify mocks.
-    firestore_api.begin_transaction.assert_not_called()
-    firestore_api.rollback.assert_not_called()
-    firestore_api.commit.assert_called_once_with(
-        request={
-            "database": transaction._client._database_string,
-            "writes": [],
-            "transaction": txn_id,
-        },
-        metadata=transaction._client._rpc_metadata,
-    )
-
-
-@pytest.mark.parametrize("database", [None, "somedb"])
 def test__transactional___call__success_first_attempt(database):
     to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
     wrapped = _make__transactional(to_wrap)
@@ -766,15 +552,22 @@ def test__transactional___call__success_second_attempt(database):
 
 
 @pytest.mark.parametrize("database", [None, "somedb"])
-def test__transactional___call__failure(database):
+@pytest.mark.parametrize("max_attempts", [1, 5])
+def test_transactional___call__failure_max_attempts(database, max_attempts):
+    """
+    rasie retryable error and exhause max_attempts
+    """
     from google.api_core import exceptions
-    from google.cloud.firestore_v1.base_transaction import _EXCEED_ATTEMPTS_TEMPLATE
+    from google.cloud.firestore_v1.types import common
+    from google.cloud.firestore_v1.transaction import _EXCEED_ATTEMPTS_TEMPLATE
 
     to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
     wrapped = _make__transactional(to_wrap)
 
-    txn_id = b"only-one-shot"
-    transaction = _make_transaction_pb(txn_id, max_attempts=1, database=database)
+    txn_id = b"attempt_exhaustion"
+    transaction = _make_transaction_pb(
+        txn_id, database=database, max_attempts=max_attempts
+    )
 
     # Actually force the ``commit`` to fail.
     exc = exceptions.Aborted("Contention just once.")
@@ -787,6 +580,76 @@ def test__transactional___call__failure(database):
 
     err_msg = _EXCEED_ATTEMPTS_TEMPLATE.format(transaction._max_attempts)
     assert exc_info.value.args == (err_msg,)
+    # should retain cause exception
+    assert exc_info.value.__cause__ == exc
+
+    assert transaction._id is None
+    assert wrapped.current_id == txn_id
+    assert wrapped.retry_id == txn_id
+
+    # Verify mocks.
+    assert to_wrap.call_count == max_attempts
+    to_wrap.assert_called_with(transaction, "here", there=1.5)
+    assert firestore_api.begin_transaction.call_count == max_attempts
+    options_ = common.TransactionOptions(
+        read_write=common.TransactionOptions.ReadWrite(retry_transaction=txn_id)
+    )
+    expected_calls = [
+        mock.call(
+            request={
+                "database": transaction._client._database_string,
+                "options": None if i == 0 else options_,
+            },
+            metadata=transaction._client._rpc_metadata,
+        )
+        for i in range(max_attempts)
+    ]
+    assert firestore_api.begin_transaction.call_args_list == expected_calls
+    assert firestore_api.commit.call_count == max_attempts
+    firestore_api.commit.assert_called_with(
+        request={
+            "database": transaction._client._database_string,
+            "writes": [],
+            "transaction": txn_id,
+        },
+        metadata=transaction._client._rpc_metadata,
+    )
+    firestore_api.rollback.assert_called_once_with(
+        request={
+            "database": transaction._client._database_string,
+            "transaction": txn_id,
+        },
+        metadata=transaction._client._rpc_metadata,
+    )
+
+
+@pytest.mark.parametrize("database", [None, "somedb"])
+@pytest.mark.parametrize("max_attempts", [1, 5])
+def test_transactional___call__failure_readonly(database, max_attempts):
+    """
+    readonly transaction should never retry
+    """
+    from google.api_core import exceptions
+    from google.cloud.firestore_v1.types import common
+
+    to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
+    wrapped = _make__transactional(to_wrap)
+
+    txn_id = b"read_only_fail"
+    transaction = _make_transaction_pb(
+        txn_id, database=database, max_attempts=max_attempts, read_only=True
+    )
+
+    # Actually force the ``commit`` to fail.
+    exc = exceptions.Aborted("Contention just once.")
+    firestore_api = transaction._client._firestore_api
+    firestore_api.commit.side_effect = exc
+
+    # Call the __call__-able ``wrapped``.
+    with pytest.raises(exceptions.Aborted) as exc_info:
+        wrapped(transaction, "here", there=1.5)
+
+    assert exc_info.value == exc
 
     assert transaction._id is None
     assert wrapped.current_id == txn_id
@@ -795,7 +658,128 @@ def test__transactional___call__failure(database):
     # Verify mocks.
     to_wrap.assert_called_once_with(transaction, "here", there=1.5)
     firestore_api.begin_transaction.assert_called_once_with(
-        request={"database": transaction._client._database_string, "options": None},
+        request={
+            "database": transaction._client._database_string,
+            "options": common.TransactionOptions(
+                read_only=common.TransactionOptions.ReadOnly()
+            ),
+        },
+        metadata=transaction._client._rpc_metadata,
+    )
+    firestore_api.rollback.assert_called_once_with(
+        request={
+            "database": transaction._client._database_string,
+            "transaction": txn_id,
+        },
+        metadata=transaction._client._rpc_metadata,
+    )
+    firestore_api.commit.assert_called_once_with(
+        request={
+            "database": transaction._client._database_string,
+            "writes": [],
+            "transaction": txn_id,
+        },
+        metadata=transaction._client._rpc_metadata,
+    )
+
+
+@pytest.mark.parametrize("database", [None, "somedb"])
+@pytest.mark.parametrize("max_attempts", [1, 5])
+def test_transactional___call__failure_with_non_retryable(database, max_attempts):
+    """
+    call fails due to an exception that is not retryable.
+    Should rollback raise immediately
+    """
+    from google.api_core import exceptions
+
+    to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
+    wrapped = _make__transactional(to_wrap)
+
+    txn_id = b"non_retryable"
+    transaction = _make_transaction_pb(
+        txn_id, database=database, max_attempts=max_attempts
+    )
+
+    # Actually force the ``commit`` to fail.
+    exc = exceptions.InvalidArgument("non retryable")
+    firestore_api = transaction._client._firestore_api
+    firestore_api.commit.side_effect = exc
+
+    # Call the __call__-able ``wrapped``.
+    with pytest.raises(exceptions.InvalidArgument) as exc_info:
+        wrapped(transaction, "here", there=1.5)
+
+    assert exc_info.value == exc
+
+    assert transaction._id is None
+    assert wrapped.current_id == txn_id
+
+    # Verify mocks.
+    to_wrap.assert_called_once_with(transaction, "here", there=1.5)
+    firestore_api.begin_transaction.assert_called_once_with(
+        request={
+            "database": transaction._client._database_string,
+            "options": None,
+        },
+        metadata=transaction._client._rpc_metadata,
+    )
+    firestore_api.rollback.assert_called_once_with(
+        request={
+            "database": transaction._client._database_string,
+            "transaction": txn_id,
+        },
+        metadata=transaction._client._rpc_metadata,
+    )
+    firestore_api.commit.assert_called_once_with(
+        request={
+            "database": transaction._client._database_string,
+            "writes": [],
+            "transaction": txn_id,
+        },
+        metadata=transaction._client._rpc_metadata,
+    )
+
+
+@pytest.mark.parametrize("database", [None, "somedb"])
+def test_transactional___call__failure_with_rollback_failure(database):
+    """
+    Test second failure as part of rollback
+    should maintain first failure as __context__
+    """
+    from google.api_core import exceptions
+
+    to_wrap = mock.Mock(return_value=mock.sentinel.result, spec=[])
+    wrapped = _make__transactional(to_wrap)
+
+    txn_id = b"non_retryable"
+    transaction = _make_transaction_pb(txn_id, database=database, max_attempts=1)
+
+    # Actually force the ``commit`` to fail.
+    exc = exceptions.InvalidArgument("first error")
+    firestore_api = transaction._client._firestore_api
+    firestore_api.commit.side_effect = exc
+    # also force a second error on rollback
+    rb_exc = exceptions.InternalServerError("second error")
+    firestore_api.rollback.side_effect = rb_exc
+
+    # Call the __call__-able ``wrapped``.
+    # should raise second error with first error as __context__
+    with pytest.raises(exceptions.InternalServerError) as exc_info:
+        wrapped(transaction, "here", there=1.5)
+
+    assert exc_info.value == rb_exc
+    assert exc_info.value.__context__ == exc
+
+    assert transaction._id is None
+    assert wrapped.current_id == txn_id
+
+    # Verify mocks.
+    to_wrap.assert_called_once_with(transaction, "here", there=1.5)
+    firestore_api.begin_transaction.assert_called_once_with(
+        request={
+            "database": transaction._client._database_string,
+            "options": None,
+        },
         metadata=transaction._client._rpc_metadata,
     )
     firestore_api.rollback.assert_called_once_with(

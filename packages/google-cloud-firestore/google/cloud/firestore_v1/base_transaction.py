@@ -185,8 +185,5 @@ class _BaseTransactional(object):
     def _pre_commit(self, transaction, *args, **kwargs) -> NoReturn:
         raise NotImplementedError
 
-    def _maybe_commit(self, transaction) -> NoReturn:
-        raise NotImplementedError
-
     def __call__(self, transaction, *args, **kwargs):
         raise NotImplementedError
