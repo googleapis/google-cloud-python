@@ -49,6 +49,26 @@ def combine_indices(index1: pd.Index, index2: pd.Index) -> pd.MultiIndex:
     return multi_index
 
 
+def index_as_tuples(index: pd.Index) -> typing.Sequence[typing.Tuple]:
+    if isinstance(index, pd.MultiIndex):
+        return [label for label in index]
+    else:
+        return [(label,) for label in index]
+
+
+def split_index(
+    index: pd.Index, levels: int = 1
+) -> typing.Tuple[typing.Optional[pd.Index], pd.Index]:
+    nlevels = index.nlevels
+    remaining = nlevels - levels
+    if remaining > 0:
+        return index.droplevel(list(range(remaining, nlevels))), index.droplevel(
+            list(range(0, remaining))
+        )
+    else:
+        return (None, index)
+
+
 def get_standardized_ids(
     col_labels: Iterable[Hashable], idx_labels: Iterable[Hashable] = ()
 ) -> tuple[list[str], list[str]]:

@@ -963,10 +963,11 @@ class ArrayValue:
         ],
         *,
         passthrough_columns: typing.Sequence[str] = (),
-        index_col_id: str = "index",
+        index_col_ids: typing.Sequence[str] = ["index"],
         dtype: typing.Union[
             bigframes.dtypes.Dtype, typing.Sequence[bigframes.dtypes.Dtype]
         ] = pandas.Float64Dtype(),
+        how="left",
     ) -> ArrayValue:
         """
         Unpivot ArrayValue columns.
@@ -981,8 +982,11 @@ class ArrayValue:
         Returns:
             ArrayValue: The unpivoted ArrayValue
         """
-        table = self._to_ibis_expr(ordering_mode="offset_col")
+        if how not in ("left", "right"):
+            raise ValueError("'how' must be 'left' or 'right'")
+        table = self._to_ibis_expr(ordering_mode="unordered", expose_hidden_cols=True)
         row_n = len(row_labels)
+        hidden_col_ids = self._hidden_ordering_column_names.keys()
         if not all(
             len(source_columns) == row_n for _, source_columns in unpivot_columns
         ):
@@ -992,33 +996,44 @@ class ArrayValue:
         unpivot_table = table.cross_join(
             ibis.memtable({unpivot_offset_id: range(row_n)})
         )
-        unpivot_offsets_value = (
-            (
-                (unpivot_table[ORDER_ID_COLUMN] * row_n)
-                + unpivot_table[unpivot_offset_id]
-            )
-            .cast(ibis_dtypes.int64)
-            .name(ORDER_ID_COLUMN),
-        )
-
         # Use ibis memtable to infer type of rowlabels (if possible)
         # TODO: Allow caller to specify dtype
-        labels_ibis_type = ibis.memtable({"col": row_labels})["col"].type()
-        labels_dtype = bigframes.dtypes.ibis_dtype_to_bigframes_dtype(labels_ibis_type)
-        cases = [
-            (
-                i,
-                bigframes.dtypes.literal_to_ibis_scalar(
-                    row_labels[i], force_dtype=labels_dtype  # type:ignore
-                ),
-            )
-            for i in range(len(row_labels))
+        if isinstance(row_labels[0], tuple):
+            labels_table = ibis.memtable(row_labels)
+            labels_ibis_types = [
+                labels_table[col].type() for col in labels_table.columns
+            ]
+        else:
+            labels_ibis_types = [ibis.memtable({"col": row_labels})["col"].type()]
+        labels_dtypes = [
+            bigframes.dtypes.ibis_dtype_to_bigframes_dtype(ibis_type)
+            for ibis_type in labels_ibis_types
         ]
-        labels_value = (
-            typing.cast(ibis_types.IntegerColumn, unpivot_table[unpivot_offset_id])
-            .cases(cases, default=None)  # type:ignore
-            .name(index_col_id)
-        )
+
+        label_columns = []
+        for label_part, (col_id, label_dtype) in enumerate(
+            zip(index_col_ids, labels_dtypes)
+        ):
+            # interpret as tuples even if it wasn't originally so can apply same logic for multi-column labels
+            labels_as_tuples = [
+                label if isinstance(label, tuple) else (label,) for label in row_labels
+            ]
+            cases = [
+                (
+                    i,
+                    bigframes.dtypes.literal_to_ibis_scalar(
+                        label_tuple[label_part],  # type:ignore
+                        force_dtype=label_dtype,  # type:ignore
+                    ),
+                )
+                for i, label_tuple in enumerate(labels_as_tuples)
+            ]
+            labels_value = (
+                typing.cast(ibis_types.IntegerColumn, unpivot_table[unpivot_offset_id])
+                .cases(cases, default=None)  # type:ignore
+                .name(col_id)
+            )
+            label_columns.append(labels_value)
 
         unpivot_values = []
         for j in range(len(unpivot_columns)):
@@ -1042,23 +1057,53 @@ class ArrayValue:
             unpivot_values.append(unpivot_value.name(result_col))
 
         unpivot_table = unpivot_table.select(
-            passthrough_columns, labels_value, *unpivot_values, unpivot_offsets_value
+            passthrough_columns,
+            *label_columns,
+            *unpivot_values,
+            *hidden_col_ids,
+            unpivot_offset_id,
         )
 
+        # Extend the original ordering using unpivot_offset_id
+        old_ordering = self._ordering
+        if how == "left":
+            new_ordering = ExpressionOrdering(
+                ordering_value_columns=[
+                    *old_ordering.ordering_value_columns,
+                    OrderingColumnReference(unpivot_offset_id),
+                ],
+                total_ordering_columns=frozenset(
+                    [*old_ordering.total_ordering_columns, unpivot_offset_id]
+                ),
+            )
+        else:  # how=="right"
+            new_ordering = ExpressionOrdering(
+                ordering_value_columns=[
+                    OrderingColumnReference(unpivot_offset_id),
+                    *old_ordering.ordering_value_columns,
+                ],
+                total_ordering_columns=frozenset(
+                    [*old_ordering.total_ordering_columns, unpivot_offset_id]
+                ),
+            )
         value_columns = [
             unpivot_table[value_col_id] for value_col_id, _ in unpivot_columns
         ]
         passthrough_values = [unpivot_table[col] for col in passthrough_columns]
+        hidden_ordering_columns = [
+            unpivot_table[unpivot_offset_id],
+            *[unpivot_table[hidden_col] for hidden_col in hidden_col_ids],
+        ]
         return ArrayValue(
             session=self._session,
             table=unpivot_table,
-            columns=[unpivot_table[index_col_id], *value_columns, *passthrough_values],
-            hidden_ordering_columns=[unpivot_table[ORDER_ID_COLUMN]],
-            ordering=ExpressionOrdering(
-                ordering_value_columns=[OrderingColumnReference(ORDER_ID_COLUMN)],
-                integer_encoding=IntegerEncoding(is_encoded=True, is_sequential=True),
-                total_ordering_columns=frozenset([ORDER_ID_COLUMN]),
-            ),
+            columns=[
+                *[unpivot_table[col_id] for col_id in index_col_ids],
+                *value_columns,
+                *passthrough_values,
+            ],
+            hidden_ordering_columns=hidden_ordering_columns,
+            ordering=new_ordering,
         )
 
     def assign(self, source_id: str, destination_id: str) -> ArrayValue:

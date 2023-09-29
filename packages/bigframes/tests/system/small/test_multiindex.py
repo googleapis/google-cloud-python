@@ -729,6 +729,26 @@ def test_column_multi_index_stack(scalars_df_index, scalars_pandas_df_index):
     )
 
 
+def test_column_multi_index_unstack(scalars_df_index, scalars_pandas_df_index):
+    columns = ["int64_too", "int64_col", "rowindex_2"]
+    level1 = pandas.Index(["b", "a", "b"], dtype="string[pyarrow]")
+    # Need resulting column to be pyarrow string rather than object dtype
+    level2 = pandas.Index(["a", "b", "b"], dtype="string[pyarrow]")
+    multi_columns = pandas.MultiIndex.from_arrays([level1, level2])
+    bf_df = scalars_df_index[columns].copy()
+    bf_df.columns = multi_columns
+    pd_df = scalars_pandas_df_index[columns].copy()
+    pd_df.columns = multi_columns
+
+    bf_result = bf_df.unstack().to_pandas()
+    # Shifting sort behavior in stack
+    pd_result = pd_df.unstack()
+
+    # Pandas produces NaN, where bq dataframes produces pd.NA
+    # Column ordering seems to depend on pandas version
+    pandas.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
 @pytest.mark.skip(reason="Pandas fails in newer versions.")
 def test_column_multi_index_w_na_stack(scalars_df_index, scalars_pandas_df_index):
     columns = ["int64_too", "int64_col", "rowindex_2"]
@@ -864,6 +884,17 @@ def test_column_multi_index_reorder_levels(scalars_df_index, scalars_pandas_df_i
     pd_result = pd_df.reorder_levels([-2, -1, 0], axis=1)
 
     pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_multi_index_unstack(hockey_df, hockey_pandas_df):
+    bf_result = (
+        hockey_df.set_index(["team_name", "season", "position"]).unstack().to_pandas()
+    )
+    pd_result = hockey_pandas_df.set_index(
+        ["team_name", "season", "position"]
+    ).unstack()
+
+    pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
 
 
 def test_column_multi_index_swaplevel(scalars_df_index, scalars_pandas_df_index):

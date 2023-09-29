@@ -1706,6 +1706,27 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             return bigframes.series.Series(result_block)
         return DataFrame(result_block)
 
+    def unstack(self):
+        block = self._block
+        # Special case, unstack with mono-index transpose into a series
+        if self.index.nlevels == 1:
+            block = block.stack(
+                how="right", dropna=False, sort=False, levels=self.columns.nlevels
+            )
+            return bigframes.series.Series(block)
+
+        # Pivot by last level of index
+        index_ids = block.index_columns
+        block = block.reset_index(drop=False)
+        block = block.set_index(index_ids[:-1])
+
+        pivot_block = block.pivot(
+            columns=[index_ids[-1]],
+            values=self._block.value_columns,
+            values_in_index=True,
+        )
+        return DataFrame(pivot_block)
+
     def _drop_non_numeric(self, keep_bool=True) -> DataFrame:
         types_to_keep = set(bigframes.dtypes.NUMERIC_BIGFRAMES_TYPES)
         if not keep_bool:

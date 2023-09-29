@@ -1771,6 +1771,26 @@ def test_df_stack(scalars_dfs):
     pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
 
 
+def test_df_unstack(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    # To match bigquery dataframes
+    scalars_pandas_df = scalars_pandas_df.copy()
+    scalars_pandas_df.columns = scalars_pandas_df.columns.astype("string[pyarrow]")
+    # Can only stack identically-typed columns
+    columns = [
+        "rowindex_2",
+        "int64_col",
+        "int64_too",
+    ]
+
+    # unstack on mono-index produces series
+    bf_result = scalars_df[columns].unstack().to_pandas()
+    pd_result = scalars_pandas_df[columns].unstack()
+
+    # Pandas produces NaN, where bq dataframes produces pd.NA
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
 @pytest.mark.parametrize(
     ("values", "index", "columns"),
     [

@@ -838,7 +838,7 @@ class Block:
             ]
             result_expr = self.expr.aggregate(aggregations, dropna=dropna).unpivot(
                 row_labels=self.column_labels.to_list(),
-                index_col_id="index",
+                index_col_ids=["index"],
                 unpivot_columns=[(value_col_id, self.value_columns)],
                 dtype=dtype,
             )
@@ -849,7 +849,7 @@ class Block:
             expr_with_offsets, offset_col = self.expr.promote_offsets()
             stacked_expr = expr_with_offsets.unpivot(
                 row_labels=self.column_labels.to_list(),
-                index_col_id=guid.generate_guid(),
+                index_col_ids=[guid.generate_guid()],
                 unpivot_columns=[(value_col_id, self.value_columns)],
                 passthrough_columns=[*self.index_columns, offset_col],
                 dtype=dtype,
@@ -1041,7 +1041,7 @@ class Block:
         expr = self.expr.aggregate(aggregations).unpivot(
             labels,
             unpivot_columns=columns,
-            index_col_id=label_col_id,
+            index_col_ids=[label_col_id],
         )
         labels = self._get_labels_for_columns(column_ids)
         return Block(expr, column_labels=labels, index_columns=[label_col_id])
@@ -1225,28 +1225,71 @@ class Block:
 
         return result_block.with_column_labels(column_index)
 
-    def stack(self):
+    def stack(self, how="left", dropna=True, sort=True, levels: int = 1):
         """Unpivot last column axis level into row axis"""
-        if isinstance(self.column_labels, pd.MultiIndex):
-            return self._stack_multi()
-        else:
-            return self._stack_mono()
-
-    def _stack_mono(self):
-        if isinstance(self.column_labels, pd.MultiIndex):
-            raise ValueError("Expected single level index")
-
         # These are the values that will be turned into rows
-        stack_values = self.column_labels.drop_duplicates().sort_values()
+
+        col_labels, row_labels = utils.split_index(self.column_labels, levels=levels)
+        if dropna:
+            row_labels = row_labels.drop_duplicates()
+        if sort:
+            row_labels = row_labels.sort_values()
+
+        row_label_tuples = utils.index_as_tuples(row_labels)
+
+        if col_labels is not None:
+            result_index = col_labels.drop_duplicates().sort_values().dropna(how="all")
+            result_col_labels = utils.index_as_tuples(result_index)
+        else:
+            result_index = pd.Index([None])
+            result_col_labels = list([()])
 
         # Get matching columns
         unpivot_columns: List[Tuple[str, List[str]]] = []
-        dtypes: List[bigframes.dtypes.Dtype] = []
-        col_id = guid.generate_guid("unpivot_")
+        dtypes = []
+        for val in result_col_labels:
+            col_id = guid.generate_guid("unpivot_")
+            input_columns, dtype = self._create_stack_column(val, row_label_tuples)
+            unpivot_columns.append((col_id, input_columns))
+            if dtype:
+                dtypes.append(dtype or pd.Float64Dtype())
+
+        added_index_columns = [guid.generate_guid() for _ in range(row_labels.nlevels)]
+        unpivot_expr = self._expr.unpivot(
+            row_labels=row_label_tuples,
+            passthrough_columns=self.index_columns,
+            unpivot_columns=unpivot_columns,
+            index_col_ids=added_index_columns,
+            dtype=dtypes,
+            how=how,
+        )
+        new_index_level_names = self.column_labels.names[-levels:]
+        if how == "left":
+            index_columns = [*self.index_columns, *added_index_columns]
+            index_labels = [*self._index_labels, *new_index_level_names]
+        else:
+            index_columns = [*added_index_columns, *self.index_columns]
+            index_labels = [*new_index_level_names, *self._index_labels]
+
+        block = Block(
+            unpivot_expr,
+            index_columns=index_columns,
+            column_labels=result_index,
+            index_labels=index_labels,
+        )
+        return block
+
+    def _create_stack_column(
+        self, col_label: typing.Tuple, stack_labels: typing.Sequence[typing.Tuple]
+    ):
         dtype = None
-        input_columns: Sequence[Optional[str]] = []
-        for uvalue in stack_values:
-            matching_ids = self.label_to_col_id.get(uvalue, [])
+        input_columns: list[Optional[str]] = []
+        for uvalue in stack_labels:
+            label_to_match = (*col_label, *uvalue)
+            label_to_match = (
+                label_to_match[0] if len(label_to_match) == 1 else label_to_match
+            )
+            matching_ids = self.label_to_col_id.get(label_to_match, [])
             input_id = matching_ids[0] if len(matching_ids) > 0 else None
             if input_id:
                 if dtype and dtype != self._column_type(input_id):
@@ -1256,84 +1299,8 @@ class Block:
                 else:
                     dtype = self._column_type(input_id)
             input_columns.append(input_id)
-        unpivot_columns.append((col_id, input_columns))
-        if dtype:
-            dtypes.append(dtype or pd.Float64Dtype())
-
-        added_index_column = col_id = guid.generate_guid()
-        unpivot_expr = self._expr.unpivot(
-            row_labels=stack_values,
-            passthrough_columns=self.index_columns,
-            unpivot_columns=unpivot_columns,
-            index_col_id=added_index_column,
-            dtype=dtypes,
-        )
-        block = Block(
-            unpivot_expr,
-            index_columns=[*self.index_columns, added_index_column],
-            column_labels=[None],
-            index_labels=[*self._index_labels, self.column_labels.names[-1]],
-        )
-        return block
-
-    def _stack_multi(self):
-        if not isinstance(self.column_labels, pd.MultiIndex):
-            raise ValueError("Expected multi-index")
-
-        # These are the values that will be turned into rows
-        stack_values = (
-            self.column_labels.get_level_values(-1).drop_duplicates().sort_values()
-        )
-
-        result_col_labels = (
-            self.column_labels.droplevel(-1)
-            .drop_duplicates()
-            .sort_values()
-            .dropna(how="all")
-        )
-
-        # Get matching columns
-        unpivot_columns: List[Tuple[str, List[str]]] = []
-        dtypes = []
-        for val in result_col_labels:
-            col_id = guid.generate_guid("unpivot_")
-            dtype = None
-            input_columns: Sequence[Optional[str]] = []
-            for uvalue in stack_values:
-                # Need to unpack if still a multi-index after dropping 1 level
-                label_to_match = (
-                    (val, uvalue) if result_col_labels.nlevels == 1 else (*val, uvalue)
-                )
-                matching_ids = self.label_to_col_id.get(label_to_match, [])
-                input_id = matching_ids[0] if len(matching_ids) > 0 else None
-                if input_id:
-                    if dtype and dtype != self._column_type(input_id):
-                        raise NotImplementedError(
-                            "Cannot stack columns with non-matching dtypes."
-                        )
-                    else:
-                        dtype = self._column_type(input_id)
-                input_columns.append(input_id)
-                # Input column i is the first one that
-            unpivot_columns.append((col_id, input_columns))
-            if dtype:
-                dtypes.append(dtype or pd.Float64Dtype())
-
-        added_index_column = col_id = guid.generate_guid()
-        unpivot_expr = self._expr.unpivot(
-            row_labels=stack_values,
-            passthrough_columns=self.index_columns,
-            unpivot_columns=unpivot_columns,
-            index_col_id=added_index_column,
-            dtype=dtypes,
-        )
-        block = Block(
-            unpivot_expr,
-            index_columns=[*self.index_columns, added_index_column],
-            column_labels=result_col_labels,
-            index_labels=[*self._index_labels, self.column_labels.names[-1]],
-        )
-        return block
+            # Input column i is the first one that
+        return input_columns, dtype or pd.Float64Dtype()
 
     def _column_type(self, col_id: str) -> bigframes.dtypes.Dtype:
         col_offset = self.value_columns.index(col_id)
