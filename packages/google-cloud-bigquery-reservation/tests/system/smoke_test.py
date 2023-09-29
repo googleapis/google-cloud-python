@@ -27,7 +27,7 @@ def project_id():
 
 
 @pytest.mark.parametrize("transport", ["grpc", "rest"])
-def test_list_connections(project_id: str, transport: str):
+def test_list_reservations(project_id: str, transport: str):
     client = bigquery_reservation_v1.ReservationServiceClient(transport=transport)
 
     parent = client.common_location_path(project_id, location="us-central1")
