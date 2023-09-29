@@ -20902,6 +20902,7 @@ def test_update_settings_rest(request_type):
             "deidentify_template": "deidentify_template_value",
             "inspect_template": "inspect_template_value",
         },
+        "speech_config": {"speech_recognizer": "speech_recognizer_value"},
     }
     request = request_type(**request_init)
 
@@ -21117,6 +21118,7 @@ def test_update_settings_rest_bad_request(
             "deidentify_template": "deidentify_template_value",
             "inspect_template": "inspect_template_value",
         },
+        "speech_config": {"speech_recognizer": "speech_recognizer_value"},
     }
     request = request_type(**request_init)
 
@@ -23587,9 +23589,37 @@ def test_parse_phrase_matcher_path():
     assert expected == actual
 
 
-def test_settings_path():
+def test_recognizer_path():
     project = "scallop"
     location = "abalone"
+    recognizer = "squid"
+    expected = (
+        "projects/{project}/locations/{location}/recognizers/{recognizer}".format(
+            project=project,
+            location=location,
+            recognizer=recognizer,
+        )
+    )
+    actual = ContactCenterInsightsClient.recognizer_path(project, location, recognizer)
+    assert expected == actual
+
+
+def test_parse_recognizer_path():
+    expected = {
+        "project": "clam",
+        "location": "whelk",
+        "recognizer": "octopus",
+    }
+    path = ContactCenterInsightsClient.recognizer_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ContactCenterInsightsClient.parse_recognizer_path(path)
+    assert expected == actual
+
+
+def test_settings_path():
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}/settings".format(
         project=project,
         location=location,
@@ -23600,8 +23630,8 @@ def test_settings_path():
 
 def test_parse_settings_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = ContactCenterInsightsClient.settings_path(**expected)
 
@@ -23611,9 +23641,9 @@ def test_parse_settings_path():
 
 
 def test_view_path():
-    project = "whelk"
-    location = "octopus"
-    view = "oyster"
+    project = "winkle"
+    location = "nautilus"
+    view = "scallop"
     expected = "projects/{project}/locations/{location}/views/{view}".format(
         project=project,
         location=location,
@@ -23625,9 +23655,9 @@ def test_view_path():
 
 def test_parse_view_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "view": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "view": "clam",
     }
     path = ContactCenterInsightsClient.view_path(**expected)
 
@@ -23637,7 +23667,7 @@ def test_parse_view_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -23647,7 +23677,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "octopus",
     }
     path = ContactCenterInsightsClient.common_billing_account_path(**expected)
 
@@ -23657,7 +23687,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -23667,7 +23697,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "nudibranch",
     }
     path = ContactCenterInsightsClient.common_folder_path(**expected)
 
@@ -23677,7 +23707,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -23687,7 +23717,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "mussel",
     }
     path = ContactCenterInsightsClient.common_organization_path(**expected)
 
@@ -23697,7 +23727,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -23707,7 +23737,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "nautilus",
     }
     path = ContactCenterInsightsClient.common_project_path(**expected)
 
@@ -23717,8 +23747,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -23729,8 +23759,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "squid",
+        "location": "clam",
     }
     path = ContactCenterInsightsClient.common_location_path(**expected)
 

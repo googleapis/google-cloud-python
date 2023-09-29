@@ -6109,7 +6109,11 @@ def test_create_service_rest(request_type):
         "encryption_config": {"kms_key": "kms_key_value"},
         "network_config": {
             "consumers": [
-                {"subnetwork": "subnetwork_value", "endpoint_uri": "endpoint_uri_value"}
+                {
+                    "subnetwork": "subnetwork_value",
+                    "endpoint_uri": "endpoint_uri_value",
+                    "endpoint_location": "endpoint_location_value",
+                }
             ]
         },
         "database_type": 1,
@@ -6372,7 +6376,11 @@ def test_create_service_rest_bad_request(
         "encryption_config": {"kms_key": "kms_key_value"},
         "network_config": {
             "consumers": [
-                {"subnetwork": "subnetwork_value", "endpoint_uri": "endpoint_uri_value"}
+                {
+                    "subnetwork": "subnetwork_value",
+                    "endpoint_uri": "endpoint_uri_value",
+                    "endpoint_location": "endpoint_location_value",
+                }
             ]
         },
         "database_type": 1,
@@ -6532,7 +6540,11 @@ def test_update_service_rest(request_type):
         "encryption_config": {"kms_key": "kms_key_value"},
         "network_config": {
             "consumers": [
-                {"subnetwork": "subnetwork_value", "endpoint_uri": "endpoint_uri_value"}
+                {
+                    "subnetwork": "subnetwork_value",
+                    "endpoint_uri": "endpoint_uri_value",
+                    "endpoint_location": "endpoint_location_value",
+                }
             ]
         },
         "database_type": 1,
@@ -6778,7 +6790,11 @@ def test_update_service_rest_bad_request(
         "encryption_config": {"kms_key": "kms_key_value"},
         "network_config": {
             "consumers": [
-                {"subnetwork": "subnetwork_value", "endpoint_uri": "endpoint_uri_value"}
+                {
+                    "subnetwork": "subnetwork_value",
+                    "endpoint_uri": "endpoint_uri_value",
+                    "endpoint_location": "endpoint_location_value",
+                }
             ]
         },
         "database_type": 1,
@@ -9611,6 +9627,7 @@ def test_create_backup_rest(request_type):
                     {
                         "subnetwork": "subnetwork_value",
                         "endpoint_uri": "endpoint_uri_value",
+                        "endpoint_location": "endpoint_location_value",
                     }
                 ]
             },
@@ -9886,6 +9903,7 @@ def test_create_backup_rest_bad_request(
                     {
                         "subnetwork": "subnetwork_value",
                         "endpoint_uri": "endpoint_uri_value",
+                        "endpoint_location": "endpoint_location_value",
                     }
                 ]
             },
