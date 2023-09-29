@@ -610,6 +610,9 @@ def notebook(session):
         "notebooks/getting_started/bq_dataframes_llm_code_generation.ipynb",
         "notebooks/getting_started/bq_dataframes_ml_linear_regression.ipynb",
         "notebooks/generative_ai/bq_dataframes_ml_drug_name_generation.ipynb",
+        "notebooks/vertex_sdk/sdk2_bigframes_pytorch.ipynb",
+        "notebooks/vertex_sdk/sdk2_bigframes_sklearn.ipynb",
+        "notebooks/vertex_sdk/sdk2_bigframes_tensorflow.ipynb",
         # The experimental notebooks imagine features that don't yet
         # exist or only exist as temporary prototypes.
         "notebooks/experimental/longer_ml_demo.ipynb",
