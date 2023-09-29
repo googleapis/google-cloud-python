@@ -26,10 +26,20 @@ _GAE_ENV_VARS = [_GAE_SERVICE_ENV, _GAE_VERSION_ENV, _GAE_INSTANCE_ENV]
 _CLOUD_RUN_SERVICE_ID = "K_SERVICE"
 _CLOUD_RUN_REVISION_ID = "K_REVISION"
 _CLOUD_RUN_CONFIGURATION_ID = "K_CONFIGURATION"
-_CLOUD_RUN_ENV_VARS = [
+_CLOUD_RUN_SERVICE_ENV_VARS = [
     _CLOUD_RUN_SERVICE_ID,
     _CLOUD_RUN_REVISION_ID,
     _CLOUD_RUN_CONFIGURATION_ID,
+]
+_CLOUD_RUN_JOB_ID = "CLOUD_RUN_JOB"
+_CLOUD_RUN_EXECUTION_ID = "CLOUD_RUN_EXECUTION"
+_CLOUD_RUN_TASK_INDEX = "CLOUD_RUN_TASK_INDEX"
+_CLOUD_RUN_TASK_ATTEMPT = "CLOUD_RUN_TASK_ATTEMPT"
+_CLOUD_RUN_JOB_ENV_VARS = [
+    _CLOUD_RUN_JOB_ID,
+    _CLOUD_RUN_EXECUTION_ID,
+    _CLOUD_RUN_TASK_INDEX,
+    _CLOUD_RUN_TASK_ATTEMPT,
 ]
 """Environment variables set in Cloud Run environment."""
 
@@ -118,8 +128,8 @@ def _create_compute_resource():
     return resource
 
 
-def _create_cloud_run_resource():
-    """Create a standardized Cloud Run resource.
+def _create_cloud_run_service_resource():
+    """Create a standardized Cloud Run service resource.
     Returns:
         google.cloud.logging.Resource
     """
@@ -133,6 +143,24 @@ def _create_cloud_run_resource():
             "revision_name": os.environ.get(_CLOUD_RUN_REVISION_ID, ""),
             "location": region.split("/")[-1] if region else "",
             "configuration_name": os.environ.get(_CLOUD_RUN_CONFIGURATION_ID, ""),
+        },
+    )
+    return resource
+
+
+def _create_cloud_run_job_resource():
+    """Create a standardized Cloud Run job resource.
+    Returns:
+        google.cloud.logging.Resource
+    """
+    region = retrieve_metadata_server(_REGION_ID)
+    project = retrieve_metadata_server(_PROJECT_NAME)
+    resource = Resource(
+        type="cloud_run_job",
+        labels={
+            "project_id": project if project else "",
+            "job_name": os.environ.get(_CLOUD_RUN_JOB_ID, ""),
+            "location": region.split("/")[-1] if region else "",
         },
     )
     return resource
@@ -190,9 +218,12 @@ def detect_resource(project=""):
     ):
         # Cloud Functions
         return _create_functions_resource()
-    elif all([env in os.environ for env in _CLOUD_RUN_ENV_VARS]):
+    elif all([env in os.environ for env in _CLOUD_RUN_SERVICE_ENV_VARS]):
         # Cloud Run
-        return _create_cloud_run_resource()
+        return _create_cloud_run_service_resource()
+    elif all([env in os.environ for env in _CLOUD_RUN_JOB_ENV_VARS]):
+        # Cloud Run
+        return _create_cloud_run_job_resource()
     elif gce_instance_name is not None:
         # Compute Engine
         return _create_compute_resource()
