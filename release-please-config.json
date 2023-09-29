@@ -1684,6 +1684,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-scheduler": {
+            "component": "google-cloud-scheduler",
+            "extra-files": [
+                "google/cloud/scheduler/gapic_version.py",
+                "google/cloud/scheduler_v1beta1/gapic_version.py",
+                "google/cloud/scheduler_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.scheduler.v1beta1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.scheduler.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-secret-manager": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
