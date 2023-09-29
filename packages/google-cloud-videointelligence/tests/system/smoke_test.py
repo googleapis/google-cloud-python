@@ -22,6 +22,7 @@ from google.cloud import videointelligence_v1
 
 INPUT_URI = "gs://cloud-samples-data/video/cat.mp4"
 
+
 @pytest.fixture(scope="session")
 def project_id():
     return os.environ["PROJECT_ID"]
