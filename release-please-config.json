@@ -450,6 +450,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-bigquery-reservation": {
+            "component": "google-cloud-bigquery-reservation",
+            "extra-files": [
+                "google/cloud/bigquery_reservation/gapic_version.py",
+                "google/cloud/bigquery_reservation_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.bigquery.reservation.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-billing": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
