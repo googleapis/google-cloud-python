@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-os-config",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-os-config",
     "api_id": "osconfig.googleapis.com",
     "default_version": "v1",

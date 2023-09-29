@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-dlp",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-dlp",
     "api_id": "dlp.googleapis.com",
     "requires_billing": true,
