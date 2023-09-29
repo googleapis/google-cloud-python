@@ -1995,6 +1995,43 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-videointelligence": {
+            "component": "google-cloud-videointelligence",
+            "extra-files": [
+                "google/cloud/videointelligence/gapic_version.py",
+                "google/cloud/videointelligence_v1p1beta1/gapic_version.py",
+                "google/cloud/videointelligence_v1p2beta1/gapic_version.py",
+                "google/cloud/videointelligence_v1beta2/gapic_version.py",
+                "google/cloud/videointelligence_v1/gapic_version.py",
+                "google/cloud/videointelligence_v1p3beta1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.videointelligence.v1p2beta1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.videointelligence.v1beta2.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.videointelligence.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.videointelligence.v1p3beta1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.videointelligence.v1p1beta1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-vm-migration": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
