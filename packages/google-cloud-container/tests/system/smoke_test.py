@@ -26,7 +26,8 @@ def project_id():
     return os.environ["PROJECT_ID"]
 
 
-@pytest.mark.parametrize("transport", ["grpc", "rest"])
+# REST transport is not yet supported in the client
+@pytest.mark.parametrize("transport", ["grpc"])
 def test_list_clusters(project_id: str, transport: str):
     client = container_v1.ClusterManagerClient(transport=transport)
 
