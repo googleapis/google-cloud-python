@@ -1894,6 +1894,31 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-tasks": {
+            "component": "google-cloud-tasks",
+            "extra-files": [
+                "google/cloud/tasks_v2/gapic_version.py",
+                "google/cloud/tasks/gapic_version.py",
+                "google/cloud/tasks_v2beta3/gapic_version.py",
+                "google/cloud/tasks_v2beta2/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.tasks.v2beta2.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.tasks.v2.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.tasks.v2beta3.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-tpu": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
