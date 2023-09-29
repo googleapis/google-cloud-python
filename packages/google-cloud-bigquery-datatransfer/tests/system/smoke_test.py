@@ -27,7 +27,7 @@ def project_id():
 
 
 @pytest.mark.parametrize("transport", ["grpc", "rest"])
-def test_list_connections(project_id: str, transport: str):
+def test_list_data_sources(project_id: str, transport: str):
     client = bigquery_datatransfer_v1.DataTransferServiceClient(transport=transport)
 
     parent = client.common_location_path(project_id, location="us-central1")
