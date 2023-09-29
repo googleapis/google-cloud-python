@@ -869,6 +869,19 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-dlp": {
+            "component": "google-cloud-dlp",
+            "extra-files": [
+                "google/cloud/dlp_v2/gapic_version.py",
+                "google/cloud/dlp/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.privacy.dlp.v2.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-dms": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
