@@ -190,6 +190,28 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         return self._transport
 
     @staticmethod
+    def group_path(
+        project: str,
+        hub: str,
+        group: str,
+    ) -> str:
+        """Returns a fully-qualified group string."""
+        return "projects/{project}/locations/global/hubs/{hub}/groups/{group}".format(
+            project=project,
+            hub=hub,
+            group=group,
+        )
+
+    @staticmethod
+    def parse_group_path(path: str) -> Dict[str, str]:
+        """Parses a group path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/global/hubs/(?P<hub>.+?)/groups/(?P<group>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def hub_path(
         project: str,
         hub: str,
@@ -205,6 +227,30 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         """Parses a hub path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/global/hubs/(?P<hub>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def hub_route_path(
+        project: str,
+        hub: str,
+        route_table: str,
+        route: str,
+    ) -> str:
+        """Returns a fully-qualified hub_route string."""
+        return "projects/{project}/locations/global/hubs/{hub}/routeTables/{route_table}/routes/{route}".format(
+            project=project,
+            hub=hub,
+            route_table=route_table,
+            route=route,
+        )
+
+    @staticmethod
+    def parse_hub_route_path(path: str) -> Dict[str, str]:
+        """Parses a hub_route path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/global/hubs/(?P<hub>.+?)/routeTables/(?P<route_table>.+?)/routes/(?P<route>.+?)$",
+            path,
         )
         return m.groupdict() if m else {}
 
@@ -268,6 +314,28 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         """Parses a network path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/global/networks/(?P<resource_id>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def route_table_path(
+        project: str,
+        hub: str,
+        route_table: str,
+    ) -> str:
+        """Returns a fully-qualified route_table string."""
+        return "projects/{project}/locations/global/hubs/{hub}/routeTables/{route_table}".format(
+            project=project,
+            hub=hub,
+            route_table=route_table,
+        )
+
+    @staticmethod
+    def parse_route_table_path(path: str) -> Dict[str, str]:
+        """Parses a route_table path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/global/hubs/(?P<hub>.+?)/routeTables/(?P<route_table>.+?)$",
+            path,
         )
         return m.groupdict() if m else {}
 
@@ -733,13 +801,15 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         Returns:
             google.cloud.networkconnectivity_v1.types.Hub:
                 A Network Connectivity Center hub is
-                a collection of spokes. A single hub can
+                a global management resource to which
+                you attach spokes. A single hub can
                 contain spokes from multiple regions.
                 However, if any of a hub's spokes use
-                the data transfer feature, the resources
-                associated with those spokes must all
-                reside in the same VPC network. Spokes
-                that do not use data transfer can be
+                the site-to-site data transfer feature,
+                the resources associated with those
+                spokes must all be in the same VPC
+                network. Spokes that do not use
+                site-to-site data transfer can be
                 associated with any VPC network in your
                 project.
 
@@ -865,13 +935,14 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A Network Connectivity Center hub is a collection of spokes. A single hub
-                   can contain spokes from multiple regions. However, if
-                   any of a hub's spokes use the data transfer feature,
+                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A Network Connectivity Center hub is a global management resource to which
+                   you attach spokes. A single hub can contain spokes
+                   from multiple regions. However, if any of a hub's
+                   spokes use the site-to-site data transfer feature,
                    the resources associated with those spokes must all
-                   reside in the same VPC network. Spokes that do not
-                   use data transfer can be associated with any VPC
-                   network in your project.
+                   be in the same VPC network. Spokes that do not use
+                   site-to-site data transfer can be associated with any
+                   VPC network in your project.
 
         """
         # Create or coerce a protobuf request object.
@@ -1003,13 +1074,14 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A Network Connectivity Center hub is a collection of spokes. A single hub
-                   can contain spokes from multiple regions. However, if
-                   any of a hub's spokes use the data transfer feature,
+                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Hub` A Network Connectivity Center hub is a global management resource to which
+                   you attach spokes. A single hub can contain spokes
+                   from multiple regions. However, if any of a hub's
+                   spokes use the site-to-site data transfer feature,
                    the resources associated with those spokes must all
-                   reside in the same VPC network. Spokes that do not
-                   use data transfer can be associated with any VPC
-                   network in your project.
+                   be in the same VPC network. Spokes that do not use
+                   site-to-site data transfer can be associated with any
+                   VPC network in your project.
 
         """
         # Create or coerce a protobuf request object.
@@ -1188,6 +1260,122 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         # Done; return the response.
         return response
 
+    def list_hub_spokes(
+        self,
+        request: Optional[Union[hub.ListHubSpokesRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListHubSpokesPager:
+        r"""Lists the Network Connectivity Center spokes
+        associated with a specified hub and location. The list
+        includes both spokes that are attached to the hub and
+        spokes that have been proposed but not yet accepted.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_list_hub_spokes():
+                # Create a client
+                client = networkconnectivity_v1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.ListHubSpokesRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                page_result = client.list_hub_spokes(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.ListHubSpokesRequest, dict]):
+                The request object. The request for
+                [HubService.ListHubSpokes][google.cloud.networkconnectivity.v1.HubService.ListHubSpokes].
+            name (str):
+                Required. The name of the hub.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListHubSpokesPager:
+                The response for
+                   [HubService.ListHubSpokes][google.cloud.networkconnectivity.v1.HubService.ListHubSpokes].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a hub.ListHubSpokesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, hub.ListHubSpokesRequest):
+            request = hub.ListHubSpokesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_hub_spokes]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListHubSpokesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def list_spokes(
         self,
         request: Optional[Union[hub.ListSpokesRequest, dict]] = None,
@@ -1359,9 +1547,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
         Returns:
             google.cloud.networkconnectivity_v1.types.Spoke:
-                A Network Connectivity Center spoke represents a connection between your
-                   Google Cloud network resources and a non-Google-Cloud
-                   network.
+                A Network Connectivity Center spoke represents one or more network
+                   connectivity resources.
 
                    When you create a spoke, you associate it with a hub.
                    You must also identify a value for exactly one of the
@@ -1370,6 +1557,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                    -  linked_vpn_tunnels
                    -  linked_interconnect_attachments
                    -  linked_router_appliance_instances
+                   -  linked_vpc_network
 
         """
         # Create or coerce a protobuf request object.
@@ -1491,9 +1679,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Spoke` A Network Connectivity Center spoke represents a connection between your
-                   Google Cloud network resources and a non-Google-Cloud
-                   network.
+                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Spoke` A Network Connectivity Center spoke represents one or more network
+                   connectivity resources.
 
                    When you create a spoke, you associate it with a hub.
                    You must also identify a value for exactly one of the
@@ -1502,6 +1689,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                    -  linked_vpn_tunnels
                    -  linked_interconnect_attachments
                    -  linked_router_appliance_instances
+                   -  linked_vpc_network
 
         """
         # Create or coerce a protobuf request object.
@@ -1633,9 +1821,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Spoke` A Network Connectivity Center spoke represents a connection between your
-                   Google Cloud network resources and a non-Google-Cloud
-                   network.
+                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.Spoke` A Network Connectivity Center spoke represents one or more network
+                   connectivity resources.
 
                    When you create a spoke, you associate it with a hub.
                    You must also identify a value for exactly one of the
@@ -1644,6 +1831,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                    -  linked_vpn_tunnels
                    -  linked_interconnect_attachments
                    -  linked_router_appliance_instances
+                   -  linked_vpc_network
 
         """
         # Create or coerce a protobuf request object.
@@ -1694,6 +1882,264 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
             response,
             self._transport.operations_client,
             hub.Spoke,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def reject_hub_spoke(
+        self,
+        request: Optional[Union[hub.RejectHubSpokeRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        spoke_uri: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Rejects a Network Connectivity Center spoke from being attached
+        to a hub. If the spoke was previously in the ``ACTIVE`` state,
+        it transitions to the ``INACTIVE`` state and is no longer able
+        to connect to other spokes that are attached to the hub.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_reject_hub_spoke():
+                # Create a client
+                client = networkconnectivity_v1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.RejectHubSpokeRequest(
+                    name="name_value",
+                    spoke_uri="spoke_uri_value",
+                )
+
+                # Make the request
+                operation = client.reject_hub_spoke(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.RejectHubSpokeRequest, dict]):
+                The request object. The request for
+                [HubService.RejectHubSpoke][google.cloud.networkconnectivity.v1.HubService.RejectHubSpoke].
+            name (str):
+                Required. The name of the hub from
+                which to reject the spoke.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            spoke_uri (str):
+                Required. The URI of the spoke to
+                reject from the hub.
+
+                This corresponds to the ``spoke_uri`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.RejectHubSpokeResponse` The response for
+                   [HubService.RejectHubSpoke][google.cloud.networkconnectivity.v1.HubService.RejectHubSpoke].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, spoke_uri])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a hub.RejectHubSpokeRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, hub.RejectHubSpokeRequest):
+            request = hub.RejectHubSpokeRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if spoke_uri is not None:
+                request.spoke_uri = spoke_uri
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.reject_hub_spoke]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            hub.RejectHubSpokeResponse,
+            metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def accept_hub_spoke(
+        self,
+        request: Optional[Union[hub.AcceptHubSpokeRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        spoke_uri: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Accepts a proposal to attach a Network Connectivity
+        Center spoke to a hub.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_accept_hub_spoke():
+                # Create a client
+                client = networkconnectivity_v1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.AcceptHubSpokeRequest(
+                    name="name_value",
+                    spoke_uri="spoke_uri_value",
+                )
+
+                # Make the request
+                operation = client.accept_hub_spoke(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.AcceptHubSpokeRequest, dict]):
+                The request object. The request for
+                [HubService.AcceptHubSpoke][google.cloud.networkconnectivity.v1.HubService.AcceptHubSpoke].
+            name (str):
+                Required. The name of the hub into
+                which to accept the spoke.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            spoke_uri (str):
+                Required. The URI of the spoke to
+                accept into the hub.
+
+                This corresponds to the ``spoke_uri`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.networkconnectivity_v1.types.AcceptHubSpokeResponse` The response for
+                   [HubService.AcceptHubSpoke][google.cloud.networkconnectivity.v1.HubService.AcceptHubSpoke].
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name, spoke_uri])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a hub.AcceptHubSpokeRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, hub.AcceptHubSpokeRequest):
+            request = hub.AcceptHubSpokeRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+            if spoke_uri is not None:
+                request.spoke_uri = spoke_uri
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.accept_hub_spoke]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            hub.AcceptHubSpokeResponse,
             metadata_type=common.OperationMetadata,
         )
 
@@ -1819,6 +2265,659 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
             self._transport.operations_client,
             empty_pb2.Empty,
             metadata_type=common.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_route_table(
+        self,
+        request: Optional[Union[hub.GetRouteTableRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> hub.RouteTable:
+        r"""Gets details about a Network Connectivity Center
+        route table.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_get_route_table():
+                # Create a client
+                client = networkconnectivity_v1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.GetRouteTableRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_route_table(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.GetRouteTableRequest, dict]):
+                The request object. The request for
+                [HubService.GetRouteTable][google.cloud.networkconnectivity.v1.HubService.GetRouteTable].
+            name (str):
+                Required. The name of the route table
+                resource.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.networkconnectivity_v1.types.RouteTable:
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a hub.GetRouteTableRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, hub.GetRouteTableRequest):
+            request = hub.GetRouteTableRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_route_table]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_route(
+        self,
+        request: Optional[Union[hub.GetRouteRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> hub.Route:
+        r"""Gets details about the specified route.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_get_route():
+                # Create a client
+                client = networkconnectivity_v1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.GetRouteRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_route(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.GetRouteRequest, dict]):
+                The request object. The request for
+                [HubService.GetRoute][google.cloud.networkconnectivity.v1.HubService.GetRoute].
+            name (str):
+                Required. The name of the route
+                resource.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.networkconnectivity_v1.types.Route:
+                A route defines a path from VM
+                instances within a spoke to a specific
+                destination resource. Only VPC spokes
+                have routes.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a hub.GetRouteRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, hub.GetRouteRequest):
+            request = hub.GetRouteRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_route]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_routes(
+        self,
+        request: Optional[Union[hub.ListRoutesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListRoutesPager:
+        r"""Lists routes in a given project.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_list_routes():
+                # Create a client
+                client = networkconnectivity_v1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.ListRoutesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_routes(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.ListRoutesRequest, dict]):
+                The request object. Request for
+                [HubService.ListRoutes][google.cloud.networkconnectivity.v1.HubService.ListRoutes]
+                method.
+            parent (str):
+                Required. The parent resource's name.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListRoutesPager:
+                Response for
+                   [HubService.ListRoutes][google.cloud.networkconnectivity.v1.HubService.ListRoutes]
+                   method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a hub.ListRoutesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, hub.ListRoutesRequest):
+            request = hub.ListRoutesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_routes]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListRoutesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_route_tables(
+        self,
+        request: Optional[Union[hub.ListRouteTablesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListRouteTablesPager:
+        r"""Lists route tables in a given project.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_list_route_tables():
+                # Create a client
+                client = networkconnectivity_v1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.ListRouteTablesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_route_tables(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.ListRouteTablesRequest, dict]):
+                The request object. Request for
+                [HubService.ListRouteTables][google.cloud.networkconnectivity.v1.HubService.ListRouteTables]
+                method.
+            parent (str):
+                Required. The parent resource's name.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListRouteTablesPager:
+                Response for
+                   [HubService.ListRouteTables][google.cloud.networkconnectivity.v1.HubService.ListRouteTables]
+                   method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a hub.ListRouteTablesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, hub.ListRouteTablesRequest):
+            request = hub.ListRouteTablesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_route_tables]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListRouteTablesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_group(
+        self,
+        request: Optional[Union[hub.GetGroupRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> hub.Group:
+        r"""Gets details about a Network Connectivity Center
+        group.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_get_group():
+                # Create a client
+                client = networkconnectivity_v1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.GetGroupRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_group(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.GetGroupRequest, dict]):
+                The request object. The request for
+                [HubService.GetGroup][google.cloud.networkconnectivity.v1.HubService.GetGroup].
+            name (str):
+                Required. The name of the route table
+                resource.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.networkconnectivity_v1.types.Group:
+                A group represents a subset of spokes
+                attached to a hub.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a hub.GetGroupRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, hub.GetGroupRequest):
+            request = hub.GetGroupRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_group]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_groups(
+        self,
+        request: Optional[Union[hub.ListGroupsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListGroupsPager:
+        r"""Lists groups in a given hub.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import networkconnectivity_v1
+
+            def sample_list_groups():
+                # Create a client
+                client = networkconnectivity_v1.HubServiceClient()
+
+                # Initialize request argument(s)
+                request = networkconnectivity_v1.ListGroupsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_groups(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.networkconnectivity_v1.types.ListGroupsRequest, dict]):
+                The request object. Request for
+                [HubService.ListGroups][google.cloud.networkconnectivity.v1.HubService.ListGroups]
+                method.
+            parent (str):
+                Required. The parent resource's name.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListGroupsPager:
+                Response for
+                   [HubService.ListGroups][google.cloud.networkconnectivity.v1.HubService.ListGroups]
+                   method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a hub.ListGroupsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, hub.ListGroupsRequest):
+            request = hub.ListGroupsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_groups]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListGroupsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.

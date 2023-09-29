@@ -152,6 +152,11 @@ class HubServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.list_hub_spokes: gapic_v1.method.wrap_method(
+                self.list_hub_spokes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_spokes: gapic_v1.method.wrap_method(
                 self.list_spokes,
                 default_timeout=None,
@@ -172,9 +177,49 @@ class HubServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.reject_hub_spoke: gapic_v1.method.wrap_method(
+                self.reject_hub_spoke,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.accept_hub_spoke: gapic_v1.method.wrap_method(
+                self.accept_hub_spoke,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_spoke: gapic_v1.method.wrap_method(
                 self.delete_spoke,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_route_table: gapic_v1.method.wrap_method(
+                self.get_route_table,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_route: gapic_v1.method.wrap_method(
+                self.get_route,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_routes: gapic_v1.method.wrap_method(
+                self.list_routes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_route_tables: gapic_v1.method.wrap_method(
+                self.list_route_tables,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_group: gapic_v1.method.wrap_method(
+                self.get_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_groups: gapic_v1.method.wrap_method(
+                self.list_groups,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }
@@ -236,6 +281,15 @@ class HubServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def list_hub_spokes(
+        self,
+    ) -> Callable[
+        [hub.ListHubSpokesRequest],
+        Union[hub.ListHubSpokesResponse, Awaitable[hub.ListHubSpokesResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_spokes(
         self,
     ) -> Callable[
@@ -269,11 +323,76 @@ class HubServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def reject_hub_spoke(
+        self,
+    ) -> Callable[
+        [hub.RejectHubSpokeRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def accept_hub_spoke(
+        self,
+    ) -> Callable[
+        [hub.AcceptHubSpokeRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def delete_spoke(
         self,
     ) -> Callable[
         [hub.DeleteSpokeRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_route_table(
+        self,
+    ) -> Callable[
+        [hub.GetRouteTableRequest], Union[hub.RouteTable, Awaitable[hub.RouteTable]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_route(
+        self,
+    ) -> Callable[[hub.GetRouteRequest], Union[hub.Route, Awaitable[hub.Route]]]:
+        raise NotImplementedError()
+
+    @property
+    def list_routes(
+        self,
+    ) -> Callable[
+        [hub.ListRoutesRequest],
+        Union[hub.ListRoutesResponse, Awaitable[hub.ListRoutesResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_route_tables(
+        self,
+    ) -> Callable[
+        [hub.ListRouteTablesRequest],
+        Union[hub.ListRouteTablesResponse, Awaitable[hub.ListRouteTablesResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_group(
+        self,
+    ) -> Callable[[hub.GetGroupRequest], Union[hub.Group, Awaitable[hub.Group]]]:
+        raise NotImplementedError()
+
+    @property
+    def list_groups(
+        self,
+    ) -> Callable[
+        [hub.ListGroupsRequest],
+        Union[hub.ListGroupsResponse, Awaitable[hub.ListGroupsResponse]],
     ]:
         raise NotImplementedError()
 

@@ -8,9 +8,178 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-network-connectivity",
-    "version": "2.1.0"
+    "version": "0.1.0"
   },
   "snippets": [
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient",
+          "shortName": "HubServiceAsyncClient"
+        },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient.accept_hub_spoke",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.AcceptHubSpoke",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "AcceptHubSpoke"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.AcceptHubSpokeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "spoke_uri",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "accept_hub_spoke"
+      },
+      "description": "Sample for AcceptHubSpoke",
+      "file": "networkconnectivity_v1_generated_hub_service_accept_hub_spoke_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_AcceptHubSpoke_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_accept_hub_spoke_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient",
+          "shortName": "HubServiceClient"
+        },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient.accept_hub_spoke",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.AcceptHubSpoke",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "AcceptHubSpoke"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.AcceptHubSpokeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "spoke_uri",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "accept_hub_spoke"
+      },
+      "description": "Sample for AcceptHubSpoke",
+      "file": "networkconnectivity_v1_generated_hub_service_accept_hub_spoke_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_AcceptHubSpoke_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_accept_hub_spoke_sync.py"
+    },
     {
       "canonical": true,
       "clientMethod": {
@@ -695,6 +864,167 @@
           "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient",
           "shortName": "HubServiceAsyncClient"
         },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient.get_group",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.GetGroup",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "GetGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.GetGroupRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.networkconnectivity_v1.types.Group",
+        "shortName": "get_group"
+      },
+      "description": "Sample for GetGroup",
+      "file": "networkconnectivity_v1_generated_hub_service_get_group_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_GetGroup_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_get_group_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient",
+          "shortName": "HubServiceClient"
+        },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient.get_group",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.GetGroup",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "GetGroup"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.GetGroupRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.networkconnectivity_v1.types.Group",
+        "shortName": "get_group"
+      },
+      "description": "Sample for GetGroup",
+      "file": "networkconnectivity_v1_generated_hub_service_get_group_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_GetGroup_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_get_group_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient",
+          "shortName": "HubServiceAsyncClient"
+        },
         "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient.get_hub",
         "method": {
           "fullName": "google.cloud.networkconnectivity.v1.HubService.GetHub",
@@ -847,6 +1177,328 @@
         }
       ],
       "title": "networkconnectivity_v1_generated_hub_service_get_hub_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient",
+          "shortName": "HubServiceAsyncClient"
+        },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient.get_route_table",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.GetRouteTable",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "GetRouteTable"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.GetRouteTableRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.networkconnectivity_v1.types.RouteTable",
+        "shortName": "get_route_table"
+      },
+      "description": "Sample for GetRouteTable",
+      "file": "networkconnectivity_v1_generated_hub_service_get_route_table_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_GetRouteTable_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_get_route_table_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient",
+          "shortName": "HubServiceClient"
+        },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient.get_route_table",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.GetRouteTable",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "GetRouteTable"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.GetRouteTableRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.networkconnectivity_v1.types.RouteTable",
+        "shortName": "get_route_table"
+      },
+      "description": "Sample for GetRouteTable",
+      "file": "networkconnectivity_v1_generated_hub_service_get_route_table_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_GetRouteTable_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_get_route_table_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient",
+          "shortName": "HubServiceAsyncClient"
+        },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient.get_route",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.GetRoute",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "GetRoute"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.GetRouteRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.networkconnectivity_v1.types.Route",
+        "shortName": "get_route"
+      },
+      "description": "Sample for GetRoute",
+      "file": "networkconnectivity_v1_generated_hub_service_get_route_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_GetRoute_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_get_route_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient",
+          "shortName": "HubServiceClient"
+        },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient.get_route",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.GetRoute",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "GetRoute"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.GetRouteRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.networkconnectivity_v1.types.Route",
+        "shortName": "get_route"
+      },
+      "description": "Sample for GetRoute",
+      "file": "networkconnectivity_v1_generated_hub_service_get_route_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_GetRoute_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_get_route_sync.py"
     },
     {
       "canonical": true,
@@ -1017,6 +1669,328 @@
           "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient",
           "shortName": "HubServiceAsyncClient"
         },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient.list_groups",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.ListGroups",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "ListGroups"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.ListGroupsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListGroupsAsyncPager",
+        "shortName": "list_groups"
+      },
+      "description": "Sample for ListGroups",
+      "file": "networkconnectivity_v1_generated_hub_service_list_groups_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_ListGroups_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_list_groups_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient",
+          "shortName": "HubServiceClient"
+        },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient.list_groups",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.ListGroups",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "ListGroups"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.ListGroupsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListGroupsPager",
+        "shortName": "list_groups"
+      },
+      "description": "Sample for ListGroups",
+      "file": "networkconnectivity_v1_generated_hub_service_list_groups_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_ListGroups_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_list_groups_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient",
+          "shortName": "HubServiceAsyncClient"
+        },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient.list_hub_spokes",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.ListHubSpokes",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "ListHubSpokes"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.ListHubSpokesRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListHubSpokesAsyncPager",
+        "shortName": "list_hub_spokes"
+      },
+      "description": "Sample for ListHubSpokes",
+      "file": "networkconnectivity_v1_generated_hub_service_list_hub_spokes_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_ListHubSpokes_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_list_hub_spokes_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient",
+          "shortName": "HubServiceClient"
+        },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient.list_hub_spokes",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.ListHubSpokes",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "ListHubSpokes"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.ListHubSpokesRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListHubSpokesPager",
+        "shortName": "list_hub_spokes"
+      },
+      "description": "Sample for ListHubSpokes",
+      "file": "networkconnectivity_v1_generated_hub_service_list_hub_spokes_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_ListHubSpokes_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_list_hub_spokes_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient",
+          "shortName": "HubServiceAsyncClient"
+        },
         "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient.list_hubs",
         "method": {
           "fullName": "google.cloud.networkconnectivity.v1.HubService.ListHubs",
@@ -1178,6 +2152,328 @@
           "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient",
           "shortName": "HubServiceAsyncClient"
         },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient.list_route_tables",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.ListRouteTables",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "ListRouteTables"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.ListRouteTablesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListRouteTablesAsyncPager",
+        "shortName": "list_route_tables"
+      },
+      "description": "Sample for ListRouteTables",
+      "file": "networkconnectivity_v1_generated_hub_service_list_route_tables_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_ListRouteTables_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_list_route_tables_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient",
+          "shortName": "HubServiceClient"
+        },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient.list_route_tables",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.ListRouteTables",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "ListRouteTables"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.ListRouteTablesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListRouteTablesPager",
+        "shortName": "list_route_tables"
+      },
+      "description": "Sample for ListRouteTables",
+      "file": "networkconnectivity_v1_generated_hub_service_list_route_tables_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_ListRouteTables_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_list_route_tables_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient",
+          "shortName": "HubServiceAsyncClient"
+        },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient.list_routes",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.ListRoutes",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "ListRoutes"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.ListRoutesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListRoutesAsyncPager",
+        "shortName": "list_routes"
+      },
+      "description": "Sample for ListRoutes",
+      "file": "networkconnectivity_v1_generated_hub_service_list_routes_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_ListRoutes_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_list_routes_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient",
+          "shortName": "HubServiceClient"
+        },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient.list_routes",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.ListRoutes",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "ListRoutes"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.ListRoutesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.networkconnectivity_v1.services.hub_service.pagers.ListRoutesPager",
+        "shortName": "list_routes"
+      },
+      "description": "Sample for ListRoutes",
+      "file": "networkconnectivity_v1_generated_hub_service_list_routes_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_ListRoutes_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_list_routes_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient",
+          "shortName": "HubServiceAsyncClient"
+        },
         "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient.list_spokes",
         "method": {
           "fullName": "google.cloud.networkconnectivity.v1.HubService.ListSpokes",
@@ -1330,6 +2626,175 @@
         }
       ],
       "title": "networkconnectivity_v1_generated_hub_service_list_spokes_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient",
+          "shortName": "HubServiceAsyncClient"
+        },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceAsyncClient.reject_hub_spoke",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.RejectHubSpoke",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "RejectHubSpoke"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.RejectHubSpokeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "spoke_uri",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "reject_hub_spoke"
+      },
+      "description": "Sample for RejectHubSpoke",
+      "file": "networkconnectivity_v1_generated_hub_service_reject_hub_spoke_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_RejectHubSpoke_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_reject_hub_spoke_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient",
+          "shortName": "HubServiceClient"
+        },
+        "fullName": "google.cloud.networkconnectivity_v1.HubServiceClient.reject_hub_spoke",
+        "method": {
+          "fullName": "google.cloud.networkconnectivity.v1.HubService.RejectHubSpoke",
+          "service": {
+            "fullName": "google.cloud.networkconnectivity.v1.HubService",
+            "shortName": "HubService"
+          },
+          "shortName": "RejectHubSpoke"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.networkconnectivity_v1.types.RejectHubSpokeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "spoke_uri",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "reject_hub_spoke"
+      },
+      "description": "Sample for RejectHubSpoke",
+      "file": "networkconnectivity_v1_generated_hub_service_reject_hub_spoke_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "networkconnectivity_v1_generated_HubService_RejectHubSpoke_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "networkconnectivity_v1_generated_hub_service_reject_hub_spoke_sync.py"
     },
     {
       "canonical": true,
