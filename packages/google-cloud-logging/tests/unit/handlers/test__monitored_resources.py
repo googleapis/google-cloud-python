@@ -28,7 +28,10 @@ from google.cloud.logging_v2.handlers._monitored_resources import (
     _create_kubernetes_resource,
 )
 from google.cloud.logging_v2.handlers._monitored_resources import (
-    _create_cloud_run_resource,
+    _create_cloud_run_service_resource,
+)
+from google.cloud.logging_v2.handlers._monitored_resources import (
+    _create_cloud_run_job_resource,
 )
 from google.cloud.logging_v2.handlers._monitored_resources import (
     _create_compute_resource,
@@ -160,7 +163,7 @@ class Test_Create_Resources(unittest.TestCase):
             self.assertEqual(resource.labels["instance_id"], self.NAME)
             self.assertEqual(resource.labels["zone"], self.LOCATION)
 
-    def test_cloud_run_resource(self):
+    def test_cloud_run_service_resource(self):
         patch = mock.patch(
             "google.cloud.logging_v2.handlers._monitored_resources.retrieve_metadata_server",
             wraps=self._mock_metadata,
@@ -169,13 +172,30 @@ class Test_Create_Resources(unittest.TestCase):
         os.environ[_monitored_resources._CLOUD_RUN_REVISION_ID] = self.VERSION
         os.environ[_monitored_resources._CLOUD_RUN_CONFIGURATION_ID] = self.CONFIG
         with patch:
-            resource = _create_cloud_run_resource()
+            resource = _create_cloud_run_service_resource()
             self.assertIsInstance(resource, Resource)
             self.assertEqual(resource.type, "cloud_run_revision")
             self.assertEqual(resource.labels["project_id"], self.PROJECT)
             self.assertEqual(resource.labels["service_name"], self.NAME)
             self.assertEqual(resource.labels["revision_name"], self.VERSION)
             self.assertEqual(resource.labels["configuration_name"], self.CONFIG)
+            self.assertEqual(resource.labels["location"], self.LOCATION)
+
+    def test_cloud_run_job_resource(self):
+        patch = mock.patch(
+            "google.cloud.logging_v2.handlers._monitored_resources.retrieve_metadata_server",
+            wraps=self._mock_metadata,
+        )
+        os.environ[_monitored_resources._CLOUD_RUN_JOB_ID] = self.NAME
+        os.environ[_monitored_resources._CLOUD_RUN_EXECUTION_ID] = self.VERSION
+        os.environ[_monitored_resources._CLOUD_RUN_TASK_INDEX] = self.CONFIG
+        os.environ[_monitored_resources._CLOUD_RUN_TASK_ATTEMPT] = self.CLUSTER
+        with patch:
+            resource = _create_cloud_run_job_resource()
+            self.assertIsInstance(resource, Resource)
+            self.assertEqual(resource.type, "cloud_run_job")
+            self.assertEqual(resource.labels["project_id"], self.PROJECT)
+            self.assertEqual(resource.labels["job_name"], self.NAME)
             self.assertEqual(resource.labels["location"], self.LOCATION)
 
     def test_app_engine_resource(self):
@@ -214,7 +234,8 @@ class Test_Create_Resources(unittest.TestCase):
             resource_fns = [
                 _global_resource_patched,
                 _create_app_engine_resource,
-                _create_cloud_run_resource,
+                _create_cloud_run_service_resource,
+                _create_cloud_run_job_resource,
                 _create_compute_resource,
                 _create_kubernetes_resource,
                 _create_functions_resource,
@@ -285,12 +306,19 @@ class Test_Resource_Detection(unittest.TestCase):
         self.assertIsInstance(resource, Resource)
         self.assertEqual(resource.type, "cloud_function")
 
-    def test_detect_cloud_run(self):
-        for env in _monitored_resources._CLOUD_RUN_ENV_VARS:
+    def test_detect_cloud_run_service(self):
+        for env in _monitored_resources._CLOUD_RUN_SERVICE_ENV_VARS:
             os.environ[env] = "TRUE"
         resource = detect_resource(self.PROJECT)
         self.assertIsInstance(resource, Resource)
         self.assertEqual(resource.type, "cloud_run_revision")
+
+    def test_detect_cloud_run_job(self):
+        for env in _monitored_resources._CLOUD_RUN_JOB_ENV_VARS:
+            os.environ[env] = "TRUE"
+        resource = detect_resource(self.PROJECT)
+        self.assertIsInstance(resource, Resource)
+        self.assertEqual(resource.type, "cloud_run_job")
 
     def test_detect_compute_engine(self):
         patch = mock.patch(
