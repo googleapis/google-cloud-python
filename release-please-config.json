@@ -595,6 +595,25 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-container": {
+            "component": "google-cloud-container",
+            "extra-files": [
+                "google/cloud/container_v1/gapic_version.py",
+                "google/cloud/container_v1beta1/gapic_version.py",
+                "google/cloud/container/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.container.v1beta1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.container.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-contentwarehouse": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
