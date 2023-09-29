@@ -7,7 +7,7 @@
     "release_level": "stable",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-texttospeech",
+    "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-cloud-texttospeech",
     "api_id": "texttospeech.googleapis.com",
     "requires_billing": true,
