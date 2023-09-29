@@ -18,6 +18,7 @@ import pytest
 
 from google.cloud import texttospeech_v1
 
+
 @pytest.mark.parametrize("transport", ["grpc", "rest"])
 def test_list_voices(transport: str):
     client = texttospeech_v1.TextToSpeechClient(transport=transport)
