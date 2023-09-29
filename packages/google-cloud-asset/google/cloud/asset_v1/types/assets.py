@@ -40,6 +40,8 @@ __protobuf__ = proto.module(
         "RelatedAssets",
         "RelationshipAttributes",
         "RelatedAsset",
+        "Tag",
+        "EffectiveTagDetails",
         "ResourceSearchResult",
         "VersionedResource",
         "AttachedResource",
@@ -510,9 +512,90 @@ class RelatedAsset(proto.Message):
     )
 
 
+class Tag(proto.Message):
+    r"""The key and value for a
+    `tag <https://cloud.google.com/resource-manager/docs/tags/tags-overview>`__,
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        tag_key (str):
+            TagKey namespaced name, in the format of
+            {ORG_ID}/{TAG_KEY_SHORT_NAME}.
+
+            This field is a member of `oneof`_ ``_tag_key``.
+        tag_value (str):
+            TagValue namespaced name, in the format of
+            {ORG_ID}/{TAG_KEY_SHORT_NAME}/{TAG_VALUE_SHORT_NAME}.
+
+            This field is a member of `oneof`_ ``_tag_value``.
+        tag_value_id (str):
+            TagValue ID, in the format of tagValues/{TAG_VALUE_ID}.
+
+            This field is a member of `oneof`_ ``_tag_value_id``.
+    """
+
+    tag_key: str = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+    tag_value: str = proto.Field(
+        proto.STRING,
+        number=3,
+        optional=True,
+    )
+    tag_value_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+        optional=True,
+    )
+
+
+class EffectiveTagDetails(proto.Message):
+    r"""The effective tags and the ancestor resources from which they
+    were inherited.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        attached_resource (str):
+            The `full resource
+            name <https://cloud.google.com/asset-inventory/docs/resource-name-format>`__
+            of the ancestor from which an [effective_tag][] is
+            inherited, according to `tag
+            inheritance <https://cloud.google.com/resource-manager/docs/tags/tags-overview#inheritance>`__.
+
+            This field is a member of `oneof`_ ``_attached_resource``.
+        effective_tags (MutableSequence[google.cloud.asset_v1.types.Tag]):
+            The effective tags inherited from the
+            [attached_resource][google.cloud.asset.v1.EffectiveTagDetails.attached_resource].
+            Note that tags with the same key but different values may
+            attach to resources at a different hierarchy levels. The
+            lower hierarchy tag value will overwrite the higher
+            hierarchy tag value of the same tag key. In this case, the
+            tag value at the higher hierarchy level will be removed. For
+            more information, see `tag
+            inheritance <https://cloud.google.com/resource-manager/docs/tags/tags-overview#inheritance>`__.
+    """
+
+    attached_resource: str = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+    effective_tags: MutableSequence["Tag"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="Tag",
+    )
+
+
 class ResourceSearchResult(proto.Message):
     r"""A result of Resource Search, containing information of a
-    cloud resource. Next ID: 32
+    cloud resource. Next ID: 34
 
     Attributes:
         name (str):
@@ -765,6 +848,9 @@ class ResourceSearchResult(proto.Message):
             ``INSTANCE_TO_INSTANCEGROUP``. See `supported relationship
             types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#supported_relationship_types>`__.
         tag_keys (MutableSequence[str]):
+            This field is only present for the purpose of backward
+            compatibility. Please use the ``tags`` field instead.
+
             TagKey namespaced names, in the format of
             {ORG_ID}/{TAG_KEY_SHORT_NAME}. To search against the
             ``tagKeys``:
@@ -779,6 +865,9 @@ class ResourceSearchResult(proto.Message):
 
                -  ``env``
         tag_values (MutableSequence[str]):
+            This field is only present for the purpose of backward
+            compatibility. Please use the ``tags`` field instead.
+
             TagValue namespaced names, in the format of
             {ORG_ID}/{TAG_KEY_SHORT_NAME}/{TAG_VALUE_SHORT_NAME}. To
             search against the ``tagValues``:
@@ -794,17 +883,57 @@ class ResourceSearchResult(proto.Message):
 
                -  ``prod``
         tag_value_ids (MutableSequence[str]):
+            This field is only present for the purpose of backward
+            compatibility. Please use the ``tags`` field instead.
+
             TagValue IDs, in the format of tagValues/{TAG_VALUE_ID}. To
             search against the ``tagValueIds``:
 
             -  Use a field query. Example:
 
-               -  ``tagValueIds:"456"``
                -  ``tagValueIds="tagValues/456"``
 
             -  Use a free text query. Example:
 
                -  ``456``
+        tags (MutableSequence[google.cloud.asset_v1.types.Tag]):
+            The tags directly attached to this resource.
+
+            To search against the ``tags``:
+
+            -  Use a field query. Example:
+
+               -  ``tagKeys:"123456789/env*"``
+               -  ``tagKeys="123456789/env"``
+               -  ``tagKeys:"env"``
+               -  ``tagValues:"env"``
+               -  ``tagValues:"env/prod"``
+               -  ``tagValues:"123456789/env/prod*"``
+               -  ``tagValues="123456789/env/prod"``
+               -  ``tagValueIds="tagValues/456"``
+
+            -  Use a free text query. Example:
+
+               -  ``env/prod``
+        effective_tags (MutableSequence[google.cloud.asset_v1.types.EffectiveTagDetails]):
+            The effective tags on this resource. All of the tags that
+            are both attached to and inherited by a resource are
+            collectively called the effective tags. For more
+            information, see `tag
+            inheritance <https://cloud.google.com/resource-manager/docs/tags/tags-overview#inheritance>`__.
+
+            To search against the ``effective_tags``:
+
+            -  Use a field query. Example:
+
+               -  ``effectiveTagKeys:"123456789/env*"``
+               -  ``effectiveTagKeys="123456789/env"``
+               -  ``effectiveTagKeys:"env"``
+               -  ``effectiveTagValues:"env"``
+               -  ``effectiveTagValues:"env/prod"``
+               -  ``effectiveTagValues:"123456789/env/prod*"``
+               -  ``effectiveTagValues="123456789/env/prod"``
+               -  ``effectiveTagValueIds="tagValues/456"``
         parent_asset_type (str):
             The type of this resource's immediate parent, if there is
             one.
@@ -815,6 +944,23 @@ class ResourceSearchResult(proto.Message):
                ``parentAssetType:"cloudresourcemanager.googleapis.com/Project"``
             -  Use a free text query. Example:
                ``cloudresourcemanager.googleapis.com/Project``
+        scc_security_marks (MutableMapping[str, str]):
+            The actual content of Security Command Center security marks
+            associated with the asset.
+
+            Note that both staging & prod SecurityMarks are attached on
+            prod resources. In CAS preprod/prod, both staging & prod
+            SecurityMarks are ingested and returned in the following
+            ``security_marks`` map. In that case, the prefix "staging."
+            will be added to the keys of all the staging marks. To
+            search against SCC SecurityMarks field:
+
+            -  Use a field query:
+
+               -  query by a given key value pair. Example:
+                  ``sccSecurityMarks.foo=bar``
+               -  query by a given key's existence. Example:
+                  ``sccSecurityMarks.foo:*``
     """
 
     name: str = proto.Field(
@@ -917,9 +1063,24 @@ class ResourceSearchResult(proto.Message):
         proto.STRING,
         number=26,
     )
+    tags: MutableSequence["Tag"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=29,
+        message="Tag",
+    )
+    effective_tags: MutableSequence["EffectiveTagDetails"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=30,
+        message="EffectiveTagDetails",
+    )
     parent_asset_type: str = proto.Field(
         proto.STRING,
         number=103,
+    )
+    scc_security_marks: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=32,
     )
 
 
@@ -1345,10 +1506,10 @@ class IamPolicyAnalysisResult(proto.Message):
 
         Attributes:
             name (str):
-                The identity name in any form of members appear in `IAM
+                The identity of members, formatted as appear in an `IAM
                 policy
-                binding <https://cloud.google.com/iam/reference/rest/v1/Binding>`__,
-                such as:
+                binding <https://cloud.google.com/iam/reference/rest/v1/Binding>`__.
+                For example, they might be formatted like the following:
 
                 -  user:foo@google.com
                 -  group:group1@google.com
@@ -1356,7 +1517,6 @@ class IamPolicyAnalysisResult(proto.Message):
                 -  projectOwner:some_project_id
                 -  domain:google.com
                 -  allUsers
-                -  etc.
             analysis_state (google.cloud.asset_v1.types.IamPolicyAnalysisState):
                 The analysis state of this identity.
         """
