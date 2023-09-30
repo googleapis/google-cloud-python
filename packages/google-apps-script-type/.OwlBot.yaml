@@ -13,5 +13,17 @@
 # limitations under the License.
 
 deep-copy-regex:
-    - source: /google/apps/script/type/(.*-py)
+    - source: /google/apps/script/type/calendar/(.*-py)
+      dest: /owl-bot-staging/google-apps-script-type/$1
+    - source: /google/apps/script/type/docs/(.*-py)
+      dest: /owl-bot-staging/google-apps-script-type/$1
+    - source: /google/apps/script/type/drive/(.*-py)
+      dest: /owl-bot-staging/google-apps-script-type/$1
+    - source: /google/apps/script/type/gmail(.*-py)
+      dest: /owl-bot-staging/google-apps-script-type/$1
+    - source: /google/apps/script/type/sheets(.*-py)
+      dest: /owl-bot-staging/google-apps-script-type/$1
+    - source: /google/apps/script/type/slides(.*-py)
+      dest: /owl-bot-staging/google-apps-script-type/$1
+    - source: /google/apps/script/type/(type-py)
       dest: /owl-bot-staging/google-apps-script-type/$1

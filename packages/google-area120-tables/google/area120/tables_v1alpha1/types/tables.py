@@ -161,6 +161,7 @@ class ListWorkspacesRequest(proto.Message):
         page_size (int):
             The maximum number of workspaces to return.
             The service may return fewer than this value.
+
             If unspecified, at most 10 workspaces are
             returned. The maximum value is 25; values above
             25 are coerced to 25.

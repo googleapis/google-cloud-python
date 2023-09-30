@@ -147,10 +147,9 @@ class NfsShare(proto.Message):
                 identity authentication.
             nfs_path (str):
                 Output only. The path to access NFS, in
-                format shareIP:/InstanceID
-                InstanceID is the generated ID instead of
-                customer provided name. example like
-                "10.0.0.0:/g123456789-nfs001".
+                format shareIP:/InstanceID InstanceID is the
+                generated ID instead of customer provided name.
+                example like "10.0.0.0:/g123456789-nfs001".
         """
 
         network: str = proto.Field(

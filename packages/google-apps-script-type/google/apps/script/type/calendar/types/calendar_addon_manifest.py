@@ -19,7 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-import google.apps.script.type.types  # type: ignore
+from google.apps.script.type.types import extension_point
 
 __protobuf__ = proto.module(
     package="google.apps.script.type.calendar",
@@ -93,12 +93,10 @@ class CalendarAddOnManifest(proto.Message):
         WRITE = 4
         READ_WRITE = 5
 
-    homepage_trigger: google.apps.script.type.types.HomepageExtensionPoint = (
-        proto.Field(
-            proto.MESSAGE,
-            number=6,
-            message=google.apps.script.type.types.HomepageExtensionPoint,
-        )
+    homepage_trigger: extension_point.HomepageExtensionPoint = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=extension_point.HomepageExtensionPoint,
     )
     conference_solution: MutableSequence["ConferenceSolution"] = proto.RepeatedField(
         proto.MESSAGE,

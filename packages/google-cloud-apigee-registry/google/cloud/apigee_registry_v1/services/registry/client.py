@@ -50,7 +50,7 @@ from google.api import httpbody_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -605,6 +605,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         Returns:
             google.cloud.apigee_registry_v1.services.registry.pagers.ListApisPager:
                 Response message for ListApis.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1152,6 +1153,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         Returns:
             google.cloud.apigee_registry_v1.services.registry.pagers.ListApiVersionsPager:
                 Response message for ListApiVersions.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -1704,6 +1706,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         Returns:
             google.cloud.apigee_registry_v1.services.registry.pagers.ListApiSpecsPager:
                 Response message for ListApiSpecs.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -3833,6 +3836,7 @@ class RegistryClient(metaclass=RegistryClientMeta):
         Returns:
             google.cloud.apigee_registry_v1.services.registry.pagers.ListArtifactsPager:
                 Response message for ListArtifacts.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
