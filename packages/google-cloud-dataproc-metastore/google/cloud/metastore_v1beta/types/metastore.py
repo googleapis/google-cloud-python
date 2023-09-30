@@ -672,6 +672,8 @@ class AuxiliaryVersionConfig(proto.Message):
 class NetworkConfig(proto.Message):
     r"""Network configuration for the Dataproc Metastore service.
 
+    Next available ID: 4
+
     Attributes:
         consumers (MutableSequence[google.cloud.metastore_v1beta.types.NetworkConfig.Consumer]):
             Immutable. The consumer-side network
@@ -686,6 +688,7 @@ class NetworkConfig(proto.Message):
     class Consumer(proto.Message):
         r"""Contains information of the customer's network
         configurations.
+        Next available ID: 5
 
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -706,6 +709,9 @@ class NetworkConfig(proto.Message):
             endpoint_uri (str):
                 Output only. The URI of the endpoint used to
                 access the metastore service.
+            endpoint_location (str):
+                Output only. The location of the endpoint URI. Format:
+                ``projects/{project}/locations/{location}``.
         """
 
         subnetwork: str = proto.Field(
@@ -716,6 +722,10 @@ class NetworkConfig(proto.Message):
         endpoint_uri: str = proto.Field(
             proto.STRING,
             number=3,
+        )
+        endpoint_location: str = proto.Field(
+            proto.STRING,
+            number=4,
         )
 
     consumers: MutableSequence[Consumer] = proto.RepeatedField(

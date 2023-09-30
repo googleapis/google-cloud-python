@@ -52,7 +52,13 @@ from google.cloud.dialogflowcx_v3.services.transition_route_groups import (
     pagers,
     transports,
 )
-from google.cloud.dialogflowcx_v3.types import fulfillment, page, response_message
+from google.cloud.dialogflowcx_v3.types import (
+    advanced_settings,
+    fulfillment,
+    gcs,
+    page,
+    response_message,
+)
 from google.cloud.dialogflowcx_v3.types import (
     transition_route_group as gcdc_transition_route_group,
 )
@@ -2985,6 +2991,19 @@ def test_create_transition_route_group_rest(request_type):
                             ]
                         }
                     ],
+                    "advanced_settings": {
+                        "audio_export_gcs_destination": {"uri": "uri_value"},
+                        "dtmf_settings": {
+                            "enabled": True,
+                            "max_digits": 1065,
+                            "finish_digit": "finish_digit_value",
+                        },
+                        "logging_settings": {
+                            "enable_stackdriver_logging": True,
+                            "enable_interaction_logging": True,
+                        },
+                    },
+                    "enable_generative_fallback": True,
                 },
                 "target_page": "target_page_value",
                 "target_flow": "target_flow_value",
@@ -3268,6 +3287,19 @@ def test_create_transition_route_group_rest_bad_request(
                             ]
                         }
                     ],
+                    "advanced_settings": {
+                        "audio_export_gcs_destination": {"uri": "uri_value"},
+                        "dtmf_settings": {
+                            "enabled": True,
+                            "max_digits": 1065,
+                            "finish_digit": "finish_digit_value",
+                        },
+                        "logging_settings": {
+                            "enable_stackdriver_logging": True,
+                            "enable_interaction_logging": True,
+                        },
+                    },
+                    "enable_generative_fallback": True,
                 },
                 "target_page": "target_page_value",
                 "target_flow": "target_flow_value",
@@ -3453,6 +3485,19 @@ def test_update_transition_route_group_rest(request_type):
                             ]
                         }
                     ],
+                    "advanced_settings": {
+                        "audio_export_gcs_destination": {"uri": "uri_value"},
+                        "dtmf_settings": {
+                            "enabled": True,
+                            "max_digits": 1065,
+                            "finish_digit": "finish_digit_value",
+                        },
+                        "logging_settings": {
+                            "enable_stackdriver_logging": True,
+                            "enable_interaction_logging": True,
+                        },
+                    },
+                    "enable_generative_fallback": True,
                 },
                 "target_page": "target_page_value",
                 "target_flow": "target_flow_value",
@@ -3738,6 +3783,19 @@ def test_update_transition_route_group_rest_bad_request(
                             ]
                         }
                     ],
+                    "advanced_settings": {
+                        "audio_export_gcs_destination": {"uri": "uri_value"},
+                        "dtmf_settings": {
+                            "enabled": True,
+                            "max_digits": 1065,
+                            "finish_digit": "finish_digit_value",
+                        },
+                        "logging_settings": {
+                            "enable_stackdriver_logging": True,
+                            "enable_interaction_logging": True,
+                        },
+                    },
+                    "enable_generative_fallback": True,
                 },
                 "target_page": "target_page_value",
                 "target_flow": "target_flow_value",

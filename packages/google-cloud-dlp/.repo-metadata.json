@@ -1,0 +1,18 @@
+{
+    "name": "dlp",
+    "name_pretty": "Cloud Data Loss Prevention",
+    "product_documentation": "https://cloud.google.com/dlp/docs/",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/dlp/latest",
+    "issue_tracker": "",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/google-cloud-python",
+    "distribution_name": "google-cloud-dlp",
+    "api_id": "dlp.googleapis.com",
+    "requires_billing": true,
+    "default_version": "v2",
+    "codeowner_team": "",
+    "api_shortname": "dlp",
+    "api_description": "provides programmatic access to a powerful detection engine for personally identifiable information and other privacy-sensitive data in unstructured data streams, like text blocks and images."
+}

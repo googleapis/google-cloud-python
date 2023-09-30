@@ -42,6 +42,8 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
@@ -779,6 +781,217 @@ class IntentsAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+
+    async def import_intents(
+        self,
+        request: Optional[Union[intent.ImportIntentsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Imports the specified intents into the agent.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [ImportIntentsMetadata][google.cloud.dialogflow.cx.v3beta1.ImportIntentsMetadata]
+        -  ``response``:
+           [ImportIntentsResponse][google.cloud.dialogflow.cx.v3beta1.ImportIntentsResponse]
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflowcx_v3beta1
+
+            async def sample_import_intents():
+                # Create a client
+                client = dialogflowcx_v3beta1.IntentsAsyncClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.ImportIntentsRequest(
+                    intents_uri="intents_uri_value",
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.import_intents(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.ImportIntentsRequest, dict]]):
+                The request object. The request message for
+                [Intents.ImportIntents][google.cloud.dialogflow.cx.v3beta1.Intents.ImportIntents].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3beta1.types.ImportIntentsResponse` The response message for
+                   [Intents.ImportIntents][google.cloud.dialogflow.cx.v3beta1.Intents.ImportIntents].
+
+        """
+        # Create or coerce a protobuf request object.
+        request = intent.ImportIntentsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.import_intents,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            intent.ImportIntentsResponse,
+            metadata_type=intent.ImportIntentsMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def export_intents(
+        self,
+        request: Optional[Union[intent.ExportIntentsRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Exports the selected intents.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [ExportIntentsMetadata][google.cloud.dialogflow.cx.v3beta1.ExportIntentsMetadata]
+        -  ``response``:
+           [ExportIntentsResponse][google.cloud.dialogflow.cx.v3beta1.ExportIntentsResponse]
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflowcx_v3beta1
+
+            async def sample_export_intents():
+                # Create a client
+                client = dialogflowcx_v3beta1.IntentsAsyncClient()
+
+                # Initialize request argument(s)
+                request = dialogflowcx_v3beta1.ExportIntentsRequest(
+                    intents_uri="intents_uri_value",
+                    parent="parent_value",
+                    intents=['intents_value1', 'intents_value2'],
+                )
+
+                # Make the request
+                operation = client.export_intents(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflowcx_v3beta1.types.ExportIntentsRequest, dict]]):
+                The request object. The request message for
+                [Intents.ExportIntents][google.cloud.dialogflow.cx.v3beta1.Intents.ExportIntents].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.dialogflowcx_v3beta1.types.ExportIntentsResponse` The response message for
+                   [Intents.ExportIntents][google.cloud.dialogflow.cx.v3beta1.Intents.ExportIntents].
+
+        """
+        # Create or coerce a protobuf request object.
+        request = intent.ExportIntentsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.export_intents,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            intent.ExportIntentsResponse,
+            metadata_type=intent.ExportIntentsMetadata,
+        )
+
+        # Done; return the response.
+        return response
 
     async def list_operations(
         self,
