@@ -39,18 +39,27 @@ def partition(
 class networkconnectivityCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'accept_hub_spoke': ('name', 'spoke_uri', 'request_id', ),
         'create_hub': ('parent', 'hub_id', 'hub', 'request_id', ),
         'create_policy_based_route': ('parent', 'policy_based_route_id', 'policy_based_route', 'request_id', ),
         'create_spoke': ('parent', 'spoke_id', 'spoke', 'request_id', ),
         'delete_hub': ('name', 'request_id', ),
         'delete_policy_based_route': ('name', 'request_id', ),
         'delete_spoke': ('name', 'request_id', ),
+        'get_group': ('name', ),
         'get_hub': ('name', ),
         'get_policy_based_route': ('name', ),
+        'get_route': ('name', ),
+        'get_route_table': ('name', ),
         'get_spoke': ('name', ),
+        'list_groups': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_hubs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_hub_spokes': ('name', 'spoke_locations', 'page_size', 'page_token', 'filter', 'order_by', 'view', ),
         'list_policy_based_routes': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_routes': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_route_tables': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_spokes': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'reject_hub_spoke': ('name', 'spoke_uri', 'request_id', 'details', ),
         'update_hub': ('hub', 'update_mask', 'request_id', ),
         'update_spoke': ('spoke', 'update_mask', 'request_id', ),
     }

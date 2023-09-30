@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "HubServiceClient",
           "rpcs": {
+            "AcceptHubSpoke": {
+              "methods": [
+                "accept_hub_spoke"
+              ]
+            },
             "CreateHub": {
               "methods": [
                 "create_hub"
@@ -30,9 +35,24 @@
                 "delete_spoke"
               ]
             },
+            "GetGroup": {
+              "methods": [
+                "get_group"
+              ]
+            },
             "GetHub": {
               "methods": [
                 "get_hub"
+              ]
+            },
+            "GetRoute": {
+              "methods": [
+                "get_route"
+              ]
+            },
+            "GetRouteTable": {
+              "methods": [
+                "get_route_table"
               ]
             },
             "GetSpoke": {
@@ -40,14 +60,39 @@
                 "get_spoke"
               ]
             },
+            "ListGroups": {
+              "methods": [
+                "list_groups"
+              ]
+            },
+            "ListHubSpokes": {
+              "methods": [
+                "list_hub_spokes"
+              ]
+            },
             "ListHubs": {
               "methods": [
                 "list_hubs"
               ]
             },
+            "ListRouteTables": {
+              "methods": [
+                "list_route_tables"
+              ]
+            },
+            "ListRoutes": {
+              "methods": [
+                "list_routes"
+              ]
+            },
             "ListSpokes": {
               "methods": [
                 "list_spokes"
+              ]
+            },
+            "RejectHubSpoke": {
+              "methods": [
+                "reject_hub_spoke"
               ]
             },
             "UpdateHub": {
@@ -65,6 +110,11 @@
         "grpc-async": {
           "libraryClient": "HubServiceAsyncClient",
           "rpcs": {
+            "AcceptHubSpoke": {
+              "methods": [
+                "accept_hub_spoke"
+              ]
+            },
             "CreateHub": {
               "methods": [
                 "create_hub"
@@ -85,9 +135,24 @@
                 "delete_spoke"
               ]
             },
+            "GetGroup": {
+              "methods": [
+                "get_group"
+              ]
+            },
             "GetHub": {
               "methods": [
                 "get_hub"
+              ]
+            },
+            "GetRoute": {
+              "methods": [
+                "get_route"
+              ]
+            },
+            "GetRouteTable": {
+              "methods": [
+                "get_route_table"
               ]
             },
             "GetSpoke": {
@@ -95,14 +160,39 @@
                 "get_spoke"
               ]
             },
+            "ListGroups": {
+              "methods": [
+                "list_groups"
+              ]
+            },
+            "ListHubSpokes": {
+              "methods": [
+                "list_hub_spokes"
+              ]
+            },
             "ListHubs": {
               "methods": [
                 "list_hubs"
               ]
             },
+            "ListRouteTables": {
+              "methods": [
+                "list_route_tables"
+              ]
+            },
+            "ListRoutes": {
+              "methods": [
+                "list_routes"
+              ]
+            },
             "ListSpokes": {
               "methods": [
                 "list_spokes"
+              ]
+            },
+            "RejectHubSpoke": {
+              "methods": [
+                "reject_hub_spoke"
               ]
             },
             "UpdateHub": {
