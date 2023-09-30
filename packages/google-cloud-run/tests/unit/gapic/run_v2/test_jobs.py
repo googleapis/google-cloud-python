@@ -744,16 +744,16 @@ async def test_create_job_async_from_dict():
     await test_create_job_async(request_type=dict)
 
 
-def test_create_job_field_headers():
+def test_create_job_routing_parameters():
     client = JobsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcr_job.CreateJobRequest()
-
-    request.parent = "parent_value"
+    request = gcr_job.CreateJobRequest(
+        **{"parent": "projects/sample1/locations/sample2"}
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_job), "__call__") as call:
@@ -765,44 +765,9 @@ def test_create_job_field_headers():
         _, args, _ = call.mock_calls[0]
         assert args[0] == request
 
-    # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_create_job_field_headers_async():
-    client = JobsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = gcr_job.CreateJobRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_job), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
-        await client.create_job(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
+    # This test doesn't assert anything useful.
+    assert kw["metadata"]
 
 
 def test_create_job_flattened():
@@ -1044,16 +1009,16 @@ async def test_get_job_async_from_dict():
     await test_get_job_async(request_type=dict)
 
 
-def test_get_job_field_headers():
+def test_get_job_routing_parameters():
     client = JobsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = job.GetJobRequest()
-
-    request.name = "name_value"
+    request = job.GetJobRequest(
+        **{"name": "projects/sample1/locations/sample2/sample3"}
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job), "__call__") as call:
@@ -1065,42 +1030,9 @@ def test_get_job_field_headers():
         _, args, _ = call.mock_calls[0]
         assert args[0] == request
 
-    # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_get_job_field_headers_async():
-    client = JobsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = job.GetJobRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_job), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(job.Job())
-        await client.get_job(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
+    # This test doesn't assert anything useful.
+    assert kw["metadata"]
 
 
 def test_get_job_flattened():
@@ -1272,16 +1204,14 @@ async def test_list_jobs_async_from_dict():
     await test_list_jobs_async(request_type=dict)
 
 
-def test_list_jobs_field_headers():
+def test_list_jobs_routing_parameters():
     client = JobsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = job.ListJobsRequest()
-
-    request.parent = "parent_value"
+    request = job.ListJobsRequest(**{"parent": "projects/sample1/locations/sample2"})
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
@@ -1293,44 +1223,9 @@ def test_list_jobs_field_headers():
         _, args, _ = call.mock_calls[0]
         assert args[0] == request
 
-    # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_list_jobs_field_headers_async():
-    client = JobsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = job.ListJobsRequest()
-
-    request.parent = "parent_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            job.ListJobsResponse()
-        )
-        await client.list_jobs(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "parent=parent_value",
-    ) in kw["metadata"]
+    # This test doesn't assert anything useful.
+    assert kw["metadata"]
 
 
 def test_list_jobs_flattened():
@@ -1453,9 +1348,6 @@ def test_list_jobs_pager(transport_name: str = "grpc"):
         )
 
         metadata = ()
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
         pager = client.list_jobs(request={})
 
         assert pager._metadata == metadata
@@ -1688,16 +1580,16 @@ async def test_update_job_async_from_dict():
     await test_update_job_async(request_type=dict)
 
 
-def test_update_job_field_headers():
+def test_update_job_routing_parameters():
     client = JobsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = gcr_job.UpdateJobRequest()
-
-    request.job.name = "name_value"
+    request = gcr_job.UpdateJobRequest(
+        **{"job": {"name": "projects/sample1/locations/sample2/sample3"}}
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_job), "__call__") as call:
@@ -1709,44 +1601,9 @@ def test_update_job_field_headers():
         _, args, _ = call.mock_calls[0]
         assert args[0] == request
 
-    # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "job.name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_update_job_field_headers_async():
-    client = JobsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = gcr_job.UpdateJobRequest()
-
-    request.job.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.update_job), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
-        await client.update_job(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "job.name=name_value",
-    ) in kw["metadata"]
+    # This test doesn't assert anything useful.
+    assert kw["metadata"]
 
 
 def test_update_job_flattened():
@@ -1914,16 +1771,16 @@ async def test_delete_job_async_from_dict():
     await test_delete_job_async(request_type=dict)
 
 
-def test_delete_job_field_headers():
+def test_delete_job_routing_parameters():
     client = JobsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = job.DeleteJobRequest()
-
-    request.name = "name_value"
+    request = job.DeleteJobRequest(
+        **{"name": "projects/sample1/locations/sample2/sample3"}
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_job), "__call__") as call:
@@ -1935,44 +1792,9 @@ def test_delete_job_field_headers():
         _, args, _ = call.mock_calls[0]
         assert args[0] == request
 
-    # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_delete_job_field_headers_async():
-    client = JobsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = job.DeleteJobRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_job), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
-        await client.delete_job(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
+    # This test doesn't assert anything useful.
+    assert kw["metadata"]
 
 
 def test_delete_job_flattened():
@@ -2140,16 +1962,16 @@ async def test_run_job_async_from_dict():
     await test_run_job_async(request_type=dict)
 
 
-def test_run_job_field_headers():
+def test_run_job_routing_parameters():
     client = JobsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = job.RunJobRequest()
-
-    request.name = "name_value"
+    request = job.RunJobRequest(
+        **{"name": "projects/sample1/locations/sample2/sample3"}
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_job), "__call__") as call:
@@ -2161,44 +1983,9 @@ def test_run_job_field_headers():
         _, args, _ = call.mock_calls[0]
         assert args[0] == request
 
-    # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_run_job_field_headers_async():
-    client = JobsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = job.RunJobRequest()
-
-    request.name = "name_value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.run_job), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
-        await client.run_job(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert (
-        "x-goog-request-params",
-        "name=name_value",
-    ) in kw["metadata"]
+    # This test doesn't assert anything useful.
+    assert kw["metadata"]
 
 
 def test_run_job_flattened():
@@ -2886,6 +2673,7 @@ def test_create_job_rest(request_type):
                             "grpc": {"port": 453, "service": "service_value"},
                         },
                         "startup_probe": {},
+                        "depends_on": ["depends_on_value1", "depends_on_value2"],
                     }
                 ],
                 "volumes": [
@@ -2905,6 +2693,7 @@ def test_create_job_rest(request_type):
                         "cloud_sql_instance": {
                             "instances": ["instances_value1", "instances_value2"]
                         },
+                        "empty_dir": {"medium": 1, "size_limit": "size_limit_value"},
                     }
                 ],
                 "max_retries": 1187,
@@ -2912,7 +2701,17 @@ def test_create_job_rest(request_type):
                 "service_account": "service_account_value",
                 "execution_environment": 1,
                 "encryption_key": "encryption_key_value",
-                "vpc_access": {"connector": "connector_value", "egress": 1},
+                "vpc_access": {
+                    "connector": "connector_value",
+                    "egress": 1,
+                    "network_interfaces": [
+                        {
+                            "network": "network_value",
+                            "subnetwork": "subnetwork_value",
+                            "tags": ["tags_value1", "tags_value2"],
+                        }
+                    ],
+                },
             },
         },
         "observed_generation": 2021,
@@ -3208,6 +3007,7 @@ def test_create_job_rest_bad_request(
                             "grpc": {"port": 453, "service": "service_value"},
                         },
                         "startup_probe": {},
+                        "depends_on": ["depends_on_value1", "depends_on_value2"],
                     }
                 ],
                 "volumes": [
@@ -3227,6 +3027,7 @@ def test_create_job_rest_bad_request(
                         "cloud_sql_instance": {
                             "instances": ["instances_value1", "instances_value2"]
                         },
+                        "empty_dir": {"medium": 1, "size_limit": "size_limit_value"},
                     }
                 ],
                 "max_retries": 1187,
@@ -3234,7 +3035,17 @@ def test_create_job_rest_bad_request(
                 "service_account": "service_account_value",
                 "execution_environment": 1,
                 "encryption_key": "encryption_key_value",
-                "vpc_access": {"connector": "connector_value", "egress": 1},
+                "vpc_access": {
+                    "connector": "connector_value",
+                    "egress": 1,
+                    "network_interfaces": [
+                        {
+                            "network": "network_value",
+                            "subnetwork": "subnetwork_value",
+                            "tags": ["tags_value1", "tags_value2"],
+                        }
+                    ],
+                },
             },
         },
         "observed_generation": 2021,
@@ -4035,6 +3846,7 @@ def test_update_job_rest(request_type):
                             "grpc": {"port": 453, "service": "service_value"},
                         },
                         "startup_probe": {},
+                        "depends_on": ["depends_on_value1", "depends_on_value2"],
                     }
                 ],
                 "volumes": [
@@ -4054,6 +3866,7 @@ def test_update_job_rest(request_type):
                         "cloud_sql_instance": {
                             "instances": ["instances_value1", "instances_value2"]
                         },
+                        "empty_dir": {"medium": 1, "size_limit": "size_limit_value"},
                     }
                 ],
                 "max_retries": 1187,
@@ -4061,7 +3874,17 @@ def test_update_job_rest(request_type):
                 "service_account": "service_account_value",
                 "execution_environment": 1,
                 "encryption_key": "encryption_key_value",
-                "vpc_access": {"connector": "connector_value", "egress": 1},
+                "vpc_access": {
+                    "connector": "connector_value",
+                    "egress": 1,
+                    "network_interfaces": [
+                        {
+                            "network": "network_value",
+                            "subnetwork": "subnetwork_value",
+                            "tags": ["tags_value1", "tags_value2"],
+                        }
+                    ],
+                },
             },
         },
         "observed_generation": 2021,
@@ -4333,6 +4156,7 @@ def test_update_job_rest_bad_request(
                             "grpc": {"port": 453, "service": "service_value"},
                         },
                         "startup_probe": {},
+                        "depends_on": ["depends_on_value1", "depends_on_value2"],
                     }
                 ],
                 "volumes": [
@@ -4352,6 +4176,7 @@ def test_update_job_rest_bad_request(
                         "cloud_sql_instance": {
                             "instances": ["instances_value1", "instances_value2"]
                         },
+                        "empty_dir": {"medium": 1, "size_limit": "size_limit_value"},
                     }
                 ],
                 "max_retries": 1187,
@@ -4359,7 +4184,17 @@ def test_update_job_rest_bad_request(
                 "service_account": "service_account_value",
                 "execution_environment": 1,
                 "encryption_key": "encryption_key_value",
-                "vpc_access": {"connector": "connector_value", "egress": 1},
+                "vpc_access": {
+                    "connector": "connector_value",
+                    "egress": 1,
+                    "network_interfaces": [
+                        {
+                            "network": "network_value",
+                            "subnetwork": "subnetwork_value",
+                            "tags": ["tags_value1", "tags_value2"],
+                        }
+                    ],
+                },
             },
         },
         "observed_generation": 2021,

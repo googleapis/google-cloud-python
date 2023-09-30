@@ -15,6 +15,7 @@
 #
 from .condition import Condition
 from .execution import (
+    CancelExecutionRequest,
     DeleteExecutionRequest,
     Execution,
     GetExecutionRequest,
@@ -37,6 +38,7 @@ from .k8s_min import (
     CloudSqlInstance,
     Container,
     ContainerPort,
+    EmptyDirVolumeSource,
     EnvVar,
     EnvVarSource,
     GRPCAction,
@@ -92,6 +94,7 @@ from .vendor_settings import (
 
 __all__ = (
     "Condition",
+    "CancelExecutionRequest",
     "DeleteExecutionRequest",
     "Execution",
     "GetExecutionRequest",
@@ -110,6 +113,7 @@ __all__ = (
     "CloudSqlInstance",
     "Container",
     "ContainerPort",
+    "EmptyDirVolumeSource",
     "EnvVar",
     "EnvVarSource",
     "GRPCAction",

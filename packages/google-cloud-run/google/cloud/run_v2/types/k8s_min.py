@@ -33,6 +33,7 @@ __protobuf__ = proto.module(
         "SecretVolumeSource",
         "VersionToPath",
         "CloudSqlInstance",
+        "EmptyDirVolumeSource",
         "Probe",
         "HTTPGetAction",
         "HTTPHeader",
@@ -46,7 +47,7 @@ class Container(proto.Message):
     r"""A single application container.
     This specifies both the container to run, the command to run in
     the container and the arguments to supply to it.
-    Note that additional arguments may be supplied by the system to
+    Note that additional arguments can be supplied by the system to
     the container at runtime.
 
     Attributes:
@@ -99,6 +100,9 @@ class Container(proto.Message):
             startup probe is provided, until it succeeds.
             Container will not be added to service endpoints
             if the probe fails.
+        depends_on (MutableSequence[str]):
+            Names of the containers that must start
+            before this container.
     """
 
     name: str = proto.Field(
@@ -150,6 +154,10 @@ class Container(proto.Message):
         proto.MESSAGE,
         number=11,
         message="Probe",
+    )
+    depends_on: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=12,
     )
 
 
@@ -207,8 +215,8 @@ class EnvVar(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the environment variable. Must be a
-            C_IDENTIFIER, and mnay not exceed 32768 characters.
+            Required. Name of the environment variable.
+            Must not exceed 32768 characters.
         value (str):
             Variable references $(VAR_NAME) are expanded using the
             previous defined environment variables in the container and
@@ -363,6 +371,10 @@ class Volume(proto.Message):
             and Cloud Run.
 
             This field is a member of `oneof`_ ``volume_type``.
+        empty_dir (google.cloud.run_v2.types.EmptyDirVolumeSource):
+            Ephemeral storage used as a shared volume.
+
+            This field is a member of `oneof`_ ``volume_type``.
     """
 
     name: str = proto.Field(
@@ -380,6 +392,12 @@ class Volume(proto.Message):
         number=3,
         oneof="volume_type",
         message="CloudSqlInstance",
+    )
+    empty_dir: "EmptyDirVolumeSource" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="volume_type",
+        message="EmptyDirVolumeSource",
     )
 
 
@@ -513,6 +531,60 @@ class CloudSqlInstance(proto.Message):
     instances: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
+    )
+
+
+class EmptyDirVolumeSource(proto.Message):
+    r"""In memory (tmpfs) ephemeral storage.
+    It is ephemeral in the sense that when the sandbox is taken
+    down, the data is destroyed with it (it does not persist across
+    sandbox runs).
+
+    Attributes:
+        medium (google.cloud.run_v2.types.EmptyDirVolumeSource.Medium):
+            The medium on which the data is stored.
+            Acceptable values today is only MEMORY or none.
+            When none, the default will currently be backed
+            by memory but could change over time. +optional
+        size_limit (str):
+            Limit on the storage usable by this EmptyDir
+            volume. The size limit is also applicable for
+            memory medium. The maximum usage on memory
+            medium EmptyDir would be the minimum value
+            between the SizeLimit specified here and the sum
+            of memory limits of all containers. The default
+            is nil which means that the limit is undefined.
+            More info:
+
+            https://cloud.google.com/run/docs/configuring/in-memory-volumes#configure-volume.
+            Info in Kubernetes:
+
+            https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
+    """
+
+    class Medium(proto.Enum):
+        r"""The different types of medium supported for EmptyDir.
+
+        Values:
+            MEDIUM_UNSPECIFIED (0):
+                When not specified, falls back to the default
+                implementation which is currently in memory
+                (this may change over time).
+            MEMORY (1):
+                Explicitly set the EmptyDir to be in memory.
+                Uses tmpfs.
+        """
+        MEDIUM_UNSPECIFIED = 0
+        MEMORY = 1
+
+    medium: Medium = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Medium,
+    )
+    size_limit: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -686,9 +758,9 @@ class GRPCAction(proto.Message):
         service (str):
             Service is the name of the service to place
             in the gRPC HealthCheckRequest (see
-            https://github.com/grpc/grpc/blob/master/doc/health-checking.md).
-            If this is not specified, the default behavior
-            is defined by gRPC.
+            https://github.com/grpc/grpc/blob/master/doc/health-checking.md
+            ). If this is not specified, the default
+            behavior is defined by gRPC.
     """
 
     port: int = proto.Field(

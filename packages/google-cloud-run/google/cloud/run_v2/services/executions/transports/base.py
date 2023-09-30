@@ -139,6 +139,11 @@ class ExecutionsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.cancel_execution: gapic_v1.method.wrap_method(
+                self.cancel_execution,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -181,6 +186,15 @@ class ExecutionsTransport(abc.ABC):
         self,
     ) -> Callable[
         [execution.DeleteExecutionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_execution(
+        self,
+    ) -> Callable[
+        [execution.CancelExecutionRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "ExecutionsClient",
           "rpcs": {
+            "CancelExecution": {
+              "methods": [
+                "cancel_execution"
+              ]
+            },
             "DeleteExecution": {
               "methods": [
                 "delete_execution"
@@ -30,6 +35,11 @@
         "grpc-async": {
           "libraryClient": "ExecutionsAsyncClient",
           "rpcs": {
+            "CancelExecution": {
+              "methods": [
+                "cancel_execution"
+              ]
+            },
             "DeleteExecution": {
               "methods": [
                 "delete_execution"
@@ -50,6 +60,11 @@
         "rest": {
           "libraryClient": "ExecutionsClient",
           "rpcs": {
+            "CancelExecution": {
+              "methods": [
+                "cancel_execution"
+              ]
+            },
             "DeleteExecution": {
               "methods": [
                 "delete_execution"

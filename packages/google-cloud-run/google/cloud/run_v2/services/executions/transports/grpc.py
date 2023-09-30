@@ -323,6 +323,32 @@ class ExecutionsGrpcTransport(ExecutionsTransport):
             )
         return self._stubs["delete_execution"]
 
+    @property
+    def cancel_execution(
+        self,
+    ) -> Callable[[execution.CancelExecutionRequest], operations_pb2.Operation]:
+        r"""Return a callable for the cancel execution method over gRPC.
+
+        Cancels an Execution.
+
+        Returns:
+            Callable[[~.CancelExecutionRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_execution" not in self._stubs:
+            self._stubs["cancel_execution"] = self.grpc_channel.unary_unary(
+                "/google.cloud.run.v2.Executions/CancelExecution",
+                request_serializer=execution.CancelExecutionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["cancel_execution"]
+
     def close(self):
         self.grpc_channel.close()
 

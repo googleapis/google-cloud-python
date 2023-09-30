@@ -18,10 +18,16 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.api import launch_stage_pb2  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.run_v2.types import condition, execution_template, vendor_settings
+from google.cloud.run_v2.types import (
+    condition,
+    execution_template,
+    k8s_min,
+    vendor_settings,
+)
 
 __protobuf__ = proto.module(
     package="google.cloud.run.v2",
@@ -243,7 +249,80 @@ class RunJobRequest(proto.Message):
             A system-generated fingerprint for this
             version of the resource. May be used to detect
             modification conflict during updates.
+        overrides (google.cloud.run_v2.types.RunJobRequest.Overrides):
+            Overrides specification for a given execution
+            of a job. If provided, overrides will be applied
+            to update the execution or task spec.
     """
+
+    class Overrides(proto.Message):
+        r"""RunJob Overrides that contains Execution fields to be
+        overridden.
+
+        Attributes:
+            container_overrides (MutableSequence[google.cloud.run_v2.types.RunJobRequest.Overrides.ContainerOverride]):
+                Per container override specification.
+            task_count (int):
+                Optional. The desired number of tasks the execution should
+                run. Will replace existing task_count value.
+            timeout (google.protobuf.duration_pb2.Duration):
+                Duration in seconds the task may be active before the system
+                will actively try to mark it failed and kill associated
+                containers. Will replace existing timeout_seconds value.
+        """
+
+        class ContainerOverride(proto.Message):
+            r"""Per-container override specification.
+
+            Attributes:
+                name (str):
+                    The name of the container specified as a DNS_LABEL.
+                args (MutableSequence[str]):
+                    Optional. Arguments to the entrypoint. Will
+                    replace existing args for override.
+                env (MutableSequence[google.cloud.run_v2.types.EnvVar]):
+                    List of environment variables to set in the
+                    container. Will be merged with existing env for
+                    override.
+                clear_args (bool):
+                    Optional. True if the intention is to clear
+                    out existing args list.
+            """
+
+            name: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            args: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=2,
+            )
+            env: MutableSequence[k8s_min.EnvVar] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message=k8s_min.EnvVar,
+            )
+            clear_args: bool = proto.Field(
+                proto.BOOL,
+                number=4,
+            )
+
+        container_overrides: MutableSequence[
+            "RunJobRequest.Overrides.ContainerOverride"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="RunJobRequest.Overrides.ContainerOverride",
+        )
+        task_count: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        timeout: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=duration_pb2.Duration,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -256,6 +335,11 @@ class RunJobRequest(proto.Message):
     etag: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    overrides: Overrides = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=Overrides,
     )
 
 

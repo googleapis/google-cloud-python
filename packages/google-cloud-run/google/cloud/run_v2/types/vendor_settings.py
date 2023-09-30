@@ -87,12 +87,9 @@ class EncryptionKeyRevocationAction(proto.Enum):
 
 
 class VpcAccess(proto.Message):
-    r"""VPC Access settings. For more information on creating a VPC
-    Connector, visit
-    https://cloud.google.com/vpc/docs/configure-serverless-vpc-access
-    For information on how to configure Cloud Run with an existing
-    VPC Connector, visit
-    https://cloud.google.com/run/docs/configuring/connecting-vpc
+    r"""VPC Access settings. For more information on sending traffic
+    to a VPC network, visit
+    https://cloud.google.com/run/docs/configuring/connecting-vpc.
 
     Attributes:
         connector (str):
@@ -100,8 +97,15 @@ class VpcAccess(proto.Message):
             Format:
             projects/{project}/locations/{location}/connectors/{connector},
             where {project} can be project id or number.
+            For more information on sending traffic to a VPC
+            network via a connector, visit
+            https://cloud.google.com/run/docs/configuring/vpc-connectors.
         egress (google.cloud.run_v2.types.VpcAccess.VpcEgress):
-            Traffic VPC egress settings.
+            Traffic VPC egress settings. If not provided, it defaults to
+            PRIVATE_RANGES_ONLY.
+        network_interfaces (MutableSequence[google.cloud.run_v2.types.VpcAccess.NetworkInterface]):
+            Direct VPC egress settings. Currently only
+            single network interface is supported.
     """
 
     class VpcEgress(proto.Enum):
@@ -121,6 +125,45 @@ class VpcAccess(proto.Message):
         ALL_TRAFFIC = 1
         PRIVATE_RANGES_ONLY = 2
 
+    class NetworkInterface(proto.Message):
+        r"""Direct VPC egress settings.
+
+        Attributes:
+            network (str):
+                The VPC network that the Cloud Run resource
+                will be able to send traffic to. At least one of
+                network or subnetwork must be specified. If both
+                network and subnetwork are specified, the given
+                VPC subnetwork must belong to the given VPC
+                network. If network is not specified, it will be
+                looked up from the subnetwork.
+            subnetwork (str):
+                The VPC subnetwork that the Cloud Run
+                resource will get IPs from. At least one of
+                network or subnetwork must be specified. If both
+                network and subnetwork are specified, the given
+                VPC subnetwork must belong to the given VPC
+                network. If subnetwork is not specified, the
+                subnetwork with the same name with the network
+                will be used.
+            tags (MutableSequence[str]):
+                Network tags applied to this Cloud Run
+                resource.
+        """
+
+        network: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        subnetwork: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        tags: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
+
     connector: str = proto.Field(
         proto.STRING,
         number=1,
@@ -129,6 +172,11 @@ class VpcAccess(proto.Message):
         proto.ENUM,
         number=2,
         enum=VpcEgress,
+    )
+    network_interfaces: MutableSequence[NetworkInterface] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=NetworkInterface,
     )
 
 

@@ -153,7 +153,12 @@ class Task(proto.Message):
             should be preserved when modifying objects.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Represents time when the task
-            was created by the job controller. It is not
+            was created by the system. It is not guaranteed
+            to be set in happens-before order across
+            separate operations.
+        scheduled_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Represents time when the task
+            was scheduled to run by the system. It is not
             guaranteed to be set in happens-before order
             across separate operations.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -276,6 +281,11 @@ class Task(proto.Message):
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    scheduled_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=34,
         message=timestamp_pb2.Timestamp,
     )
     start_time: timestamp_pb2.Timestamp = proto.Field(

@@ -25,6 +25,7 @@ from .services.services import ServicesAsyncClient, ServicesClient
 from .services.tasks import TasksAsyncClient, TasksClient
 from .types.condition import Condition
 from .types.execution import (
+    CancelExecutionRequest,
     DeleteExecutionRequest,
     Execution,
     GetExecutionRequest,
@@ -47,6 +48,7 @@ from .types.k8s_min import (
     CloudSqlInstance,
     Container,
     ContainerPort,
+    EmptyDirVolumeSource,
     EnvVar,
     EnvVarSource,
     GRPCAction,
@@ -107,6 +109,7 @@ __all__ = (
     "ServicesAsyncClient",
     "TasksAsyncClient",
     "BinaryAuthorization",
+    "CancelExecutionRequest",
     "CloudSqlInstance",
     "Condition",
     "Container",
@@ -117,6 +120,7 @@ __all__ = (
     "DeleteJobRequest",
     "DeleteRevisionRequest",
     "DeleteServiceRequest",
+    "EmptyDirVolumeSource",
     "EncryptionKeyRevocationAction",
     "EnvVar",
     "EnvVarSource",

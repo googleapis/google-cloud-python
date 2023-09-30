@@ -30,6 +30,7 @@ from google.cloud.run_v2.services.tasks.async_client import TasksAsyncClient
 from google.cloud.run_v2.services.tasks.client import TasksClient
 from google.cloud.run_v2.types.condition import Condition
 from google.cloud.run_v2.types.execution import (
+    CancelExecutionRequest,
     DeleteExecutionRequest,
     Execution,
     GetExecutionRequest,
@@ -52,6 +53,7 @@ from google.cloud.run_v2.types.k8s_min import (
     CloudSqlInstance,
     Container,
     ContainerPort,
+    EmptyDirVolumeSource,
     EnvVar,
     EnvVarSource,
     GRPCAction,
@@ -117,6 +119,7 @@ __all__ = (
     "TasksClient",
     "TasksAsyncClient",
     "Condition",
+    "CancelExecutionRequest",
     "DeleteExecutionRequest",
     "Execution",
     "GetExecutionRequest",
@@ -135,6 +138,7 @@ __all__ = (
     "CloudSqlInstance",
     "Container",
     "ContainerPort",
+    "EmptyDirVolumeSource",
     "EnvVar",
     "EnvVarSource",
     "GRPCAction",

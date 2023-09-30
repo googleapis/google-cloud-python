@@ -39,6 +39,7 @@ def partition(
 class runCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
+        'cancel_execution': ('name', 'validate_only', 'etag', ),
         'create_job': ('parent', 'job', 'job_id', 'validate_only', ),
         'create_service': ('parent', 'service', 'service_id', 'validate_only', ),
         'delete_execution': ('name', 'validate_only', 'etag', ),
@@ -56,7 +57,7 @@ class runCallTransformer(cst.CSTTransformer):
         'list_revisions': ('parent', 'page_size', 'page_token', 'show_deleted', ),
         'list_services': ('parent', 'page_size', 'page_token', 'show_deleted', ),
         'list_tasks': ('parent', 'page_size', 'page_token', 'show_deleted', ),
-        'run_job': ('name', 'validate_only', 'etag', ),
+        'run_job': ('name', 'validate_only', 'etag', 'overrides', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_job': ('job', 'validate_only', 'allow_missing', ),

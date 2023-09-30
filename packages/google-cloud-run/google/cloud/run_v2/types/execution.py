@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
         "ListExecutionsRequest",
         "ListExecutionsResponse",
         "DeleteExecutionRequest",
+        "CancelExecutionRequest",
         "Execution",
     },
 )
@@ -40,11 +41,9 @@ class GetExecutionRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The full name of the Execution.
-            Format:
-
-            projects/{project}/locations/{location}/jobs/{job}/executions/{execution},
-            where {project} can be project id or number.
+            Required. The full name of the Execution. Format:
+            ``projects/{project}/locations/{location}/jobs/{job}/executions/{execution}``,
+            where ``{project}`` can be project id or number.
     """
 
     name: str = proto.Field(
@@ -58,12 +57,11 @@ class ListExecutionsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The Execution from which the
-            Executions should be listed. To list all
-            Executions across Jobs, use "-" instead of Job
-            name. Format:
-            projects/{project}/locations/{location}/jobs/{job},
-            where {project} can be project id or number.
+            Required. The Execution from which the Executions should be
+            listed. To list all Executions across Jobs, use "-" instead
+            of Job name. Format:
+            ``projects/{project}/locations/{location}/jobs/{job}``,
+            where ``{project}`` can be project id or number.
         page_size (int):
             Maximum number of Executions to return in
             this call.
@@ -124,14 +122,44 @@ class DeleteExecutionRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Execution to
-            delete. Format:
-
-            projects/{project}/locations/{location}/jobs/{job}/executions/{execution},
-            where {project} can be project id or number.
+            Required. The name of the Execution to delete. Format:
+            ``projects/{project}/locations/{location}/jobs/{job}/executions/{execution}``,
+            where ``{project}`` can be project id or number.
         validate_only (bool):
             Indicates that the request should be
             validated without actually deleting any
+            resources.
+        etag (str):
+            A system-generated fingerprint for this
+            version of the resource. This may be used to
+            detect modification conflict during updates.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    validate_only: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    etag: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class CancelExecutionRequest(proto.Message):
+    r"""Request message for deleting an Execution.
+
+    Attributes:
+        name (str):
+            Required. The name of the Execution to cancel. Format:
+            ``projects/{project}/locations/{location}/jobs/{job}/executions/{execution}``,
+            where ``{project}`` can be project id or number.
+        validate_only (bool):
+            Indicates that the request should be
+            validated without actually cancelling any
             resources.
         etag (str):
             A system-generated fingerprint for this
