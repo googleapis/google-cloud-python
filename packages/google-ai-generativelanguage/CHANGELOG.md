@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.4](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.3.3...google-ai-generativelanguage-v0.3.4) (2023-09-30)
+
+
+### Documentation
+
+* Minor formatting ([#11630](https://github.com/googleapis/google-cloud-python/issues/11630)) ([b176996](https://github.com/googleapis/google-cloud-python/commit/b176996309cb5b3e9c257caaebde8884bd556824))
+
 ## [0.3.3](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.3.2...google-ai-generativelanguage-v0.3.3) (2023-09-21)
 
 

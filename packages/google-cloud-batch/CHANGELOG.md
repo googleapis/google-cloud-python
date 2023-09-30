@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.0...google-cloud-batch-v0.17.1) (2023-09-30)
+
+
+### Documentation
+
+* update batch PD interface support ([a300b07](https://github.com/googleapis/google-cloud-python/commit/a300b079de26647c09e783a9e27309290a5b4522))
+
 ## [0.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.16.0...google-cloud-batch-v0.17.0) (2023-08-31)
 
 

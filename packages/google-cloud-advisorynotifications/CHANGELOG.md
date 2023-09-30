@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.3.0...google-cloud-advisorynotifications-v0.3.1) (2023-09-30)
+
+
+### Features
+
+* add new RPCs GetSettings, UpdateSettings and new messages Settings, NotificationSettings, GetSettingsRequest, UpdateSettingsRequest ([e395513](https://github.com/googleapis/google-cloud-python/commit/e3955133d91b3d18b14b099f842b8d088cacbbd5))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.2.1...google-cloud-advisorynotifications-v0.3.0) (2023-08-03)
 
 
