@@ -52,11 +52,16 @@ __protobuf__ = proto.module(
         "FilesetSpec",
         "DataSourceConnectionSpec",
         "RoutineSpec",
+        "DatasetSpec",
         "SqlDatabaseSystemSpec",
         "LookerSystemSpec",
         "CloudBigtableSystemSpec",
         "CloudBigtableInstanceSpec",
         "ServiceSpec",
+        "VertexModelSourceInfo",
+        "VertexModelSpec",
+        "VertexDatasetSpec",
+        "ModelSpec",
         "BusinessContext",
         "EntryOverview",
         "Contacts",
@@ -931,6 +936,10 @@ class Entry(proto.Message):
             procedure. Valid only for entries with the ``ROUTINE`` type.
 
             This field is a member of `oneof`_ ``spec``.
+        dataset_spec (google.cloud.datacatalog_v1.types.DatasetSpec):
+            Specification that applies to a dataset.
+
+            This field is a member of `oneof`_ ``spec``.
         fileset_spec (google.cloud.datacatalog_v1.types.FilesetSpec):
             Specification that applies to a fileset resource. Valid only
             for entries with the ``FILESET`` type.
@@ -939,6 +948,10 @@ class Entry(proto.Message):
         service_spec (google.cloud.datacatalog_v1.types.ServiceSpec):
             Specification that applies to a Service
             resource.
+
+            This field is a member of `oneof`_ ``spec``.
+        model_spec (google.cloud.datacatalog_v1.types.ModelSpec):
+            Model specification.
 
             This field is a member of `oneof`_ ``spec``.
         display_name (str):
@@ -1075,6 +1088,12 @@ class Entry(proto.Message):
         oneof="spec",
         message="RoutineSpec",
     )
+    dataset_spec: "DatasetSpec" = proto.Field(
+        proto.MESSAGE,
+        number=32,
+        oneof="spec",
+        message="DatasetSpec",
+    )
     fileset_spec: "FilesetSpec" = proto.Field(
         proto.MESSAGE,
         number=33,
@@ -1086,6 +1105,12 @@ class Entry(proto.Message):
         number=42,
         oneof="spec",
         message="ServiceSpec",
+    )
+    model_spec: "ModelSpec" = proto.Field(
+        proto.MESSAGE,
+        number=43,
+        oneof="spec",
+        message="ModelSpec",
     )
     display_name: str = proto.Field(
         proto.STRING,
@@ -1392,6 +1417,28 @@ class RoutineSpec(proto.Message):
     )
 
 
+class DatasetSpec(proto.Message):
+    r"""Specification that applies to a dataset. Valid only for entries with
+    the ``DATASET`` type.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        vertex_dataset_spec (google.cloud.datacatalog_v1.types.VertexDatasetSpec):
+            Vertex AI Dataset specific fields
+
+            This field is a member of `oneof`_ ``system_spec``.
+    """
+
+    vertex_dataset_spec: "VertexDatasetSpec" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="system_spec",
+        message="VertexDatasetSpec",
+    )
+
+
 class SqlDatabaseSystemSpec(proto.Message):
     r"""Specification that applies to entries that are part ``SQL_DATABASE``
     system (user_specified_type)
@@ -1563,6 +1610,198 @@ class ServiceSpec(proto.Message):
         number=1,
         oneof="system_spec",
         message="CloudBigtableInstanceSpec",
+    )
+
+
+class VertexModelSourceInfo(proto.Message):
+    r"""Detail description of the source information of a Vertex
+    model.
+
+    Attributes:
+        source_type (google.cloud.datacatalog_v1.types.VertexModelSourceInfo.ModelSourceType):
+            Type of the model source.
+        copy (bool):
+            If this Model is copy of another Model. If true then
+            [source_type][google.cloud.datacatalog.v1.VertexModelSourceInfo.source_type]
+            pertains to the original.
+    """
+
+    class ModelSourceType(proto.Enum):
+        r"""Source of the model.
+
+        Values:
+            MODEL_SOURCE_TYPE_UNSPECIFIED (0):
+                Should not be used.
+            AUTOML (1):
+                The Model is uploaded by automl training
+                pipeline.
+            CUSTOM (2):
+                The Model is uploaded by user or custom
+                training pipeline.
+            BQML (3):
+                The Model is registered and sync'ed from
+                BigQuery ML.
+            MODEL_GARDEN (4):
+                The Model is saved or tuned from Model
+                Garden.
+        """
+        MODEL_SOURCE_TYPE_UNSPECIFIED = 0
+        AUTOML = 1
+        CUSTOM = 2
+        BQML = 3
+        MODEL_GARDEN = 4
+
+    source_type: ModelSourceType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ModelSourceType,
+    )
+    copy: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+
+
+class VertexModelSpec(proto.Message):
+    r"""Specification for vertex model resources.
+
+    Attributes:
+        version_id (str):
+            The version ID of the model.
+        version_aliases (MutableSequence[str]):
+            User provided version aliases so that a model
+            version can be referenced via alias
+        version_description (str):
+            The description of this version.
+        vertex_model_source_info (google.cloud.datacatalog_v1.types.VertexModelSourceInfo):
+            Source of a Vertex model.
+        container_image_uri (str):
+            URI of the Docker image to be used as the
+            custom container for serving predictions.
+    """
+
+    version_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version_aliases: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    version_description: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    vertex_model_source_info: "VertexModelSourceInfo" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="VertexModelSourceInfo",
+    )
+    container_image_uri: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class VertexDatasetSpec(proto.Message):
+    r"""Specification for vertex dataset resources.
+
+    Attributes:
+        data_item_count (int):
+            The number of DataItems in this Dataset. Only
+            apply for non-structured Dataset.
+        data_type (google.cloud.datacatalog_v1.types.VertexDatasetSpec.DataType):
+            Type of the dataset.
+    """
+
+    class DataType(proto.Enum):
+        r"""Type of data stored in the dataset.
+
+        Values:
+            DATA_TYPE_UNSPECIFIED (0):
+                Should not be used.
+            TABLE (1):
+                Structured data dataset.
+            IMAGE (2):
+                Image dataset which supports
+                ImageClassification, ImageObjectDetection and
+                ImageSegmentation problems.
+            TEXT (3):
+                Document dataset which supports
+                TextClassification, TextExtraction and
+                TextSentiment problems.
+            VIDEO (4):
+                Video dataset which supports
+                VideoClassification, VideoObjectTracking and
+                VideoActionRecognition problems.
+            CONVERSATION (5):
+                Conversation dataset which supports
+                conversation problems.
+            TIME_SERIES (6):
+                TimeSeries dataset.
+            DOCUMENT (7):
+                Document dataset which supports
+                DocumentAnnotation problems.
+            TEXT_TO_SPEECH (8):
+                TextToSpeech dataset which supports
+                TextToSpeech problems.
+            TRANSLATION (9):
+                Translation dataset which supports
+                Translation problems.
+            STORE_VISION (10):
+                Store Vision dataset which is used for HITL
+                integration.
+            ENTERPRISE_KNOWLEDGE_GRAPH (11):
+                Enterprise Knowledge Graph dataset which is
+                used for HITL labeling integration.
+            TEXT_PROMPT (12):
+                Text prompt dataset which supports Large
+                Language Models.
+        """
+        DATA_TYPE_UNSPECIFIED = 0
+        TABLE = 1
+        IMAGE = 2
+        TEXT = 3
+        VIDEO = 4
+        CONVERSATION = 5
+        TIME_SERIES = 6
+        DOCUMENT = 7
+        TEXT_TO_SPEECH = 8
+        TRANSLATION = 9
+        STORE_VISION = 10
+        ENTERPRISE_KNOWLEDGE_GRAPH = 11
+        TEXT_PROMPT = 12
+
+    data_item_count: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    data_type: DataType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=DataType,
+    )
+
+
+class ModelSpec(proto.Message):
+    r"""Specification that applies to a model. Valid only for entries with
+    the ``MODEL`` type.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        vertex_model_spec (google.cloud.datacatalog_v1.types.VertexModelSpec):
+            Specification for vertex model resources.
+
+            This field is a member of `oneof`_ ``system_spec``.
+    """
+
+    vertex_model_spec: "VertexModelSpec" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="system_spec",
+        message="VertexModelSpec",
     )
 
 

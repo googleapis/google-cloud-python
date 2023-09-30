@@ -53,6 +53,8 @@ class IntegratedSystem(proto.Enum):
             Cloud Sql
         LOOKER (9):
             Looker
+        VERTEX_AI (10):
+            Vertex AI
     """
     INTEGRATED_SYSTEM_UNSPECIFIED = 0
     BIGQUERY = 1
@@ -63,6 +65,7 @@ class IntegratedSystem(proto.Enum):
     CLOUD_BIGTABLE = 7
     CLOUD_SQL = 8
     LOOKER = 9
+    VERTEX_AI = 10
 
 
 class ManagingSystem(proto.Enum):
