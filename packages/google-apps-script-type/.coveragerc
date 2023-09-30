@@ -4,8 +4,8 @@ branch = True
 [report]
 show_missing = True
 omit =
-    google/apps/script/type/slides/__init__.py
-    google/apps/script/type/slides/gapic_version.py
+    google/apps/script/type/__init__.py
+    google/apps/script/type/gapic_version.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER

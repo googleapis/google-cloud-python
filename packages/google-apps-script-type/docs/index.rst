@@ -3,5 +3,5 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    slides/services
-    slides/types
+    type/services
+    type/types
