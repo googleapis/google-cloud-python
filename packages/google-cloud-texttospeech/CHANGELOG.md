@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.14.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.14.1...google-cloud-texttospeech-v2.14.2) (2023-09-30)
+
+
+### Documentation
+
+* Minor formatting ([#388](https://github.com/googleapis/google-cloud-python/issues/388)) ([c051f1b](https://github.com/googleapis/google-cloud-python/commit/c051f1b710c824e0d4028fcec73e8db315f8aebd))
+
 ## [2.14.1](https://github.com/googleapis/python-texttospeech/compare/v2.14.0...v2.14.1) (2023-01-20)
 
 
