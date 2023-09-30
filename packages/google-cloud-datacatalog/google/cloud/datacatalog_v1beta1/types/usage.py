@@ -37,7 +37,7 @@ class UsageStats(proto.Message):
     - The usage stats only include BigQuery query jobs
     - The usage stats might be underestimated, e.g. wildcard table
       references are not yet counted in usage computation
-    https://cloud.google.com/bigquery/docs/querying-wildcard-tables
+      https://cloud.google.com/bigquery/docs/querying-wildcard-tables
 
     Attributes:
         total_completions (float):
