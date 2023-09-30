@@ -16,7 +16,7 @@
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers_async
+from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
@@ -161,6 +161,7 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -235,6 +236,22 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         """
         # Return the channel from cache.
         return self._grpc_channel
+
+    @property
+    def operations_client(self) -> operations_v1.OperationsAsyncClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Quick check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsAsyncClient(
+                self.grpc_channel
+            )
+
+        # Return the client from cache.
+        return self._operations_client
 
     @property
     def list_intents(
@@ -378,6 +395,78 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_intent"]
+
+    @property
+    def import_intents(
+        self,
+    ) -> Callable[[intent.ImportIntentsRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the import intents method over gRPC.
+
+        Imports the specified intents into the agent.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [ImportIntentsMetadata][google.cloud.dialogflow.cx.v3.ImportIntentsMetadata]
+        -  ``response``:
+           [ImportIntentsResponse][google.cloud.dialogflow.cx.v3.ImportIntentsResponse]
+
+        Returns:
+            Callable[[~.ImportIntentsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "import_intents" not in self._stubs:
+            self._stubs["import_intents"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3.Intents/ImportIntents",
+                request_serializer=intent.ImportIntentsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["import_intents"]
+
+    @property
+    def export_intents(
+        self,
+    ) -> Callable[[intent.ExportIntentsRequest], Awaitable[operations_pb2.Operation]]:
+        r"""Return a callable for the export intents method over gRPC.
+
+        Exports the selected intents.
+
+        This method is a `long-running
+        operation <https://cloud.google.com/dialogflow/cx/docs/how/long-running-operation>`__.
+        The returned ``Operation`` type has the following
+        method-specific fields:
+
+        -  ``metadata``:
+           [ExportIntentsMetadata][google.cloud.dialogflow.cx.v3.ExportIntentsMetadata]
+        -  ``response``:
+           [ExportIntentsResponse][google.cloud.dialogflow.cx.v3.ExportIntentsResponse]
+
+        Returns:
+            Callable[[~.ExportIntentsRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_intents" not in self._stubs:
+            self._stubs["export_intents"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3.Intents/ExportIntents",
+                request_serializer=intent.ExportIntentsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_intents"]
 
     def close(self):
         return self.grpc_channel.close()

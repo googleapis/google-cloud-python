@@ -196,10 +196,17 @@ from google.cloud.dialogflowcx_v3.types.fulfillment import Fulfillment
 from google.cloud.dialogflowcx_v3.types.gcs import GcsDestination
 from google.cloud.dialogflowcx_v3.types.generative_settings import GenerativeSettings
 from google.cloud.dialogflowcx_v3.types.import_strategy import ImportStrategy
+from google.cloud.dialogflowcx_v3.types.inline import InlineDestination, InlineSource
 from google.cloud.dialogflowcx_v3.types.intent import (
     CreateIntentRequest,
     DeleteIntentRequest,
+    ExportIntentsMetadata,
+    ExportIntentsRequest,
+    ExportIntentsResponse,
     GetIntentRequest,
+    ImportIntentsMetadata,
+    ImportIntentsRequest,
+    ImportIntentsResponse,
     Intent,
     IntentView,
     ListIntentsRequest,
@@ -466,9 +473,17 @@ __all__ = (
     "GcsDestination",
     "GenerativeSettings",
     "ImportStrategy",
+    "InlineDestination",
+    "InlineSource",
     "CreateIntentRequest",
     "DeleteIntentRequest",
+    "ExportIntentsMetadata",
+    "ExportIntentsRequest",
+    "ExportIntentsResponse",
     "GetIntentRequest",
+    "ImportIntentsMetadata",
+    "ImportIntentsRequest",
+    "ImportIntentsResponse",
     "Intent",
     "ListIntentsRequest",
     "ListIntentsResponse",

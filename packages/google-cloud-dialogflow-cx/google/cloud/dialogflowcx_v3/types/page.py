@@ -22,6 +22,9 @@ from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import data_store_connection, fulfillment
+from google.cloud.dialogflowcx_v3.types import (
+    advanced_settings as gcdc_advanced_settings,
+)
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
@@ -127,6 +130,11 @@ class Page(proto.Message):
             Handlers associated with the page to handle
             events such as webhook errors, no match or no
             input.
+        advanced_settings (google.cloud.dialogflowcx_v3.types.AdvancedSettings):
+            Hierarchical advanced settings for this page.
+            The settings exposed at the lower level
+            overrides the settings exposed at the higher
+            level.
         knowledge_connector_settings (google.cloud.dialogflowcx_v3.types.KnowledgeConnectorSettings):
             Optional. Knowledge connector configuration.
     """
@@ -162,6 +170,11 @@ class Page(proto.Message):
         proto.MESSAGE,
         number=10,
         message="EventHandler",
+    )
+    advanced_settings: gcdc_advanced_settings.AdvancedSettings = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=gcdc_advanced_settings.AdvancedSettings,
     )
     knowledge_connector_settings: "KnowledgeConnectorSettings" = proto.Field(
         proto.MESSAGE,
@@ -223,6 +236,11 @@ class Form(proto.Message):
                 parameter level redaction or [entity type level
                 redaction][google.cloud.dialogflow.cx.v3.EntityType.redact]
                 is enabled.
+            advanced_settings (google.cloud.dialogflowcx_v3.types.AdvancedSettings):
+                Hierarchical advanced settings for this
+                parameter. The settings exposed at the lower
+                level overrides the settings exposed at the
+                higher level.
         """
 
         class FillBehavior(proto.Message):
@@ -316,6 +334,11 @@ class Form(proto.Message):
         redact: bool = proto.Field(
             proto.BOOL,
             number=11,
+        )
+        advanced_settings: gcdc_advanced_settings.AdvancedSettings = proto.Field(
+            proto.MESSAGE,
+            number=12,
+            message=gcdc_advanced_settings.AdvancedSettings,
         )
 
     parameters: MutableSequence[Parameter] = proto.RepeatedField(

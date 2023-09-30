@@ -20,7 +20,13 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
+from google.api_core import (
+    gapic_v1,
+    operations_v1,
+    path_template,
+    rest_helpers,
+    rest_streaming,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -80,11 +86,27 @@ class IntentsRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_export_intents(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_export_intents(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_intent(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_intent(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_import_intents(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_import_intents(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -141,6 +163,27 @@ class IntentsRestInterceptor:
         """
         return request, metadata
 
+    def pre_export_intents(
+        self, request: intent.ExportIntentsRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[intent.ExportIntentsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for export_intents
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Intents server.
+        """
+        return request, metadata
+
+    def post_export_intents(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for export_intents
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Intents server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_intent(
         self, request: intent.GetIntentRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[intent.GetIntentRequest, Sequence[Tuple[str, str]]]:
@@ -153,6 +196,27 @@ class IntentsRestInterceptor:
 
     def post_get_intent(self, response: intent.Intent) -> intent.Intent:
         """Post-rpc interceptor for get_intent
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Intents server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_import_intents(
+        self, request: intent.ImportIntentsRequest, metadata: Sequence[Tuple[str, str]]
+    ) -> Tuple[intent.ImportIntentsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for import_intents
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Intents server.
+        """
+        return request, metadata
+
+    def post_import_intents(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for import_intents
 
         Override in a subclass to manipulate the response
         after it is returned by the Intents server but before
@@ -408,10 +472,69 @@ class IntentsRestTransport(IntentsTransport):
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST
         )
+        self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or IntentsRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    @property
+    def operations_client(self) -> operations_v1.AbstractOperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            http_options: Dict[str, List[Dict[str, str]]] = {
+                "google.longrunning.Operations.CancelOperation": [
+                    {
+                        "method": "post",
+                        "uri": "/v3/{name=projects/*/operations/*}:cancel",
+                    },
+                    {
+                        "method": "post",
+                        "uri": "/v3/{name=projects/*/locations/*/operations/*}:cancel",
+                    },
+                ],
+                "google.longrunning.Operations.GetOperation": [
+                    {
+                        "method": "get",
+                        "uri": "/v3/{name=projects/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v3/{name=projects/*/locations/*/operations/*}",
+                    },
+                ],
+                "google.longrunning.Operations.ListOperations": [
+                    {
+                        "method": "get",
+                        "uri": "/v3/{name=projects/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v3/{name=projects/*/locations/*}/operations",
+                    },
+                ],
+            }
+
+            rest_transport = operations_v1.OperationsRestTransport(
+                host=self._host,
+                # use the credentials which are saved
+                credentials=self._credentials,
+                scopes=self._scopes,
+                http_options=http_options,
+                path_prefix="v3",
+            )
+
+            self._operations_client = operations_v1.AbstractOperationsClient(
+                transport=rest_transport
+            )
+
+        # Return the client from cache.
+        return self._operations_client
 
     class _CreateIntent(IntentsRestStub):
         def __hash__(self):
@@ -591,6 +714,103 @@ class IntentsRestTransport(IntentsTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _ExportIntents(IntentsRestStub):
+        def __hash__(self):
+            return hash("ExportIntents")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: intent.ExportIntentsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the export intents method over HTTP.
+
+            Args:
+                request (~.intent.ExportIntentsRequest):
+                    The request object. The request message for
+                [Intents.ExportIntents][google.cloud.dialogflow.cx.v3.Intents.ExportIntents].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3/{parent=projects/*/locations/*/agents/*}/intents:export",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_export_intents(request, metadata)
+            pb_request = intent.ExportIntentsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_export_intents(resp)
+            return resp
+
     class _GetIntent(IntentsRestStub):
         def __hash__(self):
             return hash("GetIntent")
@@ -683,6 +903,103 @@ class IntentsRestTransport(IntentsTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_intent(resp)
+            return resp
+
+    class _ImportIntents(IntentsRestStub):
+        def __hash__(self):
+            return hash("ImportIntents")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: intent.ImportIntentsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the import intents method over HTTP.
+
+            Args:
+                request (~.intent.ImportIntentsRequest):
+                    The request object. The request message for
+                [Intents.ImportIntents][google.cloud.dialogflow.cx.v3.Intents.ImportIntents].
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v3/{parent=projects/*/locations/*/agents/*}/intents:import",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_import_intents(request, metadata)
+            pb_request = intent.ImportIntentsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_import_intents(resp)
             return resp
 
     class _ListIntents(IntentsRestStub):
@@ -892,10 +1209,26 @@ class IntentsRestTransport(IntentsTransport):
         return self._DeleteIntent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def export_intents(
+        self,
+    ) -> Callable[[intent.ExportIntentsRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ExportIntents(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_intent(self) -> Callable[[intent.GetIntentRequest], intent.Intent]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIntent(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def import_intents(
+        self,
+    ) -> Callable[[intent.ImportIntentsRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ImportIntents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_intents(
