@@ -28,6 +28,9 @@ from google.cloud.dialogflowcx_v3.types import (
     response_message,
     session_entity_type,
 )
+from google.cloud.dialogflowcx_v3.types import (
+    advanced_settings as gcdc_advanced_settings,
+)
 from google.cloud.dialogflowcx_v3.types import audio_config
 from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
 
@@ -1071,6 +1074,16 @@ class QueryResult(proto.Message):
             [``analyze_query_text_sentiment``]
             [google.cloud.dialogflow.cx.v3.QueryParameters.analyze_query_text_sentiment],
             specified in the request.
+        advanced_settings (google.cloud.dialogflowcx_v3.types.AdvancedSettings):
+            Returns the current advanced settings
+            including IVR settings. Even though the
+            operations configured by these settings are
+            performed by Dialogflow, the client may need to
+            perform special logic at the moment. For
+            example, if Dialogflow exports audio to Google
+            Cloud Storage, then the client may need to wait
+            for the resulting object to appear in the bucket
+            before proceeding.
     """
 
     text: str = proto.Field(
@@ -1153,6 +1166,11 @@ class QueryResult(proto.Message):
         proto.MESSAGE,
         number=17,
         message="SentimentAnalysisResult",
+    )
+    advanced_settings: gcdc_advanced_settings.AdvancedSettings = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=gcdc_advanced_settings.AdvancedSettings,
     )
 
 

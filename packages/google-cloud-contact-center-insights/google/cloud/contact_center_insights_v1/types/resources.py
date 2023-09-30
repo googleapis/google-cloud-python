@@ -56,6 +56,7 @@ __protobuf__ = proto.module(
         "ExactMatchConfig",
         "Settings",
         "RedactionConfig",
+        "SpeechConfig",
         "RuntimeAnnotation",
         "AnswerFeedback",
         "ArticleSuggestionData",
@@ -1735,6 +1736,11 @@ class Settings(proto.Message):
         redaction_config (google.cloud.contact_center_insights_v1.types.RedactionConfig):
             Default DLP redaction resources to be applied
             while ingesting conversations.
+        speech_config (google.cloud.contact_center_insights_v1.types.SpeechConfig):
+            Optional. Default Speech-to-Text resources to
+            be used while ingesting audio files. Optional,
+            CCAI Insights will create a default if not
+            provided.
     """
 
     class AnalysisConfig(proto.Message):
@@ -1806,6 +1812,11 @@ class Settings(proto.Message):
         number=10,
         message="RedactionConfig",
     )
+    speech_config: "SpeechConfig" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="SpeechConfig",
+    )
 
 
 class RedactionConfig(proto.Message):
@@ -1830,6 +1841,21 @@ class RedactionConfig(proto.Message):
     inspect_template: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class SpeechConfig(proto.Message):
+    r"""Speech-to-Text configuration.
+
+    Attributes:
+        speech_recognizer (str):
+            The fully-qualified Speech Recognizer resource name. Format:
+            ``projects/{project_id}/locations/{location}/recognizer/{recognizer}``
+    """
+
+    speech_recognizer: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

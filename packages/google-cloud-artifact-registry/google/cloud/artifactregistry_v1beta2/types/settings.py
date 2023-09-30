@@ -36,6 +36,7 @@ class ProjectSettings(proto.Message):
     Attributes:
         name (str):
             The name of the project's settings.
+
             Always of the form:
 
             projects/{project-id}/projectSettings

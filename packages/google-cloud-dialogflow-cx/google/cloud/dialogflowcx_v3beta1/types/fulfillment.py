@@ -20,6 +20,9 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3beta1.types import (
+    advanced_settings as gcdc_advanced_settings,
+)
 from google.cloud.dialogflowcx_v3beta1.types import response_message
 
 __protobuf__ = proto.module(
@@ -85,6 +88,18 @@ class Fulfillment(proto.Message):
             webhook.
         conditional_cases (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Fulfillment.ConditionalCases]):
             Conditional cases for this fulfillment.
+        advanced_settings (google.cloud.dialogflowcx_v3beta1.types.AdvancedSettings):
+            Hierarchical advanced settings for this
+            fulfillment. The settings exposed at the lower
+            level overrides the settings exposed at the
+            higher level.
+        enable_generative_fallback (bool):
+            If the flag is true, the agent will utilize LLM to generate
+            a text response. If LLM generation fails, the defined
+            [responses][google.cloud.dialogflow.cx.v3beta1.Fulfillment.messages]
+            in the fulfillment will be respected. This flag is only
+            useful for fulfillments associated with no-match event
+            handlers.
     """
 
     class SetParameterAction(proto.Message):
@@ -217,6 +232,15 @@ class Fulfillment(proto.Message):
         proto.MESSAGE,
         number=5,
         message=ConditionalCases,
+    )
+    advanced_settings: gcdc_advanced_settings.AdvancedSettings = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=gcdc_advanced_settings.AdvancedSettings,
+    )
+    enable_generative_fallback: bool = proto.Field(
+        proto.BOOL,
+        number=12,
     )
 
 

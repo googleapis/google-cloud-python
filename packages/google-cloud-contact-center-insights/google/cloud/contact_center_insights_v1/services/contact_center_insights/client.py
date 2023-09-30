@@ -353,6 +353,30 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def recognizer_path(
+        project: str,
+        location: str,
+        recognizer: str,
+    ) -> str:
+        """Returns a fully-qualified recognizer string."""
+        return (
+            "projects/{project}/locations/{location}/recognizers/{recognizer}".format(
+                project=project,
+                location=location,
+                recognizer=recognizer,
+            )
+        )
+
+    @staticmethod
+    def parse_recognizer_path(path: str) -> Dict[str, str]:
+        """Parses a recognizer path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/recognizers/(?P<recognizer>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def settings_path(
         project: str,
         location: str,

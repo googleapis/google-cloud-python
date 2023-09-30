@@ -57,6 +57,7 @@ from requests.sessions import Session
 from google.cloud.documentai_v1beta3.services.document_service import (
     DocumentServiceAsyncClient,
     DocumentServiceClient,
+    pagers,
     transports,
 )
 from google.cloud.documentai_v1beta3.types import (
@@ -1463,6 +1464,432 @@ async def test_get_document_flattened_error_async():
             document_service.GetDocumentRequest(),
             dataset="dataset_value",
         )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        document_service.ListDocumentsRequest,
+        dict,
+    ],
+)
+def test_list_documents(request_type, transport: str = "grpc"):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = document_service.ListDocumentsResponse(
+            next_page_token="next_page_token_value",
+            total_size=1086,
+        )
+        response = client.list_documents(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service.ListDocumentsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDocumentsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+def test_list_documents_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
+        client.list_documents()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service.ListDocumentsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_documents_async(
+    transport: str = "grpc_asyncio", request_type=document_service.ListDocumentsRequest
+):
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_service.ListDocumentsResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        response = await client.list_documents(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service.ListDocumentsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDocumentsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+@pytest.mark.asyncio
+async def test_list_documents_async_from_dict():
+    await test_list_documents_async(request_type=dict)
+
+
+def test_list_documents_field_headers():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document_service.ListDocumentsRequest()
+
+    request.dataset = "dataset_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
+        call.return_value = document_service.ListDocumentsResponse()
+        client.list_documents(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "dataset=dataset_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_documents_field_headers_async():
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document_service.ListDocumentsRequest()
+
+    request.dataset = "dataset_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_service.ListDocumentsResponse()
+        )
+        await client.list_documents(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "dataset=dataset_value",
+    ) in kw["metadata"]
+
+
+def test_list_documents_flattened():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = document_service.ListDocumentsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_documents(
+            dataset="dataset_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].dataset
+        mock_val = "dataset_value"
+        assert arg == mock_val
+
+
+def test_list_documents_flattened_error():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_documents(
+            document_service.ListDocumentsRequest(),
+            dataset="dataset_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_documents_flattened_async():
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = document_service.ListDocumentsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_service.ListDocumentsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_documents(
+            dataset="dataset_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].dataset
+        mock_val = "dataset_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_documents_flattened_error_async():
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_documents(
+            document_service.ListDocumentsRequest(),
+            dataset="dataset_value",
+        )
+
+
+def test_list_documents_pager(transport_name: str = "grpc"):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            document_service.ListDocumentsResponse(
+                document_metadata=[
+                    document_service.DocumentMetadata(),
+                    document_service.DocumentMetadata(),
+                    document_service.DocumentMetadata(),
+                ],
+                next_page_token="abc",
+            ),
+            document_service.ListDocumentsResponse(
+                document_metadata=[],
+                next_page_token="def",
+            ),
+            document_service.ListDocumentsResponse(
+                document_metadata=[
+                    document_service.DocumentMetadata(),
+                ],
+                next_page_token="ghi",
+            ),
+            document_service.ListDocumentsResponse(
+                document_metadata=[
+                    document_service.DocumentMetadata(),
+                    document_service.DocumentMetadata(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("dataset", ""),)),
+        )
+        pager = client.list_documents(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, document_service.DocumentMetadata) for i in results)
+
+
+def test_list_documents_pages(transport_name: str = "grpc"):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_documents), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            document_service.ListDocumentsResponse(
+                document_metadata=[
+                    document_service.DocumentMetadata(),
+                    document_service.DocumentMetadata(),
+                    document_service.DocumentMetadata(),
+                ],
+                next_page_token="abc",
+            ),
+            document_service.ListDocumentsResponse(
+                document_metadata=[],
+                next_page_token="def",
+            ),
+            document_service.ListDocumentsResponse(
+                document_metadata=[
+                    document_service.DocumentMetadata(),
+                ],
+                next_page_token="ghi",
+            ),
+            document_service.ListDocumentsResponse(
+                document_metadata=[
+                    document_service.DocumentMetadata(),
+                    document_service.DocumentMetadata(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_documents(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_documents_async_pager():
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_documents), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            document_service.ListDocumentsResponse(
+                document_metadata=[
+                    document_service.DocumentMetadata(),
+                    document_service.DocumentMetadata(),
+                    document_service.DocumentMetadata(),
+                ],
+                next_page_token="abc",
+            ),
+            document_service.ListDocumentsResponse(
+                document_metadata=[],
+                next_page_token="def",
+            ),
+            document_service.ListDocumentsResponse(
+                document_metadata=[
+                    document_service.DocumentMetadata(),
+                ],
+                next_page_token="ghi",
+            ),
+            document_service.ListDocumentsResponse(
+                document_metadata=[
+                    document_service.DocumentMetadata(),
+                    document_service.DocumentMetadata(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_documents(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, document_service.DocumentMetadata) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_documents_async_pages():
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_documents), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            document_service.ListDocumentsResponse(
+                document_metadata=[
+                    document_service.DocumentMetadata(),
+                    document_service.DocumentMetadata(),
+                    document_service.DocumentMetadata(),
+                ],
+                next_page_token="abc",
+            ),
+            document_service.ListDocumentsResponse(
+                document_metadata=[],
+                next_page_token="def",
+            ),
+            document_service.ListDocumentsResponse(
+                document_metadata=[
+                    document_service.DocumentMetadata(),
+                ],
+                next_page_token="ghi",
+            ),
+            document_service.ListDocumentsResponse(
+                document_metadata=[
+                    document_service.DocumentMetadata(),
+                    document_service.DocumentMetadata(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_documents(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.parametrize(
@@ -3097,6 +3524,342 @@ def test_get_document_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        document_service.ListDocumentsRequest,
+        dict,
+    ],
+)
+def test_list_documents_rest(request_type):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "dataset": "projects/sample1/locations/sample2/processors/sample3/dataset"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = document_service.ListDocumentsResponse(
+            next_page_token="next_page_token_value",
+            total_size=1086,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = document_service.ListDocumentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_documents(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListDocumentsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
+
+
+def test_list_documents_rest_required_fields(
+    request_type=document_service.ListDocumentsRequest,
+):
+    transport_class = transports.DocumentServiceRestTransport
+
+    request_init = {}
+    request_init["dataset"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_documents._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["dataset"] = "dataset_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_documents._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "dataset" in jsonified_request
+    assert jsonified_request["dataset"] == "dataset_value"
+
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = document_service.ListDocumentsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            pb_return_value = document_service.ListDocumentsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(pb_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_documents(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_documents_rest_unset_required_fields():
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_documents._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("dataset",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_documents_rest_interceptors(null_interceptor):
+    transport = transports.DocumentServiceRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DocumentServiceRestInterceptor(),
+    )
+    client = DocumentServiceClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DocumentServiceRestInterceptor, "post_list_documents"
+    ) as post, mock.patch.object(
+        transports.DocumentServiceRestInterceptor, "pre_list_documents"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = document_service.ListDocumentsRequest.pb(
+            document_service.ListDocumentsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = document_service.ListDocumentsResponse.to_json(
+            document_service.ListDocumentsResponse()
+        )
+
+        request = document_service.ListDocumentsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = document_service.ListDocumentsResponse()
+
+        client.list_documents(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_documents_rest_bad_request(
+    transport: str = "rest", request_type=document_service.ListDocumentsRequest
+):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "dataset": "projects/sample1/locations/sample2/processors/sample3/dataset"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_documents(request)
+
+
+def test_list_documents_rest_flattened():
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = document_service.ListDocumentsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "dataset": "projects/sample1/locations/sample2/processors/sample3/dataset"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            dataset="dataset_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        pb_return_value = document_service.ListDocumentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(pb_return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_documents(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta3/{dataset=projects/*/locations/*/processors/*/dataset}:listDocuments"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_documents_rest_flattened_error(transport: str = "rest"):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_documents(
+            document_service.ListDocumentsRequest(),
+            dataset="dataset_value",
+        )
+
+
+def test_list_documents_rest_pager(transport: str = "rest"):
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            document_service.ListDocumentsResponse(
+                document_metadata=[
+                    document_service.DocumentMetadata(),
+                    document_service.DocumentMetadata(),
+                    document_service.DocumentMetadata(),
+                ],
+                next_page_token="abc",
+            ),
+            document_service.ListDocumentsResponse(
+                document_metadata=[],
+                next_page_token="def",
+            ),
+            document_service.ListDocumentsResponse(
+                document_metadata=[
+                    document_service.DocumentMetadata(),
+                ],
+                next_page_token="ghi",
+            ),
+            document_service.ListDocumentsResponse(
+                document_metadata=[
+                    document_service.DocumentMetadata(),
+                    document_service.DocumentMetadata(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            document_service.ListDocumentsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "dataset": "projects/sample1/locations/sample2/processors/sample3/dataset"
+        }
+
+        pager = client.list_documents(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, document_service.DocumentMetadata) for i in results)
+
+        pages = list(client.list_documents(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         document_service.BatchDeleteDocumentsRequest,
         dict,
     ],
@@ -3683,7 +4446,12 @@ def test_update_dataset_schema_rest(request_type):
                             "name": "name_value",
                             "value_type": "value_type_value",
                             "occurrence_type": 1,
-                            "property_metadata": {"inactive": True},
+                            "property_metadata": {
+                                "inactive": True,
+                                "field_extraction_metadata": {
+                                    "summary_options": {"length": 1, "format_": 1}
+                                },
+                            },
                         }
                     ],
                     "entity_type_metadata": {"inactive": True},
@@ -3892,7 +4660,12 @@ def test_update_dataset_schema_rest_bad_request(
                             "name": "name_value",
                             "value_type": "value_type_value",
                             "occurrence_type": 1,
-                            "property_metadata": {"inactive": True},
+                            "property_metadata": {
+                                "inactive": True,
+                                "field_extraction_metadata": {
+                                    "summary_options": {"length": 1, "format_": 1}
+                                },
+                            },
                         }
                     ],
                     "entity_type_metadata": {"inactive": True},
@@ -4130,6 +4903,7 @@ def test_document_service_base_transport():
         "update_dataset",
         "import_documents",
         "get_document",
+        "list_documents",
         "batch_delete_documents",
         "get_dataset_schema",
         "update_dataset_schema",
@@ -4426,6 +5200,9 @@ def test_document_service_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.get_document._session
     session2 = client2.transport.get_document._session
+    assert session1 != session2
+    session1 = client1.transport.list_documents._session
+    session2 = client2.transport.list_documents._session
     assert session1 != session2
     session1 = client1.transport.batch_delete_documents._session
     session2 = client2.transport.batch_delete_documents._session

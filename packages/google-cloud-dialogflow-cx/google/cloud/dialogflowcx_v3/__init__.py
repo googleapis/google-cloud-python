@@ -154,10 +154,17 @@ from .types.fulfillment import Fulfillment
 from .types.gcs import GcsDestination
 from .types.generative_settings import GenerativeSettings
 from .types.import_strategy import ImportStrategy
+from .types.inline import InlineDestination, InlineSource
 from .types.intent import (
     CreateIntentRequest,
     DeleteIntentRequest,
+    ExportIntentsMetadata,
+    ExportIntentsRequest,
+    ExportIntentsResponse,
     GetIntentRequest,
+    ImportIntentsMetadata,
+    ImportIntentsRequest,
+    ImportIntentsResponse,
     Intent,
     IntentView,
     ListIntentsRequest,
@@ -376,6 +383,9 @@ __all__ = (
     "ExportAgentResponse",
     "ExportFlowRequest",
     "ExportFlowResponse",
+    "ExportIntentsMetadata",
+    "ExportIntentsRequest",
+    "ExportIntentsResponse",
     "ExportTestCasesMetadata",
     "ExportTestCasesRequest",
     "ExportTestCasesResponse",
@@ -410,10 +420,15 @@ __all__ = (
     "GetWebhookRequest",
     "ImportFlowRequest",
     "ImportFlowResponse",
+    "ImportIntentsMetadata",
+    "ImportIntentsRequest",
+    "ImportIntentsResponse",
     "ImportStrategy",
     "ImportTestCasesMetadata",
     "ImportTestCasesRequest",
     "ImportTestCasesResponse",
+    "InlineDestination",
+    "InlineSource",
     "InputAudioConfig",
     "Intent",
     "IntentCoverage",

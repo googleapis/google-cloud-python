@@ -40,7 +40,9 @@ class advisorynotificationsCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'get_notification': ('name', 'language_code', ),
+        'get_settings': ('name', ),
         'list_notifications': ('parent', 'page_size', 'page_token', 'view', 'language_code', ),
+        'update_settings': ('settings', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

@@ -18,7 +18,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -154,6 +154,16 @@ class IntentsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.import_intents: gapic_v1.method.wrap_method(
+                self.import_intents,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.export_intents: gapic_v1.method.wrap_method(
+                self.export_intents,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -163,6 +173,11 @@ class IntentsTransport(abc.ABC):
              Only call this method if the transport is NOT shared
              with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
         raise NotImplementedError()
 
     @property
@@ -205,6 +220,24 @@ class IntentsTransport(abc.ABC):
         self,
     ) -> Callable[
         [intent.DeleteIntentRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def import_intents(
+        self,
+    ) -> Callable[
+        [intent.ImportIntentsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_intents(
+        self,
+    ) -> Callable[
+        [intent.ExportIntentsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

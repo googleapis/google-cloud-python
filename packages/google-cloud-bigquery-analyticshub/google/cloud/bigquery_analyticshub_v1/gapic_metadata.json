@@ -30,6 +30,11 @@
                 "delete_listing"
               ]
             },
+            "DeleteSubscription": {
+              "methods": [
+                "delete_subscription"
+              ]
+            },
             "GetDataExchange": {
               "methods": [
                 "get_data_exchange"
@@ -43,6 +48,11 @@
             "GetListing": {
               "methods": [
                 "get_listing"
+              ]
+            },
+            "GetSubscription": {
+              "methods": [
+                "get_subscription"
               ]
             },
             "ListDataExchanges": {
@@ -60,9 +70,34 @@
                 "list_org_data_exchanges"
               ]
             },
+            "ListSharedResourceSubscriptions": {
+              "methods": [
+                "list_shared_resource_subscriptions"
+              ]
+            },
+            "ListSubscriptions": {
+              "methods": [
+                "list_subscriptions"
+              ]
+            },
+            "RefreshSubscription": {
+              "methods": [
+                "refresh_subscription"
+              ]
+            },
+            "RevokeSubscription": {
+              "methods": [
+                "revoke_subscription"
+              ]
+            },
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
+              ]
+            },
+            "SubscribeDataExchange": {
+              "methods": [
+                "subscribe_data_exchange"
               ]
             },
             "SubscribeListing": {
@@ -110,6 +145,11 @@
                 "delete_listing"
               ]
             },
+            "DeleteSubscription": {
+              "methods": [
+                "delete_subscription"
+              ]
+            },
             "GetDataExchange": {
               "methods": [
                 "get_data_exchange"
@@ -123,6 +163,11 @@
             "GetListing": {
               "methods": [
                 "get_listing"
+              ]
+            },
+            "GetSubscription": {
+              "methods": [
+                "get_subscription"
               ]
             },
             "ListDataExchanges": {
@@ -140,9 +185,34 @@
                 "list_org_data_exchanges"
               ]
             },
+            "ListSharedResourceSubscriptions": {
+              "methods": [
+                "list_shared_resource_subscriptions"
+              ]
+            },
+            "ListSubscriptions": {
+              "methods": [
+                "list_subscriptions"
+              ]
+            },
+            "RefreshSubscription": {
+              "methods": [
+                "refresh_subscription"
+              ]
+            },
+            "RevokeSubscription": {
+              "methods": [
+                "revoke_subscription"
+              ]
+            },
             "SetIamPolicy": {
               "methods": [
                 "set_iam_policy"
+              ]
+            },
+            "SubscribeDataExchange": {
+              "methods": [
+                "subscribe_data_exchange"
               ]
             },
             "SubscribeListing": {

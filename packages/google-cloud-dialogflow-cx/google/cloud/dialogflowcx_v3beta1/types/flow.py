@@ -26,6 +26,9 @@ from google.cloud.dialogflowcx_v3beta1.types import (
     page,
     validation_message,
 )
+from google.cloud.dialogflowcx_v3beta1.types import (
+    advanced_settings as gcdc_advanced_settings,
+)
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3beta1",
@@ -202,6 +205,11 @@ class Flow(proto.Message):
             for agent-level groups.
         nlu_settings (google.cloud.dialogflowcx_v3beta1.types.NluSettings):
             NLU related settings of the flow.
+        advanced_settings (google.cloud.dialogflowcx_v3beta1.types.AdvancedSettings):
+            Hierarchical advanced settings for this flow.
+            The settings exposed at the lower level
+            overrides the settings exposed at the higher
+            level.
         knowledge_connector_settings (google.cloud.dialogflowcx_v3beta1.types.KnowledgeConnectorSettings):
             Optional. Knowledge connector configuration.
     """
@@ -236,6 +244,11 @@ class Flow(proto.Message):
         proto.MESSAGE,
         number=11,
         message="NluSettings",
+    )
+    advanced_settings: gcdc_advanced_settings.AdvancedSettings = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=gcdc_advanced_settings.AdvancedSettings,
     )
     knowledge_connector_settings: page.KnowledgeConnectorSettings = proto.Field(
         proto.MESSAGE,

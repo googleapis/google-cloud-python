@@ -80,7 +80,7 @@ from .document_schema import DocumentSchema
 from .evaluation import Evaluation, EvaluationReference
 from .geometry import BoundingPoly, NormalizedVertex, Vertex
 from .operation_metadata import CommonOperationMetadata
-from .processor import Processor, ProcessorVersion
+from .processor import Processor, ProcessorVersion, ProcessorVersionAlias
 from .processor_type import ProcessorType
 
 __all__ = (
@@ -152,5 +152,6 @@ __all__ = (
     "CommonOperationMetadata",
     "Processor",
     "ProcessorVersion",
+    "ProcessorVersionAlias",
     "ProcessorType",
 )
