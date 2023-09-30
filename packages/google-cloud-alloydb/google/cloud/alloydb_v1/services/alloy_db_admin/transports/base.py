@@ -310,6 +310,34 @@ class AlloyDBAdminTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.generate_client_certificate: gapic_v1.method.wrap_method(
+                self.generate_client_certificate,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_connection_info: gapic_v1.method.wrap_method(
+                self.get_connection_info,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.list_users: gapic_v1.method.wrap_method(
                 self.list_users,
                 default_timeout=None,
@@ -566,6 +594,27 @@ class AlloyDBAdminTransport(abc.ABC):
             service.ListSupportedDatabaseFlagsResponse,
             Awaitable[service.ListSupportedDatabaseFlagsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def generate_client_certificate(
+        self,
+    ) -> Callable[
+        [service.GenerateClientCertificateRequest],
+        Union[
+            service.GenerateClientCertificateResponse,
+            Awaitable[service.GenerateClientCertificateResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_connection_info(
+        self,
+    ) -> Callable[
+        [service.GetConnectionInfoRequest],
+        Union[resources.ConnectionInfo, Awaitable[resources.ConnectionInfo]],
     ]:
         raise NotImplementedError()
 

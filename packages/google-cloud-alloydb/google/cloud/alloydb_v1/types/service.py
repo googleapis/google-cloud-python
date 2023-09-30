@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -59,6 +60,9 @@ __protobuf__ = proto.module(
         "DeleteBackupRequest",
         "ListSupportedDatabaseFlagsRequest",
         "ListSupportedDatabaseFlagsResponse",
+        "GenerateClientCertificateRequest",
+        "GenerateClientCertificateResponse",
+        "GetConnectionInfoRequest",
         "OperationMetadata",
         "ListUsersRequest",
         "ListUsersResponse",
@@ -1644,6 +1648,131 @@ class ListSupportedDatabaseFlagsResponse(proto.Message):
         message=resources.SupportedDatabaseFlag,
     )
     next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GenerateClientCertificateRequest(proto.Message):
+    r"""Message for requests to generate a client certificate signed
+    by the Cluster CA.
+
+    Attributes:
+        parent (str):
+            Required. The name of the parent resource. The required
+            format is:
+
+            -  projects/{project}/locations/{location}/clusters/{cluster}
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes after the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        cert_duration (google.protobuf.duration_pb2.Duration):
+            Optional. An optional hint to the endpoint to
+            generate the client certificate with the
+            requested duration. The duration can be from 1
+            hour to 24 hours. The endpoint may or may not
+            honor the hint. If the hint is left unspecified
+            or is not honored, then the endpoint will pick
+            an appropriate default duration.
+        public_key (str):
+            Optional. The public key from the client.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    cert_duration: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
+    )
+    public_key: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class GenerateClientCertificateResponse(proto.Message):
+    r"""Message returned by a GenerateClientCertificate operation.
+
+    Attributes:
+        pem_certificate_chain (MutableSequence[str]):
+            Output only. The pem-encoded chain that may
+            be used to verify the X.509 certificate.
+            Expected to be in issuer-to-root order according
+            to RFC 5246.
+        ca_cert (str):
+            Optional. The pem-encoded cluster ca X.509
+            certificate.
+    """
+
+    pem_certificate_chain: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    ca_cert: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetConnectionInfoRequest(proto.Message):
+    r"""Request message for GetConnectionInfo.
+
+    Attributes:
+        parent (str):
+            Required. The name of the parent resource.
+            The required format is:
+            projects/{project}/locations/{location}/clusters/{cluster}/instances/{instance}
+        request_id (str):
+            Optional. An optional request ID to identify
+            requests. Specify a unique request ID so that if
+            you must retry your request, the server will
+            know to ignore the request if it has already
+            been completed. The server will guarantee that
+            for at least 60 minutes after the first request.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
         proto.STRING,
         number=2,
     )

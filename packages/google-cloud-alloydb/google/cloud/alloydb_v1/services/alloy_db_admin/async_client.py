@@ -72,6 +72,10 @@ class AlloyDBAdminAsyncClient:
     parse_backup_path = staticmethod(AlloyDBAdminClient.parse_backup_path)
     cluster_path = staticmethod(AlloyDBAdminClient.cluster_path)
     parse_cluster_path = staticmethod(AlloyDBAdminClient.parse_cluster_path)
+    connection_info_path = staticmethod(AlloyDBAdminClient.connection_info_path)
+    parse_connection_info_path = staticmethod(
+        AlloyDBAdminClient.parse_connection_info_path
+    )
     crypto_key_version_path = staticmethod(AlloyDBAdminClient.crypto_key_version_path)
     parse_crypto_key_version_path = staticmethod(
         AlloyDBAdminClient.parse_crypto_key_version_path
@@ -3271,6 +3275,238 @@ class AlloyDBAdminAsyncClient:
             method=rpc,
             request=request,
             response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def generate_client_certificate(
+        self,
+        request: Optional[Union[service.GenerateClientCertificateRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> service.GenerateClientCertificateResponse:
+        r"""Generate a client certificate signed by a Cluster CA.
+        The sole purpose of this endpoint is to support AlloyDB
+        connectors and the Auth Proxy client. The endpoint's
+        behavior is subject to change without notice, so do not
+        rely on its behavior remaining constant. Future changes
+        will not break AlloyDB connectors or the Auth Proxy
+        client.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import alloydb_v1
+
+            async def sample_generate_client_certificate():
+                # Create a client
+                client = alloydb_v1.AlloyDBAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = alloydb_v1.GenerateClientCertificateRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.generate_client_certificate(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.alloydb_v1.types.GenerateClientCertificateRequest, dict]]):
+                The request object. Message for requests to generate a
+                client certificate signed by the Cluster
+                CA.
+            parent (:class:`str`):
+                Required. The name of the parent resource. The required
+                format is:
+
+                -  projects/{project}/locations/{location}/clusters/{cluster}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.alloydb_v1.types.GenerateClientCertificateResponse:
+                Message returned by a
+                GenerateClientCertificate operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.GenerateClientCertificateRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.generate_client_certificate,
+            default_retry=retries.Retry(
+                initial=1.0,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_connection_info(
+        self,
+        request: Optional[Union[service.GetConnectionInfoRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.ConnectionInfo:
+        r"""Get instance metadata used for a connection.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import alloydb_v1
+
+            async def sample_get_connection_info():
+                # Create a client
+                client = alloydb_v1.AlloyDBAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = alloydb_v1.GetConnectionInfoRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.get_connection_info(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.alloydb_v1.types.GetConnectionInfoRequest, dict]]):
+                The request object. Request message for
+                GetConnectionInfo.
+            parent (:class:`str`):
+                Required. The name of the parent
+                resource. The required format is:
+                projects/{project}/locations/{location}/clusters/{cluster}/instances/{instance}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.alloydb_v1.types.ConnectionInfo:
+                ConnectionInfo singleton resource.
+                https://google.aip.dev/156
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.GetConnectionInfoRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_connection_info,
+            default_retry=retries.Retry(
+                initial=1.0,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=60.0,
+            ),
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
             metadata=metadata,
         )
 
