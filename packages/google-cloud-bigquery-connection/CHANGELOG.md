@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-connection-v1.13.1...google-cloud-bigquery-connection-v1.13.2) (2023-09-30)
+
+
+### Documentation
+
+* Minor formatting ([#342](https://github.com/googleapis/google-cloud-python/issues/342)) ([cda2dc6](https://github.com/googleapis/google-cloud-python/commit/cda2dc6b7f9c88c78e2eb7c6b8e4a959312d02da))
+
 ## [1.13.1](https://github.com/googleapis/python-bigquery-connection/compare/v1.13.0...v1.13.1) (2023-08-02)
 
 

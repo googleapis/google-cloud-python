@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-clientconnectorservices-v0.4.3...google-cloud-beyondcorp-clientconnectorservices-v0.4.4) (2023-09-30)
+
+
+### Documentation
+
+* Minor formatting ([#11630](https://github.com/googleapis/google-cloud-python/issues/11630)) ([b176996](https://github.com/googleapis/google-cloud-python/commit/b176996309cb5b3e9c257caaebde8884bd556824))
+
 ## [0.4.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-clientconnectorservices-v0.4.2...google-cloud-beyondcorp-clientconnectorservices-v0.4.3) (2023-07-05)
 
 

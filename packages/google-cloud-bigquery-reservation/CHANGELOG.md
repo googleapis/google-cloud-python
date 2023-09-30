@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.11.2...google-cloud-bigquery-reservation-v1.11.3) (2023-09-30)
+
+
+### Documentation
+
+* Minor formatting ([#377](https://github.com/googleapis/google-cloud-python/issues/377)) ([2b8616a](https://github.com/googleapis/google-cloud-python/commit/2b8616a906f2c6178a9f640c79caf956fc7d0bcc))
+
 ## [1.11.2](https://github.com/googleapis/python-bigquery-reservation/compare/v1.11.1...v1.11.2) (2023-07-05)
 
 
