@@ -42,6 +42,7 @@ __protobuf__ = proto.module(
         "ContinuousBackupSource",
         "Cluster",
         "Instance",
+        "ConnectionInfo",
         "Backup",
         "SupportedDatabaseFlag",
         "User",
@@ -1450,6 +1451,38 @@ class Instance(proto.Message):
         proto.MESSAGE,
         number=23,
         message=ClientConnectionConfig,
+    )
+
+
+class ConnectionInfo(proto.Message):
+    r"""ConnectionInfo singleton resource.
+    https://google.aip.dev/156
+
+    Attributes:
+        name (str):
+            The name of the ConnectionInfo singleton resource, e.g.:
+            projects/{project}/locations/{location}/clusters/\ */instances/*/connectionInfo
+            This field currently has no semantic meaning.
+        ip_address (str):
+            Output only. The private network IP address for the
+            Instance. This is the default IP for the instance and is
+            always created (even if enable_public_ip is set). This is
+            the connection endpoint for an end-user application.
+        instance_uid (str):
+            Output only. The unique ID of the Instance.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ip_address: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    instance_uid: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
