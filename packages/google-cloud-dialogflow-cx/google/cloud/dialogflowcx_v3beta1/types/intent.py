@@ -20,6 +20,8 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3beta1.types import inline
+
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3beta1",
     manifest={
@@ -31,6 +33,12 @@ __protobuf__ = proto.module(
         "CreateIntentRequest",
         "UpdateIntentRequest",
         "DeleteIntentRequest",
+        "ImportIntentsRequest",
+        "ImportIntentsResponse",
+        "ImportIntentsMetadata",
+        "ExportIntentsRequest",
+        "ExportIntentsResponse",
+        "ExportIntentsMetadata",
     },
 )
 
@@ -482,6 +490,291 @@ class DeleteIntentRequest(proto.Message):
         proto.STRING,
         number=1,
     )
+
+
+class ImportIntentsRequest(proto.Message):
+    r"""The request message for
+    [Intents.ImportIntents][google.cloud.dialogflow.cx.v3beta1.Intents.ImportIntents].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        parent (str):
+            Required. The agent to import the intents into. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+        intents_uri (str):
+            The `Google Cloud
+            Storage <https://cloud.google.com/storage/docs/>`__ URI to
+            import intents from. The format of this URI must be
+            ``gs://<bucket-name>/<object-name>``.
+
+            Dialogflow performs a read operation for the Cloud Storage
+            object on the caller's behalf, so your request
+            authentication must have read permissions for the object.
+            For more information, see `Dialogflow access
+            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+
+            This field is a member of `oneof`_ ``intents``.
+        intents_content (google.cloud.dialogflowcx_v3beta1.types.InlineSource):
+            Uncompressed byte content of intents.
+
+            This field is a member of `oneof`_ ``intents``.
+        merge_option (google.cloud.dialogflowcx_v3beta1.types.ImportIntentsRequest.MergeOption):
+            Merge option for importing intents. If not specified,
+            ``REJECT`` is assumed.
+    """
+
+    class MergeOption(proto.Enum):
+        r"""Merge option when display name conflicts exist during import.
+
+        Values:
+            MERGE_OPTION_UNSPECIFIED (0):
+                Unspecified. Should not be used.
+            REJECT (1):
+                DEPRECATED: Please use
+                [REPORT_CONFLICT][ImportIntentsRequest.REPORT_CONFLICT]
+                instead. Fail the request if there are intents whose display
+                names conflict with the display names of intents in the
+                agent.
+            REPLACE (2):
+                Replace the original intent in the agent with
+                the new intent when display name conflicts
+                exist.
+            MERGE (3):
+                Merge the original intent with the new intent
+                when display name conflicts exist.
+            RENAME (4):
+                Create new intents with new display names to
+                differentiate them from the existing intents
+                when display name conflicts exist.
+            REPORT_CONFLICT (5):
+                Report conflict information if display names
+                conflict is detected. Otherwise, import intents.
+            KEEP (6):
+                Keep the original intent and discard the
+                conflicting new intent when display name
+                conflicts exist.
+        """
+        MERGE_OPTION_UNSPECIFIED = 0
+        REJECT = 1
+        REPLACE = 2
+        MERGE = 3
+        RENAME = 4
+        REPORT_CONFLICT = 5
+        KEEP = 6
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    intents_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="intents",
+    )
+    intents_content: inline.InlineSource = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="intents",
+        message=inline.InlineSource,
+    )
+    merge_option: MergeOption = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=MergeOption,
+    )
+
+
+class ImportIntentsResponse(proto.Message):
+    r"""The response message for
+    [Intents.ImportIntents][google.cloud.dialogflow.cx.v3beta1.Intents.ImportIntents].
+
+    Attributes:
+        intents (MutableSequence[str]):
+            The unique identifier of the imported intents. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+        conflicting_resources (google.cloud.dialogflowcx_v3beta1.types.ImportIntentsResponse.ConflictingResources):
+            Info which resources have conflicts when
+            [REPORT_CONFLICT][ImportIntentsResponse.REPORT_CONFLICT]
+            merge_option is set in ImportIntentsRequest.
+    """
+
+    class ConflictingResources(proto.Message):
+        r"""Conflicting resources detected during the import process. Only
+        filled when [REPORT_CONFLICT][ImportIntentsResponse.REPORT_CONFLICT]
+        is set in the request and there are conflicts in the display names.
+
+        Attributes:
+            intent_display_names (MutableSequence[str]):
+                Display names of conflicting intents.
+            entity_display_names (MutableSequence[str]):
+                Display names of conflicting entities.
+        """
+
+        intent_display_names: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        entity_display_names: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+
+    intents: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    conflicting_resources: ConflictingResources = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=ConflictingResources,
+    )
+
+
+class ImportIntentsMetadata(proto.Message):
+    r"""Metadata returned for the
+    [Intents.ImportIntents][google.cloud.dialogflow.cx.v3beta1.Intents.ImportIntents]
+    long running operation.
+
+    """
+
+
+class ExportIntentsRequest(proto.Message):
+    r"""The request message for
+    [Intents.ExportIntents][google.cloud.dialogflow.cx.v3beta1.Intents.ExportIntents].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        parent (str):
+            Required. The name of the parent agent to export intents.
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+        intents (MutableSequence[str]):
+            Required. The name of the intents to export. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+        intents_uri (str):
+            Optional. The `Google Cloud
+            Storage <https://cloud.google.com/storage/docs/>`__ URI to
+            export the intents to. The format of this URI must be
+            ``gs://<bucket-name>/<object-name>``.
+
+            Dialogflow performs a write operation for the Cloud Storage
+            object on the caller's behalf, so your request
+            authentication must have write permissions for the object.
+            For more information, see `Dialogflow access
+            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+
+            This field is a member of `oneof`_ ``destination``.
+        intents_content_inline (bool):
+            Optional. The option to return the serialized
+            intents inline.
+
+            This field is a member of `oneof`_ ``destination``.
+        data_format (google.cloud.dialogflowcx_v3beta1.types.ExportIntentsRequest.DataFormat):
+            Optional. The data format of the exported intents. If not
+            specified, ``BLOB`` is assumed.
+    """
+
+    class DataFormat(proto.Enum):
+        r"""Data format of the exported intents.
+
+        Values:
+            DATA_FORMAT_UNSPECIFIED (0):
+                Unspecified format. Treated as ``BLOB``.
+            BLOB (1):
+                Intents will be exported as raw bytes.
+            JSON (2):
+                Intents will be exported in JSON format.
+            CSV (3):
+                Intents will be exported in CSV format.
+        """
+        DATA_FORMAT_UNSPECIFIED = 0
+        BLOB = 1
+        JSON = 2
+        CSV = 3
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    intents: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    intents_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="destination",
+    )
+    intents_content_inline: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+        oneof="destination",
+    )
+    data_format: DataFormat = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=DataFormat,
+    )
+
+
+class ExportIntentsResponse(proto.Message):
+    r"""The response message for
+    [Intents.ExportIntents][google.cloud.dialogflow.cx.v3beta1.Intents.ExportIntents].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        intents_uri (str):
+            The URI to a file containing the exported intents. This
+            field is populated only if ``intents_uri`` is specified in
+            [ExportIntentsRequest][google.cloud.dialogflow.cx.v3beta1.ExportIntentsRequest].
+
+            This field is a member of `oneof`_ ``intents``.
+        intents_content (google.cloud.dialogflowcx_v3beta1.types.InlineDestination):
+            Uncompressed byte content for intents. This field is
+            populated only if ``intents_content_inline`` is set to true
+            in
+            [ExportIntentsRequest][google.cloud.dialogflow.cx.v3beta1.ExportIntentsRequest].
+
+            This field is a member of `oneof`_ ``intents``.
+    """
+
+    intents_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="intents",
+    )
+    intents_content: inline.InlineDestination = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="intents",
+        message=inline.InlineDestination,
+    )
+
+
+class ExportIntentsMetadata(proto.Message):
+    r"""Metadata returned for the
+    [Intents.ExportIntents][google.cloud.dialogflow.cx.v3beta1.Intents.ExportIntents]
+    long running operation.
+
+    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

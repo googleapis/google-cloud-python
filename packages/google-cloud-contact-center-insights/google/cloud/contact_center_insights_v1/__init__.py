@@ -128,6 +128,7 @@ from .types.resources import (
     SilenceData,
     SmartComposeSuggestionData,
     SmartReplyData,
+    SpeechConfig,
     View,
 )
 
@@ -226,6 +227,7 @@ __all__ = (
     "SilenceData",
     "SmartComposeSuggestionData",
     "SmartReplyData",
+    "SpeechConfig",
     "UndeployIssueModelMetadata",
     "UndeployIssueModelRequest",
     "UndeployIssueModelResponse",

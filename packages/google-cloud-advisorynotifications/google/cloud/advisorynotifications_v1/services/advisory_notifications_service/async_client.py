@@ -68,6 +68,10 @@ class AdvisoryNotificationsServiceAsyncClient:
     parse_notification_path = staticmethod(
         AdvisoryNotificationsServiceClient.parse_notification_path
     )
+    settings_path = staticmethod(AdvisoryNotificationsServiceClient.settings_path)
+    parse_settings_path = staticmethod(
+        AdvisoryNotificationsServiceClient.parse_settings_path
+    )
     common_billing_account_path = staticmethod(
         AdvisoryNotificationsServiceClient.common_billing_account_path
     )
@@ -455,6 +459,209 @@ class AdvisoryNotificationsServiceAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_settings(
+        self,
+        request: Optional[Union[service.GetSettingsRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> service.Settings:
+        r"""Get notification settings.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import advisorynotifications_v1
+
+            async def sample_get_settings():
+                # Create a client
+                client = advisorynotifications_v1.AdvisoryNotificationsServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = advisorynotifications_v1.GetSettingsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_settings(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.advisorynotifications_v1.types.GetSettingsRequest, dict]]):
+                The request object. Request of GetSettings endpoint.
+            name (:class:`str`):
+                Required. The resource name of the
+                settings to retrieve. Format:
+
+                organizations/{organization}/locations/{location}/settings.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.advisorynotifications_v1.types.Settings:
+                Settings for Advisory Notifications.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.GetSettingsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_settings,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_settings(
+        self,
+        request: Optional[Union[service.UpdateSettingsRequest, dict]] = None,
+        *,
+        settings: Optional[service.Settings] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> service.Settings:
+        r"""Update notification settings.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import advisorynotifications_v1
+
+            async def sample_update_settings():
+                # Create a client
+                client = advisorynotifications_v1.AdvisoryNotificationsServiceAsyncClient()
+
+                # Initialize request argument(s)
+                settings = advisorynotifications_v1.Settings()
+                settings.etag = "etag_value"
+
+                request = advisorynotifications_v1.UpdateSettingsRequest(
+                    settings=settings,
+                )
+
+                # Make the request
+                response = await client.update_settings(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.advisorynotifications_v1.types.UpdateSettingsRequest, dict]]):
+                The request object. Request of UpdateSettings endpoint.
+            settings (:class:`google.cloud.advisorynotifications_v1.types.Settings`):
+                Required. New settings.
+                This corresponds to the ``settings`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.advisorynotifications_v1.types.Settings:
+                Settings for Advisory Notifications.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([settings])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.UpdateSettingsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if settings is not None:
+            request.settings = settings
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_settings,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("settings.name", request.settings.name),)
+            ),
         )
 
         # Send the request.

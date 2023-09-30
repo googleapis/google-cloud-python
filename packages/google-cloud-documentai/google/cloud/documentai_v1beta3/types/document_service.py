@@ -29,6 +29,7 @@ __protobuf__ = proto.module(
     package="google.cloud.documentai.v1beta3",
     manifest={
         "DatasetSplitType",
+        "DocumentLabelingState",
         "UpdateDatasetRequest",
         "UpdateDatasetOperationMetadata",
         "ImportDocumentsRequest",
@@ -36,12 +37,15 @@ __protobuf__ = proto.module(
         "ImportDocumentsMetadata",
         "GetDocumentRequest",
         "GetDocumentResponse",
+        "ListDocumentsRequest",
+        "ListDocumentsResponse",
         "BatchDeleteDocumentsRequest",
         "BatchDeleteDocumentsResponse",
         "BatchDeleteDocumentsMetadata",
         "GetDatasetSchemaRequest",
         "UpdateDatasetSchemaRequest",
         "DocumentPageRange",
+        "DocumentMetadata",
     },
 )
 
@@ -53,7 +57,6 @@ class DatasetSplitType(proto.Enum):
     Values:
         DATASET_SPLIT_TYPE_UNSPECIFIED (0):
             Default value if the enum is not set.
-            go/protodosdonts#do-include-an-unspecified-value-in-an-enum
         DATASET_SPLIT_TRAIN (1):
             Identifies the train documents.
         DATASET_SPLIT_TEST (2):
@@ -65,6 +68,25 @@ class DatasetSplitType(proto.Enum):
     DATASET_SPLIT_TRAIN = 1
     DATASET_SPLIT_TEST = 2
     DATASET_SPLIT_UNASSIGNED = 3
+
+
+class DocumentLabelingState(proto.Enum):
+    r"""Describes the labelling status of a document.
+
+    Values:
+        DOCUMENT_LABELING_STATE_UNSPECIFIED (0):
+            Default value if the enum is not set.
+        DOCUMENT_LABELED (1):
+            Document has been labelled.
+        DOCUMENT_UNLABELED (2):
+            Document has not been labelled.
+        DOCUMENT_AUTO_LABELED (3):
+            Document has been auto-labelled.
+    """
+    DOCUMENT_LABELING_STATE_UNSPECIFIED = 0
+    DOCUMENT_LABELED = 1
+    DOCUMENT_UNLABELED = 2
+    DOCUMENT_AUTO_LABELED = 3
 
 
 class UpdateDatasetRequest(proto.Message):
@@ -95,7 +117,7 @@ class UpdateDatasetOperationMetadata(proto.Message):
 
     Attributes:
         common_metadata (google.cloud.documentai_v1beta3.types.CommonOperationMetadata):
-            The basic metadata of the long running
+            The basic metadata of the long-running
             operation.
     """
 
@@ -201,7 +223,7 @@ class ImportDocumentsMetadata(proto.Message):
 
     Attributes:
         common_metadata (google.cloud.documentai_v1beta3.types.CommonOperationMetadata):
-            The basic metadata of the long running
+            The basic metadata of the long-running
             operation.
         individual_import_statuses (MutableSequence[google.cloud.documentai_v1beta3.types.ImportDocumentsMetadata.IndividualImportStatus]):
             The list of response details of each
@@ -243,9 +265,10 @@ class ImportDocumentsMetadata(proto.Message):
         )
 
     class ImportConfigValidationResult(proto.Message):
-        r"""The validation status of each import config. Status is set to errors
-        if there is no documents to import in the import_config, or OK if
-        the operation will try to proceed at least one document.
+        r"""The validation status of each import config. Status is set to an
+        error if there are no documents to import in the ``import_config``,
+        or ``OK`` if the operation will try to proceed with at least one
+        document.
 
         Attributes:
             input_gcs_source (str):
@@ -346,6 +369,130 @@ class GetDocumentResponse(proto.Message):
     )
 
 
+class ListDocumentsRequest(proto.Message):
+    r"""
+
+    Attributes:
+        dataset (str):
+            Required. The resource name of the dataset to
+            be listed. Format:
+
+            projects/{project}/locations/{location}/processors/{processor}/dataset
+        page_size (int):
+            The maximum number of documents to return.
+            The service may return fewer than this value. If
+            unspecified, at most 20 documents will be
+            returned. The maximum value is 100; values above
+            100 will be coerced to 100.
+        page_token (str):
+            A page token, received from a previous ``ListDocuments``
+            call. Provide this to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListDocuments`` must match the call that provided the page
+            token.
+        filter (str):
+            Optional. Query to filter the documents based on
+            https://google.aip.dev/160.
+
+            Currently support query strings are:
+
+            -  ``SplitType=DATASET_SPLIT_TEST|DATASET_SPLIT_TRAIN|DATASET_SPLIT_UNASSIGNED``
+            -  ``LabelingState=DOCUMENT_LABELED|DOCUMENT_UNLABELED|DOCUMENT_AUTO_LABELED``
+            -  ``DisplayName=\"file_name.pdf\"``
+            -  ``EntityType=abc/def``
+            -  ``TagName=\"auto-labeling-running\"|\"sampled\"``
+
+            Note:
+
+            -  Only ``AND``, ``=`` and ``!=`` are supported. e.g.
+               ``DisplayName=file_name AND EntityType!=abc`` IS
+               supported.
+            -  Wildcard ``*`` is supported only in ``DisplayName``
+               filter
+            -  No duplicate filter keys are allowed, e.g.
+               ``EntityType=a AND EntityType=b`` is NOT supported.
+            -  String match is case sensitive (for filter
+               ``DisplayName`` & ``EntityType``).
+        return_total_size (bool):
+            Optional. Controls if the ListDocuments request requires a
+            total size of matched documents. See
+            ListDocumentsResponse.total_size.
+
+            Enabling this flag may adversely impact performance.
+
+            Defaults to false.
+        skip (int):
+            Optional. Number of results to skip beginning from the
+            ``page_token`` if provided.
+            https://google.aip.dev/158#skipping-results. It must be a
+            non-negative integer. Negative values wil be rejected. Note
+            that this is not the number of pages to skip. If this value
+            causes the cursor to move past the end of results,
+            ``ListDocumentsResponse.document_metadata`` and
+            ``ListDocumentsResponse.next_page_token`` will be empty.
+    """
+
+    dataset: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    return_total_size: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    skip: int = proto.Field(
+        proto.INT32,
+        number=8,
+    )
+
+
+class ListDocumentsResponse(proto.Message):
+    r"""
+
+    Attributes:
+        document_metadata (MutableSequence[google.cloud.documentai_v1beta3.types.DocumentMetadata]):
+            Document metadata corresponding to the listed
+            documents.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        total_size (int):
+            Total count of documents queried.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    document_metadata: MutableSequence["DocumentMetadata"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="DocumentMetadata",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    total_size: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+
+
 class BatchDeleteDocumentsRequest(proto.Message):
     r"""
 
@@ -383,7 +530,7 @@ class BatchDeleteDocumentsMetadata(proto.Message):
 
     Attributes:
         common_metadata (google.cloud.documentai_v1beta3.types.CommonOperationMetadata):
-            The basic metadata of the long running
+            The basic metadata of the long-running
             operation.
         individual_batch_delete_statuses (MutableSequence[google.cloud.documentai_v1beta3.types.BatchDeleteDocumentsMetadata.IndividualBatchDeleteStatus]):
             The list of response details of each
@@ -507,6 +654,48 @@ class DocumentPageRange(proto.Message):
     end: int = proto.Field(
         proto.INT32,
         number=2,
+    )
+
+
+class DocumentMetadata(proto.Message):
+    r"""Metadata about a document.
+
+    Attributes:
+        document_id (google.cloud.documentai_v1beta3.types.DocumentId):
+            Document identifier.
+        page_count (int):
+            Number of pages in the document.
+        dataset_type (google.cloud.documentai_v1beta3.types.DatasetSplitType):
+            Type of the dataset split to which the
+            document belongs.
+        labeling_state (google.cloud.documentai_v1beta3.types.DocumentLabelingState):
+            Labelling state of the document.
+        display_name (str):
+            The display name of the document.
+    """
+
+    document_id: gcd_dataset.DocumentId = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_dataset.DocumentId,
+    )
+    page_count: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    dataset_type: "DatasetSplitType" = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="DatasetSplitType",
+    )
+    labeling_state: "DocumentLabelingState" = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum="DocumentLabelingState",
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 

@@ -4019,6 +4019,11 @@ def test_create_agent_rest(request_type):
         "locked": True,
         "advanced_settings": {
             "audio_export_gcs_destination": {"uri": "uri_value"},
+            "dtmf_settings": {
+                "enabled": True,
+                "max_digits": 1065,
+                "finish_digit": "finish_digit_value",
+            },
             "logging_settings": {
                 "enable_stackdriver_logging": True,
                 "enable_interaction_logging": True,
@@ -4255,6 +4260,11 @@ def test_create_agent_rest_bad_request(
         "locked": True,
         "advanced_settings": {
             "audio_export_gcs_destination": {"uri": "uri_value"},
+            "dtmf_settings": {
+                "enabled": True,
+                "max_digits": 1065,
+                "finish_digit": "finish_digit_value",
+            },
             "logging_settings": {
                 "enable_stackdriver_logging": True,
                 "enable_interaction_logging": True,
@@ -4385,6 +4395,11 @@ def test_update_agent_rest(request_type):
         "locked": True,
         "advanced_settings": {
             "audio_export_gcs_destination": {"uri": "uri_value"},
+            "dtmf_settings": {
+                "enabled": True,
+                "max_digits": 1065,
+                "finish_digit": "finish_digit_value",
+            },
             "logging_settings": {
                 "enable_stackdriver_logging": True,
                 "enable_interaction_logging": True,
@@ -4612,6 +4627,11 @@ def test_update_agent_rest_bad_request(
         "locked": True,
         "advanced_settings": {
             "audio_export_gcs_destination": {"uri": "uri_value"},
+            "dtmf_settings": {
+                "enabled": True,
+                "max_digits": 1065,
+                "finish_digit": "finish_digit_value",
+            },
             "logging_settings": {
                 "enable_stackdriver_logging": True,
                 "enable_interaction_logging": True,

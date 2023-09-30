@@ -99,6 +99,10 @@ class ContactCenterInsightsAsyncClient:
     parse_phrase_matcher_path = staticmethod(
         ContactCenterInsightsClient.parse_phrase_matcher_path
     )
+    recognizer_path = staticmethod(ContactCenterInsightsClient.recognizer_path)
+    parse_recognizer_path = staticmethod(
+        ContactCenterInsightsClient.parse_recognizer_path
+    )
     settings_path = staticmethod(ContactCenterInsightsClient.settings_path)
     parse_settings_path = staticmethod(ContactCenterInsightsClient.parse_settings_path)
     view_path = staticmethod(ContactCenterInsightsClient.view_path)

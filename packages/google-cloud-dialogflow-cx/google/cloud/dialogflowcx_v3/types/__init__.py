@@ -123,10 +123,17 @@ from .flow import (
 from .fulfillment import Fulfillment
 from .gcs import GcsDestination
 from .generative_settings import GenerativeSettings
+from .inline import InlineDestination, InlineSource
 from .intent import (
     CreateIntentRequest,
     DeleteIntentRequest,
+    ExportIntentsMetadata,
+    ExportIntentsRequest,
+    ExportIntentsResponse,
     GetIntentRequest,
+    ImportIntentsMetadata,
+    ImportIntentsRequest,
+    ImportIntentsResponse,
     Intent,
     IntentView,
     ListIntentsRequest,
@@ -358,9 +365,17 @@ __all__ = (
     "GcsDestination",
     "GenerativeSettings",
     "ImportStrategy",
+    "InlineDestination",
+    "InlineSource",
     "CreateIntentRequest",
     "DeleteIntentRequest",
+    "ExportIntentsMetadata",
+    "ExportIntentsRequest",
+    "ExportIntentsResponse",
     "GetIntentRequest",
+    "ImportIntentsMetadata",
+    "ImportIntentsRequest",
+    "ImportIntentsResponse",
     "Intent",
     "ListIntentsRequest",
     "ListIntentsResponse",

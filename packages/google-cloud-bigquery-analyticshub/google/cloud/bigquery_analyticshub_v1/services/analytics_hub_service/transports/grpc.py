@@ -16,12 +16,13 @@
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 
@@ -119,6 +120,7 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -236,6 +238,20 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
     def grpc_channel(self) -> grpc.Channel:
         """Return the channel designed to connect to this service."""
         return self._grpc_channel
+
+    @property
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Quick check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+
+        # Return the client from cache.
+        return self._operations_client
 
     @property
     def list_data_exchanges(
@@ -565,6 +581,208 @@ class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
                 response_deserializer=analyticshub.SubscribeListingResponse.deserialize,
             )
         return self._stubs["subscribe_listing"]
+
+    @property
+    def subscribe_data_exchange(
+        self,
+    ) -> Callable[
+        [analyticshub.SubscribeDataExchangeRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the subscribe data exchange method over gRPC.
+
+        Creates a Subscription to a Data Exchange. This is a
+        long-running operation as it will create one or more
+        linked datasets.
+
+        Returns:
+            Callable[[~.SubscribeDataExchangeRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "subscribe_data_exchange" not in self._stubs:
+            self._stubs["subscribe_data_exchange"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/SubscribeDataExchange",
+                request_serializer=analyticshub.SubscribeDataExchangeRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["subscribe_data_exchange"]
+
+    @property
+    def refresh_subscription(
+        self,
+    ) -> Callable[[analyticshub.RefreshSubscriptionRequest], operations_pb2.Operation]:
+        r"""Return a callable for the refresh subscription method over gRPC.
+
+        Refreshes a Subscription to a Data Exchange. A Data
+        Exchange can become stale when a publisher adds or
+        removes data. This is a long-running operation as it may
+        create many linked datasets.
+
+        Returns:
+            Callable[[~.RefreshSubscriptionRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "refresh_subscription" not in self._stubs:
+            self._stubs["refresh_subscription"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/RefreshSubscription",
+                request_serializer=analyticshub.RefreshSubscriptionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["refresh_subscription"]
+
+    @property
+    def get_subscription(
+        self,
+    ) -> Callable[[analyticshub.GetSubscriptionRequest], analyticshub.Subscription]:
+        r"""Return a callable for the get subscription method over gRPC.
+
+        Gets the details of a Subscription.
+
+        Returns:
+            Callable[[~.GetSubscriptionRequest],
+                    ~.Subscription]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_subscription" not in self._stubs:
+            self._stubs["get_subscription"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/GetSubscription",
+                request_serializer=analyticshub.GetSubscriptionRequest.serialize,
+                response_deserializer=analyticshub.Subscription.deserialize,
+            )
+        return self._stubs["get_subscription"]
+
+    @property
+    def list_subscriptions(
+        self,
+    ) -> Callable[
+        [analyticshub.ListSubscriptionsRequest], analyticshub.ListSubscriptionsResponse
+    ]:
+        r"""Return a callable for the list subscriptions method over gRPC.
+
+        Lists all subscriptions in a given project and
+        location.
+
+        Returns:
+            Callable[[~.ListSubscriptionsRequest],
+                    ~.ListSubscriptionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_subscriptions" not in self._stubs:
+            self._stubs["list_subscriptions"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListSubscriptions",
+                request_serializer=analyticshub.ListSubscriptionsRequest.serialize,
+                response_deserializer=analyticshub.ListSubscriptionsResponse.deserialize,
+            )
+        return self._stubs["list_subscriptions"]
+
+    @property
+    def list_shared_resource_subscriptions(
+        self,
+    ) -> Callable[
+        [analyticshub.ListSharedResourceSubscriptionsRequest],
+        analyticshub.ListSharedResourceSubscriptionsResponse,
+    ]:
+        r"""Return a callable for the list shared resource
+        subscriptions method over gRPC.
+
+        Lists all subscriptions on a given Data Exchange or
+        Listing.
+
+        Returns:
+            Callable[[~.ListSharedResourceSubscriptionsRequest],
+                    ~.ListSharedResourceSubscriptionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_shared_resource_subscriptions" not in self._stubs:
+            self._stubs[
+                "list_shared_resource_subscriptions"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/ListSharedResourceSubscriptions",
+                request_serializer=analyticshub.ListSharedResourceSubscriptionsRequest.serialize,
+                response_deserializer=analyticshub.ListSharedResourceSubscriptionsResponse.deserialize,
+            )
+        return self._stubs["list_shared_resource_subscriptions"]
+
+    @property
+    def revoke_subscription(
+        self,
+    ) -> Callable[
+        [analyticshub.RevokeSubscriptionRequest],
+        analyticshub.RevokeSubscriptionResponse,
+    ]:
+        r"""Return a callable for the revoke subscription method over gRPC.
+
+        Revokes a given subscription.
+
+        Returns:
+            Callable[[~.RevokeSubscriptionRequest],
+                    ~.RevokeSubscriptionResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "revoke_subscription" not in self._stubs:
+            self._stubs["revoke_subscription"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/RevokeSubscription",
+                request_serializer=analyticshub.RevokeSubscriptionRequest.serialize,
+                response_deserializer=analyticshub.RevokeSubscriptionResponse.deserialize,
+            )
+        return self._stubs["revoke_subscription"]
+
+    @property
+    def delete_subscription(
+        self,
+    ) -> Callable[[analyticshub.DeleteSubscriptionRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete subscription method over gRPC.
+
+        Deletes a subscription.
+
+        Returns:
+            Callable[[~.DeleteSubscriptionRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_subscription" not in self._stubs:
+            self._stubs["delete_subscription"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.analyticshub.v1.AnalyticsHubService/DeleteSubscription",
+                request_serializer=analyticshub.DeleteSubscriptionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_subscription"]
 
     @property
     def get_iam_policy(

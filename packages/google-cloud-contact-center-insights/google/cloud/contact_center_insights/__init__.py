@@ -130,6 +130,7 @@ from google.cloud.contact_center_insights_v1.types.resources import (
     SilenceData,
     SmartComposeSuggestionData,
     SmartReplyData,
+    SpeechConfig,
     View,
 )
 
@@ -239,5 +240,6 @@ __all__ = (
     "SilenceData",
     "SmartComposeSuggestionData",
     "SmartReplyData",
+    "SpeechConfig",
     "View",
 )

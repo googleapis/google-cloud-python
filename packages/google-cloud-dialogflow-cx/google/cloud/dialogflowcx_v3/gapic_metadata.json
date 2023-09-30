@@ -843,9 +843,19 @@
                 "delete_intent"
               ]
             },
+            "ExportIntents": {
+              "methods": [
+                "export_intents"
+              ]
+            },
             "GetIntent": {
               "methods": [
                 "get_intent"
+              ]
+            },
+            "ImportIntents": {
+              "methods": [
+                "import_intents"
               ]
             },
             "ListIntents": {
@@ -873,9 +883,19 @@
                 "delete_intent"
               ]
             },
+            "ExportIntents": {
+              "methods": [
+                "export_intents"
+              ]
+            },
             "GetIntent": {
               "methods": [
                 "get_intent"
+              ]
+            },
+            "ImportIntents": {
+              "methods": [
+                "import_intents"
               ]
             },
             "ListIntents": {
@@ -903,9 +923,19 @@
                 "delete_intent"
               ]
             },
+            "ExportIntents": {
+              "methods": [
+                "export_intents"
+              ]
+            },
             "GetIntent": {
               "methods": [
                 "get_intent"
+              ]
+            },
+            "ImportIntents": {
+              "methods": [
+                "import_intents"
               ]
             },
             "ListIntents": {

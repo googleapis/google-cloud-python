@@ -360,6 +360,10 @@ class UploadConversationRequest(proto.Message):
             Optional. DLP settings for transcript
             redaction. Optional, will default to the config
             specified in Settings.
+        speech_config (google.cloud.contact_center_insights_v1.types.SpeechConfig):
+            Optional. Default Speech-to-Text
+            configuration. Optional, will default to the
+            config specified in Settings.
     """
 
     parent: str = proto.Field(
@@ -379,6 +383,11 @@ class UploadConversationRequest(proto.Message):
         proto.MESSAGE,
         number=4,
         message=resources.RedactionConfig,
+    )
+    speech_config: resources.SpeechConfig = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=resources.SpeechConfig,
     )
 
 
@@ -584,7 +593,9 @@ class IngestConversationsRequest(proto.Message):
 
     Attributes:
         gcs_source (google.cloud.contact_center_insights_v1.types.IngestConversationsRequest.GcsSource):
-            A cloud storage bucket source.
+            A cloud storage bucket source. Note that any
+            previously ingested objects from the source will
+            be skipped to avoid duplication.
 
             This field is a member of `oneof`_ ``source``.
         transcript_object_config (google.cloud.contact_center_insights_v1.types.IngestConversationsRequest.TranscriptObjectConfig):

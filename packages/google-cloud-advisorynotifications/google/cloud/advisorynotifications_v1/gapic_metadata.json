@@ -15,9 +15,19 @@
                 "get_notification"
               ]
             },
+            "GetSettings": {
+              "methods": [
+                "get_settings"
+              ]
+            },
             "ListNotifications": {
               "methods": [
                 "list_notifications"
+              ]
+            },
+            "UpdateSettings": {
+              "methods": [
+                "update_settings"
               ]
             }
           }
@@ -30,9 +40,19 @@
                 "get_notification"
               ]
             },
+            "GetSettings": {
+              "methods": [
+                "get_settings"
+              ]
+            },
             "ListNotifications": {
               "methods": [
                 "list_notifications"
+              ]
+            },
+            "UpdateSettings": {
+              "methods": [
+                "update_settings"
               ]
             }
           }
@@ -45,9 +65,19 @@
                 "get_notification"
               ]
             },
+            "GetSettings": {
+              "methods": [
+                "get_settings"
+              ]
+            },
             "ListNotifications": {
               "methods": [
                 "list_notifications"
+              ]
+            },
+            "UpdateSettings": {
+              "methods": [
+                "update_settings"
               ]
             }
           }

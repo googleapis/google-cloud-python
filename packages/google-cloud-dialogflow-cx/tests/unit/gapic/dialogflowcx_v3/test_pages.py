@@ -52,7 +52,12 @@ from google.cloud.dialogflowcx_v3.services.pages import (
     pagers,
     transports,
 )
-from google.cloud.dialogflowcx_v3.types import data_store_connection, fulfillment
+from google.cloud.dialogflowcx_v3.types import (
+    advanced_settings,
+    data_store_connection,
+    fulfillment,
+    gcs,
+)
 from google.cloud.dialogflowcx_v3.types import page
 from google.cloud.dialogflowcx_v3.types import page as gcdc_page
 from google.cloud.dialogflowcx_v3.types import response_message
@@ -2733,6 +2738,19 @@ def test_create_page_rest(request_type):
                     ]
                 }
             ],
+            "advanced_settings": {
+                "audio_export_gcs_destination": {"uri": "uri_value"},
+                "dtmf_settings": {
+                    "enabled": True,
+                    "max_digits": 1065,
+                    "finish_digit": "finish_digit_value",
+                },
+                "logging_settings": {
+                    "enable_stackdriver_logging": True,
+                    "enable_interaction_logging": True,
+                },
+            },
+            "enable_generative_fallback": True,
         },
         "form": {
             "parameters": [
@@ -2755,6 +2773,7 @@ def test_create_page_rest(request_type):
                     },
                     "default_value": {},
                     "redact": True,
+                    "advanced_settings": {},
                 }
             ]
         },
@@ -2774,6 +2793,7 @@ def test_create_page_rest(request_type):
             }
         ],
         "event_handlers": {},
+        "advanced_settings": {},
         "knowledge_connector_settings": {
             "enabled": True,
             "trigger_fulfillment": {},
@@ -3034,6 +3054,19 @@ def test_create_page_rest_bad_request(
                     ]
                 }
             ],
+            "advanced_settings": {
+                "audio_export_gcs_destination": {"uri": "uri_value"},
+                "dtmf_settings": {
+                    "enabled": True,
+                    "max_digits": 1065,
+                    "finish_digit": "finish_digit_value",
+                },
+                "logging_settings": {
+                    "enable_stackdriver_logging": True,
+                    "enable_interaction_logging": True,
+                },
+            },
+            "enable_generative_fallback": True,
         },
         "form": {
             "parameters": [
@@ -3056,6 +3089,7 @@ def test_create_page_rest_bad_request(
                     },
                     "default_value": {},
                     "redact": True,
+                    "advanced_settings": {},
                 }
             ]
         },
@@ -3075,6 +3109,7 @@ def test_create_page_rest_bad_request(
             }
         ],
         "event_handlers": {},
+        "advanced_settings": {},
         "knowledge_connector_settings": {
             "enabled": True,
             "trigger_fulfillment": {},
@@ -3248,6 +3283,19 @@ def test_update_page_rest(request_type):
                     ]
                 }
             ],
+            "advanced_settings": {
+                "audio_export_gcs_destination": {"uri": "uri_value"},
+                "dtmf_settings": {
+                    "enabled": True,
+                    "max_digits": 1065,
+                    "finish_digit": "finish_digit_value",
+                },
+                "logging_settings": {
+                    "enable_stackdriver_logging": True,
+                    "enable_interaction_logging": True,
+                },
+            },
+            "enable_generative_fallback": True,
         },
         "form": {
             "parameters": [
@@ -3270,6 +3318,7 @@ def test_update_page_rest(request_type):
                     },
                     "default_value": {},
                     "redact": True,
+                    "advanced_settings": {},
                 }
             ]
         },
@@ -3289,6 +3338,7 @@ def test_update_page_rest(request_type):
             }
         ],
         "event_handlers": {},
+        "advanced_settings": {},
         "knowledge_connector_settings": {
             "enabled": True,
             "trigger_fulfillment": {},
@@ -3551,6 +3601,19 @@ def test_update_page_rest_bad_request(
                     ]
                 }
             ],
+            "advanced_settings": {
+                "audio_export_gcs_destination": {"uri": "uri_value"},
+                "dtmf_settings": {
+                    "enabled": True,
+                    "max_digits": 1065,
+                    "finish_digit": "finish_digit_value",
+                },
+                "logging_settings": {
+                    "enable_stackdriver_logging": True,
+                    "enable_interaction_logging": True,
+                },
+            },
+            "enable_generative_fallback": True,
         },
         "form": {
             "parameters": [
@@ -3573,6 +3636,7 @@ def test_update_page_rest_bad_request(
                     },
                     "default_value": {},
                     "redact": True,
+                    "advanced_settings": {},
                 }
             ]
         },
@@ -3592,6 +3656,7 @@ def test_update_page_rest_bad_request(
             }
         ],
         "event_handlers": {},
+        "advanced_settings": {},
         "knowledge_connector_settings": {
             "enabled": True,
             "trigger_fulfillment": {},
