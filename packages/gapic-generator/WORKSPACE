@@ -63,11 +63,15 @@ load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
 protobuf_deps()
 
-# Import boringssl explicitly to override what gRPC imports as its dependency.
-# Boringssl build fails on gcc12 without this fix:
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/1781):
+# Remove this import once gRPC depends on a newer version.
+#
+# Background: Import boringssl explicitly to override what gRPC
+# imports as its dependency.  Boringssl build fails on gcc12 without
+# this fix:
 # https://github.com/google/boringssl/commit/8462a367bb57e9524c3d8eca9c62733c63a63cf4,
-# which is present only in the newest version of boringssl, not the one imported
-# by gRPC. Remove this import once gRPC depends on a newer version.
+# which is present only in the newest version of boringssl, not the
+# one imported by gRPC.
 http_archive(
     name = "boringssl",
     sha256 = "b460f8673f3393e58ce506e9cdde7f2c3b2575b075f214cb819fb57d809f052b",
