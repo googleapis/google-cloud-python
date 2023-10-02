@@ -955,7 +955,7 @@ class TestDataset(unittest.TestCase):
     def test_storage_billing_model_setter_with_none(self):
         dataset = self._make_one(self.DS_REF)
         dataset.storage_billing_model = None
-        self.assertEqual(dataset.storage_billing_model, "LOGICAL")
+        self.assertIsNone(dataset.storage_billing_model)
 
     def test_storage_billing_model_setter_with_invalid_type(self):
         dataset = self._make_one(self.DS_REF)
