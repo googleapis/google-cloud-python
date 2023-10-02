@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.8.3...google-cloud-artifact-registry-v1.8.4) (2023-09-30)
+
+
+### Bug Fixes
+
+* make repository and repository_id in CreateRepository required ([3b8ea3e](https://github.com/googleapis/google-cloud-python/commit/3b8ea3e4d8f58af3cf83aeb76561857289462086))
+
 ## [1.8.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.8.2...google-cloud-artifact-registry-v1.8.3) (2023-08-03)
 
 

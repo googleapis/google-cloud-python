@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.31.0...google-cloud-container-v2.32.0) (2023-09-30)
+
+
+### Features
+
+* add SecurityPostureConfig Enterprise vuln mode to allow customers to enable Advanced Vulnerability Scanning for their clusters ([#413](https://github.com/googleapis/google-cloud-python/issues/413)) ([0280a30](https://github.com/googleapis/google-cloud-python/commit/0280a30e0f95e8d422e3179029e8bf9a35a5e304))
+
+
+### Documentation
+
+* Minor formatting ([#411](https://github.com/googleapis/google-cloud-python/issues/411)) ([1408937](https://github.com/googleapis/google-cloud-python/commit/14089372702399a5d4401191bd6ad0727e6cd067))
+
 ## [2.31.0](https://github.com/googleapis/python-container/compare/v2.30.0...v2.31.0) (2023-08-28)
 
 

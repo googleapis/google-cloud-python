@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-registry-v0.6.3...google-cloud-apigee-registry-v0.6.4) (2023-09-30)
+
+
+### Documentation
+
+* Minor formatting ([#11630](https://github.com/googleapis/google-cloud-python/issues/11630)) ([b176996](https://github.com/googleapis/google-cloud-python/commit/b176996309cb5b3e9c257caaebde8884bd556824))
+
 ## [0.6.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-apigee-registry-v0.6.2...google-cloud-apigee-registry-v0.6.3) (2023-07-05)
 
 

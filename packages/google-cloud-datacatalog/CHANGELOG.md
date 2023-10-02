@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.15.2...google-cloud-datacatalog-v3.16.0) (2023-09-30)
+
+
+### Features
+
+* Enable Vertex AI Ingestion on DataPlex ([#11762](https://github.com/googleapis/google-cloud-python/issues/11762)) ([b9d7b71](https://github.com/googleapis/google-cloud-python/commit/b9d7b71961038ee0b5119024b9eab3d45fd9b01d))
+
 ## [3.15.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.15.1...google-cloud-datacatalog-v3.15.2) (2023-09-19)
 
 

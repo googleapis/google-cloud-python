@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.12.1...google-cloud-contact-center-insights-v1.13.0) (2023-09-30)
+
+
+### Features
+
+* add optional SpeechConfig to UploadConversationRequest ([bfc25b7](https://github.com/googleapis/google-cloud-python/commit/bfc25b7040243537663b1c5ece50a2d8f2d6d8c3))
+
 ## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.12.0...google-cloud-contact-center-insights-v1.12.1) (2023-09-19)
 
 

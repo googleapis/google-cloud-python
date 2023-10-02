@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-metastore-v1.12.1...google-cloud-dataproc-metastore-v1.13.0) (2023-09-30)
+
+
+### Features
+
+* added EndpointLocation (v1, v1beta, v1alpha) ([b254665](https://github.com/googleapis/google-cloud-python/commit/b2546654ba5724bd3e47b95187cf3b8cb3d38550))
+
 ## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-metastore-v1.12.0...google-cloud-dataproc-metastore-v1.12.1) (2023-09-19)
 
 

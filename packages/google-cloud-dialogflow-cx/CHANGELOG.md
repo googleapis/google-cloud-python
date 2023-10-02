@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.27.1...google-cloud-dialogflow-cx-v1.28.0) (2023-09-30)
+
+
+### Features
+
+* add Inline destination ([40ee037](https://github.com/googleapis/google-cloud-python/commit/40ee0379f427d3426d2d41e45fdbe076b4f8eed4))
+* add Intent import/export APIs ([40ee037](https://github.com/googleapis/google-cloud-python/commit/40ee0379f427d3426d2d41e45fdbe076b4f8eed4))
+* add support for AdvancedSettings ([40ee037](https://github.com/googleapis/google-cloud-python/commit/40ee0379f427d3426d2d41e45fdbe076b4f8eed4))
+
 ## [1.27.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.27.0...google-cloud-dialogflow-cx-v1.27.1) (2023-09-19)
 
 

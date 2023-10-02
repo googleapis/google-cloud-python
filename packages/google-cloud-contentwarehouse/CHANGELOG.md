@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.7.1...google-cloud-contentwarehouse-v0.7.2) (2023-09-30)
+
+
+### Features
+
+* add matched_token_page_indices field in Document Warehouse API v1 ([030a767](https://github.com/googleapis/google-cloud-python/commit/030a76756e2ea4af464196dcae81759728231faa))
+
 ## [0.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.7.0...google-cloud-contentwarehouse-v0.7.1) (2023-09-19)
 
 

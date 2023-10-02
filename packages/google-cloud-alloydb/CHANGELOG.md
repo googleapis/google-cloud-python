@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.2...google-cloud-alloydb-v0.3.3) (2023-09-30)
+
+
+### Features
+
+* Add support to generate client certificate and get connection info ([0f72d58](https://github.com/googleapis/google-cloud-python/commit/0f72d586cebe5d6bb7e127aded5eb49dcc2ca8d9))
+* Add support to generate client certificate and get connection info for auth proxy in AlloyDB v1 ([#11764](https://github.com/googleapis/google-cloud-python/issues/11764)) ([0f72d58](https://github.com/googleapis/google-cloud-python/commit/0f72d586cebe5d6bb7e127aded5eb49dcc2ca8d9))
+
 ## [0.3.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.1...google-cloud-alloydb-v0.3.2) (2023-09-19)
 
 

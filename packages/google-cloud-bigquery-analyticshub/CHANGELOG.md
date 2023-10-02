@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.4.2...google-cloud-bigquery-analyticshub-v0.4.3) (2023-09-30)
+
+
+### Features
+
+* add Subscription resource and RPCs ([a18915b](https://github.com/googleapis/google-cloud-python/commit/a18915b21668dd9869a2d94c92866613ac041db0))
+
 ## [0.4.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-analyticshub-v0.4.1...google-cloud-bigquery-analyticshub-v0.4.2) (2023-08-03)
 
 

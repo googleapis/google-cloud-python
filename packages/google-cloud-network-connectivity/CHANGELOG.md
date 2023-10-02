@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.1.0...google-cloud-network-connectivity-v2.2.0) (2023-09-30)
+
+
+### Features
+
+* add Network Connectivity Center APIs related to VPC spokes ([#11769](https://github.com/googleapis/google-cloud-python/issues/11769)) ([4cf708c](https://github.com/googleapis/google-cloud-python/commit/4cf708cbf1637e230c120d834a9826887d7c2c37))
+
 ## [2.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.0.2...google-cloud-network-connectivity-v2.1.0) (2023-09-19)
 
 

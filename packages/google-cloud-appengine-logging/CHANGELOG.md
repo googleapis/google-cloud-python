@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-logging-v1.3.1...google-cloud-appengine-logging-v1.3.2) (2023-09-30)
+
+
+### Documentation
+
+* Minor formatting ([#11630](https://github.com/googleapis/google-cloud-python/issues/11630)) ([b176996](https://github.com/googleapis/google-cloud-python/commit/b176996309cb5b3e9c257caaebde8884bd556824))
+
 ## [1.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-logging-v1.3.0...google-cloud-appengine-logging-v1.3.1) (2023-07-05)
 
 

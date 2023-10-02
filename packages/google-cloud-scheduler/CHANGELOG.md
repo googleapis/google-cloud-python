@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.11.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-scheduler-v2.11.1...google-cloud-scheduler-v2.11.2) (2023-09-30)
+
+
+### Documentation
+
+* Minor formatting ([#353](https://github.com/googleapis/google-cloud-python/issues/353)) ([951433b](https://github.com/googleapis/google-cloud-python/commit/951433b152f9d6e3f87e0b9ccffc4170125283a8))
+
 ## [2.11.1](https://github.com/googleapis/python-scheduler/compare/v2.11.0...v2.11.1) (2023-07-04)
 
 

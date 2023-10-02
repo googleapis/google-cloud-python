@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.24.1...google-cloud-dialogflow-v2.25.0) (2023-09-30)
+
+
+### Features
+
+* Add the enable_partial_automated_agent_reply flag ([2996e9b](https://github.com/googleapis/google-cloud-python/commit/2996e9b4623749f2350392a5c6ee5823f2d62de6))
+* Remove backend API deadline ([2996e9b](https://github.com/googleapis/google-cloud-python/commit/2996e9b4623749f2350392a5c6ee5823f2d62de6))
+
 ## [2.24.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.24.0...google-cloud-dialogflow-v2.24.1) (2023-09-25)
 
 

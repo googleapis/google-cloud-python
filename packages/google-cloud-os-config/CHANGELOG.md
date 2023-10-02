@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-config-v1.15.2...google-cloud-os-config-v1.15.3) (2023-09-30)
+
+
+### Documentation
+
+* Minor formatting ([#295](https://github.com/googleapis/google-cloud-python/issues/295)) ([8805a43](https://github.com/googleapis/google-cloud-python/commit/8805a436e218ea0c7a7ec9de1b7a1e57635604e4))
+
 ## [1.15.2](https://github.com/googleapis/python-os-config/compare/v1.15.1...v1.15.2) (2023-07-04)
 
 
