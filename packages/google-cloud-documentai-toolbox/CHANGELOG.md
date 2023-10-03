@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.2-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.10.1-alpha...v0.10.2-alpha) (2023-10-03)
+
+
+### Bug Fixes
+
+* Change `ocr_line` `&lt;span&gt;` to include all `ocr_word` ([#169](https://github.com/googleapis/python-documentai-toolbox/issues/169)) ([bc44dab](https://github.com/googleapis/python-documentai-toolbox/commit/bc44dabdbee713f54d3e4f9864195af924677e3a))
+
 ## [0.10.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.10.0-alpha...v0.10.1-alpha) (2023-09-05)
 
 
