@@ -5,6 +5,27 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.12.0](https://github.com/googleapis/python-bigquery/compare/v3.11.4...v3.12.0) (2023-10-02)
+
+
+### Features
+
+* Add `Dataset.storage_billing_model` setter, use `client.update_dataset(ds, fields=["storage_billing_model"])` to update ([#1643](https://github.com/googleapis/python-bigquery/issues/1643)) ([5deba50](https://github.com/googleapis/python-bigquery/commit/5deba50b8c2d91d08bd5f5fb68742268c494b4a9))
+* Search statistics ([#1616](https://github.com/googleapis/python-bigquery/issues/1616)) ([b930e46](https://github.com/googleapis/python-bigquery/commit/b930e4673b0d1cceb53f683e47578d87af9361f3))
+* Widen retry predicate to include ServiceUnavailable ([#1641](https://github.com/googleapis/python-bigquery/issues/1641)) ([3e021a4](https://github.com/googleapis/python-bigquery/commit/3e021a46d387a0e3cb69913a281062fc221bb926))
+
+
+### Bug Fixes
+
+* Allow `storage_billing_model` to be explicitly set to `None` to use project default value ([#1665](https://github.com/googleapis/python-bigquery/issues/1665)) ([514d3e1](https://github.com/googleapis/python-bigquery/commit/514d3e12e5131bd589dff08893fd89bf40338ba3))
+* Relax timeout expectations ([#1645](https://github.com/googleapis/python-bigquery/issues/1645)) ([1760e94](https://github.com/googleapis/python-bigquery/commit/1760e945d16163980027fecf21113cd77ddc35a1))
+* Use isinstance() per E721, unpin flake8 ([#1659](https://github.com/googleapis/python-bigquery/issues/1659)) ([54a7769](https://github.com/googleapis/python-bigquery/commit/54a77694afcd80be4ba469c6ebb7ca8be112b04e))
+
+
+### Documentation
+
+* Revise update_table_expiration sample ([#1457](https://github.com/googleapis/python-bigquery/issues/1457)) ([03194e0](https://github.com/googleapis/python-bigquery/commit/03194e0156ed9201cb36301967c5af117d7ef29c))
+
 ## [3.11.4](https://github.com/googleapis/python-bigquery/compare/v3.11.3...v3.11.4) (2023-07-19)
 
 
