@@ -2525,6 +2525,24 @@ def test_iloc_list(scalars_df_index, scalars_pandas_df_index):
     )
 
 
+def test_iloc_list_multiindex(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    scalars_df = scalars_df.copy()
+    scalars_pandas_df = scalars_pandas_df.copy()
+    scalars_df = scalars_df.set_index(["bytes_col", "numeric_col"])
+    scalars_pandas_df = scalars_pandas_df.set_index(["bytes_col", "numeric_col"])
+
+    index_list = [0, 0, 0, 5, 4, 7]
+
+    bf_result = scalars_df.iloc[index_list]
+    pd_result = scalars_pandas_df.iloc[index_list]
+
+    pd.testing.assert_frame_equal(
+        bf_result.to_pandas(),
+        pd_result,
+    )
+
+
 def test_iloc_empty_list(scalars_df_index, scalars_pandas_df_index):
     index_list = []
 

@@ -332,8 +332,6 @@ def _iloc_getitem_series_or_dataframe(
     elif isinstance(key, slice):
         return series_or_dataframe._slice(key.start, key.stop, key.step)
     elif pd.api.types.is_list_like(key):
-        # TODO(henryjsolberg): support MultiIndex
-
         if len(key) == 0:
             return typing.cast(
                 typing.Union[bigframes.dataframe.DataFrame, bigframes.series.Series],
@@ -346,15 +344,18 @@ def _iloc_getitem_series_or_dataframe(
                 original_series_name if original_series_name is not None else "0"
             )
             df = series_or_dataframe.to_frame()
-        original_index_name = df.index.name
-        temporary_index_name = guid.generate_guid(prefix="temp_iloc_index_")
-        df = df.rename_axis(temporary_index_name)
+        original_index_names = df.index.names
+        temporary_index_names = [
+            guid.generate_guid(prefix="temp_iloc_index_")
+            for _ in range(len(df.index.names))
+        ]
+        df = df.rename_axis(temporary_index_names)
 
         # set to offset index and use regular loc, then restore index
         df = df.reset_index(drop=False)
         result = df.loc[key]
-        result = result.set_index(temporary_index_name)
-        result = result.rename_axis(original_index_name)
+        result = result.set_index(temporary_index_names)
+        result = result.rename_axis(original_index_names)
 
         if isinstance(series_or_dataframe, bigframes.series.Series):
             result = result[series_name]
