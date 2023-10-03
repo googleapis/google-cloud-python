@@ -8,7 +8,6 @@ from typing import Hashable, IO, Literal, Mapping, Sequence, TYPE_CHECKING
 import numpy as np
 from pandas._libs import lib
 from pandas._typing import Axis, FilePath, NaPosition, WriteBuffer
-import pandas.io.formats.format as fmt
 
 from bigframes import constants
 from third_party.bigframes_vendored.pandas.core.generic import NDFrame
@@ -151,21 +150,6 @@ class Series(NDFrame):  # type: ignore[misc]
             str or None: String representation of Series if ``buf=None``,
                 otherwise None.
         """
-        formatter = fmt.SeriesFormatter(
-            self,
-            name=name,
-            length=length,
-            header=header,
-            index=index,
-            dtype=dtype,
-            na_rep=na_rep,
-            float_format=float_format,
-            min_rows=min_rows,
-            max_rows=max_rows,
-        )
-        result = formatter.to_string()
-
-        # catch contract violations
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def to_markdown(
@@ -472,6 +456,30 @@ class Series(NDFrame):  # type: ignore[misc]
         Returns:
             bigframes.series.Series: Series indicating whether each value has occurred in the
                 preceding values.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def idxmin(self) -> Hashable:
+        """
+        Return the row label of the minimum value.
+
+        If multiple values equal the minimum, the first row label with that
+        value is returned.
+
+        Returns:
+            Index: Label of the minimum value.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def idxmax(self) -> Hashable:
+        """
+        Return the row label of the maximum value.
+
+        If multiple values equal the maximum, the first row label with that
+        value is returned.
+
+        Returns:
+            Index: Label of the maximum value.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

@@ -887,6 +887,34 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             scalars.Scalar, Series(block.select_column(row_nums)).iloc[0]
         )
 
+    def idxmax(self) -> blocks.Label:
+        block = self._block.order_by(
+            [
+                OrderingColumnReference(
+                    self._value_column, direction=OrderingDirection.DESC
+                ),
+                *[
+                    OrderingColumnReference(idx_col)
+                    for idx_col in self._block.index_columns
+                ],
+            ]
+        )
+        block = block.slice(0, 1)
+        return indexes.Index._from_block(block).to_pandas()[0]
+
+    def idxmin(self) -> blocks.Label:
+        block = self._block.order_by(
+            [
+                OrderingColumnReference(self._value_column),
+                *[
+                    OrderingColumnReference(idx_col)
+                    for idx_col in self._block.index_columns
+                ],
+            ]
+        )
+        block = block.slice(0, 1)
+        return indexes.Index._from_block(block).to_pandas()[0]
+
     @property
     def is_monotonic_increasing(self) -> bool:
         return typing.cast(

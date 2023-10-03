@@ -1642,6 +1642,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     aggregate = agg
 
+    def idxmin(self) -> bigframes.series.Series:
+        return bigframes.series.Series(block_ops.idxmin(self._block))
+
+    def idxmax(self) -> bigframes.series.Series:
+        return bigframes.series.Series(block_ops.idxmax(self._block))
+
     def describe(self) -> DataFrame:
         df_numeric = self._drop_non_numeric(keep_bool=False)
         if len(df_numeric.columns) == 0:

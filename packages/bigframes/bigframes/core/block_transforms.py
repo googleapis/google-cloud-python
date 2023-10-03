@@ -17,6 +17,7 @@ import typing
 
 import pandas as pd
 
+import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.ordering as ordering
@@ -576,3 +577,53 @@ def align_columns(
     left_final = left_block.select_columns(left_column_ids)
     right_final = right_block.select_columns(right_column_ids)
     return left_final, right_final
+
+
+def idxmin(block: blocks.Block) -> blocks.Block:
+    return _idx_extrema(block, "min")
+
+
+def idxmax(block: blocks.Block) -> blocks.Block:
+    return _idx_extrema(block, "max")
+
+
+def _idx_extrema(
+    block: blocks.Block, min_or_max: typing.Literal["min", "max"]
+) -> blocks.Block:
+    if len(block.index_columns) != 1:
+        # TODO: Need support for tuple dtype
+        raise NotImplementedError(
+            f"idxmin not support for multi-index. {constants.FEEDBACK_LINK}"
+        )
+
+    original_block = block
+    result_cols = []
+    for value_col in original_block.value_columns:
+        direction = (
+            ordering.OrderingDirection.ASC
+            if min_or_max == "min"
+            else ordering.OrderingDirection.DESC
+        )
+        # Have to find the min for each
+        order_refs = [
+            ordering.OrderingColumnReference(value_col, direction),
+            *[
+                ordering.OrderingColumnReference(idx_col)
+                for idx_col in original_block.index_columns
+            ],
+        ]
+        window_spec = core.WindowSpec(ordering=order_refs)
+        idx_col = original_block.index_columns[0]
+        block, result_col = block.apply_window_op(
+            idx_col, agg_ops.first_op, window_spec
+        )
+        result_cols.append(result_col)
+
+    block = block.select_columns(result_cols).with_column_labels(
+        original_block.column_labels
+    )
+    # Stack the entire column axis to produce single-column result
+    # Assumption: uniform dtype for stackability
+    return block.aggregate_all_and_stack(
+        agg_ops.AnyValueOp(), dtype=block.dtypes[0]
+    ).with_column_labels([original_block.index.name])

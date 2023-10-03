@@ -2468,6 +2468,18 @@ def test_argmax(scalars_df_index, scalars_pandas_df_index):
     assert bf_result == pd_result
 
 
+def test_series_idxmin(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index.string_col.idxmin()
+    pd_result = scalars_pandas_df_index.string_col.idxmin()
+    assert bf_result == pd_result
+
+
+def test_series_idxmax(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index.int64_too.idxmax()
+    pd_result = scalars_pandas_df_index.int64_too.idxmax()
+    assert bf_result == pd_result
+
+
 def test_getattr_attribute_error_when_pandas_has(scalars_df_index):
     # asof is implemented in pandas but not in bigframes
     with pytest.raises(AttributeError):

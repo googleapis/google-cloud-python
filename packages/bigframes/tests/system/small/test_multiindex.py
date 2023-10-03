@@ -41,6 +41,17 @@ def test_reset_multi_index(scalars_df_index, scalars_pandas_df_index):
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
+def test_series_multi_index_idxmin(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index.set_index(["bool_col", "int64_too"])[
+        "float64_col"
+    ].idxmin()
+    pd_result = scalars_pandas_df_index.set_index(["bool_col", "int64_too"])[
+        "float64_col"
+    ].idxmin()
+
+    assert bf_result == pd_result
+
+
 def test_binop_series_series_matching_multi_indices(
     scalars_df_index, scalars_pandas_df_index
 ):
