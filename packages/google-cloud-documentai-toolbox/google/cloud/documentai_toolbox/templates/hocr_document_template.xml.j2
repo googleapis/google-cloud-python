@@ -18,9 +18,10 @@
             {% set paridx = loop.index0 -%}
             <span class='ocr_par' id='par_{{ page_number }}_{{ bidx }}_{{ paridx }}' title='{{ paragraph.hocr_bounding_box -}}'>{% for line in paragraph.lines -%}
                 {% set lidx = loop.index0 -%}
-                <span class='ocr_line' id='line_{{ page_number }}_{{ bidx }}_{{ paridx }}_{{ lidx }}' title='{{ line.hocr_bounding_box }}'>{{ line.text }}</span>{% for token in line.tokens -%}
+                <span class='ocr_line' id='line_{{ page_number }}_{{ bidx }}_{{ paridx }}_{{ lidx }}' title='{{ line.hocr_bounding_box }}'>{{ line.text }}{% for token in line.tokens -%}
                     {% set tidx = loop.index0 -%}
-                    <span class='ocrx_word' id='word_{{ page_number }}_{{ bidx }}_{{ paridx }}_{{ lidx }}_{{ tidx }}' title='{{ token.hocr_bounding_box }}'>{{ token.text }}</span>{% endfor -%}{% endfor -%}
+                    <span class='ocrx_word' id='word_{{ page_number }}_{{ bidx }}_{{ paridx }}_{{ lidx }}_{{ tidx }}' title='{{ token.hocr_bounding_box }}'>{{ token.text }}</span>{% endfor -%}
+                </span>{% endfor -%}
             </span>{% endfor -%}
         </span>{% endfor -%}
     </div>
