@@ -38,6 +38,7 @@ import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.guid as guid
 import bigframes.core.indexes as indexes
+import bigframes.core.joins as joins
 import bigframes.core.ordering as ordering
 import bigframes.core.utils
 import bigframes.core.utils as utils
@@ -1402,6 +1403,78 @@ class Block:
         if ignore_index:
             result_block = result_block.reset_index()
         return result_block
+
+    def merge(
+        self,
+        other: Block,
+        how: typing.Literal[
+            "inner",
+            "left",
+            "outer",
+            "right",
+        ],
+        left_col_ids: typing.Sequence[str],
+        right_col_ids: typing.Sequence[str],
+        sort: bool,
+        suffixes: tuple[str, str] = ("_x", "_y"),
+    ) -> Block:
+        (
+            joined_expr,
+            coalesced_join_cols,
+            (get_column_left, get_column_right),
+        ) = joins.join_by_column(
+            self.expr,
+            left_col_ids,
+            other.expr,
+            right_col_ids,
+            how=how,
+            sort=sort,
+        )
+
+        # which join key parts should be coalesced
+        merge_join_key_mask = [
+            str(self.col_id_to_label[left_id]) == str(other.col_id_to_label[right_id])
+            for left_id, right_id in zip(left_col_ids, right_col_ids)
+        ]
+        labels_to_coalesce = [
+            self.col_id_to_label[col_id]
+            for i, col_id in enumerate(left_col_ids)
+            if merge_join_key_mask[i]
+        ]
+
+        def left_col_mapping(col_id: str) -> str:
+            if col_id in left_col_ids:
+                join_key_part = left_col_ids.index(col_id)
+                if merge_join_key_mask[join_key_part]:
+                    return coalesced_join_cols[join_key_part]
+            return get_column_left(col_id)
+
+        def right_col_mapping(col_id: str) -> typing.Optional[str]:
+            if col_id in right_col_ids:
+                join_key_part = right_col_ids.index(col_id)
+                if merge_join_key_mask[join_key_part]:
+                    return None
+            return get_column_right(col_id)
+
+        left_columns = [left_col_mapping(col_id) for col_id in self.value_columns]
+
+        right_columns = [
+            typing.cast(str, right_col_mapping(col_id))
+            for col_id in other.value_columns
+            if right_col_mapping(col_id)
+        ]
+
+        expr = joined_expr.select_columns([*left_columns, *right_columns])
+        labels = utils.merge_column_labels(
+            self.column_labels,
+            other.column_labels,
+            coalesce_labels=labels_to_coalesce,
+            suffixes=suffixes,
+        )
+
+        # Constructs default index
+        expr, offset_index_id = expr.promote_offsets()
+        return Block(expr, index_columns=[offset_index_id], column_labels=labels)
 
     def _force_reproject(self) -> Block:
         """Forces a reprojection of the underlying tables expression. Used to force predicate/order application before subsequent operations."""

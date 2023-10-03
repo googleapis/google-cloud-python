@@ -757,7 +757,7 @@ def test_df_isin_dict(scalars_dfs):
         ("right",),
     ],
 )
-def test_merge(scalars_dfs, merge_how):
+def test_df_merge(scalars_dfs, merge_how):
     scalars_df, scalars_pandas_df = scalars_dfs
     on = "rowindex_2"
     left_columns = ["int64_col", "float64_col", "rowindex_2"]
@@ -776,6 +776,39 @@ def test_merge(scalars_dfs, merge_how):
         ),
         merge_how,
         on,
+        sort=True,
+    )
+
+    assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+
+
+@pytest.mark.parametrize(
+    ("left_on", "right_on"),
+    [
+        (["int64_col", "rowindex_2"], ["int64_col", "rowindex_2"]),
+        (["rowindex_2", "int64_col"], ["int64_col", "rowindex_2"]),
+        (["rowindex_2", "float64_col"], ["int64_col", "rowindex_2"]),
+    ],
+)
+def test_df_merge_multi_key(scalars_dfs, left_on, right_on):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    left_columns = ["int64_col", "float64_col", "rowindex_2"]
+    right_columns = ["int64_col", "bool_col", "string_col", "rowindex_2"]
+
+    left = scalars_df[left_columns]
+    # Offset the rows somewhat so that outer join can have an effect.
+    right = scalars_df[right_columns].assign(rowindex_2=scalars_df["rowindex_2"] + 2)
+
+    df = left.merge(right, "outer", left_on=left_on, right_on=right_on, sort=True)
+    bf_result = df.to_pandas()
+
+    pd_result = scalars_pandas_df[left_columns].merge(
+        scalars_pandas_df[right_columns].assign(
+            rowindex_2=scalars_pandas_df["rowindex_2"] + 2
+        ),
+        "outer",
+        left_on=left_on,
+        right_on=right_on,
         sort=True,
     )
 

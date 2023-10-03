@@ -1468,14 +1468,14 @@ class DataFrame(NDFrame):
                 ``inner``: use intersection of keys from both frames, similar to a SQL inner
                 join; preserve the order of the left keys.
 
-            on:
-                Column join on. It must be found in both DataFrames. Either on or left_on + right_on
+            on (label or list of labels):
+                Columns to join on. It must be found in both DataFrames. Either on or left_on + right_on
                 must be passed in.
-            left_on:
-                Column join on in the left DataFrame. Either on or left_on + right_on
+            left_on (label or list of labels):
+                Columns to join on in the left DataFrame. Either on or left_on + right_on
                 must be passed in.
-            right_on:
-                Column join on in the right DataFrame. Either on or left_on + right_on
+            right_on (label or list of labels):
+                Columns to join on in the right DataFrame. Either on or left_on + right_on
                 must be passed in.
             sort:
                 Default False. Sort the join keys lexicographically in the
