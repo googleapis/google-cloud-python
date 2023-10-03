@@ -449,13 +449,6 @@ class Session(
         index_cols: List[str],
         api_name: str,
     ) -> Tuple[Optional[bigquery.TableReference], Optional[bigquery.QueryJob]]:
-        # If there are no index columns, then there's no reason to cache to a
-        # (clustered) session table, as we'll just have to query it again to
-        # create a default index & ordering.
-        if not index_cols:
-            _, query_job = self._start_query(query)
-            return query_job.destination, query_job
-
         # If a dry_run indicates this is not a query type job, then don't
         # bother trying to do a CREATE TEMP TABLE ... AS SELECT ... statement.
         dry_run_config = bigquery.QueryJobConfig()
@@ -465,15 +458,24 @@ class Session(
             _, query_job = self._start_query(query)
             return query_job.destination, query_job
 
-        # Make sure we cluster by the index column(s) so that subsequent
-        # operations are as speedy as they can be.
+        # Create a table to workaround BigQuery 10 GB query results limit. See:
+        # internal issue 303057336.
+        # Since we have a `statement_type == 'SELECT'`, schema should be populated.
+        schema = typing.cast(Iterable[bigquery.SchemaField], dry_run_job.schema)
+        temp_table = self._create_session_table_empty(api_name, schema, index_cols)
+
+        job_config = bigquery.QueryJobConfig()
+        job_config.destination = temp_table
+
         try:
-            ibis_expr = self.ibis_client.sql(query)
-            return self._ibis_to_session_table(ibis_expr, index_cols, api_name), None
+            # Write to temp table to workaround BigQuery 10 GB query results
+            # limit. See: internal issue 303057336.
+            _, query_job = self._start_query(query, job_config=job_config)
+            return query_job.destination, query_job
         except google.api_core.exceptions.BadRequest:
-            # Some SELECT statements still aren't compatible with CREATE TEMP
-            # TABLE ... AS SELECT ... statements. For example, if the query has
-            # a top-level ORDER BY, this conflicts with our ability to cluster
+            # Some SELECT statements still aren't compatible with cluster
+            # tables as the destination. For example, if the query has a
+            # top-level ORDER BY, this conflicts with our ability to cluster
             # the table by the index column(s).
             _, query_job = self._start_query(query)
             return query_job.destination, query_job
@@ -1231,6 +1233,54 @@ class Session(
         )
         return dataset.table(table_name)
 
+    def _create_session_table_empty(
+        self,
+        api_name: str,
+        schema: Iterable[bigquery.SchemaField],
+        cluster_cols: List[str],
+    ) -> bigquery.TableReference:
+        # Can't set a table in _SESSION as destination via query job API, so we
+        # run DDL, instead.
+        table = self._create_session_table()
+        schema_sql = bigframes_io.bq_schema_to_sql(schema)
+
+        clusterable_cols = [
+            col.name
+            for col in schema
+            if col.name in cluster_cols and _can_cluster_bq(col)
+        ][:_MAX_CLUSTER_COLUMNS]
+
+        if clusterable_cols:
+            cluster_cols_sql = ", ".join(
+                f"`{cluster_col}`" for cluster_col in clusterable_cols
+            )
+            cluster_sql = f"CLUSTER BY {cluster_cols_sql}"
+        else:
+            cluster_sql = ""
+
+        ddl_text = f"""
+        CREATE TEMP TABLE
+        `_SESSION`.`{table.table_id}`
+        ({schema_sql})
+        {cluster_sql}
+        """
+
+        job_config = bigquery.QueryJobConfig()
+
+        # Include a label so that Dataplex Lineage can identify temporary
+        # tables that BigQuery DataFrames creates. Googlers: See internal issue
+        # 296779699. We're labeling the job instead of the table because
+        # otherwise we get `BadRequest: 400 OPTIONS on temporary tables are not
+        # supported`.
+        job_config.labels = {"source": "bigquery-dataframes-temp"}
+        job_config.labels["bigframes-api"] = api_name
+
+        _, query_job = self._start_query(ddl_text, job_config=job_config)
+
+        # Use fully-qualified name instead of `_SESSION` name so that the
+        # created table can be used as the destination table.
+        return query_job.destination
+
     def _create_sequential_ordering(
         self,
         table: ibis_types.Table,
@@ -1249,7 +1299,9 @@ class Session(
             cluster_cols=list(index_cols) + [default_ordering_name],
             api_name=api_name,
         )
-        table = self.ibis_client.sql(f"SELECT * FROM `{table_ref.table_id}`")
+        table = self.ibis_client.table(
+            f"{table_ref.project}.{table_ref.dataset_id}.{table_ref.table_id}"
+        )
         ordering_reference = core.OrderingColumnReference(default_ordering_name)
         ordering = core.ExpressionOrdering(
             ordering_value_columns=[ordering_reference],
@@ -1264,55 +1316,13 @@ class Session(
         cluster_cols: Iterable[str],
         api_name: str,
     ) -> bigquery.TableReference:
-        clusterable_cols = [
-            col for col in cluster_cols if _can_cluster(table[col].type())
-        ][:_MAX_CLUSTER_COLUMNS]
-        return self._query_to_session_table(
+        desination, _ = self._query_to_destination(
             self.ibis_client.compile(table),
-            cluster_cols=clusterable_cols,
+            index_cols=list(cluster_cols),
             api_name=api_name,
         )
-
-    def _query_to_session_table(
-        self,
-        query_text: str,
-        cluster_cols: Iterable[str],
-        api_name: str,
-    ) -> bigquery.TableReference:
-        if len(list(cluster_cols)) > _MAX_CLUSTER_COLUMNS:
-            raise ValueError(
-                f"Too many cluster columns: {list(cluster_cols)}, max {_MAX_CLUSTER_COLUMNS} allowed."
-            )
-        # Can't set a table in _SESSION as destination via query job API, so we
-        # run DDL, instead.
-        table = self._create_session_table()
-        cluster_cols_sql = ", ".join(f"`{cluster_col}`" for cluster_col in cluster_cols)
-
-        # TODO(swast): This might not support multi-statement SQL queries (scripts).
-        ddl_text = f"""
-        CREATE TEMP TABLE `_SESSION`.`{table.table_id}`
-        CLUSTER BY {cluster_cols_sql}
-        AS {query_text}
-        """
-
-        job_config = bigquery.QueryJobConfig()
-
-        # Include a label so that Dataplex Lineage can identify temporary
-        # tables that BigQuery DataFrames creates. Googlers: See internal issue
-        # 296779699. We're labeling the job instead of the table because
-        # otherwise we get `BadRequest: 400 OPTIONS on temporary tables are not
-        # supported`.
-        job_config.labels = {"source": "bigquery-dataframes-temp"}
-        job_config.labels["bigframes-api"] = api_name
-
-        try:
-            self._start_query(
-                ddl_text, job_config=job_config
-            )  # Wait for the job to complete
-        except google.api_core.exceptions.Conflict:
-            # Allow query retry to succeed.
-            pass
-        return table
+        # There should always be a destination table for this query type.
+        return typing.cast(bigquery.TableReference, desination)
 
     def remote_function(
         self,
@@ -1494,14 +1504,21 @@ def connect(context: Optional[bigquery_options.BigQueryOptions] = None) -> Sessi
     return Session(context)
 
 
-def _can_cluster(ibis_type: ibis_dtypes.DataType):
+def _can_cluster_bq(field: bigquery.SchemaField):
     # https://cloud.google.com/bigquery/docs/clustered-tables
     # Notably, float is excluded
-    return (
-        ibis_type.is_integer()
-        or ibis_type.is_string()
-        or ibis_type.is_decimal()
-        or ibis_type.is_date()
-        or ibis_type.is_timestamp()
-        or ibis_type.is_boolean()
+    type_ = field.field_type
+    return type_ in (
+        "INTEGER",
+        "INT64",
+        "STRING",
+        "NUMERIC",
+        "DECIMAL",
+        "BIGNUMERIC",
+        "BIGDECIMAL",
+        "DATE",
+        "DATETIME",
+        "TIMESTAMP",
+        "BOOL",
+        "BOOLEAN",
     )

@@ -57,6 +57,7 @@ def test_read_gbq_tokyo(
         ),
         pytest.param(
             """SELECT
+                t.int64_col + 1 as my_ints,
                 t.float64_col * 2 AS my_floats,
                 CONCAT(t.string_col, "_2") AS my_strings,
                 t.int64_col > 0 AS my_bools,

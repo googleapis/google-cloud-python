@@ -23,6 +23,7 @@ import pytz
 
 import bigframes
 from bigframes.ml import core
+import tests.system.utils
 
 
 def test_model_eval(
@@ -224,7 +225,7 @@ def test_pca_model_principal_component_info(penguins_bqml_pca_model: core.BqmlMo
             "cumulative_explained_variance_ratio": [0.469357, 0.651283, 0.812383],
         },
     )
-    pd.testing.assert_frame_equal(
+    tests.system.utils.assert_pandas_df_equal_ignore_ordering(
         result,
         expected,
         check_exact=False,

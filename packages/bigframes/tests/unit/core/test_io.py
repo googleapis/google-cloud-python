@@ -13,8 +13,10 @@
 # limitations under the License.
 
 import datetime
+from typing import Iterable
 
 import google.cloud.bigquery as bigquery
+import pytest
 
 import bigframes.core.io
 
@@ -47,3 +49,56 @@ def test_create_snapshot_sql_doesnt_timetravel_session_datasets():
 
     # Don't need the project ID for _SESSION tables.
     assert "my-test-project" not in sql
+
+
+@pytest.mark.parametrize(
+    ("schema", "expected"),
+    (
+        (
+            [bigquery.SchemaField("My Column", "INTEGER")],
+            "`My Column` INT64",
+        ),
+        (
+            [
+                bigquery.SchemaField("My Column", "INTEGER"),
+                bigquery.SchemaField("Float Column", "FLOAT"),
+                bigquery.SchemaField("Bool Column", "BOOLEAN"),
+            ],
+            "`My Column` INT64, `Float Column` FLOAT64, `Bool Column` BOOL",
+        ),
+        (
+            [
+                bigquery.SchemaField("My Column", "INTEGER", mode="REPEATED"),
+                bigquery.SchemaField("Float Column", "FLOAT", mode="REPEATED"),
+                bigquery.SchemaField("Bool Column", "BOOLEAN", mode="REPEATED"),
+            ],
+            "`My Column` ARRAY<INT64>, `Float Column` ARRAY<FLOAT64>, `Bool Column` ARRAY<BOOL>",
+        ),
+        (
+            [
+                bigquery.SchemaField(
+                    "My Column",
+                    "RECORD",
+                    mode="REPEATED",
+                    fields=(
+                        bigquery.SchemaField("Float Column", "FLOAT", mode="REPEATED"),
+                        bigquery.SchemaField("Bool Column", "BOOLEAN", mode="REPEATED"),
+                        bigquery.SchemaField(
+                            "Nested Column",
+                            "RECORD",
+                            fields=(bigquery.SchemaField("Int Column", "INTEGER"),),
+                        ),
+                    ),
+                ),
+            ],
+            (
+                "`My Column` ARRAY<STRUCT<"
+                + "`Float Column` ARRAY<FLOAT64>,"
+                + " `Bool Column` ARRAY<BOOL>,"
+                + " `Nested Column` STRUCT<`Int Column` INT64>>>"
+            ),
+        ),
+    ),
+)
+def test_bq_schema_to_sql(schema: Iterable[bigquery.SchemaField], expected: str):
+    pass

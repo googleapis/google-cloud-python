@@ -1198,8 +1198,8 @@ class ArrayValue:
         destination = self._session._ibis_to_session_table(
             ibis_expr, cluster_cols=cluster_cols, api_name="cache"
         )
-        table_expression = self._session.ibis_client.sql(
-            f"SELECT * FROM `_SESSION`.`{destination.table_id}`"
+        table_expression = self._session.ibis_client.table(
+            f"{destination.project}.{destination.dataset_id}.{destination.table_id}"
         )
         new_columns = [table_expression[column] for column in self.column_names]
         new_hidden_columns = [
