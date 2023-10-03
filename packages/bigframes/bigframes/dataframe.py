@@ -160,7 +160,15 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 columns=columns,  # type:ignore
                 dtype=dtype,  # type:ignore
             )
-            if pd_dataframe.size < MAX_INLINE_DF_SIZE:
+            if (
+                pd_dataframe.size < MAX_INLINE_DF_SIZE
+                # TODO(swast): Workaround data types limitation in inline data.
+                and not any(
+                    dt.pyarrow_dtype
+                    for dt in pd_dataframe.dtypes
+                    if isinstance(dt, pandas.ArrowDtype)
+                )
+            ):
                 self._block = blocks.block_from_local(
                     pd_dataframe, session or bigframes.pandas.get_global_session()
                 )

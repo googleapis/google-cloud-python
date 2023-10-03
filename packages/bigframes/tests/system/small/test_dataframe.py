@@ -917,7 +917,19 @@ def test_get_dtypes_array_struct(session):
     dtypes = df.dtypes
     pd.testing.assert_series_equal(
         dtypes,
-        pd.Series({"array_column": np.dtype("O"), "struct_column": np.dtype("O")}),
+        pd.Series(
+            {
+                "array_column": np.dtype("O"),
+                "struct_column": pd.ArrowDtype(
+                    pa.struct(
+                        [
+                            ("string_field", pa.string()),
+                            ("float_field", pa.float64()),
+                        ]
+                    )
+                ),
+            }
+        ),
     )
 
 

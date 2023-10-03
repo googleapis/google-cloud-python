@@ -26,6 +26,9 @@ cd "${PROJECT_ROOT}"
 # Disable buffering, so that the logs stream through.
 export PYTHONUNBUFFERED=1
 
+# Workaround https://github.com/pytest-dev/pytest/issues/9567
+export PY_IGNORE_IMPORTMISMATCH=1
+
 # Debug: show build environment
 env | grep KOKORO
 

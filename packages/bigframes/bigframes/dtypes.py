@@ -84,10 +84,10 @@ ReadOnlyIbisDtype = Union[
 
 BIDIRECTIONAL_MAPPINGS: Iterable[Tuple[IbisDtype, Dtype]] = (
     (ibis_dtypes.boolean, pd.BooleanDtype()),
+    (ibis_dtypes.date, pd.ArrowDtype(pa.date32())),
     (ibis_dtypes.float64, pd.Float64Dtype()),
     (ibis_dtypes.int64, pd.Int64Dtype()),
     (ibis_dtypes.string, pd.StringDtype(storage="pyarrow")),
-    (ibis_dtypes.date, pd.ArrowDtype(pa.date32())),
     (ibis_dtypes.time, pd.ArrowDtype(pa.time64("us"))),
     (ibis_dtypes.Timestamp(timezone=None), pd.ArrowDtype(pa.timestamp("us"))),
     (
@@ -99,6 +99,19 @@ BIDIRECTIONAL_MAPPINGS: Iterable[Tuple[IbisDtype, Dtype]] = (
 BIGFRAMES_TO_IBIS: Dict[Dtype, ibis_dtypes.DataType] = {
     pandas: ibis for ibis, pandas in BIDIRECTIONAL_MAPPINGS
 }
+
+IBIS_TO_ARROW: Dict[ibis_dtypes.DataType, pa.DataType] = {
+    ibis_dtypes.boolean: pa.bool_(),
+    ibis_dtypes.date: pa.date32(),
+    ibis_dtypes.float64: pa.float64(),
+    ibis_dtypes.int64: pa.int64(),
+    ibis_dtypes.string: pa.string(),
+    ibis_dtypes.time: pa.time64("us"),
+    ibis_dtypes.Timestamp(timezone=None): pa.timestamp("us"),
+    ibis_dtypes.Timestamp(timezone="UTC"): pa.timestamp("us", tz="UTC"),
+}
+
+ARROW_TO_IBIS = {arrow: ibis for ibis, arrow in IBIS_TO_ARROW.items()}
 
 IBIS_TO_BIGFRAMES: Dict[ibis_dtypes.DataType, Union[Dtype, np.dtype[Any]]] = {
     ibis: pandas for ibis, pandas in BIDIRECTIONAL_MAPPINGS
@@ -148,16 +161,37 @@ def ibis_dtype_to_bigframes_dtype(
     # Special cases: Ibis supports variations on these types, but currently
     # our IO returns them as objects. Eventually, we should support them as
     # ArrowDType (and update the IO accordingly)
-    if isinstance(ibis_dtype, ibis_dtypes.Array) or isinstance(
-        ibis_dtype, ibis_dtypes.Struct
-    ):
+    if isinstance(ibis_dtype, ibis_dtypes.Array):
         return np.dtype("O")
+
+    if isinstance(ibis_dtype, ibis_dtypes.Struct):
+        return pd.ArrowDtype(ibis_dtype_to_arrow_dtype(ibis_dtype))
 
     if ibis_dtype in IBIS_TO_BIGFRAMES:
         return IBIS_TO_BIGFRAMES[ibis_dtype]
     elif isinstance(ibis_dtype, ibis_dtypes.Null):
         # Fallback to STRING for NULL values for most flexibility in SQL.
         return IBIS_TO_BIGFRAMES[ibis_dtypes.string]
+    else:
+        raise ValueError(
+            f"Unexpected Ibis data type {ibis_dtype}. {constants.FEEDBACK_LINK}"
+        )
+
+
+def ibis_dtype_to_arrow_dtype(ibis_dtype: ibis_dtypes.DataType) -> pa.DataType:
+    if isinstance(ibis_dtype, ibis_dtypes.Array):
+        return pa.list_(ibis_dtype_to_arrow_dtype(ibis_dtype.value_type))
+
+    if isinstance(ibis_dtype, ibis_dtypes.Struct):
+        return pa.struct(
+            [
+                (name, ibis_dtype_to_arrow_dtype(dtype))
+                for name, dtype in ibis_dtype.fields.items()
+            ]
+        )
+
+    if ibis_dtype in IBIS_TO_ARROW:
+        return IBIS_TO_ARROW[ibis_dtype]
     else:
         raise ValueError(
             f"Unexpected Ibis data type {ibis_dtype}. {constants.FEEDBACK_LINK}"
@@ -187,6 +221,24 @@ def ibis_table_to_canonical_types(table: ibis_types.Table) -> ibis_types.Table:
     return table.select(*casted_columns)
 
 
+def arrow_dtype_to_ibis_dtype(arrow_dtype: pa.DataType) -> ibis_dtypes.DataType:
+    if pa.types.is_struct(arrow_dtype):
+        struct_dtype = typing.cast(pa.StructType, arrow_dtype)
+        return ibis_dtypes.Struct.from_tuples(
+            [
+                (field.name, arrow_dtype_to_ibis_dtype(field.type))
+                for field in struct_dtype
+            ]
+        )
+
+    if arrow_dtype in ARROW_TO_IBIS:
+        return ARROW_TO_IBIS[arrow_dtype]
+    else:
+        raise ValueError(
+            f"Unexpected Arrow data type {arrow_dtype}. {constants.FEEDBACK_LINK}"
+        )
+
+
 def bigframes_dtype_to_ibis_dtype(
     bigframes_dtype: Union[DtypeString, Dtype, np.dtype[Any]]
 ) -> ibis_dtypes.DataType:
@@ -202,6 +254,9 @@ def bigframes_dtype_to_ibis_dtype(
     Raises:
         ValueError: If passed a dtype not supported by BigQuery DataFrames.
     """
+    if isinstance(bigframes_dtype, pd.ArrowDtype):
+        return arrow_dtype_to_ibis_dtype(bigframes_dtype.pyarrow_dtype)
+
     type_string = str(bigframes_dtype)
     if type_string in BIGFRAMES_STRING_TO_BIGFRAMES:
         bigframes_dtype = BIGFRAMES_STRING_TO_BIGFRAMES[

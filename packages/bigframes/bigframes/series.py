@@ -51,6 +51,7 @@ import bigframes.operations.aggregations as agg_ops
 import bigframes.operations.base
 import bigframes.operations.datetimes as dt
 import bigframes.operations.strings as strings
+import bigframes.operations.structs as structs
 import third_party.bigframes_vendored.pandas.core.series as vendored_pandas_series
 
 LevelType = typing.Union[str, int]
@@ -117,6 +118,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         if self._query_job is None:
             self._set_internal_query_job(self._compute_dry_run())
         return self._query_job
+
+    @property
+    def struct(self) -> structs.StructAccessor:
+        return structs.StructAccessor(self._block)
 
     def _set_internal_query_job(self, query_job: bigquery.QueryJob):
         self._query_job = query_job

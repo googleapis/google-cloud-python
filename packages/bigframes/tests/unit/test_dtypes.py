@@ -85,6 +85,70 @@ def test_ibis_float32_raises_unexpected_datatype():
         bigframes.dtypes.ibis_dtype_to_bigframes_dtype(ibis_dtypes.float32)
 
 
+IBIS_ARROW_DTYPES = (
+    (ibis_dtypes.boolean, pa.bool_()),
+    (ibis_dtypes.date, pa.date32()),
+    (ibis_dtypes.Timestamp(), pa.timestamp("us")),
+    (ibis_dtypes.float64, pa.float64()),
+    (
+        ibis_dtypes.Timestamp(timezone="UTC"),
+        pa.timestamp("us", tz="UTC"),
+    ),
+    (
+        ibis_dtypes.Struct.from_tuples(
+            [
+                ("name", ibis_dtypes.string()),
+                ("version", ibis_dtypes.int64()),
+            ]
+        ),
+        pa.struct(
+            [
+                ("name", pa.string()),
+                ("version", pa.int64()),
+            ]
+        ),
+    ),
+    (
+        ibis_dtypes.Struct.from_tuples(
+            [
+                (
+                    "nested",
+                    ibis_dtypes.Struct.from_tuples(
+                        [
+                            ("field", ibis_dtypes.string()),
+                        ]
+                    ),
+                ),
+            ]
+        ),
+        pa.struct(
+            [
+                (
+                    "nested",
+                    pa.struct(
+                        [
+                            ("field", pa.string()),
+                        ]
+                    ),
+                ),
+            ]
+        ),
+    ),
+)
+
+
+@pytest.mark.parametrize(("ibis_dtype", "arrow_dtype"), IBIS_ARROW_DTYPES)
+def test_arrow_dtype_to_ibis_dtype(ibis_dtype, arrow_dtype):
+    result = bigframes.dtypes.arrow_dtype_to_ibis_dtype(arrow_dtype)
+    assert result == ibis_dtype
+
+
+@pytest.mark.parametrize(("ibis_dtype", "arrow_dtype"), IBIS_ARROW_DTYPES)
+def test_ibis_dtype_to_arrow_dtype(ibis_dtype, arrow_dtype):
+    result = bigframes.dtypes.ibis_dtype_to_arrow_dtype(ibis_dtype)
+    assert result == arrow_dtype
+
+
 @pytest.mark.parametrize(
     ["bigframes_dtype", "ibis_dtype"],
     [
