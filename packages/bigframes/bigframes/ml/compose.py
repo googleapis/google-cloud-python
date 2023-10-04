@@ -31,6 +31,7 @@ CompilablePreprocessorType = Union[
     preprocessing.StandardScaler,
     preprocessing.MaxAbsScaler,
     preprocessing.MinMaxScaler,
+    preprocessing.KBinsDiscretizer,
     preprocessing.LabelEncoder,
 ]
 
@@ -91,18 +92,24 @@ class ColumnTransformer(
 
         return result
 
-    def _compile_to_sql(self, columns: List[str]) -> List[Tuple[str, str]]:
+    def _compile_to_sql(
+        self,
+        columns: List[str],
+        X: bpd.DataFrame,
+    ) -> List[Tuple[str, str]]:
         """Compile this transformer to a list of SQL expressions that can be included in
         a BQML TRANSFORM clause
 
         Args:
             columns (List[str]):
                 a list of column names to transform
+            X (bpd.DataFrame):
+                The Dataframe with training data.
 
         Returns:
             a list of tuples of (sql_expression, output_name)"""
         return [
-            transformer._compile_to_sql([column])[0]
+            transformer._compile_to_sql([column], X=X)[0]
             for column in columns
             for _, transformer, target_column in self.transformers_
             if column == target_column
@@ -115,7 +122,7 @@ class ColumnTransformer(
     ) -> ColumnTransformer:
         (X,) = utils.convert_to_dataframe(X)
 
-        compiled_transforms = self._compile_to_sql(X.columns.tolist())
+        compiled_transforms = self._compile_to_sql(X.columns.tolist(), X)
         transform_sqls = [transform_sql for transform_sql, _ in compiled_transforms]
 
         self._bqml_model = self._bqml_model_factory.create_model(

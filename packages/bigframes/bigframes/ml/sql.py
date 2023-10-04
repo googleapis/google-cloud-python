@@ -85,6 +85,15 @@ class BaseSqlGenerator:
         """Encode ML.MIN_MAX_SCALER for BQML"""
         return f"""ML.MIN_MAX_SCALER({numeric_expr_sql}) OVER() AS {name}"""
 
+    def ml_bucketize(
+        self,
+        numeric_expr_sql: str,
+        array_split_points: Iterable[Union[int, float]],
+        name: str,
+    ) -> str:
+        """Encode ML.MIN_MAX_SCALER for BQML"""
+        return f"""ML.BUCKETIZE({numeric_expr_sql}, {array_split_points}, FALSE) AS {name}"""
+
     def ml_one_hot_encoder(
         self,
         numeric_expr_sql: str,

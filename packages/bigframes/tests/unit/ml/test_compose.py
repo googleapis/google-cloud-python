@@ -23,6 +23,7 @@ def test_columntransformer_init_expectedtransforms():
     standard_scaler_transformer = preprocessing.StandardScaler()
     max_abs_scaler_transformer = preprocessing.MaxAbsScaler()
     min_max_scaler_transformer = preprocessing.MinMaxScaler()
+    k_bins_discretizer_transformer = preprocessing.KBinsDiscretizer(strategy="uniform")
     label_transformer = preprocessing.LabelEncoder()
     column_transformer = compose.ColumnTransformer(
         [
@@ -42,6 +43,11 @@ def test_columntransformer_init_expectedtransforms():
                 min_max_scaler_transformer,
                 ["culmen_length_mm", "flipper_length_mm"],
             ),
+            (
+                "k_bins_discretizer",
+                k_bins_discretizer_transformer,
+                ["culmen_length_mm", "flipper_length_mm"],
+            ),
             ("label", label_transformer, "species"),
         ]
     )
@@ -54,6 +60,8 @@ def test_columntransformer_init_expectedtransforms():
         ("max_abs_scale", max_abs_scaler_transformer, "flipper_length_mm"),
         ("min_max_scale", min_max_scaler_transformer, "culmen_length_mm"),
         ("min_max_scale", min_max_scaler_transformer, "flipper_length_mm"),
+        ("k_bins_discretizer", k_bins_discretizer_transformer, "culmen_length_mm"),
+        ("k_bins_discretizer", k_bins_discretizer_transformer, "flipper_length_mm"),
         ("label", label_transformer, "species"),
     ]
 
@@ -81,6 +89,11 @@ def test_columntransformer_repr():
                 preprocessing.MinMaxScaler(),
                 ["culmen_length_mm", "flipper_length_mm"],
             ),
+            (
+                "k_bins_discretizer",
+                preprocessing.KBinsDiscretizer(strategy="uniform"),
+                ["culmen_length_mm", "flipper_length_mm"],
+            ),
         ]
     )
 
@@ -92,6 +105,9 @@ def test_columntransformer_repr():
                                 ('max_abs_scale', MaxAbsScaler(),
                                  ['culmen_length_mm', 'flipper_length_mm']),
                                 ('min_max_scale', MinMaxScaler(),
+                                 ['culmen_length_mm', 'flipper_length_mm']),
+                                ('k_bins_discretizer',
+                                 KBinsDiscretizer(strategy='uniform'),
                                  ['culmen_length_mm', 'flipper_length_mm'])])"""
     )
 
@@ -119,6 +135,11 @@ def test_columntransformer_repr_matches_sklearn():
                 preprocessing.MinMaxScaler(),
                 ["culmen_length_mm", "flipper_length_mm"],
             ),
+            (
+                "k_bins_discretizer",
+                preprocessing.KBinsDiscretizer(strategy="uniform"),
+                ["culmen_length_mm", "flipper_length_mm"],
+            ),
         ]
     )
     sk_column_transformer = sklearn_compose.ColumnTransformer(
@@ -141,6 +162,11 @@ def test_columntransformer_repr_matches_sklearn():
             (
                 "min_max_scale",
                 sklearn_preprocessing.MinMaxScaler(),
+                ["culmen_length_mm", "flipper_length_mm"],
+            ),
+            (
+                "k_bins_discretizer",
+                sklearn_preprocessing.KBinsDiscretizer(strategy="uniform"),
                 ["culmen_length_mm", "flipper_length_mm"],
             ),
         ]

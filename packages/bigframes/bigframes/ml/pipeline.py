@@ -52,6 +52,7 @@ class Pipeline(
                 preprocessing.OneHotEncoder,
                 preprocessing.MaxAbsScaler,
                 preprocessing.MinMaxScaler,
+                preprocessing.KBinsDiscretizer,
                 preprocessing.LabelEncoder,
             ),
         ):
@@ -93,7 +94,7 @@ class Pipeline(
     ) -> Pipeline:
         (X,) = utils.convert_to_dataframe(X)
 
-        compiled_transforms = self._transform._compile_to_sql(X.columns.tolist())
+        compiled_transforms = self._transform._compile_to_sql(X.columns.tolist(), X=X)
         transform_sqls = [transform_sql for transform_sql, _ in compiled_transforms]
 
         if y is not None:
@@ -151,6 +152,7 @@ def _extract_as_column_transformer(
                 preprocessing.StandardScaler,
                 preprocessing.MaxAbsScaler,
                 preprocessing.MinMaxScaler,
+                preprocessing.KBinsDiscretizer,
                 preprocessing.LabelEncoder,
             ],
             Union[str, List[str]],
@@ -190,6 +192,13 @@ def _extract_as_column_transformer(
                     *preprocessing.MinMaxScaler._parse_from_sql(transform_sql),
                 )
             )
+        elif transform_sql.startswith("ML.BUCKETIZE"):
+            transformers.append(
+                (
+                    "k_bins_discretizer",
+                    *preprocessing.KBinsDiscretizer._parse_from_sql(transform_sql),
+                )
+            )
         elif transform_sql.startswith("ML.LABEL_ENCODER"):
             transformers.append(
                 (
@@ -213,6 +222,7 @@ def _merge_column_transformer(
     preprocessing.OneHotEncoder,
     preprocessing.MaxAbsScaler,
     preprocessing.MinMaxScaler,
+    preprocessing.KBinsDiscretizer,
     preprocessing.LabelEncoder,
 ]:
     """Try to merge the column transformer to a simple transformer."""

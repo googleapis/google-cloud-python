@@ -121,7 +121,7 @@ def test_standard_scaler_series_normalizes(penguins_df_default_index, new_pengui
 
 
 def test_max_abs_scaler_normalizes(penguins_df_default_index, new_penguins_df):
-    # TODO(http://b/292431644): add a second test that compares output to sklearn.preprocessing.StandardScaler, when BQML's change is in prod.
+    # TODO(http://b/292431644): add a second test that compares output to sklearn.preprocessing.MaxAbsScaler, when BQML's change is in prod.
     scaler = bigframes.ml.preprocessing.MaxAbsScaler()
     scaler.fit(
         penguins_df_default_index[
@@ -211,7 +211,7 @@ def test_max_abs_scaler_series_normalizes(penguins_df_default_index, new_penguin
     pd.testing.assert_frame_equal(result, expected, rtol=1e-3)
 
 
-def test_min_max_scaler_normalizeds_fit_transform(new_penguins_df):
+def test_min_max_scaler_normalized_fit_transform(new_penguins_df):
     scaler = bigframes.ml.preprocessing.MinMaxScaler()
     result = scaler.fit_transform(
         new_penguins_df[["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]]
@@ -265,7 +265,7 @@ def test_min_max_scaler_series_normalizes(penguins_df_default_index, new_penguin
 
 
 def test_min_max_scaler_normalizes(penguins_df_default_index, new_penguins_df):
-    # TODO(http://b/292431644): add a second test that compares output to sklearn.preprocessing.StandardScaler, when BQML's change is in prod.
+    # TODO(http://b/292431644): add a second test that compares output to sklearn.preprocessing.MinMaxScaler, when BQML's change is in prod.
     scaler = bigframes.ml.preprocessing.MinMaxScaler()
     scaler.fit(
         penguins_df_default_index[
@@ -298,6 +298,131 @@ def test_min_max_scaler_normalizes(penguins_df_default_index, new_penguins_df):
             "min_max_scaled_flipper_length_mm": [0.40678, 0.152542, 0.271186],
         },
         dtype="Float64",
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(result, expected, rtol=1e-3)
+
+
+def test_k_bins_discretizer_normalized_fit_transform_default_params(new_penguins_df):
+    discretizer = bigframes.ml.preprocessing.KBinsDiscretizer(strategy="uniform")
+    result = discretizer.fit_transform(
+        new_penguins_df[["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]]
+    ).to_pandas()
+
+    # TODO: bug? feature columns seem to be in nondeterministic random order
+    # workaround: sort columns by name. Can't repro it in pantheon, so could
+    # be a bigframes issue...
+    result = result.reindex(sorted(result.columns), axis=1)
+
+    expected = pd.DataFrame(
+        {
+            "kbinsdiscretizer_culmen_depth_mm": ["bin_5", "bin_2", "bin_4"],
+            "kbinsdiscretizer_culmen_length_mm": ["bin_5", "bin_3", "bin_2"],
+            "kbinsdiscretizer_flipper_length_mm": ["bin_5", "bin_2", "bin_4"],
+        },
+        dtype="string[pyarrow]",
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(result, expected, rtol=1e-3)
+
+
+def test_k_bins_discretizer_series_normalizes(
+    penguins_df_default_index, new_penguins_df
+):
+    discretizer = bigframes.ml.preprocessing.KBinsDiscretizer(strategy="uniform")
+    discretizer.fit(penguins_df_default_index["culmen_length_mm"])
+
+    result = discretizer.transform(
+        penguins_df_default_index["culmen_length_mm"]
+    ).to_pandas()
+    result = discretizer.transform(new_penguins_df).to_pandas()
+
+    # TODO: bug? feature columns seem to be in nondeterministic random order
+    # workaround: sort columns by name. Can't repro it in pantheon, so could
+    # be a bigframes issue...
+    result = result.reindex(sorted(result.columns), axis=1)
+
+    expected = pd.DataFrame(
+        {
+            "kbinsdiscretizer_culmen_length_mm": ["bin_3", "bin_3", "bin_3"],
+        },
+        dtype="string[pyarrow]",
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(result, expected, rtol=1e-3)
+
+
+def test_k_bins_discretizer_normalizes(penguins_df_default_index, new_penguins_df):
+    # TODO(http://b/292431644): add a second test that compares output to sklearn.preprocessing.KBinsDiscretizer, when BQML's change is in prod.
+    discretizer = bigframes.ml.preprocessing.KBinsDiscretizer(strategy="uniform")
+    discretizer.fit(
+        penguins_df_default_index[
+            ["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]
+        ]
+    )
+
+    result = discretizer.transform(
+        penguins_df_default_index[
+            ["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]
+        ]
+    ).to_pandas()
+
+    result = discretizer.transform(new_penguins_df).to_pandas()
+
+    # TODO: bug? feature columns seem to be in nondeterministic random order
+    # workaround: sort columns by name. Can't repro it in pantheon, so could
+    # be a bigframes issue...
+    result = result.reindex(sorted(result.columns), axis=1)
+
+    expected = pd.DataFrame(
+        {
+            "kbinsdiscretizer_culmen_depth_mm": ["bin_5", "bin_4", "bin_4"],
+            "kbinsdiscretizer_culmen_length_mm": ["bin_3", "bin_3", "bin_3"],
+            "kbinsdiscretizer_flipper_length_mm": ["bin_4", "bin_2", "bin_3"],
+        },
+        dtype="string[pyarrow]",
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(result, expected, rtol=1e-3)
+
+
+def test_k_bins_discretizer_normalizes_different_params(
+    penguins_df_default_index, new_penguins_df
+):
+    # TODO(http://b/292431644): add a second test that compares output to sklearn.preprocessing.KBinsDiscretizer, when BQML's change is in prod.
+    discretizer = bigframes.ml.preprocessing.KBinsDiscretizer(
+        n_bins=6, strategy="uniform"
+    )
+    discretizer.fit(
+        penguins_df_default_index[
+            ["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]
+        ]
+    )
+
+    result = discretizer.transform(
+        penguins_df_default_index[
+            ["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm"]
+        ]
+    ).to_pandas()
+
+    result = discretizer.transform(new_penguins_df).to_pandas()
+
+    # TODO: bug? feature columns seem to be in nondeterministic random order
+    # workaround: sort columns by name. Can't repro it in pantheon, so could
+    # be a bigframes issue...
+    result = result.reindex(sorted(result.columns), axis=1)
+
+    expected = pd.DataFrame(
+        {
+            "kbinsdiscretizer_culmen_depth_mm": ["bin_6", "bin_4", "bin_5"],
+            "kbinsdiscretizer_culmen_length_mm": ["bin_3", "bin_3", "bin_3"],
+            "kbinsdiscretizer_flipper_length_mm": ["bin_4", "bin_2", "bin_3"],
+        },
+        dtype="string[pyarrow]",
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
     )
 
