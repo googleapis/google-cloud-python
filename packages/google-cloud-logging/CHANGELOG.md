@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.8.0](https://github.com/googleapis/python-logging/compare/v3.7.0...v3.8.0) (2023-10-03)
+
+
+### Features
+
+* Add cloud_run_job monitored resource type. ([#788](https://github.com/googleapis/python-logging/issues/788)) ([3b310d6](https://github.com/googleapis/python-logging/commit/3b310d68b68df5bb31e21ac30b23207ef50c3f6f))
+
 ## [3.7.0](https://github.com/googleapis/python-logging/compare/v3.6.0...v3.7.0) (2023-09-25)
 
 
