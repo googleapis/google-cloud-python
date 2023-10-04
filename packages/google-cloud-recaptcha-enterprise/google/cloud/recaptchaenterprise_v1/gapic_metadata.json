@@ -20,14 +20,29 @@
                 "create_assessment"
               ]
             },
+            "CreateFirewallPolicy": {
+              "methods": [
+                "create_firewall_policy"
+              ]
+            },
             "CreateKey": {
               "methods": [
                 "create_key"
               ]
             },
+            "DeleteFirewallPolicy": {
+              "methods": [
+                "delete_firewall_policy"
+              ]
+            },
             "DeleteKey": {
               "methods": [
                 "delete_key"
+              ]
+            },
+            "GetFirewallPolicy": {
+              "methods": [
+                "get_firewall_policy"
               ]
             },
             "GetKey": {
@@ -38,6 +53,11 @@
             "GetMetrics": {
               "methods": [
                 "get_metrics"
+              ]
+            },
+            "ListFirewallPolicies": {
+              "methods": [
+                "list_firewall_policies"
               ]
             },
             "ListKeys": {
@@ -68,6 +88,11 @@
             "SearchRelatedAccountGroupMemberships": {
               "methods": [
                 "search_related_account_group_memberships"
+              ]
+            },
+            "UpdateFirewallPolicy": {
+              "methods": [
+                "update_firewall_policy"
               ]
             },
             "UpdateKey": {
@@ -90,14 +115,29 @@
                 "create_assessment"
               ]
             },
+            "CreateFirewallPolicy": {
+              "methods": [
+                "create_firewall_policy"
+              ]
+            },
             "CreateKey": {
               "methods": [
                 "create_key"
               ]
             },
+            "DeleteFirewallPolicy": {
+              "methods": [
+                "delete_firewall_policy"
+              ]
+            },
             "DeleteKey": {
               "methods": [
                 "delete_key"
+              ]
+            },
+            "GetFirewallPolicy": {
+              "methods": [
+                "get_firewall_policy"
               ]
             },
             "GetKey": {
@@ -108,6 +148,11 @@
             "GetMetrics": {
               "methods": [
                 "get_metrics"
+              ]
+            },
+            "ListFirewallPolicies": {
+              "methods": [
+                "list_firewall_policies"
               ]
             },
             "ListKeys": {
@@ -138,6 +183,11 @@
             "SearchRelatedAccountGroupMemberships": {
               "methods": [
                 "search_related_account_group_memberships"
+              ]
+            },
+            "UpdateFirewallPolicy": {
+              "methods": [
+                "update_firewall_policy"
               ]
             },
             "UpdateKey": {

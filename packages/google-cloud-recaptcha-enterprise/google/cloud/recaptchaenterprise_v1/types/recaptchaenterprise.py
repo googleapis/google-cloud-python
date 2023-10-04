@@ -19,6 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -37,6 +38,7 @@ __protobuf__ = proto.module(
         "RiskAnalysis",
         "TokenProperties",
         "FraudPreventionAssessment",
+        "FraudSignals",
         "AccountDefenderAssessment",
         "CreateKeyRequest",
         "ListKeysRequest",
@@ -45,6 +47,12 @@ __protobuf__ = proto.module(
         "GetKeyRequest",
         "UpdateKeyRequest",
         "DeleteKeyRequest",
+        "CreateFirewallPolicyRequest",
+        "ListFirewallPoliciesRequest",
+        "ListFirewallPoliciesResponse",
+        "GetFirewallPolicyRequest",
+        "UpdateFirewallPolicyRequest",
+        "DeleteFirewallPolicyRequest",
         "MigrateKeyRequest",
         "GetMetricsRequest",
         "Metrics",
@@ -54,9 +62,13 @@ __protobuf__ = proto.module(
         "WebKeySettings",
         "AndroidKeySettings",
         "IOSKeySettings",
+        "AppleDeveloperId",
         "ScoreDistribution",
         "ScoreMetrics",
         "ChallengeMetrics",
+        "FirewallPolicyAssessment",
+        "FirewallAction",
+        "FirewallPolicy",
         "ListRelatedAccountGroupMembershipsRequest",
         "ListRelatedAccountGroupMembershipsResponse",
         "ListRelatedAccountGroupsRequest",
@@ -75,9 +87,8 @@ class CreateAssessmentRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the project in which
-            the assessment will be created, in the format
-            "projects/{project}".
+            Required. The name of the project in which the assessment
+            will be created, in the format ``projects/{project}``.
         assessment (google.cloud.recaptchaenterprise_v1.types.Assessment):
             Required. The assessment details.
     """
@@ -257,9 +268,8 @@ class AnnotateAssessmentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the
-            Assessment, in the format
-            "projects/{project}/assessments/{assessment}".
+            Required. The resource name of the Assessment, in the format
+            ``projects/{project}/assessments/{assessment}``.
         annotation (google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest.Annotation):
             Optional. The annotation that will be
             assigned to the Event. This field can be left
@@ -617,9 +627,8 @@ class Assessment(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name for the
-            Assessment in the format
-            "projects/{project}/assessments/{assessment}".
+            Output only. The resource name for the Assessment in the
+            format ``projects/{project}/assessments/{assessment}``.
         event (google.cloud.recaptchaenterprise_v1.types.Event):
             The event being assessed.
         risk_analysis (google.cloud.recaptchaenterprise_v1.types.RiskAnalysis):
@@ -640,9 +649,16 @@ class Assessment(proto.Message):
             contains the parameters that are used to to
             check for leaks privately without sharing user
             credentials.
+        firewall_policy_assessment (google.cloud.recaptchaenterprise_v1.types.FirewallPolicyAssessment):
+            Assessment returned when firewall policies belonging to the
+            project are evaluated using the field
+            firewall_policy_evaluation.
         fraud_prevention_assessment (google.cloud.recaptchaenterprise_v1.types.FraudPreventionAssessment):
             Assessment returned by Fraud Prevention when
             TransactionData is provided.
+        fraud_signals (google.cloud.recaptchaenterprise_v1.types.FraudSignals):
+            Output only. Fraud Signals specific to the
+            users involved in a payment transaction.
     """
 
     name: str = proto.Field(
@@ -679,10 +695,20 @@ class Assessment(proto.Message):
         number=8,
         message="PrivatePasswordLeakVerification",
     )
+    firewall_policy_assessment: "FirewallPolicyAssessment" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="FirewallPolicyAssessment",
+    )
     fraud_prevention_assessment: "FraudPreventionAssessment" = proto.Field(
         proto.MESSAGE,
         number=11,
         message="FraudPreventionAssessment",
+    )
+    fraud_signals: "FraudSignals" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message="FraudSignals",
     )
 
 
@@ -715,6 +741,30 @@ class Event(proto.Message):
             Optional. Unique stable hashed user
             identifier for the request. The identifier must
             be hashed using hmac-sha256 with stable secret.
+        express (bool):
+            Optional. Flag for a reCAPTCHA express request for an
+            assessment without a token. If enabled, ``site_key`` must
+            reference a SCORE key with WAF feature set to EXPRESS.
+        requested_uri (str):
+            Optional. The URI resource the user requested
+            that triggered an assessment.
+        waf_token_assessment (bool):
+            Optional. Flag for running WAF token
+            assessment. If enabled, the token must be
+            specified, and have been created by a
+            WAF-enabled key.
+        ja3 (str):
+            Optional. Optional JA3 fingerprint for SSL
+            clients.
+        headers (MutableSequence[str]):
+            Optional. HTTP header information about the
+            request.
+        firewall_policy_evaluation (bool):
+            Optional. Flag for enabling firewall policy
+            config assessment. If this flag is enabled, the
+            firewall policy will be evaluated and a
+            suggested firewall action will be returned in
+            the response.
         transaction_data (google.cloud.recaptchaenterprise_v1.types.TransactionData):
             Optional. Data describing a payment
             transaction to be assessed. Sending this data
@@ -746,6 +796,30 @@ class Event(proto.Message):
     hashed_account_id: bytes = proto.Field(
         proto.BYTES,
         number=6,
+    )
+    express: bool = proto.Field(
+        proto.BOOL,
+        number=14,
+    )
+    requested_uri: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    waf_token_assessment: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
+    ja3: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    headers: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=11,
+    )
+    firewall_policy_evaluation: bool = proto.Field(
+        proto.BOOL,
+        number=12,
     )
     transaction_data: "TransactionData" = proto.Field(
         proto.MESSAGE,
@@ -1055,6 +1129,10 @@ class RiskAnalysis(proto.Message):
         reasons (MutableSequence[google.cloud.recaptchaenterprise_v1.types.RiskAnalysis.ClassificationReason]):
             Reasons contributing to the risk analysis
             verdict.
+        extended_verdict_reasons (MutableSequence[str]):
+            Extended verdict reasons to be used for
+            experimentation only. The set of possible
+            reasons is subject to change.
     """
 
     class ClassificationReason(proto.Enum):
@@ -1103,6 +1181,10 @@ class RiskAnalysis(proto.Message):
         proto.ENUM,
         number=2,
         enum=ClassificationReason,
+    )
+    extended_verdict_reasons: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -1203,15 +1285,19 @@ class FraudPreventionAssessment(proto.Message):
 
     Attributes:
         transaction_risk (float):
-            Probability (0-1) of this transaction being
+            Probability of this transaction being
             fraudulent. Summarizes the combined risk of
-            attack vectors below.
+            attack vectors below. Values are from 0.0
+            (lowest) to 1.0 (highest).
         stolen_instrument_verdict (google.cloud.recaptchaenterprise_v1.types.FraudPreventionAssessment.StolenInstrumentVerdict):
             Assessment of this transaction for risk of a
             stolen instrument.
         card_testing_verdict (google.cloud.recaptchaenterprise_v1.types.FraudPreventionAssessment.CardTestingVerdict):
             Assessment of this transaction for risk of
             being part of a card testing attack.
+        behavioral_trust_verdict (google.cloud.recaptchaenterprise_v1.types.FraudPreventionAssessment.BehavioralTrustVerdict):
+            Assessment of this transaction for behavioral
+            trust.
     """
 
     class StolenInstrumentVerdict(proto.Message):
@@ -1221,8 +1307,9 @@ class FraudPreventionAssessment(proto.Message):
 
         Attributes:
             risk (float):
-                Probability (0-1) of this transaction being
-                executed with a stolen instrument.
+                Probability of this transaction being
+                executed with a stolen instrument. Values are
+                from 0.0 (lowest) to 1.0 (highest).
         """
 
         risk: float = proto.Field(
@@ -1237,11 +1324,27 @@ class FraudPreventionAssessment(proto.Message):
 
         Attributes:
             risk (float):
-                Probability (0-1) of this transaction attempt
-                being part of a card testing attack.
+                Probability of this transaction attempt being
+                part of a card testing attack.
+                Values are from 0.0 (lowest) to 1.0 (highest).
         """
 
         risk: float = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+
+    class BehavioralTrustVerdict(proto.Message):
+        r"""Information about behavioral trust of the transaction.
+
+        Attributes:
+            trust (float):
+                Probability of this transaction attempt being
+                executed in a behaviorally trustworthy way.
+                Values are from 0.0 (lowest) to 1.0 (highest).
+        """
+
+        trust: float = proto.Field(
             proto.FLOAT,
             number=1,
         )
@@ -1259,6 +1362,100 @@ class FraudPreventionAssessment(proto.Message):
         proto.MESSAGE,
         number=3,
         message=CardTestingVerdict,
+    )
+    behavioral_trust_verdict: BehavioralTrustVerdict = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=BehavioralTrustVerdict,
+    )
+
+
+class FraudSignals(proto.Message):
+    r"""Fraud signals describing users and cards involved in the
+    transaction.
+
+    Attributes:
+        user_signals (google.cloud.recaptchaenterprise_v1.types.FraudSignals.UserSignals):
+            Output only. Signals describing the end user
+            in this transaction.
+        card_signals (google.cloud.recaptchaenterprise_v1.types.FraudSignals.CardSignals):
+            Output only. Signals describing the payment
+            card or cards used in this transaction.
+    """
+
+    class UserSignals(proto.Message):
+        r"""Signals describing the user involved in this transaction.
+
+        Attributes:
+            active_days_lower_bound (int):
+                Output only. This user (based on email,
+                phone, and other identifiers) has been seen on
+                the internet for at least this number of days.
+            synthetic_risk (float):
+                Output only. Likelihood (from 0.0 to 1.0)
+                this user includes synthetic components in their
+                identity, such as a randomly generated email
+                address, temporary phone number, or fake
+                shipping address.
+        """
+
+        active_days_lower_bound: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        synthetic_risk: float = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
+
+    class CardSignals(proto.Message):
+        r"""Signals describing the payment card used in this transaction.
+
+        Attributes:
+            card_labels (MutableSequence[google.cloud.recaptchaenterprise_v1.types.FraudSignals.CardSignals.CardLabel]):
+                Output only. The labels for the payment card
+                in this transaction.
+        """
+
+        class CardLabel(proto.Enum):
+            r"""Risk labels describing the card being assessed, such as its
+            funding mechanism.
+
+            Values:
+                CARD_LABEL_UNSPECIFIED (0):
+                    No label specified.
+                PREPAID (1):
+                    This card has been detected as prepaid.
+                VIRTUAL (2):
+                    This card has been detected as virtual, such
+                    as a card number generated for a single
+                    transaction or merchant.
+                UNEXPECTED_LOCATION (3):
+                    This card has been detected as being used in
+                    an unexpected geographic location.
+            """
+            CARD_LABEL_UNSPECIFIED = 0
+            PREPAID = 1
+            VIRTUAL = 2
+            UNEXPECTED_LOCATION = 3
+
+        card_labels: MutableSequence[
+            "FraudSignals.CardSignals.CardLabel"
+        ] = proto.RepeatedField(
+            proto.ENUM,
+            number=1,
+            enum="FraudSignals.CardSignals.CardLabel",
+        )
+
+    user_signals: UserSignals = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=UserSignals,
+    )
+    card_signals: CardSignals = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=CardSignals,
     )
 
 
@@ -1312,9 +1509,8 @@ class CreateKeyRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the project in which
-            the key will be created, in the format
-            "projects/{project}".
+            Required. The name of the project in which the key will be
+            created, in the format ``projects/{project}``.
         key (google.cloud.recaptchaenterprise_v1.types.Key):
             Required. Information to create a reCAPTCHA
             Enterprise key.
@@ -1336,9 +1532,8 @@ class ListKeysRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the project that
-            contains the keys that will be listed, in the
-            format "projects/{project}".
+            Required. The name of the project that contains the keys
+            that will be listed, in the format ``projects/{project}``.
         page_size (int):
             Optional. The maximum number of keys to
             return. Default is 10. Max limit is 1000.
@@ -1392,9 +1587,8 @@ class RetrieveLegacySecretKeyRequest(proto.Message):
 
     Attributes:
         key (str):
-            Required. The public key name linked to the
-            requested secret key in the format
-            "projects/{project}/keys/{key}".
+            Required. The public key name linked to the requested secret
+            key in the format ``projects/{project}/keys/{key}``.
     """
 
     key: str = proto.Field(
@@ -1408,8 +1602,8 @@ class GetKeyRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the requested key, in
-            the format "projects/{project}/keys/{key}".
+            Required. The name of the requested key, in the format
+            ``projects/{project}/keys/{key}``.
     """
 
     name: str = proto.Field(
@@ -1447,8 +1641,142 @@ class DeleteKeyRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the key to be deleted,
-            in the format "projects/{project}/keys/{key}".
+            Required. The name of the key to be deleted, in the format
+            ``projects/{project}/keys/{key}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateFirewallPolicyRequest(proto.Message):
+    r"""The create firewall policy request message.
+
+    Attributes:
+        parent (str):
+            Required. The name of the project this policy will apply to,
+            in the format ``projects/{project}``.
+        firewall_policy (google.cloud.recaptchaenterprise_v1.types.FirewallPolicy):
+            Required. Information to create the policy.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    firewall_policy: "FirewallPolicy" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="FirewallPolicy",
+    )
+
+
+class ListFirewallPoliciesRequest(proto.Message):
+    r"""The list firewall policies request message.
+
+    Attributes:
+        parent (str):
+            Required. The name of the project to list the policies for,
+            in the format ``projects/{project}``.
+        page_size (int):
+            Optional. The maximum number of policies to
+            return. Default is 10. Max limit is 1000.
+        page_token (str):
+            Optional. The next_page_token value returned from a
+            previous. ListFirewallPoliciesRequest, if any.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListFirewallPoliciesResponse(proto.Message):
+    r"""Response to request to list firewall policies belonging to a
+    key.
+
+    Attributes:
+        firewall_policies (MutableSequence[google.cloud.recaptchaenterprise_v1.types.FirewallPolicy]):
+            Policy details.
+        next_page_token (str):
+            Token to retrieve the next page of results.
+            It is set to empty if no policies remain in
+            results.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    firewall_policies: MutableSequence["FirewallPolicy"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="FirewallPolicy",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetFirewallPolicyRequest(proto.Message):
+    r"""The get firewall policy request message.
+
+    Attributes:
+        name (str):
+            Required. The name of the requested policy, in the format
+            ``projects/{project}/firewallpolicies/{firewallpolicy}``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateFirewallPolicyRequest(proto.Message):
+    r"""The update firewall policy request message.
+
+    Attributes:
+        firewall_policy (google.cloud.recaptchaenterprise_v1.types.FirewallPolicy):
+            Required. The policy to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The mask to control which fields of
+            the policy get updated. If the mask is not
+            present, all fields will be updated.
+    """
+
+    firewall_policy: "FirewallPolicy" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="FirewallPolicy",
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteFirewallPolicyRequest(proto.Message):
+    r"""The delete firewall policy request message.
+
+    Attributes:
+        name (str):
+            Required. The name of the policy to be deleted, in the
+            format
+            ``projects/{project}/firewallpolicies/{firewallpolicy}``.
     """
 
     name: str = proto.Field(
@@ -1462,8 +1790,8 @@ class MigrateKeyRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the key to be migrated,
-            in the format "projects/{project}/keys/{key}".
+            Required. The name of the key to be migrated, in the format
+            ``projects/{project}/keys/{key}``.
         skip_billing_check (bool):
             Optional. If true, skips the billing check. A reCAPTCHA
             Enterprise key or migrated key behaves differently than a
@@ -1492,9 +1820,8 @@ class GetMetricsRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the requested metrics,
-            in the format
-            "projects/{project}/keys/{key}/metrics".
+            Required. The name of the requested metrics, in the format
+            ``projects/{project}/keys/{key}/metrics``.
     """
 
     name: str = proto.Field(
@@ -1508,8 +1835,8 @@ class Metrics(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The name of the metrics, in the
-            format "projects/{project}/keys/{key}/metrics".
+            Output only. The name of the metrics, in the format
+            ``projects/{project}/keys/{key}/metrics``.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Inclusive start time aligned to a day (UTC).
         score_metrics (MutableSequence[google.cloud.recaptchaenterprise_v1.types.ScoreMetrics]):
@@ -1578,7 +1905,7 @@ class Key(proto.Message):
     Attributes:
         name (str):
             The resource name for the Key in the format
-            "projects/{project}/keys/{key}".
+            ``projects/{project}/keys/{key}``.
         display_name (str):
             Human-readable display name of this key.
             Modifiable by user.
@@ -1598,12 +1925,11 @@ class Key(proto.Message):
 
             This field is a member of `oneof`_ ``platform_settings``.
         labels (MutableMapping[str, str]):
-            See <a
-            href="https://cloud.google.com/recaptcha-enterprise/docs/labels">
-            Creating and managing labels</a>.
+            See [Creating and managing labels]
+            (https://cloud.google.com/recaptcha-enterprise/docs/labels).
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp corresponding to
-            the creation of this Key.
+            the creation of this key.
         testing_options (google.cloud.recaptchaenterprise_v1.types.TestingOptions):
             Options for user acceptance testing.
         waf_settings (google.cloud.recaptchaenterprise_v1.types.WafSettings):
@@ -1813,6 +2139,11 @@ class AndroidKeySettings(proto.Message):
         allowed_package_names (MutableSequence[str]):
             Android package names of apps allowed to use
             the key. Example: 'com.companyname.appname'
+        support_non_google_app_store_distribution (bool):
+            Set to true for keys that are used in an
+            Android application that is available for
+            download in app stores in addition to the Google
+            Play Store.
     """
 
     allow_all_package_names: bool = proto.Field(
@@ -1822,6 +2153,10 @@ class AndroidKeySettings(proto.Message):
     allowed_package_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
+    )
+    support_non_google_app_store_distribution: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 
@@ -1835,6 +2170,15 @@ class IOSKeySettings(proto.Message):
             iOS bundle ids of apps allowed to use the
             key. Example:
             'com.companyname.productname.appname'
+        apple_developer_id (google.cloud.recaptchaenterprise_v1.types.AppleDeveloperId):
+            Apple Developer account details for the app
+            that is protected by the reCAPTCHA Key.
+            reCAPTCHA Enterprise leverages platform-specific
+            checks like Apple App Attest and Apple
+            DeviceCheck to protect your app from abuse.
+            Providing these fields allows reCAPTCHA
+            Enterprise to get a better assessment of the
+            integrity of your app.
     """
 
     allow_all_bundle_ids: bool = proto.Field(
@@ -1844,6 +2188,45 @@ class IOSKeySettings(proto.Message):
     allowed_bundle_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
+    )
+    apple_developer_id: "AppleDeveloperId" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="AppleDeveloperId",
+    )
+
+
+class AppleDeveloperId(proto.Message):
+    r"""Contains fields that are required to perform Apple-specific
+    integrity checks.
+
+    Attributes:
+        private_key (str):
+            Required. Input only. A private key
+            (downloaded as a text file with a .p8 file
+            extension) generated for your Apple Developer
+            account. Ensure that Apple DeviceCheck is
+            enabled for the private key.
+        key_id (str):
+            Required. The Apple developer key ID
+            (10-character string).
+        team_id (str):
+            Required. The Apple team ID (10-character
+            string) owning the provisioning profile used to
+            build your application.
+    """
+
+    private_key: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    key_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    team_id: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -1930,6 +2313,224 @@ class ChallengeMetrics(proto.Message):
     )
 
 
+class FirewallPolicyAssessment(proto.Message):
+    r"""Policy config assessment.
+
+    Attributes:
+        error (google.rpc.status_pb2.Status):
+            If the processing of a policy config fails, an error will be
+            populated and the firewall_policy will be left empty.
+        firewall_policy (google.cloud.recaptchaenterprise_v1.types.FirewallPolicy):
+            Output only. The policy that matched the
+            request. If more than one policy may match, this
+            is the first match. If no policy matches the
+            incoming request, the policy field will be left
+            empty.
+    """
+
+    error: status_pb2.Status = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=status_pb2.Status,
+    )
+    firewall_policy: "FirewallPolicy" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="FirewallPolicy",
+    )
+
+
+class FirewallAction(proto.Message):
+    r"""An individual action. Each action represents what to do if a
+    policy matches.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        allow (google.cloud.recaptchaenterprise_v1.types.FirewallAction.AllowAction):
+            The user request did not match any policy and
+            should be allowed access to the requested
+            resource.
+
+            This field is a member of `oneof`_ ``firewall_action_oneof``.
+        block (google.cloud.recaptchaenterprise_v1.types.FirewallAction.BlockAction):
+            This action will deny access to a given page.
+            The user will get an HTTP error code.
+
+            This field is a member of `oneof`_ ``firewall_action_oneof``.
+        redirect (google.cloud.recaptchaenterprise_v1.types.FirewallAction.RedirectAction):
+            This action will redirect the request to a
+            ReCaptcha interstitial to attach a token.
+
+            This field is a member of `oneof`_ ``firewall_action_oneof``.
+        substitute (google.cloud.recaptchaenterprise_v1.types.FirewallAction.SubstituteAction):
+            This action will transparently serve a
+            different page to an offending user.
+
+            This field is a member of `oneof`_ ``firewall_action_oneof``.
+        set_header (google.cloud.recaptchaenterprise_v1.types.FirewallAction.SetHeaderAction):
+            This action will set a custom header but
+            allow the request to continue to the customer
+            backend.
+
+            This field is a member of `oneof`_ ``firewall_action_oneof``.
+    """
+
+    class AllowAction(proto.Message):
+        r"""An allow action continues processing a request unimpeded."""
+
+    class BlockAction(proto.Message):
+        r"""A block action serves an HTTP error code a prevents the
+        request from hitting the backend.
+
+        """
+
+    class RedirectAction(proto.Message):
+        r"""A redirect action returns a 307 (temporary redirect)
+        response, pointing the user to a ReCaptcha interstitial page to
+        attach a token.
+
+        """
+
+    class SubstituteAction(proto.Message):
+        r"""A substitute action transparently serves a different page
+        than the one requested.
+
+        Attributes:
+            path (str):
+                The address to redirect to. The target is a
+                relative path in the current host. Example:
+                "/blog/404.html".
+        """
+
+        path: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class SetHeaderAction(proto.Message):
+        r"""A set header action sets a header and forwards the request to
+        the backend. This can be used to trigger custom protection
+        implemented on the backend.
+
+        Attributes:
+            key (str):
+                The header key to set in the request to the
+                backend server.
+            value (str):
+                The header value to set in the request to the
+                backend server.
+        """
+
+        key: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        value: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    allow: AllowAction = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="firewall_action_oneof",
+        message=AllowAction,
+    )
+    block: BlockAction = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="firewall_action_oneof",
+        message=BlockAction,
+    )
+    redirect: RedirectAction = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="firewall_action_oneof",
+        message=RedirectAction,
+    )
+    substitute: SubstituteAction = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="firewall_action_oneof",
+        message=SubstituteAction,
+    )
+    set_header: SetHeaderAction = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="firewall_action_oneof",
+        message=SetHeaderAction,
+    )
+
+
+class FirewallPolicy(proto.Message):
+    r"""A FirewallPolicy represents a single matching pattern and
+    resulting actions to take.
+
+    Attributes:
+        name (str):
+            The resource name for the FirewallPolicy in the format
+            ``projects/{project}/firewallpolicies/{firewallpolicy}``.
+        description (str):
+            A description of what this policy aims to
+            achieve, for convenience purposes. The
+            description can at most include 256 UTF-8
+            characters.
+        path (str):
+            The path for which this policy applies, specified as a glob
+            pattern. For more information on glob, see the `manual
+            page <https://man7.org/linux/man-pages/man7/glob.7.html>`__.
+            A path has a max length of 200 characters.
+        condition (str):
+            A CEL (Common Expression Language) conditional expression
+            that specifies if this policy applies to an incoming user
+            request. If this condition evaluates to true and the
+            requested path matched the path pattern, the associated
+            actions should be executed by the caller. The condition
+            string is checked for CEL syntax correctness on creation.
+            For more information, see the `CEL
+            spec <https://github.com/google/cel-spec>`__ and its
+            `language
+            definition <https://github.com/google/cel-spec/blob/master/doc/langdef.md>`__.
+            A condition has a max length of 500 characters.
+        actions (MutableSequence[google.cloud.recaptchaenterprise_v1.types.FirewallAction]):
+            The actions that the caller should take regarding user
+            access. There should be at most one terminal action. A
+            terminal action is any action that forces a response, such
+            as ``AllowAction``, ``BlockAction`` or ``SubstituteAction``.
+            Zero or more non-terminal actions such as ``SetHeader``
+            might be specified. A single policy can contain up to 16
+            actions.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    path: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    condition: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    actions: MutableSequence["FirewallAction"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="FirewallAction",
+    )
+
+
 class ListRelatedAccountGroupMembershipsRequest(proto.Message):
     r"""The request message to list memberships in a related account
     group.
@@ -2002,9 +2603,8 @@ class ListRelatedAccountGroupsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the project to list
-            related account groups from, in the format
-            "projects/{project}".
+            Required. The name of the project to list related account
+            groups from, in the format ``projects/{project}``.
         page_size (int):
             Optional. The maximum number of groups to
             return. The service might return fewer than this
@@ -2071,14 +2671,12 @@ class SearchRelatedAccountGroupMembershipsRequest(proto.Message):
 
     Attributes:
         project (str):
-            Required. The name of the project to search
-            related account group memberships from. Specify
-            the project name in the following format:
-
-            "projects/{project}".
+            Required. The name of the project to search related account
+            group memberships from. Specify the project name in the
+            following format: ``projects/{project}``.
         hashed_account_id (bytes):
-            Optional. The unique stable hashed user identifier we should
-            search connections to. The identifier should correspond to a
+            Optional. The unique stable hashed user identifier used to
+            search connections. The identifier should correspond to a
             ``hashed_account_id`` provided in a previous
             ``CreateAssessment`` or ``AnnotateAssessment`` call.
         page_size (int):
@@ -2212,11 +2810,16 @@ class WafSettings(proto.Message):
             ACTION_TOKEN (3):
                 Use reCAPTCHA action-tokens to protect user
                 actions.
+            EXPRESS (5):
+                Use reCAPTCHA WAF express protection to
+                protect any content other than web pages, like
+                APIs and IoT devices.
         """
         WAF_FEATURE_UNSPECIFIED = 0
         CHALLENGE_PAGE = 1
         SESSION_TOKEN = 2
         ACTION_TOKEN = 3
+        EXPRESS = 5
 
     class WafService(proto.Enum):
         r"""Web Application Firewalls supported by reCAPTCHA Enterprise.
@@ -2226,9 +2829,12 @@ class WafSettings(proto.Message):
                 Undefined WAF
             CA (1):
                 Cloud Armor
+            FASTLY (3):
+                Fastly
         """
         WAF_SERVICE_UNSPECIFIED = 0
         CA = 1
+        FASTLY = 3
 
     waf_service: WafService = proto.Field(
         proto.ENUM,
