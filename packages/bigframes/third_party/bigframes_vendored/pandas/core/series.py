@@ -64,6 +64,20 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    @property
+    def T(self) -> Series:
+        """Return the transpose, which is by definition self."""
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def transpose(self) -> Series:
+        """
+        Return the transpose, which is by definition self.
+
+        Returns:
+            Series
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def reset_index(
         self,
         *,
