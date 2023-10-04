@@ -611,6 +611,7 @@ class AllocationPolicy(proto.Message):
                 -  ``batch-centos``: use Batch CentOS images.
                 -  ``batch-cos``: use Batch Container-Optimized images.
                 -  ``batch-hpc-centos``: use Batch HPC CentOS images.
+                -  ``batch-hpc-rocky``: use Batch HPC Rocky Linux images.
 
                 This field is a member of `oneof`_ ``data_source``.
             snapshot (str):
@@ -788,8 +789,8 @@ class AllocationPolicy(proto.Message):
                 file system or a raw storage drive that is not
                 ready for data storage and accessing.
             reservation (str):
-                If specified, VMs will consume only the
-                specified reservation. If not specified
+                Optional. If specified, VMs will consume only
+                the specified reservation. If not specified
                 (default), VMs will consume any applicable
                 reservation.
         """
