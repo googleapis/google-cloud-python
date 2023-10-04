@@ -173,6 +173,31 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_firewall_policy: gapic_v1.method.wrap_method(
+                self.create_firewall_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_firewall_policies: gapic_v1.method.wrap_method(
+                self.list_firewall_policies,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_firewall_policy: gapic_v1.method.wrap_method(
+                self.get_firewall_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_firewall_policy: gapic_v1.method.wrap_method(
+                self.update_firewall_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_firewall_policy: gapic_v1.method.wrap_method(
+                self.delete_firewall_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_related_account_groups: gapic_v1.method.wrap_method(
                 self.list_related_account_groups,
                 default_timeout=None,
@@ -297,6 +322,63 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
     ) -> Callable[
         [recaptchaenterprise.GetMetricsRequest],
         Union[recaptchaenterprise.Metrics, Awaitable[recaptchaenterprise.Metrics]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_firewall_policy(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.CreateFirewallPolicyRequest],
+        Union[
+            recaptchaenterprise.FirewallPolicy,
+            Awaitable[recaptchaenterprise.FirewallPolicy],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_firewall_policies(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.ListFirewallPoliciesRequest],
+        Union[
+            recaptchaenterprise.ListFirewallPoliciesResponse,
+            Awaitable[recaptchaenterprise.ListFirewallPoliciesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_firewall_policy(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.GetFirewallPolicyRequest],
+        Union[
+            recaptchaenterprise.FirewallPolicy,
+            Awaitable[recaptchaenterprise.FirewallPolicy],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_firewall_policy(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.UpdateFirewallPolicyRequest],
+        Union[
+            recaptchaenterprise.FirewallPolicy,
+            Awaitable[recaptchaenterprise.FirewallPolicy],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_firewall_policy(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.DeleteFirewallPolicyRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

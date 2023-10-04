@@ -41,16 +41,21 @@ class recaptchaenterpriseCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'annotate_assessment': ('name', 'annotation', 'reasons', 'hashed_account_id', 'transaction_event', ),
         'create_assessment': ('parent', 'assessment', ),
+        'create_firewall_policy': ('parent', 'firewall_policy', ),
         'create_key': ('parent', 'key', ),
+        'delete_firewall_policy': ('name', ),
         'delete_key': ('name', ),
+        'get_firewall_policy': ('name', ),
         'get_key': ('name', ),
         'get_metrics': ('name', ),
+        'list_firewall_policies': ('parent', 'page_size', 'page_token', ),
         'list_keys': ('parent', 'page_size', 'page_token', ),
         'list_related_account_group_memberships': ('parent', 'page_size', 'page_token', ),
         'list_related_account_groups': ('parent', 'page_size', 'page_token', ),
         'migrate_key': ('name', 'skip_billing_check', ),
         'retrieve_legacy_secret_key': ('key', ),
         'search_related_account_group_memberships': ('project', 'hashed_account_id', 'page_size', 'page_token', ),
+        'update_firewall_policy': ('firewall_policy', 'update_mask', ),
         'update_key': ('key', 'update_mask', ),
     }
 
