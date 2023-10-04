@@ -258,6 +258,61 @@ def test_drop_index(scalars_dfs):
     pd.testing.assert_frame_equal(pd_result, bf_result)
 
 
+def test_drop_pandas_index(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    drop_index = scalars_pandas_df.iloc[[4, 1, 2]].index
+
+    pd_result = scalars_pandas_df.drop(index=drop_index)
+    bf_result = scalars_df.drop(index=drop_index).to_pandas()
+
+    pd.testing.assert_frame_equal(pd_result, bf_result)
+
+
+def test_drop_bigframes_index(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    drop_index = scalars_df.loc[[4, 1, 2]].index
+    drop_pandas_index = scalars_pandas_df.loc[[4, 1, 2]].index
+
+    pd_result = scalars_pandas_df.drop(index=drop_pandas_index)
+    bf_result = scalars_df.drop(index=drop_index).to_pandas()
+
+    pd.testing.assert_frame_equal(pd_result, bf_result)
+
+
+def test_drop_bigframes_index_with_na(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    scalars_df = scalars_df.copy()
+    scalars_pandas_df = scalars_pandas_df.copy()
+    scalars_df = scalars_df.set_index("bytes_col")
+    scalars_pandas_df = scalars_pandas_df.set_index("bytes_col")
+    drop_index = scalars_df.iloc[[3, 5]].index
+    drop_pandas_index = scalars_pandas_df.iloc[[3, 5]].index
+
+    pd_result = scalars_pandas_df.drop(index=drop_pandas_index)  # drop_pandas_index)
+    bf_result = scalars_df.drop(index=drop_index).to_pandas()
+
+    pd.testing.assert_frame_equal(pd_result, bf_result)
+
+
+def test_drop_bigframes_multiindex(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    scalars_df = scalars_df.copy()
+    scalars_pandas_df = scalars_pandas_df.copy()
+    sub_df = scalars_df.iloc[[4, 1, 2]]
+    sub_pandas_df = scalars_pandas_df.iloc[[4, 1, 2]]
+    sub_df = sub_df.set_index(["bytes_col", "numeric_col"])
+    sub_pandas_df = sub_pandas_df.set_index(["bytes_col", "numeric_col"])
+    drop_index = sub_df.index
+    drop_pandas_index = sub_pandas_df.index
+
+    scalars_df = scalars_df.set_index(["bytes_col", "numeric_col"])
+    scalars_pandas_df = scalars_pandas_df.set_index(["bytes_col", "numeric_col"])
+    bf_result = scalars_df.drop(index=drop_index).to_pandas()
+    pd_result = scalars_pandas_df.drop(index=drop_pandas_index)
+
+    pd.testing.assert_frame_equal(pd_result, bf_result)
+
+
 def test_drop_labels_axis_0(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
 

@@ -937,7 +937,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 columns = labels
 
         block = self._block
-        if index:
+        if index is not None:
             level_id = self._resolve_levels(level or 0)[0]
 
             if utils.is_list_like(index):
@@ -947,6 +947,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 block, condition_id = block.apply_unary_op(
                     inverse_condition_id, ops.invert_op
                 )
+            elif isinstance(index, indexes.Index):
+                return self._drop_by_index(index)
             else:
                 block, condition_id = block.apply_unary_op(
                     level_id, ops.partial_right(ops.ne_op, index)
@@ -956,9 +958,30 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             )
         if columns:
             block = block.drop_columns(self._sql_names(columns))
-        if not index and not columns:
+        if index is None and not columns:
             raise ValueError("Must specify 'labels' or 'index'/'columns")
         return DataFrame(block)
+
+    def _drop_by_index(self, index: indexes.Index) -> DataFrame:
+        block = index._data._get_block()
+        block, ordering_col = block.promote_offsets()
+        joined_index, (get_column_left, get_column_right) = self._block.index.join(
+            block.index
+        )
+
+        new_ordering_col = get_column_right(ordering_col)
+        drop_block = joined_index._block
+        drop_block, drop_col = drop_block.apply_unary_op(
+            new_ordering_col,
+            ops.isnull_op,
+        )
+
+        drop_block = drop_block.filter(drop_col)
+        original_columns = [
+            get_column_left(column) for column in self._block.value_columns
+        ]
+        drop_block = drop_block.select_columns(original_columns)
+        return DataFrame(drop_block)
 
     def droplevel(self, level: LevelsType, axis: int | str = 0):
         axis_n = utils.get_axis_number(axis)
