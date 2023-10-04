@@ -2081,7 +2081,7 @@ def test_loc_single_index_no_duplicate(scalars_df_index, scalars_pandas_df_index
     bf_result = scalars_df_index.loc[index]
     pd_result = scalars_pandas_df_index.loc[index]
     pd.testing.assert_series_equal(
-        bf_result.to_pandas().iloc[0, :],
+        bf_result,
         pd_result,
     )
 

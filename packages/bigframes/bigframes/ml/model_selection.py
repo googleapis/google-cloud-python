@@ -17,6 +17,7 @@ Scikit-Learn's model_selection module:
 https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_selection."""
 
 
+import typing
 from typing import List, Union
 
 from bigframes.ml import utils
@@ -79,9 +80,10 @@ def train_test_split(
     train_index = split_dfs[0].index
     test_index = split_dfs[1].index
 
-    split_dfs += [
-        df.loc[index] for df in dfs[1:] for index in (train_index, test_index)
-    ]
+    split_dfs += typing.cast(
+        List[bpd.DataFrame],
+        [df.loc[index] for df in dfs[1:] for index in (train_index, test_index)],
+    )
 
     # convert back to Series.
     results: List[Union[bpd.DataFrame, bpd.Series]] = []
