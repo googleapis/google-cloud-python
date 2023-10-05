@@ -491,6 +491,7 @@ class AllocationPolicy(proto.Message):
                 -  ``batch-centos``: use Batch CentOS images.
                 -  ``batch-cos``: use Batch Container-Optimized images.
                 -  ``batch-hpc-centos``: use Batch HPC CentOS images.
+                -  ``batch-hpc-rocky``: use Batch HPC Rocky Linux images.
 
                 This field is a member of `oneof`_ ``data_source``.
             snapshot (str):
@@ -665,6 +666,11 @@ class AllocationPolicy(proto.Message):
                 disk is a disk that can be of a device with a
                 file system or a raw storage drive that is not
                 ready for data storage and accessing.
+            reservation (str):
+                Optional. If specified, VMs will consume only
+                the specified reservation. If not specified
+                (default), VMs will consume any applicable
+                reservation.
         """
 
         machine_type: str = proto.Field(
@@ -696,6 +702,10 @@ class AllocationPolicy(proto.Message):
             proto.MESSAGE,
             number=6,
             message="AllocationPolicy.AttachedDisk",
+        )
+        reservation: str = proto.Field(
+            proto.STRING,
+            number=7,
         )
 
     class InstancePolicyOrTemplate(proto.Message):

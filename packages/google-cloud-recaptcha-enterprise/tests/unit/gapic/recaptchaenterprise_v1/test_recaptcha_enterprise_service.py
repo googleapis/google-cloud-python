@@ -31,8 +31,10 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
+from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -3228,6 +3230,1483 @@ async def test_get_metrics_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        recaptchaenterprise.CreateFirewallPolicyRequest,
+        dict,
+    ],
+)
+def test_create_firewall_policy(request_type, transport: str = "grpc"):
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_firewall_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.FirewallPolicy(
+            name="name_value",
+            description="description_value",
+            path="path_value",
+            condition="condition_value",
+        )
+        response = client.create_firewall_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.CreateFirewallPolicyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.FirewallPolicy)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.path == "path_value"
+    assert response.condition == "condition_value"
+
+
+def test_create_firewall_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_firewall_policy), "__call__"
+    ) as call:
+        client.create_firewall_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.CreateFirewallPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_firewall_policy_async(
+    transport: str = "grpc_asyncio",
+    request_type=recaptchaenterprise.CreateFirewallPolicyRequest,
+):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_firewall_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.FirewallPolicy(
+                name="name_value",
+                description="description_value",
+                path="path_value",
+                condition="condition_value",
+            )
+        )
+        response = await client.create_firewall_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.CreateFirewallPolicyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.FirewallPolicy)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.path == "path_value"
+    assert response.condition == "condition_value"
+
+
+@pytest.mark.asyncio
+async def test_create_firewall_policy_async_from_dict():
+    await test_create_firewall_policy_async(request_type=dict)
+
+
+def test_create_firewall_policy_field_headers():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.CreateFirewallPolicyRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_firewall_policy), "__call__"
+    ) as call:
+        call.return_value = recaptchaenterprise.FirewallPolicy()
+        client.create_firewall_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_firewall_policy_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.CreateFirewallPolicyRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_firewall_policy), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.FirewallPolicy()
+        )
+        await client.create_firewall_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_firewall_policy_flattened():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_firewall_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.FirewallPolicy()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_firewall_policy(
+            parent="parent_value",
+            firewall_policy=recaptchaenterprise.FirewallPolicy(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].firewall_policy
+        mock_val = recaptchaenterprise.FirewallPolicy(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_firewall_policy_flattened_error():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_firewall_policy(
+            recaptchaenterprise.CreateFirewallPolicyRequest(),
+            parent="parent_value",
+            firewall_policy=recaptchaenterprise.FirewallPolicy(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_firewall_policy_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_firewall_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.FirewallPolicy()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.FirewallPolicy()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_firewall_policy(
+            parent="parent_value",
+            firewall_policy=recaptchaenterprise.FirewallPolicy(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].firewall_policy
+        mock_val = recaptchaenterprise.FirewallPolicy(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_firewall_policy_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_firewall_policy(
+            recaptchaenterprise.CreateFirewallPolicyRequest(),
+            parent="parent_value",
+            firewall_policy=recaptchaenterprise.FirewallPolicy(name="name_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recaptchaenterprise.ListFirewallPoliciesRequest,
+        dict,
+    ],
+)
+def test_list_firewall_policies(request_type, transport: str = "grpc"):
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_firewall_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.ListFirewallPoliciesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_firewall_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.ListFirewallPoliciesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListFirewallPoliciesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_firewall_policies_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_firewall_policies), "__call__"
+    ) as call:
+        client.list_firewall_policies()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.ListFirewallPoliciesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_firewall_policies_async(
+    transport: str = "grpc_asyncio",
+    request_type=recaptchaenterprise.ListFirewallPoliciesRequest,
+):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_firewall_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.ListFirewallPoliciesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_firewall_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.ListFirewallPoliciesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListFirewallPoliciesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_firewall_policies_async_from_dict():
+    await test_list_firewall_policies_async(request_type=dict)
+
+
+def test_list_firewall_policies_field_headers():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.ListFirewallPoliciesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_firewall_policies), "__call__"
+    ) as call:
+        call.return_value = recaptchaenterprise.ListFirewallPoliciesResponse()
+        client.list_firewall_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_firewall_policies_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.ListFirewallPoliciesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_firewall_policies), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.ListFirewallPoliciesResponse()
+        )
+        await client.list_firewall_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_firewall_policies_flattened():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_firewall_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.ListFirewallPoliciesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_firewall_policies(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_firewall_policies_flattened_error():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_firewall_policies(
+            recaptchaenterprise.ListFirewallPoliciesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_firewall_policies_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_firewall_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.ListFirewallPoliciesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.ListFirewallPoliciesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_firewall_policies(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_firewall_policies_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_firewall_policies(
+            recaptchaenterprise.ListFirewallPoliciesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_firewall_policies_pager(transport_name: str = "grpc"):
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_firewall_policies), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recaptchaenterprise.ListFirewallPoliciesResponse(
+                firewall_policies=[
+                    recaptchaenterprise.FirewallPolicy(),
+                    recaptchaenterprise.FirewallPolicy(),
+                    recaptchaenterprise.FirewallPolicy(),
+                ],
+                next_page_token="abc",
+            ),
+            recaptchaenterprise.ListFirewallPoliciesResponse(
+                firewall_policies=[],
+                next_page_token="def",
+            ),
+            recaptchaenterprise.ListFirewallPoliciesResponse(
+                firewall_policies=[
+                    recaptchaenterprise.FirewallPolicy(),
+                ],
+                next_page_token="ghi",
+            ),
+            recaptchaenterprise.ListFirewallPoliciesResponse(
+                firewall_policies=[
+                    recaptchaenterprise.FirewallPolicy(),
+                    recaptchaenterprise.FirewallPolicy(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_firewall_policies(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, recaptchaenterprise.FirewallPolicy) for i in results)
+
+
+def test_list_firewall_policies_pages(transport_name: str = "grpc"):
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_firewall_policies), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recaptchaenterprise.ListFirewallPoliciesResponse(
+                firewall_policies=[
+                    recaptchaenterprise.FirewallPolicy(),
+                    recaptchaenterprise.FirewallPolicy(),
+                    recaptchaenterprise.FirewallPolicy(),
+                ],
+                next_page_token="abc",
+            ),
+            recaptchaenterprise.ListFirewallPoliciesResponse(
+                firewall_policies=[],
+                next_page_token="def",
+            ),
+            recaptchaenterprise.ListFirewallPoliciesResponse(
+                firewall_policies=[
+                    recaptchaenterprise.FirewallPolicy(),
+                ],
+                next_page_token="ghi",
+            ),
+            recaptchaenterprise.ListFirewallPoliciesResponse(
+                firewall_policies=[
+                    recaptchaenterprise.FirewallPolicy(),
+                    recaptchaenterprise.FirewallPolicy(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_firewall_policies(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_firewall_policies_async_pager():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_firewall_policies),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recaptchaenterprise.ListFirewallPoliciesResponse(
+                firewall_policies=[
+                    recaptchaenterprise.FirewallPolicy(),
+                    recaptchaenterprise.FirewallPolicy(),
+                    recaptchaenterprise.FirewallPolicy(),
+                ],
+                next_page_token="abc",
+            ),
+            recaptchaenterprise.ListFirewallPoliciesResponse(
+                firewall_policies=[],
+                next_page_token="def",
+            ),
+            recaptchaenterprise.ListFirewallPoliciesResponse(
+                firewall_policies=[
+                    recaptchaenterprise.FirewallPolicy(),
+                ],
+                next_page_token="ghi",
+            ),
+            recaptchaenterprise.ListFirewallPoliciesResponse(
+                firewall_policies=[
+                    recaptchaenterprise.FirewallPolicy(),
+                    recaptchaenterprise.FirewallPolicy(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_firewall_policies(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, recaptchaenterprise.FirewallPolicy) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_firewall_policies_async_pages():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_firewall_policies),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            recaptchaenterprise.ListFirewallPoliciesResponse(
+                firewall_policies=[
+                    recaptchaenterprise.FirewallPolicy(),
+                    recaptchaenterprise.FirewallPolicy(),
+                    recaptchaenterprise.FirewallPolicy(),
+                ],
+                next_page_token="abc",
+            ),
+            recaptchaenterprise.ListFirewallPoliciesResponse(
+                firewall_policies=[],
+                next_page_token="def",
+            ),
+            recaptchaenterprise.ListFirewallPoliciesResponse(
+                firewall_policies=[
+                    recaptchaenterprise.FirewallPolicy(),
+                ],
+                next_page_token="ghi",
+            ),
+            recaptchaenterprise.ListFirewallPoliciesResponse(
+                firewall_policies=[
+                    recaptchaenterprise.FirewallPolicy(),
+                    recaptchaenterprise.FirewallPolicy(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_firewall_policies(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recaptchaenterprise.GetFirewallPolicyRequest,
+        dict,
+    ],
+)
+def test_get_firewall_policy(request_type, transport: str = "grpc"):
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_firewall_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.FirewallPolicy(
+            name="name_value",
+            description="description_value",
+            path="path_value",
+            condition="condition_value",
+        )
+        response = client.get_firewall_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.GetFirewallPolicyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.FirewallPolicy)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.path == "path_value"
+    assert response.condition == "condition_value"
+
+
+def test_get_firewall_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_firewall_policy), "__call__"
+    ) as call:
+        client.get_firewall_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.GetFirewallPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_firewall_policy_async(
+    transport: str = "grpc_asyncio",
+    request_type=recaptchaenterprise.GetFirewallPolicyRequest,
+):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_firewall_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.FirewallPolicy(
+                name="name_value",
+                description="description_value",
+                path="path_value",
+                condition="condition_value",
+            )
+        )
+        response = await client.get_firewall_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.GetFirewallPolicyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.FirewallPolicy)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.path == "path_value"
+    assert response.condition == "condition_value"
+
+
+@pytest.mark.asyncio
+async def test_get_firewall_policy_async_from_dict():
+    await test_get_firewall_policy_async(request_type=dict)
+
+
+def test_get_firewall_policy_field_headers():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.GetFirewallPolicyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_firewall_policy), "__call__"
+    ) as call:
+        call.return_value = recaptchaenterprise.FirewallPolicy()
+        client.get_firewall_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_firewall_policy_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.GetFirewallPolicyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_firewall_policy), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.FirewallPolicy()
+        )
+        await client.get_firewall_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_firewall_policy_flattened():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_firewall_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.FirewallPolicy()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_firewall_policy(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_firewall_policy_flattened_error():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_firewall_policy(
+            recaptchaenterprise.GetFirewallPolicyRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_firewall_policy_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_firewall_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.FirewallPolicy()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.FirewallPolicy()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_firewall_policy(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_firewall_policy_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_firewall_policy(
+            recaptchaenterprise.GetFirewallPolicyRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recaptchaenterprise.UpdateFirewallPolicyRequest,
+        dict,
+    ],
+)
+def test_update_firewall_policy(request_type, transport: str = "grpc"):
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_firewall_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.FirewallPolicy(
+            name="name_value",
+            description="description_value",
+            path="path_value",
+            condition="condition_value",
+        )
+        response = client.update_firewall_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.UpdateFirewallPolicyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.FirewallPolicy)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.path == "path_value"
+    assert response.condition == "condition_value"
+
+
+def test_update_firewall_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_firewall_policy), "__call__"
+    ) as call:
+        client.update_firewall_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.UpdateFirewallPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_firewall_policy_async(
+    transport: str = "grpc_asyncio",
+    request_type=recaptchaenterprise.UpdateFirewallPolicyRequest,
+):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_firewall_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.FirewallPolicy(
+                name="name_value",
+                description="description_value",
+                path="path_value",
+                condition="condition_value",
+            )
+        )
+        response = await client.update_firewall_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.UpdateFirewallPolicyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.FirewallPolicy)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.path == "path_value"
+    assert response.condition == "condition_value"
+
+
+@pytest.mark.asyncio
+async def test_update_firewall_policy_async_from_dict():
+    await test_update_firewall_policy_async(request_type=dict)
+
+
+def test_update_firewall_policy_field_headers():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.UpdateFirewallPolicyRequest()
+
+    request.firewall_policy.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_firewall_policy), "__call__"
+    ) as call:
+        call.return_value = recaptchaenterprise.FirewallPolicy()
+        client.update_firewall_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "firewall_policy.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_firewall_policy_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.UpdateFirewallPolicyRequest()
+
+    request.firewall_policy.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_firewall_policy), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.FirewallPolicy()
+        )
+        await client.update_firewall_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "firewall_policy.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_firewall_policy_flattened():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_firewall_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.FirewallPolicy()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_firewall_policy(
+            firewall_policy=recaptchaenterprise.FirewallPolicy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].firewall_policy
+        mock_val = recaptchaenterprise.FirewallPolicy(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_firewall_policy_flattened_error():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_firewall_policy(
+            recaptchaenterprise.UpdateFirewallPolicyRequest(),
+            firewall_policy=recaptchaenterprise.FirewallPolicy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_firewall_policy_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_firewall_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.FirewallPolicy()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.FirewallPolicy()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_firewall_policy(
+            firewall_policy=recaptchaenterprise.FirewallPolicy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].firewall_policy
+        mock_val = recaptchaenterprise.FirewallPolicy(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_firewall_policy_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_firewall_policy(
+            recaptchaenterprise.UpdateFirewallPolicyRequest(),
+            firewall_policy=recaptchaenterprise.FirewallPolicy(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        recaptchaenterprise.DeleteFirewallPolicyRequest,
+        dict,
+    ],
+)
+def test_delete_firewall_policy(request_type, transport: str = "grpc"):
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_firewall_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_firewall_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.DeleteFirewallPolicyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_firewall_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_firewall_policy), "__call__"
+    ) as call:
+        client.delete_firewall_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.DeleteFirewallPolicyRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_firewall_policy_async(
+    transport: str = "grpc_asyncio",
+    request_type=recaptchaenterprise.DeleteFirewallPolicyRequest,
+):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_firewall_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_firewall_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.DeleteFirewallPolicyRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_firewall_policy_async_from_dict():
+    await test_delete_firewall_policy_async(request_type=dict)
+
+
+def test_delete_firewall_policy_field_headers():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.DeleteFirewallPolicyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_firewall_policy), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_firewall_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_firewall_policy_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.DeleteFirewallPolicyRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_firewall_policy), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_firewall_policy(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_firewall_policy_flattened():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_firewall_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_firewall_policy(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_firewall_policy_flattened_error():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_firewall_policy(
+            recaptchaenterprise.DeleteFirewallPolicyRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_firewall_policy_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_firewall_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_firewall_policy(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_firewall_policy_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_firewall_policy(
+            recaptchaenterprise.DeleteFirewallPolicyRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         recaptchaenterprise.ListRelatedAccountGroupsRequest,
         dict,
     ],
@@ -4763,6 +6242,11 @@ def test_recaptcha_enterprise_service_base_transport():
         "delete_key",
         "migrate_key",
         "get_metrics",
+        "create_firewall_policy",
+        "list_firewall_policies",
+        "get_firewall_policy",
+        "update_firewall_policy",
+        "delete_firewall_policy",
         "list_related_account_groups",
         "list_related_account_group_memberships",
         "search_related_account_group_memberships",
@@ -5138,9 +6622,34 @@ def test_parse_assessment_path():
     assert expected == actual
 
 
-def test_key_path():
+def test_firewall_policy_path():
     project = "oyster"
-    key = "nudibranch"
+    firewallpolicy = "nudibranch"
+    expected = "projects/{project}/firewallpolicies/{firewallpolicy}".format(
+        project=project,
+        firewallpolicy=firewallpolicy,
+    )
+    actual = RecaptchaEnterpriseServiceClient.firewall_policy_path(
+        project, firewallpolicy
+    )
+    assert expected == actual
+
+
+def test_parse_firewall_policy_path():
+    expected = {
+        "project": "cuttlefish",
+        "firewallpolicy": "mussel",
+    }
+    path = RecaptchaEnterpriseServiceClient.firewall_policy_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = RecaptchaEnterpriseServiceClient.parse_firewall_policy_path(path)
+    assert expected == actual
+
+
+def test_key_path():
+    project = "winkle"
+    key = "nautilus"
     expected = "projects/{project}/keys/{key}".format(
         project=project,
         key=key,
@@ -5151,8 +6660,8 @@ def test_key_path():
 
 def test_parse_key_path():
     expected = {
-        "project": "cuttlefish",
-        "key": "mussel",
+        "project": "scallop",
+        "key": "abalone",
     }
     path = RecaptchaEnterpriseServiceClient.key_path(**expected)
 
@@ -5162,8 +6671,8 @@ def test_parse_key_path():
 
 
 def test_metrics_path():
-    project = "winkle"
-    key = "nautilus"
+    project = "squid"
+    key = "clam"
     expected = "projects/{project}/keys/{key}/metrics".format(
         project=project,
         key=key,
@@ -5174,8 +6683,8 @@ def test_metrics_path():
 
 def test_parse_metrics_path():
     expected = {
-        "project": "scallop",
-        "key": "abalone",
+        "project": "whelk",
+        "key": "octopus",
     }
     path = RecaptchaEnterpriseServiceClient.metrics_path(**expected)
 
@@ -5185,8 +6694,8 @@ def test_parse_metrics_path():
 
 
 def test_related_account_group_path():
-    project = "squid"
-    relatedaccountgroup = "clam"
+    project = "oyster"
+    relatedaccountgroup = "nudibranch"
     expected = "projects/{project}/relatedaccountgroups/{relatedaccountgroup}".format(
         project=project,
         relatedaccountgroup=relatedaccountgroup,
@@ -5199,8 +6708,8 @@ def test_related_account_group_path():
 
 def test_parse_related_account_group_path():
     expected = {
-        "project": "whelk",
-        "relatedaccountgroup": "octopus",
+        "project": "cuttlefish",
+        "relatedaccountgroup": "mussel",
     }
     path = RecaptchaEnterpriseServiceClient.related_account_group_path(**expected)
 
@@ -5210,9 +6719,9 @@ def test_parse_related_account_group_path():
 
 
 def test_related_account_group_membership_path():
-    project = "oyster"
-    relatedaccountgroup = "nudibranch"
-    membership = "cuttlefish"
+    project = "winkle"
+    relatedaccountgroup = "nautilus"
+    membership = "scallop"
     expected = "projects/{project}/relatedaccountgroups/{relatedaccountgroup}/memberships/{membership}".format(
         project=project,
         relatedaccountgroup=relatedaccountgroup,
@@ -5226,9 +6735,9 @@ def test_related_account_group_membership_path():
 
 def test_parse_related_account_group_membership_path():
     expected = {
-        "project": "mussel",
-        "relatedaccountgroup": "winkle",
-        "membership": "nautilus",
+        "project": "abalone",
+        "relatedaccountgroup": "squid",
+        "membership": "clam",
     }
     path = RecaptchaEnterpriseServiceClient.related_account_group_membership_path(
         **expected
@@ -5244,7 +6753,7 @@ def test_parse_related_account_group_membership_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5256,7 +6765,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "octopus",
     }
     path = RecaptchaEnterpriseServiceClient.common_billing_account_path(**expected)
 
@@ -5266,7 +6775,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -5276,7 +6785,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "nudibranch",
     }
     path = RecaptchaEnterpriseServiceClient.common_folder_path(**expected)
 
@@ -5286,7 +6795,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -5296,7 +6805,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "mussel",
     }
     path = RecaptchaEnterpriseServiceClient.common_organization_path(**expected)
 
@@ -5306,7 +6815,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -5316,7 +6825,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "nautilus",
     }
     path = RecaptchaEnterpriseServiceClient.common_project_path(**expected)
 
@@ -5326,8 +6835,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -5338,8 +6847,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "squid",
+        "location": "clam",
     }
     path = RecaptchaEnterpriseServiceClient.common_location_path(**expected)
 

@@ -478,9 +478,9 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         Enterprise. Once a key is migrated, it can be used from
         either product. SiteVerify requests are billed as
         CreateAssessment calls. You must be authenticated as one
-        of the current owners of the reCAPTCHA Site Key, and
-        your user must have the reCAPTCHA Enterprise Admin IAM
-        role in the destination project.
+        of the current owners of the reCAPTCHA Key, and your
+        user must have the reCAPTCHA Enterprise Admin IAM role
+        in the destination project.
 
         Returns:
             Callable[[~.MigrateKeyRequest],
@@ -528,6 +528,153 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
                 response_deserializer=recaptchaenterprise.Metrics.deserialize,
             )
         return self._stubs["get_metrics"]
+
+    @property
+    def create_firewall_policy(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.CreateFirewallPolicyRequest],
+        Awaitable[recaptchaenterprise.FirewallPolicy],
+    ]:
+        r"""Return a callable for the create firewall policy method over gRPC.
+
+        Creates a new FirewallPolicy, specifying conditions
+        at which reCAPTCHA Enterprise actions can be executed. A
+        project may have a maximum of 1000 policies.
+
+        Returns:
+            Callable[[~.CreateFirewallPolicyRequest],
+                    Awaitable[~.FirewallPolicy]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_firewall_policy" not in self._stubs:
+            self._stubs["create_firewall_policy"] = self.grpc_channel.unary_unary(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/CreateFirewallPolicy",
+                request_serializer=recaptchaenterprise.CreateFirewallPolicyRequest.serialize,
+                response_deserializer=recaptchaenterprise.FirewallPolicy.deserialize,
+            )
+        return self._stubs["create_firewall_policy"]
+
+    @property
+    def list_firewall_policies(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.ListFirewallPoliciesRequest],
+        Awaitable[recaptchaenterprise.ListFirewallPoliciesResponse],
+    ]:
+        r"""Return a callable for the list firewall policies method over gRPC.
+
+        Returns the list of all firewall policies that belong
+        to a project.
+
+        Returns:
+            Callable[[~.ListFirewallPoliciesRequest],
+                    Awaitable[~.ListFirewallPoliciesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_firewall_policies" not in self._stubs:
+            self._stubs["list_firewall_policies"] = self.grpc_channel.unary_unary(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListFirewallPolicies",
+                request_serializer=recaptchaenterprise.ListFirewallPoliciesRequest.serialize,
+                response_deserializer=recaptchaenterprise.ListFirewallPoliciesResponse.deserialize,
+            )
+        return self._stubs["list_firewall_policies"]
+
+    @property
+    def get_firewall_policy(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.GetFirewallPolicyRequest],
+        Awaitable[recaptchaenterprise.FirewallPolicy],
+    ]:
+        r"""Return a callable for the get firewall policy method over gRPC.
+
+        Returns the specified firewall policy.
+
+        Returns:
+            Callable[[~.GetFirewallPolicyRequest],
+                    Awaitable[~.FirewallPolicy]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_firewall_policy" not in self._stubs:
+            self._stubs["get_firewall_policy"] = self.grpc_channel.unary_unary(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetFirewallPolicy",
+                request_serializer=recaptchaenterprise.GetFirewallPolicyRequest.serialize,
+                response_deserializer=recaptchaenterprise.FirewallPolicy.deserialize,
+            )
+        return self._stubs["get_firewall_policy"]
+
+    @property
+    def update_firewall_policy(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.UpdateFirewallPolicyRequest],
+        Awaitable[recaptchaenterprise.FirewallPolicy],
+    ]:
+        r"""Return a callable for the update firewall policy method over gRPC.
+
+        Updates the specified firewall policy.
+
+        Returns:
+            Callable[[~.UpdateFirewallPolicyRequest],
+                    Awaitable[~.FirewallPolicy]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_firewall_policy" not in self._stubs:
+            self._stubs["update_firewall_policy"] = self.grpc_channel.unary_unary(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdateFirewallPolicy",
+                request_serializer=recaptchaenterprise.UpdateFirewallPolicyRequest.serialize,
+                response_deserializer=recaptchaenterprise.FirewallPolicy.deserialize,
+            )
+        return self._stubs["update_firewall_policy"]
+
+    @property
+    def delete_firewall_policy(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.DeleteFirewallPolicyRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete firewall policy method over gRPC.
+
+        Deletes the specified firewall policy.
+
+        Returns:
+            Callable[[~.DeleteFirewallPolicyRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_firewall_policy" not in self._stubs:
+            self._stubs["delete_firewall_policy"] = self.grpc_channel.unary_unary(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/DeleteFirewallPolicy",
+                request_serializer=recaptchaenterprise.DeleteFirewallPolicyRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_firewall_policy"]
 
     @property
     def list_related_account_groups(
