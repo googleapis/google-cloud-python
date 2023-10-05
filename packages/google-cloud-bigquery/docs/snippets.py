@@ -125,6 +125,8 @@ def test_create_partitioned_table(client, to_delete):
     dataset = client.create_dataset(dataset_ref)
     to_delete.append(dataset)
 
+    # TODO(tswast): remove this snippet once cloud.google.com is updated to use
+    # samples/snippets/create_partitioned_table.py
     # [START bigquery_create_table_partitioned]
     # from google.cloud import bigquery
     # client = bigquery.Client()
