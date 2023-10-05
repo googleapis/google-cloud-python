@@ -1,2 +1,0 @@
-recursive-include google/cloud/policytroubleshooter/iam *.py
-recursive-include google/cloud/policytroubleshooter/iam_v3beta *.py
