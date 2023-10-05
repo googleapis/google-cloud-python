@@ -712,7 +712,7 @@ class _AvroStreamParser(_StreamParser):
                 # TODO: Parse DATETIME into datetime.datetime (no timezone),
                 #       instead of as a string.
                 yield fastavro.schemaless_reader(messageio, self._fastavro_schema)
-            except StopIteration:
+            except (StopIteration, EOFError):
                 break  # Finished with message
 
 
