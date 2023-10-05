@@ -1,9 +1,9 @@
-Python Client for Identity and Access Management
-================================================
+Python Client for Policy Troubleshooter API
+===========================================
 
 |preview| |pypi| |versions|
 
-`Identity and Access Management`_: 
+`Policy Troubleshooter API`_: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for Identity and Access Management
    :target: https://pypi.org/project/google-cloud-policytroubleshooter-iam/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-policytroubleshooter-iam.svg
    :target: https://pypi.org/project/google-cloud-policytroubleshooter-iam/
-.. _Identity and Access Management: https://cloud.google.com/iam/
-.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/iam/latest
-.. _Product Documentation:  https://cloud.google.com/iam/
+.. _Policy Troubleshooter API: https://cloud.google.com/policy-intelligence/docs/troubleshoot-access
+.. _Client Library Documentation: https://cloud.google.com/python/docs/reference/policytroubleshooter-iam/latest
+.. _Product Documentation:  https://cloud.google.com/policy-intelligence/docs/troubleshoot-access
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the Identity and Access Management.`_
+3. `Enable the Policy Troubleshooter API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the Identity and Access Management.:  https://cloud.google.com/iam/
+.. _Enable the Policy Troubleshooter API.:  https://cloud.google.com/policy-intelligence/docs/troubleshoot-access
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for Identity and Access Management
+-  Read the `Client Library Documentation`_ for Policy Troubleshooter API
    to see other available methods on the client.
--  Read the `Identity and Access Management Product documentation`_ to learn
+-  Read the `Policy Troubleshooter API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Identity and Access Management Product documentation:  https://cloud.google.com/iam/
+.. _Policy Troubleshooter API Product documentation:  https://cloud.google.com/policy-intelligence/docs/troubleshoot-access
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
