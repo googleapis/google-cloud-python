@@ -200,6 +200,26 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         return m.groupdict() if m else {}
 
     @staticmethod
+    def firewall_policy_path(
+        project: str,
+        firewallpolicy: str,
+    ) -> str:
+        """Returns a fully-qualified firewall_policy string."""
+        return "projects/{project}/firewallpolicies/{firewallpolicy}".format(
+            project=project,
+            firewallpolicy=firewallpolicy,
+        )
+
+    @staticmethod
+    def parse_firewall_policy_path(path: str) -> Dict[str, str]:
+        """Parses a firewall_policy path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/firewallpolicies/(?P<firewallpolicy>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def key_path(
         project: str,
         key: str,
@@ -565,9 +585,9 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
                 The request object. The create assessment request
                 message.
             parent (str):
-                Required. The name of the project in
-                which the assessment will be created, in
-                the format "projects/{project}".
+                Required. The name of the project in which the
+                assessment will be created, in the format
+                ``projects/{project}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -682,9 +702,8 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
                 The request object. The request message to annotate an
                 Assessment.
             name (str):
-                Required. The resource name of the
-                Assessment, in the format
-                "projects/{project}/assessments/{assessment}".
+                Required. The resource name of the Assessment, in the
+                format ``projects/{project}/assessments/{assessment}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -801,9 +820,8 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
             request (Union[google.cloud.recaptchaenterprise_v1.types.CreateKeyRequest, dict]):
                 The request object. The create key request message.
             parent (str):
-                Required. The name of the project in
-                which the key will be created, in the
-                format "projects/{project}".
+                Required. The name of the project in which the key will
+                be created, in the format ``projects/{project}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -915,10 +933,9 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
             request (Union[google.cloud.recaptchaenterprise_v1.types.ListKeysRequest, dict]):
                 The request object. The list keys request message.
             parent (str):
-                Required. The name of the project
-                that contains the keys that will be
-                listed, in the format
-                "projects/{project}".
+                Required. The name of the project that contains the keys
+                that will be listed, in the format
+                ``projects/{project}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1035,9 +1052,9 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
                 The request object. The retrieve legacy secret key
                 request message.
             key (str):
-                Required. The public key name linked
-                to the requested secret key in the
-                format "projects/{project}/keys/{key}".
+                Required. The public key name linked to the requested
+                secret key in the format
+                ``projects/{project}/keys/{key}``.
 
                 This corresponds to the ``key`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1140,9 +1157,8 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
             request (Union[google.cloud.recaptchaenterprise_v1.types.GetKeyRequest, dict]):
                 The request object. The get key request message.
             name (str):
-                Required. The name of the requested
-                key, in the format
-                "projects/{project}/keys/{key}".
+                Required. The name of the requested key, in the format
+                ``projects/{project}/keys/{key}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1355,9 +1371,8 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
             request (Union[google.cloud.recaptchaenterprise_v1.types.DeleteKeyRequest, dict]):
                 The request object. The delete key request message.
             name (str):
-                Required. The name of the key to be
-                deleted, in the format
-                "projects/{project}/keys/{key}".
+                Required. The name of the key to be deleted, in the
+                format ``projects/{project}/keys/{key}``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1419,9 +1434,9 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         Enterprise. Once a key is migrated, it can be used from
         either product. SiteVerify requests are billed as
         CreateAssessment calls. You must be authenticated as one
-        of the current owners of the reCAPTCHA Site Key, and
-        your user must have the reCAPTCHA Enterprise Admin IAM
-        role in the destination project.
+        of the current owners of the reCAPTCHA Key, and your
+        user must have the reCAPTCHA Enterprise Admin IAM role
+        in the destination project.
 
         .. code-block:: python
 
@@ -1536,9 +1551,8 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
             request (Union[google.cloud.recaptchaenterprise_v1.types.GetMetricsRequest, dict]):
                 The request object. The get metrics request message.
             name (str):
-                Required. The name of the requested
-                metrics, in the format
-                "projects/{project}/keys/{key}/metrics".
+                Required. The name of the requested metrics, in the
+                format ``projects/{project}/keys/{key}/metrics``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1595,6 +1609,556 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         # Done; return the response.
         return response
 
+    def create_firewall_policy(
+        self,
+        request: Optional[
+            Union[recaptchaenterprise.CreateFirewallPolicyRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        firewall_policy: Optional[recaptchaenterprise.FirewallPolicy] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> recaptchaenterprise.FirewallPolicy:
+        r"""Creates a new FirewallPolicy, specifying conditions
+        at which reCAPTCHA Enterprise actions can be executed. A
+        project may have a maximum of 1000 policies.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_create_firewall_policy():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.CreateFirewallPolicyRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_firewall_policy(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.recaptchaenterprise_v1.types.CreateFirewallPolicyRequest, dict]):
+                The request object. The create firewall policy request
+                message.
+            parent (str):
+                Required. The name of the project this policy will apply
+                to, in the format ``projects/{project}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            firewall_policy (google.cloud.recaptchaenterprise_v1.types.FirewallPolicy):
+                Required. Information to create the
+                policy.
+
+                This corresponds to the ``firewall_policy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recaptchaenterprise_v1.types.FirewallPolicy:
+                A FirewallPolicy represents a single
+                matching pattern and resulting actions
+                to take.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, firewall_policy])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a recaptchaenterprise.CreateFirewallPolicyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, recaptchaenterprise.CreateFirewallPolicyRequest):
+            request = recaptchaenterprise.CreateFirewallPolicyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if firewall_policy is not None:
+                request.firewall_policy = firewall_policy
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_firewall_policy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_firewall_policies(
+        self,
+        request: Optional[
+            Union[recaptchaenterprise.ListFirewallPoliciesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListFirewallPoliciesPager:
+        r"""Returns the list of all firewall policies that belong
+        to a project.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_list_firewall_policies():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.ListFirewallPoliciesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_firewall_policies(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.recaptchaenterprise_v1.types.ListFirewallPoliciesRequest, dict]):
+                The request object. The list firewall policies request
+                message.
+            parent (str):
+                Required. The name of the project to list the policies
+                for, in the format ``projects/{project}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.pagers.ListFirewallPoliciesPager:
+                Response to request to list firewall
+                policies belonging to a key.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a recaptchaenterprise.ListFirewallPoliciesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, recaptchaenterprise.ListFirewallPoliciesRequest):
+            request = recaptchaenterprise.ListFirewallPoliciesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_firewall_policies]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListFirewallPoliciesPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_firewall_policy(
+        self,
+        request: Optional[
+            Union[recaptchaenterprise.GetFirewallPolicyRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> recaptchaenterprise.FirewallPolicy:
+        r"""Returns the specified firewall policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_get_firewall_policy():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.GetFirewallPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_firewall_policy(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.recaptchaenterprise_v1.types.GetFirewallPolicyRequest, dict]):
+                The request object. The get firewall policy request
+                message.
+            name (str):
+                Required. The name of the requested policy, in the
+                format
+                ``projects/{project}/firewallpolicies/{firewallpolicy}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recaptchaenterprise_v1.types.FirewallPolicy:
+                A FirewallPolicy represents a single
+                matching pattern and resulting actions
+                to take.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a recaptchaenterprise.GetFirewallPolicyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, recaptchaenterprise.GetFirewallPolicyRequest):
+            request = recaptchaenterprise.GetFirewallPolicyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_firewall_policy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_firewall_policy(
+        self,
+        request: Optional[
+            Union[recaptchaenterprise.UpdateFirewallPolicyRequest, dict]
+        ] = None,
+        *,
+        firewall_policy: Optional[recaptchaenterprise.FirewallPolicy] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> recaptchaenterprise.FirewallPolicy:
+        r"""Updates the specified firewall policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_update_firewall_policy():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.UpdateFirewallPolicyRequest(
+                )
+
+                # Make the request
+                response = client.update_firewall_policy(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.recaptchaenterprise_v1.types.UpdateFirewallPolicyRequest, dict]):
+                The request object. The update firewall policy request
+                message.
+            firewall_policy (google.cloud.recaptchaenterprise_v1.types.FirewallPolicy):
+                Required. The policy to update.
+                This corresponds to the ``firewall_policy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Optional. The mask to control which
+                fields of the policy get updated. If the
+                mask is not present, all fields will be
+                updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recaptchaenterprise_v1.types.FirewallPolicy:
+                A FirewallPolicy represents a single
+                matching pattern and resulting actions
+                to take.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([firewall_policy, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a recaptchaenterprise.UpdateFirewallPolicyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, recaptchaenterprise.UpdateFirewallPolicyRequest):
+            request = recaptchaenterprise.UpdateFirewallPolicyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if firewall_policy is not None:
+                request.firewall_policy = firewall_policy
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_firewall_policy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("firewall_policy.name", request.firewall_policy.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_firewall_policy(
+        self,
+        request: Optional[
+            Union[recaptchaenterprise.DeleteFirewallPolicyRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes the specified firewall policy.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import recaptchaenterprise_v1
+
+            def sample_delete_firewall_policy():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.DeleteFirewallPolicyRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_firewall_policy(request=request)
+
+        Args:
+            request (Union[google.cloud.recaptchaenterprise_v1.types.DeleteFirewallPolicyRequest, dict]):
+                The request object. The delete firewall policy request
+                message.
+            name (str):
+                Required. The name of the policy to be deleted, in the
+                format
+                ``projects/{project}/firewallpolicies/{firewallpolicy}``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a recaptchaenterprise.DeleteFirewallPolicyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, recaptchaenterprise.DeleteFirewallPolicyRequest):
+            request = recaptchaenterprise.DeleteFirewallPolicyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_firewall_policy]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
     def list_related_account_groups(
         self,
         request: Optional[
@@ -1640,9 +2204,9 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
                 The request object. The request message to list related
                 account groups.
             parent (str):
-                Required. The name of the project to
-                list related account groups from, in the
-                format "projects/{project}".
+                Required. The name of the project to list related
+                account groups from, in the format
+                ``projects/{project}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1884,22 +2448,18 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
                 The request object. The request message to search related
                 account group memberships.
             project (str):
-                Required. The name of the project to
-                search related account group memberships
-                from. Specify the project name in the
-                following format:
-
-                "projects/{project}".
+                Required. The name of the project to search related
+                account group memberships from. Specify the project name
+                in the following format: ``projects/{project}``.
 
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             hashed_account_id (bytes):
-                Optional. The unique stable hashed user identifier we
-                should search connections to. The identifier should
-                correspond to a ``hashed_account_id`` provided in a
-                previous ``CreateAssessment`` or ``AnnotateAssessment``
-                call.
+                Optional. The unique stable hashed user identifier used
+                to search connections. The identifier should correspond
+                to a ``hashed_account_id`` provided in a previous
+                ``CreateAssessment`` or ``AnnotateAssessment`` call.
 
                 This corresponds to the ``hashed_account_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

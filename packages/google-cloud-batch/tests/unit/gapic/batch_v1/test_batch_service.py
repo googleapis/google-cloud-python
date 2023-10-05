@@ -2628,6 +2628,7 @@ def test_create_job_rest(request_type):
                                 "device_name": "device_name_value",
                             }
                         ],
+                        "reservation": "reservation_value",
                     },
                     "instance_template": "instance_template_value",
                     "install_gpu_drivers": True,
@@ -2979,6 +2980,7 @@ def test_create_job_rest_bad_request(
                                 "device_name": "device_name_value",
                             }
                         ],
+                        "reservation": "reservation_value",
                     },
                     "instance_template": "instance_template_value",
                     "install_gpu_drivers": True,
