@@ -16,8 +16,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 import functools
 import math
+import textwrap
 import typing
-from typing import Collection, Dict, Iterable, Literal, Optional, Sequence, Tuple
+from typing import Collection, Iterable, Literal, Optional, Sequence, Tuple
 
 from google.cloud import bigquery
 import ibis
@@ -202,29 +203,25 @@ class ArrayValue:
         )
 
     @property
-    def table(self) -> ibis_types.Table:
-        return self._table
+    def columns(self) -> typing.Tuple[ibis_types.Value, ...]:
+        return self._columns
 
     @property
-    def reduced_predicate(self) -> typing.Optional[ibis_types.BooleanValue]:
+    def column_ids(self) -> typing.Sequence[str]:
+        return tuple(self._column_names.keys())
+
+    @property
+    def hidden_ordering_columns(self) -> typing.Tuple[ibis_types.Value, ...]:
+        return self._hidden_ordering_columns
+
+    @property
+    def _reduced_predicate(self) -> typing.Optional[ibis_types.BooleanValue]:
         """Returns the frame's predicates as an equivalent boolean value, useful where a single predicate value is preferred."""
         return (
             _reduce_predicate_list(self._predicates).name(PREDICATE_COLUMN)
             if self._predicates
             else None
         )
-
-    @property
-    def columns(self) -> typing.Tuple[ibis_types.Value, ...]:
-        return self._columns
-
-    @property
-    def column_names(self) -> Dict[str, ibis_types.Value]:
-        return self._column_names
-
-    @property
-    def hidden_ordering_columns(self) -> typing.Tuple[ibis_types.Value, ...]:
-        return self._hidden_ordering_columns
 
     @property
     def _ibis_order(self) -> Sequence[ibis_types.Value]:
@@ -265,24 +262,22 @@ class ArrayValue:
 
     def get_column_type(self, key: str) -> bigframes.dtypes.Dtype:
         ibis_type = typing.cast(
-            bigframes.dtypes.IbisDtype, self.get_any_column(key).type()
+            bigframes.dtypes.IbisDtype, self._get_any_column(key).type()
         )
         return typing.cast(
             bigframes.dtypes.Dtype,
             bigframes.dtypes.ibis_dtype_to_bigframes_dtype(ibis_type),
         )
 
-    def get_column(self, key: str) -> ibis_types.Value:
+    def _get_ibis_column(self, key: str) -> ibis_types.Value:
         """Gets the Ibis expression for a given column."""
-        if key not in self._column_names.keys():
+        if key not in self.column_ids:
             raise ValueError(
-                "Column name {} not in set of values: {}".format(
-                    key, self._column_names.keys()
-                )
+                "Column name {} not in set of values: {}".format(key, self.column_ids)
             )
         return typing.cast(ibis_types.Value, self._column_names[key])
 
-    def get_any_column(self, key: str) -> ibis_types.Value:
+    def _get_any_column(self, key: str) -> ibis_types.Value:
         """Gets the Ibis expression for a given column. Will also get hidden columns."""
         all_columns = {**self._column_names, **self._hidden_ordering_column_names}
         if key not in all_columns.keys():
@@ -303,26 +298,11 @@ class ArrayValue:
             )
         return typing.cast(ibis_types.Column, self._hidden_ordering_column_names[key])
 
-    def apply_limit(self, max_results: int) -> ArrayValue:
-        table = self._to_ibis_expr(
-            ordering_mode="order_by",
-            expose_hidden_cols=True,
-        ).limit(max_results)
-        columns = [table[column_name] for column_name in self._column_names]
-        hidden_ordering_columns = [
-            table[column_name] for column_name in self._hidden_ordering_column_names
-        ]
-        return ArrayValue(
-            self._session,
-            table,
-            columns=columns,
-            hidden_ordering_columns=hidden_ordering_columns,
-            ordering=self._ordering,
-        )
-
     def filter(self, predicate_id: str, keep_null: bool = False) -> ArrayValue:
         """Filter the table on a given expression, the predicate must be a boolean series aligned with the table expression."""
-        condition = typing.cast(ibis_types.BooleanValue, self.get_column(predicate_id))
+        condition = typing.cast(
+            ibis_types.BooleanValue, self._get_ibis_column(predicate_id)
+        )
         if keep_null:
             condition = typing.cast(
                 ibis_types.BooleanValue,
@@ -358,7 +338,7 @@ class ArrayValue:
             The row numbers of result is non-deterministic, avoid to use.
         """
         table = self._to_ibis_expr(
-            ordering_mode="order_by", expose_hidden_cols=True, fraction=fraction
+            "unordered", expose_hidden_cols=True, fraction=fraction
         )
         columns = [table[column_name] for column_name in self._column_names]
         hidden_ordering_columns = [
@@ -373,7 +353,7 @@ class ArrayValue:
         )
 
     @property
-    def offsets(self):
+    def _offsets(self) -> ibis_types.IntegerColumn:
         if not self._ordering.is_sequential:
             raise ValueError(
                 "Expression does not have offsets. Generate them first using project_offsets."
@@ -382,9 +362,10 @@ class ArrayValue:
             raise ValueError(
                 "Ordering is invalid. Marked as sequential but no total order columns."
             )
-        return self.get_any_column(self._ordering.total_order_col.column_id)
+        column = self._get_any_column(self._ordering.total_order_col.column_id)
+        return typing.cast(ibis_types.IntegerColumn, column)
 
-    def project_offsets(self) -> ArrayValue:
+    def _project_offsets(self) -> ArrayValue:
         """Create a new expression that contains offsets. Should only be executed when offsets are needed for an operations. Has no effect on expression semantics."""
         if self._ordering.is_sequential:
             return self
@@ -414,7 +395,7 @@ class ArrayValue:
         new_name = bigframes.core.guid.generate_guid(prefix="bigframes_hidden_")
         expr_builder.hidden_ordering_columns = [
             *self._hidden_ordering_columns,
-            self.get_column(column_id).name(new_name),
+            self._get_ibis_column(column_id).name(new_name),
         ]
         expr_builder.ordering = self._ordering.with_column_remap({column_id: new_name})
         return expr_builder.build()
@@ -427,26 +408,28 @@ class ArrayValue:
         ordering = self._ordering
 
         if (not ordering.is_sequential) or (not ordering.total_order_col):
-            return self.project_offsets().promote_offsets()
+            return self._project_offsets().promote_offsets()
         col_id = bigframes.core.guid.generate_guid()
         expr_builder = self.builder()
         expr_builder.columns = [
-            self.get_any_column(ordering.total_order_col.column_id).name(col_id),
+            self._get_any_column(ordering.total_order_col.column_id).name(col_id),
             *self.columns,
         ]
         return expr_builder.build(), col_id
 
     def select_columns(self, column_ids: typing.Sequence[str]):
-        return self.projection([self.get_column(col_id) for col_id in column_ids])
+        return self._projection(
+            [self._get_ibis_column(col_id) for col_id in column_ids]
+        )
 
-    def projection(self, columns: Iterable[ibis_types.Value]) -> ArrayValue:
+    def _projection(self, columns: Iterable[ibis_types.Value]) -> ArrayValue:
         """Creates a new expression based on this expression with new columns."""
         # TODO(swast): We might want to do validation here that columns derive
         # from the same table expression instead of (in addition to?) at
         # construction time.
 
         expr = self
-        for ordering_column in set(self.column_names.keys()).intersection(
+        for ordering_column in set(self.column_ids).intersection(
             [col_ref.column_id for col_ref in self._ordering.ordering_value_columns]
         ):
             # Need to hide ordering columns that are being dropped. Alternatively, could project offsets
@@ -459,7 +442,7 @@ class ArrayValue:
     def shape(self) -> typing.Tuple[int, int]:
         """Returns dimensions as (length, width) tuple."""
         width = len(self.columns)
-        count_expr = self._to_ibis_expr(ordering_mode="unordered").count()
+        count_expr = self._to_ibis_expr("unordered").count()
         sql = self._session.ibis_client.compile(count_expr)
 
         # Support in-memory engines for hermetic unit tests.
@@ -527,7 +510,7 @@ class ArrayValue:
         self, column_name: str, op: ops.UnaryOp, output_name=None
     ) -> ArrayValue:
         """Creates a new expression based on this expression with unary operation applied to one column."""
-        value = op._as_ibis(self.get_column(column_name)).name(
+        value = op._as_ibis(self._get_ibis_column(column_name)).name(
             output_name or column_name
         )
         return self._set_or_replace_by_id(output_name or column_name, value)
@@ -541,7 +524,8 @@ class ArrayValue:
     ) -> ArrayValue:
         """Creates a new expression based on this expression with binary operation applied to two columns."""
         value = op(
-            self.get_column(left_column_id), self.get_column(right_column_id)
+            self._get_ibis_column(left_column_id),
+            self._get_ibis_column(right_column_id),
         ).name(output_column_id)
         return self._set_or_replace_by_id(output_column_id, value)
 
@@ -555,9 +539,9 @@ class ArrayValue:
     ) -> ArrayValue:
         """Creates a new expression based on this expression with ternary operation applied to three columns."""
         value = op(
-            self.get_column(col_id_1),
-            self.get_column(col_id_2),
-            self.get_column(col_id_3),
+            self._get_ibis_column(col_id_1),
+            self._get_ibis_column(col_id_2),
+            self._get_ibis_column(col_id_3),
         ).name(output_column_id)
         return self._set_or_replace_by_id(output_column_id, value)
 
@@ -574,7 +558,7 @@ class ArrayValue:
             by_column_id: column id of the aggregation key, this is preserved through the transform
             dropna: whether null keys should be dropped
         """
-        table = self._to_ibis_expr(ordering_mode="unordered")
+        table = self._to_ibis_expr("unordered")
         stats = {
             col_out: agg_op._as_ibis(table[col_in])
             for col_in, agg_op, col_out in aggregations
@@ -594,10 +578,10 @@ class ArrayValue:
             if dropna:
                 for column_id in by_column_ids:
                     expr = expr._filter(
-                        ops.notnull_op._as_ibis(expr.get_column(column_id))
+                        ops.notnull_op._as_ibis(expr._get_ibis_column(column_id))
                     )
             # Can maybe remove this as Ordering id is redundant as by_column is unique after aggregation
-            return expr.project_offsets()
+            return expr._project_offsets()
         else:
             aggregates = {**stats, ORDER_ID_COLUMN: ibis_types.literal(0)}
             result = table.aggregate(**aggregates)
@@ -624,7 +608,7 @@ class ArrayValue:
         Arguments:
             corr_aggregations: left_column_id, right_column_id, output_column_id tuples
         """
-        table = self._to_ibis_expr(ordering_mode="unordered")
+        table = self._to_ibis_expr("unordered")
         stats = {
             col_out: table[col_left].corr(table[col_right], how="pop")
             for col_left, col_right, col_out in corr_aggregations
@@ -664,7 +648,7 @@ class ArrayValue:
         never_skip_nulls: will disable null skipping for operators that would otherwise do so
         skip_reproject_unsafe: skips the reprojection step, can be used when performing many non-dependent window operations, user responsible for not nesting window expressions, or using outputs as join, filter or aggregation keys before a reprojection
         """
-        column = typing.cast(ibis_types.Column, self.get_column(column_name))
+        column = typing.cast(ibis_types.Column, self._get_ibis_column(column_name))
         window = self._ibis_window_from_spec(window_spec, allow_ties=op.handles_ties)
 
         window_op = op._as_ibis(column, window)
@@ -700,26 +684,34 @@ class ArrayValue:
 
     def to_sql(
         self,
-        ordering_mode: Literal[
-            "order_by", "string_encoded", "offset_col", "unordered"
-        ] = "order_by",
-        order_col_name: Optional[str] = ORDER_ID_COLUMN,
+        offset_column: typing.Optional[str] = None,
         col_id_overrides: typing.Mapping[str, str] = {},
+        sorted: bool = False,
     ) -> str:
+        offsets_id = offset_column or ORDER_ID_COLUMN
+
         sql = self._session.ibis_client.compile(
             self._to_ibis_expr(
-                ordering_mode=ordering_mode,
-                order_col_name=order_col_name,
+                ordering_mode="offset_col"
+                if (offset_column or sorted)
+                else "unordered",
+                order_col_name=offsets_id,
                 col_id_overrides=col_id_overrides,
             )
         )
+        if sorted:
+            sql = textwrap.dedent(
+                f"""
+                SELECT * EXCEPT (`{offsets_id}`)
+                FROM ({sql})
+                ORDER BY `{offsets_id}`
+                """
+            )
         return typing.cast(str, sql)
 
     def _to_ibis_expr(
         self,
-        ordering_mode: Literal[
-            "order_by", "string_encoded", "offset_col", "unordered"
-        ] = "order_by",
+        ordering_mode: Literal["string_encoded", "offset_col", "unordered"],
         order_col_name: Optional[str] = ORDER_ID_COLUMN,
         expose_hidden_cols: bool = False,
         fraction: Optional[float] = None,
@@ -731,8 +723,6 @@ class ArrayValue:
         ArrayValue objects are sorted, so the following options are available
         to reflect this in the ibis expression.
 
-        * "order_by" (Default): The output table will not have an ordering
-          column, however there will be an order_by clause applied to the ouput.
         * "offset_col": Zero-based offsets are generated as a column, this will
           not sort the rows however.
         * "string_encoded": An ordered string column is provided in output table.
@@ -760,7 +750,6 @@ class ArrayValue:
             An ibis expression representing the data help by the ArrayValue object.
         """
         assert ordering_mode in (
-            "order_by",
             "string_encoded",
             "offset_col",
             "unordered",
@@ -775,18 +764,16 @@ class ArrayValue:
             str
         ] = []  # Ordering/Filtering columns that will be dropped at end
 
-        if self.reduced_predicate is not None:
-            columns.append(self.reduced_predicate)
+        if self._reduced_predicate is not None:
+            columns.append(self._reduced_predicate)
             # Usually drop predicate as it is will be all TRUE after filtering
             if not expose_hidden_cols:
-                columns_to_drop.append(self.reduced_predicate.get_name())
+                columns_to_drop.append(self._reduced_predicate.get_name())
 
         order_columns = self._create_order_columns(
             ordering_mode, order_col_name, expose_hidden_cols
         )
         columns.extend(order_columns)
-        if (ordering_mode == "order_by") and not expose_hidden_cols:
-            columns_to_drop.extend(col.get_name() for col in order_columns)
 
         # Special case for empty tables, since we can't create an empty
         # projection.
@@ -799,15 +786,8 @@ class ArrayValue:
             bigframes.dtypes.ibis_value_to_canonical_type(column) for column in columns
         )
         base_table = table
-        if self.reduced_predicate is not None:
+        if self._reduced_predicate is not None:
             table = table.filter(base_table[PREDICATE_COLUMN])
-        if ordering_mode == "order_by":
-            table = table.order_by(
-                _convert_ordering_to_table_values(
-                    {col: base_table[col] for col in table.columns},
-                    self._ordering.all_ordering_columns,
-                )  # type: ignore
-            )
         table = table.drop(*columns_to_drop)
         if col_id_overrides:
             table = table.relabel(col_id_overrides)
@@ -826,24 +806,24 @@ class ArrayValue:
             return (self._create_offset_column().name(order_col_name),)
         elif ordering_mode == "string_encoded":
             return (self._create_string_ordering_column().name(order_col_name),)
-        elif ordering_mode == "order_by" or expose_hidden_cols:
+        elif expose_hidden_cols:
             return self.hidden_ordering_columns
         return ()
 
     def _create_offset_column(self) -> ibis_types.IntegerColumn:
         if self._ordering.total_order_col and self._ordering.is_sequential:
-            offsets = self.get_any_column(self._ordering.total_order_col.column_id)
+            offsets = self._get_any_column(self._ordering.total_order_col.column_id)
             return typing.cast(ibis_types.IntegerColumn, offsets)
         else:
             window = ibis.window(order_by=self._ibis_order)
             if self._predicates:
-                window = window.group_by(self.reduced_predicate)
+                window = window.group_by(self._reduced_predicate)
             offsets = ibis.row_number().over(window)
             return typing.cast(ibis_types.IntegerColumn, offsets)
 
     def _create_string_ordering_column(self) -> ibis_types.StringColumn:
         if self._ordering.total_order_col and self._ordering.is_string_encoded:
-            string_order_ids = self.get_any_column(
+            string_order_ids = self._get_any_column(
                 self._ordering.total_order_col.column_id
             )
             return typing.cast(ibis_types.StringColumn, string_order_ids)
@@ -852,7 +832,7 @@ class ArrayValue:
             and self._ordering.integer_encoding.is_encoded
         ):
             # Special case: non-negative integer ordering id can be converted directly to string without regenerating row numbers
-            int_values = self.get_any_column(self._ordering.total_order_col.column_id)
+            int_values = self._get_any_column(self._ordering.total_order_col.column_id)
             return encode_order_string(
                 typing.cast(ibis_types.IntegerColumn, int_values),
             )
@@ -860,7 +840,7 @@ class ArrayValue:
             # Have to build string from scratch
             window = ibis.window(order_by=self._ibis_order)
             if self._predicates:
-                window = window.group_by(self.reduced_predicate)
+                window = window.group_by(self._reduced_predicate)
             row_nums = typing.cast(
                 ibis_types.IntegerColumn, ibis.row_number().over(window)
             )
@@ -870,7 +850,8 @@ class ArrayValue:
         self,
         job_config: Optional[bigquery.job.QueryJobConfig] = None,
         max_results: Optional[int] = None,
-        expose_extra_columns: bool = False,
+        *,
+        sorted: bool = True,
     ) -> Tuple[bigquery.table.RowIterator, bigquery.QueryJob]:
         """Execute a query and return metadata about the results."""
         # TODO(swast): Cache the job ID so we can look it up again if they ask
@@ -883,8 +864,7 @@ class ArrayValue:
         # a LocalSession for unit testing.
         # TODO(swast): Add a timeout here? If the query is taking a long time,
         # maybe we just print the job metadata that we have so far?
-        table = self._to_ibis_expr(expose_hidden_cols=expose_extra_columns)
-        sql = self._session.ibis_client.compile(table)  # type:ignore
+        sql = self.to_sql(sorted=True)  # type:ignore
         return self._session._start_query(
             sql=sql,
             job_config=job_config,
@@ -903,7 +883,7 @@ class ArrayValue:
         recursively in projections.
         """
         table = self._to_ibis_expr(
-            ordering_mode="unordered",
+            "unordered",
             expose_hidden_cols=True,
         )
         columns = [table[column_name] for column_name in self._column_names]
@@ -926,14 +906,16 @@ class ArrayValue:
     def _ibis_window_from_spec(self, window_spec: WindowSpec, allow_ties: bool = False):
         group_by: typing.List[ibis_types.Value] = (
             [
-                typing.cast(ibis_types.Column, _as_identity(self.get_column(column)))
+                typing.cast(
+                    ibis_types.Column, _as_identity(self._get_ibis_column(column))
+                )
                 for column in window_spec.grouping_keys
             ]
             if window_spec.grouping_keys
             else []
         )
-        if self.reduced_predicate is not None:
-            group_by.append(self.reduced_predicate)
+        if self._reduced_predicate is not None:
+            group_by.append(self._reduced_predicate)
         if window_spec.ordering:
             order_by = _convert_ordering_to_table_values(
                 {**self._column_names, **self._hidden_ordering_column_names},
@@ -984,7 +966,7 @@ class ArrayValue:
         """
         if how not in ("left", "right"):
             raise ValueError("'how' must be 'left' or 'right'")
-        table = self._to_ibis_expr(ordering_mode="unordered", expose_hidden_cols=True)
+        table = self._to_ibis_expr("unordered", expose_hidden_cols=True)
         row_n = len(row_labels)
         hidden_col_ids = self._hidden_ordering_column_names.keys()
         if not all(
@@ -1107,7 +1089,9 @@ class ArrayValue:
         )
 
     def assign(self, source_id: str, destination_id: str) -> ArrayValue:
-        return self._set_or_replace_by_id(destination_id, self.get_column(source_id))
+        return self._set_or_replace_by_id(
+            destination_id, self._get_ibis_column(source_id)
+        )
 
     def assign_constant(
         self,
@@ -1134,74 +1118,25 @@ class ArrayValue:
             return self._hide_column(id)._set_or_replace_by_id(id, new_value)
 
         builder = self.builder()
-        if id in self.column_names:
+        if id in self.column_ids:
             builder.columns = [
                 val if (col_id != id) else new_value.name(id)
-                for col_id, val in self.column_names.items()
+                for col_id, val in zip(self.column_ids, self._columns)
             ]
         else:
             builder.columns = [*self.columns, new_value.name(id)]
         return builder.build()
 
-    def slice(
-        self,
-        start: typing.Optional[int] = None,
-        stop: typing.Optional[int] = None,
-        step: typing.Optional[int] = None,
-    ) -> ArrayValue:
-        if step == 0:
-            raise ValueError("slice step cannot be zero")
-
-        if not step:
-            step = 1
-
-        expr_with_offsets = self.project_offsets()
-
-        # start with True and reduce with start, stop, and step conditions
-        cond_list = [expr_with_offsets.offsets == expr_with_offsets.offsets]
-
-        last_offset = expr_with_offsets.offsets.max()
-
-        # Convert negative indexes to positive indexes
-        if start and start < 0:
-            start = last_offset + start + 1
-        if stop and stop < 0:
-            stop = last_offset + stop + 1
-
-        if start is not None:
-            if step >= 1:
-                cond_list.append(expr_with_offsets.offsets >= start)
-            else:
-                cond_list.append(expr_with_offsets.offsets <= start)
-        if stop is not None:
-            if step >= 1:
-                cond_list.append(expr_with_offsets.offsets < stop)
-            else:
-                cond_list.append(expr_with_offsets.offsets > stop)
-        if step > 1:
-            start = start if (start is not None) else 0
-            cond_list.append((expr_with_offsets.offsets - start) % step == 0)
-        if step < 0:
-            start = start if (start is not None) else last_offset
-            cond_list.append((start - expr_with_offsets.offsets) % (-step) == 0)
-
-        sliced_expr = expr_with_offsets._filter(
-            functools.reduce(lambda x, y: x & y, cond_list)
-        )
-        return sliced_expr if step > 0 else sliced_expr.reversed()
-
     def cached(self, cluster_cols: typing.Sequence[str]) -> ArrayValue:
         """Write the ArrayValue to a session table and create a new block object that references it."""
-        ibis_expr = self._to_ibis_expr(
-            ordering_mode="unordered", expose_hidden_cols=True
-        )
+        ibis_expr = self._to_ibis_expr("unordered", expose_hidden_cols=True)
         destination = self._session._ibis_to_session_table(
             ibis_expr, cluster_cols=cluster_cols, api_name="cache"
         )
         table_expression = self._session.ibis_client.table(
             f"{destination.project}.{destination.dataset_id}.{destination.table_id}"
         )
-        new_columns = [table_expression[column] for column in self.column_names]
+        new_columns = [table_expression[column] for column in self.column_ids]
         new_hidden_columns = [
             table_expression[column] for column in self._hidden_ordering_column_names
         ]

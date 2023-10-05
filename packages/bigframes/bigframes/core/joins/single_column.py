@@ -74,14 +74,14 @@ def join_by_column(
     if (
         allow_row_identity_join
         and how in bigframes.core.joins.row_identity.SUPPORTED_ROW_IDENTITY_HOW
-        and left.table.equals(right.table)
+        and left._table.equals(right._table)
         # Make sure we're joining on exactly the same column(s), at least with
         # regards to value its possible that they both have the same names but
         # were modified in different ways. Ignore differences in the names.
         and all(
-            left.get_any_column(lcol)
+            left._get_any_column(lcol)
             .name("index")
-            .equals(right.get_any_column(rcol).name("index"))
+            .equals(right._get_any_column(rcol).name("index"))
             for lcol, rcol in zip(left_column_ids, right_column_ids)
         )
     ):
@@ -90,14 +90,16 @@ def join_by_column(
             get_column_right,
         ) = bigframes.core.joins.row_identity.join_by_row_identity(left, right, how=how)
         left_join_keys = [
-            combined_expr.get_column(get_column_left(col)) for col in left_column_ids
+            combined_expr._get_ibis_column(get_column_left(col))
+            for col in left_column_ids
         ]
         right_join_keys = [
-            combined_expr.get_column(get_column_right(col)) for col in right_column_ids
+            combined_expr._get_ibis_column(get_column_right(col))
+            for col in right_column_ids
         ]
         join_key_cols = get_coalesced_join_cols(left_join_keys, right_join_keys, how)
         join_key_ids = [col.get_name() for col in join_key_cols]
-        combined_expr = combined_expr.projection(
+        combined_expr = combined_expr._projection(
             [*join_key_cols, *combined_expr.columns]
         )
         if sort:
@@ -119,13 +121,13 @@ def join_by_column(
         lmapping = {
             col_id: guid.generate_guid()
             for col_id in itertools.chain(
-                left.column_names, left._hidden_ordering_column_names
+                left.column_ids, left._hidden_ordering_column_names
             )
         }
         rmapping = {
             col_id: guid.generate_guid()
             for col_id in itertools.chain(
-                right.column_names, right._hidden_ordering_column_names
+                right.column_ids, right._hidden_ordering_column_names
             )
         }
 
@@ -136,12 +138,12 @@ def join_by_column(
             return rmapping[col_id]
 
         left_table = left._to_ibis_expr(
-            ordering_mode="unordered",
+            "unordered",
             expose_hidden_cols=True,
             col_id_overrides=lmapping,
         )
         right_table = right._to_ibis_expr(
-            ordering_mode="unordered",
+            "unordered",
             expose_hidden_cols=True,
             col_id_overrides=rmapping,
         )

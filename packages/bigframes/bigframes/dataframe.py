@@ -554,7 +554,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             other._block.index, how=how
         )
 
-        series_column_id = other._value.get_name()
+        series_column_id = other._value_column
         series_col = get_column_right(series_column_id)
         block = joined_index._block
         for column_id, label in zip(
@@ -2382,13 +2382,11 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         if ordering_id is not None:
             return array_value.to_sql(
-                ordering_mode="offset_col",
+                offset_column=ordering_id,
                 col_id_overrides=id_overrides,
-                order_col_name=ordering_id,
             )
         else:
             return array_value.to_sql(
-                ordering_mode="unordered",
                 col_id_overrides=id_overrides,
             )
 

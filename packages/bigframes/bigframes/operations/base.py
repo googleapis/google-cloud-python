@@ -16,7 +16,6 @@ from __future__ import annotations
 
 import typing
 
-import ibis.expr.types as ibis_types
 import pandas as pd
 
 import bigframes.constants as constants
@@ -105,11 +104,6 @@ class SeriesMethods:
                 self._block = bigframes.pandas.read_pandas(pd_dataframe)._get_block()
             if pd_series.name is None:
                 self._block = self._block.with_column_labels([None])
-
-    @property
-    def _value(self) -> ibis_types.Value:
-        """Private property to get Ibis expression for the value column."""
-        return self._block.expr.get_column(self._value_column)
 
     @property
     def _value_column(self) -> str:

@@ -1150,7 +1150,11 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def apply(self, func) -> Series:
         # TODO(shobs, b/274645634): Support convert_dtype, args, **kwargs
         # is actually a ternary op
-        return self._apply_unary_op(ops.RemoteFunctionOp(func))
+        # Reproject as workaround to applying filter too late. This forces the filter
+        # to be applied before passing data to remote function, protecting from bad
+        # inputs causing errors.
+        reprojected_series = Series(self._block._force_reproject())
+        return reprojected_series._apply_unary_op(ops.RemoteFunctionOp(func))
 
     def add_prefix(self, prefix: str, axis: int | str | None = None) -> Series:
         return Series(self._get_block().add_prefix(prefix))

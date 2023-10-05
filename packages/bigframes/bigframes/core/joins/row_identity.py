@@ -38,11 +38,11 @@ def join_by_row_identity(
             f"Only how='outer','left','inner' currently supported. {constants.FEEDBACK_LINK}"
         )
 
-    if not left.table.equals(right.table):
+    if not left._table.equals(right._table):
         raise ValueError(
             "Cannot combine objects without an explicit join/merge key. "
-            f"Left based on: {left.table.compile()}, but "
-            f"right based on: {right.table.compile()}"
+            f"Left based on: {left._table.compile()}, but "
+            f"right based on: {right._table.compile()}"
         )
 
     left_predicates = left._predicates
@@ -63,11 +63,11 @@ def join_by_row_identity(
     left_mask = left_relative_predicates if how in ["right", "outer"] else None
     right_mask = right_relative_predicates if how in ["left", "outer"] else None
     joined_columns = [
-        _mask_value(left.get_column(key), left_mask).name(map_left_id(key))
-        for key in left.column_names.keys()
+        _mask_value(left._get_ibis_column(key), left_mask).name(map_left_id(key))
+        for key in left.column_ids
     ] + [
-        _mask_value(right.get_column(key), right_mask).name(map_right_id(key))
-        for key in right.column_names.keys()
+        _mask_value(right._get_ibis_column(key), right_mask).name(map_right_id(key))
+        for key in right.column_ids
     ]
 
     # If left isn't being masked, can just use left ordering
@@ -108,7 +108,7 @@ def join_by_row_identity(
 
     joined_expr = core.ArrayValue(
         left._session,
-        left.table,
+        left._table,
         columns=joined_columns,
         hidden_ordering_columns=hidden_ordering_columns,
         ordering=new_ordering,

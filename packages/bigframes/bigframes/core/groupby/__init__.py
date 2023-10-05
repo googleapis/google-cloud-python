@@ -426,10 +426,6 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
         self._value_name = value_name
         self._dropna = dropna  # Applies to aggregations but not windowing
 
-    @property
-    def _value(self):
-        return self._block.expr.get_column(self._value_column)
-
     def all(self) -> series.Series:
         return self._aggregate(agg_ops.all_op)
 
