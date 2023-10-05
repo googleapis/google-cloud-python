@@ -2551,6 +2551,74 @@ def test_df_reindex_columns(scalars_df_index, scalars_pandas_df_index):
     )
 
 
+def test_df_equals_identical(scalars_df_index, scalars_pandas_df_index):
+    unsupported = [
+        "geography_col",
+    ]
+    scalars_df_index = scalars_df_index.drop(columns=unsupported)
+    scalars_pandas_df_index = scalars_pandas_df_index.drop(columns=unsupported)
+
+    bf_result = scalars_df_index.equals(scalars_df_index)
+    pd_result = scalars_pandas_df_index.equals(scalars_pandas_df_index)
+
+    assert pd_result == bf_result
+
+
+def test_df_equals_series(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index[["int64_col"]].equals(scalars_df_index["int64_col"])
+    pd_result = scalars_pandas_df_index[["int64_col"]].equals(
+        scalars_pandas_df_index["int64_col"]
+    )
+
+    assert pd_result == bf_result
+
+
+def test_df_equals_different_dtype(scalars_df_index, scalars_pandas_df_index):
+    columns = ["int64_col", "int64_too"]
+    scalars_df_index = scalars_df_index[columns]
+    scalars_pandas_df_index = scalars_pandas_df_index[columns]
+
+    bf_modified = scalars_df_index.copy()
+    bf_modified = bf_modified.astype("Float64")
+
+    pd_modified = scalars_pandas_df_index.copy()
+    pd_modified = pd_modified.astype("Float64")
+
+    bf_result = scalars_df_index.equals(bf_modified)
+    pd_result = scalars_pandas_df_index.equals(pd_modified)
+
+    assert pd_result == bf_result
+
+
+def test_df_equals_different_values(scalars_df_index, scalars_pandas_df_index):
+    columns = ["int64_col", "int64_too"]
+    scalars_df_index = scalars_df_index[columns]
+    scalars_pandas_df_index = scalars_pandas_df_index[columns]
+
+    bf_modified = scalars_df_index.copy()
+    bf_modified["int64_col"] = bf_modified.int64_col + 1
+
+    pd_modified = scalars_pandas_df_index.copy()
+    pd_modified["int64_col"] = pd_modified.int64_col + 1
+
+    bf_result = scalars_df_index.equals(bf_modified)
+    pd_result = scalars_pandas_df_index.equals(pd_modified)
+
+    assert pd_result == bf_result
+
+
+def test_df_equals_extra_column(scalars_df_index, scalars_pandas_df_index):
+    columns = ["int64_col", "int64_too"]
+    more_columns = ["int64_col", "int64_too", "float64_col"]
+
+    bf_result = scalars_df_index[columns].equals(scalars_df_index[more_columns])
+    pd_result = scalars_pandas_df_index[columns].equals(
+        scalars_pandas_df_index[more_columns]
+    )
+
+    assert pd_result == bf_result
+
+
 def test_df_reindex_like(scalars_df_index, scalars_pandas_df_index):
     reindex_target_bf = scalars_df_index.reindex(
         columns=["not_a_col", "int64_col", "int64_too"], index=[5, 1, 3, 99, 1]

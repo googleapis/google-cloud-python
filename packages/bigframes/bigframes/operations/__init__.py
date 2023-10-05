@@ -705,6 +705,16 @@ def eq_op(
     return x == y
 
 
+def eq_nulls_match_op(
+    x: ibis_types.Value,
+    y: ibis_types.Value,
+):
+    """Variant of eq_op where nulls match each other. Only use where dtypes are known to be same."""
+    left = x.cast(ibis_dtypes.str).fillna(ibis_types.literal("$NULL_SENTINEL$"))
+    right = y.cast(ibis_dtypes.str).fillna(ibis_types.literal("$NULL_SENTINEL$"))
+    return left == right
+
+
 def ne_op(
     x: ibis_types.Value,
     y: ibis_types.Value,

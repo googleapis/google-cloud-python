@@ -112,6 +112,44 @@ def test_series_get_column_default(scalars_dfs):
     assert result == "default_val"
 
 
+def test_series_equals_identical(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index.int64_col.equals(scalars_df_index.int64_col)
+    pd_result = scalars_pandas_df_index.int64_col.equals(
+        scalars_pandas_df_index.int64_col
+    )
+
+    assert pd_result == bf_result
+
+
+def test_series_equals_df(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index["int64_col"].equals(scalars_df_index[["int64_col"]])
+    pd_result = scalars_pandas_df_index["int64_col"].equals(
+        scalars_pandas_df_index[["int64_col"]]
+    )
+
+    assert pd_result == bf_result
+
+
+def test_series_equals_different_dtype(scalars_df_index, scalars_pandas_df_index):
+    bf_series = scalars_df_index["int64_col"]
+    pd_series = scalars_pandas_df_index["int64_col"]
+
+    bf_result = bf_series.equals(bf_series.astype("Float64"))
+    pd_result = pd_series.equals(pd_series.astype("Float64"))
+
+    assert pd_result == bf_result
+
+
+def test_series_equals_different_values(scalars_df_index, scalars_pandas_df_index):
+    bf_series = scalars_df_index["int64_col"]
+    pd_series = scalars_pandas_df_index["int64_col"]
+
+    bf_result = bf_series.equals(bf_series + 1)
+    pd_result = pd_series.equals(pd_series + 1)
+
+    assert pd_result == bf_result
+
+
 def test_series_get_with_default_index(scalars_dfs):
     col_name = "float64_col"
     key = 2

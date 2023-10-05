@@ -1066,6 +1066,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             labels = [mapper]
         return DataFrame(self._block.with_index_labels(labels))
 
+    def equals(self, other: typing.Union[bigframes.series.Series, DataFrame]) -> bool:
+        # Must be same object type, same column dtypes, and same label values
+        if not isinstance(other, DataFrame):
+            return False
+        return block_ops.equals(self._block, other._block)
+
     def assign(self, **kwargs) -> DataFrame:
         # TODO(garrettwu) Support list-like values. Requires ordering.
         # TODO(garrettwu) Support callable values.
