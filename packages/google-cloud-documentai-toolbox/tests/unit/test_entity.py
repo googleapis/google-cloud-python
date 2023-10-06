@@ -102,3 +102,15 @@ def test_crop_image_without_page_image(docproto):
         match="Document does not contain images.",
     ):
         doc.entities[0].crop_image(documentai_page=docproto.pages[0])
+
+
+def test_crop_image_empty_bounding_box(docproto):
+    doc = document.Document.from_documentai_document(docproto)
+    del (
+        doc.entities[0]
+        .documentai_object.page_anchor.page_refs[0]
+        .bounding_poly.normalized_vertices
+    )
+
+    actual = doc.entities[0].crop_image(documentai_page=docproto.pages[0])
+    assert actual is None

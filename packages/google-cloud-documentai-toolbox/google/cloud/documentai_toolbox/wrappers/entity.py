@@ -95,9 +95,11 @@ class Entity:
         if not documentai_page.image:
             raise ValueError("Document does not contain images.")
 
-        top, left, bottom, right = docai_utilities.get_bounding_box(
+        bbox = docai_utilities.get_bounding_box(
             bounding_poly=self.documentai_object.page_anchor.page_refs[0].bounding_poly,
             page_dimension=documentai_page.dimension,
         )
+        if bbox is None:
+            return None
         doc_image = Image.open(BytesIO(documentai_page.image.content))
-        return doc_image.crop((top, left, bottom, right))
+        return doc_image.crop(bbox)

@@ -40,6 +40,12 @@ def docproto_form_parser():
         return documentai.Document.from_json(f.read())
 
 
+@pytest.fixture
+def docproto_blank_document():
+    with open("tests/unit/resources/blank_document.json", "r", encoding="utf-8") as f:
+        return documentai.Document.from_json(f.read())
+
+
 def test_table_to_csv(docproto):
     docproto_page = docproto.pages[0]
     table = page.Table(
@@ -158,6 +164,15 @@ def test_get_hocr_bounding_box(docproto):
     )
 
     assert hocr_bounding_box_with_vertices == "bbox 1310 220 1534 282"
+
+
+def test_get_hocr_bounding_box_with_blank_document(docproto_blank_document):
+    hocr_bounding_box_normalized = page._get_hocr_bounding_box(
+        element_with_layout=docproto_blank_document.pages[0],
+        page_dimension=docproto_blank_document.pages[0].dimension,
+    )
+
+    assert hocr_bounding_box_normalized is None
 
 
 # Class init Tests
