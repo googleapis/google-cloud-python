@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.3-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.10.2-alpha...v0.10.3-alpha) (2023-10-06)
+
+
+### Bug Fixes
+
+* `docai_utilities.py` to return `Optional` ([#176](https://github.com/googleapis/python-documentai-toolbox/issues/176)) ([028bc37](https://github.com/googleapis/python-documentai-toolbox/commit/028bc37b8a488cecf7a3a71d90036594bfa0dc23))
+
 ## [0.10.2-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.10.1-alpha...v0.10.2-alpha) (2023-10-03)
 
 
