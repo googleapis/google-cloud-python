@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.12.2...google-cloud-recaptcha-enterprise-v1.13.0) (2023-10-05)
+
+
+### Features
+
+* added AndroidKeySettings.support_non_google_app_store_distribution ([84f4480](https://github.com/googleapis/google-cloud-python/commit/84f44807e374939750a23db53ca345f2e24874c1))
+* added Assessment.firewall_policy_assessment, fraud_signals ([84f4480](https://github.com/googleapis/google-cloud-python/commit/84f44807e374939750a23db53ca345f2e24874c1))
+* added FraudPreventionAssessment.behavioral_trust_verdict ([84f4480](https://github.com/googleapis/google-cloud-python/commit/84f44807e374939750a23db53ca345f2e24874c1))
+* added FraudPreventionAssessment.behavioral_trust_verdict ([84f4480](https://github.com/googleapis/google-cloud-python/commit/84f44807e374939750a23db53ca345f2e24874c1))
+* added IOSKeySettings.apple_developer_id ([84f4480](https://github.com/googleapis/google-cloud-python/commit/84f44807e374939750a23db53ca345f2e24874c1))
+* added new fields to Event message ([84f4480](https://github.com/googleapis/google-cloud-python/commit/84f44807e374939750a23db53ca345f2e24874c1))
+* added RiskAnalysis.extended_verdict_reasons ([84f4480](https://github.com/googleapis/google-cloud-python/commit/84f44807e374939750a23db53ca345f2e24874c1))
+* added WafFeature.EXPRESS enum value ([84f4480](https://github.com/googleapis/google-cloud-python/commit/84f44807e374939750a23db53ca345f2e24874c1))
+* added WafService.FASTLY enum value ([84f4480](https://github.com/googleapis/google-cloud-python/commit/84f44807e374939750a23db53ca345f2e24874c1))
+* FirewallPolicy CRUD API ([84f4480](https://github.com/googleapis/google-cloud-python/commit/84f44807e374939750a23db53ca345f2e24874c1))
+
+
+### Documentation
+
+* formatting of resource names ([84f4480](https://github.com/googleapis/google-cloud-python/commit/84f44807e374939750a23db53ca345f2e24874c1))
+
 ## [1.12.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.12.1...google-cloud-recaptcha-enterprise-v1.12.2) (2023-09-19)
 
 
