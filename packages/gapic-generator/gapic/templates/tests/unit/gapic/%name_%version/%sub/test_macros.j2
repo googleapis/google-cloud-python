@@ -887,6 +887,58 @@ def test_{{ method_name }}_rest(request_type):
     {% if not field.oneof or field.proto3_optional %}
     {# ignore oneof fields that might conflict with sample_request #}
     request_init["{{ field.name }}"] = {{ field.merged_mock_value(method.http_options[0].sample_request(method).get(field.name)) }}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    is_message_proto_plus_type = not hasattr({{ method.input.ident }}.meta.fields["{{ field.name }}"].message, "DESCRIPTOR")
+
+    if is_message_proto_plus_type:
+        message_fields = {{ method.input.ident }}.meta.fields["{{ field.name }}"].message.meta.fields
+    else:
+        message_fields = {{ method.input.ident }}.meta.fields["{{ field.name }}"].message.DESCRIPTOR.fields
+
+    subfields_not_in_runtime = []
+
+    # Get all subfields for the message
+    runtime_nested_fields = [
+        (field.name, subfield.name)
+        for field in message_fields
+        if hasattr(field, "message_type") and field.message_type
+        for subfield in field.message_type.fields
+    ]
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["{{ field.name }}"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {"field": field, "subfield": subfield, "is_repeated": is_repeated}
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["{{ field.name }}"][field])):
+                    del request_init["{{ field.name }}"][field][i][subfield]
+            else:
+                del request_init["{{ field.name }}"][field][subfield]
     {% endif %}
     {% endfor %}
     request = request_type(**request_init)
@@ -942,11 +994,10 @@ def test_{{ method_name }}_rest(request_type):
         json_return_value = json_format.MessageToJson(return_value)
         {% else %}
         {% if method.output.ident.is_proto_plus_type %}
-        pb_return_value = {{ method.output.ident }}.pb(return_value)
-        {% else %}
-        pb_return_value = return_value
+        # Convert return value to protobuf type
+        return_value = {{ method.output.ident }}.pb(return_value)
         {% endif %}
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         {% endif %}
 
         {% if method.server_streaming %}
@@ -1116,11 +1167,10 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
             {% else %}
 
             {% if method.output.ident.is_proto_plus_type %}
-            pb_return_value = {{ method.output.ident }}.pb(return_value)
-            {% else %}
-            pb_return_value = return_value
+            # Convert return value to protobuf type
+            return_value = {{ method.output.ident }}.pb(return_value)
             {% endif %}
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
             {% endif %}
             {% if method.server_streaming %}
             json_return_value = "[{}]".format(json_return_value)
@@ -1242,12 +1292,6 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
 
     # send a request that will satisfy transcoding
     request_init = {{ method.http_options[0].sample_request(method) }}
-    {% for field in method.body_fields.values() %}
-    {% if not field.oneof or field.proto3_optional %}
-    {# ignore oneof fields that might conflict with sample_request #}
-    request_init["{{ field.name }}"] = {{ field.merged_mock_value(method.http_options[0].sample_request(method).get(field.name)) }}
-    {% endif %}
-    {% endfor %}
     request = request_type(**request_init)
     {% if method.client_streaming %}
     requests = [request]
@@ -1308,11 +1352,10 @@ def test_{{ method_name }}_rest_flattened():
         json_return_value = json_format.MessageToJson(return_value)
         {% else %}
         {% if method.output.ident.is_proto_plus_type %}
-        pb_return_value = {{ method.output.ident }}.pb(return_value)
-        {% else %}
-        pb_return_value = return_value
+        # Convert return value to protobuf type
+        return_value = {{ method.output.ident }}.pb(return_value)
         {% endif %}
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         {% endif %}
         {% if method.server_streaming %}
         json_return_value = "[{}]".format(json_return_value)

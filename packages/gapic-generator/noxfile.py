@@ -110,9 +110,20 @@ class FragTester:
             )
 
             # Install the generated fragment library.
-            # Note: install into the tempdir to prevent issues
-            # with running pip concurrently.
-            self.session.install(tmp_dir, "-e", ".", "-t", tmp_dir, "-qqq")
+            if self.use_ads_templates:
+                self.session.install(tmp_dir, "-e", ".", "-qqq")
+            else:
+                # Use the constraints file for the specific python runtime version.
+                # We do this to make sure that we're testing against the lowest
+                # supported version of a dependency.
+                # This is needed to recreate the issue reported in
+                # https://github.com/googleapis/gapic-generator-python/issues/1748
+                # The ads templates do not have constraints files.
+                constraints_path = str(
+                f"{tmp_dir}/testing/constraints-{self.session.python}.txt"
+                )
+                self.session.install(tmp_dir, "-e", ".", "-qqq", "-r", constraints_path)
+
             # Run the fragment's generated unit tests.
             # Don't bother parallelizing them: we already parallelize
             # the fragments, and there usually aren't too many tests per fragment.
