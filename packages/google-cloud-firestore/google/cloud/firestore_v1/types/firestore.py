@@ -1056,7 +1056,8 @@ class PartitionQueryResponse(proto.Message):
             -  query, start_at B
 
             An empty result may indicate that the query has too few
-            results to be partitioned.
+            results to be partitioned, or that the query is not yet
+            supported for partitioning.
         next_page_token (str):
             A page token that may be used to request an additional set
             of results, up to the number specified by
@@ -1360,9 +1361,26 @@ class Target(proto.Message):
 
             This field is a member of `oneof`_ ``resume_type``.
         target_id (int):
-            The target ID that identifies the target on
-            the stream. Must be a positive number and
-            non-zero.
+            The target ID that identifies the target on the stream. Must
+            be a positive number and non-zero.
+
+            If ``target_id`` is 0 (or unspecified), the server will
+            assign an ID for this target and return that in a
+            ``TargetChange::ADD`` event. Once a target with
+            ``target_id=0`` is added, all subsequent targets must also
+            have ``target_id=0``. If an ``AddTarget`` request with
+            ``target_id != 0`` is sent to the server after a target with
+            ``target_id=0`` is added, the server will immediately send a
+            response with a ``TargetChange::Remove`` event.
+
+            Note that if the client sends multiple ``AddTarget``
+            requests without an ID, the order of IDs returned in
+            ``TargetChage.target_ids`` are undefined. Therefore, clients
+            should provide a target ID instead of relying on the server
+            to assign one.
+
+            If ``target_id`` is non-zero, there must not be an existing
+            active target on this stream with the same ID.
         once (bool):
             If the target should be removed once it is
             current and consistent.
