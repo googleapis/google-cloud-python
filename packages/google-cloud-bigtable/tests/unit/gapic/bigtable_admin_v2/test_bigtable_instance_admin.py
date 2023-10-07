@@ -3524,6 +3524,7 @@ def test_create_app_profile(request_type, transport: str = "grpc"):
             name="name_value",
             etag="etag_value",
             description="description_value",
+            priority=instance.AppProfile.Priority.PRIORITY_LOW,
         )
         response = client.create_app_profile(request)
 
@@ -3793,6 +3794,7 @@ def test_get_app_profile(request_type, transport: str = "grpc"):
             name="name_value",
             etag="etag_value",
             description="description_value",
+            priority=instance.AppProfile.Priority.PRIORITY_LOW,
         )
         response = client.get_app_profile(request)
 
@@ -9323,6 +9325,8 @@ def test_create_app_profile_rest(request_type):
             "cluster_id": "cluster_id_value",
             "allow_transactional_writes": True,
         },
+        "priority": 1,
+        "standard_isolation": {"priority": 1},
     }
     request = request_type(**request_init)
 
@@ -9333,6 +9337,7 @@ def test_create_app_profile_rest(request_type):
             name="name_value",
             etag="etag_value",
             description="description_value",
+            priority=instance.AppProfile.Priority.PRIORITY_LOW,
         )
 
         # Wrap the value into a proper Response obj
@@ -9550,6 +9555,8 @@ def test_create_app_profile_rest_bad_request(
             "cluster_id": "cluster_id_value",
             "allow_transactional_writes": True,
         },
+        "priority": 1,
+        "standard_isolation": {"priority": 1},
     }
     request = request_type(**request_init)
 
@@ -9655,6 +9662,7 @@ def test_get_app_profile_rest(request_type):
             name="name_value",
             etag="etag_value",
             description="description_value",
+            priority=instance.AppProfile.Priority.PRIORITY_LOW,
         )
 
         # Wrap the value into a proper Response obj
@@ -10283,6 +10291,8 @@ def test_update_app_profile_rest(request_type):
             "cluster_id": "cluster_id_value",
             "allow_transactional_writes": True,
         },
+        "priority": 1,
+        "standard_isolation": {"priority": 1},
     }
     request = request_type(**request_init)
 
@@ -10489,6 +10499,8 @@ def test_update_app_profile_rest_bad_request(
             "cluster_id": "cluster_id_value",
             "allow_transactional_writes": True,
         },
+        "priority": 1,
+        "standard_isolation": {"priority": 1},
     }
     request = request_type(**request_init)
 

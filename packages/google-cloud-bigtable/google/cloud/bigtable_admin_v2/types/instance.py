@@ -173,7 +173,7 @@ class AutoscalingTargets(proto.Message):
             The storage utilization that the Autoscaler should be trying
             to achieve. This number is limited between 2560 (2.5TiB) and
             5120 (5TiB) for a SSD cluster and between 8192 (8TiB) and
-            16384 (16TiB) for an HDD cluster; otherwise it will return
+            16384 (16TiB) for an HDD cluster, otherwise it will return
             INVALID_ARGUMENT error. If this value is set to 0, it will
             be treated as if it were set to the default value: 2560 for
             SSD, 8192 for HDD.
@@ -419,7 +419,42 @@ class AppProfile(proto.Message):
             Use a single-cluster routing policy.
 
             This field is a member of `oneof`_ ``routing_policy``.
+        priority (google.cloud.bigtable_admin_v2.types.AppProfile.Priority):
+            This field has been deprecated in favor of
+            ``standard_isolation.priority``. If you set this field,
+            ``standard_isolation.priority`` will be set instead.
+
+            The priority of requests sent using this app profile.
+
+            This field is a member of `oneof`_ ``isolation``.
+        standard_isolation (google.cloud.bigtable_admin_v2.types.AppProfile.StandardIsolation):
+            The standard options used for isolating this
+            app profile's traffic from other use cases.
+
+            This field is a member of `oneof`_ ``isolation``.
     """
+
+    class Priority(proto.Enum):
+        r"""Possible priorities for an app profile. Note that higher
+        priority writes can sometimes queue behind lower priority writes
+        to the same tablet, as writes must be strictly sequenced in the
+        durability log.
+
+        Values:
+            PRIORITY_UNSPECIFIED (0):
+                Default value. Mapped to PRIORITY_HIGH (the legacy behavior)
+                on creation.
+            PRIORITY_LOW (1):
+                No description available.
+            PRIORITY_MEDIUM (2):
+                No description available.
+            PRIORITY_HIGH (3):
+                No description available.
+        """
+        PRIORITY_UNSPECIFIED = 0
+        PRIORITY_LOW = 1
+        PRIORITY_MEDIUM = 2
+        PRIORITY_HIGH = 3
 
     class MultiClusterRoutingUseAny(proto.Message):
         r"""Read/write requests are routed to the nearest cluster in the
@@ -466,6 +501,22 @@ class AppProfile(proto.Message):
             number=2,
         )
 
+    class StandardIsolation(proto.Message):
+        r"""Standard options for isolating this app profile's traffic
+        from other use cases.
+
+        Attributes:
+            priority (google.cloud.bigtable_admin_v2.types.AppProfile.Priority):
+                The priority of requests sent using this app
+                profile.
+        """
+
+        priority: "AppProfile.Priority" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="AppProfile.Priority",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -489,6 +540,18 @@ class AppProfile(proto.Message):
         number=6,
         oneof="routing_policy",
         message=SingleClusterRouting,
+    )
+    priority: Priority = proto.Field(
+        proto.ENUM,
+        number=7,
+        oneof="isolation",
+        enum=Priority,
+    )
+    standard_isolation: StandardIsolation = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="isolation",
+        message=StandardIsolation,
     )
 
 
