@@ -125,8 +125,8 @@ def system(session):
 @nox.session(python=["3.7", "3.8", "3.9", "3.10", "3.11"])
 @nox.parametrize(
     "library",
-    ["python-pubsub", "python-texttospeech", "python-speech"],
-    ids=["pubsub", "texttospeech", "speech"],
+    ["python-pubsub", "python-speech"],
+    ids=["pubsub", "speech"],
 )
 def test(session, library):
     """Run tests from a downstream libraries.
