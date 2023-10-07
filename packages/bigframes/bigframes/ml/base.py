@@ -104,7 +104,8 @@ class Predictor(BaseEstimator):
     def register(self: _T, vertex_ai_model_id: Optional[str] = None) -> _T:
         """Register the model to Vertex AI.
 
-        After register, go to https://pantheon.corp.google.com/vertex-ai/models to manage the model registries.
+        After register, go to Google Cloud Console (https://console.cloud.google.com/vertex-ai/models)
+        to manage the model registries.
         Refer to https://cloud.google.com/vertex-ai/docs/model-registry/introduction for more options.
 
         Args:
