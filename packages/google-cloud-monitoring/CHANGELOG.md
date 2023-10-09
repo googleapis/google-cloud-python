@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.16.0](https://github.com/googleapis/python-monitoring/compare/v2.15.1...v2.16.0) (2023-10-09)
+
+
+### Features
+
+* Added support for forecast options in AlertPolicy ([218e678](https://github.com/googleapis/python-monitoring/commit/218e67818d7a19e45bd1521adb3cea76efb3f541))
+* Added support for promQL condition type in AlertPolicy ([218e678](https://github.com/googleapis/python-monitoring/commit/218e67818d7a19e45bd1521adb3cea76efb3f541))
+* Added support for retriggering notifications in AlertPolicy ([218e678](https://github.com/googleapis/python-monitoring/commit/218e67818d7a19e45bd1521adb3cea76efb3f541))
+
+
+### Documentation
+
+* Minor formatting ([218e678](https://github.com/googleapis/python-monitoring/commit/218e67818d7a19e45bd1521adb3cea76efb3f541))
+
 ## [2.15.1](https://github.com/googleapis/python-monitoring/compare/v2.15.0...v2.15.1) (2023-07-04)
 
 
