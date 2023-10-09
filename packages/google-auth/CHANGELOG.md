@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.23.3](https://github.com/googleapis/google-auth-library-python/compare/v2.23.2...v2.23.3) (2023-10-05)
+
+
+### Bug Fixes
+
+* Serialize signer keys on __getstate__ for pickling ([#1394](https://github.com/googleapis/google-auth-library-python/issues/1394)) ([8b783b9](https://github.com/googleapis/google-auth-library-python/commit/8b783b904d6044433acc5ba0f0c166fc38b3ddb3)), closes [#1383](https://github.com/googleapis/google-auth-library-python/issues/1383)
+
 ## [2.23.2](https://github.com/googleapis/google-auth-library-python/compare/v2.23.1...v2.23.2) (2023-09-28)
 
 
