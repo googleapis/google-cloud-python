@@ -322,6 +322,11 @@ class SpannerTransport(abc.ABC):
                 default_timeout=30.0,
                 client_info=client_info,
             ),
+            self.batch_write: gapic_v1.method.wrap_method(
+                self.batch_write,
+                default_timeout=3600.0,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -470,6 +475,15 @@ class SpannerTransport(abc.ABC):
     ) -> Callable[
         [spanner.PartitionReadRequest],
         Union[spanner.PartitionResponse, Awaitable[spanner.PartitionResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def batch_write(
+        self,
+    ) -> Callable[
+        [spanner.BatchWriteRequest],
+        Union[spanner.BatchWriteResponse, Awaitable[spanner.BatchWriteResponse]],
     ]:
         raise NotImplementedError()
 

@@ -36,6 +36,8 @@ from .result_set import (
 from .spanner import (
     BatchCreateSessionsRequest,
     BatchCreateSessionsResponse,
+    BatchWriteRequest,
+    BatchWriteResponse,
     BeginTransactionRequest,
     CommitRequest,
     CreateSessionRequest,
@@ -81,6 +83,8 @@ __all__ = (
     "ResultSetStats",
     "BatchCreateSessionsRequest",
     "BatchCreateSessionsResponse",
+    "BatchWriteRequest",
+    "BatchWriteResponse",
     "BeginTransactionRequest",
     "CommitRequest",
     "CreateSessionRequest",

@@ -755,6 +755,50 @@ class SpannerGrpcTransport(SpannerTransport):
             )
         return self._stubs["partition_read"]
 
+    @property
+    def batch_write(
+        self,
+    ) -> Callable[[spanner.BatchWriteRequest], spanner.BatchWriteResponse]:
+        r"""Return a callable for the batch write method over gRPC.
+
+        Batches the supplied mutation groups in a collection
+        of efficient transactions. All mutations in a group are
+        committed atomically. However, mutations across groups
+        can be committed non-atomically in an unspecified order
+        and thus, they must be independent of each other.
+        Partial failure is possible, i.e., some groups may have
+        been committed successfully, while some may have failed.
+        The results of individual batches are streamed into the
+        response as the batches are applied.
+
+        BatchWrite requests are not replay protected, meaning
+        that each mutation group may be applied more than once.
+        Replays of non-idempotent mutations may have undesirable
+        effects. For example, replays of an insert mutation may
+        produce an already exists error or if you use generated
+        or commit timestamp-based keys, it may result in
+        additional rows being added to the mutation's table. We
+        recommend structuring your mutation groups to be
+        idempotent to avoid this issue.
+
+        Returns:
+            Callable[[~.BatchWriteRequest],
+                    ~.BatchWriteResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "batch_write" not in self._stubs:
+            self._stubs["batch_write"] = self.grpc_channel.unary_stream(
+                "/google.spanner.v1.Spanner/BatchWrite",
+                request_serializer=spanner.BatchWriteRequest.serialize,
+                response_deserializer=spanner.BatchWriteResponse.deserialize,
+            )
+        return self._stubs["batch_write"]
+
     def close(self):
         self.grpc_channel.close()
 

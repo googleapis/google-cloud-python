@@ -15,6 +15,11 @@
                 "batch_create_sessions"
               ]
             },
+            "BatchWrite": {
+              "methods": [
+                "batch_write"
+              ]
+            },
             "BeginTransaction": {
               "methods": [
                 "begin_transaction"
@@ -95,6 +100,11 @@
                 "batch_create_sessions"
               ]
             },
+            "BatchWrite": {
+              "methods": [
+                "batch_write"
+              ]
+            },
             "BeginTransaction": {
               "methods": [
                 "begin_transaction"
@@ -173,6 +183,11 @@
             "BatchCreateSessions": {
               "methods": [
                 "batch_create_sessions"
+              ]
+            },
+            "BatchWrite": {
+              "methods": [
+                "batch_write"
               ]
             },
             "BeginTransaction": {
