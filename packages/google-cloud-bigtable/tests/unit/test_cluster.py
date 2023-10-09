@@ -752,7 +752,6 @@ def test_cluster_update_w_partial_autoscaling_config():
         },
     ]
     for config in cluster_config:
-
         cluster = _make_cluster(
             CLUSTER_ID,
             instance,
@@ -927,7 +926,6 @@ def test_cluster_disable_autoscaling():
 
 
 def test_create_cluster_with_both_manual_and_autoscaling():
-
     from google.cloud.bigtable.instance import Instance
     from google.cloud.bigtable.enums import StorageType
 
@@ -955,7 +953,6 @@ def test_create_cluster_with_both_manual_and_autoscaling():
 
 
 def test_create_cluster_with_partial_autoscaling_config():
-
     from google.cloud.bigtable.instance import Instance
     from google.cloud.bigtable.enums import StorageType
 
@@ -996,7 +993,6 @@ def test_create_cluster_with_partial_autoscaling_config():
 
 
 def test_create_cluster_with_no_scaling_config():
-
     from google.cloud.bigtable.instance import Instance
     from google.cloud.bigtable.enums import StorageType
 

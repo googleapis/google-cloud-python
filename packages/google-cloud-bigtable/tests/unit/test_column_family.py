@@ -595,7 +595,6 @@ def test__gc_rule_from_pb_unknown_field_name():
     from google.cloud.bigtable.column_family import _gc_rule_from_pb
 
     class MockProto(object):
-
         names = []
 
         _pb = {}

@@ -1689,7 +1689,6 @@ def _do_mutate_retryable_rows_helper(
 
     expected_entries = []
     for row, prior_status in zip(rows, worker.responses_statuses):
-
         if prior_status is None or prior_status.code in RETRYABLES:
             mutations = row._get_mutations().copy()  # row clears on success
             entry = data_messages_v2_pb2.MutateRowsRequest.Entry(

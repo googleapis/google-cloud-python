@@ -448,7 +448,6 @@ def test_bigtable_create_table():
 
 
 def test_bigtable_list_tables():
-
     # [START bigtable_api_list_tables]
     from google.cloud.bigtable import Client
 

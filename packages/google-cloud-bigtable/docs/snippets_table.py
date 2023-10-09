@@ -964,7 +964,6 @@ def test_bigtable_create_family_gc_nested():
 
 
 def test_bigtable_row_data_cells_cell_value_cell_values():
-
     value = b"value_in_col1"
     row = Config.TABLE.row(b"row_key_1")
     row.set_cell(

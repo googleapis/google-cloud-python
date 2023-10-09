@@ -1118,7 +1118,6 @@ def test_RRRM_build_updated_request_row_ranges_valid():
 
 
 class _MockCancellableIterator(object):
-
     cancel_calls = 0
 
     def __init__(self, *values):
@@ -1199,5 +1198,4 @@ def _read_rows_retry_exception(exc):
 
 
 class _Client(object):
-
     data_stub = None

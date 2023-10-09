@@ -28,7 +28,6 @@ def _create_app_profile_helper(
     allow_transactional_writes=None,
     ignore_warnings=None,
 ):
-
     app_profile = instance.app_profile(
         app_profile_id=app_profile_id,
         routing_policy_type=routing_policy_type,

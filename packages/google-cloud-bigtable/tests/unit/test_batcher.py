@@ -59,7 +59,6 @@ def test_mutation_batcher_w_user_callback():
 def test_mutation_batcher_mutate_row():
     table = _Table(TABLE_NAME)
     with MutationsBatcher(table=table) as mutation_batcher:
-
         rows = [
             DirectRow(row_key=b"row_key"),
             DirectRow(row_key=b"row_key_2"),
@@ -75,7 +74,6 @@ def test_mutation_batcher_mutate_row():
 def test_mutation_batcher_mutate():
     table = _Table(TABLE_NAME)
     with MutationsBatcher(table=table) as mutation_batcher:
-
         row = DirectRow(row_key=b"row_key")
         row.set_cell("cf1", b"c1", 1)
         row.set_cell("cf1", b"c2", 2)
@@ -98,7 +96,6 @@ def test_mutation_batcher_flush_w_no_rows():
 def test_mutation_batcher_mutate_w_max_flush_count():
     table = _Table(TABLE_NAME)
     with MutationsBatcher(table=table, flush_count=3) as mutation_batcher:
-
         row_1 = DirectRow(row_key=b"row_key_1")
         row_2 = DirectRow(row_key=b"row_key_2")
         row_3 = DirectRow(row_key=b"row_key_3")
@@ -114,7 +111,6 @@ def test_mutation_batcher_mutate_w_max_flush_count():
 def test_mutation_batcher_mutate_w_max_mutations():
     table = _Table(TABLE_NAME)
     with MutationsBatcher(table=table) as mutation_batcher:
-
         row = DirectRow(row_key=b"row_key")
         row.set_cell("cf1", b"c1", 1)
         row.set_cell("cf1", b"c2", 2)
@@ -130,7 +126,6 @@ def test_mutation_batcher_mutate_w_max_row_bytes():
     with MutationsBatcher(
         table=table, max_row_bytes=3 * 1024 * 1024
     ) as mutation_batcher:
-
         number_of_bytes = 1 * 1024 * 1024
         max_value = b"1" * number_of_bytes
 
@@ -168,7 +163,6 @@ def test_mutations_batcher_context_manager_flushed_when_closed():
     with MutationsBatcher(
         table=table, max_row_bytes=3 * 1024 * 1024
     ) as mutation_batcher:
-
         number_of_bytes = 1 * 1024 * 1024
         max_value = b"1" * number_of_bytes
 

@@ -67,7 +67,6 @@ def _make_instance(*args, **kwargs):
 
 
 def test_instance_constructor_defaults():
-
     client = object()
     instance = _make_instance(INSTANCE_ID, client)
     assert instance.instance_id == INSTANCE_ID
