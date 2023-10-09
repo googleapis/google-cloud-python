@@ -25,7 +25,6 @@ from google.cloud.logging_v2.handlers._monitored_resources import (
 
 
 class TestCloudLoggingFilter(unittest.TestCase):
-
     PROJECT = "PROJECT"
 
     @staticmethod
@@ -291,7 +290,6 @@ class TestCloudLoggingFilter(unittest.TestCase):
 
 
 class TestCloudLoggingHandler(unittest.TestCase):
-
     PROJECT = "PROJECT"
 
     @staticmethod
@@ -859,7 +857,7 @@ class TestFormatAndParseMessage(unittest.TestCase):
         _format_and_parse_message(record, handler)
         # ensure json_fields has no side-effects
         self.assertEqual(set(json_fields.keys()), set(json_fields_orig.keys()))
-        for (key, value) in json_fields_orig.items():
+        for key, value in json_fields_orig.items():
             self.assertEqual(
                 value, json_fields[key], f"expected_payload[{key}] != result[{key}]"
             )

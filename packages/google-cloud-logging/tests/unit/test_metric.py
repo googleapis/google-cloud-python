@@ -16,7 +16,6 @@ import unittest
 
 
 class TestMetric(unittest.TestCase):
-
     PROJECT = "test-project"
     METRIC_NAME = "metric-name"
     FULL_METRIC_NAME = f"projects/{PROJECT}/metrics/{METRIC_NAME}"

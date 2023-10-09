@@ -17,7 +17,6 @@ import unittest
 
 
 class TestSyncHandler(unittest.TestCase):
-
     PROJECT = "PROJECT"
 
     @staticmethod

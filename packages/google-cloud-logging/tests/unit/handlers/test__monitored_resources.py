@@ -45,7 +45,6 @@ from google.cloud.logging_v2.resource import Resource
 
 
 class Test_Create_Resources(unittest.TestCase):
-
     PROJECT = "test-project"
     LOCATION = "test-location"
     NAME = "test-name"
@@ -135,7 +134,6 @@ class Test_Create_Resources(unittest.TestCase):
             self.assertEqual(func_resource.labels["function_name"], "")
 
     def test_create_kubernetes_resource(self):
-
         patch = mock.patch(
             "google.cloud.logging_v2.handlers._monitored_resources.retrieve_metadata_server",
             wraps=self._mock_metadata,
@@ -246,7 +244,6 @@ class Test_Create_Resources(unittest.TestCase):
 
 
 class Test_Resource_Detection(unittest.TestCase):
-
     PROJECT = "test-project"
 
     def _mock_k8s_metadata(self, endpoint):

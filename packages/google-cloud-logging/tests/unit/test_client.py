@@ -34,7 +34,6 @@ def _make_credentials():
 
 
 class TestClient(unittest.TestCase):
-
     PROJECT = "PROJECT"
     PROJECT_PATH = f"projects/{PROJECT}"
     LOGGER_NAME = "LOGGER_NAME"
@@ -903,7 +902,6 @@ class TestClient(unittest.TestCase):
 
 
 class _Connection(object):
-
     _called_with = None
 
     def __init__(self, *responses):

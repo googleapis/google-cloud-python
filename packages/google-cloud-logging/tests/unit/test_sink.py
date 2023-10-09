@@ -16,7 +16,6 @@ import unittest
 
 
 class TestSink(unittest.TestCase):
-
     PROJECT = "test-project"
     PROJECT_PATH = f"projects/{PROJECT}"
     SINK_NAME = "sink-name"

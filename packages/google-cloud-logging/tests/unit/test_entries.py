@@ -79,7 +79,6 @@ class Test__int_or_none(unittest.TestCase):
 
 
 class TestLogEntry(unittest.TestCase):
-
     PROJECT = "PROJECT"
     LOGGER_NAME = "LOGGER_NAME"
 
@@ -469,7 +468,6 @@ class TestLogEntry(unittest.TestCase):
 
 
 class TestTextEntry(unittest.TestCase):
-
     PROJECT = "PROJECT"
     LOGGER_NAME = "LOGGER_NAME"
 
@@ -557,7 +555,6 @@ class TestTextEntry(unittest.TestCase):
 
 
 class TestStructEntry(unittest.TestCase):
-
     PROJECT = "PROJECT"
     LOGGER_NAME = "LOGGER_NAME"
 
@@ -659,7 +656,6 @@ class TestStructEntry(unittest.TestCase):
 
 
 class TestProtobufEntry(unittest.TestCase):
-
     PROJECT = "PROJECT"
     LOGGER_NAME = "LOGGER_NAME"
 

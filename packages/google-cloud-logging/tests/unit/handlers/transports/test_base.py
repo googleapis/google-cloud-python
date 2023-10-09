@@ -16,7 +16,6 @@ import unittest
 
 
 class TestBaseHandler(unittest.TestCase):
-
     PROJECT = "PROJECT"
 
     @staticmethod
