@@ -20,17 +20,22 @@ requests, especially for services that are regional.
 Generally, these headers are specified as gRPC metadata.
 """
 
+import functools
 from enum import Enum
 from urllib.parse import urlencode
 
 ROUTING_METADATA_KEY = "x-goog-request-params"
+# This is the value for the `maxsize` argument of @functools.lru_cache
+# https://docs.python.org/3/library/functools.html#functools.lru_cache
+# This represents the number of recent function calls to store.
+ROUTING_PARAM_CACHE_SIZE = 32
 
 
 def to_routing_header(params, qualified_enums=True):
     """Returns a routing header string for the given request parameters.
 
     Args:
-        params (Mapping[str, Any]): A dictionary containing the request
+        params (Mapping[str, str | bytes | Enum]): A dictionary containing the request
             parameters used for routing.
         qualified_enums (bool): Whether to represent enum values
             as their type-qualified symbol names instead of as their
@@ -38,19 +43,11 @@ def to_routing_header(params, qualified_enums=True):
 
     Returns:
         str: The routing header string.
-
     """
+    tuples = params.items() if isinstance(params, dict) else params
     if not qualified_enums:
-        if isinstance(params, dict):
-            tuples = params.items()
-        else:
-            tuples = params
-        params = [(x[0], x[1].name) if isinstance(x[1], Enum) else x for x in tuples]
-    return urlencode(
-        params,
-        # Per Google API policy (go/api-url-encoding), / is not encoded.
-        safe="/",
-    )
+        tuples = [(x[0], x[1].name) if isinstance(x[1], Enum) else x for x in tuples]
+    return "&".join([_urlencode_param(*t) for t in tuples])
 
 
 def to_grpc_metadata(params, qualified_enums=True):
@@ -58,7 +55,7 @@ def to_grpc_metadata(params, qualified_enums=True):
     request parameters.
 
     Args:
-        params (Mapping[str, Any]): A dictionary containing the request
+        params (Mapping[str, str | bytes | Enum]): A dictionary containing the request
             parameters used for routing.
         qualified_enums (bool): Whether to represent enum values
             as their type-qualified symbol names instead of as their
@@ -69,3 +66,22 @@ def to_grpc_metadata(params, qualified_enums=True):
             and value.
     """
     return (ROUTING_METADATA_KEY, to_routing_header(params, qualified_enums))
+
+
+# use caching to avoid repeated computation
+@functools.lru_cache(maxsize=ROUTING_PARAM_CACHE_SIZE)
+def _urlencode_param(key, value):
+    """Cacheable wrapper over urlencode
+
+    Args:
+        key (str): The key of the parameter to encode.
+        value (str | bytes | Enum): The value of the parameter to encode.
+
+    Returns:
+        str: The encoded parameter.
+    """
+    return urlencode(
+        {key: value},
+        # Per Google API policy (go/api-url-encoding), / is not encoded.
+        safe="/",
+    )
