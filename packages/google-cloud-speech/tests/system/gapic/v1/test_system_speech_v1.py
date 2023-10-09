@@ -21,7 +21,6 @@ from google.cloud import speech_v1
 
 class TestSystemSpeech(object):
     def test_recognize(self):
-
         try:
             BUCKET = os.environ["GOOGLE_CLOUD_TESTS_SPEECH_BUCKET"]
         except KeyError:
@@ -43,7 +42,6 @@ class TestSystemSpeech(object):
         assert response.results[0].alternatives[0].transcript is not None
 
     def test_long_running_recognize(self):
-
         try:
             BUCKET = os.environ["GOOGLE_CLOUD_TESTS_SPEECH_BUCKET"]
         except KeyError:
@@ -65,7 +63,6 @@ class TestSystemSpeech(object):
         assert response.result() is not None
 
     def test_streaming_recognize(self):
-
         try:
             BUCKET = os.environ["GOOGLE_CLOUD_TESTS_SPEECH_BUCKET"]
         except KeyError:
