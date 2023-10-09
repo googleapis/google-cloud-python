@@ -24,7 +24,6 @@ def _make_credentials():
 
 
 class Test_ErrorReportingLoggingAPI(unittest.TestCase):
-
     PROJECT = "PROJECT"
 
     def _make_one(self, project, credentials, **kw):

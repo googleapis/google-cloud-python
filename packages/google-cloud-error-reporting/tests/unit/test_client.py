@@ -25,7 +25,6 @@ def _make_credentials():
 
 
 class TestClient(unittest.TestCase):
-
     PROJECT = "PROJECT"
     SERVICE = "SERVICE"
     VERSION = "myversion"

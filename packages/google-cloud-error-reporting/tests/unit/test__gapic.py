@@ -49,7 +49,6 @@ class Test_make_report_error_api(unittest.TestCase):
 
 
 class Test_ErrorReportingGapicApi(unittest.TestCase):
-
     PROJECT = "PROJECT"
 
     def _make_one(self, gapic_api, project):
