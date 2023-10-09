@@ -24,7 +24,6 @@ def _make_credentials():
 
 
 class TestClient(unittest.TestCase):
-
     PROJECT = "PROJECT"
     ZONE_NAME = "zone-name"
 
