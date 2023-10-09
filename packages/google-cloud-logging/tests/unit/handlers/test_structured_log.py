@@ -86,7 +86,7 @@ class TestStructuredLogHandler(unittest.TestCase):
         }
         handler.filter(record)
         result = json.loads(handler.format(record))
-        for (key, value) in expected_payload.items():
+        for key, value in expected_payload.items():
             self.assertEqual(value, result[key])
         self.assertEqual(
             len(expected_payload.keys()),
@@ -121,7 +121,7 @@ class TestStructuredLogHandler(unittest.TestCase):
         handler.filter(record)
         result = json.loads(handler.format(record))
         self.assertEqual(set(expected_payload.keys()), set(result.keys()))
-        for (key, value) in expected_payload.items():
+        for key, value in expected_payload.items():
             self.assertEqual(
                 value, result[key], f"expected_payload[{key}] != result[{key}]"
             )
@@ -304,7 +304,7 @@ class TestStructuredLogHandler(unittest.TestCase):
         handler.filter(record)
         result = json.loads(handler.format(record))
         self.assertEqual(set(expected_payload.keys()), set(result.keys()))
-        for (key, value) in expected_payload.items():
+        for key, value in expected_payload.items():
             self.assertEqual(
                 value, result[key], f"expected_payload[{key}] != result[{key}]"
             )
@@ -417,7 +417,7 @@ class TestStructuredLogHandler(unittest.TestCase):
         ):
             handler.filter(record)
             result = json.loads(handler.format(record))
-            for (key, value) in expected_payload.items():
+            for key, value in expected_payload.items():
                 self.assertEqual(value, result[key])
 
     def test_format_with_traceparent(self):
@@ -452,7 +452,7 @@ class TestStructuredLogHandler(unittest.TestCase):
         ):
             handler.filter(record)
             result = json.loads(handler.format(record))
-            for (key, value) in expected_payload.items():
+            for key, value in expected_payload.items():
                 self.assertEqual(value, result[key])
 
     def test_format_overrides(self):
@@ -509,7 +509,7 @@ class TestStructuredLogHandler(unittest.TestCase):
             )
             handler.filter(record)
             result = json.loads(handler.format(record))
-            for (key, value) in expected_payload.items():
+            for key, value in expected_payload.items():
                 self.assertEqual(value, result[key])
 
     def test_format_with_json_fields(self):
@@ -590,7 +590,7 @@ class TestStructuredLogHandler(unittest.TestCase):
         handler.format(record)
         # ensure json_fields has no side-effects
         self.assertEqual(set(json_fields.keys()), set(json_fields_orig.keys()))
-        for (key, value) in json_fields_orig.items():
+        for key, value in json_fields_orig.items():
             self.assertEqual(
                 value, json_fields[key], f"expected_payload[{key}] != result[{key}]"
             )

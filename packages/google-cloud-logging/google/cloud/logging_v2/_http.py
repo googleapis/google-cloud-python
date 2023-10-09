@@ -26,7 +26,6 @@ from google.cloud.logging_v2.metric import Metric
 
 
 class Connection(_http.JSONConnection):
-
     DEFAULT_API_ENDPOINT = "https://logging.googleapis.com"
 
     def __init__(self, client, *, client_info=None, api_endpoint=DEFAULT_API_ENDPOINT):

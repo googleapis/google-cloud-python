@@ -118,7 +118,6 @@ skip_for_mtls = pytest.mark.skipif(
 
 
 class TestLogging(unittest.TestCase):
-
     JSON_PAYLOAD = {
         "message": "System test: test_log_struct",
         "weather": {

@@ -17,7 +17,6 @@ import google.cloud.logging_v2._instrumentation as i
 
 
 class TestInstrumentation(unittest.TestCase):
-
     TEST_NAME = "python"
     # LONG_NAME > 14 characters
     LONG_NAME = TEST_NAME + "789ABCDEF"

@@ -70,7 +70,7 @@ class CloudLoggingFilter(logging.Filter):
                 ("function", "funcName"),
             ]
             output = {}
-            for (gcp_name, std_lib_name) in name_map:
+            for gcp_name, std_lib_name in name_map:
                 value = getattr(record, std_lib_name, None)
                 if value is not None:
                     output[gcp_name] = value

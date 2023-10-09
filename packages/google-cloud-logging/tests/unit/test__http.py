@@ -24,7 +24,6 @@ def _make_credentials():
 
 
 class TestConnection(unittest.TestCase):
-
     PROJECT = "project"
     FILTER = "logName:syslog AND severity>=ERROR"
 
@@ -96,7 +95,6 @@ class TestConnection(unittest.TestCase):
 
 
 class Test_LoggingAPI(unittest.TestCase):
-
     PROJECT = "project"
     PROJECT_PATH = "projects/project"
     LIST_ENTRIES_PATH = "entries:list"
@@ -354,7 +352,6 @@ class Test_LoggingAPI(unittest.TestCase):
 
 
 class Test_SinksAPI(unittest.TestCase):
-
     PROJECT = "project"
     PROJECT_PATH = "projects/project"
     FILTER = "logName:syslog AND severity>=ERROR"
@@ -636,7 +633,6 @@ class Test_SinksAPI(unittest.TestCase):
 
 
 class Test_MetricsAPI(unittest.TestCase):
-
     PROJECT = "project"
     FILTER = "logName:syslog AND severity>=ERROR"
     LIST_METRICS_PATH = "projects/%s/metrics" % (PROJECT,)
@@ -865,7 +861,6 @@ class Test_MetricsAPI(unittest.TestCase):
 
 
 class _Connection(object):
-
     _called_with = None
     _raise_conflict = False
 

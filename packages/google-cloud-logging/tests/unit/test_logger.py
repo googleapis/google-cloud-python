@@ -28,7 +28,6 @@ def _make_credentials():
 
 
 class TestLogger(unittest.TestCase):
-
     PROJECT = "test-project"
     LOGGER_NAME = "logger-name"
     TIME_FORMAT = '"%Y-%m-%dT%H:%M:%S.%f%z"'
@@ -1086,7 +1085,6 @@ class TestLogger(unittest.TestCase):
 
 
 class TestBatch(unittest.TestCase):
-
     PROJECT = "test-project"
 
     @staticmethod
@@ -1847,7 +1845,6 @@ class TestBatch(unittest.TestCase):
 
 
 class _Logger(object):
-
     labels = None
 
     def __init__(self, name="NAME", project="PROJECT"):
@@ -1855,7 +1852,6 @@ class _Logger(object):
 
 
 class _DummyLoggingAPI(object):
-
     _write_entries_called_with = None
 
     def write_entries(
@@ -1909,7 +1905,6 @@ class _Bugout(Exception):
 
 
 class _Connection(object):
-
     _called_with = None
 
     def __init__(self, *responses):
