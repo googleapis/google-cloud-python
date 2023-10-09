@@ -183,7 +183,6 @@ class BigQueryExecutionContext(DefaultExecutionContext):
 
 
 class BigQueryCompiler(_struct.SQLCompiler, SQLCompiler):
-
     compound_keywords = SQLCompiler.compound_keywords.copy()
     compound_keywords[selectable.CompoundSelect.UNION] = "UNION DISTINCT"
     compound_keywords[selectable.CompoundSelect.UNION_ALL] = "UNION ALL"
@@ -624,7 +623,6 @@ class BigQueryTypeCompiler(GenericTypeCompiler):
 
 
 class BigQueryDDLCompiler(DDLCompiler):
-
     # BigQuery has no support for foreign keys.
     def visit_foreign_key_constraint(self, constraint):
         return None
@@ -723,7 +721,6 @@ class BQTimestamp(sqlalchemy.sql.type_api.TypeEngine):
 
 class BQArray(sqlalchemy.sql.sqltypes.ARRAY):
     def literal_processor(self, dialect):
-
         item_processor = self.item_type._cached_literal_processor(dialect)
         if not item_processor:
             raise NotImplementedError(

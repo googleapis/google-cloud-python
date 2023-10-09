@@ -29,7 +29,6 @@ import sqlalchemy_bigquery.base
 
 
 def _check(raw, escaped, escape=None, autoescape=True):
-
     col = sqlalchemy.sql.schema.Column()
     op = col.contains(raw, escape=escape, autoescape=autoescape)
     o2 = sqlalchemy_bigquery.base.BigQueryCompiler._maybe_reescape(op)
@@ -40,7 +39,6 @@ def _check(raw, escaped, escape=None, autoescape=True):
 
 
 def test_like_autoescape_reescape():
-
     _check("ab%cd", "ab\\%cd")
     _check("ab%c_d", "ab\\%c\\_d")
     _check("ab%cd", "ab%cd", autoescape=False)

@@ -354,7 +354,6 @@ class attrdict(dict):
 
 class FauxClient:
     def __init__(self, project_id=None, default_query_job_config=None, *args, **kw):
-
         if project_id is None:
             if default_query_job_config is not None:
                 project_id = default_query_job_config.default_dataset.project
