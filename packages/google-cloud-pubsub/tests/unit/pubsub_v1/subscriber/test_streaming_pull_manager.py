@@ -1157,7 +1157,6 @@ def test_heartbeat_stream_ack_deadline_seconds(caplog):
     "google.cloud.pubsub_v1.subscriber._protocol.heartbeater.Heartbeater", autospec=True
 )
 def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bidi_rpc):
-
     manager = make_manager()
 
     with mock.patch.object(

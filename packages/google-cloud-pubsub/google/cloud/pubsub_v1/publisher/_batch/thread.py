@@ -388,7 +388,6 @@ class Batch(base.Batch):
             overflow = new_size > size_limit or new_count >= self.settings.max_messages
 
             if not self._messages or not overflow:
-
                 # Store the actual message in the batch's message queue.
                 self._messages.append(message)
                 self._size = new_size
