@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [1.11.6](https://github.com/googleapis/gapic-generator-python/compare/v1.11.5...v1.11.6) (2023-10-09)
+
+
+### Bug Fixes
+
+* Change to Set vs FrozenSet and thread the same set through ([#1125](https://github.com/googleapis/gapic-generator-python/issues/1125)) ([723efca](https://github.com/googleapis/gapic-generator-python/commit/723efca3f909527c48e8070eff61511293888626))
+* Resolve unit test failure caused by differences in protobuf runtimes ([#1749](https://github.com/googleapis/gapic-generator-python/issues/1749)) ([812abce](https://github.com/googleapis/gapic-generator-python/commit/812abceeb68d86f3902974aaeef8a58cfd6e7515))
+
 ## [1.11.5](https://github.com/googleapis/gapic-generator-python/compare/v1.11.4...v1.11.5) (2023-09-06)
 
 
