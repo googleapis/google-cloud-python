@@ -105,7 +105,6 @@ def run(database):
     response = input("Is this OK [y/n]? ")
 
     if response.lower() == "y":
-
         for kind in kinds:
             remove_kind(kind, client)
 

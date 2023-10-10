@@ -373,7 +373,6 @@ def test_query_add_filter_return_query_obj(database_id):
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_query_add_property_filter_without_keyword_argument(database_id):
-
     query = _make_query(_make_client(database=database_id))
     property_filter = PropertyFilter("firstname", "=", "John")
     with pytest.raises(ValueError) as exc:
@@ -387,7 +386,6 @@ def test_query_add_property_filter_without_keyword_argument(database_id):
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_query_add_composite_filter_without_keyword_argument(database_id):
-
     query = _make_query(_make_client(database=database_id))
     and_filter = And(["firstname", "=", "John"])
     with pytest.raises(ValueError) as exc:
@@ -410,7 +408,6 @@ def test_query_add_composite_filter_without_keyword_argument(database_id):
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_query_positional_args_and_property_filter(database_id):
-
     query = _make_query(_make_client(database=database_id))
     with pytest.raises(ValueError) as exc:
         query.add_filter("firstname", "=", "John", filter=("name", "=", "Blabla"))
@@ -423,7 +420,6 @@ def test_query_positional_args_and_property_filter(database_id):
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_query_positional_args_and_composite_filter(database_id):
-
     query = _make_query(_make_client(database=database_id))
     and_filter = And(["firstname", "=", "John"])
     with pytest.raises(ValueError) as exc:
@@ -1199,7 +1195,6 @@ def test_pb_from_complex_filter():
 
 
 def test_build_pb_for_and():
-
     and_filter = And(
         [
             ("name", "=", "John"),

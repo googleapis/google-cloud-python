@@ -48,7 +48,6 @@ def query_client(datastore_client):
 
 @pytest.fixture(scope="session")
 def ancestor_key(query_client, in_emulator):
-
     # In the emulator, re-populating the datastore is cheap.
     if in_emulator:
         populate_datastore.add_characters(client=query_client)
@@ -205,7 +204,6 @@ def test_query_w_projection(ancestor_query, database_id):
 
 @pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
 def test_query_w_paginate_simple_uuid_keys(query_client, database_id):
-
     # See issue #4264
     page_query = query_client.query(kind="uuid_key")
     iterator = page_query.fetch()
@@ -224,7 +222,6 @@ def test_query_w_paginate_simple_uuid_keys(query_client, database_id):
 
 @pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
 def test_query_paginate_simple_timestamp_keys(query_client, database_id):
-
     # See issue #4264
     page_query = query_client.query(kind="timestamp_key")
     iterator = page_query.fetch()

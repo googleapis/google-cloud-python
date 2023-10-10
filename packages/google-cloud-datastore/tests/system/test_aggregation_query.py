@@ -46,7 +46,6 @@ def aggregation_query_client(datastore_client, database_id=None):
 
 @pytest.fixture(scope="session")
 def ancestor_key(aggregation_query_client, in_emulator):
-
     # In the emulator, re-populating the datastore is cheap.
     if in_emulator:
         populate_datastore.add_characters(client=aggregation_query_client)

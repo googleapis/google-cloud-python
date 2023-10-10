@@ -209,7 +209,6 @@ def test_id():
 
 
 def test_id_none():
-
     entity = _make_entity(key=None)
     assert entity.id is None
 

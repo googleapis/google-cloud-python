@@ -204,7 +204,6 @@ class Query(object):
         order=(),
         distinct_on=(),
     ):
-
         self._client = client
         self._kind = kind
 

@@ -374,7 +374,6 @@ def test_client__push_batch_and__pop_batch():
 
 
 def test_client_get_miss():
-
     creds = _make_credentials()
     client = _make_client(credentials=creds)
     get_multi = client.get_multi = mock.Mock(return_value=[])
@@ -843,7 +842,6 @@ def test_client_get_multi_max_loops(database_id):
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_client_put(database_id):
-
     creds = _make_credentials()
     client = _make_client(credentials=creds, database=database_id)
     put_multi = client.put_multi = mock.Mock()
@@ -856,7 +854,6 @@ def test_client_put(database_id):
 
 @pytest.mark.parametrize("database_id", [None, "somedb"])
 def test_client_put_w_retry_w_timeout(database_id):
-
     creds = _make_credentials()
     client = _make_client(credentials=creds, database=database_id)
     put_multi = client.put_multi = mock.Mock()

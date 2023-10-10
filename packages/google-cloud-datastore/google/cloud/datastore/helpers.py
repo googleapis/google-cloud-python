@@ -50,7 +50,6 @@ def _get_meaning(value_pb, is_list=False):
               list meanings agree, it just condenses them.
     """
     if is_list:
-
         values = value_pb.array_value.values
 
         # An empty list will have no values, hence no shared meaning

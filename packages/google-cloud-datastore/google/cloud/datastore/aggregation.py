@@ -166,7 +166,6 @@ class AggregationQuery(object):
         client,
         query,
     ):
-
         self._client = client
         self._nested_query = query
         self._aggregations = []
