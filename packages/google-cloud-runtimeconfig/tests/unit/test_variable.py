@@ -356,7 +356,6 @@ class TestVariable(unittest.TestCase):
 
 
 class _Client(object):
-
     _connection = None
 
     def __init__(self, project, connection=None):
