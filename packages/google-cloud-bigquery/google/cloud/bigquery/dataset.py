@@ -454,7 +454,6 @@ class AccessEntry(object):
         return not self == other
 
     def __repr__(self):
-
         return f"<AccessEntry: role={self.role}, {self._entity_type}={self.entity_id}>"
 
     def _key(self):

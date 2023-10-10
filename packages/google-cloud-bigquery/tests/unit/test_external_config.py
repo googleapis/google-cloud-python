@@ -21,7 +21,6 @@ from google.cloud.bigquery import schema
 
 
 class TestExternalConfig(unittest.TestCase):
-
     SOURCE_URIS = ["gs://foo", "gs://bar"]
 
     BASE_RESOURCE = {

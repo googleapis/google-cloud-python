@@ -476,7 +476,6 @@ class Client(ClientWithProject):
         span_attributes = {"path": path}
 
         def api_request(*args, **kwargs):
-
             return self._call_api(
                 retry,
                 span_name="BigQuery.listDatasets",
@@ -2686,7 +2685,6 @@ class Client(ClientWithProject):
         os.close(tmpfd)
 
         try:
-
             if new_job_config.source_format == job.SourceFormat.PARQUET:
                 if _PYARROW_VERSION in _PYARROW_BAD_VERSIONS:
                     msg = (
@@ -2722,7 +2720,6 @@ class Client(ClientWithProject):
                     )
 
             else:
-
                 dataframe.to_csv(
                     tmppath,
                     index=False,

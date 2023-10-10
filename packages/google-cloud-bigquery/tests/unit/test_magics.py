@@ -638,9 +638,9 @@ def test_bigquery_magic_with_bqstorage_from_argument(monkeypatch):
         google.cloud.bigquery.job.QueryJob, instance=True
     )
     query_job_mock.to_dataframe.return_value = result
-    with run_query_patch as run_query_mock, bqstorage_client_patch, warnings.catch_warnings(
-        record=True
-    ) as warned:
+    with run_query_patch as run_query_mock, (
+        bqstorage_client_patch
+    ), warnings.catch_warnings(record=True) as warned:
         run_query_mock.return_value = query_job_mock
 
         return_value = ip.run_cell_magic("bigquery", "--use_bqstorage_api", sql)
@@ -801,7 +801,9 @@ def test_bigquery_magic_w_max_results_query_job_results_fails():
 
     with pytest.raises(
         OSError
-    ), client_query_patch as client_query_mock, default_patch, close_transports_patch as close_transports:
+    ), client_query_patch as client_query_mock, (
+        default_patch
+    ), close_transports_patch as close_transports:
         client_query_mock.return_value = query_job_mock
         ip.run_cell_magic("bigquery", "--max_results=5", sql)
 

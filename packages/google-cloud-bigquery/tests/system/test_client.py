@@ -2319,7 +2319,6 @@ def _table_exists(t):
 
 
 def test_dbapi_create_view(dataset_id: str):
-
     query = f"""
     CREATE VIEW {dataset_id}.dbapi_create_view
     AS SELECT name, SUM(number) AS total

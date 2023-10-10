@@ -416,7 +416,6 @@ class TestTableReference(unittest.TestCase):
 
 
 class TestTable(unittest.TestCase, _SchemaBase):
-
     PROJECT = "prahj-ekt"
     DS_ID = "dataset-name"
     TABLE_NAME = "table-name"
@@ -524,7 +523,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
         )
 
     def _verifyResourceProperties(self, table, resource):
-
         self._verifyReadonlyResourceProperties(table, resource)
 
         if "expirationTime" in resource:
@@ -1501,7 +1499,6 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
 
 class Test_row_from_mapping(unittest.TestCase, _SchemaBase):
-
     PROJECT = "prahj-ekt"
     DS_ID = "dataset-name"
     TABLE_NAME = "table-name"
@@ -1790,7 +1787,6 @@ class TestTableClassesInterchangeability:
         return TableListItem(*args, **kwargs)
 
     def test_table_eq_table_ref(self):
-
         table = self._make_table("project_foo.dataset_bar.table_baz")
         dataset_ref = DatasetReference("project_foo", "dataset_bar")
         table_ref = self._make_table_ref(dataset_ref, "table_baz")
@@ -1814,7 +1810,6 @@ class TestTableClassesInterchangeability:
         assert table_list_item == table
 
     def test_table_ref_eq_table_list_item(self):
-
         dataset_ref = DatasetReference("project_foo", "dataset_bar")
         table_ref = self._make_table_ref(dataset_ref, "table_baz")
         table_list_item = self._make_table_list_item(

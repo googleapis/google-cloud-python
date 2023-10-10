@@ -54,7 +54,6 @@ class TestQueryJob(_Base):
         return resource
 
     def _verifyBooleanResourceProperties(self, job, config):
-
         if "allowLargeResults" in config:
             self.assertEqual(job.allow_large_results, config["allowLargeResults"])
         else:

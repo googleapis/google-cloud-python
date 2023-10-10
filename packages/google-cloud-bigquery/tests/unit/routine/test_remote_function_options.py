@@ -32,7 +32,6 @@ def target_class():
 
 
 def test_ctor(target_class):
-
     options = target_class(
         endpoint=ENDPOINT,
         connection=CONNECTION,

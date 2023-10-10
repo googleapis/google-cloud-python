@@ -693,7 +693,6 @@ class TestDataset(unittest.TestCase):
             self.assertEqual(a_entry.entity_id, r_entry["entity_id"])
 
     def _verify_readonly_resource_properties(self, dataset, resource):
-
         self.assertEqual(dataset.project, self.PROJECT)
         self.assertEqual(dataset.dataset_id, self.DS_ID)
         self.assertEqual(dataset.reference.project, self.PROJECT)
@@ -717,7 +716,6 @@ class TestDataset(unittest.TestCase):
             self.assertIsNone(dataset.self_link)
 
     def _verify_resource_properties(self, dataset, resource):
-
         self._verify_readonly_resource_properties(dataset, resource)
 
         if "defaultTableExpirationMs" in resource:

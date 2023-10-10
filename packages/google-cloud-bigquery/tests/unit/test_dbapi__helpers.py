@@ -255,7 +255,6 @@ class TestToBqTableRows(unittest.TestCase):
 class TestRaiseOnClosedDecorator(unittest.TestCase):
     def _make_class(self):
         class Foo(object):
-
             class_member = "class member"
 
             def __init__(self):
