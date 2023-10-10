@@ -1411,7 +1411,6 @@ philosophers_data_set = [
 
 
 def _do_recursive_delete(client, bulk_writer, empty_philosophers=False):
-
     if empty_philosophers:
         doc_paths = philosophers = []
     else:
@@ -1823,7 +1822,6 @@ def test_count_query_stream_default_alias(query, database):
 
 @pytest.mark.parametrize("database", [None, FIRESTORE_OTHER_DB], indirect=True)
 def test_count_query_stream_with_alias(query, database):
-
     count_query = query.count(alias="total")
     for result in count_query.stream():
         for aggregation_result in result:

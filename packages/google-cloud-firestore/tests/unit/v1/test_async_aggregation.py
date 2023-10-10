@@ -196,7 +196,6 @@ async def _async_aggregation_query_get_helper(retry=None, timeout=None, read_tim
     assert len(returned) == 1
 
     for result in returned:
-
         for r in result:
             assert r.alias == aggregation_result.alias
             assert r.value == aggregation_result.value

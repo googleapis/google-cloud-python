@@ -185,7 +185,6 @@ class AsyncBulkWriterMixin:
         self,
         operation: "BulkWriterOperation",
     ) -> concurrent.futures.Future:
-
         delay: int = 0
         if self._options.retry == BulkRetry.exponential:
             delay = operation.attempts**2  # pragma: NO COVER
@@ -365,7 +364,6 @@ class BulkWriter(AsyncBulkWriterMixin):
             return
 
         while True:
-
             # Queue any waiting operations and try our luck again.
             # This can happen if users add a number of records not divisible by
             # 20 and then call flush (which should be ~19 out of 20 use cases).
@@ -469,7 +467,6 @@ class BulkWriter(AsyncBulkWriterMixin):
         self._schedule_ready_retries()
 
         while self._queued_batches:
-
             # For FIFO order, add to the right of this deque (via `append`) and take
             # from the left (via `popleft`).
             operations: List[BulkWriterOperation] = self._queued_batches.popleft()

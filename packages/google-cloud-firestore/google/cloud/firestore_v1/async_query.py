@@ -292,9 +292,9 @@ class AsyncQuery(BaseQuery):
                 yield snapshot
 
     @staticmethod
-    def _get_collection_reference_class() -> Type[
-        "firestore_v1.async_collection.AsyncCollectionReference"
-    ]:
+    def _get_collection_reference_class() -> (
+        Type["firestore_v1.async_collection.AsyncCollectionReference"]
+    ):
         from google.cloud.firestore_v1.async_collection import AsyncCollectionReference
 
         return AsyncCollectionReference

@@ -196,9 +196,10 @@ class BaseAggregationQuery(ABC):
             retries.Retry, None, gapic_v1.method._MethodDefault
         ] = gapic_v1.method.DEFAULT,
         timeout: float | None = None,
-    ) -> Generator[List[AggregationResult], Any, None] | AsyncGenerator[
-        List[AggregationResult], None
-    ]:
+    ) -> (
+        Generator[List[AggregationResult], Any, None]
+        | AsyncGenerator[List[AggregationResult], None]
+    ):
         """Runs the aggregation query.
 
         This sends a``RunAggregationQuery`` RPC and returns an iterator in the stream of ``RunAggregationQueryResponse`` messages.

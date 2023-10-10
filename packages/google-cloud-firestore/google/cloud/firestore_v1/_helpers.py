@@ -440,7 +440,6 @@ def extract_fields(
         yield prefix_path, _EmptyDict
     else:
         for key, value in sorted(document_data.items()):
-
             if expand_dots:
                 sub_key = FieldPath.from_string(key)
             else:
@@ -503,7 +502,6 @@ class DocumentExtractor(object):
         iterator = self._get_document_iterator(prefix_path)
 
         for field_path, value in iterator:
-
             if field_path == prefix_path and value is _EmptyDict:
                 self.empty_document = True
 
@@ -565,7 +563,6 @@ class DocumentExtractor(object):
     def get_update_pb(
         self, document_path, exists=None, allow_empty_mask=False
     ) -> types.write.Write:
-
         if exists is not None:
             current_document = common.Precondition(exists=exists)
         else:
@@ -762,7 +759,6 @@ class DocumentExtractorForMerge(DocumentExtractor):
         return merge_paths
 
     def _apply_merge_paths(self, merge) -> None:
-
         if self.empty_document:
             raise ValueError("Cannot merge specific fields with empty document.")
 
@@ -773,7 +769,6 @@ class DocumentExtractorForMerge(DocumentExtractor):
         self.merge = merge_paths
 
         for merge_path in merge_paths:
-
             if merge_path in self.transform_paths:
                 self.transform_merge.append(merge_path)
 
@@ -1187,7 +1182,6 @@ def deserialize_bundle(
     bundle: Optional[FirestoreBundle] = None
     data: Dict
     for data in _parse_bundle_elements_data(serialized):
-
         # BundleElements are serialized as JSON containing one key outlining
         # the type, with all further data nested under that key
         keys: List[str] = list(data.keys())

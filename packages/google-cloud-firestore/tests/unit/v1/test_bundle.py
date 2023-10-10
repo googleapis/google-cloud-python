@@ -28,7 +28,6 @@ from tests.unit.v1._test_helpers import DEFAULT_TEST_PROJECT
 
 
 class _CollectionQueryMixin:
-
     # Path to each document where we don't specify custom collection names or
     # document Ids
     doc_key: str = (

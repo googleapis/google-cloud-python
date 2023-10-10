@@ -65,7 +65,6 @@ def test_collection_aggregation_query():
 
 
 def test_collection_count():
-
     collection_id1 = "rooms"
     document_id = "roomA"
     collection_id2 = "messages"
@@ -339,7 +338,6 @@ def test_get_w_retry_timeout(query_class):
 
 @mock.patch("google.cloud.firestore_v1.query.Query", autospec=True)
 def test_get_with_transaction(query_class):
-
     collection = _make_collection_reference("collection")
     transaction = mock.sentinel.txn
     get_response = collection.get(transaction=transaction)

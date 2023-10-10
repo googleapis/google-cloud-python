@@ -136,7 +136,6 @@ def test_order_compare_across_heterogenous_values():
         for left in groups[i]:
             for j in range(len(groups)):
                 for right in groups[j]:
-
                     expected = Order._compare_to(i, j)
                     assert target.compare(left, right) == expected
 

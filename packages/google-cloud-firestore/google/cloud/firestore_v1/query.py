@@ -174,7 +174,6 @@ class Query(BaseQuery):
     def _chunkify(
         self, chunk_size: int
     ) -> Generator[List[DocumentSnapshot], None, None]:
-
         max_to_return: Optional[int] = self._limit
         num_returned: int = 0
         original: Query = self._copy()
@@ -354,9 +353,9 @@ class Query(BaseQuery):
         return Watch.for_query(self, callback, document.DocumentSnapshot)
 
     @staticmethod
-    def _get_collection_reference_class() -> Type[
-        "firestore_v1.collection.CollectionReference"
-    ]:
+    def _get_collection_reference_class() -> (
+        Type["firestore_v1.collection.CollectionReference"]
+    ):
         from google.cloud.firestore_v1.collection import CollectionReference
 
         return CollectionReference

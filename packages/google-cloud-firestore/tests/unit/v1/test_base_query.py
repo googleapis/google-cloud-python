@@ -760,7 +760,6 @@ def test_basequery_end_at():
 
 
 def test_basequery_where_filter_keyword_arg():
-
     from google.cloud.firestore_v1.types import StructuredQuery
     from google.cloud.firestore_v1.types import document
     from google.cloud.firestore_v1.types import query
@@ -862,7 +861,6 @@ def test_basequery_where_filter_keyword_arg():
 
 
 def test_basequery_where_cannot_pass_both_positional_and_keyword_filter_arg():
-
     from google.cloud.firestore_v1.base_query import FieldFilter
 
     field_path_1 = "x.y"

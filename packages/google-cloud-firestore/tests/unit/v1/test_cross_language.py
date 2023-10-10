@@ -465,7 +465,6 @@ def parse_query(testcase):
     query = collection
 
     for clause in testcase.clauses:
-
         if "select" in clause:
             field_paths = [
                 ".".join(field_path.field) for field_path in clause.select.fields

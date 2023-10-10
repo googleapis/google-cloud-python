@@ -808,7 +808,6 @@ class BaseQuery(object):
             else:
                 return _filter_pb(filter)
         else:
-
             composite_filter = query.StructuredQuery.CompositeFilter(
                 op=StructuredQuery.CompositeFilter.Operator.AND,
             )
@@ -826,7 +825,6 @@ class BaseQuery(object):
     def _normalize_projection(projection) -> StructuredQuery.Projection:
         """Helper:  convert field paths to message."""
         if projection is not None:
-
             fields = list(projection.fields)
 
             if not fields:

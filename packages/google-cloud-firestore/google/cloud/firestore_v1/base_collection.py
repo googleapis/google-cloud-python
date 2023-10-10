@@ -280,7 +280,6 @@ class BaseCollectionReference(object):
                 wrapped_names = []
 
                 for name in value:
-
                     if isinstance(name, str):
                         name = self.document(name)
 

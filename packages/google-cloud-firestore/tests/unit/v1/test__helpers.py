@@ -1897,7 +1897,6 @@ def test_documentextractorformerge_apply_merge_list_fields_w_delete():
 
 
 def test_documentextractorformerge_apply_merge_list_fields_w_prefixes():
-
     document_data = {"a": {"b": {"c": 123}}}
     inst = _make_document_extractor_for_merge(document_data)
 
@@ -1906,7 +1905,6 @@ def test_documentextractorformerge_apply_merge_list_fields_w_prefixes():
 
 
 def test_documentextractorformerge_apply_merge_lists_w_missing_data_paths():
-
     document_data = {"write_me": "value", "ignore_me": 123}
     inst = _make_document_extractor_for_merge(document_data)
 
@@ -1915,7 +1913,6 @@ def test_documentextractorformerge_apply_merge_lists_w_missing_data_paths():
 
 
 def test_documentextractorformerge_apply_merge_list_fields_w_non_merge_field():
-
     document_data = {"write_me": "value", "ignore_me": 123}
     inst = _make_document_extractor_for_merge(document_data)
 
