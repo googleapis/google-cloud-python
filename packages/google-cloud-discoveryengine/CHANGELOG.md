@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.1...google-cloud-discoveryengine-v0.11.2) (2023-10-10)
+
+
+### Features
+
+* add v1alpha public library for discoveryengine ([#11796](https://github.com/googleapis/google-cloud-python/issues/11796)) ([e9ccb06](https://github.com/googleapis/google-cloud-python/commit/e9ccb06149480b1e21523e666e4bcb7f2cc2c5ed))
+
 ## [0.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.0...google-cloud-discoveryengine-v0.11.1) (2023-09-19)
 
 
