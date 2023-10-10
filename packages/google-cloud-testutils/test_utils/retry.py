@@ -99,11 +99,10 @@ class RetryErrors(RetryBase):
                 try:
                     return to_wrap(*args, **kwargs)
                 except self.exception as caught_exception:
-
                     if not self.error_predicate(caught_exception):
                         raise
 
-                    delay = self.delay * self.backoff ** tries
+                    delay = self.delay * self.backoff**tries
                     msg = "%s, Trying again in %d seconds..." % (
                         caught_exception,
                         delay,
@@ -158,7 +157,7 @@ class RetryResult(RetryBase):
                 if self.result_predicate(result):
                     return result
 
-                delay = self.delay * self.backoff ** tries
+                delay = self.delay * self.backoff**tries
                 msg = "%s. Trying again in %d seconds..." % (
                     self.result_predicate.__name__,
                     delay,
@@ -215,7 +214,7 @@ class RetryInstanceState(RetryBase):
                 if self.instance_predicate(instance):
                     return result
 
-                delay = self.delay * self.backoff ** tries
+                delay = self.delay * self.backoff**tries
                 msg = "%s. Trying again in %d seconds..." % (
                     self.instance_predicate.__name__,
                     delay,

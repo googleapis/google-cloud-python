@@ -36,7 +36,7 @@ nox.options.sessions = [
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
 
-BLACK_VERSION = "black==19.3b0"
+BLACK_VERSION = "black==23.7.0"
 BLACK_PATHS = ["test_utils", "setup.py"]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
@@ -48,7 +48,7 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION, "click<8.1.0")
+    session.install("flake8", BLACK_VERSION)
     session.run(
         "black", "--check", *BLACK_PATHS,
     )
@@ -60,12 +60,8 @@ def blacken(session):
     """Run black.
 
     Format code to uniform standard.
-
-    This currently uses Python 3.6 due to the automated Kokoro run of synthtool.
-    That run uses an image that doesn't have 3.6 installed. Before updating this
-    check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
     """
-    session.install(BLACK_VERSION, "click<8.1.0")
+    session.install(BLACK_VERSION)
     session.run(
         "black", *BLACK_PATHS,
     )
