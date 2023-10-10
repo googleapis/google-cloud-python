@@ -845,10 +845,16 @@
             "extra-files": [
                 "google/cloud/discoveryengine/gapic_version.py",
                 "google/cloud/discoveryengine_v1/gapic_version.py",
+                "google/cloud/discoveryengine_v1alpha/gapic_version.py",
                 "google/cloud/discoveryengine_v1beta/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.discoveryengine.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.discoveryengine.v1alpha.json",
                     "type": "json"
                 },
                 {
