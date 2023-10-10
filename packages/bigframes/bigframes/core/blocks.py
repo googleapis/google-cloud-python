@@ -1284,20 +1284,20 @@ class Block:
 
         return result_block.with_column_labels(column_index)
 
-    def stack(self, how="left", dropna=True, sort=True, levels: int = 1):
+    def stack(self, how="left", levels: int = 1):
         """Unpivot last column axis level into row axis"""
+        if levels == 0:
+            return self
+
         # These are the values that will be turned into rows
 
         col_labels, row_labels = utils.split_index(self.column_labels, levels=levels)
-        if dropna:
-            row_labels = row_labels.drop_duplicates()
-        if sort:
-            row_labels = row_labels.sort_values()
+        row_labels = row_labels.drop_duplicates()
 
         row_label_tuples = utils.index_as_tuples(row_labels)
 
         if col_labels is not None:
-            result_index = col_labels.drop_duplicates().sort_values().dropna(how="all")
+            result_index = col_labels.drop_duplicates().dropna(how="all")
             result_col_labels = utils.index_as_tuples(result_index)
         else:
             result_index = pd.Index([None])

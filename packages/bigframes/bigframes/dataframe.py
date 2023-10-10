@@ -1741,24 +1741,49 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         )
         return DataFrame(pivot_block)
 
-    def stack(self):
-        # TODO: support 'level' param by simply reordering levels such that selected level is last before passing to Block.stack.
-        # TODO: match impl to pandas future_stack as described in pandas 2.1 release notes
-        stack_block = self._block.stack()
-        result_block = block_ops.dropna(
-            stack_block, stack_block.value_columns, how="all"
-        )
+    def stack(self, level: LevelsType = -1):
         if not isinstance(self.columns, pandas.MultiIndex):
-            return bigframes.series.Series(result_block)
-        return DataFrame(result_block)
+            if level not in [0, -1, self.columns.name]:
+                raise IndexError(f"Invalid level {level} for single-level index")
+            return self._stack_mono()
+        return self._stack_multi(level)
+
+    def _stack_mono(self):
+        result_block = self._block.stack()
+        return bigframes.series.Series(result_block)
+
+    def _stack_multi(self, level: LevelsType = -1):
+        n_levels = self.columns.nlevels
+        if isinstance(level, int) or isinstance(level, str):
+            level = [level]
+        level_indices = []
+        for level_ref in level:
+            if isinstance(level_ref, int):
+                if level_ref < 0:
+                    level_indices.append(n_levels + level_ref)
+                else:
+                    level_indices.append(level_ref)
+            else:  # str
+                level_indices.append(self.columns.names.index(level_ref))
+
+        new_order = [
+            *[i for i in range(n_levels) if i not in level_indices],
+            *level_indices,
+        ]
+
+        original_columns = typing.cast(pandas.MultiIndex, self.columns)
+        new_columns = original_columns.reorder_levels(new_order)
+
+        block = self._block.with_column_labels(new_columns)
+
+        block = block.stack(levels=len(level))
+        return DataFrame(block)
 
     def unstack(self):
         block = self._block
         # Special case, unstack with mono-index transpose into a series
         if self.index.nlevels == 1:
-            block = block.stack(
-                how="right", dropna=False, sort=False, levels=self.columns.nlevels
-            )
+            block = block.stack(how="right", levels=self.columns.nlevels)
             return bigframes.series.Series(block)
 
         # Pivot by last level of index

@@ -53,7 +53,7 @@ def equals(block1: blocks.Block, block2: blocks.Block) -> bool:
     joined_block = joined_block.select_columns(equality_ids).with_column_labels(
         list(range(len(equality_ids)))
     )
-    stacked_block = joined_block.stack(dropna=False, sort=False)
+    stacked_block = joined_block.stack()
     result = stacked_block.get_stat(stacked_block.value_columns[0], agg_ops.all_op)
     return typing.cast(bool, result)
 

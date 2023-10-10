@@ -718,25 +718,37 @@ def test_column_multi_index_cumsum(scalars_df_index, scalars_pandas_df_index):
     pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
 
 
-def test_column_multi_index_stack(scalars_df_index, scalars_pandas_df_index):
-    columns = ["int64_too", "int64_col", "rowindex_2"]
-    level1 = pandas.Index(["b", "a", "b"])
-    # Need resulting column to be pyarrow string rather than object dtype
-    level2 = pandas.Index(["a", "b", "b"], dtype="string[pyarrow]")
-    multi_columns = pandas.MultiIndex.from_arrays([level1, level2])
-    bf_df = scalars_df_index[columns].copy()
-    bf_df.columns = multi_columns
-    pd_df = scalars_pandas_df_index[columns].copy()
-    pd_df.columns = multi_columns
+@pytest.mark.parametrize(
+    ("level",),
+    [(["l3", "l1"],), ([-2, -1],), (["l3"],), ("l2",), (-3,)],
+)
+def test_column_multi_index_stack(level):
+    if pandas.__version__.startswith("1.") or pandas.__version__.startswith("2.0"):
+        pytest.skip("pandas <2.1 uses different stack implementation")
 
-    bf_result = bf_df.stack().to_pandas()
-    # Shifting sort behavior in stack
-    pd_result = pd_df.stack()
+    level1 = pandas.Index(["b", "a", "b"])
+    level2 = pandas.Index(["a", "b", "b"])
+    level3 = pandas.Index(["b", "b", "a"])
+
+    multi_columns = pandas.MultiIndex.from_arrays(
+        [level1, level2, level3], names=["l1", "l2", "l3"]
+    )
+    pd_df = pandas.DataFrame(
+        [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+        index=[5, 2, None],
+        columns=multi_columns,
+        dtype="Int64",
+    )
+    bf_df = bpd.DataFrame(pd_df)
+
+    bf_result = bf_df.stack(level=level).to_pandas()
+    # BigFrames emulates future_stack impl
+    pd_result = pd_df.stack(level=level, future_stack=True)
 
     # Pandas produces NaN, where bq dataframes produces pd.NA
     # Column ordering seems to depend on pandas version
     pandas.testing.assert_frame_equal(
-        bf_result.sort_index(axis=1), pd_result.sort_index(axis=1), check_dtype=False
+        bf_result, pd_result, check_dtype=False, check_index_type=False
     )
 
 
