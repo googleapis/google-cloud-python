@@ -29,7 +29,6 @@ def _make_credentials():
 
 
 class TestClient(unittest.TestCase):
-
     PROJECT = "PROJECT"
     PATH = "projects/%s" % (PROJECT,)
     CONFIGURATION_NAME = "config-name"

@@ -973,7 +973,6 @@ class TestStreamedResultSet(unittest.TestCase):
 
 
 class _MockCancellableIterator(object):
-
     cancel_calls = 0
 
     def __init__(self, *values):
@@ -987,7 +986,6 @@ class _MockCancellableIterator(object):
 
 
 class TestStreamedResultSet_JSON_acceptance_tests(unittest.TestCase):
-
     _json_tests = None
 
     def _getTargetClass(self):
@@ -1006,7 +1004,7 @@ class TestStreamedResultSet_JSON_acceptance_tests(unittest.TestCase):
             filename = os.path.join(dirname, "streaming-read-acceptance-test.json")
             raw = _parse_streaming_read_acceptance_tests(filename)
             tests = self.__class__._json_tests = {}
-            for (name, partial_result_sets, results) in raw:
+            for name, partial_result_sets, results in raw:
                 tests[name] = partial_result_sets, results
         return self.__class__._json_tests[test_name]
 

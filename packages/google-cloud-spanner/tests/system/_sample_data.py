@@ -70,7 +70,6 @@ def _check_row_data(row_data, expected, recurse_into_lists=True):
 
 
 def _check_cell_data(found_cell, expected_cell, recurse_into_lists=True):
-
     if isinstance(found_cell, datetime_helpers.DatetimeWithNanoseconds):
         _assert_timestamp(expected_cell, found_cell)
 

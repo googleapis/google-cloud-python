@@ -42,7 +42,6 @@ PARAM_TYPES = {"age": Type(code=TypeCode.INT64)}
 
 
 class TestTransaction(OpenTelemetryBase):
-
     PROJECT_ID = "project-id"
     INSTANCE_ID = "instance-id"
     INSTANCE_NAME = "projects/" + PROJECT_ID + "/instances/" + INSTANCE_ID
@@ -910,7 +909,6 @@ class _Database(object):
 
 
 class _Session(object):
-
     _transaction = None
 
     def __init__(self, database=None, name=TestTransaction.SESSION_NAME):
@@ -919,7 +917,6 @@ class _Session(object):
 
 
 class _FauxSpannerAPI(object):
-
     _committed = None
 
     def __init__(self, **kwargs):

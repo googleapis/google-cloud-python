@@ -441,7 +441,6 @@ def _delay_until_retry(exc, deadline, attempts):
 
     delay = _get_retry_delay(cause, attempts)
     if delay is not None:
-
         if now + delay > deadline:
             raise
 

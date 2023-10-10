@@ -205,7 +205,6 @@ class TestKeySet(unittest.TestCase):
         self.assertEqual(keyset.ranges, [range_1, range_2])
 
     def test_ctor_w_all_and_keys(self):
-
         with self.assertRaises(ValueError):
             self._make_one(all_=True, keys=[["key1"], ["key2"]])
 

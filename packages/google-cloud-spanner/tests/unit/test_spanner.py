@@ -88,7 +88,6 @@ dml_statements = [
 
 
 class TestTransaction(OpenTelemetryBase):
-
     PROJECT_ID = "project-id"
     INSTANCE_ID = "instance-id"
     INSTANCE_NAME = "projects/" + PROJECT_ID + "/instances/" + INSTANCE_ID
@@ -344,7 +343,6 @@ class TestTransaction(OpenTelemetryBase):
         self.assertEqual(result_set.stats, stats_pb)
 
     def _read_helper_expected_request(self, partition=None, begin=True, count=0):
-
         if begin is True:
             expected_transaction = TransactionSelector(
                 begin=TransactionOptions(read_write=TransactionOptions.ReadWrite())
@@ -939,7 +937,6 @@ class _Database(object):
 
 
 class _Session(object):
-
     _transaction = None
 
     def __init__(self, database=None, name=TestTransaction.SESSION_NAME):

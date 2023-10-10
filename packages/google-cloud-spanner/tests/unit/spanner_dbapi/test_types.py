@@ -18,7 +18,6 @@ from time import timezone
 
 
 class TestTypes(unittest.TestCase):
-
     TICKS = 1572822862.9782631 + timezone  # Sun 03 Nov 2019 23:14:22 UTC
 
     def test__date_from_ticks(self):

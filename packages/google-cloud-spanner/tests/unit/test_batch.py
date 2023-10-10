@@ -32,7 +32,6 @@ BASE_ATTRIBUTES = {
 
 
 class _BaseTest(unittest.TestCase):
-
     PROJECT_ID = "project-id"
     INSTANCE_ID = "instance-id"
     INSTANCE_NAME = "projects/" + PROJECT_ID + "/instances/" + INSTANCE_ID
@@ -426,7 +425,6 @@ class _Database(object):
 
 
 class _FauxSpannerAPI:
-
     _create_instance_conflict = False
     _instance_not_found = False
     _committed = None

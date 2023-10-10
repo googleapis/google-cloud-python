@@ -20,7 +20,6 @@ from google.cloud.spanner_v1 import JsonObject
 
 
 class TestParseUtils(unittest.TestCase):
-
     skip_condition = sys.version_info[0] < 3
     skip_message = "Subtests are not supported in Python 2"
 
@@ -112,7 +111,7 @@ class TestParseUtils(unittest.TestCase):
                 ("SELECT * from t WHERE id=10", {"f1": "app", "f2": "name"}),
             ),
         ]
-        for ((sql_in, params), sql_want) in cases:
+        for (sql_in, params), sql_want in cases:
             with self.subTest(sql=sql_in):
                 got_sql, got_named_args = sql_pyformat_args_to_spanner(sql_in, params)
                 want_sql, want_named_args = sql_want

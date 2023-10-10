@@ -20,7 +20,6 @@ import unittest
 
 
 class TestCursor(unittest.TestCase):
-
     INSTANCE = "test-instance"
     DATABASE = "test-database"
 
@@ -917,7 +916,6 @@ class TestCursor(unittest.TestCase):
             with mock.patch(
                 "google.cloud.spanner_dbapi.connection.Connection.retry_transaction"
             ) as retry_mock:
-
                 cursor.fetchone()
 
                 retry_mock.assert_called_with()
@@ -948,7 +946,6 @@ class TestCursor(unittest.TestCase):
                 "google.cloud.spanner_dbapi.connection.Connection.run_statement",
                 return_value=([row], ResultsChecksum()),
             ) as run_mock:
-
                 cursor.fetchone()
 
                 run_mock.assert_called_with(statement, retried=True)
@@ -982,7 +979,6 @@ class TestCursor(unittest.TestCase):
                 "google.cloud.spanner_dbapi.connection.Connection.run_statement",
                 return_value=([row2], ResultsChecksum()),
             ) as run_mock:
-
                 with self.assertRaises(RetryAborted):
                     cursor.fetchone()
 
@@ -1007,7 +1003,6 @@ class TestCursor(unittest.TestCase):
             with mock.patch(
                 "google.cloud.spanner_dbapi.connection.Connection.retry_transaction"
             ) as retry_mock:
-
                 cursor.fetchall()
 
                 retry_mock.assert_called_with()
@@ -1071,7 +1066,6 @@ class TestCursor(unittest.TestCase):
                 "google.cloud.spanner_dbapi.connection.Connection.run_statement",
                 return_value=([row2], ResultsChecksum()),
             ) as run_mock:
-
                 with self.assertRaises(RetryAborted):
                     cursor.fetchall()
 
@@ -1096,7 +1090,6 @@ class TestCursor(unittest.TestCase):
             with mock.patch(
                 "google.cloud.spanner_dbapi.connection.Connection.retry_transaction"
             ) as retry_mock:
-
                 cursor.fetchmany()
 
                 retry_mock.assert_called_with()
@@ -1127,7 +1120,6 @@ class TestCursor(unittest.TestCase):
                 "google.cloud.spanner_dbapi.connection.Connection.run_statement",
                 return_value=([row], ResultsChecksum()),
             ) as run_mock:
-
                 cursor.fetchmany(len(row))
 
                 run_mock.assert_called_with(statement, retried=True)
@@ -1161,7 +1153,6 @@ class TestCursor(unittest.TestCase):
                 "google.cloud.spanner_dbapi.connection.Connection.run_statement",
                 return_value=([row2], ResultsChecksum()),
             ) as run_mock:
-
                 with self.assertRaises(RetryAborted):
                     cursor.fetchmany(len(row))
 

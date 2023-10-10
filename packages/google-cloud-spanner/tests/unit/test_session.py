@@ -37,7 +37,6 @@ class _ConstantTime:
 
 
 class TestSession(OpenTelemetryBase):
-
     PROJECT_ID = "project-id"
     INSTANCE_ID = "instance-id"
     INSTANCE_NAME = "projects/" + PROJECT_ID + "/instances/" + INSTANCE_ID

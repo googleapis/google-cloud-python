@@ -913,7 +913,6 @@ def _make_transaction(*args, **kw):
 
 @total_ordering
 class _Session(object):
-
     _transaction = None
 
     def __init__(self, database, exists=True, transaction=None):
@@ -1004,7 +1003,6 @@ class _Database(object):
 
 
 class _Queue(object):
-
     _size = 1
 
     def __init__(self, *items):
@@ -1035,5 +1033,4 @@ class _Queue(object):
 
 
 class _Pool(_Queue):
-
     _database = None

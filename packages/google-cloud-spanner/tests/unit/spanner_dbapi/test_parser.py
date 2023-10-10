@@ -17,7 +17,6 @@ import unittest
 
 
 class TestParser(unittest.TestCase):
-
     skip_condition = sys.version_info[0] < 3
     skip_message = "Subtests are not supported in Python 2"
 

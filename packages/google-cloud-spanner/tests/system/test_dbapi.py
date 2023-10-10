@@ -64,7 +64,6 @@ def clear_table(transaction):
 
 @pytest.fixture(scope="function")
 def dbapi_database(raw_database):
-
     raw_database.run_in_transaction(clear_table)
 
     yield raw_database

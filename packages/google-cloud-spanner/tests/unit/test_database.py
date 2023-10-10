@@ -49,7 +49,6 @@ def _make_credentials():  # pragma: NO COVER
 
 
 class _BaseTest(unittest.TestCase):
-
     PROJECT_ID = "project-id"
     PARENT = "projects/" + PROJECT_ID
     INSTANCE_ID = "instance-id"
@@ -148,14 +147,12 @@ class TestDatabase(_BaseTest):
         self.assertFalse(database._route_to_leader_enabled)
 
     def test_ctor_w_ddl_statements_non_string(self):
-
         with self.assertRaises(ValueError):
             self._make_one(
                 self.DATABASE_ID, instance=object(), ddl_statements=[object()]
             )
 
     def test_ctor_w_ddl_statements_w_create_database(self):
-
         with self.assertRaises(ValueError):
             self._make_one(
                 self.DATABASE_ID,
@@ -365,7 +362,6 @@ class TestDatabase(_BaseTest):
         self.assertEqual(database.default_leader, default_leader)
 
     def test_spanner_api_property_w_scopeless_creds(self):
-
         client = _Client()
         client_info = client._client_info = mock.Mock()
         client_options = client._client_options = mock.Mock()
@@ -2744,7 +2740,6 @@ class _Pool(object):
 
 
 class _Session(object):
-
     _rows = ()
     _created = False
     _transaction = None

@@ -119,7 +119,6 @@ def instance_configs(spanner_client):
     configs = list(_helpers.retry_503(spanner_client.list_instance_configs)())
 
     if not _helpers.USE_EMULATOR:
-
         # Defend against back-end returning configs for regions we aren't
         # actually allowed to use.
         configs = [config for config in configs if "-us-" in config.name]
