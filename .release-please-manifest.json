@@ -44,7 +44,7 @@
     "packages/google-cloud-datacatalog-lineage": "0.2.4",
     "packages/google-cloud-dataform": "0.5.3",
     "packages/google-cloud-datalabeling": "1.8.4",
-    "packages/google-cloud-dataplex": "1.6.3",
+    "packages/google-cloud-dataplex": "1.7.0",
     "packages/google-cloud-dataproc": "5.6.0",
     "packages/google-cloud-dataproc-metastore": "1.13.0",
     "packages/google-cloud-datastream": "1.7.1",

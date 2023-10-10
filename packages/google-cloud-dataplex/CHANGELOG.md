@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.6.3...google-cloud-dataplex-v1.7.0) (2023-10-10)
+
+
+### Features
+
+* DataQualityDimension is now part of the DataQualityDimensionResult message ([#11791](https://github.com/googleapis/google-cloud-python/issues/11791)) ([88844db](https://github.com/googleapis/google-cloud-python/commit/88844db627026aad4be09e50ea6c9fff3573cc5b))
+
 ## [1.6.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataplex-v1.6.2...google-cloud-dataplex-v1.6.3) (2023-09-19)
 
 
