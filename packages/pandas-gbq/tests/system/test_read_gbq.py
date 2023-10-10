@@ -549,7 +549,6 @@ ORDER BY row_num ASC
 def test_default_dtypes(
     read_gbq, query, expected, use_bqstorage_apis, use_bqstorage_api
 ):
-
     if use_bqstorage_api not in use_bqstorage_apis:
         pytest.skip(f"use_bqstorage_api={use_bqstorage_api} not supported.")
     # the parameter useQueryCache=False is used in the following function call
