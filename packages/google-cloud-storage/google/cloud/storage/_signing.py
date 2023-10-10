@@ -147,7 +147,6 @@ def get_expiration_seconds_v4(expiration):
         seconds = expiration
 
     if isinstance(expiration, datetime.datetime):
-
         if expiration.tzinfo is None:
             expiration = expiration.replace(tzinfo=_helpers.UTC)
 
@@ -646,7 +645,6 @@ def get_v4_now_dtstamps():
 
 
 def _sign_message(message, access_token, service_account_email):
-
     """Signs a message.
 
     :type message: str

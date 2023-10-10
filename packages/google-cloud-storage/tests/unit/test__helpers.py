@@ -94,7 +94,6 @@ class Test_PropertyMixin(unittest.TestCase):
 
     def _derivedClass(self, path=None, user_project=None):
         class Derived(self._get_target_class()):
-
             client = None
             _actual_encryption_headers = None
 

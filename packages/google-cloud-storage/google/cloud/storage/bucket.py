@@ -474,7 +474,6 @@ class IAMConfiguration(dict):
         bucket_policy_only_locked_time=_default,
     ):
         if bucket_policy_only_enabled is not _default:
-
             if uniform_bucket_level_access_enabled is not _default:
                 raise ValueError(_UBLA_BPO_ENABLED_MESSAGE)
 
@@ -482,7 +481,6 @@ class IAMConfiguration(dict):
             uniform_bucket_level_access_enabled = bucket_policy_only_enabled
 
         if bucket_policy_only_locked_time is not _default:
-
             if uniform_bucket_level_access_locked_time is not _default:
                 raise ValueError(_UBLA_BPO_LOCK_TIME_MESSAGE)
 

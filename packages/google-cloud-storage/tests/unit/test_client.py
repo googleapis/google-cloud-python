@@ -2818,7 +2818,6 @@ def test_conformance_post_policy(test_data):
             return_value=in_data["expiration"],
         ):
             with mock.patch("google.cloud.storage.client._NOW", return_value=timestamp):
-
                 policy = client.generate_signed_post_policy_v4(
                     bucket_name=in_data["bucket"],
                     blob_name=in_data["object"],

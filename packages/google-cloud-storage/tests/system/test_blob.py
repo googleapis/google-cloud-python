@@ -86,7 +86,6 @@ def test_large_file_write_from_stream_w_failed_checksum(
     # The # remote API is still exercised.
     info = file_data["big"]
     with open(info["path"], "rb") as file_obj:
-
         with mock.patch(
             "google.resumable_media._helpers.prepare_checksum_digest",
             return_value="FFFFFF==",
@@ -527,7 +526,6 @@ def test_blob_direct_write_and_read_into_file(
     same_blob.reload()  # Initialize properties.
 
     with tempfile.NamedTemporaryFile() as temp_f:
-
         with open(temp_f.name, "wb") as file_obj:
             same_blob.download_to_file(file_obj)
 
@@ -553,7 +551,6 @@ def test_blob_download_w_generation_match(
     same_blob.reload()  # Initialize properties.
 
     with tempfile.NamedTemporaryFile() as temp_f:
-
         with open(temp_f.name, "wb") as file_obj:
             with pytest.raises(exceptions.PreconditionFailed):
                 same_blob.download_to_file(

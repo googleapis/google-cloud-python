@@ -75,7 +75,7 @@ def test_upload_many_with_filenames():
         upload_kwargs=UPLOAD_KWARGS,
         worker_type=transfer_manager.THREAD,
     )
-    for (filename, mock_blob) in FILE_BLOB_PAIRS:
+    for filename, mock_blob in FILE_BLOB_PAIRS:
         mock_blob._handle_filename_and_upload.assert_any_call(
             filename, **expected_upload_kwargs
         )
@@ -100,7 +100,7 @@ def test_upload_many_with_file_objs():
         upload_kwargs=UPLOAD_KWARGS,
         worker_type=transfer_manager.THREAD,
     )
-    for (file, mock_blob) in FILE_BLOB_PAIRS:
+    for file, mock_blob in FILE_BLOB_PAIRS:
         mock_blob._prep_and_do_upload.assert_any_call(file, **expected_upload_kwargs)
     for result in results:
         assert result == FAKE_RESULT
@@ -263,7 +263,7 @@ def test_download_many_with_filenames():
         download_kwargs=DOWNLOAD_KWARGS,
         worker_type=transfer_manager.THREAD,
     )
-    for (mock_blob, file) in BLOB_FILE_PAIRS:
+    for mock_blob, file in BLOB_FILE_PAIRS:
         mock_blob._handle_filename_and_download.assert_any_call(
             file, **EXPECTED_DOWNLOAD_KWARGS
         )
@@ -285,7 +285,7 @@ def test_download_many_with_file_objs():
         download_kwargs=DOWNLOAD_KWARGS,
         worker_type=transfer_manager.THREAD,
     )
-    for (mock_blob, file) in BLOB_FILE_PAIRS:
+    for mock_blob, file in BLOB_FILE_PAIRS:
         mock_blob._prep_and_do_download.assert_any_call(file, **DOWNLOAD_KWARGS)
     for result in results:
         assert result == FAKE_RESULT

@@ -761,7 +761,6 @@ class Test__FutureDict(unittest.TestCase):
 
 
 class _Connection(object):
-
     project = "TESTING"
 
     def __init__(self, **kw):

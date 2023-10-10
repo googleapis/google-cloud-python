@@ -984,7 +984,6 @@ class Blob(_PropertyMixin):
             response = download.consume(transport, timeout=timeout)
             self._extract_headers_from_download(response)
         else:
-
             if checksum:
                 msg = _CHUNKED_DOWNLOAD_CHECKSUM_MESSAGE.format(checksum)
                 _logger.info(msg)

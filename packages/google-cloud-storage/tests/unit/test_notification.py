@@ -20,7 +20,6 @@ from google.cloud.storage.retry import DEFAULT_RETRY
 
 
 class TestBucketNotification(unittest.TestCase):
-
     BUCKET_NAME = "test-bucket"
     BUCKET_PROJECT = "bucket-project-123"
     TOPIC_NAME = "test-topic"

@@ -1072,7 +1072,6 @@ class Test_ObjectACL(unittest.TestCase):
 
 
 class _Blob(object):
-
     user_project = None
 
     def __init__(self, bucket, blob):
@@ -1085,7 +1084,6 @@ class _Blob(object):
 
 
 class _Bucket(object):
-
     user_project = None
 
     def __init__(self, name):

@@ -1029,7 +1029,6 @@ def upload_chunks_concurrently(
     futures = []
 
     with pool_class(max_workers=max_workers) as executor:
-
         for part_number in range(1, num_of_parts + 1):
             start = (part_number - 1) * chunk_size
             end = min(part_number * chunk_size, size)

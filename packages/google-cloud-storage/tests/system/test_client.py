@@ -130,7 +130,6 @@ def test_download_blob_to_file_w_uri(
     blobs_to_delete.append(blob)
 
     with tempfile.NamedTemporaryFile() as temp_f:
-
         with open(temp_f.name, "wb") as file_obj:
             storage_client.download_blob_to_file(
                 "gs://" + shared_bucket.name + "/MyBuffer", file_obj
