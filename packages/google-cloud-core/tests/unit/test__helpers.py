@@ -672,7 +672,6 @@ class Test__duration_pb_to_timedelta(unittest.TestCase):
 
 
 class Test__name_from_project_path(unittest.TestCase):
-
     PROJECT = "PROJECT"
     THING_NAME = "THING_NAME"
     TEMPLATE = r"projects/(?P<project>\w+)/things/(?P<name>\w+)"

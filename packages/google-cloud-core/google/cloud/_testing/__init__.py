@@ -76,7 +76,6 @@ del _tempdir_maker
 
 
 class _GAXBaseAPI(object):
-
     _random_gax_error = False
 
     def __init__(self, **kw):

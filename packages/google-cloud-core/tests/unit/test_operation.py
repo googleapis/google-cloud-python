@@ -103,7 +103,6 @@ class Test_register_type(unittest.TestCase):
 
 
 class TestOperation(unittest.TestCase):
-
     OPERATION_NAME = "operations/projects/foo/instances/bar/operations/123"
 
     @staticmethod
