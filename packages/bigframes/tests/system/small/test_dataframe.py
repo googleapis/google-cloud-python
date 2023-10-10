@@ -2077,7 +2077,7 @@ def test_iloc_slice_nested(scalars_df_index, scalars_pandas_df_index):
 
 @pytest.mark.parametrize(
     "index",
-    [0, 5, -2],
+    [0, 5, -2, (2,)],
 )
 def test_iloc_single_integer(scalars_df_index, scalars_pandas_df_index, index):
     bf_result = scalars_df_index.iloc[index]
@@ -2087,6 +2087,59 @@ def test_iloc_single_integer(scalars_df_index, scalars_pandas_df_index, index):
         bf_result,
         pd_result,
     )
+
+
+@pytest.mark.parametrize(
+    "index",
+    [(2, 5), (5, 0), (0, 0)],
+)
+def test_iloc_tuple(scalars_df_index, scalars_pandas_df_index, index):
+    bf_result = scalars_df_index.iloc[index]
+    pd_result = scalars_pandas_df_index.iloc[index]
+
+    assert bf_result == pd_result
+
+
+@pytest.mark.parametrize(
+    ("index", "error"),
+    [
+        ((1, 1, 1), pd.errors.IndexingError),
+        (("asd", "asd", "asd"), pd.errors.IndexingError),
+        (("asd"), TypeError),
+    ],
+)
+def test_iloc_tuple_errors(scalars_df_index, scalars_pandas_df_index, index, error):
+    with pytest.raises(error):
+        scalars_df_index.iloc[index]
+    with pytest.raises(error):
+        scalars_pandas_df_index.iloc[index]
+
+
+@pytest.mark.parametrize(
+    "index",
+    [(2, 5), (5, 0), (0, 0)],
+)
+def test_iat(scalars_df_index, scalars_pandas_df_index, index):
+    bf_result = scalars_df_index.iat[index]
+    pd_result = scalars_pandas_df_index.iat[index]
+
+    assert bf_result == pd_result
+
+
+@pytest.mark.parametrize(
+    ("index", "error"),
+    [
+        (0, TypeError),
+        ("asd", ValueError),
+        ((1, 2, 3), TypeError),
+        (("asd", "asd"), ValueError),
+    ],
+)
+def test_iat_errors(scalars_df_index, scalars_pandas_df_index, index, error):
+    with pytest.raises(error):
+        scalars_pandas_df_index.iat[index]
+    with pytest.raises(error):
+        scalars_df_index.iat[index]
 
 
 def test_iloc_single_integer_out_of_bound_error(

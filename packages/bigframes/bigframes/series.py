@@ -88,6 +88,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return bigframes.core.indexers.IlocSeriesIndexer(self)
 
     @property
+    def iat(self) -> bigframes.core.indexers.IatSeriesIndexer:
+        return bigframes.core.indexers.IatSeriesIndexer(self)
+
+    @property
     def name(self) -> blocks.Label:
         return self._name
 

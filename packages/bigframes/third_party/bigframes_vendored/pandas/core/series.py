@@ -1823,3 +1823,13 @@ class Series(NDFrame):  # type: ignore[misc]
             Series: Same index as caller.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def iloc(self):
+        """Purely integer-location based indexing for selection by position."""
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def iat(self):
+        """Access a single value for a row/column pair by integer position."""
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

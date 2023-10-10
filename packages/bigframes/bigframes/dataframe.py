@@ -255,6 +255,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return indexers.ILocDataFrameIndexer(self)
 
     @property
+    def iat(self) -> indexers.IatDataFrameIndexer:
+        return indexers.IatDataFrameIndexer(self)
+
+    @property
     def dtypes(self) -> pandas.Series:
         return pandas.Series(data=self._block.dtypes, index=self._block.column_labels)
 

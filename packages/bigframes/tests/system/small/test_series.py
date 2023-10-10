@@ -1953,6 +1953,20 @@ def test_series_iloc(scalars_df_index, scalars_pandas_df_index, start, stop, ste
     )
 
 
+def test_iat(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index["int64_too"].iat[3]
+    pd_result = scalars_pandas_df_index["int64_too"].iat[3]
+
+    assert bf_result == pd_result
+
+
+def test_iat_error(scalars_df_index, scalars_pandas_df_index):
+    with pytest.raises(ValueError):
+        scalars_pandas_df_index["int64_too"].iat["asd"]
+    with pytest.raises(ValueError):
+        scalars_df_index["int64_too"].iat["asd"]
+
+
 def test_series_add_prefix(scalars_df_index, scalars_pandas_df_index):
     bf_result = scalars_df_index["int64_too"].add_prefix("prefix_").to_pandas()
 

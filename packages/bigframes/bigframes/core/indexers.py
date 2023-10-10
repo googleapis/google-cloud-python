@@ -97,6 +97,16 @@ class IlocSeriesIndexer:
         return _iloc_getitem_series_or_dataframe(self._series, key)
 
 
+class IatSeriesIndexer:
+    def __init__(self, series: bigframes.series.Series):
+        self._series = series
+
+    def __getitem__(self, key: int) -> bigframes.core.scalar.Scalar:
+        if not isinstance(key, int):
+            raise ValueError("Series iAt based indexing can only have integer indexers")
+        return self._series.iloc[key]
+
+
 class LocDataFrameIndexer:
     def __init__(self, dataframe: bigframes.dataframe.DataFrame):
         self._dataframe = dataframe
@@ -186,6 +196,28 @@ class ILocDataFrameIndexer:
         Other key types are not yet supported.
         """
         return _iloc_getitem_series_or_dataframe(self._dataframe, key)
+
+
+class IatDataFrameIndexer:
+    def __init__(self, dataframe: bigframes.dataframe.DataFrame):
+        self._dataframe = dataframe
+
+    def __getitem__(self, key: tuple) -> bigframes.core.scalar.Scalar:
+        error_message = "DataFrame.iat should be indexed by a tuple of exactly 2 ints"
+        # we raise TypeError or ValueError under the same conditions that pandas does
+        if isinstance(key, int):
+            raise TypeError(error_message)
+        if not isinstance(key, tuple):
+            raise ValueError(error_message)
+        key_values_are_ints = [isinstance(key_value, int) for key_value in key]
+        if not all(key_values_are_ints):
+            raise ValueError(error_message)
+        if len(key) != 2:
+            raise TypeError(error_message)
+        block = self._dataframe._block
+        column_block = block.select_columns([block.value_columns[key[1]]])
+        column = bigframes.series.Series(column_block)
+        return column.iloc[key[0]]
 
 
 @typing.overload
@@ -356,6 +388,18 @@ def _iloc_getitem_series_or_dataframe(
         return result_pd_df.iloc[0]
     elif isinstance(key, slice):
         return series_or_dataframe._slice(key.start, key.stop, key.step)
+    elif isinstance(key, tuple) and len(key) == 0:
+        return series_or_dataframe
+    elif isinstance(key, tuple) and len(key) == 1:
+        return _iloc_getitem_series_or_dataframe(series_or_dataframe, key[0])
+    elif (
+        isinstance(key, tuple)
+        and isinstance(series_or_dataframe, bigframes.dataframe.DataFrame)
+        and len(key) == 2
+    ):
+        return series_or_dataframe.iat[key]
+    elif isinstance(key, tuple):
+        raise pd.errors.IndexingError("Too many indexers")
     elif pd.api.types.is_list_like(key):
         if len(key) == 0:
             return typing.cast(
