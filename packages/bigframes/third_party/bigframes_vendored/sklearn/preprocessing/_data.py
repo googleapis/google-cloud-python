@@ -29,7 +29,7 @@ class StandardScaler(BaseEstimator, TransformerMixin):
     individual features do not more or less look like standard normally
     distributed data (e.g. Gaussian with 0 mean and unit variance).
 
-    Examples:
+    **Examples:**
 
         .. code-block::
 

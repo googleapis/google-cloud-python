@@ -17,6 +17,21 @@ class OneHotEncoder(BaseEstimator):
     Note that this method deviates from Scikit-Learn; instead of producing sparse
     binary columns, the encoding is a single column of `STRUCT<index INT64, value DOUBLE>`.
 
+    **Examples:**
+
+        Given a dataset with two features, we let the encoder find the unique
+        values per feature and transform the data to a binary one-hot encoding.
+
+        .. code-block::
+
+            from bigframes.ml.preprocessing import OneHotEncoder
+            import bigframes.pandas as bpd
+
+            enc = OneHotEncoder()
+            X = bpd.DataFrame({"a": ["Male", "Female", "Female"], "b": ["1", "3", "2"]})
+            enc.fit(X)
+            print(enc.transform(bpd.DataFrame({"a": ["Female", "Male"], "b": ["1", "4"]})))
+
     Args:
         drop (Optional[Literal["most_frequent"]], default None):
             Specifies a methodology to use to drop one of the categories per feature.
@@ -37,21 +52,6 @@ class OneHotEncoder(BaseEstimator):
             when considering infrequent categories. If there are infrequent categories,
             max_categories includes the category representing the infrequent categories along with the frequent categories.
             Default None, set limit to 1,000,000.
-
-    Examples:
-
-        Given a dataset with two features, we let the encoder find the unique
-        values per feature and transform the data to a binary one-hot encoding.
-
-        .. code-block::
-
-            from bigframes.ml.preprocessing import OneHotEncoder
-            import bigframes.pandas as bpd
-
-            enc = OneHotEncoder()
-            X = bpd.DataFrame({"a": ["Male", "Female", "Female"], "b": ["1", "3", "2"]})
-            enc.fit(X)
-            print(enc.transform(bpd.DataFrame({"a": ["Female", "Male"], "b": ["1", "4"]})))
     """
 
     def fit(self, X, y=None):

@@ -121,10 +121,18 @@
     - items:
       - name: Overview
         uid: bigframes.ml.preprocessing
-      - name: OneHotEncoder
-        uid: bigframes.ml.preprocessing.OneHotEncoder
+      - name: KBinsDiscretizer
+        uid: bigframes.ml.preprocessing.KBinsDiscretizer
+      - name: LabelEncoder
+        uid: bigframes.ml.preprocessing.LabelEncoder
+      - name: MaxAbsScaler
+        uid: bigframes.ml.preprocessing.MaxAbsScaler
+      - name: MinMaxScaler
+        uid: bigframes.ml.preprocessing.MinMaxScaler
       - name: StandardScaler
         uid: bigframes.ml.preprocessing.StandardScaler
+      - name: OneHotEncoder
+        uid: bigframes.ml.preprocessing.OneHotEncoder
       name: preprocessing
     name: bigframes.ml
   name: BigQuery DataFrames
