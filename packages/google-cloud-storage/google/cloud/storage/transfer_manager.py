@@ -1154,11 +1154,14 @@ def _call_method_on_maybe_pickled_blob(
 
 
 def _reduce_client(cl):
-    """Replicate a Client by constructing a new one with the same params."""
+    """Replicate a Client by constructing a new one with the same params.
+
+    LazyClient performs transparent caching for when the same client is needed
+    on the same process multiple times."""
 
     client_object_id = id(cl)
     project = cl.project
-    credentials = cl._initial_credentials
+    credentials = cl._credentials
     _http = None  # Can't carry this over
     client_info = cl._initial_client_info
     client_options = cl._initial_client_options

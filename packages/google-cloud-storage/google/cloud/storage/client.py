@@ -127,7 +127,6 @@ class Client(ClientWithProject):
         # are passed along, for use in __reduce__ defined elsewhere.
         self._initial_client_info = client_info
         self._initial_client_options = client_options
-        self._initial_credentials = credentials
 
         kw_args = {"client_info": client_info}
 
