@@ -409,6 +409,49 @@ def test_remote_function_explicit_with_bigframes_series(
 
 
 @pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_explicit_dataset_not_created(
+    session, scalars_dfs, dataset_id_not_created, bq_cf_connection, functions_client
+):
+    try:
+
+        @session.remote_function(
+            [int],
+            int,
+            dataset_id_not_created,
+            bq_cf_connection,
+            reuse=False,
+        )
+        def square(x):
+            return x * x
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        bf_int64_col = scalars_df["int64_col"]
+        bf_int64_col_filter = bf_int64_col.notnull()
+        bf_int64_col_filtered = bf_int64_col[bf_int64_col_filter]
+        bf_result_col = bf_int64_col_filtered.apply(square)
+        bf_result = (
+            bf_int64_col_filtered.to_frame().assign(result=bf_result_col).to_pandas()
+        )
+
+        pd_int64_col = scalars_pandas_df["int64_col"]
+        pd_int64_col_filter = pd_int64_col.notnull()
+        pd_int64_col_filtered = pd_int64_col[pd_int64_col_filter]
+        pd_result_col = pd_int64_col_filtered.apply(lambda x: x * x)
+        # TODO(shobs): Figure why pandas .apply() changes the dtype, i.e.
+        # pd_int64_col_filtered.dtype is Int64Dtype()
+        # pd_int64_col_filtered.apply(lambda x: x * x).dtype is int64.
+        # For this test let's force the pandas dtype to be same as bigframes' dtype.
+        pd_result_col = pd_result_col.astype(pandas.Int64Dtype())
+        pd_result = pd_int64_col_filtered.to_frame().assign(result=pd_result_col)
+
+        assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(session.bqclient, functions_client, square)
+
+
+@pytest.mark.flaky(retries=2, delay=120)
 def test_remote_udf_referring_outside_var(
     session, scalars_dfs, dataset_id, bq_cf_connection, functions_client
 ):

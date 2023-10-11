@@ -202,10 +202,22 @@ class RemoteFunctionClient:
             OPTIONS (
               endpoint = "{endpoint}"
             )"""
+
         logger.info(f"Creating BQ remote function: {create_function_ddl}")
+
+        # Make sure the dataset exists
+        dataset = bigquery.Dataset(
+            bigquery.DatasetReference.from_string(
+                self._bq_dataset, default_project=self._gcp_project_id
+            )
+        )
+        dataset.location = self._bq_location
+        self._bq_client.create_dataset(dataset, exists_ok=True)
+
         # TODO: Use session._start_query() so we get progress bar
         query_job = self._bq_client.query(create_function_ddl)  # Make an API request.
         query_job.result()  # Wait for the job to complete.
+
         logger.info(f"Created remote function {query_job.ddl_target_routine}")
 
     def get_cloud_function_fully_qualified_parent(self):
@@ -465,17 +477,22 @@ class RemoteFunctionClient:
         routines = self._bq_client.list_routines(
             f"{self._gcp_project_id}.{self._bq_dataset}"
         )
-        for routine in routines:
-            if routine.reference.routine_id == remote_function_name:
-                # TODO(shobs): Use first class properties when they are available
-                # https://github.com/googleapis/python-bigquery/issues/1552
-                rf_options = routine._properties.get("remoteFunctionOptions")
-                if rf_options:
-                    http_endpoint = rf_options.get("endpoint")
-                    bq_connection = rf_options.get("connection")
-                    if bq_connection:
-                        bq_connection = os.path.basename(bq_connection)
-                break
+        try:
+            for routine in routines:
+                if routine.reference.routine_id == remote_function_name:
+                    # TODO(shobs): Use first class properties when they are available
+                    # https://github.com/googleapis/python-bigquery/issues/1552
+                    rf_options = routine._properties.get("remoteFunctionOptions")
+                    if rf_options:
+                        http_endpoint = rf_options.get("endpoint")
+                        bq_connection = rf_options.get("connection")
+                        if bq_connection:
+                            bq_connection = os.path.basename(bq_connection)
+                    break
+        except google.api_core.exceptions.NotFound:
+            # The dataset might not exist, in which case the http_endpoint doesn't, either.
+            # Note: list_routines doesn't make an API request until we iterate on the response object.
+            pass
         return (http_endpoint, bq_connection)
 
 

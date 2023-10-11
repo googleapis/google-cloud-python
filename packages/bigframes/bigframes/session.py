@@ -381,17 +381,12 @@ class Session(
             ]
         )
 
-        # Dataset for storing BQML models and remote functions, which don't yet
+        # Dataset for storing remote functions, which don't yet
         # support proper session temporary storage yet
         self._session_dataset = bigquery.Dataset(
             f"{self.bqclient.project}.bigframes_temp_{self._location.lower().replace('-', '_')}"
         )
         self._session_dataset.location = self._location
-        self._session_dataset.default_table_expiration_ms = 24 * 60 * 60 * 1000
-
-        # TODO: handle case when the dataset does not exist and the user does
-        # not have permission to create one (bigquery.datasets.create IAM)
-        self.bqclient.create_dataset(self._session_dataset, exists_ok=True)
 
     def close(self):
         """Terminated the BQ session, otherwises the session will be terminated automatically after

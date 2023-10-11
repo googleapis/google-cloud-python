@@ -134,15 +134,28 @@ def cleanup_datasets(bigquery_client: bigquery.Client) -> None:
             )
 
 
+def get_dataset_id(project_id: str):
+    "Get a fully qualified dataset id belonging to the given project."
+    dataset_id = f"{project_id}.{prefixer.create_prefix()}_dataset_id"
+    return dataset_id
+
+
 @pytest.fixture(scope="session")
 def dataset_id(bigquery_client: bigquery.Client):
     """Create (and cleanup) a temporary dataset."""
-    project_id = bigquery_client.project
-    dataset_id = f"{project_id}.{prefixer.create_prefix()}_dataset_id"
-    dataset = bigquery.Dataset(dataset_id)
-    bigquery_client.create_dataset(dataset)
+    dataset_id = get_dataset_id(bigquery_client.project)
+    bigquery_client.create_dataset(dataset_id)
     yield dataset_id
-    bigquery_client.delete_dataset(dataset, delete_contents=True)
+    bigquery_client.delete_dataset(dataset_id, delete_contents=True)
+
+
+@pytest.fixture
+def dataset_id_not_created(bigquery_client: bigquery.Client):
+    """Return a temporary dataset object without creating it, and clean it up
+    after it has been used."""
+    dataset_id = get_dataset_id(bigquery_client.project)
+    yield dataset_id
+    bigquery_client.delete_dataset(dataset_id, delete_contents=True)
 
 
 @pytest.fixture(scope="session")

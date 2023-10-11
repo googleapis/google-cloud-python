@@ -894,11 +894,6 @@ def test_session_id(session):
     # TODO(chelsealin): Verify the session id can be binded with a load job.
 
 
-def test_session_dataset_exists_and_configured(session: bigframes.Session):
-    dataset = session.bqclient.get_dataset(session._session_dataset_id)
-    assert dataset.default_table_expiration_ms == 24 * 60 * 60 * 1000
-
-
 @pytest.mark.flaky(retries=2)
 def test_to_close_session():
     session = bigframes.Session()
