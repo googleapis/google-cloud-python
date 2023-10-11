@@ -83,12 +83,14 @@ class BigQueryOptions:
 
     @property
     def bq_connection(self) -> Optional[str]:
-        """Name of the BigQuery connection to use.
+        """Name of the BigQuery connection to use. Should be of the form <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
 
         You should either have the connection already created in the
         <code>location</code> you have chosen, or you should have the Project IAM
         Admin role to enable the service to create the connection for you if you
         need it.
+
+        If this option isn't provided, or project or location aren't provided, session will use its default project/location/connection_id as default connection.
         """
         return self._bq_connection
 

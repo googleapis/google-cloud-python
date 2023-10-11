@@ -695,9 +695,12 @@ def remote_function(
             persistent name.
 
     """
+    import bigframes.pandas as bpd
+
+    session = session or bpd.get_global_session()
 
     # A BigQuery client is required to perform BQ operations
-    if not bigquery_client and session:
+    if not bigquery_client:
         bigquery_client = session.bqclient
     if not bigquery_client:
         raise ValueError(
@@ -706,7 +709,7 @@ def remote_function(
         )
 
     # A BigQuery connection client is required to perform BQ connection operations
-    if not bigquery_connection_client and session:
+    if not bigquery_connection_client:
         bigquery_connection_client = session.bqconnectionclient
     if not bigquery_connection_client:
         raise ValueError(
@@ -716,8 +719,7 @@ def remote_function(
 
     # A cloud functions client is required to perform cloud functions operations
     if not cloud_functions_client:
-        if session:
-            cloud_functions_client = session.cloudfunctionsclient
+        cloud_functions_client = session.cloudfunctionsclient
     if not cloud_functions_client:
         raise ValueError(
             "A cloud functions client must be provided, either directly or via session. "
@@ -726,8 +728,7 @@ def remote_function(
 
     # A resource manager client is required to get/set IAM operations
     if not resource_manager_client:
-        if session:
-            resource_manager_client = session.resourcemanagerclient
+        resource_manager_client = session.resourcemanagerclient
     if not resource_manager_client:
         raise ValueError(
             "A resource manager client must be provided, either directly or via session. "
@@ -740,14 +741,9 @@ def remote_function(
         dataset_ref = bigquery.DatasetReference.from_string(
             dataset, default_project=bigquery_client.project
         )
-    elif session:
+    else:
         dataset_ref = bigquery.DatasetReference.from_string(
             session._session_dataset_id, default_project=bigquery_client.project
-        )
-    else:
-        raise ValueError(
-            "Project and dataset must be provided, either directly or via session. "
-            f"{constants.FEEDBACK_LINK}"
         )
 
     bq_location, cloud_function_region = get_remote_function_locations(
@@ -756,40 +752,30 @@ def remote_function(
 
     # A connection is required for BQ remote function
     # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#create_a_remote_function
-    if not bigquery_connection and session:
-        bigquery_connection = session._bq_connection  # type: ignore
     if not bigquery_connection:
-        raise ValueError(
-            "BigQuery connection must be provided, either directly or via session. "
-            f"{constants.FEEDBACK_LINK}"
-        )
+        bigquery_connection = session._bq_connection  # type: ignore
 
-    # Check connection_id with `LOCATION.CONNECTION_ID` or `PROJECT_ID.LOCATION.CONNECTION_ID` format.
-    if bigquery_connection.count(".") == 1:
-        bq_connection_location, bq_connection_id = bigquery_connection.split(".")
-        if bq_connection_location.casefold() != bq_location.casefold():
-            raise ValueError(
-                "The location does not match BigQuery connection location: "
-                f"{bq_location}."
-            )
-        bigquery_connection = bq_connection_id
-    elif bigquery_connection.count(".") == 2:
-        (
-            gcp_project_id,
-            bq_connection_location,
-            bq_connection_id,
-        ) = bigquery_connection.split(".")
-        if gcp_project_id.casefold() != dataset_ref.project.casefold():
-            raise ValueError(
-                "The project_id does not match BigQuery connection gcp_project_id: "
-                f"{dataset_ref.project}."
-            )
-        if bq_connection_location.casefold() != bq_location.casefold():
-            raise ValueError(
-                "The location does not match BigQuery connection location: "
-                f"{bq_location}."
-            )
-        bigquery_connection = bq_connection_id
+    bigquery_connection = clients.get_connection_name_full(
+        bigquery_connection,
+        default_project=dataset_ref.project,
+        default_location=bq_location,
+    )
+    # Guaranteed to be the form of <project>.<location>.<connection_id>
+    (
+        gcp_project_id,
+        bq_connection_location,
+        bq_connection_id,
+    ) = bigquery_connection.split(".")
+    if gcp_project_id.casefold() != dataset_ref.project.casefold():
+        raise ValueError(
+            "The project_id does not match BigQuery connection gcp_project_id: "
+            f"{dataset_ref.project}."
+        )
+    if bq_connection_location.casefold() != bq_location.casefold():
+        raise ValueError(
+            "The location does not match BigQuery connection location: "
+            f"{bq_location}."
+        )
 
     def wrapper(f):
         if not callable(f):
@@ -808,7 +794,7 @@ def remote_function(
             dataset_ref.dataset_id,
             bigquery_client,
             bigquery_connection_client,
-            bigquery_connection,
+            bq_connection_id,
             resource_manager_client,
         )
 

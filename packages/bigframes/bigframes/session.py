@@ -350,9 +350,13 @@ class Session(
     @property
     def _session_dataset_id(self):
         """A dataset for storing temporary objects local to the session
-        This is a workaround for BQML models and remote functions that do not
+        This is a workaround for remote functions that do not
         yet support session-temporary instances."""
         return self._session_dataset.dataset_id
+
+    @property
+    def _project(self):
+        return self.bqclient.project
 
     def _create_and_bind_bq_session(self):
         """Create a BQ session and bind the session id with clients to capture BQ activities:

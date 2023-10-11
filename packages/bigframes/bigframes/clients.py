@@ -29,6 +29,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+_BIGFRAMES_DEFAULT_CONNECTION_ID = "bigframes-default-connection"
+
 
 class BqConnectionManager:
     """Manager to handle operations with BQ connections."""
@@ -162,3 +164,25 @@ class BqConnectionManager:
             pass
 
         return service_account
+
+
+def get_connection_name_full(
+    connection_name: Optional[str], default_project: str, default_location: str
+) -> str:
+    """Retrieve the full connection name of the form <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
+    Use default project, location or connection_id when any of them are missing."""
+    if connection_name is None:
+        return (
+            f"{default_project}.{default_location}.{_BIGFRAMES_DEFAULT_CONNECTION_ID}"
+        )
+
+    if connection_name.count(".") == 2:
+        return connection_name
+
+    if connection_name.count(".") == 1:
+        return f"{default_project}.{connection_name}"
+
+    if connection_name.count(".") == 0:
+        return f"{default_project}.{default_location}.{connection_name}"
+
+    raise ValueError(f"Invalid connection name format: {connection_name}.")

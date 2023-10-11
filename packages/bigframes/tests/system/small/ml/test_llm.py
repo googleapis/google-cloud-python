@@ -26,7 +26,8 @@ def test_create_text_generator_model(palm2_text_generator_model):
     assert palm2_text_generator_model._bqml_model is not None
 
 
-def test_create_text_generator_model_defaults(bq_connection):
+@pytest.mark.flaky(retries=2, delay=120)
+def test_create_text_generator_model_default_session(bq_connection, llm_text_pandas_df):
     import bigframes.pandas as bpd
 
     bpd.reset_session()
@@ -36,6 +37,40 @@ def test_create_text_generator_model_defaults(bq_connection):
     model = llm.PaLM2TextGenerator()
     assert model is not None
     assert model._bqml_model is not None
+    assert model.connection_name.casefold() == "bigframes-dev.us.bigframes-rf-conn"
+
+    llm_text_df = bpd.read_pandas(llm_text_pandas_df)
+
+    df = model.predict(llm_text_df).to_pandas()
+    TestCase().assertSequenceEqual(df.shape, (3, 1))
+    assert "ml_generate_text_llm_result" in df.columns
+    series = df["ml_generate_text_llm_result"]
+    assert all(series.str.len() > 20)
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_create_text_generator_model_default_connection(llm_text_pandas_df):
+    from bigframes import _config
+    import bigframes.pandas as bpd
+
+    bpd.reset_session()
+    _config.options = _config.Options()  # reset configs
+
+    llm_text_df = bpd.read_pandas(llm_text_pandas_df)
+
+    model = llm.PaLM2TextGenerator()
+    assert model is not None
+    assert model._bqml_model is not None
+    assert (
+        model.connection_name.casefold()
+        == "bigframes-dev.us.bigframes-default-connection"
+    )
+
+    df = model.predict(llm_text_df).to_pandas()
+    TestCase().assertSequenceEqual(df.shape, (3, 1))
+    assert "ml_generate_text_llm_result" in df.columns
+    series = df["ml_generate_text_llm_result"]
+    assert all(series.str.len() > 20)
 
 
 # Marked as flaky only because BQML LLM is in preview, the service only has limited capacity, not stable enough.
