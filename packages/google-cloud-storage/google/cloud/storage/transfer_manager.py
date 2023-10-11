@@ -273,6 +273,8 @@ def download_many(
     raise_exception=False,
     worker_type=PROCESS,
     max_workers=DEFAULT_MAX_WORKERS,
+    *,
+    skip_if_exists=False,
 ):
     """Download many blobs concurrently via a worker pool.
 
@@ -348,6 +350,11 @@ def download_many(
         and the default is a conservative number that should work okay in most
         cases without consuming excessive resources.
 
+    :type skip_if_exists: bool
+    :param skip_if_exists:
+        Before downloading each blob, check if the file for the filename exists;
+        if it does, skip that blob.
+
     :raises: :exc:`concurrent.futures.TimeoutError` if deadline is exceeded.
 
     :rtype: list
@@ -373,6 +380,10 @@ def download_many(
                 raise ValueError(
                     "Passing in a file object is only supported by the THREAD worker type. Please either select THREAD workers, or pass in filenames only."
                 )
+
+            if skip_if_exists and isinstance(path_or_file, str):
+                if os.path.isfile(path_or_file):
+                    continue
 
             futures.append(
                 executor.submit(
@@ -589,6 +600,8 @@ def download_many_to_path(
     raise_exception=False,
     worker_type=PROCESS,
     max_workers=DEFAULT_MAX_WORKERS,
+    *,
+    skip_if_exists=False,
 ):
     """Download many files concurrently by their blob names.
 
@@ -715,6 +728,11 @@ def download_many_to_path(
         and the default is a conservative number that should work okay in most
         cases without consuming excessive resources.
 
+    :type skip_if_exists: bool
+    :param skip_if_exists:
+        Before downloading each blob, check if the file for the filename exists;
+        if it does, skip that blob. This only works for filenames.
+
     :raises: :exc:`concurrent.futures.TimeoutError` if deadline is exceeded.
 
     :rtype: list
@@ -740,6 +758,7 @@ def download_many_to_path(
         raise_exception=raise_exception,
         worker_type=worker_type,
         max_workers=max_workers,
+        skip_if_exists=skip_if_exists,
     )
 
 

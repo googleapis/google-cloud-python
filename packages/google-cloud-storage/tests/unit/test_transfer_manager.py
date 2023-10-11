@@ -273,6 +273,32 @@ def test_download_many_with_filenames():
         assert result == FAKE_RESULT
 
 
+def test_download_many_with_skip_if_exists():
+    with tempfile.NamedTemporaryFile() as tf:
+        BLOB_FILE_PAIRS = [
+            (mock.Mock(spec=Blob), "file_a.txt"),
+            (mock.Mock(spec=Blob), tf.name),
+        ]
+
+        for blob_mock, _ in BLOB_FILE_PAIRS:
+            blob_mock._handle_filename_and_download.return_value = FAKE_RESULT
+
+        results = transfer_manager.download_many(
+            BLOB_FILE_PAIRS,
+            download_kwargs=DOWNLOAD_KWARGS,
+            worker_type=transfer_manager.THREAD,
+            skip_if_exists=True,
+        )
+        mock_blob, file = BLOB_FILE_PAIRS[0]
+        mock_blob._handle_filename_and_download.assert_any_call(
+            file, **EXPECTED_DOWNLOAD_KWARGS
+        )
+        mock_blob, _ = BLOB_FILE_PAIRS[1]
+        mock_blob._handle_filename_and_download.assert_not_called()
+        for result in results:
+            assert result == FAKE_RESULT
+
+
 def test_download_many_with_file_objs():
     BLOB_FILE_PAIRS = [
         (mock.Mock(spec=Blob), tempfile.TemporaryFile()),
@@ -485,6 +511,7 @@ def test_download_many_to_path():
             raise_exception=True,
             max_workers=MAX_WORKERS,
             worker_type=WORKER_TYPE,
+            skip_if_exists=True,
         )
 
     mock_download_many.assert_called_once_with(
@@ -494,6 +521,7 @@ def test_download_many_to_path():
         raise_exception=True,
         max_workers=MAX_WORKERS,
         worker_type=WORKER_TYPE,
+        skip_if_exists=True,
     )
     for blobname in BLOBNAMES:
         bucket.blob.assert_any_call(BLOB_NAME_PREFIX + blobname)
@@ -532,6 +560,7 @@ def test_download_many_to_path_creates_directories():
             raise_exception=True,
             worker_type=transfer_manager.PROCESS,
             max_workers=8,
+            skip_if_exists=False,
         )
         for blobname in BLOBNAMES:
             bucket.blob.assert_any_call(blobname)
