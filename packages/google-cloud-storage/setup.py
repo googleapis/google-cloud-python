@@ -33,6 +33,7 @@ dependencies = [
     "google-cloud-core >= 2.3.0, < 3.0dev",
     "google-resumable-media >= 2.6.0",
     "requests >= 2.18.0, < 3.0.0dev",
+    "google-crc32c >= 1.0, < 2.0dev",
 ]
 extras = {"protobuf": ["protobuf<5.0.0dev"]}
 

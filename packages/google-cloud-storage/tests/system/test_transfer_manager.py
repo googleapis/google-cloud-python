@@ -172,8 +172,19 @@ def test_download_chunks_concurrently(shared_bucket, file_data):
         with open(trailing_chunk_filename, "rb") as file_obj:
             assert _base64_md5hash(file_obj) == source_file["hash"]
 
+        # And for a case where there is only one chunk.
+        trailing_chunk_filename = os.path.join(tempdir, "chunky_file_3")
+        transfer_manager.download_chunks_concurrently(
+            download_blob,
+            trailing_chunk_filename,
+            chunk_size=size,
+            deadline=DEADLINE,
+        )
+        with open(trailing_chunk_filename, "rb") as file_obj:
+            assert _base64_md5hash(file_obj) == source_file["hash"]
+
         # Also test threaded mode.
-        threaded_filename = os.path.join(tempdir, "chunky_file_3")
+        threaded_filename = os.path.join(tempdir, "chunky_file_4")
         transfer_manager.download_chunks_concurrently(
             download_blob,
             threaded_filename,
