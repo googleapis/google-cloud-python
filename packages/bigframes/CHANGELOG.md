@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [0.8.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.7.0...v0.8.0) (2023-10-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* The default behavior of `to_parquet` is changing from no compression to `'snappy'` compression.
+
+### Features
+
+* Support compression in `to_parquet` ([a8c286f](https://github.com/googleapis/python-bigquery-dataframes/commit/a8c286f0995cc8cf2a4c44fb51855773ecf71f72))
+
+
+### Bug Fixes
+
+* Create session dataset for remote functions only when needed ([#94](https://github.com/googleapis/python-bigquery-dataframes/issues/94)) ([1d385be](https://github.com/googleapis/python-bigquery-dataframes/commit/1d385be1c68342a66ecb9f28c5efc83c18d0e64c))
+
 ## [0.7.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.6.0...v0.7.0) (2023-10-11)
 
 
