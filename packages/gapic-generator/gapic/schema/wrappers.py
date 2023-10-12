@@ -713,7 +713,7 @@ class MessageType:
         references.
         """
         visited_messages = visited_messages or set()
-        visited_messages.add(self)
+        visited_messages = visited_messages | {self}
         return dataclasses.replace(
             self,
             fields={
