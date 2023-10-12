@@ -16,7 +16,7 @@ Python Client for
    :target: https://pypi.org/project/google-shopping-merchant-inventories/
 .. _: 
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/inventories/latest
-.. _Product Documentation:  
+.. _Product Documentation:  https://developers.google.com/merchant/api
 
 Quick Start
 -----------
