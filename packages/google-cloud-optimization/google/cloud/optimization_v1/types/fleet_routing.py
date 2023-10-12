@@ -35,6 +35,7 @@ __protobuf__ = proto.module(
         "Shipment",
         "ShipmentTypeIncompatibility",
         "ShipmentTypeRequirement",
+        "RouteModifiers",
         "Vehicle",
         "TimeWindow",
         "CapacityQuantity",
@@ -1689,6 +1690,53 @@ class ShipmentTypeRequirement(proto.Message):
     )
 
 
+class RouteModifiers(proto.Message):
+    r"""Encapsulates a set of optional conditions to satisfy when
+    calculating vehicle routes. This is similar to ``RouteModifiers`` in
+    the Google Maps Platform API; see:
+    https://developers.google.com/maps/documentation/routes/reference/rest/v2/RouteModifiers.
+
+    Attributes:
+        avoid_tolls (bool):
+            Specifies whether to avoid toll roads where
+            reasonable. Preference will be given to routes
+            not containing toll roads. Applies only to
+            motorized travel modes.
+        avoid_highways (bool):
+            Specifies whether to avoid highways where
+            reasonable. Preference will be given to routes
+            not containing highways. Applies only to
+            motorized travel modes.
+        avoid_ferries (bool):
+            Specifies whether to avoid ferries where
+            reasonable. Preference will be given to routes
+            not containing travel by ferries. Applies only
+            to motorized travel modes.
+        avoid_indoor (bool):
+            Optional. Specifies whether to avoid navigating indoors
+            where reasonable. Preference will be given to routes not
+            containing indoor navigation. Applies only to the
+            ``WALKING`` travel mode.
+    """
+
+    avoid_tolls: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    avoid_highways: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    avoid_ferries: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    avoid_indoor: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+
+
 class Vehicle(proto.Message):
     r"""Models a vehicle in a shipment problem. Solving a shipment problem
     will build a route starting from ``start_location`` and ending at
@@ -1703,6 +1751,10 @@ class Vehicle(proto.Message):
             The travel mode which affects the roads usable by the
             vehicle and its speed. See also
             ``travel_duration_multiple``.
+        route_modifiers (google.cloud.optimization_v1.types.RouteModifiers):
+            Optional. A set of conditions to satisfy that
+            affect the way routes are calculated for the
+            given vehicle.
         start_location (google.type.latlng_pb2.LatLng):
             Geographic location where the vehicle starts before picking
             up any shipments. If not specified, the vehicle starts at
@@ -2140,6 +2192,11 @@ class Vehicle(proto.Message):
         proto.ENUM,
         number=1,
         enum=TravelMode,
+    )
+    route_modifiers: "RouteModifiers" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="RouteModifiers",
     )
     start_location: latlng_pb2.LatLng = proto.Field(
         proto.MESSAGE,
@@ -4218,6 +4275,15 @@ class OptimizeToursValidationError(proto.Message):
                -  VISIT_REQUEST_DURATION_EXCEEDS_GLOBAL_DURATION = 4405;
 
             -  PRECEDENCE_ERROR = 46;
+
+               -  PRECEDENCE_RULE_MISSING_FIRST_INDEX = 4600;
+               -  PRECEDENCE_RULE_MISSING_SECOND_INDEX = 4601;
+               -  PRECEDENCE_RULE_FIRST_INDEX_OUT_OF_BOUNDS = 4602;
+               -  PRECEDENCE_RULE_SECOND_INDEX_OUT_OF_BOUNDS = 4603;
+               -  PRECEDENCE_RULE_DUPLICATE_INDEX = 4604;
+               -  PRECEDENCE_RULE_INEXISTENT_FIRST_VISIT_REQUEST = 4605;
+               -  PRECEDENCE_RULE_INEXISTENT_SECOND_VISIT_REQUEST =
+                  4606;
 
             -  BREAK_ERROR = 48;
 
