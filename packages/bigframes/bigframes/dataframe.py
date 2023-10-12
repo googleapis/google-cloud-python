@@ -21,6 +21,7 @@ import textwrap
 import typing
 from typing import (
     Callable,
+    Dict,
     Iterable,
     List,
     Literal,
@@ -2270,7 +2271,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     __array__ = to_numpy
 
-    def to_parquet(self, path: str, *, index: bool = True) -> None:
+    def to_parquet(
+        self,
+        path: str,
+        *,
+        compression: Optional[Literal["snappy", "gzip"]] = "snappy",
+        index: bool = True,
+    ) -> None:
         # TODO(swast): Can we support partition columns argument?
         # TODO(chelsealin): Support local file paths.
         # TODO(swast): Some warning that wildcard is recommended for large
@@ -2282,6 +2289,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if "*" not in path:
             raise NotImplementedError(ERROR_IO_REQUIRES_WILDCARD)
 
+        if compression not in {None, "snappy", "gzip"}:
+            raise ValueError("'{0}' is not valid for compression".format(compression))
+
+        export_options: Dict[str, Union[bool, str]] = {}
+        if compression:
+            export_options["compression"] = compression.upper()
+
         result_table = self._run_io_query(
             index=index, ordering_id=bigframes.core.io.IO_ORDERING_ID
         )
@@ -2289,7 +2303,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             f"{result_table.project}.{result_table.dataset_id}.{result_table.table_id}",
             uri=path,
             format="PARQUET",
-            export_options={},
+            export_options=export_options,
         )
         _, query_job = self._block.expr._session._start_query(export_data_statement)
         self._set_internal_query_job(query_job)
