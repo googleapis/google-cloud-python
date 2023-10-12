@@ -196,8 +196,8 @@ class SeriesMethods:
                     get_column_right,
                 ) = block.index.join(other._block.index, how=how)
                 value_ids = [
-                    *[get_column_left(value) for value in value_ids],
-                    get_column_right(other._value_column),
+                    *[get_column_left[value] for value in value_ids],
+                    get_column_right[other._value_column],
                 ]
                 block = combined_index._block
             else:

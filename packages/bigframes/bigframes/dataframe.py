@@ -419,7 +419,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             get_column_right,
         ) = self._block.index.join(key._block.index, how="left")
         block = combined_index._block
-        filter_col_id = get_column_right(key._value_column)
+        filter_col_id = get_column_right[key._value_column]
         block = block.filter(filter_col_id)
         block = block.drop_columns([filter_col_id])
         return DataFrame(block)
@@ -560,18 +560,18 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         )
 
         series_column_id = other._value_column
-        series_col = get_column_right(series_column_id)
+        series_col = get_column_right[series_column_id]
         block = joined_index._block
         for column_id, label in zip(
             self._block.value_columns, self._block.column_labels
         ):
             block, _ = block.apply_binary_op(
-                get_column_left(column_id),
+                get_column_left[column_id],
                 series_col,
                 op,
                 result_label=label,
             )
-            block = block.drop_columns([get_column_left(column_id)])
+            block = block.drop_columns([get_column_left[column_id]])
 
         block = block.drop_columns([series_col])
         block = block.with_index_labels(self.index.names)
@@ -603,22 +603,22 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 left_col_id = self._block.value_columns[left_index]
                 right_col_id = other._block.value_columns[right_index]
                 block, result_col_id = block.apply_binary_op(
-                    get_column_left(left_col_id),
-                    get_column_right(right_col_id),
+                    get_column_left[left_col_id],
+                    get_column_right[right_col_id],
                     op,
                 )
                 binop_result_ids.append(result_col_id)
             elif left_index >= 0:
                 left_col_id = self._block.value_columns[left_index]
                 block, result_col_id = block.apply_unary_op(
-                    get_column_left(left_col_id),
+                    get_column_left[left_col_id],
                     ops.partial_right(op, None),
                 )
                 binop_result_ids.append(result_col_id)
             elif right_index >= 0:
                 right_col_id = other._block.value_columns[right_index]
                 block, result_col_id = block.apply_unary_op(
-                    get_column_right(right_col_id),
+                    get_column_right[right_col_id],
                     ops.partial_left(op, None),
                 )
                 binop_result_ids.append(result_col_id)
@@ -974,7 +974,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             block.index
         )
 
-        new_ordering_col = get_column_right(ordering_col)
+        new_ordering_col = get_column_right[ordering_col]
         drop_block = joined_index._block
         drop_block, drop_col = drop_block.apply_unary_op(
             new_ordering_col,
@@ -983,7 +983,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         drop_block = drop_block.filter(drop_col)
         original_columns = [
-            get_column_left(column) for column in self._block.value_columns
+            get_column_left[column] for column in self._block.value_columns
         ]
         drop_block = drop_block.select_columns(original_columns)
         return DataFrame(drop_block)
@@ -1119,7 +1119,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             # local_df is likely (but not guarunteed) to be cached locally
             # since the original list came from memory and so is probably < MAX_INLINE_DF_SIZE
 
-            this_expr, this_offsets_col_id = self._get_block()._expr.promote_offsets()
+            this_offsets_col_id = bigframes.core.guid.generate_guid()
+            this_expr = self._get_block()._expr.promote_offsets(this_offsets_col_id)
             block = blocks.Block(
                 expr=this_expr,
                 index_labels=self.index.names,
@@ -1156,10 +1157,10 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         )
 
         column_ids = [
-            get_column_left(col_id) for col_id in self._block.cols_matching_label(label)
+            get_column_left[col_id] for col_id in self._block.cols_matching_label(label)
         ]
         block = joined_index._block
-        source_column = get_column_right(series._value_column)
+        source_column = get_column_right[series._value_column]
 
         # Replace each column matching the label
         for column_id in column_ids:
@@ -2032,8 +2033,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                     key._block.index, how="inner" if dropna else "left"
                 )
                 col_ids = [
-                    *[get_column_left(value) for value in col_ids],
-                    get_column_right(key._value_column),
+                    *[get_column_left[value] for value in col_ids],
+                    get_column_right[key._value_column],
                 ]
                 block = combined_index._block
             else:

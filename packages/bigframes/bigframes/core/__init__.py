@@ -211,8 +211,8 @@ class ArrayValue:
         return tuple(self._column_names.keys())
 
     @property
-    def hidden_ordering_columns(self) -> typing.Tuple[ibis_types.Value, ...]:
-        return self._hidden_ordering_columns
+    def _hidden_column_ids(self) -> typing.Sequence[str]:
+        return tuple(self._hidden_ordering_column_names.keys())
 
     @property
     def _reduced_predicate(self) -> typing.Optional[ibis_types.BooleanValue]:
@@ -400,7 +400,7 @@ class ArrayValue:
         expr_builder.ordering = self._ordering.with_column_remap({column_id: new_name})
         return expr_builder.build()
 
-    def promote_offsets(self) -> typing.Tuple[ArrayValue, str]:
+    def promote_offsets(self, col_id: str) -> ArrayValue:
         """
         Convenience function to promote copy of column offsets to a value column. Can be used to reset index.
         """
@@ -408,16 +408,15 @@ class ArrayValue:
         ordering = self._ordering
 
         if (not ordering.is_sequential) or (not ordering.total_order_col):
-            return self._project_offsets().promote_offsets()
-        col_id = bigframes.core.guid.generate_guid()
+            return self._project_offsets().promote_offsets(col_id)
         expr_builder = self.builder()
         expr_builder.columns = [
             self._get_any_column(ordering.total_order_col.column_id).name(col_id),
             *self.columns,
         ]
-        return expr_builder.build(), col_id
+        return expr_builder.build()
 
-    def select_columns(self, column_ids: typing.Sequence[str]):
+    def select_columns(self, column_ids: typing.Sequence[str]) -> ArrayValue:
         return self._projection(
             [self._get_ibis_column(col_id) for col_id in column_ids]
         )
@@ -807,7 +806,7 @@ class ArrayValue:
         elif ordering_mode == "string_encoded":
             return (self._create_string_ordering_column().name(order_col_name),)
         elif expose_hidden_cols:
-            return self.hidden_ordering_columns
+            return self._hidden_ordering_columns
         return ()
 
     def _create_offset_column(self) -> ibis_types.IntegerColumn:

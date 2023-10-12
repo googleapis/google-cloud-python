@@ -39,6 +39,7 @@ import bigframes.core as core
 import bigframes.core.guid as guid
 import bigframes.core.indexes as indexes
 import bigframes.core.joins as joins
+import bigframes.core.joins.name_resolution as join_names
 import bigframes.core.ordering as ordering
 import bigframes.core.utils
 import bigframes.core.utils as utils
@@ -97,7 +98,8 @@ class Block:
                     "'index_columns' and 'index_labels' must have equal length"
                 )
         if len(index_columns) == 0:
-            expr, new_index_col_id = expr.promote_offsets()
+            new_index_col_id = guid.generate_guid()
+            expr = expr.promote_offsets(new_index_col_id)
             index_columns = [new_index_col_id]
         self._index_columns = tuple(index_columns)
         # Index labels don't need complicated hierarchical access so can store as tuple
@@ -260,7 +262,8 @@ class Block:
             from Index classes that point to this block.
         """
         block = self
-        expr, new_index_col_id = self._expr.promote_offsets()
+        new_index_col_id = guid.generate_guid()
+        expr = self._expr.promote_offsets(new_index_col_id)
         if drop:
             # Even though the index might be part of the ordering, keep that
             # ordering expression as reset_index shouldn't change the row
@@ -833,7 +836,8 @@ class Block:
         else:  # axis_n == 1
             # using offsets as identity to group on.
             # TODO: Allow to promote identity/total_order columns instead for better perf
-            expr_with_offsets, offset_col = self.expr.promote_offsets()
+            offset_col = guid.generate_guid()
+            expr_with_offsets = self.expr.promote_offsets(offset_col)
             stacked_expr = expr_with_offsets.unpivot(
                 row_labels=self.column_labels.to_list(),
                 index_col_ids=[guid.generate_guid()],
@@ -952,9 +956,10 @@ class Block:
             ]
             by_column_labels = self._get_labels_for_columns(by_value_columns)
             labels = (*by_column_labels, *aggregate_labels)
-            result_expr_pruned, offsets_id = result_expr.select_columns(
+            offsets_id = guid.generate_guid()
+            result_expr_pruned = result_expr.select_columns(
                 [*by_value_columns, *output_col_ids]
-            ).promote_offsets()
+            ).promote_offsets(offsets_id)
 
             return (
                 Block(
@@ -975,7 +980,8 @@ class Block:
 
         aggregations = [(column_id, stat, stat.name) for stat in stats_to_fetch]
         expr = self.expr.aggregate(aggregations)
-        expr, offset_index_id = expr.promote_offsets()
+        offset_index_id = guid.generate_guid()
+        expr = expr.promote_offsets(offset_index_id)
         block = Block(
             expr,
             index_columns=[offset_index_id],
@@ -999,7 +1005,8 @@ class Block:
             )
         ]
         expr = self.expr.corr_aggregate(corr_aggregations)
-        expr, offset_index_id = expr.promote_offsets()
+        offset_index_id = guid.generate_guid()
+        expr = expr.promote_offsets(offset_index_id)
         block = Block(
             expr,
             index_columns=[offset_index_id],
@@ -1197,7 +1204,8 @@ class Block:
         return formatted_df, count, query_job
 
     def promote_offsets(self, label: Label = None) -> typing.Tuple[Block, str]:
-        expr, result_id = self._expr.promote_offsets()
+        result_id = guid.generate_guid()
+        expr = self._expr.promote_offsets(result_id)
         return (
             Block(
                 expr,
@@ -1471,67 +1479,76 @@ class Block:
             "outer",
             "right",
         ],
-        left_col_ids: typing.Sequence[str],
-        right_col_ids: typing.Sequence[str],
+        left_join_ids: typing.Sequence[str],
+        right_join_ids: typing.Sequence[str],
         sort: bool,
         suffixes: tuple[str, str] = ("_x", "_y"),
     ) -> Block:
-        (
-            joined_expr,
-            coalesced_join_cols,
-            (get_column_left, get_column_right),
-        ) = joins.join_by_column(
+        joined_expr = joins.join_by_column(
             self.expr,
-            left_col_ids,
+            left_join_ids,
             other.expr,
-            right_col_ids,
+            right_join_ids,
             how=how,
-            sort=sort,
         )
+        get_column_left, get_column_right = join_names.JOIN_NAME_REMAPPER(
+            self.expr.column_ids, other.expr.column_ids
+        )
+        result_columns = []
+        matching_join_labels = []
 
-        # which join key parts should be coalesced
-        merge_join_key_mask = [
-            str(self.col_id_to_label[left_id]) == str(other.col_id_to_label[right_id])
-            for left_id, right_id in zip(left_col_ids, right_col_ids)
-        ]
-        labels_to_coalesce = [
-            self.col_id_to_label[col_id]
-            for i, col_id in enumerate(left_col_ids)
-            if merge_join_key_mask[i]
-        ]
+        coalesced_ids = []
+        for left_id, right_id in zip(left_join_ids, right_join_ids):
+            coalesced_id = guid.generate_guid()
+            joined_expr = joined_expr.project_binary_op(
+                get_column_left[left_id],
+                get_column_right[right_id],
+                ops.coalesce_op,
+                coalesced_id,
+            )
+            coalesced_ids.append(coalesced_id)
 
-        def left_col_mapping(col_id: str) -> str:
-            if col_id in left_col_ids:
-                join_key_part = left_col_ids.index(col_id)
-                if merge_join_key_mask[join_key_part]:
-                    return coalesced_join_cols[join_key_part]
-            return get_column_left(col_id)
+        for col_id in self.value_columns:
+            if col_id in left_join_ids:
+                key_part = left_join_ids.index(col_id)
+                matching_right_id = right_join_ids[key_part]
+                if (
+                    self.col_id_to_label[col_id]
+                    == other.col_id_to_label[matching_right_id]
+                ):
+                    matching_join_labels.append(self.col_id_to_label[col_id])
+                    result_columns.append(coalesced_ids[key_part])
+                else:
+                    result_columns.append(get_column_left[col_id])
+            else:
+                result_columns.append(get_column_left[col_id])
+        for col_id in other.value_columns:
+            if col_id in right_join_ids:
+                key_part = right_join_ids.index(col_id)
+                if other.col_id_to_label[matching_right_id] in matching_join_labels:
+                    pass
+                else:
+                    result_columns.append(get_column_right[col_id])
+            else:
+                result_columns.append(get_column_right[col_id])
 
-        def right_col_mapping(col_id: str) -> typing.Optional[str]:
-            if col_id in right_col_ids:
-                join_key_part = right_col_ids.index(col_id)
-                if merge_join_key_mask[join_key_part]:
-                    return None
-            return get_column_right(col_id)
+        if sort:
+            # sort uses coalesced join keys always
+            joined_expr = joined_expr.order_by(
+                [ordering.OrderingColumnReference(col_id) for col_id in coalesced_ids],
+                stable=True,
+            )
 
-        left_columns = [left_col_mapping(col_id) for col_id in self.value_columns]
-
-        right_columns = [
-            typing.cast(str, right_col_mapping(col_id))
-            for col_id in other.value_columns
-            if right_col_mapping(col_id)
-        ]
-
-        expr = joined_expr.select_columns([*left_columns, *right_columns])
+        joined_expr = joined_expr.select_columns(result_columns)
         labels = utils.merge_column_labels(
             self.column_labels,
             other.column_labels,
-            coalesce_labels=labels_to_coalesce,
+            coalesce_labels=matching_join_labels,
             suffixes=suffixes,
         )
-
         # Constructs default index
-        expr, offset_index_id = expr.promote_offsets()
+        offset_index_id = guid.generate_guid()
+        expr = joined_expr.promote_offsets(offset_index_id)
         return Block(expr, index_columns=[offset_index_id], column_labels=labels)
 
     def _force_reproject(self) -> Block:

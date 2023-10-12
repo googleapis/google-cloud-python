@@ -40,8 +40,8 @@ def equals(block1: blocks.Block, block2: blocks.Block) -> bool:
 
     equality_ids = []
     for lcol, rcol in zip(block1.value_columns, block2.value_columns):
-        lcolmapped = lmap(lcol)
-        rcolmapped = rmap(rcol)
+        lcolmapped = lmap[lcol]
+        rcolmapped = rmap[rcol]
         joined_block, result_id = joined_block.apply_binary_op(
             lcolmapped, rcolmapped, ops.eq_nulls_match_op
         )
@@ -563,8 +563,8 @@ def align_rows(
     joined_index, (get_column_left, get_column_right) = left_block.index.join(
         right_block.index, how=join
     )
-    left_columns = [get_column_left(col) for col in left_block.value_columns]
-    right_columns = [get_column_right(col) for col in right_block.value_columns]
+    left_columns = [get_column_left[col] for col in left_block.value_columns]
+    right_columns = [get_column_right[col] for col in right_block.value_columns]
 
     left_block = joined_index._block.select_columns(left_columns)
     right_block = joined_index._block.select_columns(right_columns)

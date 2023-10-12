@@ -913,6 +913,16 @@ def ge_op(
     return x >= y
 
 
+def coalesce_op(
+    x: ibis_types.Value,
+    y: ibis_types.Value,
+):
+    if x.name("name").equals(y.name("name")):
+        return x
+    else:
+        return ibis.coalesce(x, y)
+
+
 @short_circuit_nulls(ibis_dtypes.int)
 def floordiv_op(
     x: ibis_types.Value,
