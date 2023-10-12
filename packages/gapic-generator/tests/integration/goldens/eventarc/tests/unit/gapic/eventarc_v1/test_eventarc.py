@@ -6230,22 +6230,30 @@ def test_create_trigger_rest(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    is_message_proto_plus_type = not hasattr(eventarc.CreateTriggerRequest.meta.fields["trigger"].message, "DESCRIPTOR")
+    test_field = eventarc.CreateTriggerRequest.meta.fields["trigger"]
 
-    if is_message_proto_plus_type:
-        message_fields = eventarc.CreateTriggerRequest.meta.fields["trigger"].message.meta.fields
-    else:
-        message_fields = eventarc.CreateTriggerRequest.meta.fields["trigger"].message.DESCRIPTOR.fields
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
 
     subfields_not_in_runtime = []
-
-    # Get all subfields for the message
-    runtime_nested_fields = [
-        (field.name, subfield.name)
-        for field in message_fields
-        if hasattr(field, "message_type") and field.message_type
-        for subfield in field.message_type.fields
-    ]
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     for field, value in request_init["trigger"].items():
@@ -6538,22 +6546,30 @@ def test_update_trigger_rest(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    is_message_proto_plus_type = not hasattr(eventarc.UpdateTriggerRequest.meta.fields["trigger"].message, "DESCRIPTOR")
+    test_field = eventarc.UpdateTriggerRequest.meta.fields["trigger"]
 
-    if is_message_proto_plus_type:
-        message_fields = eventarc.UpdateTriggerRequest.meta.fields["trigger"].message.meta.fields
-    else:
-        message_fields = eventarc.UpdateTriggerRequest.meta.fields["trigger"].message.DESCRIPTOR.fields
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
 
     subfields_not_in_runtime = []
-
-    # Get all subfields for the message
-    runtime_nested_fields = [
-        (field.name, subfield.name)
-        for field in message_fields
-        if hasattr(field, "message_type") and field.message_type
-        for subfield in field.message_type.fields
-    ]
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     for field, value in request_init["trigger"].items():
@@ -7612,22 +7628,30 @@ def test_create_channel_rest(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    is_message_proto_plus_type = not hasattr(eventarc.CreateChannelRequest.meta.fields["channel"].message, "DESCRIPTOR")
+    test_field = eventarc.CreateChannelRequest.meta.fields["channel"]
 
-    if is_message_proto_plus_type:
-        message_fields = eventarc.CreateChannelRequest.meta.fields["channel"].message.meta.fields
-    else:
-        message_fields = eventarc.CreateChannelRequest.meta.fields["channel"].message.DESCRIPTOR.fields
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
 
     subfields_not_in_runtime = []
-
-    # Get all subfields for the message
-    runtime_nested_fields = [
-        (field.name, subfield.name)
-        for field in message_fields
-        if hasattr(field, "message_type") and field.message_type
-        for subfield in field.message_type.fields
-    ]
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     for field, value in request_init["channel"].items():
@@ -7920,22 +7944,30 @@ def test_update_channel_rest(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    is_message_proto_plus_type = not hasattr(eventarc.UpdateChannelRequest.meta.fields["channel"].message, "DESCRIPTOR")
+    test_field = eventarc.UpdateChannelRequest.meta.fields["channel"]
 
-    if is_message_proto_plus_type:
-        message_fields = eventarc.UpdateChannelRequest.meta.fields["channel"].message.meta.fields
-    else:
-        message_fields = eventarc.UpdateChannelRequest.meta.fields["channel"].message.DESCRIPTOR.fields
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
 
     subfields_not_in_runtime = []
-
-    # Get all subfields for the message
-    runtime_nested_fields = [
-        (field.name, subfield.name)
-        for field in message_fields
-        if hasattr(field, "message_type") and field.message_type
-        for subfield in field.message_type.fields
-    ]
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     for field, value in request_init["channel"].items():
@@ -9516,22 +9548,30 @@ def test_create_channel_connection_rest(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    is_message_proto_plus_type = not hasattr(eventarc.CreateChannelConnectionRequest.meta.fields["channel_connection"].message, "DESCRIPTOR")
+    test_field = eventarc.CreateChannelConnectionRequest.meta.fields["channel_connection"]
 
-    if is_message_proto_plus_type:
-        message_fields = eventarc.CreateChannelConnectionRequest.meta.fields["channel_connection"].message.meta.fields
-    else:
-        message_fields = eventarc.CreateChannelConnectionRequest.meta.fields["channel_connection"].message.DESCRIPTOR.fields
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
 
     subfields_not_in_runtime = []
-
-    # Get all subfields for the message
-    runtime_nested_fields = [
-        (field.name, subfield.name)
-        for field in message_fields
-        if hasattr(field, "message_type") and field.message_type
-        for subfield in field.message_type.fields
-    ]
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     for field, value in request_init["channel_connection"].items():
@@ -10276,22 +10316,30 @@ def test_update_google_channel_config_rest(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    is_message_proto_plus_type = not hasattr(eventarc.UpdateGoogleChannelConfigRequest.meta.fields["google_channel_config"].message, "DESCRIPTOR")
+    test_field = eventarc.UpdateGoogleChannelConfigRequest.meta.fields["google_channel_config"]
 
-    if is_message_proto_plus_type:
-        message_fields = eventarc.UpdateGoogleChannelConfigRequest.meta.fields["google_channel_config"].message.meta.fields
-    else:
-        message_fields = eventarc.UpdateGoogleChannelConfigRequest.meta.fields["google_channel_config"].message.DESCRIPTOR.fields
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
 
     subfields_not_in_runtime = []
-
-    # Get all subfields for the message
-    runtime_nested_fields = [
-        (field.name, subfield.name)
-        for field in message_fields
-        if hasattr(field, "message_type") and field.message_type
-        for subfield in field.message_type.fields
-    ]
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     for field, value in request_init["google_channel_config"].items():

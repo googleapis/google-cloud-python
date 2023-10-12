@@ -34,20 +34,27 @@ service MyServiceWithProtobufType {
   rpc MyMethod(MethodRequestWithProtobufType)
       returns (MethodResponseWithProtobufType) {
     option (google.api.http) = {
-      post: "/v1/services/{service_name}/configs"
+      post: "/v1/services/{service_name}/configs/{test_message.another_message.another_field}"
       body: "test_message"
     };
-    option (google.api.method_signature) = "service_name,test_message";
+    option (google.api.method_signature) = "service_name,test_message,another_string";
   }
 }
 
 message MethodRequestWithProtobufType {
   string service_name = 1 [(google.api.field_behavior) = REQUIRED];
   TestMessage test_message = 2 [(google.api.field_behavior) = REQUIRED];
+  string another_string = 3 [(google.api.field_behavior) = REQUIRED];
 }
 
 message TestMessage {
+  string name = 1 [(google.api.field_behavior) = REQUIRED];
   repeated google.protobuf.Type types = 2 [(google.api.field_behavior) = REQUIRED];
+  AnotherTestMessage another_message = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+message AnotherTestMessage {
+  string another_field = 1;
 }
 
 message MethodResponseWithProtobufType {

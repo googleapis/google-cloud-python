@@ -9998,22 +9998,30 @@ def test_create_saved_query_rest(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    is_message_proto_plus_type = not hasattr(asset_service.CreateSavedQueryRequest.meta.fields["saved_query"].message, "DESCRIPTOR")
+    test_field = asset_service.CreateSavedQueryRequest.meta.fields["saved_query"]
 
-    if is_message_proto_plus_type:
-        message_fields = asset_service.CreateSavedQueryRequest.meta.fields["saved_query"].message.meta.fields
-    else:
-        message_fields = asset_service.CreateSavedQueryRequest.meta.fields["saved_query"].message.DESCRIPTOR.fields
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
 
     subfields_not_in_runtime = []
-
-    # Get all subfields for the message
-    runtime_nested_fields = [
-        (field.name, subfield.name)
-        for field in message_fields
-        if hasattr(field, "message_type") and field.message_type
-        for subfield in field.message_type.fields
-    ]
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     for field, value in request_init["saved_query"].items():
@@ -10843,22 +10851,30 @@ def test_update_saved_query_rest(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    is_message_proto_plus_type = not hasattr(asset_service.UpdateSavedQueryRequest.meta.fields["saved_query"].message, "DESCRIPTOR")
+    test_field = asset_service.UpdateSavedQueryRequest.meta.fields["saved_query"]
 
-    if is_message_proto_plus_type:
-        message_fields = asset_service.UpdateSavedQueryRequest.meta.fields["saved_query"].message.meta.fields
-    else:
-        message_fields = asset_service.UpdateSavedQueryRequest.meta.fields["saved_query"].message.DESCRIPTOR.fields
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
 
     subfields_not_in_runtime = []
-
-    # Get all subfields for the message
-    runtime_nested_fields = [
-        (field.name, subfield.name)
-        for field in message_fields
-        if hasattr(field, "message_type") and field.message_type
-        for subfield in field.message_type.fields
-    ]
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     for field, value in request_init["saved_query"].items():
