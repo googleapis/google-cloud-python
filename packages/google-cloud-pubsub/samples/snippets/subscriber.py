@@ -191,7 +191,7 @@ def create_push_no_wrapper_subscription(
     project_id: str, topic_id: str, subscription_id: str, endpoint: str
 ) -> None:
     """Create a new push no wrapper subscription on the given topic."""
-    # [START pubsub_create_push_no_wrapper_subscription]
+    # [START pubsub_create_unwrapped_push_subscription]
     from google.cloud import pubsub_v1
 
     # TODO(developer)
@@ -224,7 +224,7 @@ def create_push_no_wrapper_subscription(
     print(f"Push no wrapper subscription created: {subscription}.")
     print(f"Endpoint for subscription is: {endpoint}")
     print(f"No wrapper configuration for subscription is: {no_wrapper}")
-    # [END pubsub_create_push_no_wrapper_subscription]
+    # [END pubsub_create_unwrapped_push_subscription]
 
 
 def create_subscription_with_ordering(
@@ -358,7 +358,7 @@ def create_cloudstorage_subscription(
     project_id: str, topic_id: str, subscription_id: str, bucket: str
 ) -> None:
     """Create a new CloudStorage subscription on the given topic."""
-    # [START pubsub_cloudstorage_subscription]
+    # [START pubsub_create_cloud_storage_subscription]
     from google.cloud import pubsub_v1
     from google.protobuf import duration_pb2
 
@@ -407,7 +407,7 @@ def create_cloudstorage_subscription(
     print(f"Bucket for subscription is: {bucket}")
     print(f"Prefix is: {filename_prefix}")
     print(f"Suffix is: {filename_suffix}")
-    # [END pubsub_cloudstorage_subscription]
+    # [END pubsub_create_cloud_storage_subscription]
 
 
 def delete_subscription(project_id: str, subscription_id: str) -> None:
