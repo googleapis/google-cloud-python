@@ -102,6 +102,25 @@ def test_upload_many_skip_if_exists(
     assert len(blobs_to_delete) == 1
 
 
+def test_upload_many_from_filenames_with_attributes(
+    listable_bucket, listable_filenames, file_data, blobs_to_delete
+):
+    SOURCE_DIRECTORY, FILENAME = os.path.split(file_data["logo"]["path"])
+
+    transfer_manager.upload_many_from_filenames(
+        listable_bucket,
+        [FILENAME],
+        source_directory=SOURCE_DIRECTORY,
+        additional_blob_attributes={"cache_control": "no-cache"},
+        raise_exception=True,
+    )
+
+    blob = listable_bucket.blob(FILENAME)
+    blob.reload()
+    blobs_to_delete.append(blob)
+    assert blob.cache_control == "no-cache"
+
+
 def test_download_many(listable_bucket):
     blobs = list(listable_bucket.list_blobs())
     with tempfile.TemporaryDirectory() as tempdir:

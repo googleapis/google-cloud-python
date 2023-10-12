@@ -482,6 +482,38 @@ def test_upload_many_from_filenames_minimal_args():
     bucket.blob.assert_any_call(FILENAMES[1])
 
 
+def test_upload_many_from_filenames_additional_properties():
+    bucket = mock.Mock()
+    blob = mock.Mock()
+    bucket_blob = mock.Mock(return_value=blob)
+    blob.cache_control = None
+    bucket.blob = bucket_blob
+
+    FILENAME = "file_a.txt"
+    ADDITIONAL_BLOB_ATTRIBUTES = {"cache_control": "no-cache"}
+    EXPECTED_FILE_BLOB_PAIRS = [(FILENAME, mock.ANY)]
+
+    with mock.patch(
+        "google.cloud.storage.transfer_manager.upload_many"
+    ) as mock_upload_many:
+        transfer_manager.upload_many_from_filenames(
+            bucket, [FILENAME], additional_blob_attributes=ADDITIONAL_BLOB_ATTRIBUTES
+        )
+
+    mock_upload_many.assert_called_once_with(
+        EXPECTED_FILE_BLOB_PAIRS,
+        skip_if_exists=False,
+        upload_kwargs=None,
+        deadline=None,
+        raise_exception=False,
+        worker_type=transfer_manager.PROCESS,
+        max_workers=8,
+    )
+
+    for attrib, value in ADDITIONAL_BLOB_ATTRIBUTES.items():
+        assert getattr(blob, attrib) == value
+
+
 def test_download_many_to_path():
     bucket = mock.Mock()
 

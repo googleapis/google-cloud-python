@@ -427,6 +427,8 @@ def upload_many_from_filenames(
     raise_exception=False,
     worker_type=PROCESS,
     max_workers=DEFAULT_MAX_WORKERS,
+    *,
+    additional_blob_attributes=None,
 ):
     """Upload many files concurrently by their filenames.
 
@@ -557,6 +559,17 @@ def upload_many_from_filenames(
         and the default is a conservative number that should work okay in most
         cases without consuming excessive resources.
 
+    :type additional_blob_attributes: dict
+    :param additional_blob_attributes:
+        A dictionary of blob attribute names and values. This allows the
+        configuration of blobs beyond what is possible with
+        blob_constructor_kwargs. For instance, {"cache_control": "no-cache"}
+        would set the cache_control attribute of each blob to "no-cache".
+
+        As with blob_constructor_kwargs, this affects the creation of every
+        blob identically. To fine-tune each blob individually, use `upload_many`
+        and create the blobs as desired before passing them in.
+
     :raises: :exc:`concurrent.futures.TimeoutError` if deadline is exceeded.
 
     :rtype: list
@@ -567,6 +580,8 @@ def upload_many_from_filenames(
     """
     if blob_constructor_kwargs is None:
         blob_constructor_kwargs = {}
+    if additional_blob_attributes is None:
+        additional_blob_attributes = {}
 
     file_blob_pairs = []
 
@@ -574,6 +589,8 @@ def upload_many_from_filenames(
         path = os.path.join(source_directory, filename)
         blob_name = blob_name_prefix + filename
         blob = bucket.blob(blob_name, **blob_constructor_kwargs)
+        for prop, value in additional_blob_attributes.items():
+            setattr(blob, prop, value)
         file_blob_pairs.append((path, blob))
 
     return upload_many(
