@@ -117,7 +117,9 @@ def upload_many(
     :type file_blob_pairs: List(Tuple(IOBase or str, 'google.cloud.storage.blob.Blob'))
     :param file_blob_pairs:
         A list of tuples of a file or filename and a blob. Each file will be
-        uploaded to the corresponding blob by using APIs identical to blob.upload_from_file() or blob.upload_from_filename() as appropriate.
+        uploaded to the corresponding blob by using APIs identical to
+        `blob.upload_from_file()` or `blob.upload_from_filename()` as
+        appropriate.
 
         File handlers are only supported if worker_type is set to THREAD.
         If worker_type is set to PROCESS, please use filenames only.
@@ -125,7 +127,7 @@ def upload_many(
     :type skip_if_exists: bool
     :param skip_if_exists:
         If True, blobs that already have a live version will not be overwritten.
-        This is accomplished by setting "if_generation_match = 0" on uploads.
+        This is accomplished by setting `if_generation_match = 0` on uploads.
         Uploads so skipped will result in a 412 Precondition Failed response
         code, which will be included in the return value but not raised
         as an exception regardless of the value of raise_exception.
@@ -133,8 +135,9 @@ def upload_many(
     :type upload_kwargs: dict
     :param upload_kwargs:
         A dictionary of keyword arguments to pass to the upload method. Refer
-        to the documentation for blob.upload_from_file() or
-        blob.upload_from_filename() for more information. The dict is directly passed into the upload methods and is not validated by this function.
+        to the documentation for `blob.upload_from_file()` or
+        `blob.upload_from_filename()` for more information. The dict is directly
+        passed into the upload methods and is not validated by this function.
 
     :type threads: int
     :param threads:
@@ -147,8 +150,8 @@ def upload_many(
     :param deadline:
         The number of seconds to wait for all threads to resolve. If the
         deadline is reached, all threads will be terminated regardless of their
-        progress and concurrent.futures.TimeoutError will be raised. This can be
-        left as the default of None (no deadline) for most use cases.
+        progress and `concurrent.futures.TimeoutError` will be raised. This can
+        be left as the default of `None` (no deadline) for most use cases.
 
     :type raise_exception: bool
     :param raise_exception:
@@ -163,8 +166,8 @@ def upload_many(
 
     :type worker_type: str
     :param worker_type:
-        The worker type to use; one of google.cloud.storage.transfer_manager.PROCESS
-        or google.cloud.storage.transfer_manager.THREAD.
+        The worker type to use; one of `google.cloud.storage.transfer_manager.PROCESS`
+        or `google.cloud.storage.transfer_manager.THREAD`.
 
         Although the exact performance impact depends on the use case, in most
         situations the PROCESS worker type will use more system resources (both
@@ -201,7 +204,7 @@ def upload_many(
     :returns: A list of results corresponding to, in order, each item in the
         input list. If an exception was received, it will be the result
         for that operation. Otherwise, the return value from the successful
-        upload method is used (typically, None).
+        upload method is used (which will be None).
     """
     if upload_kwargs is None:
         upload_kwargs = {}
@@ -282,7 +285,9 @@ def download_many(
     :type download_kwargs: dict
     :param download_kwargs:
         A dictionary of keyword arguments to pass to the download method. Refer
-        to the documentation for blob.download_to_file() or blob.download_to_filename() for more information. The dict is directly passed into the download methods and is not validated by this function.
+        to the documentation for `blob.download_to_file()` or
+        `blob.download_to_filename()` for more information. The dict is directly
+        passed into the download methods and is not validated by this function.
 
     :type threads: int
     :param threads:
@@ -295,8 +300,8 @@ def download_many(
     :param deadline:
         The number of seconds to wait for all threads to resolve. If the
         deadline is reached, all threads will be terminated regardless of their
-        progress and concurrent.futures.TimeoutError will be raised. This can be
-        left as the default of None (no deadline) for most use cases.
+        progress and `concurrent.futures.TimeoutError` will be raised. This can
+        be left as the default of `None` (no deadline) for most use cases.
 
     :type raise_exception: bool
     :param raise_exception:
@@ -308,8 +313,8 @@ def download_many(
 
     :type worker_type: str
     :param worker_type:
-        The worker type to use; one of google.cloud.storage.transfer_manager.PROCESS
-        or google.cloud.storage.transfer_manager.THREAD.
+        The worker type to use; one of `google.cloud.storage.transfer_manager.PROCESS`
+        or `google.cloud.storage.transfer_manager.THREAD`.
 
         Although the exact performance impact depends on the use case, in most
         situations the PROCESS worker type will use more system resources (both
@@ -351,7 +356,7 @@ def download_many(
     :returns: A list of results corresponding to, in order, each item in the
         input list. If an exception was received, it will be the result
         for that operation. Otherwise, the return value from the successful
-        download method is used (typically, None).
+        download method is used (which will be None).
     """
 
     if download_kwargs is None:
@@ -430,18 +435,19 @@ def upload_many_from_filenames(
     then the file at "/home/myuser/images/icon.jpg" will be uploaded to a blob
     named "myfiles/images/icon.jpg".
 
-    :type bucket: 'google.cloud.storage.bucket.Bucket'
+    :type bucket: :class:`google.cloud.storage.bucket.Bucket`
     :param bucket:
         The bucket which will contain the uploaded blobs.
 
     :type filenames: list(str)
     :param filenames:
         A list of filenames to be uploaded. This may include part of the path.
-        The full path to the file must be source_directory + filename.
+        The file will be accessed at the full path of `source_directory` +
+        `filename`.
 
     :type source_directory: str
     :param source_directory:
-        A string that will be prepended (with os.path.join()) to each filename
+        A string that will be prepended (with `os.path.join()`) to each filename
         in the input list, in order to find the source file for each blob.
         Unlike the filename itself, the source_directory does not affect the
         name of the uploaded blob.
@@ -472,7 +478,7 @@ def upload_many_from_filenames(
     :type skip_if_exists: bool
     :param skip_if_exists:
         If True, blobs that already have a live version will not be overwritten.
-        This is accomplished by setting "if_generation_match = 0" on uploads.
+        This is accomplished by setting `if_generation_match = 0` on uploads.
         Uploads so skipped will result in a 412 Precondition Failed response
         code, which will be included in the return value, but not raised
         as an exception regardless of the value of raise_exception.
@@ -480,7 +486,7 @@ def upload_many_from_filenames(
     :type blob_constructor_kwargs: dict
     :param blob_constructor_kwargs:
         A dictionary of keyword arguments to pass to the blob constructor. Refer
-        to the documentation for blob.Blob() for more information. The dict is
+        to the documentation for `blob.Blob()` for more information. The dict is
         directly passed into the constructor and is not validated by this
         function. `name` and `bucket` keyword arguments are reserved by this
         function and will result in an error if passed in here.
@@ -488,8 +494,9 @@ def upload_many_from_filenames(
     :type upload_kwargs: dict
     :param upload_kwargs:
         A dictionary of keyword arguments to pass to the upload method. Refer
-        to the documentation for blob.upload_from_file() or
-        blob.upload_from_filename() for more information. The dict is directly passed into the upload methods and is not validated by this function.
+        to the documentation for `blob.upload_from_file()` or
+        `blob.upload_from_filename()` for more information. The dict is directly
+        passed into the upload methods and is not validated by this function.
 
     :type threads: int
     :param threads:
@@ -502,8 +509,8 @@ def upload_many_from_filenames(
     :param deadline:
         The number of seconds to wait for all threads to resolve. If the
         deadline is reached, all threads will be terminated regardless of their
-        progress and concurrent.futures.TimeoutError will be raised. This can be
-        left as the default of None (no deadline) for most use cases.
+        progress and `concurrent.futures.TimeoutError` will be raised. This can
+        be left as the default of `None` (no deadline) for most use cases.
 
     :type raise_exception: bool
     :param raise_exception:
@@ -518,8 +525,8 @@ def upload_many_from_filenames(
 
     :type worker_type: str
     :param worker_type:
-        The worker type to use; one of google.cloud.storage.transfer_manager.PROCESS
-        or google.cloud.storage.transfer_manager.THREAD.
+        The worker type to use; one of `google.cloud.storage.transfer_manager.PROCESS`
+        or `google.cloud.storage.transfer_manager.THREAD`.
 
         Although the exact performance impact depends on the use case, in most
         situations the PROCESS worker type will use more system resources (both
@@ -564,7 +571,7 @@ def upload_many_from_filenames(
     :returns: A list of results corresponding to, in order, each item in the
         input list. If an exception was received, it will be the result
         for that operation. Otherwise, the return value from the successful
-        upload method is used (typically, None).
+        upload method is used (which will be None).
     """
     if blob_constructor_kwargs is None:
         blob_constructor_kwargs = {}
@@ -622,7 +629,7 @@ def download_many_to_path(
     "images/icon.jpg" will be downloaded to a file named
     "/home/myuser/icon.jpg".
 
-    :type bucket: 'google.cloud.storage.bucket.Bucket'
+    :type bucket: :class:`google.cloud.storage.bucket.Bucket`
     :param bucket:
         The bucket which contains the blobs to be downloaded
 
@@ -666,8 +673,8 @@ def download_many_to_path(
     :type download_kwargs: dict
     :param download_kwargs:
         A dictionary of keyword arguments to pass to the download method. Refer
-        to the documentation for blob.download_to_file() or
-        blob.download_to_filename() for more information. The dict is directly
+        to the documentation for `blob.download_to_file()` or
+        `blob.download_to_filename()` for more information. The dict is directly
         passed into the download methods and is not validated by this function.
 
     :type threads: int
@@ -681,8 +688,8 @@ def download_many_to_path(
     :param deadline:
         The number of seconds to wait for all threads to resolve. If the
         deadline is reached, all threads will be terminated regardless of their
-        progress and concurrent.futures.TimeoutError will be raised. This can be
-        left as the default of None (no deadline) for most use cases.
+        progress and `concurrent.futures.TimeoutError` will be raised. This can
+        be left as the default of `None` (no deadline) for most use cases.
 
     :type create_directories: bool
     :param create_directories:
@@ -702,8 +709,8 @@ def download_many_to_path(
 
     :type worker_type: str
     :param worker_type:
-        The worker type to use; one of google.cloud.storage.transfer_manager.PROCESS
-        or google.cloud.storage.transfer_manager.THREAD.
+        The worker type to use; one of `google.cloud.storage.transfer_manager.PROCESS`
+        or `google.cloud.storage.transfer_manager.THREAD`.
 
         Although the exact performance impact depends on the use case, in most
         situations the PROCESS worker type will use more system resources (both
@@ -742,7 +749,7 @@ def download_many_to_path(
     :returns: A list of results corresponding to, in order, each item in the
         input list. If an exception was received, it will be the result
         for that operation. Otherwise, the return value from the successful
-        download method is used (typically, None).
+        download method is used (which will be None).
     """
     blob_file_pairs = []
 
@@ -785,10 +792,7 @@ def download_chunks_concurrently(
     performance under normal circumstances due to Python interpreter threading
     behavior. The default is therefore to use processes instead of threads.
 
-    :param bucket:
-        The bucket which contains the blobs to be downloaded
-
-    :type blob: `google.cloud.storage.Blob`
+    :type blob: :class:`google.cloud.storage.blob.Blob`
     :param blob:
         The blob to be downloaded.
 
@@ -805,26 +809,26 @@ def download_chunks_concurrently(
     :type download_kwargs: dict
     :param download_kwargs:
         A dictionary of keyword arguments to pass to the download method. Refer
-        to the documentation for blob.download_to_file() or
-        blob.download_to_filename() for more information. The dict is directly
+        to the documentation for `blob.download_to_file()` or
+        `blob.download_to_filename()` for more information. The dict is directly
         passed into the download methods and is not validated by this function.
 
         Keyword arguments "start" and "end" which are not supported and will
         cause a ValueError if present. The key "checksum" is also not supported
-        in download_kwargs, but see the argument "crc32c_checksum" (which does
-        not go in download_kwargs) below.
+        in `download_kwargs`, but see the argument `crc32c_checksum` (which does
+        not go in `download_kwargs`) below.
 
     :type deadline: int
     :param deadline:
         The number of seconds to wait for all threads to resolve. If the
         deadline is reached, all threads will be terminated regardless of their
-        progress and concurrent.futures.TimeoutError will be raised. This can be
-        left as the default of None (no deadline) for most use cases.
+        progress and `concurrent.futures.TimeoutError` will be raised. This can
+        be left as the default of `None` (no deadline) for most use cases.
 
     :type worker_type: str
     :param worker_type:
-        The worker type to use; one of google.cloud.storage.transfer_manager.PROCESS
-        or google.cloud.storage.transfer_manager.THREAD.
+        The worker type to use; one of `google.cloud.storage.transfer_manager.PROCESS`
+        or `google.cloud.storage.transfer_manager.THREAD`.
 
         Although the exact performance impact depends on the use case, in most
         situations the PROCESS worker type will use more system resources (both
@@ -968,7 +972,7 @@ def upload_chunks_concurrently(
     file in chunks, concurrently with a worker pool.
 
     The XML MPU API is significantly different from other uploads; please review
-    the documentation at https://cloud.google.com/storage/docs/multipart-uploads
+    the documentation at `https://cloud.google.com/storage/docs/multipart-uploads`
     before using this feature.
 
     The library will attempt to cancel uploads that fail due to an exception.
@@ -990,7 +994,7 @@ def upload_chunks_concurrently(
     :param filename:
         The path to the file to upload. File-like objects are not supported.
 
-    :type blob: `google.cloud.storage.Blob`
+    :type blob: :class:`google.cloud.storage.blob.Blob`
     :param blob:
         The blob to which to upload.
 
@@ -1002,19 +1006,19 @@ def upload_chunks_concurrently(
         The size in bytes of each chunk to send. The optimal chunk size for
         maximum throughput may vary depending on the exact network environment
         and size of the blob. The remote API has restrictions on the minimum
-        and maximum size allowable, see: https://cloud.google.com/storage/quotas#requests
+        and maximum size allowable, see: `https://cloud.google.com/storage/quotas#requests`
 
     :type deadline: int
     :param deadline:
         The number of seconds to wait for all threads to resolve. If the
         deadline is reached, all threads will be terminated regardless of their
-        progress and concurrent.futures.TimeoutError will be raised. This can be
-        left as the default of None (no deadline) for most use cases.
+        progress and `concurrent.futures.TimeoutError` will be raised. This can
+        be left as the default of `None` (no deadline) for most use cases.
 
     :type worker_type: str
     :param worker_type:
-        The worker type to use; one of google.cloud.storage.transfer_manager.PROCESS
-        or google.cloud.storage.transfer_manager.THREAD.
+        The worker type to use; one of `google.cloud.storage.transfer_manager.PROCESS`
+        or `google.cloud.storage.transfer_manager.THREAD`.
 
         Although the exact performance impact depends on the use case, in most
         situations the PROCESS worker type will use more system resources (both
@@ -1044,12 +1048,12 @@ def upload_chunks_concurrently(
 
     :type checksum: str
     :param checksum:
-        (Optional) The checksum scheme to use: either 'md5', 'crc32c' or None.
+        (Optional) The checksum scheme to use: either "md5", "crc32c" or None.
         Each individual part is checksummed. At present, the selected checksum
         rule is only applied to parts and a separate checksum of the entire
         resulting blob is not computed. Please compute and compare the checksum
         of the file to the resulting blob separately if needed, using the
-        'crc32c' algorithm as per the XML MPU documentation.
+        "crc32c" algorithm as per the XML MPU documentation.
 
     :type timeout: float or tuple
     :param timeout:
@@ -1058,16 +1062,16 @@ def upload_chunks_concurrently(
 
     :type retry: google.api_core.retry.Retry
     :param retry: (Optional) How to retry the RPC. A None value will disable
-        retries. A google.api_core.retry.Retry value will enable retries,
+        retries. A `google.api_core.retry.Retry` value will enable retries,
         and the object will configure backoff and timeout options. Custom
         predicates (customizable error codes) are not supported for media
         operations such as this one.
 
-        This function does not accept ConditionalRetryPolicy values because
+        This function does not accept `ConditionalRetryPolicy` values because
         preconditions are not supported by the underlying API call.
 
         See the retry.py source code and docstrings in this package
-        (google.cloud.storage.retry) for information on retry types and how
+        (`google.cloud.storage.retry`) for information on retry types and how
         to configure them.
 
     :raises: :exc:`concurrent.futures.TimeoutError` if deadline is exceeded.
