@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.21.0](https://github.com/googleapis/python-analytics-admin/compare/v0.20.0...v0.21.0) (2023-10-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename the `enterprise_daily_export_enabled` field to `fresh_daily_export_enabled` in the `BigQueryLink` resource
+
+### Features
+
+* Add `CoarseValue`, `ConversionValues`, `EventMapping`, `SKAdNetworkConversionValueSchema` types ([cabcb1f](https://github.com/googleapis/python-analytics-admin/commit/cabcb1ff2eb5100885c5684c2cfb6896ccadd97b))
+* Add `GetSKAdNetworkConversionValueSchema`, `CreateSKAdNetworkConversionValueSchema`, `DeleteSKAdNetworkConversionValueSchema`, `UpdateSKAdNetworkConversionValueSchema`, `ListSKAdNetworkConversionValueSchemas` methods to the Admin API v1 alpha ([cabcb1f](https://github.com/googleapis/python-analytics-admin/commit/cabcb1ff2eb5100885c5684c2cfb6896ccadd97b))
+* Add `UpdateConversionEvent` method to the Admin API v1 beta ([7c8f27f](https://github.com/googleapis/python-analytics-admin/commit/7c8f27f204724ff46f8400effb97dfc786a4fcb5))
+* Add the `ConversionCountingMethod` enum ([7c8f27f](https://github.com/googleapis/python-analytics-admin/commit/7c8f27f204724ff46f8400effb97dfc786a4fcb5))
+* Add the `counting_method` field to the `ConversionEvent` type ([7c8f27f](https://github.com/googleapis/python-analytics-admin/commit/7c8f27f204724ff46f8400effb97dfc786a4fcb5))
+* Add the `ITEM` option to the `DimensionScope` enum ([7c8f27f](https://github.com/googleapis/python-analytics-admin/commit/7c8f27f204724ff46f8400effb97dfc786a4fcb5))
+* Add the `skadnetwork_conversion_value_schema` field to the `ChangeHistoryResource.resource` oneof type ([cabcb1f](https://github.com/googleapis/python-analytics-admin/commit/cabcb1ff2eb5100885c5684c2cfb6896ccadd97b))
+* Add the `SKADNETWORK_CONVERSION_VALUE_SCHEMA` option to the `ChangeHistoryResourceType` enum ([cabcb1f](https://github.com/googleapis/python-analytics-admin/commit/cabcb1ff2eb5100885c5684c2cfb6896ccadd97b))
+* Make the field `default_uri` of `WebStreamData` mutable ([7c8f27f](https://github.com/googleapis/python-analytics-admin/commit/7c8f27f204724ff46f8400effb97dfc786a4fcb5))
+
+
+### Bug Fixes
+
+* Add the missing `REQUIRED` annotation to the `update_mask` field of `UpdateMeasurementProtocolSecretRequest` ([7c8f27f](https://github.com/googleapis/python-analytics-admin/commit/7c8f27f204724ff46f8400effb97dfc786a4fcb5))
+* Rename the `enterprise_daily_export_enabled` field to `fresh_daily_export_enabled` in the `BigQueryLink` resource ([cabcb1f](https://github.com/googleapis/python-analytics-admin/commit/cabcb1ff2eb5100885c5684c2cfb6896ccadd97b))
+
+
+### Documentation
+
+* Minor formatting ([#379](https://github.com/googleapis/python-analytics-admin/issues/379)) ([ab8a30b](https://github.com/googleapis/python-analytics-admin/commit/ab8a30b637284a9526fae5b85e05b1c54891c609))
+
 ## [0.20.0](https://github.com/googleapis/python-analytics-admin/compare/v0.19.0...v0.20.0) (2023-08-10)
 
 
