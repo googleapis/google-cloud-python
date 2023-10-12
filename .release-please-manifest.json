@@ -84,7 +84,7 @@
     "packages/google-cloud-network-security": "0.9.4",
     "packages/google-cloud-network-services": "0.5.4",
     "packages/google-cloud-notebooks": "1.8.1",
-    "packages/google-cloud-optimization": "1.5.0",
+    "packages/google-cloud-optimization": "1.6.0",
     "packages/google-cloud-orchestration-airflow": "1.9.2",
     "packages/google-cloud-os-config": "1.15.3",
     "packages/google-cloud-phishing-protection": "1.9.2",
