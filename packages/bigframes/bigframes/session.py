@@ -97,6 +97,8 @@ _BIGQUERY_REGIONAL_ENDPOINT = "https://{location}-bigquery.googleapis.com"
 _BIGQUERYCONNECTION_REGIONAL_ENDPOINT = "{location}-bigqueryconnection.googleapis.com"
 _BIGQUERYSTORAGE_REGIONAL_ENDPOINT = "{location}-bigquerystorage.googleapis.com"
 
+_BIGFRAMES_DEFAULT_CONNECTION_ID = "bigframes-default-connection"
+
 _MAX_CLUSTER_COLUMNS = 4
 
 # TODO(swast): Need to connect to regional endpoints when performing remote
@@ -321,7 +323,7 @@ class Session(
             ),
         )
 
-        self._bq_connection = context.bq_connection
+        self._bq_connection = context.bq_connection or _BIGFRAMES_DEFAULT_CONNECTION_ID
 
         # Now that we're starting the session, don't allow the options to be
         # changed.
