@@ -23,7 +23,7 @@ def test_remote_function_and_read_gbq_function(
     capsys: pytest.CaptureFixture[str],
 ) -> None:
     # We need a fresh session since we're modifying connection options.
-    bigframes.pandas.reset_session()
+    bigframes.pandas.close_session()
 
     # TODO(swast): Get project from environment so contributors can run tests.
     remote_function.run_remote_function_and_read_gbq_function("bigframes-dev")

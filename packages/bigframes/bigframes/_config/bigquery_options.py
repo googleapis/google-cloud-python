@@ -23,7 +23,7 @@ import google.auth.credentials
 
 SESSION_STARTED_MESSAGE = (
     "Cannot change '{attribute}' once a session has started. "
-    "Call bigframes.pandas.reset_session() first, if you are using the bigframes.pandas API."
+    "Call bigframes.pandas.close_session() first, if you are using the bigframes.pandas API."
 )
 
 

@@ -116,7 +116,7 @@ def test_pandas_attribute():
     assert bpd.ArrowDtype is pd.ArrowDtype
 
 
-def test_reset_session_after_bq_session_ended(monkeypatch):
+def test_close_session_after_bq_session_ended(monkeypatch):
     bqclient = mock.create_autospec(google.cloud.bigquery.Client, instance=True)
     bqclient.project = "test-project"
     session = resources.create_bigquery_session(
@@ -144,7 +144,7 @@ def test_reset_session_after_bq_session_ended(monkeypatch):
         bpd.read_gbq("SELECT 1")
 
     # Even though the query to stop the session raises an exception, we should
-    # still be able to reset it without raising an error to the user.
-    bpd.reset_session()
+    # still be able to close it without raising an error to the user.
+    bpd.close_session()
     assert "CALL BQ.ABORT_SESSION('JUST_A_TEST')" in bqclient.query.call_args.args[0]
     assert bigframes.core.global_session._global_session is None

@@ -63,7 +63,7 @@ auto-populates ``bf.options.bigquery.location`` if the user starts with
 directly or in a SQL statement.
 
 If you want to reset the location of the created DataFrame or Series objects,
-you can reset the session by executing ``bigframes.pandas.reset_session()``.
+you can close the session by executing ``bigframes.pandas.close_session()``.
 After that, you can reuse ``bigframes.pandas.options.bigquery.location`` to
 specify another location.
 
@@ -335,7 +335,7 @@ sessions
 ; when this happens, you can’t use previously
 created DataFrame or Series objects and must re-create them using a new
 BigQuery DataFrames session. You can do this by running
-``bigframes.pandas.reset_session()`` and then re-running the BigQuery
+``bigframes.pandas.close_session()`` and then re-running the BigQuery
 DataFrames expressions.
 
 

@@ -23,7 +23,7 @@ def test_quickstart(
     capsys: pytest.CaptureFixture[str],
 ) -> None:
     # We need a fresh session since we're modifying connection options.
-    bigframes.pandas.reset_session()
+    bigframes.pandas.close_session()
 
     # TODO(swast): Get project from environment so contributors can run tests.
     quickstart.run_quickstart("bigframes-dev")

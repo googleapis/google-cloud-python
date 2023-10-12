@@ -447,7 +447,7 @@ options = config.options
 
 # Session management APIs
 get_global_session = global_session.get_global_session
-reset_session = global_session.reset_session
+close_session = global_session.close_session
 
 
 # Use __all__ to let type checkers know what is part of the public API.
@@ -478,5 +478,5 @@ __all___ = [
     "options",
     # Session management APIs
     "get_global_session",
-    "reset_session",
+    "close_session",
 ]

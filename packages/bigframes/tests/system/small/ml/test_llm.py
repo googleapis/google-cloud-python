@@ -30,7 +30,7 @@ def test_create_text_generator_model(palm2_text_generator_model):
 def test_create_text_generator_model_default_session(bq_connection, llm_text_pandas_df):
     import bigframes.pandas as bpd
 
-    bpd.reset_session()
+    bpd.close_session()
     bpd.options.bigquery.bq_connection = bq_connection
     bpd.options.bigquery.location = "us"
 
@@ -53,7 +53,7 @@ def test_create_text_generator_model_default_connection(llm_text_pandas_df):
     from bigframes import _config
     import bigframes.pandas as bpd
 
-    bpd.reset_session()
+    bpd.close_session()
     _config.options = _config.Options()  # reset configs
 
     llm_text_df = bpd.read_pandas(llm_text_pandas_df)
@@ -130,7 +130,7 @@ def test_create_embedding_generator_model(palm2_embedding_generator_model):
 def test_create_text_embedding_generator_model_defaults(bq_connection):
     import bigframes.pandas as bpd
 
-    bpd.reset_session()
+    bpd.close_session()
     bpd.options.bigquery.bq_connection = bq_connection
     bpd.options.bigquery.location = "us"
 
