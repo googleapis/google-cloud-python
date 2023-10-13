@@ -95,10 +95,18 @@ using the
 and the `bigframes.ml.compose module <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.compose>`_.
 BigQuery DataFrames offers the following transformations:
 
-* Use the `OneHotEncoder class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.preprocessing.OneHotEncoder>`_
-  in the ``bigframes.ml.preprocessing`` module to transform categorical values into numeric format.
+* Use the `KBinsDiscretizer class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.compose.ColumnTransformer>`_
+  in the ``bigframes.ml.preprocessing`` module to bin continuous data into intervals.
+* Use the `LabelEncoder class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.preprocessing.LabelEncoder>`_
+  in the ``bigframes.ml.preprocessing`` module to normalize the target labels as integer values.
+* Use the `MaxAbsScaler class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.preprocessing.MaxAbsScaler>`_
+  in the ``bigframes.ml.preprocessing`` module to scale each feature to the range ``[-1, 1]`` by its maximum absolute value.
+* Use the `MinMaxScaler class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.preprocessing.MinMaxScaler>`_
+  in the ``bigframes.ml.preprocessing`` module to standardize features by scaling each feature to the range ``[0, 1]``.
 * Use the `StandardScaler class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.preprocessing.StandardScaler>`_
   in the ``bigframes.ml.preprocessing`` module to standardize features by removing the mean and scaling to unit variance.
+* Use the `OneHotEncoder class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.preprocessing.OneHotEncoder>`_
+  in the ``bigframes.ml.preprocessing`` module to transform categorical values into numeric format.
 * Use the `ColumnTransformer class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.compose.ColumnTransformer>`_
   in the ``bigframes.ml.compose`` module to apply transformers to DataFrames columns.
 
