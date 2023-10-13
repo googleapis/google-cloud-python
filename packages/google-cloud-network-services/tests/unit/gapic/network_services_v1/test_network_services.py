@@ -11812,8 +11812,9 @@ def test_list_endpoint_policies_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = endpoint_policy.ListEndpointPoliciesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = endpoint_policy.ListEndpointPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11895,10 +11896,9 @@ def test_list_endpoint_policies_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = endpoint_policy.ListEndpointPoliciesResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = endpoint_policy.ListEndpointPoliciesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12033,8 +12033,9 @@ def test_list_endpoint_policies_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = endpoint_policy.ListEndpointPoliciesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = endpoint_policy.ListEndpointPoliciesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12163,8 +12164,9 @@ def test_get_endpoint_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = endpoint_policy.EndpointPolicy.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = endpoint_policy.EndpointPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12247,8 +12249,9 @@ def test_get_endpoint_policy_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = endpoint_policy.EndpointPolicy.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = endpoint_policy.EndpointPolicy.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12377,8 +12380,9 @@ def test_get_endpoint_policy_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = endpoint_policy.EndpointPolicy.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = endpoint_policy.EndpointPolicy.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12454,6 +12458,72 @@ def test_create_endpoint_policy_rest(request_type):
         "server_tls_policy": "server_tls_policy_value",
         "client_tls_policy": "client_tls_policy_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcn_endpoint_policy.CreateEndpointPolicyRequest.meta.fields[
+        "endpoint_policy"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["endpoint_policy"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["endpoint_policy"][field])):
+                    del request_init["endpoint_policy"][field][i][subfield]
+            else:
+                del request_init["endpoint_policy"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -12653,29 +12723,6 @@ def test_create_endpoint_policy_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["endpoint_policy"] = {
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "type_": 1,
-        "authorization_policy": "authorization_policy_value",
-        "endpoint_matcher": {
-            "metadata_label_matcher": {
-                "metadata_label_match_criteria": 1,
-                "metadata_labels": [
-                    {
-                        "label_name": "label_name_value",
-                        "label_value": "label_value_value",
-                    }
-                ],
-            }
-        },
-        "traffic_port_selector": {"ports": ["ports_value1", "ports_value2"]},
-        "description": "description_value",
-        "server_tls_policy": "server_tls_policy_value",
-        "client_tls_policy": "client_tls_policy_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -12797,6 +12844,72 @@ def test_update_endpoint_policy_rest(request_type):
         "server_tls_policy": "server_tls_policy_value",
         "client_tls_policy": "client_tls_policy_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcn_endpoint_policy.UpdateEndpointPolicyRequest.meta.fields[
+        "endpoint_policy"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["endpoint_policy"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["endpoint_policy"][field])):
+                    del request_init["endpoint_policy"][field][i][subfield]
+            else:
+                del request_init["endpoint_policy"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -12972,29 +13085,6 @@ def test_update_endpoint_policy_rest_bad_request(
         "endpoint_policy": {
             "name": "projects/sample1/locations/sample2/endpointPolicies/sample3"
         }
-    }
-    request_init["endpoint_policy"] = {
-        "name": "projects/sample1/locations/sample2/endpointPolicies/sample3",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "type_": 1,
-        "authorization_policy": "authorization_policy_value",
-        "endpoint_matcher": {
-            "metadata_label_matcher": {
-                "metadata_label_match_criteria": 1,
-                "metadata_labels": [
-                    {
-                        "label_name": "label_name_value",
-                        "label_value": "label_value_value",
-                    }
-                ],
-            }
-        },
-        "traffic_port_selector": {"ports": ["ports_value1", "ports_value2"]},
-        "description": "description_value",
-        "server_tls_policy": "server_tls_policy_value",
-        "client_tls_policy": "client_tls_policy_value",
     }
     request = request_type(**request_init)
 
@@ -13373,8 +13463,9 @@ def test_list_gateways_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gateway.ListGatewaysResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gateway.ListGatewaysResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -13454,8 +13545,9 @@ def test_list_gateways_rest_required_fields(request_type=gateway.ListGatewaysReq
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gateway.ListGatewaysResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gateway.ListGatewaysResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -13586,8 +13678,9 @@ def test_list_gateways_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gateway.ListGatewaysResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gateway.ListGatewaysResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -13712,8 +13805,9 @@ def test_get_gateway_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gateway.Gateway.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gateway.Gateway.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -13792,8 +13886,9 @@ def test_get_gateway_rest_required_fields(request_type=gateway.GetGatewayRequest
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gateway.Gateway.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gateway.Gateway.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -13914,8 +14009,9 @@ def test_get_gateway_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gateway.Gateway.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gateway.Gateway.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -13979,6 +14075,70 @@ def test_create_gateway_rest(request_type):
         "scope": "scope_value",
         "server_tls_policy": "server_tls_policy_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcn_gateway.CreateGatewayRequest.meta.fields["gateway"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["gateway"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["gateway"][field])):
+                    del request_init["gateway"][field][i][subfield]
+            else:
+                del request_init["gateway"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -14177,18 +14337,6 @@ def test_create_gateway_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["gateway"] = {
-        "name": "name_value",
-        "self_link": "self_link_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "description": "description_value",
-        "type_": 1,
-        "ports": [569, 570],
-        "scope": "scope_value",
-        "server_tls_policy": "server_tls_policy_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -14296,6 +14444,70 @@ def test_update_gateway_rest(request_type):
         "scope": "scope_value",
         "server_tls_policy": "server_tls_policy_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcn_gateway.UpdateGatewayRequest.meta.fields["gateway"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["gateway"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["gateway"][field])):
+                    del request_init["gateway"][field][i][subfield]
+            else:
+                del request_init["gateway"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -14468,18 +14680,6 @@ def test_update_gateway_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "gateway": {"name": "projects/sample1/locations/sample2/gateways/sample3"}
-    }
-    request_init["gateway"] = {
-        "name": "projects/sample1/locations/sample2/gateways/sample3",
-        "self_link": "self_link_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "description": "description_value",
-        "type_": 1,
-        "ports": [569, 570],
-        "scope": "scope_value",
-        "server_tls_policy": "server_tls_policy_value",
     }
     request = request_type(**request_init)
 
@@ -14845,8 +15045,9 @@ def test_list_grpc_routes_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grpc_route.ListGrpcRoutesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grpc_route.ListGrpcRoutesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -14928,8 +15129,9 @@ def test_list_grpc_routes_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = grpc_route.ListGrpcRoutesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = grpc_route.ListGrpcRoutesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -15062,8 +15264,9 @@ def test_list_grpc_routes_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grpc_route.ListGrpcRoutesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grpc_route.ListGrpcRoutesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -15187,8 +15390,9 @@ def test_get_grpc_route_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grpc_route.GrpcRoute.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grpc_route.GrpcRoute.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15268,8 +15472,9 @@ def test_get_grpc_route_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = grpc_route.GrpcRoute.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = grpc_route.GrpcRoute.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -15392,8 +15597,9 @@ def test_get_grpc_route_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = grpc_route.GrpcRoute.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = grpc_route.GrpcRoute.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -15493,6 +15699,70 @@ def test_create_grpc_route_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcn_grpc_route.CreateGrpcRouteRequest.meta.fields["grpc_route"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["grpc_route"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["grpc_route"][field])):
+                    del request_init["grpc_route"][field][i][subfield]
+            else:
+                del request_init["grpc_route"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -15691,54 +15961,6 @@ def test_create_grpc_route_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["grpc_route"] = {
-        "name": "name_value",
-        "self_link": "self_link_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "description": "description_value",
-        "hostnames": ["hostnames_value1", "hostnames_value2"],
-        "meshes": ["meshes_value1", "meshes_value2"],
-        "gateways": ["gateways_value1", "gateways_value2"],
-        "rules": [
-            {
-                "matches": [
-                    {
-                        "method": {
-                            "type_": 1,
-                            "grpc_service": "grpc_service_value",
-                            "grpc_method": "grpc_method_value",
-                            "case_sensitive": True,
-                        },
-                        "headers": [
-                            {"type_": 1, "key": "key_value", "value": "value_value"}
-                        ],
-                    }
-                ],
-                "action": {
-                    "destinations": [
-                        {"service_name": "service_name_value", "weight": 648}
-                    ],
-                    "fault_injection_policy": {
-                        "delay": {
-                            "fixed_delay": {"seconds": 751, "nanos": 543},
-                            "percentage": 1054,
-                        },
-                        "abort": {"http_status": 1219, "percentage": 1054},
-                    },
-                    "timeout": {},
-                    "retry_policy": {
-                        "retry_conditions": [
-                            "retry_conditions_value1",
-                            "retry_conditions_value2",
-                        ],
-                        "num_retries": 1197,
-                    },
-                },
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -15882,6 +16104,70 @@ def test_update_grpc_route_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcn_grpc_route.UpdateGrpcRouteRequest.meta.fields["grpc_route"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["grpc_route"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["grpc_route"][field])):
+                    del request_init["grpc_route"][field][i][subfield]
+            else:
+                del request_init["grpc_route"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -16054,54 +16340,6 @@ def test_update_grpc_route_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "grpc_route": {"name": "projects/sample1/locations/sample2/grpcRoutes/sample3"}
-    }
-    request_init["grpc_route"] = {
-        "name": "projects/sample1/locations/sample2/grpcRoutes/sample3",
-        "self_link": "self_link_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "description": "description_value",
-        "hostnames": ["hostnames_value1", "hostnames_value2"],
-        "meshes": ["meshes_value1", "meshes_value2"],
-        "gateways": ["gateways_value1", "gateways_value2"],
-        "rules": [
-            {
-                "matches": [
-                    {
-                        "method": {
-                            "type_": 1,
-                            "grpc_service": "grpc_service_value",
-                            "grpc_method": "grpc_method_value",
-                            "case_sensitive": True,
-                        },
-                        "headers": [
-                            {"type_": 1, "key": "key_value", "value": "value_value"}
-                        ],
-                    }
-                ],
-                "action": {
-                    "destinations": [
-                        {"service_name": "service_name_value", "weight": 648}
-                    ],
-                    "fault_injection_policy": {
-                        "delay": {
-                            "fixed_delay": {"seconds": 751, "nanos": 543},
-                            "percentage": 1054,
-                        },
-                        "abort": {"http_status": 1219, "percentage": 1054},
-                    },
-                    "timeout": {},
-                    "retry_policy": {
-                        "retry_conditions": [
-                            "retry_conditions_value1",
-                            "retry_conditions_value2",
-                        ],
-                        "num_retries": 1197,
-                    },
-                },
-            }
-        ],
     }
     request = request_type(**request_init)
 
@@ -16475,8 +16713,9 @@ def test_list_http_routes_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = http_route.ListHttpRoutesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = http_route.ListHttpRoutesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -16558,8 +16797,9 @@ def test_list_http_routes_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = http_route.ListHttpRoutesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = http_route.ListHttpRoutesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -16692,8 +16932,9 @@ def test_list_http_routes_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = http_route.ListHttpRoutesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = http_route.ListHttpRoutesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -16817,8 +17058,9 @@ def test_get_http_route_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = http_route.HttpRoute.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = http_route.HttpRoute.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -16898,8 +17140,9 @@ def test_get_http_route_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = http_route.HttpRoute.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = http_route.HttpRoute.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -17022,8 +17265,9 @@ def test_get_http_route_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = http_route.HttpRoute.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = http_route.HttpRoute.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -17184,6 +17428,70 @@ def test_create_http_route_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcn_http_route.CreateHttpRouteRequest.meta.fields["http_route"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["http_route"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["http_route"][field])):
+                    del request_init["http_route"][field][i][subfield]
+            else:
+                del request_init["http_route"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -17382,115 +17690,6 @@ def test_create_http_route_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["http_route"] = {
-        "name": "name_value",
-        "self_link": "self_link_value",
-        "description": "description_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "hostnames": ["hostnames_value1", "hostnames_value2"],
-        "meshes": ["meshes_value1", "meshes_value2"],
-        "gateways": ["gateways_value1", "gateways_value2"],
-        "labels": {},
-        "rules": [
-            {
-                "matches": [
-                    {
-                        "full_path_match": "full_path_match_value",
-                        "prefix_match": "prefix_match_value",
-                        "regex_match": "regex_match_value",
-                        "ignore_case": True,
-                        "headers": [
-                            {
-                                "exact_match": "exact_match_value",
-                                "regex_match": "regex_match_value",
-                                "prefix_match": "prefix_match_value",
-                                "present_match": True,
-                                "suffix_match": "suffix_match_value",
-                                "range_match": {"start": 558, "end": 311},
-                                "header": "header_value",
-                                "invert_match": True,
-                            }
-                        ],
-                        "query_parameters": [
-                            {
-                                "exact_match": "exact_match_value",
-                                "regex_match": "regex_match_value",
-                                "present_match": True,
-                                "query_parameter": "query_parameter_value",
-                            }
-                        ],
-                    }
-                ],
-                "action": {
-                    "destinations": [
-                        {"service_name": "service_name_value", "weight": 648}
-                    ],
-                    "redirect": {
-                        "host_redirect": "host_redirect_value",
-                        "path_redirect": "path_redirect_value",
-                        "prefix_rewrite": "prefix_rewrite_value",
-                        "response_code": 1,
-                        "https_redirect": True,
-                        "strip_query": True,
-                        "port_redirect": 1398,
-                    },
-                    "fault_injection_policy": {
-                        "delay": {
-                            "fixed_delay": {"seconds": 751, "nanos": 543},
-                            "percentage": 1054,
-                        },
-                        "abort": {"http_status": 1219, "percentage": 1054},
-                    },
-                    "request_header_modifier": {
-                        "set": {},
-                        "add": {},
-                        "remove": ["remove_value1", "remove_value2"],
-                    },
-                    "response_header_modifier": {},
-                    "url_rewrite": {
-                        "path_prefix_rewrite": "path_prefix_rewrite_value",
-                        "host_rewrite": "host_rewrite_value",
-                    },
-                    "timeout": {},
-                    "retry_policy": {
-                        "retry_conditions": [
-                            "retry_conditions_value1",
-                            "retry_conditions_value2",
-                        ],
-                        "num_retries": 1197,
-                        "per_try_timeout": {},
-                    },
-                    "request_mirror_policy": {"destination": {}},
-                    "cors_policy": {
-                        "allow_origins": [
-                            "allow_origins_value1",
-                            "allow_origins_value2",
-                        ],
-                        "allow_origin_regexes": [
-                            "allow_origin_regexes_value1",
-                            "allow_origin_regexes_value2",
-                        ],
-                        "allow_methods": [
-                            "allow_methods_value1",
-                            "allow_methods_value2",
-                        ],
-                        "allow_headers": [
-                            "allow_headers_value1",
-                            "allow_headers_value2",
-                        ],
-                        "expose_headers": [
-                            "expose_headers_value1",
-                            "expose_headers_value2",
-                        ],
-                        "max_age": "max_age_value",
-                        "allow_credentials": True,
-                        "disabled": True,
-                    },
-                },
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -17695,6 +17894,70 @@ def test_update_http_route_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcn_http_route.UpdateHttpRouteRequest.meta.fields["http_route"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["http_route"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["http_route"][field])):
+                    del request_init["http_route"][field][i][subfield]
+            else:
+                del request_init["http_route"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -17867,115 +18130,6 @@ def test_update_http_route_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "http_route": {"name": "projects/sample1/locations/sample2/httpRoutes/sample3"}
-    }
-    request_init["http_route"] = {
-        "name": "projects/sample1/locations/sample2/httpRoutes/sample3",
-        "self_link": "self_link_value",
-        "description": "description_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "hostnames": ["hostnames_value1", "hostnames_value2"],
-        "meshes": ["meshes_value1", "meshes_value2"],
-        "gateways": ["gateways_value1", "gateways_value2"],
-        "labels": {},
-        "rules": [
-            {
-                "matches": [
-                    {
-                        "full_path_match": "full_path_match_value",
-                        "prefix_match": "prefix_match_value",
-                        "regex_match": "regex_match_value",
-                        "ignore_case": True,
-                        "headers": [
-                            {
-                                "exact_match": "exact_match_value",
-                                "regex_match": "regex_match_value",
-                                "prefix_match": "prefix_match_value",
-                                "present_match": True,
-                                "suffix_match": "suffix_match_value",
-                                "range_match": {"start": 558, "end": 311},
-                                "header": "header_value",
-                                "invert_match": True,
-                            }
-                        ],
-                        "query_parameters": [
-                            {
-                                "exact_match": "exact_match_value",
-                                "regex_match": "regex_match_value",
-                                "present_match": True,
-                                "query_parameter": "query_parameter_value",
-                            }
-                        ],
-                    }
-                ],
-                "action": {
-                    "destinations": [
-                        {"service_name": "service_name_value", "weight": 648}
-                    ],
-                    "redirect": {
-                        "host_redirect": "host_redirect_value",
-                        "path_redirect": "path_redirect_value",
-                        "prefix_rewrite": "prefix_rewrite_value",
-                        "response_code": 1,
-                        "https_redirect": True,
-                        "strip_query": True,
-                        "port_redirect": 1398,
-                    },
-                    "fault_injection_policy": {
-                        "delay": {
-                            "fixed_delay": {"seconds": 751, "nanos": 543},
-                            "percentage": 1054,
-                        },
-                        "abort": {"http_status": 1219, "percentage": 1054},
-                    },
-                    "request_header_modifier": {
-                        "set": {},
-                        "add": {},
-                        "remove": ["remove_value1", "remove_value2"],
-                    },
-                    "response_header_modifier": {},
-                    "url_rewrite": {
-                        "path_prefix_rewrite": "path_prefix_rewrite_value",
-                        "host_rewrite": "host_rewrite_value",
-                    },
-                    "timeout": {},
-                    "retry_policy": {
-                        "retry_conditions": [
-                            "retry_conditions_value1",
-                            "retry_conditions_value2",
-                        ],
-                        "num_retries": 1197,
-                        "per_try_timeout": {},
-                    },
-                    "request_mirror_policy": {"destination": {}},
-                    "cors_policy": {
-                        "allow_origins": [
-                            "allow_origins_value1",
-                            "allow_origins_value2",
-                        ],
-                        "allow_origin_regexes": [
-                            "allow_origin_regexes_value1",
-                            "allow_origin_regexes_value2",
-                        ],
-                        "allow_methods": [
-                            "allow_methods_value1",
-                            "allow_methods_value2",
-                        ],
-                        "allow_headers": [
-                            "allow_headers_value1",
-                            "allow_headers_value2",
-                        ],
-                        "expose_headers": [
-                            "expose_headers_value1",
-                            "expose_headers_value2",
-                        ],
-                        "max_age": "max_age_value",
-                        "allow_credentials": True,
-                        "disabled": True,
-                    },
-                },
-            }
-        ],
     }
     request = request_type(**request_init)
 
@@ -18349,8 +18503,9 @@ def test_list_tcp_routes_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tcp_route.ListTcpRoutesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tcp_route.ListTcpRoutesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -18432,8 +18587,9 @@ def test_list_tcp_routes_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = tcp_route.ListTcpRoutesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = tcp_route.ListTcpRoutesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -18564,8 +18720,9 @@ def test_list_tcp_routes_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tcp_route.ListTcpRoutesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tcp_route.ListTcpRoutesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -18688,8 +18845,9 @@ def test_get_tcp_route_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tcp_route.TcpRoute.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tcp_route.TcpRoute.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -18766,8 +18924,9 @@ def test_get_tcp_route_rest_required_fields(request_type=tcp_route.GetTcpRouteRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = tcp_route.TcpRoute.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = tcp_route.TcpRoute.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -18890,8 +19049,9 @@ def test_get_tcp_route_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tcp_route.TcpRoute.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tcp_route.TcpRoute.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -18964,6 +19124,70 @@ def test_create_tcp_route_rest(request_type):
         "gateways": ["gateways_value1", "gateways_value2"],
         "labels": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcn_tcp_route.CreateTcpRouteRequest.meta.fields["tcp_route"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["tcp_route"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["tcp_route"][field])):
+                    del request_init["tcp_route"][field][i][subfield]
+            else:
+                del request_init["tcp_route"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -19162,27 +19386,6 @@ def test_create_tcp_route_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["tcp_route"] = {
-        "name": "name_value",
-        "self_link": "self_link_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "description": "description_value",
-        "rules": [
-            {
-                "matches": [{"address": "address_value", "port": "port_value"}],
-                "action": {
-                    "destinations": [
-                        {"service_name": "service_name_value", "weight": 648}
-                    ],
-                    "original_destination": True,
-                },
-            }
-        ],
-        "meshes": ["meshes_value1", "meshes_value2"],
-        "gateways": ["gateways_value1", "gateways_value2"],
-        "labels": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -19299,6 +19502,70 @@ def test_update_tcp_route_rest(request_type):
         "gateways": ["gateways_value1", "gateways_value2"],
         "labels": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcn_tcp_route.UpdateTcpRouteRequest.meta.fields["tcp_route"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["tcp_route"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["tcp_route"][field])):
+                    del request_init["tcp_route"][field][i][subfield]
+            else:
+                del request_init["tcp_route"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -19471,27 +19738,6 @@ def test_update_tcp_route_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "tcp_route": {"name": "projects/sample1/locations/sample2/tcpRoutes/sample3"}
-    }
-    request_init["tcp_route"] = {
-        "name": "projects/sample1/locations/sample2/tcpRoutes/sample3",
-        "self_link": "self_link_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "description": "description_value",
-        "rules": [
-            {
-                "matches": [{"address": "address_value", "port": "port_value"}],
-                "action": {
-                    "destinations": [
-                        {"service_name": "service_name_value", "weight": 648}
-                    ],
-                    "original_destination": True,
-                },
-            }
-        ],
-        "meshes": ["meshes_value1", "meshes_value2"],
-        "gateways": ["gateways_value1", "gateways_value2"],
-        "labels": {},
     }
     request = request_type(**request_init)
 
@@ -19865,8 +20111,9 @@ def test_list_tls_routes_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tls_route.ListTlsRoutesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tls_route.ListTlsRoutesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -19948,8 +20195,9 @@ def test_list_tls_routes_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = tls_route.ListTlsRoutesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = tls_route.ListTlsRoutesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -20080,8 +20328,9 @@ def test_list_tls_routes_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tls_route.ListTlsRoutesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tls_route.ListTlsRoutesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -20204,8 +20453,9 @@ def test_get_tls_route_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tls_route.TlsRoute.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tls_route.TlsRoute.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -20282,8 +20532,9 @@ def test_get_tls_route_rest_required_fields(request_type=tls_route.GetTlsRouteRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = tls_route.TlsRoute.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = tls_route.TlsRoute.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -20406,8 +20657,9 @@ def test_get_tls_route_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = tls_route.TlsRoute.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = tls_route.TlsRoute.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -20483,6 +20735,70 @@ def test_create_tls_route_rest(request_type):
         "meshes": ["meshes_value1", "meshes_value2"],
         "gateways": ["gateways_value1", "gateways_value2"],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcn_tls_route.CreateTlsRouteRequest.meta.fields["tls_route"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["tls_route"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["tls_route"][field])):
+                    del request_init["tls_route"][field][i][subfield]
+            else:
+                del request_init["tls_route"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -20681,30 +20997,6 @@ def test_create_tls_route_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["tls_route"] = {
-        "name": "name_value",
-        "self_link": "self_link_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "description": "description_value",
-        "rules": [
-            {
-                "matches": [
-                    {
-                        "sni_host": ["sni_host_value1", "sni_host_value2"],
-                        "alpn": ["alpn_value1", "alpn_value2"],
-                    }
-                ],
-                "action": {
-                    "destinations": [
-                        {"service_name": "service_name_value", "weight": 648}
-                    ]
-                },
-            }
-        ],
-        "meshes": ["meshes_value1", "meshes_value2"],
-        "gateways": ["gateways_value1", "gateways_value2"],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -20824,6 +21116,70 @@ def test_update_tls_route_rest(request_type):
         "meshes": ["meshes_value1", "meshes_value2"],
         "gateways": ["gateways_value1", "gateways_value2"],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcn_tls_route.UpdateTlsRouteRequest.meta.fields["tls_route"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["tls_route"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["tls_route"][field])):
+                    del request_init["tls_route"][field][i][subfield]
+            else:
+                del request_init["tls_route"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -20996,30 +21352,6 @@ def test_update_tls_route_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "tls_route": {"name": "projects/sample1/locations/sample2/tlsRoutes/sample3"}
-    }
-    request_init["tls_route"] = {
-        "name": "projects/sample1/locations/sample2/tlsRoutes/sample3",
-        "self_link": "self_link_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "description": "description_value",
-        "rules": [
-            {
-                "matches": [
-                    {
-                        "sni_host": ["sni_host_value1", "sni_host_value2"],
-                        "alpn": ["alpn_value1", "alpn_value2"],
-                    }
-                ],
-                "action": {
-                    "destinations": [
-                        {"service_name": "service_name_value", "weight": 648}
-                    ]
-                },
-            }
-        ],
-        "meshes": ["meshes_value1", "meshes_value2"],
-        "gateways": ["gateways_value1", "gateways_value2"],
     }
     request = request_type(**request_init)
 
@@ -21393,8 +21725,9 @@ def test_list_service_bindings_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service_binding.ListServiceBindingsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service_binding.ListServiceBindingsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -21476,10 +21809,9 @@ def test_list_service_bindings_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = service_binding.ListServiceBindingsResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = service_binding.ListServiceBindingsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -21612,8 +21944,9 @@ def test_list_service_bindings_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service_binding.ListServiceBindingsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service_binding.ListServiceBindingsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -21739,8 +22072,9 @@ def test_get_service_binding_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service_binding.ServiceBinding.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service_binding.ServiceBinding.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -21817,8 +22151,9 @@ def test_get_service_binding_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = service_binding.ServiceBinding.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = service_binding.ServiceBinding.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -21947,8 +22282,9 @@ def test_get_service_binding_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service_binding.ServiceBinding.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service_binding.ServiceBinding.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -22009,6 +22345,72 @@ def test_create_service_binding_rest(request_type):
         "service": "service_value",
         "labels": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcn_service_binding.CreateServiceBindingRequest.meta.fields[
+        "service_binding"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["service_binding"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["service_binding"][field])):
+                    del request_init["service_binding"][field][i][subfield]
+            else:
+                del request_init["service_binding"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -22208,14 +22610,6 @@ def test_create_service_binding_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["service_binding"] = {
-        "name": "name_value",
-        "description": "description_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "service": "service_value",
-        "labels": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -22591,8 +22985,9 @@ def test_list_meshes_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = mesh.ListMeshesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = mesh.ListMeshesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -22672,8 +23067,9 @@ def test_list_meshes_rest_required_fields(request_type=mesh.ListMeshesRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = mesh.ListMeshesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = mesh.ListMeshesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -22804,8 +23200,9 @@ def test_list_meshes_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = mesh.ListMeshesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = mesh.ListMeshesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -22927,8 +23324,9 @@ def test_get_mesh_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = mesh.Mesh.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = mesh.Mesh.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -23004,8 +23402,9 @@ def test_get_mesh_rest_required_fields(request_type=mesh.GetMeshRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = mesh.Mesh.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = mesh.Mesh.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -23126,8 +23525,9 @@ def test_get_mesh_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = mesh.Mesh.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = mesh.Mesh.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -23188,6 +23588,70 @@ def test_create_mesh_rest(request_type):
         "description": "description_value",
         "interception_port": 1848,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcn_mesh.CreateMeshRequest.meta.fields["mesh"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["mesh"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["mesh"][field])):
+                    del request_init["mesh"][field][i][subfield]
+            else:
+                del request_init["mesh"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -23382,15 +23846,6 @@ def test_create_mesh_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["mesh"] = {
-        "name": "name_value",
-        "self_link": "self_link_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "description": "description_value",
-        "interception_port": 1848,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -23495,6 +23950,70 @@ def test_update_mesh_rest(request_type):
         "description": "description_value",
         "interception_port": 1848,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcn_mesh.UpdateMeshRequest.meta.fields["mesh"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["mesh"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["mesh"][field])):
+                    del request_init["mesh"][field][i][subfield]
+            else:
+                del request_init["mesh"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -23663,15 +24182,6 @@ def test_update_mesh_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "mesh": {"name": "projects/sample1/locations/sample2/meshes/sample3"}
-    }
-    request_init["mesh"] = {
-        "name": "projects/sample1/locations/sample2/meshes/sample3",
-        "self_link": "self_link_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "description": "description_value",
-        "interception_port": 1848,
     }
     request = request_type(**request_init)
 

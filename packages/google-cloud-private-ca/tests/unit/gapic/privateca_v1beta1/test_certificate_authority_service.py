@@ -6731,6 +6731,70 @@ def test_create_certificate_rest(request_type):
         "update_time": {},
         "labels": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.CreateCertificateRequest.meta.fields["certificate"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["certificate"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["certificate"][field])):
+                    del request_init["certificate"][field][i][subfield]
+            else:
+                del request_init["certificate"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6746,8 +6810,9 @@ def test_create_certificate_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Certificate.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Certificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6832,8 +6897,9 @@ def test_create_certificate_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.Certificate.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.Certificate.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6936,115 +7002,6 @@ def test_create_certificate_rest_bad_request(
     request_init = {
         "parent": "projects/sample1/locations/sample2/certificateAuthorities/sample3"
     }
-    request_init["certificate"] = {
-        "name": "name_value",
-        "pem_csr": "pem_csr_value",
-        "config": {
-            "subject_config": {
-                "subject": {
-                    "country_code": "country_code_value",
-                    "organization": "organization_value",
-                    "organizational_unit": "organizational_unit_value",
-                    "locality": "locality_value",
-                    "province": "province_value",
-                    "street_address": "street_address_value",
-                    "postal_code": "postal_code_value",
-                },
-                "common_name": "common_name_value",
-                "subject_alt_name": {
-                    "dns_names": ["dns_names_value1", "dns_names_value2"],
-                    "uris": ["uris_value1", "uris_value2"],
-                    "email_addresses": [
-                        "email_addresses_value1",
-                        "email_addresses_value2",
-                    ],
-                    "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
-                    "custom_sans": [
-                        {
-                            "object_id": {"object_id_path": [1456, 1457]},
-                            "critical": True,
-                            "value": b"value_blob",
-                        }
-                    ],
-                },
-            },
-            "reusable_config": {
-                "reusable_config": "reusable_config_value",
-                "reusable_config_values": {
-                    "key_usage": {
-                        "base_key_usage": {
-                            "digital_signature": True,
-                            "content_commitment": True,
-                            "key_encipherment": True,
-                            "data_encipherment": True,
-                            "key_agreement": True,
-                            "cert_sign": True,
-                            "crl_sign": True,
-                            "encipher_only": True,
-                            "decipher_only": True,
-                        },
-                        "extended_key_usage": {
-                            "server_auth": True,
-                            "client_auth": True,
-                            "code_signing": True,
-                            "email_protection": True,
-                            "time_stamping": True,
-                            "ocsp_signing": True,
-                        },
-                        "unknown_extended_key_usages": {},
-                    },
-                    "ca_options": {
-                        "is_ca": {"value": True},
-                        "max_issuer_path_length": {"value": 541},
-                    },
-                    "policy_ids": {},
-                    "aia_ocsp_servers": [
-                        "aia_ocsp_servers_value1",
-                        "aia_ocsp_servers_value2",
-                    ],
-                    "additional_extensions": {},
-                },
-            },
-            "public_key": {"type_": 1, "key": b"key_blob"},
-        },
-        "lifetime": {"seconds": 751, "nanos": 543},
-        "revocation_details": {
-            "revocation_state": 1,
-            "revocation_time": {"seconds": 751, "nanos": 543},
-        },
-        "pem_certificate": "pem_certificate_value",
-        "certificate_description": {
-            "subject_description": {
-                "subject": {},
-                "common_name": "common_name_value",
-                "subject_alt_name": {},
-                "hex_serial_number": "hex_serial_number_value",
-                "lifetime": {},
-                "not_before_time": {},
-                "not_after_time": {},
-            },
-            "config_values": {},
-            "public_key": {},
-            "subject_key_id": {"key_id": "key_id_value"},
-            "authority_key_id": {},
-            "crl_distribution_points": [
-                "crl_distribution_points_value1",
-                "crl_distribution_points_value2",
-            ],
-            "aia_issuing_certificate_urls": [
-                "aia_issuing_certificate_urls_value1",
-                "aia_issuing_certificate_urls_value2",
-            ],
-            "cert_fingerprint": {"sha256_hash": "sha256_hash_value"},
-        },
-        "pem_certificate_chain": [
-            "pem_certificate_chain_value1",
-            "pem_certificate_chain_value2",
-        ],
-        "create_time": {},
-        "update_time": {},
-        "labels": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -7086,8 +7043,9 @@ def test_create_certificate_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Certificate.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Certificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7159,8 +7117,9 @@ def test_get_certificate_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Certificate.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Certificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7237,8 +7196,9 @@ def test_get_certificate_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.Certificate.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.Certificate.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7365,8 +7325,9 @@ def test_get_certificate_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Certificate.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Certificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7434,8 +7395,9 @@ def test_list_certificates_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListCertificatesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListCertificatesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7520,8 +7482,9 @@ def test_list_certificates_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = service.ListCertificatesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = service.ListCertificatesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7660,8 +7623,9 @@ def test_list_certificates_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListCertificatesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListCertificatesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7788,8 +7752,9 @@ def test_revoke_certificate_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Certificate.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Certificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7867,8 +7832,9 @@ def test_revoke_certificate_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.Certificate.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.Certificate.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8005,8 +7971,9 @@ def test_revoke_certificate_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Certificate.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Certificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8172,6 +8139,70 @@ def test_update_certificate_rest(request_type):
         "update_time": {},
         "labels": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.UpdateCertificateRequest.meta.fields["certificate"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["certificate"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["certificate"][field])):
+                    del request_init["certificate"][field][i][subfield]
+            else:
+                del request_init["certificate"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -8187,8 +8218,9 @@ def test_update_certificate_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Certificate.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Certificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8268,8 +8300,9 @@ def test_update_certificate_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.Certificate.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.Certificate.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8374,115 +8407,6 @@ def test_update_certificate_rest_bad_request(
             "name": "projects/sample1/locations/sample2/certificateAuthorities/sample3/certificates/sample4"
         }
     }
-    request_init["certificate"] = {
-        "name": "projects/sample1/locations/sample2/certificateAuthorities/sample3/certificates/sample4",
-        "pem_csr": "pem_csr_value",
-        "config": {
-            "subject_config": {
-                "subject": {
-                    "country_code": "country_code_value",
-                    "organization": "organization_value",
-                    "organizational_unit": "organizational_unit_value",
-                    "locality": "locality_value",
-                    "province": "province_value",
-                    "street_address": "street_address_value",
-                    "postal_code": "postal_code_value",
-                },
-                "common_name": "common_name_value",
-                "subject_alt_name": {
-                    "dns_names": ["dns_names_value1", "dns_names_value2"],
-                    "uris": ["uris_value1", "uris_value2"],
-                    "email_addresses": [
-                        "email_addresses_value1",
-                        "email_addresses_value2",
-                    ],
-                    "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
-                    "custom_sans": [
-                        {
-                            "object_id": {"object_id_path": [1456, 1457]},
-                            "critical": True,
-                            "value": b"value_blob",
-                        }
-                    ],
-                },
-            },
-            "reusable_config": {
-                "reusable_config": "reusable_config_value",
-                "reusable_config_values": {
-                    "key_usage": {
-                        "base_key_usage": {
-                            "digital_signature": True,
-                            "content_commitment": True,
-                            "key_encipherment": True,
-                            "data_encipherment": True,
-                            "key_agreement": True,
-                            "cert_sign": True,
-                            "crl_sign": True,
-                            "encipher_only": True,
-                            "decipher_only": True,
-                        },
-                        "extended_key_usage": {
-                            "server_auth": True,
-                            "client_auth": True,
-                            "code_signing": True,
-                            "email_protection": True,
-                            "time_stamping": True,
-                            "ocsp_signing": True,
-                        },
-                        "unknown_extended_key_usages": {},
-                    },
-                    "ca_options": {
-                        "is_ca": {"value": True},
-                        "max_issuer_path_length": {"value": 541},
-                    },
-                    "policy_ids": {},
-                    "aia_ocsp_servers": [
-                        "aia_ocsp_servers_value1",
-                        "aia_ocsp_servers_value2",
-                    ],
-                    "additional_extensions": {},
-                },
-            },
-            "public_key": {"type_": 1, "key": b"key_blob"},
-        },
-        "lifetime": {"seconds": 751, "nanos": 543},
-        "revocation_details": {
-            "revocation_state": 1,
-            "revocation_time": {"seconds": 751, "nanos": 543},
-        },
-        "pem_certificate": "pem_certificate_value",
-        "certificate_description": {
-            "subject_description": {
-                "subject": {},
-                "common_name": "common_name_value",
-                "subject_alt_name": {},
-                "hex_serial_number": "hex_serial_number_value",
-                "lifetime": {},
-                "not_before_time": {},
-                "not_after_time": {},
-            },
-            "config_values": {},
-            "public_key": {},
-            "subject_key_id": {"key_id": "key_id_value"},
-            "authority_key_id": {},
-            "crl_distribution_points": [
-                "crl_distribution_points_value1",
-                "crl_distribution_points_value2",
-            ],
-            "aia_issuing_certificate_urls": [
-                "aia_issuing_certificate_urls_value1",
-                "aia_issuing_certificate_urls_value2",
-            ],
-            "cert_fingerprint": {"sha256_hash": "sha256_hash_value"},
-        },
-        "pem_certificate_chain": [
-            "pem_certificate_chain_value1",
-            "pem_certificate_chain_value2",
-        ],
-        "create_time": {},
-        "update_time": {},
-        "labels": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -8525,8 +8449,9 @@ def test_update_certificate_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Certificate.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Certificate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9026,6 +8951,72 @@ def test_create_certificate_authority_rest(request_type):
         "delete_time": {},
         "labels": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.CreateCertificateAuthorityRequest.meta.fields[
+        "certificate_authority"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["certificate_authority"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["certificate_authority"][field])):
+                    del request_init["certificate_authority"][field][i][subfield]
+            else:
+                del request_init["certificate_authority"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -9241,165 +9232,6 @@ def test_create_certificate_authority_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["certificate_authority"] = {
-        "name": "name_value",
-        "type_": 1,
-        "tier": 1,
-        "config": {
-            "subject_config": {
-                "subject": {
-                    "country_code": "country_code_value",
-                    "organization": "organization_value",
-                    "organizational_unit": "organizational_unit_value",
-                    "locality": "locality_value",
-                    "province": "province_value",
-                    "street_address": "street_address_value",
-                    "postal_code": "postal_code_value",
-                },
-                "common_name": "common_name_value",
-                "subject_alt_name": {
-                    "dns_names": ["dns_names_value1", "dns_names_value2"],
-                    "uris": ["uris_value1", "uris_value2"],
-                    "email_addresses": [
-                        "email_addresses_value1",
-                        "email_addresses_value2",
-                    ],
-                    "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
-                    "custom_sans": [
-                        {
-                            "object_id": {"object_id_path": [1456, 1457]},
-                            "critical": True,
-                            "value": b"value_blob",
-                        }
-                    ],
-                },
-            },
-            "reusable_config": {
-                "reusable_config": "reusable_config_value",
-                "reusable_config_values": {
-                    "key_usage": {
-                        "base_key_usage": {
-                            "digital_signature": True,
-                            "content_commitment": True,
-                            "key_encipherment": True,
-                            "data_encipherment": True,
-                            "key_agreement": True,
-                            "cert_sign": True,
-                            "crl_sign": True,
-                            "encipher_only": True,
-                            "decipher_only": True,
-                        },
-                        "extended_key_usage": {
-                            "server_auth": True,
-                            "client_auth": True,
-                            "code_signing": True,
-                            "email_protection": True,
-                            "time_stamping": True,
-                            "ocsp_signing": True,
-                        },
-                        "unknown_extended_key_usages": {},
-                    },
-                    "ca_options": {
-                        "is_ca": {"value": True},
-                        "max_issuer_path_length": {"value": 541},
-                    },
-                    "policy_ids": {},
-                    "aia_ocsp_servers": [
-                        "aia_ocsp_servers_value1",
-                        "aia_ocsp_servers_value2",
-                    ],
-                    "additional_extensions": {},
-                },
-            },
-            "public_key": {"type_": 1, "key": b"key_blob"},
-        },
-        "lifetime": {"seconds": 751, "nanos": 543},
-        "key_spec": {
-            "cloud_kms_key_version": "cloud_kms_key_version_value",
-            "algorithm": 1,
-        },
-        "certificate_policy": {
-            "allowed_config_list": {"allowed_config_values": {}},
-            "overwrite_config_values": {},
-            "allowed_locations_and_organizations": {},
-            "allowed_common_names": [
-                "allowed_common_names_value1",
-                "allowed_common_names_value2",
-            ],
-            "allowed_sans": {
-                "allowed_dns_names": [
-                    "allowed_dns_names_value1",
-                    "allowed_dns_names_value2",
-                ],
-                "allowed_uris": ["allowed_uris_value1", "allowed_uris_value2"],
-                "allowed_email_addresses": [
-                    "allowed_email_addresses_value1",
-                    "allowed_email_addresses_value2",
-                ],
-                "allowed_ips": ["allowed_ips_value1", "allowed_ips_value2"],
-                "allow_globbing_dns_wildcards": True,
-                "allow_custom_sans": True,
-            },
-            "maximum_lifetime": {},
-            "allowed_issuance_modes": {
-                "allow_csr_based_issuance": True,
-                "allow_config_based_issuance": True,
-            },
-        },
-        "issuing_options": {
-            "include_ca_cert_url": True,
-            "include_crl_access_url": True,
-        },
-        "subordinate_config": {
-            "certificate_authority": "certificate_authority_value",
-            "pem_issuer_chain": {
-                "pem_certificates": [
-                    "pem_certificates_value1",
-                    "pem_certificates_value2",
-                ]
-            },
-        },
-        "state": 1,
-        "pem_ca_certificates": [
-            "pem_ca_certificates_value1",
-            "pem_ca_certificates_value2",
-        ],
-        "ca_certificate_descriptions": [
-            {
-                "subject_description": {
-                    "subject": {},
-                    "common_name": "common_name_value",
-                    "subject_alt_name": {},
-                    "hex_serial_number": "hex_serial_number_value",
-                    "lifetime": {},
-                    "not_before_time": {"seconds": 751, "nanos": 543},
-                    "not_after_time": {},
-                },
-                "config_values": {},
-                "public_key": {},
-                "subject_key_id": {"key_id": "key_id_value"},
-                "authority_key_id": {},
-                "crl_distribution_points": [
-                    "crl_distribution_points_value1",
-                    "crl_distribution_points_value2",
-                ],
-                "aia_issuing_certificate_urls": [
-                    "aia_issuing_certificate_urls_value1",
-                    "aia_issuing_certificate_urls_value2",
-                ],
-                "cert_fingerprint": {"sha256_hash": "sha256_hash_value"},
-            }
-        ],
-        "gcs_bucket": "gcs_bucket_value",
-        "access_urls": {
-            "ca_certificate_access_url": "ca_certificate_access_url_value",
-            "crl_access_url": "crl_access_url_value",
-        },
-        "create_time": {},
-        "update_time": {},
-        "delete_time": {},
-        "labels": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -10054,8 +9886,9 @@ def test_fetch_certificate_authority_csr_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.FetchCertificateAuthorityCsrResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.FetchCertificateAuthorityCsrResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10130,10 +9963,9 @@ def test_fetch_certificate_authority_csr_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = service.FetchCertificateAuthorityCsrResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = service.FetchCertificateAuthorityCsrResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10268,8 +10100,9 @@ def test_fetch_certificate_authority_csr_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.FetchCertificateAuthorityCsrResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.FetchCertificateAuthorityCsrResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -10341,8 +10174,9 @@ def test_get_certificate_authority_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.CertificateAuthority.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.CertificateAuthority.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10422,8 +10256,9 @@ def test_get_certificate_authority_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.CertificateAuthority.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.CertificateAuthority.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10554,8 +10389,9 @@ def test_get_certificate_authority_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.CertificateAuthority.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.CertificateAuthority.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -10621,8 +10457,9 @@ def test_list_certificate_authorities_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListCertificateAuthoritiesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListCertificateAuthoritiesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10707,10 +10544,9 @@ def test_list_certificate_authorities_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = service.ListCertificateAuthoritiesResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = service.ListCertificateAuthoritiesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10847,8 +10683,9 @@ def test_list_certificate_authorities_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListCertificateAuthoritiesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListCertificateAuthoritiesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11676,6 +11513,72 @@ def test_update_certificate_authority_rest(request_type):
         "delete_time": {},
         "labels": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.UpdateCertificateAuthorityRequest.meta.fields[
+        "certificate_authority"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["certificate_authority"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["certificate_authority"][field])):
+                    del request_init["certificate_authority"][field][i][subfield]
+            else:
+                del request_init["certificate_authority"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -11871,165 +11774,6 @@ def test_update_certificate_authority_rest_bad_request(
             "name": "projects/sample1/locations/sample2/certificateAuthorities/sample3"
         }
     }
-    request_init["certificate_authority"] = {
-        "name": "projects/sample1/locations/sample2/certificateAuthorities/sample3",
-        "type_": 1,
-        "tier": 1,
-        "config": {
-            "subject_config": {
-                "subject": {
-                    "country_code": "country_code_value",
-                    "organization": "organization_value",
-                    "organizational_unit": "organizational_unit_value",
-                    "locality": "locality_value",
-                    "province": "province_value",
-                    "street_address": "street_address_value",
-                    "postal_code": "postal_code_value",
-                },
-                "common_name": "common_name_value",
-                "subject_alt_name": {
-                    "dns_names": ["dns_names_value1", "dns_names_value2"],
-                    "uris": ["uris_value1", "uris_value2"],
-                    "email_addresses": [
-                        "email_addresses_value1",
-                        "email_addresses_value2",
-                    ],
-                    "ip_addresses": ["ip_addresses_value1", "ip_addresses_value2"],
-                    "custom_sans": [
-                        {
-                            "object_id": {"object_id_path": [1456, 1457]},
-                            "critical": True,
-                            "value": b"value_blob",
-                        }
-                    ],
-                },
-            },
-            "reusable_config": {
-                "reusable_config": "reusable_config_value",
-                "reusable_config_values": {
-                    "key_usage": {
-                        "base_key_usage": {
-                            "digital_signature": True,
-                            "content_commitment": True,
-                            "key_encipherment": True,
-                            "data_encipherment": True,
-                            "key_agreement": True,
-                            "cert_sign": True,
-                            "crl_sign": True,
-                            "encipher_only": True,
-                            "decipher_only": True,
-                        },
-                        "extended_key_usage": {
-                            "server_auth": True,
-                            "client_auth": True,
-                            "code_signing": True,
-                            "email_protection": True,
-                            "time_stamping": True,
-                            "ocsp_signing": True,
-                        },
-                        "unknown_extended_key_usages": {},
-                    },
-                    "ca_options": {
-                        "is_ca": {"value": True},
-                        "max_issuer_path_length": {"value": 541},
-                    },
-                    "policy_ids": {},
-                    "aia_ocsp_servers": [
-                        "aia_ocsp_servers_value1",
-                        "aia_ocsp_servers_value2",
-                    ],
-                    "additional_extensions": {},
-                },
-            },
-            "public_key": {"type_": 1, "key": b"key_blob"},
-        },
-        "lifetime": {"seconds": 751, "nanos": 543},
-        "key_spec": {
-            "cloud_kms_key_version": "cloud_kms_key_version_value",
-            "algorithm": 1,
-        },
-        "certificate_policy": {
-            "allowed_config_list": {"allowed_config_values": {}},
-            "overwrite_config_values": {},
-            "allowed_locations_and_organizations": {},
-            "allowed_common_names": [
-                "allowed_common_names_value1",
-                "allowed_common_names_value2",
-            ],
-            "allowed_sans": {
-                "allowed_dns_names": [
-                    "allowed_dns_names_value1",
-                    "allowed_dns_names_value2",
-                ],
-                "allowed_uris": ["allowed_uris_value1", "allowed_uris_value2"],
-                "allowed_email_addresses": [
-                    "allowed_email_addresses_value1",
-                    "allowed_email_addresses_value2",
-                ],
-                "allowed_ips": ["allowed_ips_value1", "allowed_ips_value2"],
-                "allow_globbing_dns_wildcards": True,
-                "allow_custom_sans": True,
-            },
-            "maximum_lifetime": {},
-            "allowed_issuance_modes": {
-                "allow_csr_based_issuance": True,
-                "allow_config_based_issuance": True,
-            },
-        },
-        "issuing_options": {
-            "include_ca_cert_url": True,
-            "include_crl_access_url": True,
-        },
-        "subordinate_config": {
-            "certificate_authority": "certificate_authority_value",
-            "pem_issuer_chain": {
-                "pem_certificates": [
-                    "pem_certificates_value1",
-                    "pem_certificates_value2",
-                ]
-            },
-        },
-        "state": 1,
-        "pem_ca_certificates": [
-            "pem_ca_certificates_value1",
-            "pem_ca_certificates_value2",
-        ],
-        "ca_certificate_descriptions": [
-            {
-                "subject_description": {
-                    "subject": {},
-                    "common_name": "common_name_value",
-                    "subject_alt_name": {},
-                    "hex_serial_number": "hex_serial_number_value",
-                    "lifetime": {},
-                    "not_before_time": {"seconds": 751, "nanos": 543},
-                    "not_after_time": {},
-                },
-                "config_values": {},
-                "public_key": {},
-                "subject_key_id": {"key_id": "key_id_value"},
-                "authority_key_id": {},
-                "crl_distribution_points": [
-                    "crl_distribution_points_value1",
-                    "crl_distribution_points_value2",
-                ],
-                "aia_issuing_certificate_urls": [
-                    "aia_issuing_certificate_urls_value1",
-                    "aia_issuing_certificate_urls_value2",
-                ],
-                "cert_fingerprint": {"sha256_hash": "sha256_hash_value"},
-            }
-        ],
-        "gcs_bucket": "gcs_bucket_value",
-        "access_urls": {
-            "ca_certificate_access_url": "ca_certificate_access_url_value",
-            "crl_access_url": "crl_access_url_value",
-        },
-        "create_time": {},
-        "update_time": {},
-        "delete_time": {},
-        "labels": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -12144,8 +11888,9 @@ def test_get_certificate_revocation_list_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.CertificateRevocationList.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.CertificateRevocationList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12224,8 +11969,9 @@ def test_get_certificate_revocation_list_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.CertificateRevocationList.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.CertificateRevocationList.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12358,8 +12104,9 @@ def test_get_certificate_revocation_list_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.CertificateRevocationList.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.CertificateRevocationList.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12427,10 +12174,9 @@ def test_list_certificate_revocation_lists_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListCertificateRevocationListsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListCertificateRevocationListsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12515,10 +12261,11 @@ def test_list_certificate_revocation_lists_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = service.ListCertificateRevocationListsResponse.pb(
+            # Convert return value to protobuf type
+            return_value = service.ListCertificateRevocationListsResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12663,10 +12410,9 @@ def test_list_certificate_revocation_lists_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListCertificateRevocationListsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListCertificateRevocationListsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12803,6 +12549,74 @@ def test_update_certificate_revocation_list_rest(request_type):
         "update_time": {},
         "labels": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.UpdateCertificateRevocationListRequest.meta.fields[
+        "certificate_revocation_list"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["certificate_revocation_list"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["certificate_revocation_list"][field])
+                ):
+                    del request_init["certificate_revocation_list"][field][i][subfield]
+            else:
+                del request_init["certificate_revocation_list"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -13000,23 +12814,6 @@ def test_update_certificate_revocation_list_rest_bad_request(
             "name": "projects/sample1/locations/sample2/certificateAuthorities/sample3/certificateRevocationLists/sample4"
         }
     }
-    request_init["certificate_revocation_list"] = {
-        "name": "projects/sample1/locations/sample2/certificateAuthorities/sample3/certificateRevocationLists/sample4",
-        "sequence_number": 1601,
-        "revoked_certificates": [
-            {
-                "certificate": "certificate_value",
-                "hex_serial_number": "hex_serial_number_value",
-                "revocation_reason": 1,
-            }
-        ],
-        "pem_crl": "pem_crl_value",
-        "access_url": "access_url_value",
-        "state": 1,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -13134,8 +12931,9 @@ def test_get_reusable_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.ReusableConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.ReusableConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -13211,8 +13009,9 @@ def test_get_reusable_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.ReusableConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.ReusableConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -13342,8 +13141,9 @@ def test_get_reusable_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.ReusableConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.ReusableConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -13409,8 +13209,9 @@ def test_list_reusable_configs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListReusableConfigsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListReusableConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -13495,8 +13296,9 @@ def test_list_reusable_configs_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = service.ListReusableConfigsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = service.ListReusableConfigsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -13633,8 +13435,9 @@ def test_list_reusable_configs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListReusableConfigsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListReusableConfigsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
