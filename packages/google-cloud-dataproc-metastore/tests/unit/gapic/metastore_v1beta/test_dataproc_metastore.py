@@ -5612,8 +5612,9 @@ def test_list_services_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = metastore.ListServicesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = metastore.ListServicesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5696,8 +5697,9 @@ def test_list_services_rest_required_fields(request_type=metastore.ListServicesR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = metastore.ListServicesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = metastore.ListServicesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5830,8 +5832,9 @@ def test_list_services_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = metastore.ListServicesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = metastore.ListServicesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5961,8 +5964,9 @@ def test_get_service_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = metastore.Service.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = metastore.Service.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6045,8 +6049,9 @@ def test_get_service_rest_required_fields(request_type=metastore.GetServiceReque
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = metastore.Service.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = metastore.Service.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6167,8 +6172,9 @@ def test_get_service_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = metastore.Service.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = metastore.Service.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6287,6 +6293,70 @@ def test_create_service_rest(request_type):
         "telemetry_config": {"log_format": 1},
         "scaling_config": {"instance_size": 1, "scaling_factor": 0.1471},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = metastore.CreateServiceRequest.meta.fields["service"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["service"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["service"][field])):
+                    del request_init["service"][field][i][subfield]
+            else:
+                del request_init["service"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6493,72 +6563,6 @@ def test_create_service_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["service"] = {
-        "hive_metastore_config": {
-            "version": "version_value",
-            "config_overrides": {},
-            "kerberos_config": {
-                "keytab": {"cloud_secret": "cloud_secret_value"},
-                "principal": "principal_value",
-                "krb5_config_gcs_uri": "krb5_config_gcs_uri_value",
-            },
-            "endpoint_protocol": 1,
-            "auxiliary_versions": {},
-        },
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "network": "network_value",
-        "endpoint_uri": "endpoint_uri_value",
-        "port": 453,
-        "state": 1,
-        "state_message": "state_message_value",
-        "artifact_gcs_uri": "artifact_gcs_uri_value",
-        "tier": 1,
-        "metadata_integration": {
-            "data_catalog_config": {"enabled": True},
-            "dataplex_config": {"lake_resources": {}},
-        },
-        "maintenance_window": {"hour_of_day": {"value": 541}, "day_of_week": 1},
-        "uid": "uid_value",
-        "metadata_management_activity": {
-            "metadata_exports": [
-                {
-                    "destination_gcs_uri": "destination_gcs_uri_value",
-                    "start_time": {},
-                    "end_time": {},
-                    "state": 1,
-                    "database_dump_type": 1,
-                }
-            ],
-            "restores": [
-                {
-                    "start_time": {},
-                    "end_time": {},
-                    "state": 1,
-                    "backup": "backup_value",
-                    "type_": 1,
-                    "details": "details_value",
-                }
-            ],
-        },
-        "release_channel": 1,
-        "encryption_config": {"kms_key": "kms_key_value"},
-        "network_config": {
-            "consumers": [
-                {
-                    "subnetwork": "subnetwork_value",
-                    "endpoint_uri": "endpoint_uri_value",
-                    "endpoint_location": "endpoint_location_value",
-                }
-            ],
-            "custom_routes_enabled": True,
-        },
-        "database_type": 1,
-        "telemetry_config": {"log_format": 1},
-        "scaling_config": {"instance_size": 1, "scaling_factor": 0.1471},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6729,6 +6733,70 @@ def test_update_service_rest(request_type):
         "telemetry_config": {"log_format": 1},
         "scaling_config": {"instance_size": 1, "scaling_factor": 0.1471},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = metastore.UpdateServiceRequest.meta.fields["service"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["service"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["service"][field])):
+                    del request_init["service"][field][i][subfield]
+            else:
+                del request_init["service"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6917,72 +6985,6 @@ def test_update_service_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "service": {"name": "projects/sample1/locations/sample2/services/sample3"}
-    }
-    request_init["service"] = {
-        "hive_metastore_config": {
-            "version": "version_value",
-            "config_overrides": {},
-            "kerberos_config": {
-                "keytab": {"cloud_secret": "cloud_secret_value"},
-                "principal": "principal_value",
-                "krb5_config_gcs_uri": "krb5_config_gcs_uri_value",
-            },
-            "endpoint_protocol": 1,
-            "auxiliary_versions": {},
-        },
-        "name": "projects/sample1/locations/sample2/services/sample3",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "network": "network_value",
-        "endpoint_uri": "endpoint_uri_value",
-        "port": 453,
-        "state": 1,
-        "state_message": "state_message_value",
-        "artifact_gcs_uri": "artifact_gcs_uri_value",
-        "tier": 1,
-        "metadata_integration": {
-            "data_catalog_config": {"enabled": True},
-            "dataplex_config": {"lake_resources": {}},
-        },
-        "maintenance_window": {"hour_of_day": {"value": 541}, "day_of_week": 1},
-        "uid": "uid_value",
-        "metadata_management_activity": {
-            "metadata_exports": [
-                {
-                    "destination_gcs_uri": "destination_gcs_uri_value",
-                    "start_time": {},
-                    "end_time": {},
-                    "state": 1,
-                    "database_dump_type": 1,
-                }
-            ],
-            "restores": [
-                {
-                    "start_time": {},
-                    "end_time": {},
-                    "state": 1,
-                    "backup": "backup_value",
-                    "type_": 1,
-                    "details": "details_value",
-                }
-            ],
-        },
-        "release_channel": 1,
-        "encryption_config": {"kms_key": "kms_key_value"},
-        "network_config": {
-            "consumers": [
-                {
-                    "subnetwork": "subnetwork_value",
-                    "endpoint_uri": "endpoint_uri_value",
-                    "endpoint_location": "endpoint_location_value",
-                }
-            ],
-            "custom_routes_enabled": True,
-        },
-        "database_type": 1,
-        "telemetry_config": {"log_format": 1},
-        "scaling_config": {"instance_size": 1, "scaling_factor": 0.1471},
     }
     request = request_type(**request_init)
 
@@ -7362,8 +7364,9 @@ def test_list_metadata_imports_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = metastore.ListMetadataImportsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = metastore.ListMetadataImportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7448,8 +7451,9 @@ def test_list_metadata_imports_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = metastore.ListMetadataImportsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = metastore.ListMetadataImportsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7586,8 +7590,9 @@ def test_list_metadata_imports_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = metastore.ListMetadataImportsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = metastore.ListMetadataImportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7715,8 +7720,9 @@ def test_get_metadata_import_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = metastore.MetadataImport.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = metastore.MetadataImport.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7793,8 +7799,9 @@ def test_get_metadata_import_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = metastore.MetadataImport.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = metastore.MetadataImport.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7923,8 +7930,9 @@ def test_get_metadata_import_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = metastore.MetadataImport.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = metastore.MetadataImport.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7991,6 +7999,70 @@ def test_create_metadata_import_rest(request_type):
         "end_time": {},
         "state": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = metastore.CreateMetadataImportRequest.meta.fields["metadata_import"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["metadata_import"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["metadata_import"][field])):
+                    del request_init["metadata_import"][field][i][subfield]
+            else:
+                del request_init["metadata_import"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -8199,20 +8271,6 @@ def test_create_metadata_import_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
-    request_init["metadata_import"] = {
-        "database_dump": {
-            "database_type": 1,
-            "gcs_uri": "gcs_uri_value",
-            "source_database": "source_database_value",
-            "type_": 1,
-        },
-        "name": "name_value",
-        "description": "description_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "end_time": {},
-        "state": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -8335,6 +8393,70 @@ def test_update_metadata_import_rest(request_type):
         "end_time": {},
         "state": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = metastore.UpdateMetadataImportRequest.meta.fields["metadata_import"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["metadata_import"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["metadata_import"][field])):
+                    del request_init["metadata_import"][field][i][subfield]
+            else:
+                del request_init["metadata_import"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -8527,20 +8649,6 @@ def test_update_metadata_import_rest_bad_request(
         "metadata_import": {
             "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4"
         }
-    }
-    request_init["metadata_import"] = {
-        "database_dump": {
-            "database_type": 1,
-            "gcs_uri": "gcs_uri_value",
-            "source_database": "source_database_value",
-            "type_": 1,
-        },
-        "name": "projects/sample1/locations/sample2/services/sample3/metadataImports/sample4",
-        "description": "description_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "end_time": {},
-        "state": 1,
     }
     request = request_type(**request_init)
 
@@ -9148,8 +9256,9 @@ def test_list_backups_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = metastore.ListBackupsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = metastore.ListBackupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9232,8 +9341,9 @@ def test_list_backups_rest_required_fields(request_type=metastore.ListBackupsReq
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = metastore.ListBackupsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = metastore.ListBackupsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -9368,8 +9478,9 @@ def test_list_backups_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = metastore.ListBackupsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = metastore.ListBackupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9496,8 +9607,9 @@ def test_get_backup_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = metastore.Backup.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = metastore.Backup.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9573,8 +9685,9 @@ def test_get_backup_rest_required_fields(request_type=metastore.GetBackupRequest
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = metastore.Backup.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = metastore.Backup.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -9699,8 +9812,9 @@ def test_get_backup_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = metastore.Backup.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = metastore.Backup.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9830,6 +9944,70 @@ def test_create_backup_rest(request_type):
             "restoring_services_value2",
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = metastore.CreateBackupRequest.meta.fields["backup"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["backup"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["backup"][field])):
+                    del request_init["backup"][field][i][subfield]
+            else:
+                del request_init["backup"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10034,83 +10212,6 @@ def test_create_backup_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/services/sample3"}
-    request_init["backup"] = {
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "end_time": {},
-        "state": 1,
-        "service_revision": {
-            "hive_metastore_config": {
-                "version": "version_value",
-                "config_overrides": {},
-                "kerberos_config": {
-                    "keytab": {"cloud_secret": "cloud_secret_value"},
-                    "principal": "principal_value",
-                    "krb5_config_gcs_uri": "krb5_config_gcs_uri_value",
-                },
-                "endpoint_protocol": 1,
-                "auxiliary_versions": {},
-            },
-            "name": "name_value",
-            "create_time": {},
-            "update_time": {},
-            "labels": {},
-            "network": "network_value",
-            "endpoint_uri": "endpoint_uri_value",
-            "port": 453,
-            "state": 1,
-            "state_message": "state_message_value",
-            "artifact_gcs_uri": "artifact_gcs_uri_value",
-            "tier": 1,
-            "metadata_integration": {
-                "data_catalog_config": {"enabled": True},
-                "dataplex_config": {"lake_resources": {}},
-            },
-            "maintenance_window": {"hour_of_day": {"value": 541}, "day_of_week": 1},
-            "uid": "uid_value",
-            "metadata_management_activity": {
-                "metadata_exports": [
-                    {
-                        "destination_gcs_uri": "destination_gcs_uri_value",
-                        "start_time": {},
-                        "end_time": {},
-                        "state": 1,
-                        "database_dump_type": 1,
-                    }
-                ],
-                "restores": [
-                    {
-                        "start_time": {},
-                        "end_time": {},
-                        "state": 1,
-                        "backup": "backup_value",
-                        "type_": 1,
-                        "details": "details_value",
-                    }
-                ],
-            },
-            "release_channel": 1,
-            "encryption_config": {"kms_key": "kms_key_value"},
-            "network_config": {
-                "consumers": [
-                    {
-                        "subnetwork": "subnetwork_value",
-                        "endpoint_uri": "endpoint_uri_value",
-                        "endpoint_location": "endpoint_location_value",
-                    }
-                ],
-                "custom_routes_enabled": True,
-            },
-            "database_type": 1,
-            "telemetry_config": {"log_format": 1},
-            "scaling_config": {"instance_size": 1, "scaling_factor": 0.1471},
-        },
-        "description": "description_value",
-        "restoring_services": [
-            "restoring_services_value1",
-            "restoring_services_value2",
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -10488,8 +10589,9 @@ def test_remove_iam_policy_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = metastore.RemoveIamPolicyResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = metastore.RemoveIamPolicyResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10565,8 +10667,9 @@ def test_remove_iam_policy_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = metastore.RemoveIamPolicyResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = metastore.RemoveIamPolicyResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value

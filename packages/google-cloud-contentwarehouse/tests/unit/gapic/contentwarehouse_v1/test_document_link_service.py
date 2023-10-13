@@ -1974,10 +1974,9 @@ def test_list_linked_targets_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = document_link_service.ListLinkedTargetsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = document_link_service.ListLinkedTargetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2055,10 +2054,11 @@ def test_list_linked_targets_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = document_link_service.ListLinkedTargetsResponse.pb(
+            # Convert return value to protobuf type
+            return_value = document_link_service.ListLinkedTargetsResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2187,10 +2187,9 @@ def test_list_linked_targets_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = document_link_service.ListLinkedTargetsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = document_link_service.ListLinkedTargetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2255,10 +2254,9 @@ def test_list_linked_sources_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = document_link_service.ListLinkedSourcesResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = document_link_service.ListLinkedSourcesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2334,10 +2332,11 @@ def test_list_linked_sources_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = document_link_service.ListLinkedSourcesResponse.pb(
+            # Convert return value to protobuf type
+            return_value = document_link_service.ListLinkedSourcesResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2466,10 +2465,9 @@ def test_list_linked_sources_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = document_link_service.ListLinkedSourcesResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = document_link_service.ListLinkedSourcesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2595,8 +2593,9 @@ def test_create_document_link_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = document_link_service.DocumentLink.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = document_link_service.DocumentLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2674,8 +2673,9 @@ def test_create_document_link_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = document_link_service.DocumentLink.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = document_link_service.DocumentLink.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2812,8 +2812,9 @@ def test_create_document_link_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = document_link_service.DocumentLink.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = document_link_service.DocumentLink.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
