@@ -103,7 +103,7 @@
     "packages/google-cloud-retail": "1.16.3",
     "packages/google-cloud-scheduler": "2.11.2",
     "packages/google-cloud-secret-manager": "2.16.4",
-    "packages/google-cloud-securesourcemanager": "0.0.0",
+    "packages/google-cloud-securesourcemanager": "0.1.0",
     "packages/google-cloud-securitycenter": "1.23.3",
     "packages/google-cloud-service-control": "1.9.2",
     "packages/google-cloud-service-directory": "1.9.2",
