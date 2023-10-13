@@ -1,9 +1,9 @@
-Python Client for 
-==================
+Python Client for Secure Source Manager API
+===========================================
 
 |preview| |pypi| |versions|
 
-``_: 
+`Secure Source Manager API`_: Regionally deployed, single-tenant managed source code repository hosted on Google Cloud.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for
    :target: https://pypi.org/project/google-cloud-securesourcemanager/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-securesourcemanager.svg
    :target: https://pypi.org/project/google-cloud-securesourcemanager/
-.. _: 
+.. _Secure Source Manager API: https://cloud.google.com/secure-source-manager/docs/overview
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/securesourcemanager/latest
-.. _Product Documentation:  
+.. _Product Documentation:  https://cloud.google.com/secure-source-manager/docs/overview
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the .`_
+3. `Enable the Secure Source Manager API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the .:  
+.. _Enable the Secure Source Manager API.:  https://cloud.google.com/secure-source-manager/docs/overview
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for 
+-  Read the `Client Library Documentation`_ for Secure Source Manager API
    to see other available methods on the client.
--  Read the ` Product documentation`_ to learn
+-  Read the `Secure Source Manager API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _ Product documentation:  
+.. _Secure Source Manager API Product documentation:  https://cloud.google.com/secure-source-manager/docs/overview
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
