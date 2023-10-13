@@ -1,0 +1,2 @@
+recursive-include google/cloud/vmmigration *.py
+recursive-include google/cloud/vmmigration_v1 *.py
