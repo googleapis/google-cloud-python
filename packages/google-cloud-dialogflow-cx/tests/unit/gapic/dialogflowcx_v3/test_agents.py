@@ -3400,8 +3400,9 @@ def test_list_agents_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = agent.ListAgentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = agent.ListAgentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3481,8 +3482,9 @@ def test_list_agents_rest_required_fields(request_type=agent.ListAgentsRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = agent.ListAgentsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = agent.ListAgentsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3611,8 +3613,9 @@ def test_list_agents_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = agent.ListAgentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = agent.ListAgentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3742,8 +3745,9 @@ def test_get_agent_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = agent.Agent.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = agent.Agent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3827,8 +3831,9 @@ def test_get_agent_rest_required_fields(request_type=agent.GetAgentRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = agent.Agent.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = agent.Agent.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3947,8 +3952,9 @@ def test_get_agent_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = agent.Agent.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = agent.Agent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4041,6 +4047,70 @@ def test_create_agent_rest(request_type):
         "text_to_speech_settings": {"synthesize_speech_configs": {}},
         "gen_app_builder_settings": {"engine": "engine_value"},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcdc_agent.CreateAgentRequest.meta.fields["agent"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["agent"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["agent"][field])):
+                    del request_init["agent"][field][i][subfield]
+            else:
+                del request_init["agent"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4064,8 +4134,9 @@ def test_create_agent_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcdc_agent.Agent.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcdc_agent.Agent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4150,8 +4221,9 @@ def test_create_agent_rest_required_fields(request_type=gcdc_agent.CreateAgentRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcdc_agent.Agent.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcdc_agent.Agent.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4241,47 +4313,6 @@ def test_create_agent_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["agent"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "default_language_code": "default_language_code_value",
-        "supported_language_codes": [
-            "supported_language_codes_value1",
-            "supported_language_codes_value2",
-        ],
-        "time_zone": "time_zone_value",
-        "description": "description_value",
-        "avatar_uri": "avatar_uri_value",
-        "speech_to_text_settings": {"enable_speech_adaptation": True},
-        "start_flow": "start_flow_value",
-        "security_settings": "security_settings_value",
-        "enable_stackdriver_logging": True,
-        "enable_spell_correction": True,
-        "locked": True,
-        "advanced_settings": {
-            "audio_export_gcs_destination": {"uri": "uri_value"},
-            "dtmf_settings": {
-                "enabled": True,
-                "max_digits": 1065,
-                "finish_digit": "finish_digit_value",
-            },
-            "logging_settings": {
-                "enable_stackdriver_logging": True,
-                "enable_interaction_logging": True,
-            },
-        },
-        "git_integration_settings": {
-            "github_settings": {
-                "display_name": "display_name_value",
-                "repository_uri": "repository_uri_value",
-                "tracking_branch": "tracking_branch_value",
-                "access_token": "access_token_value",
-                "branches": ["branches_value1", "branches_value2"],
-            }
-        },
-        "text_to_speech_settings": {"synthesize_speech_configs": {}},
-        "gen_app_builder_settings": {"engine": "engine_value"},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4320,8 +4351,9 @@ def test_create_agent_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcdc_agent.Agent.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcdc_agent.Agent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4417,6 +4449,70 @@ def test_update_agent_rest(request_type):
         "text_to_speech_settings": {"synthesize_speech_configs": {}},
         "gen_app_builder_settings": {"engine": "engine_value"},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcdc_agent.UpdateAgentRequest.meta.fields["agent"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["agent"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["agent"][field])):
+                    del request_init["agent"][field][i][subfield]
+            else:
+                del request_init["agent"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4440,8 +4536,9 @@ def test_update_agent_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcdc_agent.Agent.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcdc_agent.Agent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4523,8 +4620,9 @@ def test_update_agent_rest_required_fields(request_type=gcdc_agent.UpdateAgentRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcdc_agent.Agent.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcdc_agent.Agent.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4608,47 +4706,6 @@ def test_update_agent_rest_bad_request(
     request_init = {
         "agent": {"name": "projects/sample1/locations/sample2/agents/sample3"}
     }
-    request_init["agent"] = {
-        "name": "projects/sample1/locations/sample2/agents/sample3",
-        "display_name": "display_name_value",
-        "default_language_code": "default_language_code_value",
-        "supported_language_codes": [
-            "supported_language_codes_value1",
-            "supported_language_codes_value2",
-        ],
-        "time_zone": "time_zone_value",
-        "description": "description_value",
-        "avatar_uri": "avatar_uri_value",
-        "speech_to_text_settings": {"enable_speech_adaptation": True},
-        "start_flow": "start_flow_value",
-        "security_settings": "security_settings_value",
-        "enable_stackdriver_logging": True,
-        "enable_spell_correction": True,
-        "locked": True,
-        "advanced_settings": {
-            "audio_export_gcs_destination": {"uri": "uri_value"},
-            "dtmf_settings": {
-                "enabled": True,
-                "max_digits": 1065,
-                "finish_digit": "finish_digit_value",
-            },
-            "logging_settings": {
-                "enable_stackdriver_logging": True,
-                "enable_interaction_logging": True,
-            },
-        },
-        "git_integration_settings": {
-            "github_settings": {
-                "display_name": "display_name_value",
-                "repository_uri": "repository_uri_value",
-                "tracking_branch": "tracking_branch_value",
-                "access_token": "access_token_value",
-                "branches": ["branches_value1", "branches_value2"],
-            }
-        },
-        "text_to_speech_settings": {"synthesize_speech_configs": {}},
-        "gen_app_builder_settings": {"engine": "engine_value"},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4689,8 +4746,9 @@ def test_update_agent_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcdc_agent.Agent.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcdc_agent.Agent.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5408,8 +5466,9 @@ def test_validate_agent_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = agent.AgentValidationResult.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = agent.AgentValidationResult.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5483,8 +5542,9 @@ def test_validate_agent_rest_required_fields(request_type=agent.ValidateAgentReq
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = agent.AgentValidationResult.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = agent.AgentValidationResult.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5617,8 +5677,9 @@ def test_get_agent_validation_result_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = agent.AgentValidationResult.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = agent.AgentValidationResult.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5695,8 +5756,9 @@ def test_get_agent_validation_result_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = agent.AgentValidationResult.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = agent.AgentValidationResult.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5823,8 +5885,9 @@ def test_get_agent_validation_result_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = agent.AgentValidationResult.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = agent.AgentValidationResult.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5892,8 +5955,9 @@ def test_get_generative_settings_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = generative_settings.GenerativeSettings.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = generative_settings.GenerativeSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5978,8 +6042,9 @@ def test_get_generative_settings_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = generative_settings.GenerativeSettings.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = generative_settings.GenerativeSettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6121,8 +6186,9 @@ def test_get_generative_settings_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = generative_settings.GenerativeSettings.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = generative_settings.GenerativeSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6206,6 +6272,72 @@ def test_update_generative_settings_rest(request_type):
         },
         "language_code": "language_code_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = agent.UpdateGenerativeSettingsRequest.meta.fields[
+        "generative_settings"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["generative_settings"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["generative_settings"][field])):
+                    del request_init["generative_settings"][field][i][subfield]
+            else:
+                del request_init["generative_settings"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6219,8 +6351,9 @@ def test_update_generative_settings_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcdc_generative_settings.GenerativeSettings.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcdc_generative_settings.GenerativeSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6294,10 +6427,9 @@ def test_update_generative_settings_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcdc_generative_settings.GenerativeSettings.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcdc_generative_settings.GenerativeSettings.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6387,32 +6519,6 @@ def test_update_generative_settings_rest_bad_request(
             "name": "projects/sample1/locations/sample2/agents/sample3/generativeSettings"
         }
     }
-    request_init["generative_settings"] = {
-        "name": "projects/sample1/locations/sample2/agents/sample3/generativeSettings",
-        "fallback_settings": {
-            "selected_prompt": "selected_prompt_value",
-            "prompt_templates": [
-                {
-                    "display_name": "display_name_value",
-                    "prompt_text": "prompt_text_value",
-                    "frozen": True,
-                }
-            ],
-        },
-        "generative_safety_settings": {
-            "banned_phrases": [
-                {"text": "text_value", "language_code": "language_code_value"}
-            ]
-        },
-        "knowledge_connector_settings": {
-            "business": "business_value",
-            "agent": "agent_value",
-            "agent_identity": "agent_identity_value",
-            "business_description": "business_description_value",
-            "agent_scope": "agent_scope_value",
-        },
-        "language_code": "language_code_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6457,8 +6563,9 @@ def test_update_generative_settings_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcdc_generative_settings.GenerativeSettings.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcdc_generative_settings.GenerativeSettings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

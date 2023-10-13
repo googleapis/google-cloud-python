@@ -2042,8 +2042,9 @@ def test_get_question_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = question.Question.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = question.Question.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2124,8 +2125,9 @@ def test_get_question_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = question.Question.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = question.Question.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2250,8 +2252,9 @@ def test_get_question_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = question.Question.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = question.Question.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2388,6 +2391,70 @@ def test_create_question_rest(request_type):
         },
         "debug_info": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = question_service.CreateQuestionRequest.meta.fields["question"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["question"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["question"][field])):
+                    del request_init["question"][field][i][subfield]
+            else:
+                del request_init["question"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2404,8 +2471,9 @@ def test_create_question_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcd_question.Question.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcd_question.Question.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2485,8 +2553,9 @@ def test_create_question_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcd_question.Question.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcd_question.Question.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2582,90 +2651,6 @@ def test_create_question_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["question"] = {
-        "name": "name_value",
-        "scopes": ["scopes_value1", "scopes_value2"],
-        "query": "query_value",
-        "data_source_annotations": [
-            "data_source_annotations_value1",
-            "data_source_annotations_value2",
-        ],
-        "interpret_error": {
-            "message": "message_value",
-            "code": 1,
-            "details": {
-                "unsupported_details": {
-                    "operators": ["operators_value1", "operators_value2"],
-                    "intent": ["intent_value1", "intent_value2"],
-                },
-                "incomplete_query_details": {"entities": [1]},
-                "ambiguity_details": {},
-            },
-        },
-        "interpretations": [
-            {
-                "data_sources": ["data_sources_value1", "data_sources_value2"],
-                "confidence": 0.1038,
-                "unused_phrases": ["unused_phrases_value1", "unused_phrases_value2"],
-                "human_readable": {
-                    "generated_interpretation": {
-                        "text_formatted": "text_formatted_value",
-                        "html_formatted": "html_formatted_value",
-                        "markups": [
-                            {"type_": 1, "start_char_index": 1698, "length": 642}
-                        ],
-                    },
-                    "original_question": {},
-                },
-                "interpretation_structure": {
-                    "visualization_types": [1],
-                    "column_info": [
-                        {
-                            "output_alias": "output_alias_value",
-                            "display_name": "display_name_value",
-                        }
-                    ],
-                },
-                "data_query": {"sql": "sql_value"},
-                "execution_info": {
-                    "job_creation_status": {
-                        "code": 411,
-                        "message": "message_value",
-                        "details": [
-                            {
-                                "type_url": "type.googleapis.com/google.protobuf.Duration",
-                                "value": b"\x08\x0c\x10\xdb\x07",
-                            }
-                        ],
-                    },
-                    "job_execution_state": 1,
-                    "create_time": {"seconds": 751, "nanos": 543},
-                    "bigquery_job": {
-                        "job_id": "job_id_value",
-                        "project_id": "project_id_value",
-                        "location": "location_value",
-                    },
-                },
-            }
-        ],
-        "create_time": {},
-        "user_email": "user_email_value",
-        "debug_flags": {
-            "include_va_query": True,
-            "include_nested_va_query": True,
-            "include_human_interpretation": True,
-            "include_aqua_debug_response": True,
-            "time_override": 1390,
-            "is_internal_google_user": True,
-            "ignore_cache": True,
-            "include_search_entities_rpc": True,
-            "include_list_column_annotations_rpc": True,
-            "include_virtual_analyst_entities": True,
-            "include_table_list": True,
-            "include_domain_list": True,
-        },
-        "debug_info": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2704,8 +2689,9 @@ def test_create_question_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcd_question.Question.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcd_question.Question.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2775,8 +2761,9 @@ def test_execute_question_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = question.Question.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = question.Question.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2860,8 +2847,9 @@ def test_execute_question_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = question.Question.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = question.Question.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2995,8 +2983,9 @@ def test_execute_question_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = question.Question.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = question.Question.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3066,8 +3055,9 @@ def test_get_user_feedback_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = user_feedback.UserFeedback.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = user_feedback.UserFeedback.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3144,8 +3134,9 @@ def test_get_user_feedback_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = user_feedback.UserFeedback.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = user_feedback.UserFeedback.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3274,8 +3265,9 @@ def test_get_user_feedback_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = user_feedback.UserFeedback.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = user_feedback.UserFeedback.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3337,6 +3329,70 @@ def test_update_user_feedback_rest(request_type):
         "free_form_feedback": "free_form_feedback_value",
         "rating": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = question_service.UpdateUserFeedbackRequest.meta.fields["user_feedback"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["user_feedback"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["user_feedback"][field])):
+                    del request_init["user_feedback"][field][i][subfield]
+            else:
+                del request_init["user_feedback"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3351,8 +3407,9 @@ def test_update_user_feedback_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcd_user_feedback.UserFeedback.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcd_user_feedback.UserFeedback.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3427,8 +3484,9 @@ def test_update_user_feedback_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcd_user_feedback.UserFeedback.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcd_user_feedback.UserFeedback.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3520,11 +3578,6 @@ def test_update_user_feedback_rest_bad_request(
             "name": "projects/sample1/locations/sample2/questions/sample3/userFeedback"
         }
     }
-    request_init["user_feedback"] = {
-        "name": "projects/sample1/locations/sample2/questions/sample3/userFeedback",
-        "free_form_feedback": "free_form_feedback_value",
-        "rating": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3567,8 +3620,9 @@ def test_update_user_feedback_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcd_user_feedback.UserFeedback.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcd_user_feedback.UserFeedback.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
