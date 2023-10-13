@@ -13,5 +13,5 @@
 # limitations under the License.
 
 deep-copy-regex:
-    - source: /apiPath/(.*)/.*-py
+    - source: /apiPath/(v.*)/.*-py
       dest: /owl-bot-staging/apiDashes/$1
