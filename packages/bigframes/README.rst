@@ -13,6 +13,7 @@ BigQuery DataFrames is an open-source package. You can run
 Documentation
 -------------
 
+* `BigQuery DataFrames source code (GitHub) <https://github.com/googleapis/python-bigquery-dataframes>`_
 * `BigQuery DataFrames sample notebooks <https://github.com/googleapis/python-bigquery-dataframes/tree/main/notebooks>`_
 * `BigQuery DataFrames API reference <https://cloud.google.com/python/docs/reference/bigframes/latest>`_
 * `BigQuery documentation <https://cloud.google.com/bigquery/docs/>`_
