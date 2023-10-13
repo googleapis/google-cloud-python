@@ -1,9 +1,9 @@
 {
     "name": "fleetengine",
-    "name_pretty": "",
-    "api_description": "",
-    "product_documentation": "",
-    "client_documentation": "https://cloud.google.com/python/docs/reference/fleetengine/latest",
+    "name_pretty": "Local Rides and Deliveries API",
+    "api_description": "Enables Fleet Engine for access to the On Demand Rides and Deliveries and Last Mile Fleet Solution APIs.  Customer's use of Google Maps Content in the Cloud Logging Services is subject to the Google Maps Platform Terms of Service located at https://cloud.google.com/maps-platform/terms.",
+    "product_documentation": "https://developers.google.com/maps/documentation/transportation-logistics/mobility",
+    "client_documentation": "https://googleapis.dev/python/fleetengine/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
     "language": "python",
