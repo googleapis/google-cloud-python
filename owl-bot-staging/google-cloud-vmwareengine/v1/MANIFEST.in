@@ -1,2 +1,0 @@
-recursive-include google/cloud/vmwareengine *.py
-recursive-include google/cloud/vmwareengine_v1 *.py
