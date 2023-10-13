@@ -13535,8 +13535,9 @@ def test_list_instances_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = instance.ListInstancesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = instance.ListInstancesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -13620,8 +13621,9 @@ def test_list_instances_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = instance.ListInstancesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = instance.ListInstancesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -13753,8 +13755,9 @@ def test_list_instances_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = instance.ListInstancesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = instance.ListInstancesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -13884,8 +13887,9 @@ def test_get_instance_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = instance.Instance.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = instance.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -13969,8 +13973,9 @@ def test_get_instance_rest_required_fields(request_type=instance.GetInstanceRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = instance.Instance.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = instance.Instance.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -14093,8 +14098,9 @@ def test_get_instance_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = instance.Instance.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = instance.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -14277,6 +14283,70 @@ def test_update_instance_rest(request_type):
         "workload_profile": 1,
         "firmware_version": "firmware_version_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcb_instance.UpdateInstanceRequest.meta.fields["instance"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["instance"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["instance"][field])):
+                    del request_init["instance"][field][i][subfield]
+            else:
+                del request_init["instance"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -14450,135 +14520,6 @@ def test_update_instance_rest_bad_request(
     request_init = {
         "instance": {"name": "projects/sample1/locations/sample2/instances/sample3"}
     }
-    request_init["instance"] = {
-        "name": "projects/sample1/locations/sample2/instances/sample3",
-        "id": "id_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "machine_type": "machine_type_value",
-        "state": 1,
-        "hyperthreading_enabled": True,
-        "labels": {},
-        "luns": [
-            {
-                "name": "name_value",
-                "id": "id_value",
-                "state": 1,
-                "size_gb": 739,
-                "multiprotocol_type": 1,
-                "storage_volume": "storage_volume_value",
-                "shareable": True,
-                "boot_lun": True,
-                "storage_type": 1,
-                "wwid": "wwid_value",
-                "expire_time": {},
-                "instances": ["instances_value1", "instances_value2"],
-            }
-        ],
-        "volumes": [
-            {
-                "name": "name_value",
-                "id": "id_value",
-                "storage_type": 1,
-                "state": 1,
-                "requested_size_gib": 1917,
-                "originally_requested_size_gib": 3094,
-                "current_size_gib": 1710,
-                "emergency_size_gib": 1898,
-                "max_size_gib": 1265,
-                "auto_grown_size_gib": 2032,
-                "remaining_space_gib": 1974,
-                "snapshot_reservation_detail": {
-                    "reserved_space_gib": 1884,
-                    "reserved_space_used_percent": 2859,
-                    "reserved_space_remaining_gib": 2933,
-                    "reserved_space_percent": 2331,
-                },
-                "snapshot_auto_delete_behavior": 1,
-                "labels": {},
-                "snapshot_enabled": True,
-                "pod": "pod_value",
-                "protocol": 1,
-                "boot_volume": True,
-                "performance_tier": 1,
-                "notes": "notes_value",
-                "workload_profile": 1,
-                "expire_time": {},
-                "instances": ["instances_value1", "instances_value2"],
-                "attached": True,
-            }
-        ],
-        "networks": [
-            {
-                "name": "name_value",
-                "id": "id_value",
-                "type_": 1,
-                "ip_address": "ip_address_value",
-                "mac_address": ["mac_address_value1", "mac_address_value2"],
-                "state": 1,
-                "vlan_id": "vlan_id_value",
-                "cidr": "cidr_value",
-                "vrf": {
-                    "name": "name_value",
-                    "state": 1,
-                    "qos_policy": {"bandwidth_gbps": 0.1472},
-                    "vlan_attachments": [
-                        {
-                            "peer_vlan_id": 1256,
-                            "peer_ip": "peer_ip_value",
-                            "router_ip": "router_ip_value",
-                            "pairing_key": "pairing_key_value",
-                            "qos_policy": {},
-                            "id": "id_value",
-                            "interconnect_attachment": "interconnect_attachment_value",
-                        }
-                    ],
-                },
-                "labels": {},
-                "services_cidr": "services_cidr_value",
-                "reservations": [
-                    {
-                        "start_address": "start_address_value",
-                        "end_address": "end_address_value",
-                        "note": "note_value",
-                    }
-                ],
-                "pod": "pod_value",
-                "mount_points": [
-                    {
-                        "instance": "instance_value",
-                        "logical_interface": "logical_interface_value",
-                        "default_gateway": True,
-                        "ip_address": "ip_address_value",
-                    }
-                ],
-                "jumbo_frames_enabled": True,
-                "gateway_ip": "gateway_ip_value",
-            }
-        ],
-        "interactive_serial_console_enabled": True,
-        "os_image": "os_image_value",
-        "pod": "pod_value",
-        "network_template": "network_template_value",
-        "logical_interfaces": [
-            {
-                "logical_network_interfaces": [
-                    {
-                        "network": "network_value",
-                        "ip_address": "ip_address_value",
-                        "default_gateway": True,
-                        "network_type": 1,
-                        "id": "id_value",
-                    }
-                ],
-                "name": "name_value",
-                "interface_index": 1576,
-            }
-        ],
-        "login_info": "login_info_value",
-        "workload_profile": 1,
-        "firmware_version": "firmware_version_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -14696,8 +14637,9 @@ def test_rename_instance_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = instance.Instance.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = instance.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -14788,8 +14730,9 @@ def test_rename_instance_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = instance.Instance.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = instance.Instance.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -14921,8 +14864,9 @@ def test_rename_instance_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = instance.Instance.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = instance.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -16599,8 +16543,9 @@ def test_list_ssh_keys_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = ssh_key.ListSSHKeysResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = ssh_key.ListSSHKeysResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -16680,8 +16625,9 @@ def test_list_ssh_keys_rest_required_fields(request_type=ssh_key.ListSSHKeysRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = ssh_key.ListSSHKeysResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = ssh_key.ListSSHKeysResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -16812,8 +16758,9 @@ def test_list_ssh_keys_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = ssh_key.ListSSHKeysResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = ssh_key.ListSSHKeysResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -16921,6 +16868,70 @@ def test_create_ssh_key_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request_init["ssh_key"] = {"name": "name_value", "public_key": "public_key_value"}
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcb_ssh_key.CreateSSHKeyRequest.meta.fields["ssh_key"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["ssh_key"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["ssh_key"][field])):
+                    del request_init["ssh_key"][field][i][subfield]
+            else:
+                del request_init["ssh_key"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -16934,8 +16945,9 @@ def test_create_ssh_key_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcb_ssh_key.SSHKey.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcb_ssh_key.SSHKey.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -17021,8 +17033,9 @@ def test_create_ssh_key_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcb_ssh_key.SSHKey.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcb_ssh_key.SSHKey.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -17123,7 +17136,6 @@ def test_create_ssh_key_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["ssh_key"] = {"name": "name_value", "public_key": "public_key_value"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -17163,8 +17175,9 @@ def test_create_ssh_key_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcb_ssh_key.SSHKey.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcb_ssh_key.SSHKey.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -17479,8 +17492,9 @@ def test_list_volumes_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = volume.ListVolumesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = volume.ListVolumesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -17562,8 +17576,9 @@ def test_list_volumes_rest_required_fields(request_type=volume.ListVolumesReques
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = volume.ListVolumesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = volume.ListVolumesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -17695,8 +17710,9 @@ def test_list_volumes_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = volume.ListVolumesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = volume.ListVolumesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -17835,8 +17851,9 @@ def test_get_volume_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = volume.Volume.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = volume.Volume.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -17935,8 +17952,9 @@ def test_get_volume_rest_required_fields(request_type=volume.GetVolumeRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = volume.Volume.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = volume.Volume.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -18057,8 +18075,9 @@ def test_get_volume_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = volume.Volume.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = volume.Volume.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -18143,6 +18162,70 @@ def test_update_volume_rest(request_type):
         "instances": ["instances_value1", "instances_value2"],
         "attached": True,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcb_volume.UpdateVolumeRequest.meta.fields["volume"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["volume"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["volume"][field])):
+                    del request_init["volume"][field][i][subfield]
+            else:
+                del request_init["volume"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -18314,37 +18397,6 @@ def test_update_volume_rest_bad_request(
     request_init = {
         "volume": {"name": "projects/sample1/locations/sample2/volumes/sample3"}
     }
-    request_init["volume"] = {
-        "name": "projects/sample1/locations/sample2/volumes/sample3",
-        "id": "id_value",
-        "storage_type": 1,
-        "state": 1,
-        "requested_size_gib": 1917,
-        "originally_requested_size_gib": 3094,
-        "current_size_gib": 1710,
-        "emergency_size_gib": 1898,
-        "max_size_gib": 1265,
-        "auto_grown_size_gib": 2032,
-        "remaining_space_gib": 1974,
-        "snapshot_reservation_detail": {
-            "reserved_space_gib": 1884,
-            "reserved_space_used_percent": 2859,
-            "reserved_space_remaining_gib": 2933,
-            "reserved_space_percent": 2331,
-        },
-        "snapshot_auto_delete_behavior": 1,
-        "labels": {},
-        "snapshot_enabled": True,
-        "pod": "pod_value",
-        "protocol": 1,
-        "boot_volume": True,
-        "performance_tier": 1,
-        "notes": "notes_value",
-        "workload_profile": 1,
-        "expire_time": {"seconds": 751, "nanos": 543},
-        "instances": ["instances_value1", "instances_value2"],
-        "attached": True,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -18471,8 +18523,9 @@ def test_rename_volume_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = volume.Volume.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = volume.Volume.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -18576,8 +18629,9 @@ def test_rename_volume_rest_required_fields(request_type=volume.RenameVolumeRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = volume.Volume.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = volume.Volume.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -18707,8 +18761,9 @@ def test_rename_volume_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = volume.Volume.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = volume.Volume.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -19301,8 +19356,9 @@ def test_list_networks_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = network.ListNetworksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = network.ListNetworksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -19384,8 +19440,9 @@ def test_list_networks_rest_required_fields(request_type=network.ListNetworksReq
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = network.ListNetworksResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = network.ListNetworksResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -19517,8 +19574,9 @@ def test_list_networks_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = network.ListNetworksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = network.ListNetworksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -19635,8 +19693,9 @@ def test_list_network_usage_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = network.ListNetworkUsageResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = network.ListNetworkUsageResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -19710,8 +19769,9 @@ def test_list_network_usage_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = network.ListNetworkUsageResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = network.ListNetworkUsageResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -19836,8 +19896,9 @@ def test_list_network_usage_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = network.ListNetworkUsageResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = network.ListNetworkUsageResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -19913,8 +19974,9 @@ def test_get_network_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = network.Network.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = network.Network.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -19998,8 +20060,9 @@ def test_get_network_rest_required_fields(request_type=network.GetNetworkRequest
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = network.Network.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = network.Network.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -20120,8 +20183,9 @@ def test_get_network_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = network.Network.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = network.Network.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -20221,6 +20285,70 @@ def test_update_network_rest(request_type):
         "jumbo_frames_enabled": True,
         "gateway_ip": "gateway_ip_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcb_network.UpdateNetworkRequest.meta.fields["network"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["network"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["network"][field])):
+                    del request_init["network"][field][i][subfield]
+            else:
+                del request_init["network"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -20394,52 +20522,6 @@ def test_update_network_rest_bad_request(
     request_init = {
         "network": {"name": "projects/sample1/locations/sample2/networks/sample3"}
     }
-    request_init["network"] = {
-        "name": "projects/sample1/locations/sample2/networks/sample3",
-        "id": "id_value",
-        "type_": 1,
-        "ip_address": "ip_address_value",
-        "mac_address": ["mac_address_value1", "mac_address_value2"],
-        "state": 1,
-        "vlan_id": "vlan_id_value",
-        "cidr": "cidr_value",
-        "vrf": {
-            "name": "name_value",
-            "state": 1,
-            "qos_policy": {"bandwidth_gbps": 0.1472},
-            "vlan_attachments": [
-                {
-                    "peer_vlan_id": 1256,
-                    "peer_ip": "peer_ip_value",
-                    "router_ip": "router_ip_value",
-                    "pairing_key": "pairing_key_value",
-                    "qos_policy": {},
-                    "id": "id_value",
-                    "interconnect_attachment": "interconnect_attachment_value",
-                }
-            ],
-        },
-        "labels": {},
-        "services_cidr": "services_cidr_value",
-        "reservations": [
-            {
-                "start_address": "start_address_value",
-                "end_address": "end_address_value",
-                "note": "note_value",
-            }
-        ],
-        "pod": "pod_value",
-        "mount_points": [
-            {
-                "instance": "instance_value",
-                "logical_interface": "logical_interface_value",
-                "default_gateway": True,
-                "ip_address": "ip_address_value",
-            }
-        ],
-        "jumbo_frames_enabled": True,
-        "gateway_ip": "gateway_ip_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -20542,6 +20624,72 @@ def test_create_volume_snapshot_rest(request_type):
         "storage_volume": "storage_volume_value",
         "type_": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcb_volume_snapshot.CreateVolumeSnapshotRequest.meta.fields[
+        "volume_snapshot"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["volume_snapshot"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["volume_snapshot"][field])):
+                    del request_init["volume_snapshot"][field][i][subfield]
+            else:
+                del request_init["volume_snapshot"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -20558,8 +20706,9 @@ def test_create_volume_snapshot_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcb_volume_snapshot.VolumeSnapshot.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcb_volume_snapshot.VolumeSnapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -20639,8 +20788,9 @@ def test_create_volume_snapshot_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcb_volume_snapshot.VolumeSnapshot.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcb_volume_snapshot.VolumeSnapshot.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -20737,14 +20887,6 @@ def test_create_volume_snapshot_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/volumes/sample3"}
-    request_init["volume_snapshot"] = {
-        "name": "name_value",
-        "id": "id_value",
-        "description": "description_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "storage_volume": "storage_volume_value",
-        "type_": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -20785,8 +20927,9 @@ def test_create_volume_snapshot_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcb_volume_snapshot.VolumeSnapshot.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcb_volume_snapshot.VolumeSnapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -21388,8 +21531,9 @@ def test_get_volume_snapshot_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = volume_snapshot.VolumeSnapshot.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = volume_snapshot.VolumeSnapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -21468,8 +21612,9 @@ def test_get_volume_snapshot_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = volume_snapshot.VolumeSnapshot.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = volume_snapshot.VolumeSnapshot.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -21598,8 +21743,9 @@ def test_get_volume_snapshot_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = volume_snapshot.VolumeSnapshot.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = volume_snapshot.VolumeSnapshot.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -21665,8 +21811,9 @@ def test_list_volume_snapshots_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = volume_snapshot.ListVolumeSnapshotsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = volume_snapshot.ListVolumeSnapshotsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -21749,10 +21896,9 @@ def test_list_volume_snapshots_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = volume_snapshot.ListVolumeSnapshotsResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = volume_snapshot.ListVolumeSnapshotsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -21887,8 +22033,9 @@ def test_list_volume_snapshots_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = volume_snapshot.ListVolumeSnapshotsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = volume_snapshot.ListVolumeSnapshotsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -22024,8 +22171,9 @@ def test_get_lun_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = lun.Lun.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = lun.Lun.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -22108,8 +22256,9 @@ def test_get_lun_rest_required_fields(request_type=lun.GetLunRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = lun.Lun.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = lun.Lun.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -22234,8 +22383,9 @@ def test_get_lun_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = lun.Lun.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = lun.Lun.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -22301,8 +22451,9 @@ def test_list_luns_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = lun.ListLunsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = lun.ListLunsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -22383,8 +22534,9 @@ def test_list_luns_rest_required_fields(request_type=lun.ListLunsRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = lun.ListLunsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = lun.ListLunsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -22515,8 +22667,9 @@ def test_list_luns_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = lun.ListLunsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = lun.ListLunsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -22910,8 +23063,9 @@ def test_get_nfs_share_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = nfs_share.NfsShare.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = nfs_share.NfsShare.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -22990,8 +23144,9 @@ def test_get_nfs_share_rest_required_fields(request_type=nfs_share.GetNfsShareRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = nfs_share.NfsShare.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = nfs_share.NfsShare.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -23114,8 +23269,9 @@ def test_get_nfs_share_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = nfs_share.NfsShare.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = nfs_share.NfsShare.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -23180,8 +23336,9 @@ def test_list_nfs_shares_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = nfs_share.ListNfsSharesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = nfs_share.ListNfsSharesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -23265,8 +23422,9 @@ def test_list_nfs_shares_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = nfs_share.ListNfsSharesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = nfs_share.ListNfsSharesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -23398,8 +23556,9 @@ def test_list_nfs_shares_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = nfs_share.ListNfsSharesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = nfs_share.ListNfsSharesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -23530,6 +23689,70 @@ def test_update_nfs_share_rest(request_type):
         "requested_size_gib": 1917,
         "storage_type": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcb_nfs_share.UpdateNfsShareRequest.meta.fields["nfs_share"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["nfs_share"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["nfs_share"][field])):
+                    del request_init["nfs_share"][field][i][subfield]
+            else:
+                del request_init["nfs_share"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -23703,28 +23926,6 @@ def test_update_nfs_share_rest_bad_request(
     request_init = {
         "nfs_share": {"name": "projects/sample1/locations/sample2/nfsShares/sample3"}
     }
-    request_init["nfs_share"] = {
-        "name": "projects/sample1/locations/sample2/nfsShares/sample3",
-        "nfs_share_id": "nfs_share_id_value",
-        "id": "id_value",
-        "state": 1,
-        "volume": "volume_value",
-        "allowed_clients": [
-            {
-                "network": "network_value",
-                "share_ip": "share_ip_value",
-                "allowed_clients_cidr": "allowed_clients_cidr_value",
-                "mount_permissions": 1,
-                "allow_dev": True,
-                "allow_suid": True,
-                "no_root_squash": True,
-                "nfs_path": "nfs_path_value",
-            }
-        ],
-        "labels": {},
-        "requested_size_gib": 1917,
-        "storage_type": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -23843,6 +24044,70 @@ def test_create_nfs_share_rest(request_type):
         "requested_size_gib": 1917,
         "storage_type": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcb_nfs_share.CreateNfsShareRequest.meta.fields["nfs_share"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["nfs_share"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["nfs_share"][field])):
+                    del request_init["nfs_share"][field][i][subfield]
+            else:
+                del request_init["nfs_share"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -24025,28 +24290,6 @@ def test_create_nfs_share_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["nfs_share"] = {
-        "name": "name_value",
-        "nfs_share_id": "nfs_share_id_value",
-        "id": "id_value",
-        "state": 1,
-        "volume": "volume_value",
-        "allowed_clients": [
-            {
-                "network": "network_value",
-                "share_ip": "share_ip_value",
-                "allowed_clients_cidr": "allowed_clients_cidr_value",
-                "mount_permissions": 1,
-                "allow_dev": True,
-                "allow_suid": True,
-                "no_root_squash": True,
-                "nfs_path": "nfs_path_value",
-            }
-        ],
-        "labels": {},
-        "requested_size_gib": 1917,
-        "storage_type": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -24156,8 +24399,9 @@ def test_rename_nfs_share_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = nfs_share.NfsShare.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = nfs_share.NfsShare.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -24243,8 +24487,9 @@ def test_rename_nfs_share_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = nfs_share.NfsShare.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = nfs_share.NfsShare.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -24378,8 +24623,9 @@ def test_rename_nfs_share_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = nfs_share.NfsShare.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = nfs_share.NfsShare.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -24709,8 +24955,9 @@ def test_list_provisioning_quotas_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = provisioning.ListProvisioningQuotasResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = provisioning.ListProvisioningQuotasResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -24792,10 +25039,9 @@ def test_list_provisioning_quotas_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = provisioning.ListProvisioningQuotasResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = provisioning.ListProvisioningQuotasResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -24928,8 +25174,9 @@ def test_list_provisioning_quotas_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = provisioning.ListProvisioningQuotasResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = provisioning.ListProvisioningQuotasResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -25049,8 +25296,9 @@ def test_submit_provisioning_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = provisioning.SubmitProvisioningConfigResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = provisioning.SubmitProvisioningConfigResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -25125,10 +25373,11 @@ def test_submit_provisioning_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = provisioning.SubmitProvisioningConfigResponse.pb(
+            # Convert return value to protobuf type
+            return_value = provisioning.SubmitProvisioningConfigResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -25264,8 +25513,9 @@ def test_submit_provisioning_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = provisioning.SubmitProvisioningConfigResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = provisioning.SubmitProvisioningConfigResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -25342,8 +25592,9 @@ def test_get_provisioning_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = provisioning.ProvisioningConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -25427,8 +25678,9 @@ def test_get_provisioning_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = provisioning.ProvisioningConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -25557,8 +25809,9 @@ def test_get_provisioning_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = provisioning.ProvisioningConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -25702,6 +25955,72 @@ def test_create_provisioning_config_rest(request_type):
         "status_message": "status_message_value",
         "custom_id": "custom_id_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = provisioning.CreateProvisioningConfigRequest.meta.fields[
+        "provisioning_config"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["provisioning_config"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["provisioning_config"][field])):
+                    del request_init["provisioning_config"][field][i][subfield]
+            else:
+                del request_init["provisioning_config"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -25723,8 +26042,9 @@ def test_create_provisioning_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = provisioning.ProvisioningConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -25811,8 +26131,9 @@ def test_create_provisioning_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = provisioning.ProvisioningConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -25908,97 +26229,6 @@ def test_create_provisioning_config_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["provisioning_config"] = {
-        "name": "name_value",
-        "instances": [
-            {
-                "name": "name_value",
-                "id": "id_value",
-                "instance_type": "instance_type_value",
-                "hyperthreading": True,
-                "os_image": "os_image_value",
-                "client_network": {
-                    "network_id": "network_id_value",
-                    "address": "address_value",
-                    "existing_network_id": "existing_network_id_value",
-                },
-                "private_network": {},
-                "user_note": "user_note_value",
-                "account_networks_enabled": True,
-                "network_config": 1,
-                "network_template": "network_template_value",
-                "logical_interfaces": [
-                    {
-                        "logical_network_interfaces": [
-                            {
-                                "network": "network_value",
-                                "ip_address": "ip_address_value",
-                                "default_gateway": True,
-                                "network_type": 1,
-                                "id": "id_value",
-                            }
-                        ],
-                        "name": "name_value",
-                        "interface_index": 1576,
-                    }
-                ],
-                "ssh_key_names": ["ssh_key_names_value1", "ssh_key_names_value2"],
-            }
-        ],
-        "networks": [
-            {
-                "name": "name_value",
-                "id": "id_value",
-                "type_": 1,
-                "bandwidth": 1,
-                "vlan_attachments": [
-                    {"id": "id_value", "pairing_key": "pairing_key_value"}
-                ],
-                "cidr": "cidr_value",
-                "service_cidr": 1,
-                "user_note": "user_note_value",
-                "gcp_service": "gcp_service_value",
-                "vlan_same_project": True,
-                "jumbo_frames_enabled": True,
-            }
-        ],
-        "volumes": [
-            {
-                "name": "name_value",
-                "id": "id_value",
-                "snapshots_enabled": True,
-                "type_": 1,
-                "protocol": 1,
-                "size_gb": 739,
-                "lun_ranges": [{"quantity": 895, "size_gb": 739}],
-                "machine_ids": ["machine_ids_value1", "machine_ids_value2"],
-                "nfs_exports": [
-                    {
-                        "network_id": "network_id_value",
-                        "machine_id": "machine_id_value",
-                        "cidr": "cidr_value",
-                        "permissions": 1,
-                        "no_root_squash": True,
-                        "allow_suid": True,
-                        "allow_dev": True,
-                    }
-                ],
-                "user_note": "user_note_value",
-                "gcp_service": "gcp_service_value",
-                "performance_tier": 1,
-            }
-        ],
-        "ticket_id": "ticket_id_value",
-        "handover_service_account": "handover_service_account_value",
-        "email": "email_value",
-        "state": 1,
-        "location": "location_value",
-        "update_time": {"seconds": 751, "nanos": 543},
-        "cloud_console_uri": "cloud_console_uri_value",
-        "vpc_sc_enabled": True,
-        "status_message": "status_message_value",
-        "custom_id": "custom_id_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -26037,8 +26267,9 @@ def test_create_provisioning_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = provisioning.ProvisioningConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -26187,6 +26418,72 @@ def test_update_provisioning_config_rest(request_type):
         "status_message": "status_message_value",
         "custom_id": "custom_id_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = provisioning.UpdateProvisioningConfigRequest.meta.fields[
+        "provisioning_config"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["provisioning_config"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["provisioning_config"][field])):
+                    del request_init["provisioning_config"][field][i][subfield]
+            else:
+                del request_init["provisioning_config"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -26208,8 +26505,9 @@ def test_update_provisioning_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = provisioning.ProvisioningConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -26296,8 +26594,9 @@ def test_update_provisioning_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = provisioning.ProvisioningConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -26402,97 +26701,6 @@ def test_update_provisioning_config_rest_bad_request(
             "name": "projects/sample1/locations/sample2/provisioningConfigs/sample3"
         }
     }
-    request_init["provisioning_config"] = {
-        "name": "projects/sample1/locations/sample2/provisioningConfigs/sample3",
-        "instances": [
-            {
-                "name": "name_value",
-                "id": "id_value",
-                "instance_type": "instance_type_value",
-                "hyperthreading": True,
-                "os_image": "os_image_value",
-                "client_network": {
-                    "network_id": "network_id_value",
-                    "address": "address_value",
-                    "existing_network_id": "existing_network_id_value",
-                },
-                "private_network": {},
-                "user_note": "user_note_value",
-                "account_networks_enabled": True,
-                "network_config": 1,
-                "network_template": "network_template_value",
-                "logical_interfaces": [
-                    {
-                        "logical_network_interfaces": [
-                            {
-                                "network": "network_value",
-                                "ip_address": "ip_address_value",
-                                "default_gateway": True,
-                                "network_type": 1,
-                                "id": "id_value",
-                            }
-                        ],
-                        "name": "name_value",
-                        "interface_index": 1576,
-                    }
-                ],
-                "ssh_key_names": ["ssh_key_names_value1", "ssh_key_names_value2"],
-            }
-        ],
-        "networks": [
-            {
-                "name": "name_value",
-                "id": "id_value",
-                "type_": 1,
-                "bandwidth": 1,
-                "vlan_attachments": [
-                    {"id": "id_value", "pairing_key": "pairing_key_value"}
-                ],
-                "cidr": "cidr_value",
-                "service_cidr": 1,
-                "user_note": "user_note_value",
-                "gcp_service": "gcp_service_value",
-                "vlan_same_project": True,
-                "jumbo_frames_enabled": True,
-            }
-        ],
-        "volumes": [
-            {
-                "name": "name_value",
-                "id": "id_value",
-                "snapshots_enabled": True,
-                "type_": 1,
-                "protocol": 1,
-                "size_gb": 739,
-                "lun_ranges": [{"quantity": 895, "size_gb": 739}],
-                "machine_ids": ["machine_ids_value1", "machine_ids_value2"],
-                "nfs_exports": [
-                    {
-                        "network_id": "network_id_value",
-                        "machine_id": "machine_id_value",
-                        "cidr": "cidr_value",
-                        "permissions": 1,
-                        "no_root_squash": True,
-                        "allow_suid": True,
-                        "allow_dev": True,
-                    }
-                ],
-                "user_note": "user_note_value",
-                "gcp_service": "gcp_service_value",
-                "performance_tier": 1,
-            }
-        ],
-        "ticket_id": "ticket_id_value",
-        "handover_service_account": "handover_service_account_value",
-        "email": "email_value",
-        "state": 1,
-        "location": "location_value",
-        "update_time": {"seconds": 751, "nanos": 543},
-        "cloud_console_uri": "cloud_console_uri_value",
-        "vpc_sc_enabled": True,
-        "status_message": "status_message_value",
-        "custom_id": "custom_id_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -26535,8 +26743,9 @@ def test_update_provisioning_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = provisioning.ProvisioningConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = provisioning.ProvisioningConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -26613,8 +26822,9 @@ def test_rename_network_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = network.Network.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = network.Network.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -26703,8 +26913,9 @@ def test_rename_network_rest_required_fields(request_type=network.RenameNetworkR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = network.Network.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = network.Network.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -26834,8 +27045,9 @@ def test_rename_network_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = network.Network.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = network.Network.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -26901,8 +27113,9 @@ def test_list_os_images_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = osimage.ListOSImagesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = osimage.ListOSImagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -26982,8 +27195,9 @@ def test_list_os_images_rest_required_fields(request_type=osimage.ListOSImagesRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = osimage.ListOSImagesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = osimage.ListOSImagesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -27114,8 +27328,9 @@ def test_list_os_images_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = osimage.ListOSImagesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = osimage.ListOSImagesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
