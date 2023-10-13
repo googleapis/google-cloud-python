@@ -1,2 +1,0 @@
-recursive-include google/cloud/edgecontainer *.py
-recursive-include google/cloud/edgecontainer_v1 *.py

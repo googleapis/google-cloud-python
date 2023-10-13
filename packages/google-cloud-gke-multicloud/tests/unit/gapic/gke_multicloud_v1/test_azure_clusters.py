@@ -5308,6 +5308,70 @@ def test_create_azure_client_rest(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = azure_service.CreateAzureClientRequest.meta.fields["azure_client"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["azure_client"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["azure_client"][field])):
+                    del request_init["azure_client"][field][i][subfield]
+            else:
+                del request_init["azure_client"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5515,17 +5579,6 @@ def test_create_azure_client_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["azure_client"] = {
-        "name": "name_value",
-        "tenant_id": "tenant_id_value",
-        "application_id": "application_id_value",
-        "reconciling": True,
-        "annotations": {},
-        "pem_certificate": "pem_certificate_value",
-        "uid": "uid_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5637,8 +5690,9 @@ def test_get_azure_client_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = azure_resources.AzureClient.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = azure_resources.AzureClient.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5718,8 +5772,9 @@ def test_get_azure_client_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = azure_resources.AzureClient.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = azure_resources.AzureClient.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5846,8 +5901,9 @@ def test_get_azure_client_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = azure_resources.AzureClient.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = azure_resources.AzureClient.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5912,8 +5968,9 @@ def test_list_azure_clients_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = azure_service.ListAzureClientsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = azure_service.ListAzureClientsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5995,8 +6052,9 @@ def test_list_azure_clients_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = azure_service.ListAzureClientsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = azure_service.ListAzureClientsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6129,8 +6187,9 @@ def test_list_azure_clients_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = azure_service.ListAzureClientsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = azure_service.ListAzureClientsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6591,6 +6650,70 @@ def test_create_azure_cluster_rest(request_type):
         "errors": [{"message": "message_value"}],
         "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = azure_service.CreateAzureClusterRequest.meta.fields["azure_cluster"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["azure_cluster"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["azure_cluster"][field])):
+                    del request_init["azure_cluster"][field][i][subfield]
+            else:
+                del request_init["azure_cluster"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6798,77 +6921,6 @@ def test_create_azure_cluster_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["azure_cluster"] = {
-        "name": "name_value",
-        "description": "description_value",
-        "azure_region": "azure_region_value",
-        "resource_group_id": "resource_group_id_value",
-        "azure_client": "azure_client_value",
-        "networking": {
-            "virtual_network_id": "virtual_network_id_value",
-            "pod_address_cidr_blocks": [
-                "pod_address_cidr_blocks_value1",
-                "pod_address_cidr_blocks_value2",
-            ],
-            "service_address_cidr_blocks": [
-                "service_address_cidr_blocks_value1",
-                "service_address_cidr_blocks_value2",
-            ],
-            "service_load_balancer_subnet_id": "service_load_balancer_subnet_id_value",
-        },
-        "control_plane": {
-            "version": "version_value",
-            "subnet_id": "subnet_id_value",
-            "vm_size": "vm_size_value",
-            "ssh_config": {"authorized_key": "authorized_key_value"},
-            "root_volume": {"size_gib": 844},
-            "main_volume": {},
-            "database_encryption": {"key_id": "key_id_value"},
-            "proxy_config": {
-                "resource_group_id": "resource_group_id_value",
-                "secret_id": "secret_id_value",
-            },
-            "config_encryption": {
-                "key_id": "key_id_value",
-                "public_key": "public_key_value",
-            },
-            "tags": {},
-            "replica_placements": [
-                {
-                    "subnet_id": "subnet_id_value",
-                    "azure_availability_zone": "azure_availability_zone_value",
-                }
-            ],
-            "endpoint_subnet_id": "endpoint_subnet_id_value",
-        },
-        "authorization": {"admin_users": [{"username": "username_value"}]},
-        "azure_services_authentication": {
-            "tenant_id": "tenant_id_value",
-            "application_id": "application_id_value",
-        },
-        "state": 1,
-        "endpoint": "endpoint_value",
-        "uid": "uid_value",
-        "reconciling": True,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "etag": "etag_value",
-        "annotations": {},
-        "workload_identity_config": {
-            "issuer_uri": "issuer_uri_value",
-            "workload_pool": "workload_pool_value",
-            "identity_provider": "identity_provider_value",
-        },
-        "cluster_ca_certificate": "cluster_ca_certificate_value",
-        "fleet": {"project": "project_value", "membership": "membership_value"},
-        "managed_resources": {
-            "network_security_group_id": "network_security_group_id_value",
-            "control_plane_application_security_group_id": "control_plane_application_security_group_id_value",
-        },
-        "logging_config": {"component_config": {"enable_components": [1]}},
-        "errors": [{"message": "message_value"}],
-        "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -7038,6 +7090,70 @@ def test_update_azure_cluster_rest(request_type):
         "errors": [{"message": "message_value"}],
         "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = azure_service.UpdateAzureClusterRequest.meta.fields["azure_cluster"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["azure_cluster"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["azure_cluster"][field])):
+                    del request_init["azure_cluster"][field][i][subfield]
+            else:
+                del request_init["azure_cluster"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -7231,77 +7347,6 @@ def test_update_azure_cluster_rest_bad_request(
             "name": "projects/sample1/locations/sample2/azureClusters/sample3"
         }
     }
-    request_init["azure_cluster"] = {
-        "name": "projects/sample1/locations/sample2/azureClusters/sample3",
-        "description": "description_value",
-        "azure_region": "azure_region_value",
-        "resource_group_id": "resource_group_id_value",
-        "azure_client": "azure_client_value",
-        "networking": {
-            "virtual_network_id": "virtual_network_id_value",
-            "pod_address_cidr_blocks": [
-                "pod_address_cidr_blocks_value1",
-                "pod_address_cidr_blocks_value2",
-            ],
-            "service_address_cidr_blocks": [
-                "service_address_cidr_blocks_value1",
-                "service_address_cidr_blocks_value2",
-            ],
-            "service_load_balancer_subnet_id": "service_load_balancer_subnet_id_value",
-        },
-        "control_plane": {
-            "version": "version_value",
-            "subnet_id": "subnet_id_value",
-            "vm_size": "vm_size_value",
-            "ssh_config": {"authorized_key": "authorized_key_value"},
-            "root_volume": {"size_gib": 844},
-            "main_volume": {},
-            "database_encryption": {"key_id": "key_id_value"},
-            "proxy_config": {
-                "resource_group_id": "resource_group_id_value",
-                "secret_id": "secret_id_value",
-            },
-            "config_encryption": {
-                "key_id": "key_id_value",
-                "public_key": "public_key_value",
-            },
-            "tags": {},
-            "replica_placements": [
-                {
-                    "subnet_id": "subnet_id_value",
-                    "azure_availability_zone": "azure_availability_zone_value",
-                }
-            ],
-            "endpoint_subnet_id": "endpoint_subnet_id_value",
-        },
-        "authorization": {"admin_users": [{"username": "username_value"}]},
-        "azure_services_authentication": {
-            "tenant_id": "tenant_id_value",
-            "application_id": "application_id_value",
-        },
-        "state": 1,
-        "endpoint": "endpoint_value",
-        "uid": "uid_value",
-        "reconciling": True,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "etag": "etag_value",
-        "annotations": {},
-        "workload_identity_config": {
-            "issuer_uri": "issuer_uri_value",
-            "workload_pool": "workload_pool_value",
-            "identity_provider": "identity_provider_value",
-        },
-        "cluster_ca_certificate": "cluster_ca_certificate_value",
-        "fleet": {"project": "project_value", "membership": "membership_value"},
-        "managed_resources": {
-            "network_security_group_id": "network_security_group_id_value",
-            "control_plane_application_security_group_id": "control_plane_application_security_group_id_value",
-        },
-        "logging_config": {"component_config": {"enable_components": [1]}},
-        "errors": [{"message": "message_value"}],
-        "monitoring_config": {"managed_prometheus_config": {"enabled": True}},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -7420,8 +7465,9 @@ def test_get_azure_cluster_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = azure_resources.AzureCluster.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = azure_resources.AzureCluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7506,8 +7552,9 @@ def test_get_azure_cluster_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = azure_resources.AzureCluster.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = azure_resources.AzureCluster.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7634,8 +7681,9 @@ def test_get_azure_cluster_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = azure_resources.AzureCluster.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = azure_resources.AzureCluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7700,8 +7748,9 @@ def test_list_azure_clusters_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = azure_service.ListAzureClustersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = azure_service.ListAzureClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7783,8 +7832,9 @@ def test_list_azure_clusters_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = azure_service.ListAzureClustersResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = azure_service.ListAzureClustersResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7917,8 +7967,9 @@ def test_list_azure_clusters_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = azure_service.ListAzureClustersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = azure_service.ListAzureClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8324,10 +8375,9 @@ def test_generate_azure_access_token_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = azure_service.GenerateAzureAccessTokenResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = azure_service.GenerateAzureAccessTokenResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8402,10 +8452,11 @@ def test_generate_azure_access_token_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = azure_service.GenerateAzureAccessTokenResponse.pb(
+            # Convert return value to protobuf type
+            return_value = azure_service.GenerateAzureAccessTokenResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8567,6 +8618,70 @@ def test_create_azure_node_pool_rest(request_type):
         "azure_availability_zone": "azure_availability_zone_value",
         "errors": [{"message": "message_value"}],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = azure_service.CreateAzureNodePoolRequest.meta.fields["azure_node_pool"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["azure_node_pool"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["azure_node_pool"][field])):
+                    del request_init["azure_node_pool"][field][i][subfield]
+            else:
+                del request_init["azure_node_pool"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -8776,39 +8891,6 @@ def test_create_azure_node_pool_rest_bad_request(
     request_init = {
         "parent": "projects/sample1/locations/sample2/azureClusters/sample3"
     }
-    request_init["azure_node_pool"] = {
-        "name": "name_value",
-        "version": "version_value",
-        "config": {
-            "vm_size": "vm_size_value",
-            "root_volume": {"size_gib": 844},
-            "tags": {},
-            "image_type": "image_type_value",
-            "ssh_config": {"authorized_key": "authorized_key_value"},
-            "proxy_config": {
-                "resource_group_id": "resource_group_id_value",
-                "secret_id": "secret_id_value",
-            },
-            "config_encryption": {
-                "key_id": "key_id_value",
-                "public_key": "public_key_value",
-            },
-            "taints": [{"key": "key_value", "value": "value_value", "effect": 1}],
-            "labels": {},
-        },
-        "subnet_id": "subnet_id_value",
-        "autoscaling": {"min_node_count": 1489, "max_node_count": 1491},
-        "state": 1,
-        "uid": "uid_value",
-        "reconciling": True,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "etag": "etag_value",
-        "annotations": {},
-        "max_pods_constraint": {"max_pods_per_node": 1798},
-        "azure_availability_zone": "azure_availability_zone_value",
-        "errors": [{"message": "message_value"}],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -8942,6 +9024,70 @@ def test_update_azure_node_pool_rest(request_type):
         "azure_availability_zone": "azure_availability_zone_value",
         "errors": [{"message": "message_value"}],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = azure_service.UpdateAzureNodePoolRequest.meta.fields["azure_node_pool"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["azure_node_pool"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["azure_node_pool"][field])):
+                    del request_init["azure_node_pool"][field][i][subfield]
+            else:
+                del request_init["azure_node_pool"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -9135,39 +9281,6 @@ def test_update_azure_node_pool_rest_bad_request(
             "name": "projects/sample1/locations/sample2/azureClusters/sample3/azureNodePools/sample4"
         }
     }
-    request_init["azure_node_pool"] = {
-        "name": "projects/sample1/locations/sample2/azureClusters/sample3/azureNodePools/sample4",
-        "version": "version_value",
-        "config": {
-            "vm_size": "vm_size_value",
-            "root_volume": {"size_gib": 844},
-            "tags": {},
-            "image_type": "image_type_value",
-            "ssh_config": {"authorized_key": "authorized_key_value"},
-            "proxy_config": {
-                "resource_group_id": "resource_group_id_value",
-                "secret_id": "secret_id_value",
-            },
-            "config_encryption": {
-                "key_id": "key_id_value",
-                "public_key": "public_key_value",
-            },
-            "taints": [{"key": "key_value", "value": "value_value", "effect": 1}],
-            "labels": {},
-        },
-        "subnet_id": "subnet_id_value",
-        "autoscaling": {"min_node_count": 1489, "max_node_count": 1491},
-        "state": 1,
-        "uid": "uid_value",
-        "reconciling": True,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "etag": "etag_value",
-        "annotations": {},
-        "max_pods_constraint": {"max_pods_per_node": 1798},
-        "azure_availability_zone": "azure_availability_zone_value",
-        "errors": [{"message": "message_value"}],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -9285,8 +9398,9 @@ def test_get_azure_node_pool_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = azure_resources.AzureNodePool.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = azure_resources.AzureNodePool.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9368,8 +9482,9 @@ def test_get_azure_node_pool_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = azure_resources.AzureNodePool.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = azure_resources.AzureNodePool.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -9498,8 +9613,9 @@ def test_get_azure_node_pool_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = azure_resources.AzureNodePool.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = azure_resources.AzureNodePool.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9566,8 +9682,9 @@ def test_list_azure_node_pools_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = azure_service.ListAzureNodePoolsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = azure_service.ListAzureNodePoolsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9649,8 +9766,9 @@ def test_list_azure_node_pools_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = azure_service.ListAzureNodePoolsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = azure_service.ListAzureNodePoolsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -9787,8 +9905,9 @@ def test_list_azure_node_pools_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = azure_service.ListAzureNodePoolsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = azure_service.ListAzureNodePoolsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -10199,8 +10318,9 @@ def test_get_azure_server_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = azure_resources.AzureServerConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = azure_resources.AzureServerConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10276,8 +10396,9 @@ def test_get_azure_server_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = azure_resources.AzureServerConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = azure_resources.AzureServerConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10404,8 +10525,9 @@ def test_get_azure_server_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = azure_resources.AzureServerConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = azure_resources.AzureServerConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
