@@ -3326,8 +3326,9 @@ def test_list_instances_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListInstancesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListInstancesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3410,8 +3411,9 @@ def test_list_instances_rest_required_fields(request_type=service.ListInstancesR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = service.ListInstancesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = service.ListInstancesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3544,8 +3546,9 @@ def test_list_instances_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListInstancesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListInstancesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3671,8 +3674,9 @@ def test_get_instance_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = instance.Instance.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = instance.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3752,8 +3756,9 @@ def test_get_instance_rest_required_fields(request_type=service.GetInstanceReque
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = instance.Instance.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = instance.Instance.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3876,8 +3881,9 @@ def test_get_instance_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = instance.Instance.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = instance.Instance.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3999,6 +4005,70 @@ def test_create_instance_rest(request_type):
         "disable_proxy_access": True,
         "labels": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.CreateInstanceRequest.meta.fields["instance"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["instance"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["instance"][field])):
+                    del request_init["instance"][field][i][subfield]
+            else:
+                del request_init["instance"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4205,76 +4275,6 @@ def test_create_instance_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["instance"] = {
-        "name": "name_value",
-        "gce_setup": {
-            "machine_type": "machine_type_value",
-            "accelerator_configs": [{"type_": 2, "core_count": 1073}],
-            "service_accounts": [
-                {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}
-            ],
-            "vm_image": {
-                "project": "project_value",
-                "name": "name_value",
-                "family": "family_value",
-            },
-            "container_image": {"repository": "repository_value", "tag": "tag_value"},
-            "boot_disk": {
-                "disk_size_gb": 1261,
-                "disk_type": 1,
-                "disk_encryption": 1,
-                "kms_key": "kms_key_value",
-            },
-            "data_disks": [
-                {
-                    "disk_size_gb": 1261,
-                    "disk_type": 1,
-                    "disk_encryption": 1,
-                    "kms_key": "kms_key_value",
-                }
-            ],
-            "shielded_instance_config": {
-                "enable_secure_boot": True,
-                "enable_vtpm": True,
-                "enable_integrity_monitoring": True,
-            },
-            "network_interfaces": [
-                {"network": "network_value", "subnet": "subnet_value", "nic_type": 1}
-            ],
-            "disable_public_ip": True,
-            "tags": ["tags_value1", "tags_value2"],
-            "metadata": {},
-            "enable_ip_forwarding": True,
-            "gpu_driver_config": {
-                "enable_gpu_driver": True,
-                "custom_gpu_driver_path": "custom_gpu_driver_path_value",
-            },
-        },
-        "proxy_uri": "proxy_uri_value",
-        "instance_owners": ["instance_owners_value1", "instance_owners_value2"],
-        "creator": "creator_value",
-        "state": 1,
-        "upgrade_history": [
-            {
-                "snapshot": "snapshot_value",
-                "vm_image": "vm_image_value",
-                "container_image": "container_image_value",
-                "framework": "framework_value",
-                "version": "version_value",
-                "state": 1,
-                "create_time": {"seconds": 751, "nanos": 543},
-                "action": 1,
-                "target_version": "target_version_value",
-            }
-        ],
-        "id": "id_value",
-        "health_state": 1,
-        "health_info": {},
-        "create_time": {},
-        "update_time": {},
-        "disable_proxy_access": True,
-        "labels": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4440,6 +4440,70 @@ def test_update_instance_rest(request_type):
         "disable_proxy_access": True,
         "labels": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.UpdateInstanceRequest.meta.fields["instance"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["instance"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["instance"][field])):
+                    del request_init["instance"][field][i][subfield]
+            else:
+                del request_init["instance"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4628,76 +4692,6 @@ def test_update_instance_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "instance": {"name": "projects/sample1/locations/sample2/instances/sample3"}
-    }
-    request_init["instance"] = {
-        "name": "projects/sample1/locations/sample2/instances/sample3",
-        "gce_setup": {
-            "machine_type": "machine_type_value",
-            "accelerator_configs": [{"type_": 2, "core_count": 1073}],
-            "service_accounts": [
-                {"email": "email_value", "scopes": ["scopes_value1", "scopes_value2"]}
-            ],
-            "vm_image": {
-                "project": "project_value",
-                "name": "name_value",
-                "family": "family_value",
-            },
-            "container_image": {"repository": "repository_value", "tag": "tag_value"},
-            "boot_disk": {
-                "disk_size_gb": 1261,
-                "disk_type": 1,
-                "disk_encryption": 1,
-                "kms_key": "kms_key_value",
-            },
-            "data_disks": [
-                {
-                    "disk_size_gb": 1261,
-                    "disk_type": 1,
-                    "disk_encryption": 1,
-                    "kms_key": "kms_key_value",
-                }
-            ],
-            "shielded_instance_config": {
-                "enable_secure_boot": True,
-                "enable_vtpm": True,
-                "enable_integrity_monitoring": True,
-            },
-            "network_interfaces": [
-                {"network": "network_value", "subnet": "subnet_value", "nic_type": 1}
-            ],
-            "disable_public_ip": True,
-            "tags": ["tags_value1", "tags_value2"],
-            "metadata": {},
-            "enable_ip_forwarding": True,
-            "gpu_driver_config": {
-                "enable_gpu_driver": True,
-                "custom_gpu_driver_path": "custom_gpu_driver_path_value",
-            },
-        },
-        "proxy_uri": "proxy_uri_value",
-        "instance_owners": ["instance_owners_value1", "instance_owners_value2"],
-        "creator": "creator_value",
-        "state": 1,
-        "upgrade_history": [
-            {
-                "snapshot": "snapshot_value",
-                "vm_image": "vm_image_value",
-                "container_image": "container_image_value",
-                "framework": "framework_value",
-                "version": "version_value",
-                "state": 1,
-                "create_time": {"seconds": 751, "nanos": 543},
-                "action": 1,
-                "target_version": "target_version_value",
-            }
-        ],
-        "id": "id_value",
-        "health_state": 1,
-        "health_info": {},
-        "create_time": {},
-        "update_time": {},
-        "disable_proxy_access": True,
-        "labels": {},
     }
     request = request_type(**request_init)
 
@@ -5689,8 +5683,9 @@ def test_check_instance_upgradability_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.CheckInstanceUpgradabilityResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.CheckInstanceUpgradabilityResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5768,10 +5763,9 @@ def test_check_instance_upgradability_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = service.CheckInstanceUpgradabilityResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = service.CheckInstanceUpgradabilityResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value

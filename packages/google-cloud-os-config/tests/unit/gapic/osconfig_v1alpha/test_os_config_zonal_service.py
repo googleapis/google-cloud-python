@@ -5711,6 +5711,72 @@ def test_create_os_policy_assignment_rest(request_type):
         "reconciling": True,
         "uid": "uid_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = os_policy_assignments.CreateOSPolicyAssignmentRequest.meta.fields[
+        "os_policy_assignment"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["os_policy_assignment"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["os_policy_assignment"][field])):
+                    del request_init["os_policy_assignment"][field][i][subfield]
+            else:
+                del request_init["os_policy_assignment"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5915,140 +5981,6 @@ def test_create_os_policy_assignment_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["os_policy_assignment"] = {
-        "name": "name_value",
-        "description": "description_value",
-        "os_policies": [
-            {
-                "id": "id_value",
-                "description": "description_value",
-                "mode": 1,
-                "resource_groups": [
-                    {
-                        "os_filter": {
-                            "os_short_name": "os_short_name_value",
-                            "os_version": "os_version_value",
-                        },
-                        "inventory_filters": [
-                            {
-                                "os_short_name": "os_short_name_value",
-                                "os_version": "os_version_value",
-                            }
-                        ],
-                        "resources": [
-                            {
-                                "id": "id_value",
-                                "pkg": {
-                                    "desired_state": 1,
-                                    "apt": {"name": "name_value"},
-                                    "deb": {
-                                        "source": {
-                                            "remote": {
-                                                "uri": "uri_value",
-                                                "sha256_checksum": "sha256_checksum_value",
-                                            },
-                                            "gcs": {
-                                                "bucket": "bucket_value",
-                                                "object_": "object__value",
-                                                "generation": 1068,
-                                            },
-                                            "local_path": "local_path_value",
-                                            "allow_insecure": True,
-                                        },
-                                        "pull_deps": True,
-                                    },
-                                    "yum": {"name": "name_value"},
-                                    "zypper": {"name": "name_value"},
-                                    "rpm": {"source": {}, "pull_deps": True},
-                                    "googet": {"name": "name_value"},
-                                    "msi": {
-                                        "source": {},
-                                        "properties": [
-                                            "properties_value1",
-                                            "properties_value2",
-                                        ],
-                                    },
-                                },
-                                "repository": {
-                                    "apt": {
-                                        "archive_type": 1,
-                                        "uri": "uri_value",
-                                        "distribution": "distribution_value",
-                                        "components": [
-                                            "components_value1",
-                                            "components_value2",
-                                        ],
-                                        "gpg_key": "gpg_key_value",
-                                    },
-                                    "yum": {
-                                        "id": "id_value",
-                                        "display_name": "display_name_value",
-                                        "base_url": "base_url_value",
-                                        "gpg_keys": [
-                                            "gpg_keys_value1",
-                                            "gpg_keys_value2",
-                                        ],
-                                    },
-                                    "zypper": {
-                                        "id": "id_value",
-                                        "display_name": "display_name_value",
-                                        "base_url": "base_url_value",
-                                        "gpg_keys": [
-                                            "gpg_keys_value1",
-                                            "gpg_keys_value2",
-                                        ],
-                                    },
-                                    "goo": {"name": "name_value", "url": "url_value"},
-                                },
-                                "exec_": {
-                                    "validate": {
-                                        "file": {},
-                                        "script": "script_value",
-                                        "args": ["args_value1", "args_value2"],
-                                        "interpreter": 1,
-                                        "output_file_path": "output_file_path_value",
-                                    },
-                                    "enforce": {},
-                                },
-                                "file": {
-                                    "file": {},
-                                    "content": "content_value",
-                                    "path": "path_value",
-                                    "state": 1,
-                                    "permissions": "permissions_value",
-                                },
-                            }
-                        ],
-                    }
-                ],
-                "allow_no_resource_group_match": True,
-            }
-        ],
-        "instance_filter": {
-            "all_": True,
-            "os_short_names": ["os_short_names_value1", "os_short_names_value2"],
-            "inclusion_labels": [{"labels": {}}],
-            "exclusion_labels": {},
-            "inventories": [
-                {
-                    "os_short_name": "os_short_name_value",
-                    "os_version": "os_version_value",
-                }
-            ],
-        },
-        "rollout": {
-            "disruption_budget": {"fixed": 528, "percent": 753},
-            "min_wait_duration": {"seconds": 751, "nanos": 543},
-        },
-        "revision_id": "revision_id_value",
-        "revision_create_time": {"seconds": 751, "nanos": 543},
-        "etag": "etag_value",
-        "rollout_state": 1,
-        "baseline": True,
-        "deleted": True,
-        "reconciling": True,
-        "uid": "uid_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6285,6 +6217,72 @@ def test_update_os_policy_assignment_rest(request_type):
         "reconciling": True,
         "uid": "uid_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = os_policy_assignments.UpdateOSPolicyAssignmentRequest.meta.fields[
+        "os_policy_assignment"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["os_policy_assignment"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["os_policy_assignment"][field])):
+                    del request_init["os_policy_assignment"][field][i][subfield]
+            else:
+                del request_init["os_policy_assignment"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6463,140 +6461,6 @@ def test_update_os_policy_assignment_rest_bad_request(
             "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3"
         }
     }
-    request_init["os_policy_assignment"] = {
-        "name": "projects/sample1/locations/sample2/osPolicyAssignments/sample3",
-        "description": "description_value",
-        "os_policies": [
-            {
-                "id": "id_value",
-                "description": "description_value",
-                "mode": 1,
-                "resource_groups": [
-                    {
-                        "os_filter": {
-                            "os_short_name": "os_short_name_value",
-                            "os_version": "os_version_value",
-                        },
-                        "inventory_filters": [
-                            {
-                                "os_short_name": "os_short_name_value",
-                                "os_version": "os_version_value",
-                            }
-                        ],
-                        "resources": [
-                            {
-                                "id": "id_value",
-                                "pkg": {
-                                    "desired_state": 1,
-                                    "apt": {"name": "name_value"},
-                                    "deb": {
-                                        "source": {
-                                            "remote": {
-                                                "uri": "uri_value",
-                                                "sha256_checksum": "sha256_checksum_value",
-                                            },
-                                            "gcs": {
-                                                "bucket": "bucket_value",
-                                                "object_": "object__value",
-                                                "generation": 1068,
-                                            },
-                                            "local_path": "local_path_value",
-                                            "allow_insecure": True,
-                                        },
-                                        "pull_deps": True,
-                                    },
-                                    "yum": {"name": "name_value"},
-                                    "zypper": {"name": "name_value"},
-                                    "rpm": {"source": {}, "pull_deps": True},
-                                    "googet": {"name": "name_value"},
-                                    "msi": {
-                                        "source": {},
-                                        "properties": [
-                                            "properties_value1",
-                                            "properties_value2",
-                                        ],
-                                    },
-                                },
-                                "repository": {
-                                    "apt": {
-                                        "archive_type": 1,
-                                        "uri": "uri_value",
-                                        "distribution": "distribution_value",
-                                        "components": [
-                                            "components_value1",
-                                            "components_value2",
-                                        ],
-                                        "gpg_key": "gpg_key_value",
-                                    },
-                                    "yum": {
-                                        "id": "id_value",
-                                        "display_name": "display_name_value",
-                                        "base_url": "base_url_value",
-                                        "gpg_keys": [
-                                            "gpg_keys_value1",
-                                            "gpg_keys_value2",
-                                        ],
-                                    },
-                                    "zypper": {
-                                        "id": "id_value",
-                                        "display_name": "display_name_value",
-                                        "base_url": "base_url_value",
-                                        "gpg_keys": [
-                                            "gpg_keys_value1",
-                                            "gpg_keys_value2",
-                                        ],
-                                    },
-                                    "goo": {"name": "name_value", "url": "url_value"},
-                                },
-                                "exec_": {
-                                    "validate": {
-                                        "file": {},
-                                        "script": "script_value",
-                                        "args": ["args_value1", "args_value2"],
-                                        "interpreter": 1,
-                                        "output_file_path": "output_file_path_value",
-                                    },
-                                    "enforce": {},
-                                },
-                                "file": {
-                                    "file": {},
-                                    "content": "content_value",
-                                    "path": "path_value",
-                                    "state": 1,
-                                    "permissions": "permissions_value",
-                                },
-                            }
-                        ],
-                    }
-                ],
-                "allow_no_resource_group_match": True,
-            }
-        ],
-        "instance_filter": {
-            "all_": True,
-            "os_short_names": ["os_short_names_value1", "os_short_names_value2"],
-            "inclusion_labels": [{"labels": {}}],
-            "exclusion_labels": {},
-            "inventories": [
-                {
-                    "os_short_name": "os_short_name_value",
-                    "os_version": "os_version_value",
-                }
-            ],
-        },
-        "rollout": {
-            "disruption_budget": {"fixed": 528, "percent": 753},
-            "min_wait_duration": {"seconds": 751, "nanos": 543},
-        },
-        "revision_id": "revision_id_value",
-        "revision_create_time": {"seconds": 751, "nanos": 543},
-        "etag": "etag_value",
-        "rollout_state": 1,
-        "baseline": True,
-        "deleted": True,
-        "reconciling": True,
-        "uid": "uid_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6719,8 +6583,9 @@ def test_get_os_policy_assignment_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = os_policy_assignments.OSPolicyAssignment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = os_policy_assignments.OSPolicyAssignment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6806,8 +6671,9 @@ def test_get_os_policy_assignment_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = os_policy_assignments.OSPolicyAssignment.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = os_policy_assignments.OSPolicyAssignment.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6937,8 +6803,9 @@ def test_get_os_policy_assignment_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = os_policy_assignments.OSPolicyAssignment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = os_policy_assignments.OSPolicyAssignment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7003,10 +6870,11 @@ def test_list_os_policy_assignments_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7088,10 +6956,11 @@ def test_list_os_policy_assignments_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse.pb(
+            # Convert return value to protobuf type
+            return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7228,10 +7097,11 @@ def test_list_os_policy_assignments_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = os_policy_assignments.ListOSPolicyAssignmentsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7358,12 +7228,11 @@ def test_list_os_policy_assignment_revisions_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = (
-            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.pb(
-                return_value
-            )
+        # Convert return value to protobuf type
+        return_value = os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.pb(
+            return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7445,12 +7314,13 @@ def test_list_os_policy_assignment_revisions_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = (
+            # Convert return value to protobuf type
+            return_value = (
                 os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.pb(
                     return_value
                 )
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7596,12 +7466,11 @@ def test_list_os_policy_assignment_revisions_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = (
-            os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.pb(
-                return_value
-            )
+        # Convert return value to protobuf type
+        return_value = os_policy_assignments.ListOSPolicyAssignmentRevisionsResponse.pb(
+            return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8011,12 +7880,11 @@ def test_get_instance_os_policies_compliance_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = (
-            instance_os_policies_compliance.InstanceOSPoliciesCompliance.pb(
-                return_value
-            )
+        # Convert return value to protobuf type
+        return_value = instance_os_policies_compliance.InstanceOSPoliciesCompliance.pb(
+            return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8098,12 +7966,13 @@ def test_get_instance_os_policies_compliance_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = (
+            # Convert return value to protobuf type
+            return_value = (
                 instance_os_policies_compliance.InstanceOSPoliciesCompliance.pb(
                     return_value
                 )
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8245,12 +8114,11 @@ def test_get_instance_os_policies_compliance_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = (
-            instance_os_policies_compliance.InstanceOSPoliciesCompliance.pb(
-                return_value
-            )
+        # Convert return value to protobuf type
+        return_value = instance_os_policies_compliance.InstanceOSPoliciesCompliance.pb(
+            return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8319,10 +8187,11 @@ def test_list_instance_os_policies_compliances_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse.pb(
+        # Convert return value to protobuf type
+        return_value = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8411,10 +8280,11 @@ def test_list_instance_os_policies_compliances_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse.pb(
+            # Convert return value to protobuf type
+            return_value = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8559,10 +8429,11 @@ def test_list_instance_os_policies_compliances_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse.pb(
+        # Convert return value to protobuf type
+        return_value = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8699,10 +8570,11 @@ def test_get_os_policy_assignment_report_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = os_policy_assignment_reports.OSPolicyAssignmentReport.pb(
+        # Convert return value to protobuf type
+        return_value = os_policy_assignment_reports.OSPolicyAssignmentReport.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8780,10 +8652,11 @@ def test_get_os_policy_assignment_report_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = os_policy_assignment_reports.OSPolicyAssignmentReport.pb(
+            # Convert return value to protobuf type
+            return_value = os_policy_assignment_reports.OSPolicyAssignmentReport.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8919,10 +8792,11 @@ def test_get_os_policy_assignment_report_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = os_policy_assignment_reports.OSPolicyAssignmentReport.pb(
+        # Convert return value to protobuf type
+        return_value = os_policy_assignment_reports.OSPolicyAssignmentReport.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8991,12 +8865,13 @@ def test_list_os_policy_assignment_reports_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = (
+        # Convert return value to protobuf type
+        return_value = (
             os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.pb(
                 return_value
             )
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9079,12 +8954,13 @@ def test_list_os_policy_assignment_reports_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = (
+            # Convert return value to protobuf type
+            return_value = (
                 os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.pb(
                     return_value
                 )
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -9235,12 +9111,13 @@ def test_list_os_policy_assignment_reports_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = (
+        # Convert return value to protobuf type
+        return_value = (
             os_policy_assignment_reports.ListOSPolicyAssignmentReportsResponse.pb(
                 return_value
             )
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9376,8 +9253,9 @@ def test_get_inventory_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = inventory.Inventory.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = inventory.Inventory.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9452,8 +9330,9 @@ def test_get_inventory_rest_required_fields(request_type=inventory.GetInventoryR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = inventory.Inventory.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = inventory.Inventory.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -9578,8 +9457,9 @@ def test_get_inventory_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = inventory.Inventory.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = inventory.Inventory.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9644,8 +9524,9 @@ def test_list_inventories_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = inventory.ListInventoriesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = inventory.ListInventoriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9729,8 +9610,9 @@ def test_list_inventories_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = inventory.ListInventoriesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = inventory.ListInventoriesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -9867,8 +9749,9 @@ def test_list_inventories_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = inventory.ListInventoriesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = inventory.ListInventoriesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9992,8 +9875,9 @@ def test_get_vulnerability_report_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vulnerability.VulnerabilityReport.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vulnerability.VulnerabilityReport.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10068,8 +9952,9 @@ def test_get_vulnerability_report_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vulnerability.VulnerabilityReport.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vulnerability.VulnerabilityReport.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10198,8 +10083,9 @@ def test_get_vulnerability_report_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vulnerability.VulnerabilityReport.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vulnerability.VulnerabilityReport.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -10264,10 +10150,9 @@ def test_list_vulnerability_reports_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vulnerability.ListVulnerabilityReportsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vulnerability.ListVulnerabilityReportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10350,10 +10235,11 @@ def test_list_vulnerability_reports_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vulnerability.ListVulnerabilityReportsResponse.pb(
+            # Convert return value to protobuf type
+            return_value = vulnerability.ListVulnerabilityReportsResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10492,10 +10378,9 @@ def test_list_vulnerability_reports_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vulnerability.ListVulnerabilityReportsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vulnerability.ListVulnerabilityReportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
