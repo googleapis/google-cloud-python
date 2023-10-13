@@ -2703,8 +2703,9 @@ def test_get_function_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = functions.Function.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = functions.Function.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2782,8 +2783,9 @@ def test_get_function_rest_required_fields(request_type=functions.GetFunctionReq
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = functions.Function.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = functions.Function.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2906,8 +2908,9 @@ def test_get_function_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = functions.Function.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = functions.Function.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2972,8 +2975,9 @@ def test_list_functions_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = functions.ListFunctionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = functions.ListFunctionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3058,8 +3062,9 @@ def test_list_functions_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = functions.ListFunctionsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = functions.ListFunctionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3192,8 +3197,9 @@ def test_list_functions_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = functions.ListFunctionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = functions.ListFunctionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3392,6 +3398,70 @@ def test_create_function_rest(request_type):
         "url": "url_value",
         "kms_key_name": "kms_key_name_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = functions.CreateFunctionRequest.meta.fields["function"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["function"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["function"][field])):
+                    del request_init["function"][field][i][subfield]
+            else:
+                del request_init["function"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3576,98 +3646,6 @@ def test_create_function_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["function"] = {
-        "name": "name_value",
-        "description": "description_value",
-        "build_config": {
-            "build": "build_value",
-            "runtime": "runtime_value",
-            "entry_point": "entry_point_value",
-            "source": {
-                "storage_source": {
-                    "bucket": "bucket_value",
-                    "object_": "object__value",
-                    "generation": 1068,
-                },
-                "repo_source": {
-                    "branch_name": "branch_name_value",
-                    "tag_name": "tag_name_value",
-                    "commit_sha": "commit_sha_value",
-                    "project_id": "project_id_value",
-                    "repo_name": "repo_name_value",
-                    "dir_": "dir__value",
-                    "invert_regex": True,
-                },
-            },
-            "source_provenance": {
-                "resolved_storage_source": {},
-                "resolved_repo_source": {},
-            },
-            "worker_pool": "worker_pool_value",
-            "environment_variables": {},
-            "docker_registry": 1,
-            "docker_repository": "docker_repository_value",
-        },
-        "service_config": {
-            "service": "service_value",
-            "timeout_seconds": 1621,
-            "available_memory": "available_memory_value",
-            "available_cpu": "available_cpu_value",
-            "environment_variables": {},
-            "max_instance_count": 1922,
-            "min_instance_count": 1920,
-            "vpc_connector": "vpc_connector_value",
-            "vpc_connector_egress_settings": 1,
-            "ingress_settings": 1,
-            "uri": "uri_value",
-            "service_account_email": "service_account_email_value",
-            "all_traffic_on_latest_revision": True,
-            "secret_environment_variables": [
-                {
-                    "key": "key_value",
-                    "project_id": "project_id_value",
-                    "secret": "secret_value",
-                    "version": "version_value",
-                }
-            ],
-            "secret_volumes": [
-                {
-                    "mount_path": "mount_path_value",
-                    "project_id": "project_id_value",
-                    "secret": "secret_value",
-                    "versions": [{"version": "version_value", "path": "path_value"}],
-                }
-            ],
-            "revision": "revision_value",
-            "max_instance_request_concurrency": 3436,
-            "security_level": 1,
-        },
-        "event_trigger": {
-            "trigger": "trigger_value",
-            "trigger_region": "trigger_region_value",
-            "event_type": "event_type_value",
-            "event_filters": [
-                {
-                    "attribute": "attribute_value",
-                    "value": "value_value",
-                    "operator": "operator_value",
-                }
-            ],
-            "pubsub_topic": "pubsub_topic_value",
-            "service_account_email": "service_account_email_value",
-            "retry_policy": 1,
-            "channel": "channel_value",
-        },
-        "state": 1,
-        "update_time": {"seconds": 751, "nanos": 543},
-        "labels": {},
-        "state_messages": [
-            {"severity": 1, "type_": "type__value", "message": "message_value"}
-        ],
-        "environment": 1,
-        "url": "url_value",
-        "kms_key_name": "kms_key_name_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3855,6 +3833,70 @@ def test_update_function_rest(request_type):
         "url": "url_value",
         "kms_key_name": "kms_key_name_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = functions.UpdateFunctionRequest.meta.fields["function"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["function"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["function"][field])):
+                    del request_init["function"][field][i][subfield]
+            else:
+                del request_init["function"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4027,98 +4069,6 @@ def test_update_function_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "function": {"name": "projects/sample1/locations/sample2/functions/sample3"}
-    }
-    request_init["function"] = {
-        "name": "projects/sample1/locations/sample2/functions/sample3",
-        "description": "description_value",
-        "build_config": {
-            "build": "build_value",
-            "runtime": "runtime_value",
-            "entry_point": "entry_point_value",
-            "source": {
-                "storage_source": {
-                    "bucket": "bucket_value",
-                    "object_": "object__value",
-                    "generation": 1068,
-                },
-                "repo_source": {
-                    "branch_name": "branch_name_value",
-                    "tag_name": "tag_name_value",
-                    "commit_sha": "commit_sha_value",
-                    "project_id": "project_id_value",
-                    "repo_name": "repo_name_value",
-                    "dir_": "dir__value",
-                    "invert_regex": True,
-                },
-            },
-            "source_provenance": {
-                "resolved_storage_source": {},
-                "resolved_repo_source": {},
-            },
-            "worker_pool": "worker_pool_value",
-            "environment_variables": {},
-            "docker_registry": 1,
-            "docker_repository": "docker_repository_value",
-        },
-        "service_config": {
-            "service": "service_value",
-            "timeout_seconds": 1621,
-            "available_memory": "available_memory_value",
-            "available_cpu": "available_cpu_value",
-            "environment_variables": {},
-            "max_instance_count": 1922,
-            "min_instance_count": 1920,
-            "vpc_connector": "vpc_connector_value",
-            "vpc_connector_egress_settings": 1,
-            "ingress_settings": 1,
-            "uri": "uri_value",
-            "service_account_email": "service_account_email_value",
-            "all_traffic_on_latest_revision": True,
-            "secret_environment_variables": [
-                {
-                    "key": "key_value",
-                    "project_id": "project_id_value",
-                    "secret": "secret_value",
-                    "version": "version_value",
-                }
-            ],
-            "secret_volumes": [
-                {
-                    "mount_path": "mount_path_value",
-                    "project_id": "project_id_value",
-                    "secret": "secret_value",
-                    "versions": [{"version": "version_value", "path": "path_value"}],
-                }
-            ],
-            "revision": "revision_value",
-            "max_instance_request_concurrency": 3436,
-            "security_level": 1,
-        },
-        "event_trigger": {
-            "trigger": "trigger_value",
-            "trigger_region": "trigger_region_value",
-            "event_type": "event_type_value",
-            "event_filters": [
-                {
-                    "attribute": "attribute_value",
-                    "value": "value_value",
-                    "operator": "operator_value",
-                }
-            ],
-            "pubsub_topic": "pubsub_topic_value",
-            "service_account_email": "service_account_email_value",
-            "retry_policy": 1,
-            "channel": "channel_value",
-        },
-        "state": 1,
-        "update_time": {"seconds": 751, "nanos": 543},
-        "labels": {},
-        "state_messages": [
-            {"severity": 1, "type_": "type__value", "message": "message_value"}
-        ],
-        "environment": 1,
-        "url": "url_value",
-        "kms_key_name": "kms_key_name_value",
     }
     request = request_type(**request_init)
 
@@ -4490,8 +4440,9 @@ def test_generate_upload_url_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = functions.GenerateUploadUrlResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = functions.GenerateUploadUrlResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4567,8 +4518,9 @@ def test_generate_upload_url_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = functions.GenerateUploadUrlResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = functions.GenerateUploadUrlResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4703,8 +4655,9 @@ def test_generate_download_url_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = functions.GenerateDownloadUrlResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = functions.GenerateDownloadUrlResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4780,8 +4733,9 @@ def test_generate_download_url_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = functions.GenerateDownloadUrlResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = functions.GenerateDownloadUrlResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4914,8 +4868,9 @@ def test_list_runtimes_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = functions.ListRuntimesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = functions.ListRuntimesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4989,8 +4944,9 @@ def test_list_runtimes_rest_required_fields(request_type=functions.ListRuntimesR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = functions.ListRuntimesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = functions.ListRuntimesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5113,8 +5069,9 @@ def test_list_runtimes_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = functions.ListRuntimesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = functions.ListRuntimesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

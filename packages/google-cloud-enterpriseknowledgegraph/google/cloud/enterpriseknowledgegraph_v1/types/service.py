@@ -191,7 +191,6 @@ class ReconConfig(proto.Message):
                 - schema.org/addressLocality
                 - schema.org/addressRegion
                 - schema.org/addressCountry
-
                 Warning: processing will no longer be
                 regionalized!
         """
