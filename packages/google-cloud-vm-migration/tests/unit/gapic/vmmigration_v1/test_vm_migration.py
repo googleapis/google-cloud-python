@@ -13591,8 +13591,9 @@ def test_list_sources_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListSourcesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListSourcesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -13682,8 +13683,9 @@ def test_list_sources_rest_required_fields(request_type=vmmigration.ListSourcesR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.ListSourcesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.ListSourcesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -13827,8 +13829,9 @@ def test_list_sources_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListSourcesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListSourcesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -13948,8 +13951,9 @@ def test_get_source_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.Source.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.Source.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -14023,8 +14027,9 @@ def test_get_source_rest_required_fields(request_type=vmmigration.GetSourceReque
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.Source.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.Source.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -14145,8 +14150,9 @@ def test_get_source_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.Source.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.Source.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -14236,6 +14242,70 @@ def test_create_source_rest(request_type):
         "labels": {},
         "description": "description_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmmigration.CreateSourceRequest.meta.fields["source"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["source"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["source"][field])):
+                    del request_init["source"][field][i][subfield]
+            else:
+                del request_init["source"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -14444,44 +14514,6 @@ def test_create_source_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["source"] = {
-        "vmware": {
-            "username": "username_value",
-            "password": "password_value",
-            "vcenter_ip": "vcenter_ip_value",
-            "thumbprint": "thumbprint_value",
-        },
-        "aws": {
-            "access_key_creds": {
-                "access_key_id": "access_key_id_value",
-                "secret_access_key": "secret_access_key_value",
-            },
-            "aws_region": "aws_region_value",
-            "state": 1,
-            "error": {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            },
-            "inventory_tag_list": [{"key": "key_value", "value": "value_value"}],
-            "inventory_security_group_names": [
-                "inventory_security_group_names_value1",
-                "inventory_security_group_names_value2",
-            ],
-            "migration_resources_user_tags": {},
-            "public_ip": "public_ip_value",
-        },
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "description": "description_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -14619,6 +14651,70 @@ def test_update_source_rest(request_type):
         "labels": {},
         "description": "description_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmmigration.UpdateSourceRequest.meta.fields["source"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["source"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["source"][field])):
+                    del request_init["source"][field][i][subfield]
+            else:
+                del request_init["source"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -14804,44 +14900,6 @@ def test_update_source_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "source": {"name": "projects/sample1/locations/sample2/sources/sample3"}
-    }
-    request_init["source"] = {
-        "vmware": {
-            "username": "username_value",
-            "password": "password_value",
-            "vcenter_ip": "vcenter_ip_value",
-            "thumbprint": "thumbprint_value",
-        },
-        "aws": {
-            "access_key_creds": {
-                "access_key_id": "access_key_id_value",
-                "secret_access_key": "secret_access_key_value",
-            },
-            "aws_region": "aws_region_value",
-            "state": 1,
-            "error": {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            },
-            "inventory_tag_list": [{"key": "key_value", "value": "value_value"}],
-            "inventory_security_group_names": [
-                "inventory_security_group_names_value1",
-                "inventory_security_group_names_value2",
-            ],
-            "migration_resources_user_tags": {},
-            "public_ip": "public_ip_value",
-        },
-        "name": "projects/sample1/locations/sample2/sources/sample3",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "description": "description_value",
     }
     request = request_type(**request_init)
 
@@ -15215,8 +15273,9 @@ def test_fetch_inventory_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.FetchInventoryResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.FetchInventoryResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15292,8 +15351,9 @@ def test_fetch_inventory_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.FetchInventoryResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.FetchInventoryResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -15420,8 +15480,9 @@ def test_fetch_inventory_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.FetchInventoryResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.FetchInventoryResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -15487,8 +15548,9 @@ def test_list_utilization_reports_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListUtilizationReportsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListUtilizationReportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15581,10 +15643,9 @@ def test_list_utilization_reports_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.ListUtilizationReportsResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.ListUtilizationReportsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -15733,8 +15794,9 @@ def test_list_utilization_reports_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListUtilizationReportsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListUtilizationReportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -15864,8 +15926,9 @@ def test_get_utilization_report_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.UtilizationReport.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.UtilizationReport.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15946,8 +16009,9 @@ def test_get_utilization_report_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.UtilizationReport.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.UtilizationReport.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -16076,8 +16140,9 @@ def test_get_utilization_report_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.UtilizationReport.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.UtilizationReport.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -16179,6 +16244,72 @@ def test_create_utilization_report_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmmigration.CreateUtilizationReportRequest.meta.fields[
+        "utilization_report"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["utilization_report"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["utilization_report"][field])):
+                    del request_init["utilization_report"][field][i][subfield]
+            else:
+                del request_init["utilization_report"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -16390,55 +16521,6 @@ def test_create_utilization_report_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/sources/sample3"}
-    request_init["utilization_report"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "state": 1,
-        "state_time": {"seconds": 751, "nanos": 543},
-        "error": {
-            "code": 411,
-            "message": "message_value",
-            "details": [
-                {
-                    "type_url": "type.googleapis.com/google.protobuf.Duration",
-                    "value": b"\x08\x0c\x10\xdb\x07",
-                }
-            ],
-        },
-        "create_time": {},
-        "time_frame": 1,
-        "frame_end_time": {},
-        "vm_count": 875,
-        "vms": [
-            {
-                "vmware_vm_details": {
-                    "vm_id": "vm_id_value",
-                    "datacenter_id": "datacenter_id_value",
-                    "datacenter_description": "datacenter_description_value",
-                    "uuid": "uuid_value",
-                    "display_name": "display_name_value",
-                    "power_state": 1,
-                    "cpu_count": 976,
-                    "memory_mb": 967,
-                    "disk_count": 1075,
-                    "committed_storage_mb": 2120,
-                    "guest_description": "guest_description_value",
-                    "boot_option": 1,
-                },
-                "vm_id": "vm_id_value",
-                "utilization": {
-                    "cpu_max_percent": 1597,
-                    "cpu_average_percent": 2002,
-                    "memory_max_percent": 1934,
-                    "memory_average_percent": 2339,
-                    "disk_io_rate_max_kbps": 2209,
-                    "disk_io_rate_average_kbps": 2614,
-                    "network_throughput_max_kbps": 2935,
-                    "network_throughput_average_kbps": 3340,
-                },
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -16819,8 +16901,9 @@ def test_list_datacenter_connectors_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListDatacenterConnectorsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListDatacenterConnectorsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -16912,10 +16995,9 @@ def test_list_datacenter_connectors_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.ListDatacenterConnectorsResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.ListDatacenterConnectorsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -17065,8 +17147,9 @@ def test_list_datacenter_connectors_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListDatacenterConnectorsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListDatacenterConnectorsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -17199,8 +17282,9 @@ def test_get_datacenter_connector_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.DatacenterConnector.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.DatacenterConnector.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -17285,8 +17369,9 @@ def test_get_datacenter_connector_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.DatacenterConnector.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.DatacenterConnector.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -17415,8 +17500,9 @@ def test_get_datacenter_connector_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.DatacenterConnector.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.DatacenterConnector.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -17508,6 +17594,72 @@ def test_create_datacenter_connector_rest(request_type):
             "previous_version": "previous_version_value",
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmmigration.CreateDatacenterConnectorRequest.meta.fields[
+        "datacenter_connector"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["datacenter_connector"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["datacenter_connector"][field])):
+                    del request_init["datacenter_connector"][field][i][subfield]
+            else:
+                del request_init["datacenter_connector"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -17719,45 +17871,6 @@ def test_create_datacenter_connector_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/sources/sample3"}
-    request_init["datacenter_connector"] = {
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "name": "name_value",
-        "registration_id": "registration_id_value",
-        "service_account": "service_account_value",
-        "version": "version_value",
-        "bucket": "bucket_value",
-        "state": 1,
-        "state_time": {},
-        "error": {
-            "code": 411,
-            "message": "message_value",
-            "details": [
-                {
-                    "type_url": "type.googleapis.com/google.protobuf.Duration",
-                    "value": b"\x08\x0c\x10\xdb\x07",
-                }
-            ],
-        },
-        "appliance_infrastructure_version": "appliance_infrastructure_version_value",
-        "appliance_software_version": "appliance_software_version_value",
-        "available_versions": {
-            "new_deployable_appliance": {
-                "version": "version_value",
-                "uri": "uri_value",
-                "critical": True,
-                "release_notes_uri": "release_notes_uri_value",
-            },
-            "in_place_update": {},
-        },
-        "upgrade_status": {
-            "version": "version_value",
-            "state": 1,
-            "error": {},
-            "start_time": {},
-            "previous_version": "previous_version_value",
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -18501,6 +18614,70 @@ def test_create_migrating_vm_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmmigration.CreateMigratingVmRequest.meta.fields["migrating_vm"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["migrating_vm"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["migrating_vm"][field])):
+                    del request_init["migrating_vm"][field][i][subfield]
+            else:
+                del request_init["migrating_vm"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -18709,165 +18886,6 @@ def test_create_migrating_vm_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/sources/sample3"}
-    request_init["migrating_vm"] = {
-        "compute_engine_target_defaults": {
-            "vm_name": "vm_name_value",
-            "target_project": "target_project_value",
-            "zone": "zone_value",
-            "machine_type_series": "machine_type_series_value",
-            "machine_type": "machine_type_value",
-            "network_tags": ["network_tags_value1", "network_tags_value2"],
-            "network_interfaces": [
-                {
-                    "network": "network_value",
-                    "subnetwork": "subnetwork_value",
-                    "internal_ip": "internal_ip_value",
-                    "external_ip": "external_ip_value",
-                }
-            ],
-            "service_account": "service_account_value",
-            "disk_type": 1,
-            "labels": {},
-            "license_type": 1,
-            "applied_license": {"type_": 1, "os_license": "os_license_value"},
-            "compute_scheduling": {
-                "on_host_maintenance": 1,
-                "restart_type": 1,
-                "node_affinities": [
-                    {
-                        "key": "key_value",
-                        "operator": 1,
-                        "values": ["values_value1", "values_value2"],
-                    }
-                ],
-                "min_node_cpus": 1379,
-            },
-            "secure_boot": True,
-            "boot_option": 1,
-            "metadata": {},
-            "additional_licenses": [
-                "additional_licenses_value1",
-                "additional_licenses_value2",
-            ],
-            "hostname": "hostname_value",
-        },
-        "aws_source_vm_details": {"firmware": 1, "committed_storage_bytes": 2464},
-        "name": "name_value",
-        "source_vm_id": "source_vm_id_value",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "policy": {
-            "idle_duration": {"seconds": 751, "nanos": 543},
-            "skip_os_adaptation": True,
-        },
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "last_sync": {"last_sync_time": {}},
-        "state": 1,
-        "state_time": {},
-        "current_sync_info": {
-            "name": "name_value",
-            "cycle_number": 1272,
-            "start_time": {},
-            "end_time": {},
-            "total_pause_duration": {},
-            "progress_percent": 1733,
-            "steps": [
-                {
-                    "initializing_replication": {},
-                    "replicating": {
-                        "total_bytes": 1194,
-                        "replicated_bytes": 1699,
-                        "last_two_minutes_average_bytes_per_second": 4370,
-                        "last_thirty_minutes_average_bytes_per_second": 4700,
-                    },
-                    "post_processing": {},
-                    "start_time": {},
-                    "end_time": {},
-                }
-            ],
-            "state": 1,
-            "error": {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            },
-        },
-        "group": "group_value",
-        "labels": {},
-        "recent_clone_jobs": [
-            {
-                "compute_engine_target_details": {
-                    "vm_name": "vm_name_value",
-                    "project": "project_value",
-                    "zone": "zone_value",
-                    "machine_type_series": "machine_type_series_value",
-                    "machine_type": "machine_type_value",
-                    "network_tags": ["network_tags_value1", "network_tags_value2"],
-                    "network_interfaces": {},
-                    "service_account": "service_account_value",
-                    "disk_type": 1,
-                    "labels": {},
-                    "license_type": 1,
-                    "applied_license": {},
-                    "compute_scheduling": {},
-                    "secure_boot": True,
-                    "boot_option": 1,
-                    "metadata": {},
-                    "additional_licenses": [
-                        "additional_licenses_value1",
-                        "additional_licenses_value2",
-                    ],
-                    "hostname": "hostname_value",
-                },
-                "create_time": {},
-                "end_time": {},
-                "name": "name_value",
-                "state": 1,
-                "state_time": {},
-                "error": {},
-                "steps": [
-                    {
-                        "adapting_os": {},
-                        "preparing_vm_disks": {},
-                        "instantiating_migrated_vm": {},
-                        "start_time": {},
-                        "end_time": {},
-                    }
-                ],
-            }
-        ],
-        "error": {},
-        "recent_cutover_jobs": [
-            {
-                "compute_engine_target_details": {},
-                "create_time": {},
-                "end_time": {},
-                "name": "name_value",
-                "state": 1,
-                "state_time": {},
-                "progress_percent": 1733,
-                "error": {},
-                "state_message": "state_message_value",
-                "steps": [
-                    {
-                        "previous_replication_cycle": {},
-                        "shutting_down_source_vm": {},
-                        "final_sync": {},
-                        "preparing_vm_disks": {},
-                        "instantiating_migrated_vm": {},
-                        "start_time": {},
-                        "end_time": {},
-                    }
-                ],
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -18985,8 +19003,9 @@ def test_list_migrating_vms_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListMigratingVmsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListMigratingVmsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -19079,8 +19098,9 @@ def test_list_migrating_vms_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.ListMigratingVmsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.ListMigratingVmsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -19229,8 +19249,9 @@ def test_list_migrating_vms_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListMigratingVmsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListMigratingVmsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -19361,8 +19382,9 @@ def test_get_migrating_vm_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.MigratingVm.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.MigratingVm.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -19444,8 +19466,9 @@ def test_get_migrating_vm_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.MigratingVm.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.MigratingVm.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -19574,8 +19597,9 @@ def test_get_migrating_vm_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.MigratingVm.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.MigratingVm.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -19791,6 +19815,70 @@ def test_update_migrating_vm_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmmigration.UpdateMigratingVmRequest.meta.fields["migrating_vm"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["migrating_vm"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["migrating_vm"][field])):
+                    del request_init["migrating_vm"][field][i][subfield]
+            else:
+                del request_init["migrating_vm"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -19978,165 +20066,6 @@ def test_update_migrating_vm_rest_bad_request(
         "migrating_vm": {
             "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
         }
-    }
-    request_init["migrating_vm"] = {
-        "compute_engine_target_defaults": {
-            "vm_name": "vm_name_value",
-            "target_project": "target_project_value",
-            "zone": "zone_value",
-            "machine_type_series": "machine_type_series_value",
-            "machine_type": "machine_type_value",
-            "network_tags": ["network_tags_value1", "network_tags_value2"],
-            "network_interfaces": [
-                {
-                    "network": "network_value",
-                    "subnetwork": "subnetwork_value",
-                    "internal_ip": "internal_ip_value",
-                    "external_ip": "external_ip_value",
-                }
-            ],
-            "service_account": "service_account_value",
-            "disk_type": 1,
-            "labels": {},
-            "license_type": 1,
-            "applied_license": {"type_": 1, "os_license": "os_license_value"},
-            "compute_scheduling": {
-                "on_host_maintenance": 1,
-                "restart_type": 1,
-                "node_affinities": [
-                    {
-                        "key": "key_value",
-                        "operator": 1,
-                        "values": ["values_value1", "values_value2"],
-                    }
-                ],
-                "min_node_cpus": 1379,
-            },
-            "secure_boot": True,
-            "boot_option": 1,
-            "metadata": {},
-            "additional_licenses": [
-                "additional_licenses_value1",
-                "additional_licenses_value2",
-            ],
-            "hostname": "hostname_value",
-        },
-        "aws_source_vm_details": {"firmware": 1, "committed_storage_bytes": 2464},
-        "name": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4",
-        "source_vm_id": "source_vm_id_value",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "policy": {
-            "idle_duration": {"seconds": 751, "nanos": 543},
-            "skip_os_adaptation": True,
-        },
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "last_sync": {"last_sync_time": {}},
-        "state": 1,
-        "state_time": {},
-        "current_sync_info": {
-            "name": "name_value",
-            "cycle_number": 1272,
-            "start_time": {},
-            "end_time": {},
-            "total_pause_duration": {},
-            "progress_percent": 1733,
-            "steps": [
-                {
-                    "initializing_replication": {},
-                    "replicating": {
-                        "total_bytes": 1194,
-                        "replicated_bytes": 1699,
-                        "last_two_minutes_average_bytes_per_second": 4370,
-                        "last_thirty_minutes_average_bytes_per_second": 4700,
-                    },
-                    "post_processing": {},
-                    "start_time": {},
-                    "end_time": {},
-                }
-            ],
-            "state": 1,
-            "error": {
-                "code": 411,
-                "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
-            },
-        },
-        "group": "group_value",
-        "labels": {},
-        "recent_clone_jobs": [
-            {
-                "compute_engine_target_details": {
-                    "vm_name": "vm_name_value",
-                    "project": "project_value",
-                    "zone": "zone_value",
-                    "machine_type_series": "machine_type_series_value",
-                    "machine_type": "machine_type_value",
-                    "network_tags": ["network_tags_value1", "network_tags_value2"],
-                    "network_interfaces": {},
-                    "service_account": "service_account_value",
-                    "disk_type": 1,
-                    "labels": {},
-                    "license_type": 1,
-                    "applied_license": {},
-                    "compute_scheduling": {},
-                    "secure_boot": True,
-                    "boot_option": 1,
-                    "metadata": {},
-                    "additional_licenses": [
-                        "additional_licenses_value1",
-                        "additional_licenses_value2",
-                    ],
-                    "hostname": "hostname_value",
-                },
-                "create_time": {},
-                "end_time": {},
-                "name": "name_value",
-                "state": 1,
-                "state_time": {},
-                "error": {},
-                "steps": [
-                    {
-                        "adapting_os": {},
-                        "preparing_vm_disks": {},
-                        "instantiating_migrated_vm": {},
-                        "start_time": {},
-                        "end_time": {},
-                    }
-                ],
-            }
-        ],
-        "error": {},
-        "recent_cutover_jobs": [
-            {
-                "compute_engine_target_details": {},
-                "create_time": {},
-                "end_time": {},
-                "name": "name_value",
-                "state": 1,
-                "state_time": {},
-                "progress_percent": 1733,
-                "error": {},
-                "state_message": "state_message_value",
-                "steps": [
-                    {
-                        "previous_replication_cycle": {},
-                        "shutting_down_source_vm": {},
-                        "final_sync": {},
-                        "preparing_vm_disks": {},
-                        "instantiating_migrated_vm": {},
-                        "start_time": {},
-                        "end_time": {},
-                    }
-                ],
-            }
-        ],
     }
     request = request_type(**request_init)
 
@@ -21546,6 +21475,70 @@ def test_create_clone_job_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmmigration.CreateCloneJobRequest.meta.fields["clone_job"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["clone_job"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["clone_job"][field])):
+                    del request_init["clone_job"][field][i][subfield]
+            else:
+                del request_init["clone_job"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -21755,73 +21748,6 @@ def test_create_clone_job_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
-    }
-    request_init["clone_job"] = {
-        "compute_engine_target_details": {
-            "vm_name": "vm_name_value",
-            "project": "project_value",
-            "zone": "zone_value",
-            "machine_type_series": "machine_type_series_value",
-            "machine_type": "machine_type_value",
-            "network_tags": ["network_tags_value1", "network_tags_value2"],
-            "network_interfaces": [
-                {
-                    "network": "network_value",
-                    "subnetwork": "subnetwork_value",
-                    "internal_ip": "internal_ip_value",
-                    "external_ip": "external_ip_value",
-                }
-            ],
-            "service_account": "service_account_value",
-            "disk_type": 1,
-            "labels": {},
-            "license_type": 1,
-            "applied_license": {"type_": 1, "os_license": "os_license_value"},
-            "compute_scheduling": {
-                "on_host_maintenance": 1,
-                "restart_type": 1,
-                "node_affinities": [
-                    {
-                        "key": "key_value",
-                        "operator": 1,
-                        "values": ["values_value1", "values_value2"],
-                    }
-                ],
-                "min_node_cpus": 1379,
-            },
-            "secure_boot": True,
-            "boot_option": 1,
-            "metadata": {},
-            "additional_licenses": [
-                "additional_licenses_value1",
-                "additional_licenses_value2",
-            ],
-            "hostname": "hostname_value",
-        },
-        "create_time": {"seconds": 751, "nanos": 543},
-        "end_time": {},
-        "name": "name_value",
-        "state": 1,
-        "state_time": {},
-        "error": {
-            "code": 411,
-            "message": "message_value",
-            "details": [
-                {
-                    "type_url": "type.googleapis.com/google.protobuf.Duration",
-                    "value": b"\x08\x0c\x10\xdb\x07",
-                }
-            ],
-        },
-        "steps": [
-            {
-                "adapting_os": {},
-                "preparing_vm_disks": {},
-                "instantiating_migrated_vm": {},
-                "start_time": {},
-                "end_time": {},
-            }
-        ],
     }
     request = request_type(**request_init)
 
@@ -22212,8 +22138,9 @@ def test_list_clone_jobs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListCloneJobsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListCloneJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -22305,8 +22232,9 @@ def test_list_clone_jobs_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.ListCloneJobsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.ListCloneJobsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -22456,8 +22384,9 @@ def test_list_clone_jobs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListCloneJobsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListCloneJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -22582,8 +22511,9 @@ def test_get_clone_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.CloneJob.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.CloneJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -22659,8 +22589,9 @@ def test_get_clone_job_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.CloneJob.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.CloneJob.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -22785,8 +22716,9 @@ def test_get_clone_job_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.CloneJob.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.CloneJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -22935,6 +22867,70 @@ def test_create_cutover_job_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmmigration.CreateCutoverJobRequest.meta.fields["cutover_job"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["cutover_job"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["cutover_job"][field])):
+                    del request_init["cutover_job"][field][i][subfield]
+            else:
+                del request_init["cutover_job"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -23144,100 +23140,6 @@ def test_create_cutover_job_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "parent": "projects/sample1/locations/sample2/sources/sample3/migratingVms/sample4"
-    }
-    request_init["cutover_job"] = {
-        "compute_engine_target_details": {
-            "vm_name": "vm_name_value",
-            "project": "project_value",
-            "zone": "zone_value",
-            "machine_type_series": "machine_type_series_value",
-            "machine_type": "machine_type_value",
-            "network_tags": ["network_tags_value1", "network_tags_value2"],
-            "network_interfaces": [
-                {
-                    "network": "network_value",
-                    "subnetwork": "subnetwork_value",
-                    "internal_ip": "internal_ip_value",
-                    "external_ip": "external_ip_value",
-                }
-            ],
-            "service_account": "service_account_value",
-            "disk_type": 1,
-            "labels": {},
-            "license_type": 1,
-            "applied_license": {"type_": 1, "os_license": "os_license_value"},
-            "compute_scheduling": {
-                "on_host_maintenance": 1,
-                "restart_type": 1,
-                "node_affinities": [
-                    {
-                        "key": "key_value",
-                        "operator": 1,
-                        "values": ["values_value1", "values_value2"],
-                    }
-                ],
-                "min_node_cpus": 1379,
-            },
-            "secure_boot": True,
-            "boot_option": 1,
-            "metadata": {},
-            "additional_licenses": [
-                "additional_licenses_value1",
-                "additional_licenses_value2",
-            ],
-            "hostname": "hostname_value",
-        },
-        "create_time": {"seconds": 751, "nanos": 543},
-        "end_time": {},
-        "name": "name_value",
-        "state": 1,
-        "state_time": {},
-        "progress_percent": 1733,
-        "error": {
-            "code": 411,
-            "message": "message_value",
-            "details": [
-                {
-                    "type_url": "type.googleapis.com/google.protobuf.Duration",
-                    "value": b"\x08\x0c\x10\xdb\x07",
-                }
-            ],
-        },
-        "state_message": "state_message_value",
-        "steps": [
-            {
-                "previous_replication_cycle": {
-                    "name": "name_value",
-                    "cycle_number": 1272,
-                    "start_time": {},
-                    "end_time": {},
-                    "total_pause_duration": {"seconds": 751, "nanos": 543},
-                    "progress_percent": 1733,
-                    "steps": [
-                        {
-                            "initializing_replication": {},
-                            "replicating": {
-                                "total_bytes": 1194,
-                                "replicated_bytes": 1699,
-                                "last_two_minutes_average_bytes_per_second": 4370,
-                                "last_thirty_minutes_average_bytes_per_second": 4700,
-                            },
-                            "post_processing": {},
-                            "start_time": {},
-                            "end_time": {},
-                        }
-                    ],
-                    "state": 1,
-                    "error": {},
-                },
-                "shutting_down_source_vm": {},
-                "final_sync": {},
-                "preparing_vm_disks": {},
-                "instantiating_migrated_vm": {},
-                "start_time": {},
-                "end_time": {},
-            }
-        ],
     }
     request = request_type(**request_init)
 
@@ -23628,8 +23530,9 @@ def test_list_cutover_jobs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListCutoverJobsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListCutoverJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -23721,8 +23624,9 @@ def test_list_cutover_jobs_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.ListCutoverJobsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.ListCutoverJobsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -23872,8 +23776,9 @@ def test_list_cutover_jobs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListCutoverJobsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListCutoverJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -24002,8 +23907,9 @@ def test_get_cutover_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.CutoverJob.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.CutoverJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -24081,8 +23987,9 @@ def test_get_cutover_job_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.CutoverJob.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.CutoverJob.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -24211,8 +24118,9 @@ def test_get_cutover_job_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.CutoverJob.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.CutoverJob.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -24278,8 +24186,9 @@ def test_list_groups_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListGroupsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListGroupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -24369,8 +24278,9 @@ def test_list_groups_rest_required_fields(request_type=vmmigration.ListGroupsReq
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.ListGroupsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.ListGroupsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -24514,8 +24424,9 @@ def test_list_groups_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListGroupsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListGroupsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -24636,8 +24547,9 @@ def test_get_group_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.Group.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.Group.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -24712,8 +24624,9 @@ def test_get_group_rest_required_fields(request_type=vmmigration.GetGroupRequest
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.Group.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.Group.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -24834,8 +24747,9 @@ def test_get_group_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.Group.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.Group.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -24894,6 +24808,70 @@ def test_create_group_rest(request_type):
         "description": "description_value",
         "display_name": "display_name_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmmigration.CreateGroupRequest.meta.fields["group"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["group"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["group"][field])):
+                    del request_init["group"][field][i][subfield]
+            else:
+                del request_init["group"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -25098,13 +25076,6 @@ def test_create_group_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["group"] = {
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "description": "description_value",
-        "display_name": "display_name_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -25207,6 +25178,70 @@ def test_update_group_rest(request_type):
         "description": "description_value",
         "display_name": "display_name_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmmigration.UpdateGroupRequest.meta.fields["group"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["group"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["group"][field])):
+                    del request_init["group"][field][i][subfield]
+            else:
+                del request_init["group"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -25388,13 +25423,6 @@ def test_update_group_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "group": {"name": "projects/sample1/locations/sample2/groups/sample3"}
-    }
-    request_init["group"] = {
-        "name": "projects/sample1/locations/sample2/groups/sample3",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "description": "description_value",
-        "display_name": "display_name_value",
     }
     request = request_type(**request_init)
 
@@ -26291,8 +26319,9 @@ def test_list_target_projects_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListTargetProjectsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListTargetProjectsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -26384,8 +26413,9 @@ def test_list_target_projects_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.ListTargetProjectsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.ListTargetProjectsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -26531,8 +26561,9 @@ def test_list_target_projects_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListTargetProjectsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListTargetProjectsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -26656,8 +26687,9 @@ def test_get_target_project_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.TargetProject.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.TargetProject.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -26734,8 +26766,9 @@ def test_get_target_project_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.TargetProject.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.TargetProject.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -26862,8 +26895,9 @@ def test_get_target_project_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.TargetProject.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.TargetProject.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -26923,6 +26957,70 @@ def test_create_target_project_rest(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmmigration.CreateTargetProjectRequest.meta.fields["target_project"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["target_project"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["target_project"][field])):
+                    del request_init["target_project"][field][i][subfield]
+            else:
+                del request_init["target_project"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -27131,13 +27229,6 @@ def test_create_target_project_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["target_project"] = {
-        "name": "name_value",
-        "project": "project_value",
-        "description": "description_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -27243,6 +27334,70 @@ def test_update_target_project_rest(request_type):
         "create_time": {"seconds": 751, "nanos": 543},
         "update_time": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmmigration.UpdateTargetProjectRequest.meta.fields["target_project"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["target_project"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["target_project"][field])):
+                    del request_init["target_project"][field][i][subfield]
+            else:
+                del request_init["target_project"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -27430,13 +27585,6 @@ def test_update_target_project_rest_bad_request(
         "target_project": {
             "name": "projects/sample1/locations/sample2/targetProjects/sample3"
         }
-    }
-    request_init["target_project"] = {
-        "name": "projects/sample1/locations/sample2/targetProjects/sample3",
-        "project": "project_value",
-        "description": "description_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
     }
     request = request_type(**request_init)
 
@@ -27816,8 +27964,9 @@ def test_list_replication_cycles_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListReplicationCyclesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListReplicationCyclesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -27909,8 +28058,9 @@ def test_list_replication_cycles_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.ListReplicationCyclesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.ListReplicationCyclesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -28060,8 +28210,9 @@ def test_list_replication_cycles_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ListReplicationCyclesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ListReplicationCyclesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -28190,8 +28341,9 @@ def test_get_replication_cycle_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ReplicationCycle.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ReplicationCycle.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -28269,8 +28421,9 @@ def test_get_replication_cycle_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = vmmigration.ReplicationCycle.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = vmmigration.ReplicationCycle.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -28399,8 +28552,9 @@ def test_get_replication_cycle_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = vmmigration.ReplicationCycle.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = vmmigration.ReplicationCycle.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

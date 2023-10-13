@@ -4084,8 +4084,9 @@ def test_list_nodes_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_tpu.ListNodesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_tpu.ListNodesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4166,8 +4167,9 @@ def test_list_nodes_rest_required_fields(request_type=cloud_tpu.ListNodesRequest
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_tpu.ListNodesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_tpu.ListNodesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4296,8 +4298,9 @@ def test_list_nodes_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_tpu.ListNodesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_tpu.ListNodesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4428,8 +4431,9 @@ def test_get_node_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_tpu.Node.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_tpu.Node.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4514,8 +4518,9 @@ def test_get_node_rest_required_fields(request_type=cloud_tpu.GetNodeRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_tpu.Node.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_tpu.Node.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4634,8 +4639,9 @@ def test_get_node_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_tpu.Node.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_tpu.Node.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4734,6 +4740,70 @@ def test_create_node_rest(request_type):
         "queued_resource": "queued_resource_value",
         "multislice_node": True,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_tpu.CreateNodeRequest.meta.fields["node"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["node"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["node"][field])):
+                    del request_init["node"][field][i][subfield]
+            else:
+                del request_init["node"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -4912,53 +4982,6 @@ def test_create_node_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["node"] = {
-        "name": "name_value",
-        "description": "description_value",
-        "accelerator_type": "accelerator_type_value",
-        "state": 1,
-        "health_description": "health_description_value",
-        "runtime_version": "runtime_version_value",
-        "network_config": {
-            "network": "network_value",
-            "subnetwork": "subnetwork_value",
-            "enable_external_ips": True,
-            "can_ip_forward": True,
-        },
-        "cidr_block": "cidr_block_value",
-        "service_account": {
-            "email": "email_value",
-            "scope": ["scope_value1", "scope_value2"],
-        },
-        "create_time": {"seconds": 751, "nanos": 543},
-        "scheduling_config": {"preemptible": True, "reserved": True},
-        "network_endpoints": [
-            {
-                "ip_address": "ip_address_value",
-                "port": 453,
-                "access_config": {"external_ip": "external_ip_value"},
-            }
-        ],
-        "health": 1,
-        "labels": {},
-        "metadata": {},
-        "tags": ["tags_value1", "tags_value2"],
-        "id": 205,
-        "data_disks": [{"source_disk": "source_disk_value", "mode": 1}],
-        "api_version": 1,
-        "symptoms": [
-            {
-                "create_time": {},
-                "symptom_type": 1,
-                "details": "details_value",
-                "worker_id": "worker_id_value",
-            }
-        ],
-        "shielded_instance_config": {"enable_secure_boot": True},
-        "accelerator_config": {"type_": 2, "topology": "topology_value"},
-        "queued_resource": "queued_resource_value",
-        "multislice_node": True,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5763,6 +5786,70 @@ def test_update_node_rest(request_type):
         "queued_resource": "queued_resource_value",
         "multislice_node": True,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_tpu.UpdateNodeRequest.meta.fields["node"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["node"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["node"][field])):
+                    del request_init["node"][field][i][subfield]
+            else:
+                del request_init["node"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5938,53 +6025,6 @@ def test_update_node_rest_bad_request(
     request_init = {
         "node": {"name": "projects/sample1/locations/sample2/nodes/sample3"}
     }
-    request_init["node"] = {
-        "name": "projects/sample1/locations/sample2/nodes/sample3",
-        "description": "description_value",
-        "accelerator_type": "accelerator_type_value",
-        "state": 1,
-        "health_description": "health_description_value",
-        "runtime_version": "runtime_version_value",
-        "network_config": {
-            "network": "network_value",
-            "subnetwork": "subnetwork_value",
-            "enable_external_ips": True,
-            "can_ip_forward": True,
-        },
-        "cidr_block": "cidr_block_value",
-        "service_account": {
-            "email": "email_value",
-            "scope": ["scope_value1", "scope_value2"],
-        },
-        "create_time": {"seconds": 751, "nanos": 543},
-        "scheduling_config": {"preemptible": True, "reserved": True},
-        "network_endpoints": [
-            {
-                "ip_address": "ip_address_value",
-                "port": 453,
-                "access_config": {"external_ip": "external_ip_value"},
-            }
-        ],
-        "health": 1,
-        "labels": {},
-        "metadata": {},
-        "tags": ["tags_value1", "tags_value2"],
-        "id": 205,
-        "data_disks": [{"source_disk": "source_disk_value", "mode": 1}],
-        "api_version": 1,
-        "symptoms": [
-            {
-                "create_time": {},
-                "symptom_type": 1,
-                "details": "details_value",
-                "worker_id": "worker_id_value",
-            }
-        ],
-        "shielded_instance_config": {"enable_secure_boot": True},
-        "accelerator_config": {"type_": 2, "topology": "topology_value"},
-        "queued_resource": "queued_resource_value",
-        "multislice_node": True,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -6088,8 +6128,9 @@ def test_generate_service_identity_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_tpu.GenerateServiceIdentityResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_tpu.GenerateServiceIdentityResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6164,8 +6205,9 @@ def test_generate_service_identity_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_tpu.GenerateServiceIdentityResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_tpu.GenerateServiceIdentityResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6299,8 +6341,9 @@ def test_list_accelerator_types_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_tpu.ListAcceleratorTypesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_tpu.ListAcceleratorTypesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6385,8 +6428,9 @@ def test_list_accelerator_types_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_tpu.ListAcceleratorTypesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_tpu.ListAcceleratorTypesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6519,8 +6563,9 @@ def test_list_accelerator_types_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_tpu.ListAcceleratorTypesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_tpu.ListAcceleratorTypesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6645,8 +6690,9 @@ def test_get_accelerator_type_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_tpu.AcceleratorType.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_tpu.AcceleratorType.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6722,8 +6768,9 @@ def test_get_accelerator_type_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_tpu.AcceleratorType.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_tpu.AcceleratorType.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6850,8 +6897,9 @@ def test_get_accelerator_type_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_tpu.AcceleratorType.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_tpu.AcceleratorType.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -6917,8 +6965,9 @@ def test_list_runtime_versions_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_tpu.ListRuntimeVersionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_tpu.ListRuntimeVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7003,8 +7052,9 @@ def test_list_runtime_versions_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_tpu.ListRuntimeVersionsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_tpu.ListRuntimeVersionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7137,8 +7187,9 @@ def test_list_runtime_versions_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_tpu.ListRuntimeVersionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_tpu.ListRuntimeVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7263,8 +7314,9 @@ def test_get_runtime_version_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_tpu.RuntimeVersion.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_tpu.RuntimeVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7340,8 +7392,9 @@ def test_get_runtime_version_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_tpu.RuntimeVersion.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_tpu.RuntimeVersion.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7468,8 +7521,9 @@ def test_get_runtime_version_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_tpu.RuntimeVersion.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_tpu.RuntimeVersion.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7532,8 +7586,9 @@ def test_get_guest_attributes_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_tpu.GetGuestAttributesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_tpu.GetGuestAttributesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7608,8 +7663,9 @@ def test_get_guest_attributes_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_tpu.GetGuestAttributesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_tpu.GetGuestAttributesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
