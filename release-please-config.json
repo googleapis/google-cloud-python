@@ -2159,6 +2159,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-maps-fleetengine": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-maps-fleetengine",
+            "extra-files": [
+                "google/maps/fleetengine/gapic_version.py",
+                "google/maps/fleetengine_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_maps.fleetengine.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-maps-fleetengine-delivery": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
