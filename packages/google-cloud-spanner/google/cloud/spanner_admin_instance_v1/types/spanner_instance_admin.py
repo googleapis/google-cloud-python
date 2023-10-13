@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
     manifest={
         "ReplicaInfo",
         "InstanceConfig",
+        "AutoscalingConfig",
         "Instance",
         "ListInstanceConfigsRequest",
         "ListInstanceConfigsResponse",
@@ -297,6 +298,116 @@ class InstanceConfig(proto.Message):
     )
 
 
+class AutoscalingConfig(proto.Message):
+    r"""Autoscaling config for an instance.
+
+    Attributes:
+        autoscaling_limits (google.cloud.spanner_admin_instance_v1.types.AutoscalingConfig.AutoscalingLimits):
+            Required. Autoscaling limits for an instance.
+        autoscaling_targets (google.cloud.spanner_admin_instance_v1.types.AutoscalingConfig.AutoscalingTargets):
+            Required. The autoscaling targets for an
+            instance.
+    """
+
+    class AutoscalingLimits(proto.Message):
+        r"""The autoscaling limits for the instance. Users can define the
+        minimum and maximum compute capacity allocated to the instance, and
+        the autoscaler will only scale within that range. Users can either
+        use nodes or processing units to specify the limits, but should use
+        the same unit to set both the min_limit and max_limit.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            min_nodes (int):
+                Minimum number of nodes allocated to the
+                instance. If set, this number should be greater
+                than or equal to 1.
+
+                This field is a member of `oneof`_ ``min_limit``.
+            min_processing_units (int):
+                Minimum number of processing units allocated
+                to the instance. If set, this number should be
+                multiples of 1000.
+
+                This field is a member of `oneof`_ ``min_limit``.
+            max_nodes (int):
+                Maximum number of nodes allocated to the instance. If set,
+                this number should be greater than or equal to min_nodes.
+
+                This field is a member of `oneof`_ ``max_limit``.
+            max_processing_units (int):
+                Maximum number of processing units allocated to the
+                instance. If set, this number should be multiples of 1000
+                and be greater than or equal to min_processing_units.
+
+                This field is a member of `oneof`_ ``max_limit``.
+        """
+
+        min_nodes: int = proto.Field(
+            proto.INT32,
+            number=1,
+            oneof="min_limit",
+        )
+        min_processing_units: int = proto.Field(
+            proto.INT32,
+            number=2,
+            oneof="min_limit",
+        )
+        max_nodes: int = proto.Field(
+            proto.INT32,
+            number=3,
+            oneof="max_limit",
+        )
+        max_processing_units: int = proto.Field(
+            proto.INT32,
+            number=4,
+            oneof="max_limit",
+        )
+
+    class AutoscalingTargets(proto.Message):
+        r"""The autoscaling targets for an instance.
+
+        Attributes:
+            high_priority_cpu_utilization_percent (int):
+                Required. The target high priority cpu utilization
+                percentage that the autoscaler should be trying to achieve
+                for the instance. This number is on a scale from 0 (no
+                utilization) to 100 (full utilization). The valid range is
+                [10, 90] inclusive.
+            storage_utilization_percent (int):
+                Required. The target storage utilization percentage that the
+                autoscaler should be trying to achieve for the instance.
+                This number is on a scale from 0 (no utilization) to 100
+                (full utilization). The valid range is [10, 100] inclusive.
+        """
+
+        high_priority_cpu_utilization_percent: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        storage_utilization_percent: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+
+    autoscaling_limits: AutoscalingLimits = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=AutoscalingLimits,
+    )
+    autoscaling_targets: AutoscalingTargets = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=AutoscalingTargets,
+    )
+
+
 class Instance(proto.Message):
     r"""An isolated set of Cloud Spanner resources on which databases
     can be hosted.
@@ -325,8 +436,13 @@ class Instance(proto.Message):
         node_count (int):
             The number of nodes allocated to this instance. At most one
             of either node_count or processing_units should be present
-            in the message. This may be zero in API responses for
-            instances that are not yet in state ``READY``.
+            in the message.
+
+            Users can set the node_count field to specify the target
+            number of nodes allocated to the instance.
+
+            This may be zero in API responses for instances that are not
+            yet in state ``READY``.
 
             See `the
             documentation <https://cloud.google.com/spanner/docs/compute-capacity>`__
@@ -334,12 +450,23 @@ class Instance(proto.Message):
         processing_units (int):
             The number of processing units allocated to this instance.
             At most one of processing_units or node_count should be
-            present in the message. This may be zero in API responses
-            for instances that are not yet in state ``READY``.
+            present in the message.
+
+            Users can set the processing_units field to specify the
+            target number of processing units allocated to the instance.
+
+            This may be zero in API responses for instances that are not
+            yet in state ``READY``.
 
             See `the
             documentation <https://cloud.google.com/spanner/docs/compute-capacity>`__
             for more information about nodes and processing units.
+        autoscaling_config (google.cloud.spanner_admin_instance_v1.types.AutoscalingConfig):
+            Optional. The autoscaling configuration. Autoscaling is
+            enabled if this field is set. When autoscaling is enabled,
+            node_count and processing_units are treated as OUTPUT_ONLY
+            fields and reflect the current compute capacity allocated to
+            the instance.
         state (google.cloud.spanner_admin_instance_v1.types.Instance.State):
             Output only. The current instance state. For
             [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance],
@@ -423,6 +550,11 @@ class Instance(proto.Message):
     processing_units: int = proto.Field(
         proto.INT32,
         number=9,
+    )
+    autoscaling_config: "AutoscalingConfig" = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message="AutoscalingConfig",
     )
     state: State = proto.Field(
         proto.ENUM,

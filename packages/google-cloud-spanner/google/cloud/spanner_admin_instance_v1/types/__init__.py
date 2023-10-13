@@ -17,6 +17,7 @@ from .common import (
     OperationProgress,
 )
 from .spanner_instance_admin import (
+    AutoscalingConfig,
     CreateInstanceConfigMetadata,
     CreateInstanceConfigRequest,
     CreateInstanceMetadata,
@@ -42,6 +43,7 @@ from .spanner_instance_admin import (
 
 __all__ = (
     "OperationProgress",
+    "AutoscalingConfig",
     "CreateInstanceConfigMetadata",
     "CreateInstanceConfigRequest",
     "CreateInstanceMetadata",
