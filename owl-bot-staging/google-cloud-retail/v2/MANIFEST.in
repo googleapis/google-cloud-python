@@ -1,2 +1,0 @@
-recursive-include google/cloud/retail *.py
-recursive-include google/cloud/retail_v2 *.py

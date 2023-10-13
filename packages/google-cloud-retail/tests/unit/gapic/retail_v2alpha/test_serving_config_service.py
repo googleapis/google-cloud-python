@@ -3098,6 +3098,72 @@ def test_create_serving_config_rest(request_type):
         "personalization_spec": {"mode": 1},
         "solution_types": [1],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = serving_config_service.CreateServingConfigRequest.meta.fields[
+        "serving_config"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["serving_config"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["serving_config"][field])):
+                    del request_init["serving_config"][field][i][subfield]
+            else:
+                del request_init["serving_config"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3126,8 +3192,9 @@ def test_create_serving_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcr_serving_config.ServingConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcr_serving_config.ServingConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3233,8 +3300,9 @@ def test_create_serving_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcr_serving_config.ServingConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcr_serving_config.ServingConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3338,48 +3406,6 @@ def test_create_serving_config_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3"}
-    request_init["serving_config"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "model_id": "model_id_value",
-        "price_reranking_level": "price_reranking_level_value",
-        "facet_control_ids": ["facet_control_ids_value1", "facet_control_ids_value2"],
-        "dynamic_facet_spec": {"mode": 1},
-        "boost_control_ids": ["boost_control_ids_value1", "boost_control_ids_value2"],
-        "filter_control_ids": [
-            "filter_control_ids_value1",
-            "filter_control_ids_value2",
-        ],
-        "redirect_control_ids": [
-            "redirect_control_ids_value1",
-            "redirect_control_ids_value2",
-        ],
-        "twoway_synonyms_control_ids": [
-            "twoway_synonyms_control_ids_value1",
-            "twoway_synonyms_control_ids_value2",
-        ],
-        "oneway_synonyms_control_ids": [
-            "oneway_synonyms_control_ids_value1",
-            "oneway_synonyms_control_ids_value2",
-        ],
-        "do_not_associate_control_ids": [
-            "do_not_associate_control_ids_value1",
-            "do_not_associate_control_ids_value2",
-        ],
-        "replacement_control_ids": [
-            "replacement_control_ids_value1",
-            "replacement_control_ids_value2",
-        ],
-        "ignore_control_ids": [
-            "ignore_control_ids_value1",
-            "ignore_control_ids_value2",
-        ],
-        "diversity_level": "diversity_level_value",
-        "diversity_type": 2,
-        "enable_category_filter_level": "enable_category_filter_level_value",
-        "personalization_spec": {"mode": 1},
-        "solution_types": [1],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3421,8 +3447,9 @@ def test_create_serving_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcr_serving_config.ServingConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcr_serving_config.ServingConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3783,6 +3810,72 @@ def test_update_serving_config_rest(request_type):
         "personalization_spec": {"mode": 1},
         "solution_types": [1],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = serving_config_service.UpdateServingConfigRequest.meta.fields[
+        "serving_config"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["serving_config"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["serving_config"][field])):
+                    del request_init["serving_config"][field][i][subfield]
+            else:
+                del request_init["serving_config"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3811,8 +3904,9 @@ def test_update_serving_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcr_serving_config.ServingConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcr_serving_config.ServingConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3906,8 +4000,9 @@ def test_update_serving_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcr_serving_config.ServingConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcr_serving_config.ServingConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4000,48 +4095,6 @@ def test_update_serving_config_rest_bad_request(
             "name": "projects/sample1/locations/sample2/catalogs/sample3/servingConfigs/sample4"
         }
     }
-    request_init["serving_config"] = {
-        "name": "projects/sample1/locations/sample2/catalogs/sample3/servingConfigs/sample4",
-        "display_name": "display_name_value",
-        "model_id": "model_id_value",
-        "price_reranking_level": "price_reranking_level_value",
-        "facet_control_ids": ["facet_control_ids_value1", "facet_control_ids_value2"],
-        "dynamic_facet_spec": {"mode": 1},
-        "boost_control_ids": ["boost_control_ids_value1", "boost_control_ids_value2"],
-        "filter_control_ids": [
-            "filter_control_ids_value1",
-            "filter_control_ids_value2",
-        ],
-        "redirect_control_ids": [
-            "redirect_control_ids_value1",
-            "redirect_control_ids_value2",
-        ],
-        "twoway_synonyms_control_ids": [
-            "twoway_synonyms_control_ids_value1",
-            "twoway_synonyms_control_ids_value2",
-        ],
-        "oneway_synonyms_control_ids": [
-            "oneway_synonyms_control_ids_value1",
-            "oneway_synonyms_control_ids_value2",
-        ],
-        "do_not_associate_control_ids": [
-            "do_not_associate_control_ids_value1",
-            "do_not_associate_control_ids_value2",
-        ],
-        "replacement_control_ids": [
-            "replacement_control_ids_value1",
-            "replacement_control_ids_value2",
-        ],
-        "ignore_control_ids": [
-            "ignore_control_ids_value1",
-            "ignore_control_ids_value2",
-        ],
-        "diversity_level": "diversity_level_value",
-        "diversity_type": 2,
-        "enable_category_filter_level": "enable_category_filter_level_value",
-        "personalization_spec": {"mode": 1},
-        "solution_types": [1],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -4084,8 +4137,9 @@ def test_update_serving_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcr_serving_config.ServingConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcr_serving_config.ServingConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4169,8 +4223,9 @@ def test_get_serving_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = serving_config.ServingConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = serving_config.ServingConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4266,8 +4321,9 @@ def test_get_serving_config_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = serving_config.ServingConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = serving_config.ServingConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4396,8 +4452,9 @@ def test_get_serving_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = serving_config.ServingConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = serving_config.ServingConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4462,10 +4519,11 @@ def test_list_serving_configs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = serving_config_service.ListServingConfigsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = serving_config_service.ListServingConfigsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4547,10 +4605,11 @@ def test_list_serving_configs_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = serving_config_service.ListServingConfigsResponse.pb(
+            # Convert return value to protobuf type
+            return_value = serving_config_service.ListServingConfigsResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4688,10 +4747,11 @@ def test_list_serving_configs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = serving_config_service.ListServingConfigsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = serving_config_service.ListServingConfigsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4834,8 +4894,9 @@ def test_add_control_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcr_serving_config.ServingConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcr_serving_config.ServingConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4936,8 +4997,9 @@ def test_add_control_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcr_serving_config.ServingConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcr_serving_config.ServingConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5074,8 +5136,9 @@ def test_add_control_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcr_serving_config.ServingConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcr_serving_config.ServingConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5158,8 +5221,9 @@ def test_remove_control_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcr_serving_config.ServingConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcr_serving_config.ServingConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5260,8 +5324,9 @@ def test_remove_control_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcr_serving_config.ServingConfig.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcr_serving_config.ServingConfig.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5398,8 +5463,9 @@ def test_remove_control_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcr_serving_config.ServingConfig.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcr_serving_config.ServingConfig.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

@@ -3353,6 +3353,70 @@ def test_create_job_rest(request_type):
         "batch_mode_priority": 2023,
         "optimization": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = services.CreateJobRequest.meta.fields["job"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["job"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["job"][field])):
+                    del request_init["job"][field][i][subfield]
+            else:
+                del request_init["job"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3373,8 +3437,9 @@ def test_create_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3455,8 +3520,9 @@ def test_create_job_rest_required_fields(request_type=services.CreateJobRequest)
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.Job.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3548,258 +3614,6 @@ def test_create_job_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["job"] = {
-        "name": "name_value",
-        "input_uri": "input_uri_value",
-        "output_uri": "output_uri_value",
-        "template_id": "template_id_value",
-        "config": {
-            "inputs": [
-                {
-                    "key": "key_value",
-                    "uri": "uri_value",
-                    "preprocessing_config": {
-                        "color": {
-                            "saturation": 0.10980000000000001,
-                            "contrast": 0.878,
-                            "brightness": 0.1081,
-                        },
-                        "denoise": {"strength": 0.879, "tune": "tune_value"},
-                        "deblock": {"strength": 0.879, "enabled": True},
-                        "audio": {"lufs": 0.442, "high_boost": True, "low_boost": True},
-                        "crop": {
-                            "top_pixels": 1095,
-                            "bottom_pixels": 1417,
-                            "left_pixels": 1183,
-                            "right_pixels": 1298,
-                        },
-                        "pad": {
-                            "top_pixels": 1095,
-                            "bottom_pixels": 1417,
-                            "left_pixels": 1183,
-                            "right_pixels": 1298,
-                        },
-                        "deinterlace": {
-                            "yadif": {
-                                "mode": "mode_value",
-                                "disable_spatial_interlacing": True,
-                                "parity": "parity_value",
-                                "deinterlace_all_frames": True,
-                            },
-                            "bwdif": {
-                                "mode": "mode_value",
-                                "parity": "parity_value",
-                                "deinterlace_all_frames": True,
-                            },
-                        },
-                    },
-                }
-            ],
-            "edit_list": [
-                {
-                    "key": "key_value",
-                    "inputs": ["inputs_value1", "inputs_value2"],
-                    "end_time_offset": {"seconds": 751, "nanos": 543},
-                    "start_time_offset": {},
-                }
-            ],
-            "elementary_streams": [
-                {
-                    "key": "key_value",
-                    "video_stream": {
-                        "h264": {
-                            "width_pixels": 1300,
-                            "height_pixels": 1389,
-                            "frame_rate": 0.1046,
-                            "bitrate_bps": 1167,
-                            "pixel_format": "pixel_format_value",
-                            "rate_control_mode": "rate_control_mode_value",
-                            "crf_level": 946,
-                            "allow_open_gop": True,
-                            "gop_frame_count": 1592,
-                            "gop_duration": {},
-                            "enable_two_pass": True,
-                            "vbv_size_bits": 1401,
-                            "vbv_fullness_bits": 1834,
-                            "entropy_coder": "entropy_coder_value",
-                            "b_pyramid": True,
-                            "b_frame_count": 1364,
-                            "aq_strength": 0.1184,
-                            "profile": "profile_value",
-                            "tune": "tune_value",
-                            "preset": "preset_value",
-                        },
-                        "h265": {
-                            "width_pixels": 1300,
-                            "height_pixels": 1389,
-                            "frame_rate": 0.1046,
-                            "bitrate_bps": 1167,
-                            "pixel_format": "pixel_format_value",
-                            "rate_control_mode": "rate_control_mode_value",
-                            "crf_level": 946,
-                            "allow_open_gop": True,
-                            "gop_frame_count": 1592,
-                            "gop_duration": {},
-                            "enable_two_pass": True,
-                            "vbv_size_bits": 1401,
-                            "vbv_fullness_bits": 1834,
-                            "b_pyramid": True,
-                            "b_frame_count": 1364,
-                            "aq_strength": 0.1184,
-                            "profile": "profile_value",
-                            "tune": "tune_value",
-                            "preset": "preset_value",
-                        },
-                        "vp9": {
-                            "width_pixels": 1300,
-                            "height_pixels": 1389,
-                            "frame_rate": 0.1046,
-                            "bitrate_bps": 1167,
-                            "pixel_format": "pixel_format_value",
-                            "rate_control_mode": "rate_control_mode_value",
-                            "crf_level": 946,
-                            "gop_frame_count": 1592,
-                            "gop_duration": {},
-                            "profile": "profile_value",
-                        },
-                    },
-                    "audio_stream": {
-                        "codec": "codec_value",
-                        "bitrate_bps": 1167,
-                        "channel_count": 1377,
-                        "channel_layout": [
-                            "channel_layout_value1",
-                            "channel_layout_value2",
-                        ],
-                        "mapping_": [
-                            {
-                                "atom_key": "atom_key_value",
-                                "input_key": "input_key_value",
-                                "input_track": 1188,
-                                "input_channel": 1384,
-                                "output_channel": 1513,
-                                "gain_db": 0.708,
-                            }
-                        ],
-                        "sample_rate_hertz": 1817,
-                        "language_code": "language_code_value",
-                        "display_name": "display_name_value",
-                    },
-                    "text_stream": {
-                        "codec": "codec_value",
-                        "language_code": "language_code_value",
-                        "mapping_": [
-                            {
-                                "atom_key": "atom_key_value",
-                                "input_key": "input_key_value",
-                                "input_track": 1188,
-                            }
-                        ],
-                        "display_name": "display_name_value",
-                    },
-                }
-            ],
-            "mux_streams": [
-                {
-                    "key": "key_value",
-                    "file_name": "file_name_value",
-                    "container": "container_value",
-                    "elementary_streams": [
-                        "elementary_streams_value1",
-                        "elementary_streams_value2",
-                    ],
-                    "segment_settings": {
-                        "segment_duration": {},
-                        "individual_segments": True,
-                    },
-                    "encryption_id": "encryption_id_value",
-                }
-            ],
-            "manifests": [
-                {
-                    "file_name": "file_name_value",
-                    "type_": 1,
-                    "mux_streams": ["mux_streams_value1", "mux_streams_value2"],
-                    "dash": {"segment_reference_scheme": 1},
-                }
-            ],
-            "output": {"uri": "uri_value"},
-            "ad_breaks": [{"start_time_offset": {}}],
-            "pubsub_destination": {"topic": "topic_value"},
-            "sprite_sheets": [
-                {
-                    "format_": "format__value",
-                    "file_prefix": "file_prefix_value",
-                    "sprite_width_pixels": 2058,
-                    "sprite_height_pixels": 2147,
-                    "column_count": 1302,
-                    "row_count": 992,
-                    "start_time_offset": {},
-                    "end_time_offset": {},
-                    "total_count": 1196,
-                    "interval": {},
-                    "quality": 777,
-                }
-            ],
-            "overlays": [
-                {
-                    "image": {
-                        "uri": "uri_value",
-                        "resolution": {"x": 0.12, "y": 0.121},
-                        "alpha": 0.518,
-                    },
-                    "animations": [
-                        {
-                            "animation_static": {"xy": {}, "start_time_offset": {}},
-                            "animation_fade": {
-                                "fade_type": 1,
-                                "xy": {},
-                                "start_time_offset": {},
-                                "end_time_offset": {},
-                            },
-                            "animation_end": {"start_time_offset": {}},
-                        }
-                    ],
-                }
-            ],
-            "encryptions": [
-                {
-                    "id": "id_value",
-                    "aes_128": {},
-                    "sample_aes": {},
-                    "mpeg_cenc": {"scheme": "scheme_value"},
-                    "secret_manager_key_source": {
-                        "secret_version": "secret_version_value"
-                    },
-                    "drm_systems": {
-                        "widevine": {},
-                        "fairplay": {},
-                        "playready": {},
-                        "clearkey": {},
-                    },
-                }
-            ],
-        },
-        "state": 1,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "start_time": {},
-        "end_time": {},
-        "ttl_after_completion_days": 2670,
-        "labels": {},
-        "error": {
-            "code": 411,
-            "message": "message_value",
-            "details": [
-                {
-                    "type_url": "type.googleapis.com/google.protobuf.Duration",
-                    "value": b"\x08\x0c\x10\xdb\x07",
-                }
-            ],
-        },
-        "mode": 1,
-        "batch_mode_priority": 2023,
-        "optimization": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3838,8 +3652,9 @@ def test_create_job_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3905,8 +3720,9 @@ def test_list_jobs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = services.ListJobsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = services.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3989,8 +3805,9 @@ def test_list_jobs_rest_required_fields(request_type=services.ListJobsRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = services.ListJobsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = services.ListJobsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4123,8 +3940,9 @@ def test_list_jobs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = services.ListJobsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = services.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4251,8 +4069,9 @@ def test_get_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4332,8 +4151,9 @@ def test_get_job_rest_required_fields(request_type=services.GetJobRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.Job.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4454,8 +4274,9 @@ def test_get_job_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4988,6 +4809,70 @@ def test_create_job_template_rest(request_type):
         },
         "labels": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = services.CreateJobTemplateRequest.meta.fields["job_template"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["job_template"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["job_template"][field])):
+                    del request_init["job_template"][field][i][subfield]
+            else:
+                del request_init["job_template"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5000,8 +4885,9 @@ def test_create_job_template_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.JobTemplate.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.JobTemplate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5086,8 +4972,9 @@ def test_create_job_template_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.JobTemplate.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.JobTemplate.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5190,237 +5077,6 @@ def test_create_job_template_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["job_template"] = {
-        "name": "name_value",
-        "config": {
-            "inputs": [
-                {
-                    "key": "key_value",
-                    "uri": "uri_value",
-                    "preprocessing_config": {
-                        "color": {
-                            "saturation": 0.10980000000000001,
-                            "contrast": 0.878,
-                            "brightness": 0.1081,
-                        },
-                        "denoise": {"strength": 0.879, "tune": "tune_value"},
-                        "deblock": {"strength": 0.879, "enabled": True},
-                        "audio": {"lufs": 0.442, "high_boost": True, "low_boost": True},
-                        "crop": {
-                            "top_pixels": 1095,
-                            "bottom_pixels": 1417,
-                            "left_pixels": 1183,
-                            "right_pixels": 1298,
-                        },
-                        "pad": {
-                            "top_pixels": 1095,
-                            "bottom_pixels": 1417,
-                            "left_pixels": 1183,
-                            "right_pixels": 1298,
-                        },
-                        "deinterlace": {
-                            "yadif": {
-                                "mode": "mode_value",
-                                "disable_spatial_interlacing": True,
-                                "parity": "parity_value",
-                                "deinterlace_all_frames": True,
-                            },
-                            "bwdif": {
-                                "mode": "mode_value",
-                                "parity": "parity_value",
-                                "deinterlace_all_frames": True,
-                            },
-                        },
-                    },
-                }
-            ],
-            "edit_list": [
-                {
-                    "key": "key_value",
-                    "inputs": ["inputs_value1", "inputs_value2"],
-                    "end_time_offset": {"seconds": 751, "nanos": 543},
-                    "start_time_offset": {},
-                }
-            ],
-            "elementary_streams": [
-                {
-                    "key": "key_value",
-                    "video_stream": {
-                        "h264": {
-                            "width_pixels": 1300,
-                            "height_pixels": 1389,
-                            "frame_rate": 0.1046,
-                            "bitrate_bps": 1167,
-                            "pixel_format": "pixel_format_value",
-                            "rate_control_mode": "rate_control_mode_value",
-                            "crf_level": 946,
-                            "allow_open_gop": True,
-                            "gop_frame_count": 1592,
-                            "gop_duration": {},
-                            "enable_two_pass": True,
-                            "vbv_size_bits": 1401,
-                            "vbv_fullness_bits": 1834,
-                            "entropy_coder": "entropy_coder_value",
-                            "b_pyramid": True,
-                            "b_frame_count": 1364,
-                            "aq_strength": 0.1184,
-                            "profile": "profile_value",
-                            "tune": "tune_value",
-                            "preset": "preset_value",
-                        },
-                        "h265": {
-                            "width_pixels": 1300,
-                            "height_pixels": 1389,
-                            "frame_rate": 0.1046,
-                            "bitrate_bps": 1167,
-                            "pixel_format": "pixel_format_value",
-                            "rate_control_mode": "rate_control_mode_value",
-                            "crf_level": 946,
-                            "allow_open_gop": True,
-                            "gop_frame_count": 1592,
-                            "gop_duration": {},
-                            "enable_two_pass": True,
-                            "vbv_size_bits": 1401,
-                            "vbv_fullness_bits": 1834,
-                            "b_pyramid": True,
-                            "b_frame_count": 1364,
-                            "aq_strength": 0.1184,
-                            "profile": "profile_value",
-                            "tune": "tune_value",
-                            "preset": "preset_value",
-                        },
-                        "vp9": {
-                            "width_pixels": 1300,
-                            "height_pixels": 1389,
-                            "frame_rate": 0.1046,
-                            "bitrate_bps": 1167,
-                            "pixel_format": "pixel_format_value",
-                            "rate_control_mode": "rate_control_mode_value",
-                            "crf_level": 946,
-                            "gop_frame_count": 1592,
-                            "gop_duration": {},
-                            "profile": "profile_value",
-                        },
-                    },
-                    "audio_stream": {
-                        "codec": "codec_value",
-                        "bitrate_bps": 1167,
-                        "channel_count": 1377,
-                        "channel_layout": [
-                            "channel_layout_value1",
-                            "channel_layout_value2",
-                        ],
-                        "mapping_": [
-                            {
-                                "atom_key": "atom_key_value",
-                                "input_key": "input_key_value",
-                                "input_track": 1188,
-                                "input_channel": 1384,
-                                "output_channel": 1513,
-                                "gain_db": 0.708,
-                            }
-                        ],
-                        "sample_rate_hertz": 1817,
-                        "language_code": "language_code_value",
-                        "display_name": "display_name_value",
-                    },
-                    "text_stream": {
-                        "codec": "codec_value",
-                        "language_code": "language_code_value",
-                        "mapping_": [
-                            {
-                                "atom_key": "atom_key_value",
-                                "input_key": "input_key_value",
-                                "input_track": 1188,
-                            }
-                        ],
-                        "display_name": "display_name_value",
-                    },
-                }
-            ],
-            "mux_streams": [
-                {
-                    "key": "key_value",
-                    "file_name": "file_name_value",
-                    "container": "container_value",
-                    "elementary_streams": [
-                        "elementary_streams_value1",
-                        "elementary_streams_value2",
-                    ],
-                    "segment_settings": {
-                        "segment_duration": {},
-                        "individual_segments": True,
-                    },
-                    "encryption_id": "encryption_id_value",
-                }
-            ],
-            "manifests": [
-                {
-                    "file_name": "file_name_value",
-                    "type_": 1,
-                    "mux_streams": ["mux_streams_value1", "mux_streams_value2"],
-                    "dash": {"segment_reference_scheme": 1},
-                }
-            ],
-            "output": {"uri": "uri_value"},
-            "ad_breaks": [{"start_time_offset": {}}],
-            "pubsub_destination": {"topic": "topic_value"},
-            "sprite_sheets": [
-                {
-                    "format_": "format__value",
-                    "file_prefix": "file_prefix_value",
-                    "sprite_width_pixels": 2058,
-                    "sprite_height_pixels": 2147,
-                    "column_count": 1302,
-                    "row_count": 992,
-                    "start_time_offset": {},
-                    "end_time_offset": {},
-                    "total_count": 1196,
-                    "interval": {},
-                    "quality": 777,
-                }
-            ],
-            "overlays": [
-                {
-                    "image": {
-                        "uri": "uri_value",
-                        "resolution": {"x": 0.12, "y": 0.121},
-                        "alpha": 0.518,
-                    },
-                    "animations": [
-                        {
-                            "animation_static": {"xy": {}, "start_time_offset": {}},
-                            "animation_fade": {
-                                "fade_type": 1,
-                                "xy": {},
-                                "start_time_offset": {},
-                                "end_time_offset": {},
-                            },
-                            "animation_end": {"start_time_offset": {}},
-                        }
-                    ],
-                }
-            ],
-            "encryptions": [
-                {
-                    "id": "id_value",
-                    "aes_128": {},
-                    "sample_aes": {},
-                    "mpeg_cenc": {"scheme": "scheme_value"},
-                    "secret_manager_key_source": {
-                        "secret_version": "secret_version_value"
-                    },
-                    "drm_systems": {
-                        "widevine": {},
-                        "fairplay": {},
-                        "playready": {},
-                        "clearkey": {},
-                    },
-                }
-            ],
-        },
-        "labels": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -5460,8 +5116,9 @@ def test_create_job_template_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.JobTemplate.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.JobTemplate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5529,8 +5186,9 @@ def test_list_job_templates_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = services.ListJobTemplatesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = services.ListJobTemplatesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5615,8 +5273,9 @@ def test_list_job_templates_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = services.ListJobTemplatesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = services.ListJobTemplatesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5751,8 +5410,9 @@ def test_list_job_templates_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = services.ListJobTemplatesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = services.ListJobTemplatesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5872,8 +5532,9 @@ def test_get_job_template_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.JobTemplate.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.JobTemplate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5948,8 +5609,9 @@ def test_get_job_template_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.JobTemplate.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.JobTemplate.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6074,8 +5736,9 @@ def test_get_job_template_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.JobTemplate.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.JobTemplate.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
