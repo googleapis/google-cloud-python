@@ -89,7 +89,6 @@ nox.options.sessions = [
     "system",
     "doctest",
     "cover",
-    "release_dry_run",
 ]
 
 # Error if a python version is missing

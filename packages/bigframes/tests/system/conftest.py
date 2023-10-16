@@ -17,6 +17,7 @@ import hashlib
 import logging
 import math
 import pathlib
+import textwrap
 import typing
 from typing import Dict, Optional
 
@@ -793,6 +794,36 @@ WHERE
         session.bqclient.query(sql).result()
     finally:
         return model_name
+
+
+@pytest.fixture(scope="session")
+def usa_names_grouped_table(
+    session: bigframes.Session, dataset_id_permanent
+) -> bigquery.Table:
+    """Provides a table with primary key(s) set."""
+    table_id = f"{dataset_id_permanent}.usa_names_grouped"
+    try:
+        return session.bqclient.get_table(table_id)
+    except google.cloud.exceptions.NotFound:
+        query = textwrap.dedent(
+            f"""
+            CREATE TABLE `{dataset_id_permanent}.usa_names_grouped`
+            (
+                total_people INT64,
+                name STRING,
+                gender STRING,
+                year INT64,
+                PRIMARY KEY(name, gender, year) NOT ENFORCED
+            )
+            AS
+            SELECT SUM(`number`) AS total_people, name, gender, year
+            FROM `bigquery-public-data.usa_names.usa_1910_2013`
+            GROUP BY name, gender, year
+            """
+        )
+        job = session.bqclient.query(query)
+        job.result()
+        return session.bqclient.get_table(table_id)
 
 
 @pytest.fixture()

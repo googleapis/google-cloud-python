@@ -498,6 +498,8 @@ class Session(
 
         See also: :meth:`Session.read_gbq`.
         """
+        # NOTE: This method doesn't (yet) exist in pandas or pandas-gbq, so
+        # these docstrings are inline.
         return self._read_gbq_query(
             query=query,
             index_col=index_col,
@@ -515,8 +517,6 @@ class Session(
         max_results: Optional[int] = None,
         api_name: str,
     ) -> dataframe.DataFrame:
-        # NOTE: This method doesn't (yet) exist in pandas or pandas-gbq, so
-        # these docstrings are inline.
         if isinstance(index_col, str):
             index_cols = [index_col]
         else:
@@ -561,6 +561,8 @@ class Session(
 
         See also: :meth:`Session.read_gbq`.
         """
+        # NOTE: This method doesn't (yet) exist in pandas or pandas-gbq, so
+        # these docstrings are inline.
         return self._read_gbq_table(
             query=query,
             index_col=index_col,
@@ -568,6 +570,62 @@ class Session(
             max_results=max_results,
             api_name="read_gbq_table",
         )
+
+    def _read_gbq_table_to_ibis_with_total_ordering(
+        self,
+        table_ref: bigquery.table.TableReference,
+        *,
+        api_name: str,
+    ) -> Tuple[ibis_types.Table, Optional[Sequence[str]]]:
+        """Create a read-only Ibis table expression representing a table.
+
+        If we can get a total ordering from the table, such as via primary key
+        column(s), then return those too so that ordering generation can be
+        avoided.
+        """
+        if table_ref.dataset_id.upper() == "_SESSION":
+            # _SESSION tables aren't supported by the tables.get REST API.
+            return (
+                self.ibis_client.sql(
+                    f"SELECT * FROM `_SESSION`.`{table_ref.table_id}`"
+                ),
+                None,
+            )
+
+        table_expression = self.ibis_client.table(
+            table_ref.table_id,
+            database=f"{table_ref.project}.{table_ref.dataset_id}",
+        )
+
+        # If there are primary keys defined, the query engine assumes these
+        # columns are unique, even if the constraint is not enforced. We make
+        # the same assumption and use these columns as the total ordering keys.
+        table = self.bqclient.get_table(table_ref)
+
+        # TODO(b/305264153): Use public properties to fetch primary keys once
+        # added to google-cloud-bigquery.
+        primary_keys = (
+            table._properties.get("tableConstraints", {})
+            .get("primaryKey", {})
+            .get("columns")
+        )
+
+        if not primary_keys:
+            return table_expression, None
+        else:
+            # Read from a snapshot since we won't have to copy the table data to create a total ordering.
+            job_config = bigquery.QueryJobConfig()
+            job_config.labels["bigframes-api"] = api_name
+            current_timestamp = list(
+                self.bqclient.query(
+                    "SELECT CURRENT_TIMESTAMP() AS `current_timestamp`",
+                    job_config=job_config,
+                ).result()
+            )[0][0]
+            table_expression = self.ibis_client.sql(
+                bigframes_io.create_snapshot_sql(table_ref, current_timestamp)
+            )
+            return table_expression, primary_keys
 
     def _read_gbq_table(
         self,
@@ -581,24 +639,19 @@ class Session(
         if max_results and max_results <= 0:
             raise ValueError("`max_results` should be a positive number.")
 
-        # NOTE: This method doesn't (yet) exist in pandas or pandas-gbq, so
-        # these docstrings are inline.
         # TODO(swast): Can we re-use the temp table from other reads in the
         # session, if the original table wasn't modified?
         table_ref = bigquery.table.TableReference.from_string(
             query, default_project=self.bqclient.project
         )
 
-        if table_ref.dataset_id.upper() == "_SESSION":
-            # _SESSION tables aren't supported by the tables.get REST API.
-            table_expression = self.ibis_client.sql(
-                f"SELECT * FROM `_SESSION`.`{table_ref.table_id}`"
-            )
-        else:
-            table_expression = self.ibis_client.table(
-                table_ref.table_id,
-                database=f"{table_ref.project}.{table_ref.dataset_id}",
-            )
+        (
+            table_expression,
+            total_ordering_cols,
+        ) = self._read_gbq_table_to_ibis_with_total_ordering(
+            table_ref,
+            api_name=api_name,
+        )
 
         for key in col_order:
             if key not in table_expression.columns:
@@ -624,7 +677,34 @@ class Session(
         ordering = None
         is_total_ordering = False
 
-        if len(index_cols) != 0:
+        if total_ordering_cols is not None:
+            # Note: currently, this a table has a total ordering only when the
+            # primary key(s) are set on a table. The query engine assumes such
+            # columns are unique, even if not enforced.
+            is_total_ordering = True
+            ordering = core.ExpressionOrdering(
+                ordering_value_columns=[
+                    core.OrderingColumnReference(column_id)
+                    for column_id in total_ordering_cols
+                ],
+                total_ordering_columns=frozenset(total_ordering_cols),
+            )
+
+            if len(index_cols) != 0:
+                index_labels = typing.cast(List[Optional[str]], index_cols)
+            else:
+                # Use the total_ordering_cols to project offsets to use as the default index.
+                table_expression = table_expression.order_by(index_cols)
+                default_index_id = guid.generate_guid("bigframes_index_")
+                default_index_col = (
+                    ibis.row_number().cast(ibis_dtypes.int64).name(default_index_id)
+                )
+                table_expression = table_expression.mutate(
+                    **{default_index_id: default_index_col}
+                )
+                index_cols = [default_index_id]
+                index_labels = [None]
+        elif len(index_cols) != 0:
             index_labels = typing.cast(List[Optional[str]], index_cols)
             distinct_table = table_expression.select(*index_cols).distinct()
             is_unique_sql = f"""WITH full_table AS (
