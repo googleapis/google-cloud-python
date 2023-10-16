@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.11.3](https://github.com/googleapis/python-automl/compare/v2.11.2...v2.11.3) (2023-10-09)
+
+
+### Documentation
+
+* Minor formatting ([e146232](https://github.com/googleapis/python-automl/commit/e1462325c948e800edc93ba45f437d3e66cb5556))
+
 ## [2.11.2](https://github.com/googleapis/python-automl/compare/v2.11.1...v2.11.2) (2023-07-04)
 
 
