@@ -7644,6 +7644,70 @@ def test_create_dataset_rest(request_type):
         "create_time": {},
         "etag": "etag_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.CreateDatasetRequest.meta.fields["dataset"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["dataset"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["dataset"][field])):
+                    del request_init["dataset"][field][i][subfield]
+            else:
+                del request_init["dataset"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -7660,8 +7724,9 @@ def test_create_dataset_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gca_dataset.Dataset.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gca_dataset.Dataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7739,8 +7804,9 @@ def test_create_dataset_rest_required_fields(request_type=service.CreateDatasetR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gca_dataset.Dataset.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gca_dataset.Dataset.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7830,33 +7896,6 @@ def test_create_dataset_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["dataset"] = {
-        "translation_dataset_metadata": {
-            "source_language_code": "source_language_code_value",
-            "target_language_code": "target_language_code_value",
-        },
-        "image_classification_dataset_metadata": {"classification_type": 1},
-        "text_classification_dataset_metadata": {"classification_type": 1},
-        "image_object_detection_dataset_metadata": {},
-        "video_classification_dataset_metadata": {},
-        "video_object_tracking_dataset_metadata": {},
-        "text_extraction_dataset_metadata": {},
-        "text_sentiment_dataset_metadata": {"sentiment_max": 1404},
-        "tables_dataset_metadata": {
-            "primary_table_spec_id": "primary_table_spec_id_value",
-            "target_column_spec_id": "target_column_spec_id_value",
-            "weight_column_spec_id": "weight_column_spec_id_value",
-            "ml_use_column_spec_id": "ml_use_column_spec_id_value",
-            "target_column_correlations": {},
-            "stats_update_time": {"seconds": 751, "nanos": 543},
-        },
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "example_count": 1396,
-        "create_time": {},
-        "etag": "etag_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -7899,8 +7938,9 @@ def test_create_dataset_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gca_dataset.Dataset.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gca_dataset.Dataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7974,8 +8014,9 @@ def test_get_dataset_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = dataset.Dataset.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = dataset.Dataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8052,8 +8093,9 @@ def test_get_dataset_rest_required_fields(request_type=service.GetDatasetRequest
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = dataset.Dataset.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = dataset.Dataset.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8172,8 +8214,9 @@ def test_get_dataset_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = dataset.Dataset.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = dataset.Dataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8238,8 +8281,9 @@ def test_list_datasets_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListDatasetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListDatasetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8320,8 +8364,9 @@ def test_list_datasets_rest_required_fields(request_type=service.ListDatasetsReq
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = service.ListDatasetsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = service.ListDatasetsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8451,8 +8496,9 @@ def test_list_datasets_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListDatasetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListDatasetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8589,6 +8635,70 @@ def test_update_dataset_rest(request_type):
         "create_time": {},
         "etag": "etag_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.UpdateDatasetRequest.meta.fields["dataset"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["dataset"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["dataset"][field])):
+                    del request_init["dataset"][field][i][subfield]
+            else:
+                del request_init["dataset"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -8605,8 +8715,9 @@ def test_update_dataset_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gca_dataset.Dataset.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gca_dataset.Dataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8681,8 +8792,9 @@ def test_update_dataset_rest_required_fields(request_type=service.UpdateDatasetR
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gca_dataset.Dataset.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gca_dataset.Dataset.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8766,33 +8878,6 @@ def test_update_dataset_rest_bad_request(
     request_init = {
         "dataset": {"name": "projects/sample1/locations/sample2/datasets/sample3"}
     }
-    request_init["dataset"] = {
-        "translation_dataset_metadata": {
-            "source_language_code": "source_language_code_value",
-            "target_language_code": "target_language_code_value",
-        },
-        "image_classification_dataset_metadata": {"classification_type": 1},
-        "text_classification_dataset_metadata": {"classification_type": 1},
-        "image_object_detection_dataset_metadata": {},
-        "video_classification_dataset_metadata": {},
-        "video_object_tracking_dataset_metadata": {},
-        "text_extraction_dataset_metadata": {},
-        "text_sentiment_dataset_metadata": {"sentiment_max": 1404},
-        "tables_dataset_metadata": {
-            "primary_table_spec_id": "primary_table_spec_id_value",
-            "target_column_spec_id": "target_column_spec_id_value",
-            "weight_column_spec_id": "weight_column_spec_id_value",
-            "ml_use_column_spec_id": "ml_use_column_spec_id_value",
-            "target_column_correlations": {},
-            "stats_update_time": {"seconds": 751, "nanos": 543},
-        },
-        "name": "projects/sample1/locations/sample2/datasets/sample3",
-        "display_name": "display_name_value",
-        "description": "description_value",
-        "example_count": 1396,
-        "create_time": {},
-        "etag": "etag_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -8836,8 +8921,9 @@ def test_update_dataset_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gca_dataset.Dataset.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gca_dataset.Dataset.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9715,8 +9801,9 @@ def test_get_annotation_spec_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = annotation_spec.AnnotationSpec.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = annotation_spec.AnnotationSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9793,8 +9880,9 @@ def test_get_annotation_spec_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = annotation_spec.AnnotationSpec.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = annotation_spec.AnnotationSpec.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -9921,8 +10009,9 @@ def test_get_annotation_spec_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = annotation_spec.AnnotationSpec.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = annotation_spec.AnnotationSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9994,8 +10083,9 @@ def test_get_table_spec_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = table_spec.TableSpec.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = table_spec.TableSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10075,8 +10165,9 @@ def test_get_table_spec_rest_required_fields(request_type=service.GetTableSpecRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = table_spec.TableSpec.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = table_spec.TableSpec.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10199,8 +10290,9 @@ def test_get_table_spec_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = table_spec.TableSpec.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = table_spec.TableSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -10265,8 +10357,9 @@ def test_list_table_specs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListTableSpecsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListTableSpecsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10350,8 +10443,9 @@ def test_list_table_specs_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = service.ListTableSpecsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = service.ListTableSpecsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10484,8 +10578,9 @@ def test_list_table_specs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListTableSpecsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListTableSpecsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -10616,6 +10711,70 @@ def test_update_table_spec_rest(request_type):
         ],
         "etag": "etag_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.UpdateTableSpecRequest.meta.fields["table_spec"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["table_spec"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["table_spec"][field])):
+                    del request_init["table_spec"][field][i][subfield]
+            else:
+                del request_init["table_spec"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10633,8 +10792,9 @@ def test_update_table_spec_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gca_table_spec.TableSpec.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gca_table_spec.TableSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10712,8 +10872,9 @@ def test_update_table_spec_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gca_table_spec.TableSpec.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gca_table_spec.TableSpec.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10801,23 +10962,6 @@ def test_update_table_spec_rest_bad_request(
             "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4"
         }
     }
-    request_init["table_spec"] = {
-        "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4",
-        "time_column_spec_id": "time_column_spec_id_value",
-        "row_count": 992,
-        "valid_row_count": 1615,
-        "column_count": 1302,
-        "input_configs": [
-            {
-                "gcs_source": {
-                    "input_uris": ["input_uris_value1", "input_uris_value2"]
-                },
-                "bigquery_source": {"input_uri": "input_uri_value"},
-                "params": {},
-            }
-        ],
-        "etag": "etag_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -10859,8 +11003,9 @@ def test_update_table_spec_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gca_table_spec.TableSpec.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gca_table_spec.TableSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -10929,8 +11074,9 @@ def test_get_column_spec_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = column_spec.ColumnSpec.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = column_spec.ColumnSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11009,8 +11155,9 @@ def test_get_column_spec_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = column_spec.ColumnSpec.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = column_spec.ColumnSpec.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11135,8 +11282,9 @@ def test_get_column_spec_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = column_spec.ColumnSpec.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = column_spec.ColumnSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11203,8 +11351,9 @@ def test_list_column_specs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListColumnSpecsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListColumnSpecsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11288,8 +11437,9 @@ def test_list_column_specs_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = service.ListColumnSpecsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = service.ListColumnSpecsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11424,8 +11574,9 @@ def test_list_column_specs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListColumnSpecsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListColumnSpecsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11577,6 +11728,70 @@ def test_update_column_spec_rest(request_type):
         ],
         "etag": "etag_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.UpdateColumnSpecRequest.meta.fields["column_spec"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["column_spec"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["column_spec"][field])):
+                    del request_init["column_spec"][field][i][subfield]
+            else:
+                del request_init["column_spec"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -11591,8 +11806,9 @@ def test_update_column_spec_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gca_column_spec.ColumnSpec.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gca_column_spec.ColumnSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11667,8 +11883,9 @@ def test_update_column_spec_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gca_column_spec.ColumnSpec.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gca_column_spec.ColumnSpec.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11758,44 +11975,6 @@ def test_update_column_spec_rest_bad_request(
             "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4/columnSpecs/sample5"
         }
     }
-    request_init["column_spec"] = {
-        "name": "projects/sample1/locations/sample2/datasets/sample3/tableSpecs/sample4/columnSpecs/sample5",
-        "data_type": {
-            "list_element_type": {},
-            "struct_type": {"fields": {}},
-            "time_format": "time_format_value",
-            "type_code": 3,
-            "nullable": True,
-        },
-        "display_name": "display_name_value",
-        "data_stats": {
-            "float64_stats": {
-                "mean": 0.417,
-                "standard_deviation": 0.1907,
-                "quantiles": [0.983, 0.984],
-                "histogram_buckets": [{"min_": 0.419, "max_": 0.421, "count": 553}],
-            },
-            "string_stats": {
-                "top_unigram_stats": [{"value": "value_value", "count": 553}]
-            },
-            "timestamp_stats": {"granular_stats": {}},
-            "array_stats": {"member_stats": {}},
-            "struct_stats": {"field_stats": {}},
-            "category_stats": {
-                "top_category_stats": [{"value": "value_value", "count": 553}]
-            },
-            "distinct_value_count": 2150,
-            "null_value_count": 1727,
-            "valid_value_count": 1812,
-        },
-        "top_correlated_columns": [
-            {
-                "column_spec_id": "column_spec_id_value",
-                "correlation_stats": {"cramers_v": 0.962},
-            }
-        ],
-        "etag": "etag_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -11837,8 +12016,9 @@ def test_update_column_spec_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gca_column_spec.ColumnSpec.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gca_column_spec.ColumnSpec.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11982,6 +12162,70 @@ def test_create_model_rest(request_type):
         "update_time": {},
         "deployment_state": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = service.CreateModelRequest.meta.fields["model"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["model"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["model"][field])):
+                    del request_init["model"][field][i][subfield]
+            else:
+                del request_init["model"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -12158,97 +12402,6 @@ def test_create_model_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["model"] = {
-        "translation_model_metadata": {
-            "base_model": "base_model_value",
-            "source_language_code": "source_language_code_value",
-            "target_language_code": "target_language_code_value",
-        },
-        "image_classification_model_metadata": {
-            "base_model_id": "base_model_id_value",
-            "train_budget": 1272,
-            "train_cost": 1078,
-            "stop_reason": "stop_reason_value",
-            "model_type": "model_type_value",
-            "node_qps": 0.857,
-            "node_count": 1070,
-        },
-        "text_classification_model_metadata": {"classification_type": 1},
-        "image_object_detection_model_metadata": {
-            "model_type": "model_type_value",
-            "node_count": 1070,
-            "node_qps": 0.857,
-            "stop_reason": "stop_reason_value",
-            "train_budget_milli_node_hours": 3075,
-            "train_cost_milli_node_hours": 2881,
-        },
-        "video_classification_model_metadata": {},
-        "video_object_tracking_model_metadata": {},
-        "text_extraction_model_metadata": {"model_hint": "model_hint_value"},
-        "tables_model_metadata": {
-            "optimization_objective_recall_value": 0.37270000000000003,
-            "optimization_objective_precision_value": 0.4072,
-            "target_column_spec": {
-                "name": "name_value",
-                "data_type": {
-                    "list_element_type": {},
-                    "struct_type": {"fields": {}},
-                    "time_format": "time_format_value",
-                    "type_code": 3,
-                    "nullable": True,
-                },
-                "display_name": "display_name_value",
-                "data_stats": {
-                    "float64_stats": {
-                        "mean": 0.417,
-                        "standard_deviation": 0.1907,
-                        "quantiles": [0.983, 0.984],
-                        "histogram_buckets": [
-                            {"min_": 0.419, "max_": 0.421, "count": 553}
-                        ],
-                    },
-                    "string_stats": {
-                        "top_unigram_stats": [{"value": "value_value", "count": 553}]
-                    },
-                    "timestamp_stats": {"granular_stats": {}},
-                    "array_stats": {"member_stats": {}},
-                    "struct_stats": {"field_stats": {}},
-                    "category_stats": {
-                        "top_category_stats": [{"value": "value_value", "count": 553}]
-                    },
-                    "distinct_value_count": 2150,
-                    "null_value_count": 1727,
-                    "valid_value_count": 1812,
-                },
-                "top_correlated_columns": [
-                    {
-                        "column_spec_id": "column_spec_id_value",
-                        "correlation_stats": {"cramers_v": 0.962},
-                    }
-                ],
-                "etag": "etag_value",
-            },
-            "input_feature_column_specs": {},
-            "optimization_objective": "optimization_objective_value",
-            "tables_model_column_info": [
-                {
-                    "column_spec_name": "column_spec_name_value",
-                    "column_display_name": "column_display_name_value",
-                    "feature_importance": 0.1917,
-                }
-            ],
-            "train_budget_milli_node_hours": 3075,
-            "train_cost_milli_node_hours": 2881,
-            "disable_early_stopping": True,
-        },
-        "text_sentiment_model_metadata": {},
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "dataset_id": "dataset_id_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "deployment_state": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -12364,8 +12517,9 @@ def test_get_model_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = model.Model.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = model.Model.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12441,8 +12595,9 @@ def test_get_model_rest_required_fields(request_type=service.GetModelRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = model.Model.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = model.Model.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12561,8 +12716,9 @@ def test_get_model_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = model.Model.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = model.Model.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12627,8 +12783,9 @@ def test_list_models_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListModelsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListModelsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12709,8 +12866,9 @@ def test_list_models_rest_required_fields(request_type=service.ListModelsRequest
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = service.ListModelsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = service.ListModelsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12840,8 +12998,9 @@ def test_list_models_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListModelsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListModelsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -14295,8 +14454,9 @@ def test_get_model_evaluation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = model_evaluation.ModelEvaluation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = model_evaluation.ModelEvaluation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -14374,8 +14534,9 @@ def test_get_model_evaluation_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = model_evaluation.ModelEvaluation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = model_evaluation.ModelEvaluation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -14502,8 +14663,9 @@ def test_get_model_evaluation_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = model_evaluation.ModelEvaluation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = model_evaluation.ModelEvaluation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -14568,8 +14730,9 @@ def test_list_model_evaluations_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListModelEvaluationsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListModelEvaluationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -14652,8 +14815,9 @@ def test_list_model_evaluations_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = service.ListModelEvaluationsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = service.ListModelEvaluationsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -14785,8 +14949,9 @@ def test_list_model_evaluations_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = service.ListModelEvaluationsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = service.ListModelEvaluationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
