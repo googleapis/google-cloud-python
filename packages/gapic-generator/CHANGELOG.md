@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [1.11.8](https://github.com/googleapis/gapic-generator-python/compare/v1.11.7...v1.11.8) (2023-10-16)
+
+
+### Bug Fixes
+
+* Add missing dependencies ([#1804](https://github.com/googleapis/gapic-generator-python/issues/1804)) ([3e020cd](https://github.com/googleapis/gapic-generator-python/commit/3e020cd338339e311f825c7ea77dd473b660bcc5))
+* Fix coverage gap in tests ([#1802](https://github.com/googleapis/gapic-generator-python/issues/1802)) ([2fe0df1](https://github.com/googleapis/gapic-generator-python/commit/2fe0df19261bf5e6e7589a7cd77de03dd1c5c5fc))
+
 ## [1.11.7](https://github.com/googleapis/gapic-generator-python/compare/v1.11.6...v1.11.7) (2023-10-12)
 
 
