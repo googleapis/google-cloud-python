@@ -2541,6 +2541,7 @@ def test_create_job_rest(request_type):
                             },
                             "script": {"path": "path_value", "text": "text_value"},
                             "barrier": {"name": "name_value"},
+                            "display_name": "display_name_value",
                             "ignore_exit_status": True,
                             "background": True,
                             "always_run": True,
@@ -2675,6 +2676,70 @@ def test_create_job_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = batch.CreateJobRequest.meta.fields["job"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            else:
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    for field, value in request_init["job"].items():
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    for subfield_to_delete in subfields_not_in_runtime:
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["job"][field])):
+                    del request_init["job"][field][i][subfield]
+            else:
+                del request_init["job"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2689,8 +2754,9 @@ def test_create_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcb_job.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcb_job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2773,8 +2839,9 @@ def test_create_job_rest_required_fields(request_type=batch.CreateJobRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcb_job.Job.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcb_job.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2871,162 +2938,6 @@ def test_create_job_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["job"] = {
-        "name": "name_value",
-        "uid": "uid_value",
-        "priority": 898,
-        "task_groups": [
-            {
-                "name": "name_value",
-                "task_spec": {
-                    "runnables": [
-                        {
-                            "container": {
-                                "image_uri": "image_uri_value",
-                                "commands": ["commands_value1", "commands_value2"],
-                                "entrypoint": "entrypoint_value",
-                                "volumes": ["volumes_value1", "volumes_value2"],
-                                "options": "options_value",
-                                "block_external_network": True,
-                                "username": "username_value",
-                                "password": "password_value",
-                            },
-                            "script": {"path": "path_value", "text": "text_value"},
-                            "barrier": {"name": "name_value"},
-                            "ignore_exit_status": True,
-                            "background": True,
-                            "always_run": True,
-                            "environment": {
-                                "variables": {},
-                                "secret_variables": {},
-                                "encrypted_variables": {
-                                    "key_name": "key_name_value",
-                                    "cipher_text": "cipher_text_value",
-                                },
-                            },
-                            "timeout": {"seconds": 751, "nanos": 543},
-                            "labels": {},
-                        }
-                    ],
-                    "compute_resource": {
-                        "cpu_milli": 958,
-                        "memory_mib": 1072,
-                        "boot_disk_mib": 1365,
-                    },
-                    "max_run_duration": {},
-                    "max_retry_count": 1635,
-                    "lifecycle_policies": [
-                        {"action": 1, "action_condition": {"exit_codes": [1064, 1065]}}
-                    ],
-                    "environments": {},
-                    "volumes": [
-                        {
-                            "nfs": {
-                                "server": "server_value",
-                                "remote_path": "remote_path_value",
-                            },
-                            "gcs": {"remote_path": "remote_path_value"},
-                            "device_name": "device_name_value",
-                            "mount_path": "mount_path_value",
-                            "mount_options": [
-                                "mount_options_value1",
-                                "mount_options_value2",
-                            ],
-                        }
-                    ],
-                    "environment": {},
-                },
-                "task_count": 1083,
-                "parallelism": 1174,
-                "scheduling_policy": 1,
-                "task_environments": {},
-                "task_count_per_node": 2022,
-                "require_hosts_file": True,
-                "permissive_ssh": True,
-            }
-        ],
-        "allocation_policy": {
-            "location": {
-                "allowed_locations": [
-                    "allowed_locations_value1",
-                    "allowed_locations_value2",
-                ]
-            },
-            "instances": [
-                {
-                    "policy": {
-                        "machine_type": "machine_type_value",
-                        "min_cpu_platform": "min_cpu_platform_value",
-                        "provisioning_model": 1,
-                        "accelerators": [
-                            {
-                                "type_": "type__value",
-                                "count": 553,
-                                "install_gpu_drivers": True,
-                                "driver_version": "driver_version_value",
-                            }
-                        ],
-                        "boot_disk": {
-                            "image": "image_value",
-                            "snapshot": "snapshot_value",
-                            "type_": "type__value",
-                            "size_gb": 739,
-                            "disk_interface": "disk_interface_value",
-                        },
-                        "disks": [
-                            {
-                                "new_disk": {},
-                                "existing_disk": "existing_disk_value",
-                                "device_name": "device_name_value",
-                            }
-                        ],
-                        "reservation": "reservation_value",
-                    },
-                    "instance_template": "instance_template_value",
-                    "install_gpu_drivers": True,
-                }
-            ],
-            "service_account": {
-                "email": "email_value",
-                "scopes": ["scopes_value1", "scopes_value2"],
-            },
-            "labels": {},
-            "network": {
-                "network_interfaces": [
-                    {
-                        "network": "network_value",
-                        "subnetwork": "subnetwork_value",
-                        "no_external_ip_address": True,
-                    }
-                ]
-            },
-            "placement": {"collocation": "collocation_value", "max_distance": 1264},
-        },
-        "labels": {},
-        "status": {
-            "state": 1,
-            "status_events": [
-                {
-                    "type_": "type__value",
-                    "description": "description_value",
-                    "event_time": {"seconds": 751, "nanos": 543},
-                    "task_execution": {"exit_code": 948},
-                    "task_state": 1,
-                }
-            ],
-            "task_groups": {},
-            "run_duration": {},
-        },
-        "create_time": {},
-        "update_time": {},
-        "logs_policy": {"destination": 1, "logs_path": "logs_path_value"},
-        "notifications": [
-            {
-                "pubsub_topic": "pubsub_topic_value",
-                "message": {"type_": 1, "new_job_state": 1, "new_task_state": 1},
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3066,8 +2977,9 @@ def test_create_job_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcb_job.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcb_job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3135,8 +3047,9 @@ def test_get_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = job.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3211,8 +3124,9 @@ def test_get_job_rest_required_fields(request_type=batch.GetJobRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = job.Job.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = job.Job.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3333,8 +3247,9 @@ def test_get_job_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = job.Job.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = job.Job.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3575,8 +3490,9 @@ def test_list_jobs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = batch.ListJobsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = batch.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3690,8 +3606,9 @@ def test_list_jobs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = batch.ListJobsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = batch.ListJobsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -3812,8 +3729,9 @@ def test_get_task_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = task.Task.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = task.Task.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3886,8 +3804,9 @@ def test_get_task_rest_required_fields(request_type=batch.GetTaskRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = task.Task.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = task.Task.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4012,8 +3931,9 @@ def test_get_task_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = task.Task.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = task.Task.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -4081,8 +4001,9 @@ def test_list_tasks_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = batch.ListTasksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = batch.ListTasksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4164,8 +4085,9 @@ def test_list_tasks_rest_required_fields(request_type=batch.ListTasksRequest):
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = batch.ListTasksResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = batch.ListTasksResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4301,8 +4223,9 @@ def test_list_tasks_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = batch.ListTasksResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = batch.ListTasksResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
