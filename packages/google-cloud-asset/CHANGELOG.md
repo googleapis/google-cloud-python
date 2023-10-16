@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.20.0](https://github.com/googleapis/python-asset/compare/v3.19.1...v3.20.0) (2023-10-16)
+
+
+### Features
+
+* Add support for directly attached and effective tags ([7e2b606](https://github.com/googleapis/python-asset/commit/7e2b606ad80569b58bfb5218eac98dba151c7ad0))
+
+
+### Documentation
+
+* Clarify comments for tags and effective tags ([7e2b606](https://github.com/googleapis/python-asset/commit/7e2b606ad80569b58bfb5218eac98dba151c7ad0))
+* Minor formatting ([#586](https://github.com/googleapis/python-asset/issues/586)) ([6374962](https://github.com/googleapis/python-asset/commit/63749629f90d6c433e18526c028fc5d8a907a050))
+
 ## [3.19.1](https://github.com/googleapis/python-asset/compare/v3.19.0...v3.19.1) (2023-07-04)
 
 
