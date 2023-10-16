@@ -4,4 +4,6 @@
 google-api-core
 proto-plus
 protobuf
+google-cloud-access-context-manager
+google-cloud-os-config
 grpc-google-iam-v1
