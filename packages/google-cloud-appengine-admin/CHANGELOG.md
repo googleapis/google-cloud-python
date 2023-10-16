@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.4](https://github.com/googleapis/python-appengine-admin/compare/v1.9.3...v1.9.4) (2023-10-09)
+
+
+### Documentation
+
+* Minor formatting ([#249](https://github.com/googleapis/python-appengine-admin/issues/249)) ([7de9b52](https://github.com/googleapis/python-appengine-admin/commit/7de9b52ce89849f49ca067690a8725d3d9239f09))
+
 ## [1.9.3](https://github.com/googleapis/python-appengine-admin/compare/v1.9.2...v1.9.3) (2023-07-04)
 
 
