@@ -20,7 +20,7 @@ import pytest
 
 import bigframes
 
-from . import resources
+from .. import resources
 
 
 @pytest.mark.parametrize("missing_parts_table_id", [(""), ("table")])

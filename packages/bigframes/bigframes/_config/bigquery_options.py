@@ -37,13 +37,32 @@ class BigQueryOptions:
         location: Optional[str] = None,
         bq_connection: Optional[str] = None,
         use_regional_endpoints: bool = False,
+        application_name: Optional[str] = None,
     ):
         self._credentials = credentials
         self._project = project
         self._location = location
         self._bq_connection = bq_connection
         self._use_regional_endpoints = use_regional_endpoints
+        self._application_name = application_name
         self._session_started = False
+
+    @property
+    def application_name(self) -> Optional[str]:
+        """The application name to amend to the user-agent sent to Google APIs.
+
+        Recommended format is ``"appplication-name/major.minor.patch_version"``
+        or ``"(gpn:PartnerName;)"`` for official Google partners.
+        """
+        return self._application_name
+
+    @application_name.setter
+    def application_name(self, value: Optional[str]):
+        if self._session_started and self._application_name != value:
+            raise ValueError(
+                SESSION_STARTED_MESSAGE.format(attribute="application_name")
+            )
+        self._application_name = value
 
     @property
     def credentials(self) -> Optional[google.auth.credentials.Credentials]:

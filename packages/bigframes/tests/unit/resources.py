@@ -22,6 +22,7 @@ import pandas
 
 import bigframes
 import bigframes.core as core
+import bigframes.session.clients
 
 """Utilities for creating test resources."""
 
@@ -37,7 +38,7 @@ def create_bigquery_session(
         bqclient = mock.create_autospec(google.cloud.bigquery.Client, instance=True)
         bqclient.project = "test-project"
 
-    clients_provider = mock.create_autospec(bigframes.session.ClientsProvider)
+    clients_provider = mock.create_autospec(bigframes.session.clients.ClientsProvider)
     type(clients_provider).bqclient = mock.PropertyMock(return_value=bqclient)
     clients_provider._credentials = credentials
 
