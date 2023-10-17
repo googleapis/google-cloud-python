@@ -2024,6 +2024,15 @@ def test_asset_path():
     assert expected == actual
 
 
+def test_parse_asset_path():
+    expected = {}
+    path = AssetServiceClient.asset_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AssetServiceClient.parse_asset_path(path)
+    assert expected == actual
+
+
 def test_service_perimeter_path():
     access_policy = "cuttlefish"
     service_perimeter = "mussel"

@@ -14,7 +14,6 @@
 
 import json
 from pathlib import Path
-import re
 import shutil
 
 import synthtool as s
@@ -36,55 +35,39 @@ for library in s.get_staging_dirs(default_version):
     if clean_up_generated_samples:
         shutil.rmtree("samples/generated_samples", ignore_errors=True)
         clean_up_generated_samples = False
-    # Fix import of 'osconfig' type
-    s.replace(
-        library / f"google/cloud/asset_{library.name}/types/assets.py",
-        f"from google\.cloud\.osconfig\.{library.name} import inventory_pb2",
-        f"from google.cloud.osconfig_{library.name} import Inventory"
-    )
 
-    s.replace(
-        library / f"google/cloud/asset_{library.name}/types/assets.py",
-        "inventory_pb2\.Inventory",
-        "Inventory"
-    )
+    # ----------------------------------------------------------------------------
+    # Workarounds to be migrated to the monorepo
+    # ----------------------------------------------------------------------------
 
-    s.replace(
-        library / f"google/cloud/asset_{library.name}/types/assets.py",
-        "google\.cloud\.osconfig\.v1\.inventory_pb2\.Inventory",
-        "google.cloud.osconfig_v1.Inventory"
-    )
+    # Generator issue: https://github.com/googleapis/gapic-generator-python/issues/1806
+    # Description: google-cloud-org-policy is not defined in https://github.com/googleapis/gapic-generator-python/blob/main/gapic/templates/_pypi_packages.j2.
+    # An attempt was made to add the dependency via https://github.com/googleapis/gapic-generator-python/pull/1805 however mypy checks 
+    # failed with error `google.cloud.orgpolicy.v1.orgpolicy_pb2.Policy is not valid as a type`.
 
-    # Remove broken `parse_asset_path` method
-    # The resource pattern is '*' which breaks the regex match
-    s.replace(
-        library / "google/cloud/**/client.py",
-        """@staticmethod
-    def parse_asset_path.*?@staticmethod""",
-        """@staticmethod""",
-        flags=re.MULTILINE | re.DOTALL
-    )
+    # Only the setup.py and testing/constraints-3.7.txt from the default version need to be updated
+    if library.name == default_version:
+        replacement_count = 1
+        assert replacement_count == s.replace(
+            library / "setup.py",
+        """\"google-cloud-access-context-manager >= 0.1.2, <1.0.0dev\",
+    \"google-cloud-os-config >= 1.0.0, <2.0.0dev\",""",
+        """"google-cloud-access-context-manager >= 0.1.2, <1.0.0dev",
+    "google-cloud-org-policy >= 0.1.2, <2.0.0dev",
+    "google-cloud-os-config >= 1.0.0, <2.0.0dev",""",
+        )
 
-    s.replace(
-        library / "google/cloud/**/async_client.py",
-        """parse_asset_path = staticmethod\(AssetServiceClient\.parse_asset_path\)""",
-        ""
-    )
+        replacement_count = 1
+        assert replacement_count == s.replace(
+            library / "testing/constraints-3.7.txt",
+        """google-cloud-access-context-manager==0.1.2
+google-cloud-os-config==1.0.0""",
+        """google-cloud-access-context-manager==0.1.2
+google-cloud-org-policy==0.1.2
+google-cloud-os-config==1.0.0""",
+        )
 
-    s.replace(
-        library / "tests/unit/**/test_asset_service.py",
-        """def test_parse_asset_path.*?def""",
-        """def""",
-        flags=re.MULTILINE | re.DOTALL,
-    )
-
-    s.replace(
-        library / "google/cloud/asset_v*/__init__.py",
-        "from google.cloud.asset import gapic_version as package_version",
-        f"from google.cloud.asset_{library.name} import gapic_version as package_version",
-    )
-
-    s.move([library], excludes=["**/gapic_version.py", "docs/index.rst", "setup.py", "testing/constraints-3.7.txt"])
+    s.move([library], excludes=["**/gapic_version.py"])
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
@@ -96,7 +79,7 @@ templated_files = gcp.CommonTemplates().py_library(
     microgenerator=True,
     versions=gcp.common.detect_versions(path="./google", default_first=True),
 )
-s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml", "docs/index.rst"])
+s.move(templated_files, excludes=[".coveragerc", ".github/release-please.yml"])
 
 python.py_samples(skip_readmes=True)
 

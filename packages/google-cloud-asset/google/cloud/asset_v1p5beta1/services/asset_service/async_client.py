@@ -64,7 +64,7 @@ class AssetServiceAsyncClient:
     access_policy_path = staticmethod(AssetServiceClient.access_policy_path)
     parse_access_policy_path = staticmethod(AssetServiceClient.parse_access_policy_path)
     asset_path = staticmethod(AssetServiceClient.asset_path)
-
+    parse_asset_path = staticmethod(AssetServiceClient.parse_asset_path)
     service_perimeter_path = staticmethod(AssetServiceClient.service_perimeter_path)
     parse_service_perimeter_path = staticmethod(
         AssetServiceClient.parse_service_perimeter_path

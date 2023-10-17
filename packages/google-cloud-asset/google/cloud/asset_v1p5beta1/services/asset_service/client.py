@@ -217,6 +217,12 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         return "*".format()
 
     @staticmethod
+    def parse_asset_path(path: str) -> Dict[str, str]:
+        """Parses a asset path into its component segments."""
+        m = re.match(r"^.*$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def service_perimeter_path(
         access_policy: str,
         service_perimeter: str,
