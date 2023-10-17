@@ -32,7 +32,7 @@ from typing import Any, AsyncGenerator, Tuple
 from google.cloud.firestore_v1.transaction import Transaction
 
 
-class AsyncCollectionReference(BaseCollectionReference):
+class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
     """A reference to a collection in a Firestore database.
 
     The collection may already exist or this class can facilitate creation

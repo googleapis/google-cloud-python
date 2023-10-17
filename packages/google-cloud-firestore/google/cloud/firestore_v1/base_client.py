@@ -262,13 +262,15 @@ class BaseClient(ClientWithProject):
 
         return self._rpc_metadata_internal
 
-    def collection(self, *collection_path) -> BaseCollectionReference:
+    def collection(self, *collection_path) -> BaseCollectionReference[BaseQuery]:
         raise NotImplementedError
 
     def collection_group(self, collection_id: str) -> BaseQuery:
         raise NotImplementedError
 
-    def _get_collection_reference(self, collection_id: str) -> BaseCollectionReference:
+    def _get_collection_reference(
+        self, collection_id: str
+    ) -> BaseCollectionReference[BaseQuery]:
         """Checks validity of collection_id and then uses subclasses collection implementation.
 
         Args:
@@ -325,7 +327,7 @@ class BaseClient(ClientWithProject):
 
     def recursive_delete(
         self,
-        reference: Union[BaseCollectionReference, BaseDocumentReference],
+        reference: Union[BaseCollectionReference[BaseQuery], BaseDocumentReference],
         bulk_writer: Optional["BulkWriter"] = None,  # type: ignore
     ) -> int:
         raise NotImplementedError
@@ -459,8 +461,8 @@ class BaseClient(ClientWithProject):
         retry: retries.Retry = None,
         timeout: float = None,
     ) -> Union[
-        AsyncGenerator[BaseCollectionReference, Any],
-        Generator[BaseCollectionReference, Any, Any],
+        AsyncGenerator[BaseCollectionReference[BaseQuery], Any],
+        Generator[BaseCollectionReference[BaseQuery], Any, Any],
     ]:
         raise NotImplementedError
 

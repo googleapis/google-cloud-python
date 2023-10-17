@@ -47,6 +47,7 @@ from typing import (
     Optional,
     Tuple,
     Type,
+    TypeVar,
     Union,
 )
 
@@ -101,6 +102,8 @@ _NO_ORDERS_FOR_CURSOR = (
 _MISMATCH_CURSOR_W_ORDER_BY = "The cursor {!r} does not match the order fields {!r}."
 
 _not_passed = object()
+
+QueryType = TypeVar("QueryType", bound="BaseQuery")
 
 
 class BaseFilter(abc.ABC):
@@ -319,7 +322,7 @@ class BaseQuery(object):
         """
         return self._parent._client
 
-    def select(self, field_paths: Iterable[str]) -> "BaseQuery":
+    def select(self: QueryType, field_paths: Iterable[str]) -> QueryType:
         """Project documents matching query to a limited set of fields.
 
         See :meth:`~google.cloud.firestore_v1.client.Client.field_path` for
@@ -354,7 +357,7 @@ class BaseQuery(object):
         return self._copy(projection=new_projection)
 
     def _copy(
-        self,
+        self: QueryType,
         *,
         projection: Optional[query.StructuredQuery.Projection] = _not_passed,
         field_filters: Optional[Tuple[query.StructuredQuery.FieldFilter]] = _not_passed,
@@ -366,7 +369,7 @@ class BaseQuery(object):
         end_at: Optional[Tuple[dict, bool]] = _not_passed,
         all_descendants: Optional[bool] = _not_passed,
         recursive: Optional[bool] = _not_passed,
-    ) -> "BaseQuery":
+    ) -> QueryType:
         return self.__class__(
             self._parent,
             projection=self._evaluate_param(projection, self._projection),
@@ -389,13 +392,13 @@ class BaseQuery(object):
         return value if value is not _not_passed else fallback_value
 
     def where(
-        self,
+        self: QueryType,
         field_path: Optional[str] = None,
         op_string: Optional[str] = None,
         value=None,
         *,
         filter=None,
-    ) -> "BaseQuery":
+    ) -> QueryType:
         """Filter the query on a field.
 
         See :meth:`~google.cloud.firestore_v1.client.Client.field_path` for
@@ -492,7 +495,9 @@ class BaseQuery(object):
             direction=_enum_from_direction(direction),
         )
 
-    def order_by(self, field_path: str, direction: str = ASCENDING) -> "BaseQuery":
+    def order_by(
+        self: QueryType, field_path: str, direction: str = ASCENDING
+    ) -> QueryType:
         """Modify the query to add an order clause on a specific field.
 
         See :meth:`~google.cloud.firestore_v1.client.Client.field_path` for
@@ -526,7 +531,7 @@ class BaseQuery(object):
         new_orders = self._orders + (order_pb,)
         return self._copy(orders=new_orders)
 
-    def limit(self, count: int) -> "BaseQuery":
+    def limit(self: QueryType, count: int) -> QueryType:
         """Limit a query to return at most `count` matching results.
 
         If the current query already has a `limit` set, this will override it.
@@ -545,7 +550,7 @@ class BaseQuery(object):
         """
         return self._copy(limit=count, limit_to_last=False)
 
-    def limit_to_last(self, count: int) -> "BaseQuery":
+    def limit_to_last(self: QueryType, count: int) -> QueryType:
         """Limit a query to return the last `count` matching results.
         If the current query already has a `limit_to_last`
         set, this will override it.
@@ -570,7 +575,7 @@ class BaseQuery(object):
             return max(self._limit - num_loaded, 0)
         return chunk_size
 
-    def offset(self, num_to_skip: int) -> "BaseQuery":
+    def offset(self: QueryType, num_to_skip: int) -> QueryType:
         """Skip to an offset in a query.
 
         If the current query already has specified an offset, this will
@@ -601,11 +606,11 @@ class BaseQuery(object):
             raise ValueError("Cannot use snapshot from another collection as a cursor.")
 
     def _cursor_helper(
-        self,
+        self: QueryType,
         document_fields_or_snapshot: Union[DocumentSnapshot, dict, list, tuple],
         before: bool,
         start: bool,
-    ) -> "BaseQuery":
+    ) -> QueryType:
         """Set values to be used for a ``start_at`` or ``end_at`` cursor.
 
         The values will later be used in a query protobuf.
@@ -658,8 +663,9 @@ class BaseQuery(object):
         return self._copy(**query_kwargs)
 
     def start_at(
-        self, document_fields_or_snapshot: Union[DocumentSnapshot, dict, list, tuple]
-    ) -> "BaseQuery":
+        self: QueryType,
+        document_fields_or_snapshot: Union[DocumentSnapshot, dict, list, tuple],
+    ) -> QueryType:
         """Start query results at a particular document value.
 
         The result set will **include** the document specified by
@@ -690,8 +696,9 @@ class BaseQuery(object):
         return self._cursor_helper(document_fields_or_snapshot, before=True, start=True)
 
     def start_after(
-        self, document_fields_or_snapshot: Union[DocumentSnapshot, dict, list, tuple]
-    ) -> "BaseQuery":
+        self: QueryType,
+        document_fields_or_snapshot: Union[DocumentSnapshot, dict, list, tuple],
+    ) -> QueryType:
         """Start query results after a particular document value.
 
         The result set will **exclude** the document specified by
@@ -723,8 +730,9 @@ class BaseQuery(object):
         )
 
     def end_before(
-        self, document_fields_or_snapshot: Union[DocumentSnapshot, dict, list, tuple]
-    ) -> "BaseQuery":
+        self: QueryType,
+        document_fields_or_snapshot: Union[DocumentSnapshot, dict, list, tuple],
+    ) -> QueryType:
         """End query results before a particular document value.
 
         The result set will **exclude** the document specified by
@@ -756,8 +764,9 @@ class BaseQuery(object):
         )
 
     def end_at(
-        self, document_fields_or_snapshot: Union[DocumentSnapshot, dict, list, tuple]
-    ) -> "BaseQuery":
+        self: QueryType,
+        document_fields_or_snapshot: Union[DocumentSnapshot, dict, list, tuple],
+    ) -> QueryType:
         """End query results at a particular document value.
 
         The result set will **include** the document specified by
@@ -1003,7 +1012,7 @@ class BaseQuery(object):
     def on_snapshot(self, callback) -> NoReturn:
         raise NotImplementedError
 
-    def recursive(self) -> "BaseQuery":
+    def recursive(self: QueryType) -> QueryType:
         """Returns a copy of this query whose iterator will yield all matching
         documents as well as each of their descendent subcollections and documents.
 

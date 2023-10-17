@@ -31,7 +31,7 @@ from typing import Any, Callable, Generator, Tuple, Union
 from google.cloud.firestore_v1.transaction import Transaction
 
 
-class CollectionReference(BaseCollectionReference):
+class CollectionReference(BaseCollectionReference[query_mod.Query]):
     """A reference to a collection in a Firestore database.
 
     The collection may already exist or this class can facilitate creation
