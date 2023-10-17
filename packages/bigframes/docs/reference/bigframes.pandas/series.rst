@@ -34,3 +34,11 @@ String handling
     :members:
     :inherited-members:
     :undoc-members:
+
+Struct handling
+^^^^^^^^^^^^^^^
+
+.. automodule:: bigframes.operations.structs
+    :members:
+    :inherited-members:
+    :undoc-members:

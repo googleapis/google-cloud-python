@@ -25,7 +25,7 @@ import bigframes.series
 import third_party.bigframes_vendored.pandas.core.arrays.arrow.accessors as vendoracessors
 
 
-class StructField(bigframes.operations.UnaryOp):
+class _StructField(bigframes.operations.UnaryOp):
     def __init__(self, name_or_index: str | int):
         self._name_or_index = name_or_index
 
@@ -44,7 +44,7 @@ class StructAccessor(
     __doc__ = vendoracessors.StructAccessor.__doc__
 
     def field(self, name_or_index: str | int) -> bigframes.series.Series:
-        series = self._apply_unary_op(StructField(name_or_index))
+        series = self._apply_unary_op(_StructField(name_or_index))
         if isinstance(name_or_index, str):
             name = name_or_index
         else:

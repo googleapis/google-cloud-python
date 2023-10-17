@@ -22,6 +22,23 @@ class Series(NDFrame):  # type: ignore[misc]
     def dt(self):
         """
         Accessor object for datetime-like properties of the Series values.
+
+        Returns:
+            bigframes.operations.datetimes.DatetimeMethods:
+                An accessor containing datetime methods.
+
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def struct(self):
+        """
+        Accessor object for struct properties of the Series values.
+
+        Returns:
+            bigframes.operations.structs.StructAccessor:
+                An accessor containing struct methods.
+
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -1733,6 +1750,10 @@ class Series(NDFrame):  # type: ignore[misc]
 
         NAs stay NA unless handled otherwise by a particular method. Patterned
         after Python’s string methods, with some inspiration from R’s stringr package.
+
+        Returns:
+            bigframes.operations.strings.StringMethods:
+                An accessor containing string methods.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 

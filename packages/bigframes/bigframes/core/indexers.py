@@ -225,7 +225,7 @@ class IatDataFrameIndexer:
             raise ValueError(error_message)
         if len(key) != 2:
             raise TypeError(error_message)
-        block: bigframes.core.blocks.Block = self._dataframe._block
+        block: bigframes.core.blocks.Block = self._dataframe._block  # type: ignore
         column_block = block.select_columns([block.value_columns[key[1]]])
         column = bigframes.series.Series(column_block)
         return column.iloc[key[0]]

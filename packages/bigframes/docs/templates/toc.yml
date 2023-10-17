@@ -39,6 +39,8 @@
         uid: bigframes.operations.datetimes.DatetimeMethods
       - name: StringMethods
         uid: bigframes.operations.strings.StringMethods
+      - name: StructAccessor
+        uid: bigframes.operations.structs.StructAccessor
       name: Series
     - name: Window
       uid: bigframes.core.window.Window
