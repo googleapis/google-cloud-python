@@ -1802,12 +1802,13 @@ def test_create_prediction_api_key_registration_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = (
+        # Convert return value to protobuf type
+        return_value = (
             prediction_apikey_registry_service.PredictionApiKeyRegistration.pb(
                 return_value
             )
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1889,12 +1890,13 @@ def test_create_prediction_api_key_registration_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = (
+            # Convert return value to protobuf type
+            return_value = (
                 prediction_apikey_registry_service.PredictionApiKeyRegistration.pb(
                     return_value
                 )
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2045,12 +2047,13 @@ def test_create_prediction_api_key_registration_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = (
+        # Convert return value to protobuf type
+        return_value = (
             prediction_apikey_registry_service.PredictionApiKeyRegistration.pb(
                 return_value
             )
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2122,10 +2125,11 @@ def test_list_prediction_api_key_registrations_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2213,10 +2217,11 @@ def test_list_prediction_api_key_registrations_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.pb(
+            # Convert return value to protobuf type
+            return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2364,10 +2369,11 @@ def test_list_prediction_api_key_registrations_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
