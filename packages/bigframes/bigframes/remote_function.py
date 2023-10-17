@@ -100,9 +100,12 @@ def get_remote_function_locations(bq_location):
     return bq_location, cloud_function_region
 
 
-def _get_hash(def_):
+def _get_hash(def_, package_requirements=None):
     "Get hash (32 digits alphanumeric) of a function."
     def_repr = cloudpickle.dumps(def_, protocol=_pickle_protocol_version)
+    if package_requirements:
+        for p in sorted(package_requirements):
+            def_repr += p.encode()
     return hashlib.md5(def_repr).hexdigest()
 
 
@@ -129,18 +132,18 @@ class IbisSignature(NamedTuple):
     output_type: IbisDataType
 
 
-def get_cloud_function_name(def_, uniq_suffix=None):
+def get_cloud_function_name(def_, uniq_suffix=None, package_requirements=None):
     "Get a name for the cloud function for the given user defined function."
-    cf_name = _get_hash(def_)
+    cf_name = _get_hash(def_, package_requirements)
     cf_name = f"bigframes-{cf_name}"  # for identification
     if uniq_suffix:
         cf_name = f"{cf_name}-{uniq_suffix}"
     return cf_name
 
 
-def get_remote_function_name(def_, uniq_suffix=None):
+def get_remote_function_name(def_, uniq_suffix=None, package_requirements=None):
     "Get a name for the BQ remote function for the given user defined function."
-    bq_rf_name = _get_hash(def_)
+    bq_rf_name = _get_hash(def_, package_requirements)
     bq_rf_name = f"bigframes_{bq_rf_name}"  # for identification
     if uniq_suffix:
         bq_rf_name = f"{bq_rf_name}_{uniq_suffix}"
@@ -200,7 +203,8 @@ class RemoteFunctionClient:
             RETURNS {bq_function_return_type}
             REMOTE WITH CONNECTION `{self._gcp_project_id}.{self._bq_location}.{self._bq_connection_id}`
             OPTIONS (
-              endpoint = "{endpoint}"
+              endpoint = "{endpoint}",
+              max_batching_rows = 1000
             )"""
 
         logger.info(f"Creating BQ remote function: {create_function_ddl}")
@@ -320,11 +324,14 @@ class RemoteFunctionClient:
 
         return handler_func_name
 
-    def generate_cloud_function_code(self, def_, dir):
+    def generate_cloud_function_code(self, def_, dir, package_requirements=None):
         """Generate the cloud function code for a given user defined function."""
 
         # requirements.txt
         requirements = ["cloudpickle >= 2.1.0"]
+        if package_requirements:
+            requirements.extend(package_requirements)
+        requirements = sorted(requirements)
         requirements_txt = os.path.join(dir, "requirements.txt")
         with open(requirements_txt, "w") as f:
             f.write("\n".join(requirements))
@@ -333,12 +340,14 @@ class RemoteFunctionClient:
         entry_point = self.generate_cloud_function_main_code(def_, dir)
         return entry_point
 
-    def create_cloud_function(self, def_, cf_name):
+    def create_cloud_function(self, def_, cf_name, package_requirements=None):
         """Create a cloud function from the given user defined function."""
 
         # Build and deploy folder structure containing cloud function
         with tempfile.TemporaryDirectory() as dir:
-            entry_point = self.generate_cloud_function_code(def_, dir)
+            entry_point = self.generate_cloud_function_code(
+                def_, dir, package_requirements
+            )
             archive_path = shutil.make_archive(dir, "zip", dir)
 
             # We are creating cloud function source code from the currently running
@@ -392,6 +401,9 @@ class RemoteFunctionClient:
             function.build_config.source.storage_source.object_ = (
                 upload_url_response.storage_source.object_
             )
+            function.service_config = functions_v2.ServiceConfig()
+            function.service_config.available_memory = "1024M"
+            function.service_config.timeout_seconds = 600
             create_function_request.function = function
 
             # Create the cloud function and wait for it to be ready to use
@@ -422,6 +434,7 @@ class RemoteFunctionClient:
         output_type,
         reuse,
         name,
+        package_requirements,
     ):
         """Provision a BigQuery remote function."""
         # If reuse of any existing function with the same name (indicated by the
@@ -435,19 +448,25 @@ class RemoteFunctionClient:
 
         # Derive the name of the cloud function underlying the intended BQ
         # remote function
-        cloud_function_name = get_cloud_function_name(def_, uniq_suffix)
+        cloud_function_name = get_cloud_function_name(
+            def_, uniq_suffix, package_requirements
+        )
         cf_endpoint = self.get_cloud_function_endpoint(cloud_function_name)
 
         # Create the cloud function if it does not exist
         if not cf_endpoint:
-            cf_endpoint = self.create_cloud_function(def_, cloud_function_name)
+            cf_endpoint = self.create_cloud_function(
+                def_, cloud_function_name, package_requirements
+            )
         else:
             logger.info(f"Cloud function {cloud_function_name} already exists.")
 
         # Derive the name of the remote function
         remote_function_name = name
         if not remote_function_name:
-            remote_function_name = get_remote_function_name(def_, uniq_suffix)
+            remote_function_name = get_remote_function_name(
+                def_, uniq_suffix, package_requirements
+            )
         rf_endpoint, rf_conn = self.get_remote_function_specs(remote_function_name)
 
         # Create the BQ remote function in following circumstances:
@@ -619,6 +638,7 @@ def remote_function(
     bigquery_connection: Optional[str] = None,
     reuse: bool = True,
     name: Optional[str] = None,
+    packages: Optional[Sequence[str]] = None,
 ):
     """Decorator to turn a user defined function into a BigQuery remote function.
 
@@ -710,6 +730,10 @@ def remote_function(
             caution, because two users working in the same project and dataset
             could overwrite each other's remote functions if they use the same
             persistent name.
+        packages (str[], Optional):
+            Explicit name of the external package dependencies. Each dependency
+            is added to the `requirements.txt` as is, and can be of the form
+            supported in https://pip.pypa.io/en/stable/reference/requirements-file-format/.
 
     """
     import bigframes.pandas as bpd
@@ -821,6 +845,7 @@ def remote_function(
             ibis_signature.output_type,
             reuse,
             name,
+            packages,
         )
 
         node = remote_function_node(dataset_ref.routine(rf_name), ibis_signature)

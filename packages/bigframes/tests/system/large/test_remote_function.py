@@ -917,6 +917,51 @@ def test_remote_function_with_explicit_name(
 
 
 @pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_with_external_package_dependencies(
+    session, scalars_dfs, dataset_id, bq_cf_connection, functions_client
+):
+    try:
+
+        def pd_np_foo(x):
+            import numpy as mynp
+            import pandas as mypd
+
+            return mypd.Series([x, mynp.sqrt(mynp.abs(x))]).sum()
+
+        # Create the remote function with the name provided explicitly
+        pd_np_foo_remote = session.remote_function(
+            [int],
+            float,
+            dataset_id,
+            bq_cf_connection,
+            reuse=False,
+            packages=["numpy", "pandas >= 2.0.0"],
+        )(pd_np_foo)
+
+        # The behavior of the created remote function should be as expected
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        bf_int64_col = scalars_df["int64_too"]
+        bf_result_col = bf_int64_col.apply(pd_np_foo_remote)
+        bf_result = bf_int64_col.to_frame().assign(result=bf_result_col).to_pandas()
+
+        pd_int64_col = scalars_pandas_df["int64_too"]
+        pd_result_col = pd_int64_col.apply(pd_np_foo)
+        pd_result = pd_int64_col.to_frame().assign(result=pd_result_col)
+
+        # pandas result is non-nullable type float64, make it Float64 before
+        # comparing for the purpose of this test
+        pd_result.result = pd_result.result.astype(pandas.Float64Dtype())
+
+        assert_pandas_df_equal_ignore_ordering(bf_result, pd_result)
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            session.bqclient, functions_client, pd_np_foo_remote
+        )
+
+
+@pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_with_explicit_name_reuse(
     session, scalars_dfs, dataset_id, bq_cf_connection, functions_client
 ):

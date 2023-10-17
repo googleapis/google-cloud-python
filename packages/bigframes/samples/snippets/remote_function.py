@@ -89,19 +89,25 @@ def run_remote_function_and_read_gbq_function(project_id: str):
     # say we consider the `species`, `island` and `sex` of the penguins
     # sensitive information and want to redact that by replacing with their hash
     # code instead. Let's define another scalar custom function and decorate it
-    # as a remote function
+    # as a remote function. The custom function in this example has external
+    # package dependency, which can be specified via `packages` parameter.
     @bpd.remote_function(
-        [str], str, bigquery_connection="bigframes-rf-conn", reuse=False
+        [str],
+        str,
+        bigquery_connection="bigframes-rf-conn",
+        reuse=False,
+        packages=["cryptography"],
     )
     def get_hash(input):
-        import hashlib
+        from cryptography.fernet import Fernet
 
         # handle missing value
         if input is None:
             input = ""
-        encoded_input = input.encode()
-        hash = hashlib.md5(encoded_input)
-        return hash.hexdigest()
+
+        key = Fernet.generate_key()
+        f = Fernet(key)
+        return f.encrypt(input.encode()).decode()
 
     # We can use this remote function in another `pandas`-like API `map` that
     # can be applied on a DataFrame
