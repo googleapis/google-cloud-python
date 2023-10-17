@@ -1833,3 +1833,8 @@ class Series(NDFrame):  # type: ignore[misc]
     def iat(self):
         """Access a single value for a row/column pair by integer position."""
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def at(self):
+        """Access a single value for a row/column label pair."""
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

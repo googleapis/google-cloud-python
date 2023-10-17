@@ -1953,6 +1953,16 @@ def test_series_iloc(scalars_df_index, scalars_pandas_df_index, start, stop, ste
     )
 
 
+def test_at(scalars_df_index, scalars_pandas_df_index):
+    scalars_df_index = scalars_df_index.set_index("int64_too", drop=False)
+    scalars_pandas_df_index = scalars_pandas_df_index.set_index("int64_too", drop=False)
+    index = -2345
+    bf_result = scalars_df_index["string_col"].at[index]
+    pd_result = scalars_pandas_df_index["string_col"].at[index]
+
+    assert bf_result == pd_result
+
+
 def test_iat(scalars_df_index, scalars_pandas_df_index):
     bf_result = scalars_df_index["int64_too"].iat[3]
     pd_result = scalars_pandas_df_index["int64_too"].iat[3]

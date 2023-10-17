@@ -2196,6 +2196,29 @@ def test_loc_single_index_no_duplicate(scalars_df_index, scalars_pandas_df_index
     )
 
 
+def test_at_with_duplicate(scalars_df_index, scalars_pandas_df_index):
+    scalars_df_index = scalars_df_index.set_index("string_col", drop=False)
+    scalars_pandas_df_index = scalars_pandas_df_index.set_index(
+        "string_col", drop=False
+    )
+    index = "Hello, World!"
+    bf_result = scalars_df_index.at[index, "int64_too"]
+    pd_result = scalars_pandas_df_index.at[index, "int64_too"]
+    pd.testing.assert_series_equal(
+        bf_result.to_pandas(),
+        pd_result,
+    )
+
+
+def test_at_no_duplicate(scalars_df_index, scalars_pandas_df_index):
+    scalars_df_index = scalars_df_index.set_index("int64_too", drop=False)
+    scalars_pandas_df_index = scalars_pandas_df_index.set_index("int64_too", drop=False)
+    index = -2345
+    bf_result = scalars_df_index.at[index, "string_col"]
+    pd_result = scalars_pandas_df_index.at[index, "string_col"]
+    assert bf_result == pd_result
+
+
 def test_loc_setitem_bool_series_scalar_new_col(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_df = scalars_df.copy()
