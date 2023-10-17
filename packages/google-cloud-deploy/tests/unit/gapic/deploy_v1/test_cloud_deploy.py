@@ -8010,8 +8010,9 @@ def test_list_delivery_pipelines_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.ListDeliveryPipelinesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ListDeliveryPipelinesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8096,10 +8097,9 @@ def test_list_delivery_pipelines_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.ListDeliveryPipelinesResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.ListDeliveryPipelinesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8234,8 +8234,9 @@ def test_list_delivery_pipelines_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.ListDeliveryPipelinesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ListDeliveryPipelinesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8363,8 +8364,9 @@ def test_get_delivery_pipeline_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.DeliveryPipeline.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.DeliveryPipeline.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8443,8 +8445,9 @@ def test_get_delivery_pipeline_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.DeliveryPipeline.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.DeliveryPipeline.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8573,8 +8576,9 @@ def test_get_delivery_pipeline_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.DeliveryPipeline.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.DeliveryPipeline.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8712,6 +8716,75 @@ def test_create_delivery_pipeline_rest(request_type):
         "etag": "etag_value",
         "suspended": True,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_deploy.CreateDeliveryPipelineRequest.meta.fields[
+        "delivery_pipeline"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["delivery_pipeline"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["delivery_pipeline"][field])):
+                    del request_init["delivery_pipeline"][field][i][subfield]
+            else:
+                del request_init["delivery_pipeline"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -8924,91 +8997,6 @@ def test_create_delivery_pipeline_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["delivery_pipeline"] = {
-        "name": "name_value",
-        "uid": "uid_value",
-        "description": "description_value",
-        "annotations": {},
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "serial_pipeline": {
-            "stages": [
-                {
-                    "target_id": "target_id_value",
-                    "profiles": ["profiles_value1", "profiles_value2"],
-                    "strategy": {
-                        "standard": {
-                            "verify": True,
-                            "predeploy": {
-                                "actions": ["actions_value1", "actions_value2"]
-                            },
-                            "postdeploy": {
-                                "actions": ["actions_value1", "actions_value2"]
-                            },
-                        },
-                        "canary": {
-                            "runtime_config": {
-                                "kubernetes": {
-                                    "gateway_service_mesh": {
-                                        "http_route": "http_route_value",
-                                        "service": "service_value",
-                                        "deployment": "deployment_value",
-                                        "route_update_wait_time": {
-                                            "seconds": 751,
-                                            "nanos": 543,
-                                        },
-                                    },
-                                    "service_networking": {
-                                        "service": "service_value",
-                                        "deployment": "deployment_value",
-                                        "disable_pod_overprovisioning": True,
-                                    },
-                                },
-                                "cloud_run": {"automatic_traffic_control": True},
-                            },
-                            "canary_deployment": {
-                                "percentages": [1170, 1171],
-                                "verify": True,
-                                "predeploy": {},
-                                "postdeploy": {},
-                            },
-                            "custom_canary_deployment": {
-                                "phase_configs": [
-                                    {
-                                        "phase_id": "phase_id_value",
-                                        "percentage": 1054,
-                                        "profiles": [
-                                            "profiles_value1",
-                                            "profiles_value2",
-                                        ],
-                                        "verify": True,
-                                        "predeploy": {},
-                                        "postdeploy": {},
-                                    }
-                                ]
-                            },
-                        },
-                    },
-                    "deploy_parameters": [{"values": {}, "match_target_labels": {}}],
-                }
-            ]
-        },
-        "condition": {
-            "pipeline_ready_condition": {"status": True, "update_time": {}},
-            "targets_present_condition": {
-                "status": True,
-                "missing_targets": ["missing_targets_value1", "missing_targets_value2"],
-                "update_time": {},
-            },
-            "targets_type_condition": {
-                "status": True,
-                "error_details": "error_details_value",
-            },
-        },
-        "etag": "etag_value",
-        "suspended": True,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -9192,6 +9180,75 @@ def test_update_delivery_pipeline_rest(request_type):
         "etag": "etag_value",
         "suspended": True,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_deploy.UpdateDeliveryPipelineRequest.meta.fields[
+        "delivery_pipeline"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["delivery_pipeline"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["delivery_pipeline"][field])):
+                    del request_init["delivery_pipeline"][field][i][subfield]
+            else:
+                del request_init["delivery_pipeline"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -9388,91 +9445,6 @@ def test_update_delivery_pipeline_rest_bad_request(
         "delivery_pipeline": {
             "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
         }
-    }
-    request_init["delivery_pipeline"] = {
-        "name": "projects/sample1/locations/sample2/deliveryPipelines/sample3",
-        "uid": "uid_value",
-        "description": "description_value",
-        "annotations": {},
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "serial_pipeline": {
-            "stages": [
-                {
-                    "target_id": "target_id_value",
-                    "profiles": ["profiles_value1", "profiles_value2"],
-                    "strategy": {
-                        "standard": {
-                            "verify": True,
-                            "predeploy": {
-                                "actions": ["actions_value1", "actions_value2"]
-                            },
-                            "postdeploy": {
-                                "actions": ["actions_value1", "actions_value2"]
-                            },
-                        },
-                        "canary": {
-                            "runtime_config": {
-                                "kubernetes": {
-                                    "gateway_service_mesh": {
-                                        "http_route": "http_route_value",
-                                        "service": "service_value",
-                                        "deployment": "deployment_value",
-                                        "route_update_wait_time": {
-                                            "seconds": 751,
-                                            "nanos": 543,
-                                        },
-                                    },
-                                    "service_networking": {
-                                        "service": "service_value",
-                                        "deployment": "deployment_value",
-                                        "disable_pod_overprovisioning": True,
-                                    },
-                                },
-                                "cloud_run": {"automatic_traffic_control": True},
-                            },
-                            "canary_deployment": {
-                                "percentages": [1170, 1171],
-                                "verify": True,
-                                "predeploy": {},
-                                "postdeploy": {},
-                            },
-                            "custom_canary_deployment": {
-                                "phase_configs": [
-                                    {
-                                        "phase_id": "phase_id_value",
-                                        "percentage": 1054,
-                                        "profiles": [
-                                            "profiles_value1",
-                                            "profiles_value2",
-                                        ],
-                                        "verify": True,
-                                        "predeploy": {},
-                                        "postdeploy": {},
-                                    }
-                                ]
-                            },
-                        },
-                    },
-                    "deploy_parameters": [{"values": {}, "match_target_labels": {}}],
-                }
-            ]
-        },
-        "condition": {
-            "pipeline_ready_condition": {"status": True, "update_time": {}},
-            "targets_present_condition": {
-                "status": True,
-                "missing_targets": ["missing_targets_value1", "missing_targets_value2"],
-                "update_time": {},
-            },
-            "targets_type_condition": {
-                "status": True,
-                "error_details": "error_details_value",
-            },
-        },
-        "etag": "etag_value",
-        "suspended": True,
     }
     request = request_type(**request_init)
 
@@ -9873,8 +9845,9 @@ def test_list_targets_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.ListTargetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ListTargetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9959,8 +9932,9 @@ def test_list_targets_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.ListTargetsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.ListTargetsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10095,8 +10069,9 @@ def test_list_targets_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.ListTargetsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ListTargetsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -10220,8 +10195,9 @@ def test_get_target_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.Target.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.Target.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10299,8 +10275,9 @@ def test_get_target_rest_required_fields(request_type=cloud_deploy.GetTargetRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.Target.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.Target.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10421,8 +10398,9 @@ def test_get_target_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.Target.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.Target.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -10509,6 +10487,73 @@ def test_create_target_rest(request_type):
         ],
         "deploy_parameters": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_deploy.CreateTargetRequest.meta.fields["target"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["target"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["target"][field])):
+                    del request_init["target"][field][i][subfield]
+            else:
+                del request_init["target"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10719,41 +10764,6 @@ def test_create_target_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["target"] = {
-        "name": "name_value",
-        "target_id": "target_id_value",
-        "uid": "uid_value",
-        "description": "description_value",
-        "annotations": {},
-        "labels": {},
-        "require_approval": True,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "gke": {"cluster": "cluster_value", "internal_ip": True},
-        "anthos_cluster": {"membership": "membership_value"},
-        "run": {"location": "location_value"},
-        "multi_target": {"target_ids": ["target_ids_value1", "target_ids_value2"]},
-        "etag": "etag_value",
-        "execution_configs": [
-            {
-                "usages": [1],
-                "default_pool": {
-                    "service_account": "service_account_value",
-                    "artifact_storage": "artifact_storage_value",
-                },
-                "private_pool": {
-                    "worker_pool": "worker_pool_value",
-                    "service_account": "service_account_value",
-                    "artifact_storage": "artifact_storage_value",
-                },
-                "worker_pool": "worker_pool_value",
-                "service_account": "service_account_value",
-                "artifact_storage": "artifact_storage_value",
-                "execution_timeout": {"seconds": 751, "nanos": 543},
-            }
-        ],
-        "deploy_parameters": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -10884,6 +10894,73 @@ def test_update_target_rest(request_type):
         ],
         "deploy_parameters": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_deploy.UpdateTargetRequest.meta.fields["target"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["target"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["target"][field])):
+                    del request_init["target"][field][i][subfield]
+            else:
+                del request_init["target"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -11078,41 +11155,6 @@ def test_update_target_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "target": {"name": "projects/sample1/locations/sample2/targets/sample3"}
-    }
-    request_init["target"] = {
-        "name": "projects/sample1/locations/sample2/targets/sample3",
-        "target_id": "target_id_value",
-        "uid": "uid_value",
-        "description": "description_value",
-        "annotations": {},
-        "labels": {},
-        "require_approval": True,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "gke": {"cluster": "cluster_value", "internal_ip": True},
-        "anthos_cluster": {"membership": "membership_value"},
-        "run": {"location": "location_value"},
-        "multi_target": {"target_ids": ["target_ids_value1", "target_ids_value2"]},
-        "etag": "etag_value",
-        "execution_configs": [
-            {
-                "usages": [1],
-                "default_pool": {
-                    "service_account": "service_account_value",
-                    "artifact_storage": "artifact_storage_value",
-                },
-                "private_pool": {
-                    "worker_pool": "worker_pool_value",
-                    "service_account": "service_account_value",
-                    "artifact_storage": "artifact_storage_value",
-                },
-                "worker_pool": "worker_pool_value",
-                "service_account": "service_account_value",
-                "artifact_storage": "artifact_storage_value",
-                "execution_timeout": {"seconds": 751, "nanos": 543},
-            }
-        ],
-        "deploy_parameters": {},
     }
     request = request_type(**request_init)
 
@@ -11504,8 +11546,9 @@ def test_list_releases_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.ListReleasesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ListReleasesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11590,8 +11633,9 @@ def test_list_releases_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.ListReleasesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.ListReleasesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11730,8 +11774,9 @@ def test_list_releases_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.ListReleasesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ListReleasesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11863,8 +11908,9 @@ def test_get_release_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.Release.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.Release.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11945,8 +11991,9 @@ def test_get_release_rest_required_fields(request_type=cloud_deploy.GetReleaseRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.Release.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.Release.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12071,8 +12118,9 @@ def test_get_release_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.Release.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.Release.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12285,6 +12333,73 @@ def test_create_release_rest(request_type):
         },
         "deploy_parameters": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_deploy.CreateReleaseRequest.meta.fields["release"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["release"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["release"][field])):
+                    del request_init["release"][field][i][subfield]
+            else:
+                del request_init["release"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -12497,164 +12612,6 @@ def test_create_release_rest_bad_request(
     request_init = {
         "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3"
     }
-    request_init["release"] = {
-        "name": "name_value",
-        "uid": "uid_value",
-        "description": "description_value",
-        "annotations": {},
-        "labels": {},
-        "abandoned": True,
-        "create_time": {"seconds": 751, "nanos": 543},
-        "render_start_time": {},
-        "render_end_time": {},
-        "skaffold_config_uri": "skaffold_config_uri_value",
-        "skaffold_config_path": "skaffold_config_path_value",
-        "build_artifacts": [{"image": "image_value", "tag": "tag_value"}],
-        "delivery_pipeline_snapshot": {
-            "name": "name_value",
-            "uid": "uid_value",
-            "description": "description_value",
-            "annotations": {},
-            "labels": {},
-            "create_time": {},
-            "update_time": {},
-            "serial_pipeline": {
-                "stages": [
-                    {
-                        "target_id": "target_id_value",
-                        "profiles": ["profiles_value1", "profiles_value2"],
-                        "strategy": {
-                            "standard": {
-                                "verify": True,
-                                "predeploy": {
-                                    "actions": ["actions_value1", "actions_value2"]
-                                },
-                                "postdeploy": {
-                                    "actions": ["actions_value1", "actions_value2"]
-                                },
-                            },
-                            "canary": {
-                                "runtime_config": {
-                                    "kubernetes": {
-                                        "gateway_service_mesh": {
-                                            "http_route": "http_route_value",
-                                            "service": "service_value",
-                                            "deployment": "deployment_value",
-                                            "route_update_wait_time": {
-                                                "seconds": 751,
-                                                "nanos": 543,
-                                            },
-                                        },
-                                        "service_networking": {
-                                            "service": "service_value",
-                                            "deployment": "deployment_value",
-                                            "disable_pod_overprovisioning": True,
-                                        },
-                                    },
-                                    "cloud_run": {"automatic_traffic_control": True},
-                                },
-                                "canary_deployment": {
-                                    "percentages": [1170, 1171],
-                                    "verify": True,
-                                    "predeploy": {},
-                                    "postdeploy": {},
-                                },
-                                "custom_canary_deployment": {
-                                    "phase_configs": [
-                                        {
-                                            "phase_id": "phase_id_value",
-                                            "percentage": 1054,
-                                            "profiles": [
-                                                "profiles_value1",
-                                                "profiles_value2",
-                                            ],
-                                            "verify": True,
-                                            "predeploy": {},
-                                            "postdeploy": {},
-                                        }
-                                    ]
-                                },
-                            },
-                        },
-                        "deploy_parameters": [
-                            {"values": {}, "match_target_labels": {}}
-                        ],
-                    }
-                ]
-            },
-            "condition": {
-                "pipeline_ready_condition": {"status": True, "update_time": {}},
-                "targets_present_condition": {
-                    "status": True,
-                    "missing_targets": [
-                        "missing_targets_value1",
-                        "missing_targets_value2",
-                    ],
-                    "update_time": {},
-                },
-                "targets_type_condition": {
-                    "status": True,
-                    "error_details": "error_details_value",
-                },
-            },
-            "etag": "etag_value",
-            "suspended": True,
-        },
-        "target_snapshots": [
-            {
-                "name": "name_value",
-                "target_id": "target_id_value",
-                "uid": "uid_value",
-                "description": "description_value",
-                "annotations": {},
-                "labels": {},
-                "require_approval": True,
-                "create_time": {},
-                "update_time": {},
-                "gke": {"cluster": "cluster_value", "internal_ip": True},
-                "anthos_cluster": {"membership": "membership_value"},
-                "run": {"location": "location_value"},
-                "multi_target": {
-                    "target_ids": ["target_ids_value1", "target_ids_value2"]
-                },
-                "etag": "etag_value",
-                "execution_configs": [
-                    {
-                        "usages": [1],
-                        "default_pool": {
-                            "service_account": "service_account_value",
-                            "artifact_storage": "artifact_storage_value",
-                        },
-                        "private_pool": {
-                            "worker_pool": "worker_pool_value",
-                            "service_account": "service_account_value",
-                            "artifact_storage": "artifact_storage_value",
-                        },
-                        "worker_pool": "worker_pool_value",
-                        "service_account": "service_account_value",
-                        "artifact_storage": "artifact_storage_value",
-                        "execution_timeout": {},
-                    }
-                ],
-                "deploy_parameters": {},
-            }
-        ],
-        "render_state": 1,
-        "etag": "etag_value",
-        "skaffold_version": "skaffold_version_value",
-        "target_artifacts": {},
-        "target_renders": {},
-        "condition": {
-            "release_ready_condition": {"status": True},
-            "skaffold_supported_condition": {
-                "status": True,
-                "skaffold_support_state": 1,
-                "maintenance_mode_time": {},
-                "support_expiration_time": {},
-            },
-        },
-        "deploy_parameters": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -12763,8 +12720,9 @@ def test_abandon_release_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.AbandonReleaseResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.AbandonReleaseResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12839,8 +12797,9 @@ def test_abandon_release_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.AbandonReleaseResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.AbandonReleaseResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12969,8 +12928,9 @@ def test_abandon_release_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.AbandonReleaseResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.AbandonReleaseResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -13035,8 +12995,9 @@ def test_approve_rollout_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.ApproveRolloutResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ApproveRolloutResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -13115,8 +13076,9 @@ def test_approve_rollout_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.ApproveRolloutResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.ApproveRolloutResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -13253,8 +13215,9 @@ def test_approve_rollout_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.ApproveRolloutResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ApproveRolloutResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -13319,8 +13282,9 @@ def test_advance_rollout_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.AdvanceRolloutResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.AdvanceRolloutResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -13399,8 +13363,9 @@ def test_advance_rollout_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.AdvanceRolloutResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.AdvanceRolloutResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -13538,8 +13503,9 @@ def test_advance_rollout_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.AdvanceRolloutResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.AdvanceRolloutResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -13605,8 +13571,9 @@ def test_cancel_rollout_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.CancelRolloutResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.CancelRolloutResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -13681,8 +13648,9 @@ def test_cancel_rollout_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.CancelRolloutResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.CancelRolloutResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -13811,8 +13779,9 @@ def test_cancel_rollout_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.CancelRolloutResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.CancelRolloutResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -13880,8 +13849,9 @@ def test_list_rollouts_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.ListRolloutsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ListRolloutsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -13966,8 +13936,9 @@ def test_list_rollouts_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.ListRolloutsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.ListRolloutsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -14106,8 +14077,9 @@ def test_list_rollouts_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.ListRolloutsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ListRolloutsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -14241,8 +14213,9 @@ def test_get_rollout_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.Rollout.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.Rollout.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -14328,8 +14301,9 @@ def test_get_rollout_rest_required_fields(request_type=cloud_deploy.GetRolloutRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.Rollout.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.Rollout.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -14454,8 +14428,9 @@ def test_get_rollout_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.Rollout.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.Rollout.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -14569,6 +14544,73 @@ def test_create_rollout_rest(request_type):
         },
         "controller_rollout": "controller_rollout_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = cloud_deploy.CreateRolloutRequest.meta.fields["rollout"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["rollout"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["rollout"][field])):
+                    del request_init["rollout"][field][i][subfield]
+            else:
+                del request_init["rollout"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -14783,65 +14825,6 @@ def test_create_rollout_rest_bad_request(
     request_init = {
         "parent": "projects/sample1/locations/sample2/deliveryPipelines/sample3/releases/sample4"
     }
-    request_init["rollout"] = {
-        "name": "name_value",
-        "uid": "uid_value",
-        "description": "description_value",
-        "annotations": {},
-        "labels": {},
-        "create_time": {"seconds": 751, "nanos": 543},
-        "approve_time": {},
-        "enqueue_time": {},
-        "deploy_start_time": {},
-        "deploy_end_time": {},
-        "target_id": "target_id_value",
-        "approval_state": 1,
-        "state": 1,
-        "failure_reason": "failure_reason_value",
-        "deploying_build": "deploying_build_value",
-        "etag": "etag_value",
-        "deploy_failure_cause": 1,
-        "phases": [
-            {
-                "id": "id_value",
-                "state": 1,
-                "skip_message": "skip_message_value",
-                "deployment_jobs": {
-                    "deploy_job": {
-                        "id": "id_value",
-                        "state": 1,
-                        "skip_message": "skip_message_value",
-                        "job_run": "job_run_value",
-                        "deploy_job": {},
-                        "verify_job": {},
-                        "predeploy_job": {
-                            "actions": ["actions_value1", "actions_value2"]
-                        },
-                        "postdeploy_job": {
-                            "actions": ["actions_value1", "actions_value2"]
-                        },
-                        "create_child_rollout_job": {},
-                        "advance_child_rollout_job": {},
-                    },
-                    "verify_job": {},
-                    "predeploy_job": {},
-                    "postdeploy_job": {},
-                },
-                "child_rollout_jobs": {
-                    "create_rollout_jobs": {},
-                    "advance_rollout_jobs": {},
-                },
-            }
-        ],
-        "metadata": {
-            "cloud_run": {
-                "service": "service_value",
-                "service_urls": ["service_urls_value1", "service_urls_value2"],
-                "revision": "revision_value",
-            }
-        },
-        "controller_rollout": "controller_rollout_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -14950,8 +14933,9 @@ def test_ignore_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.IgnoreJobResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.IgnoreJobResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15032,8 +15016,9 @@ def test_ignore_job_rest_required_fields(request_type=cloud_deploy.IgnoreJobRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.IgnoreJobResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.IgnoreJobResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -15171,8 +15156,9 @@ def test_ignore_job_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.IgnoreJobResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.IgnoreJobResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -15239,8 +15225,9 @@ def test_retry_job_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.RetryJobResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.RetryJobResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15321,8 +15308,9 @@ def test_retry_job_rest_required_fields(request_type=cloud_deploy.RetryJobReques
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.RetryJobResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.RetryJobResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -15460,8 +15448,9 @@ def test_retry_job_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.RetryJobResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.RetryJobResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -15531,8 +15520,9 @@ def test_list_job_runs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.ListJobRunsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ListJobRunsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15617,8 +15607,9 @@ def test_list_job_runs_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.ListJobRunsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.ListJobRunsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -15757,8 +15748,9 @@ def test_list_job_runs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.ListJobRunsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.ListJobRunsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -15887,8 +15879,9 @@ def test_get_job_run_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.JobRun.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.JobRun.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15966,8 +15959,9 @@ def test_get_job_run_rest_required_fields(request_type=cloud_deploy.GetJobRunReq
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.JobRun.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.JobRun.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -16092,8 +16086,9 @@ def test_get_job_run_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.JobRun.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.JobRun.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -16158,8 +16153,9 @@ def test_terminate_job_run_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.TerminateJobRunResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.TerminateJobRunResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -16234,8 +16230,9 @@ def test_terminate_job_run_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.TerminateJobRunResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.TerminateJobRunResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -16364,8 +16361,9 @@ def test_terminate_job_run_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.TerminateJobRunResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.TerminateJobRunResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -16431,8 +16429,9 @@ def test_get_config_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.Config.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.Config.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -16506,8 +16505,9 @@ def test_get_config_rest_required_fields(request_type=cloud_deploy.GetConfigRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = cloud_deploy.Config.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = cloud_deploy.Config.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -16628,8 +16628,9 @@ def test_get_config_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = cloud_deploy.Config.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = cloud_deploy.Config.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

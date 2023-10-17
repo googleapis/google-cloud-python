@@ -7170,6 +7170,73 @@ def test_create_reservation_rest(request_type):
         "multi_region_auxiliary": True,
         "edition": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcbr_reservation.CreateReservationRequest.meta.fields["reservation"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["reservation"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["reservation"][field])):
+                    del request_init["reservation"][field][i][subfield]
+            else:
+                del request_init["reservation"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -7187,8 +7254,9 @@ def test_create_reservation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcbr_reservation.Reservation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcbr_reservation.Reservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7271,8 +7339,9 @@ def test_create_reservation_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = gcbr_reservation.Reservation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = gcbr_reservation.Reservation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7360,17 +7429,6 @@ def test_create_reservation_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["reservation"] = {
-        "name": "name_value",
-        "slot_capacity": 1391,
-        "ignore_idle_slots": True,
-        "autoscale": {"current_slots": 1431, "max_slots": 986},
-        "concurrency": 1195,
-        "creation_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "multi_region_auxiliary": True,
-        "edition": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -7410,8 +7468,9 @@ def test_create_reservation_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcbr_reservation.Reservation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcbr_reservation.Reservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7478,8 +7537,9 @@ def test_list_reservations_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.ListReservationsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.ListReservationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7561,8 +7621,9 @@ def test_list_reservations_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = reservation.ListReservationsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = reservation.ListReservationsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7695,8 +7756,9 @@ def test_list_reservations_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.ListReservationsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.ListReservationsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7823,8 +7885,9 @@ def test_get_reservation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.Reservation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.Reservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7904,8 +7967,9 @@ def test_get_reservation_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = reservation.Reservation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = reservation.Reservation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8032,8 +8096,9 @@ def test_get_reservation_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.Reservation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.Reservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8356,6 +8421,73 @@ def test_update_reservation_rest(request_type):
         "multi_region_auxiliary": True,
         "edition": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = gcbr_reservation.UpdateReservationRequest.meta.fields["reservation"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["reservation"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["reservation"][field])):
+                    del request_init["reservation"][field][i][subfield]
+            else:
+                del request_init["reservation"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -8373,8 +8505,9 @@ def test_update_reservation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcbr_reservation.Reservation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcbr_reservation.Reservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8461,17 +8594,6 @@ def test_update_reservation_rest_bad_request(
             "name": "projects/sample1/locations/sample2/reservations/sample3"
         }
     }
-    request_init["reservation"] = {
-        "name": "projects/sample1/locations/sample2/reservations/sample3",
-        "slot_capacity": 1391,
-        "ignore_idle_slots": True,
-        "autoscale": {"current_slots": 1431, "max_slots": 986},
-        "concurrency": 1195,
-        "creation_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "multi_region_auxiliary": True,
-        "edition": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -8514,8 +8636,9 @@ def test_update_reservation_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = gcbr_reservation.Reservation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = gcbr_reservation.Reservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8590,6 +8713,75 @@ def test_create_capacity_commitment_rest(request_type):
         "multi_region_auxiliary": True,
         "edition": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = reservation.CreateCapacityCommitmentRequest.meta.fields[
+        "capacity_commitment"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["capacity_commitment"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["capacity_commitment"][field])):
+                    del request_init["capacity_commitment"][field][i][subfield]
+            else:
+                del request_init["capacity_commitment"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -8608,8 +8800,9 @@ def test_create_capacity_commitment_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.CapacityCommitment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.CapacityCommitment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8698,8 +8891,9 @@ def test_create_capacity_commitment_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = reservation.CapacityCommitment.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = reservation.CapacityCommitment.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8795,27 +8989,6 @@ def test_create_capacity_commitment_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["capacity_commitment"] = {
-        "name": "name_value",
-        "slot_count": 1098,
-        "plan": 3,
-        "state": 1,
-        "commitment_start_time": {"seconds": 751, "nanos": 543},
-        "commitment_end_time": {},
-        "failure_status": {
-            "code": 411,
-            "message": "message_value",
-            "details": [
-                {
-                    "type_url": "type.googleapis.com/google.protobuf.Duration",
-                    "value": b"\x08\x0c\x10\xdb\x07",
-                }
-            ],
-        },
-        "renewal_plan": 3,
-        "multi_region_auxiliary": True,
-        "edition": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -8854,8 +9027,9 @@ def test_create_capacity_commitment_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.CapacityCommitment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.CapacityCommitment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8921,8 +9095,9 @@ def test_list_capacity_commitments_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.ListCapacityCommitmentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.ListCapacityCommitmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9004,10 +9179,9 @@ def test_list_capacity_commitments_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = reservation.ListCapacityCommitmentsResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = reservation.ListCapacityCommitmentsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -9140,8 +9314,9 @@ def test_list_capacity_commitments_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.ListCapacityCommitmentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.ListCapacityCommitmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9271,8 +9446,9 @@ def test_get_capacity_commitment_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.CapacityCommitment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.CapacityCommitment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9353,8 +9529,9 @@ def test_get_capacity_commitment_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = reservation.CapacityCommitment.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = reservation.CapacityCommitment.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -9483,8 +9660,9 @@ def test_get_capacity_commitment_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.CapacityCommitment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.CapacityCommitment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9823,6 +10001,75 @@ def test_update_capacity_commitment_rest(request_type):
         "multi_region_auxiliary": True,
         "edition": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = reservation.UpdateCapacityCommitmentRequest.meta.fields[
+        "capacity_commitment"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["capacity_commitment"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["capacity_commitment"][field])):
+                    del request_init["capacity_commitment"][field][i][subfield]
+            else:
+                del request_init["capacity_commitment"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -9841,8 +10088,9 @@ def test_update_capacity_commitment_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.CapacityCommitment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.CapacityCommitment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -9930,27 +10178,6 @@ def test_update_capacity_commitment_rest_bad_request(
             "name": "projects/sample1/locations/sample2/capacityCommitments/sample3"
         }
     }
-    request_init["capacity_commitment"] = {
-        "name": "projects/sample1/locations/sample2/capacityCommitments/sample3",
-        "slot_count": 1098,
-        "plan": 3,
-        "state": 1,
-        "commitment_start_time": {"seconds": 751, "nanos": 543},
-        "commitment_end_time": {},
-        "failure_status": {
-            "code": 411,
-            "message": "message_value",
-            "details": [
-                {
-                    "type_url": "type.googleapis.com/google.protobuf.Duration",
-                    "value": b"\x08\x0c\x10\xdb\x07",
-                }
-            ],
-        },
-        "renewal_plan": 3,
-        "multi_region_auxiliary": True,
-        "edition": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -9993,8 +10220,9 @@ def test_update_capacity_commitment_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.CapacityCommitment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.CapacityCommitment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -10060,8 +10288,9 @@ def test_split_capacity_commitment_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.SplitCapacityCommitmentResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.SplitCapacityCommitmentResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10136,10 +10365,9 @@ def test_split_capacity_commitment_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = reservation.SplitCapacityCommitmentResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = reservation.SplitCapacityCommitmentResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10269,8 +10497,9 @@ def test_split_capacity_commitment_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.SplitCapacityCommitmentResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.SplitCapacityCommitmentResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -10342,8 +10571,9 @@ def test_merge_capacity_commitments_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.CapacityCommitment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.CapacityCommitment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10465,8 +10695,9 @@ def test_merge_capacity_commitments_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.CapacityCommitment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.CapacityCommitment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -10526,6 +10757,73 @@ def test_create_assignment_rest(request_type):
         "job_type": 1,
         "state": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = reservation.CreateAssignmentRequest.meta.fields["assignment"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["assignment"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["assignment"][field])):
+                    del request_init["assignment"][field][i][subfield]
+            else:
+                del request_init["assignment"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -10541,8 +10839,9 @@ def test_create_assignment_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.Assignment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.Assignment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10623,8 +10922,9 @@ def test_create_assignment_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = reservation.Assignment.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = reservation.Assignment.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10712,12 +11012,6 @@ def test_create_assignment_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/reservations/sample3"}
-    request_init["assignment"] = {
-        "name": "name_value",
-        "assignee": "assignee_value",
-        "job_type": 1,
-        "state": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -10758,8 +11052,9 @@ def test_create_assignment_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.Assignment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.Assignment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -10825,8 +11120,9 @@ def test_list_assignments_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.ListAssignmentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.ListAssignmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10908,8 +11204,9 @@ def test_list_assignments_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = reservation.ListAssignmentsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = reservation.ListAssignmentsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11044,8 +11341,9 @@ def test_list_assignments_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.ListAssignmentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.ListAssignmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11428,8 +11726,9 @@ def test_search_assignments_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.SearchAssignmentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.SearchAssignmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11512,8 +11811,9 @@ def test_search_assignments_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = reservation.SearchAssignmentsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = reservation.SearchAssignmentsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11648,8 +11948,9 @@ def test_search_assignments_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.SearchAssignmentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.SearchAssignmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11772,8 +12073,9 @@ def test_search_all_assignments_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.SearchAllAssignmentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.SearchAllAssignmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11856,8 +12158,9 @@ def test_search_all_assignments_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = reservation.SearchAllAssignmentsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = reservation.SearchAllAssignmentsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11992,8 +12295,9 @@ def test_search_all_assignments_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.SearchAllAssignmentsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.SearchAllAssignmentsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12121,8 +12425,9 @@ def test_move_assignment_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.Assignment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.Assignment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12201,8 +12506,9 @@ def test_move_assignment_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = reservation.Assignment.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = reservation.Assignment.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12332,8 +12638,9 @@ def test_move_assignment_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.Assignment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.Assignment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12397,6 +12704,73 @@ def test_update_assignment_rest(request_type):
         "job_type": 1,
         "state": 1,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = reservation.UpdateAssignmentRequest.meta.fields["assignment"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["assignment"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["assignment"][field])):
+                    del request_init["assignment"][field][i][subfield]
+            else:
+                del request_init["assignment"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -12412,8 +12786,9 @@ def test_update_assignment_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.Assignment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.Assignment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12498,12 +12873,6 @@ def test_update_assignment_rest_bad_request(
             "name": "projects/sample1/locations/sample2/reservations/sample3/assignments/sample4"
         }
     }
-    request_init["assignment"] = {
-        "name": "projects/sample1/locations/sample2/reservations/sample3/assignments/sample4",
-        "assignee": "assignee_value",
-        "job_type": 1,
-        "state": 1,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -12546,8 +12915,9 @@ def test_update_assignment_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.Assignment.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.Assignment.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12614,8 +12984,9 @@ def test_get_bi_reservation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.BiReservation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.BiReservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12691,8 +13062,9 @@ def test_get_bi_reservation_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = reservation.BiReservation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = reservation.BiReservation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12817,8 +13189,9 @@ def test_get_bi_reservation_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.BiReservation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.BiReservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12885,6 +13258,73 @@ def test_update_bi_reservation_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = reservation.UpdateBiReservationRequest.meta.fields["bi_reservation"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["bi_reservation"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["bi_reservation"][field])):
+                    del request_init["bi_reservation"][field][i][subfield]
+            else:
+                del request_init["bi_reservation"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -12898,8 +13338,9 @@ def test_update_bi_reservation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.BiReservation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.BiReservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12980,18 +13421,6 @@ def test_update_bi_reservation_rest_bad_request(
     request_init = {
         "bi_reservation": {"name": "projects/sample1/locations/sample2/biReservation"}
     }
-    request_init["bi_reservation"] = {
-        "name": "projects/sample1/locations/sample2/biReservation",
-        "update_time": {"seconds": 751, "nanos": 543},
-        "size": 443,
-        "preferred_tables": [
-            {
-                "project_id": "project_id_value",
-                "dataset_id": "dataset_id_value",
-                "table_id": "table_id_value",
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -13034,8 +13463,9 @@ def test_update_bi_reservation_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = reservation.BiReservation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = reservation.BiReservation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
