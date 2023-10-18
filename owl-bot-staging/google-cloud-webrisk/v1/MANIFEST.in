@@ -1,2 +1,0 @@
-recursive-include google/cloud/webrisk *.py
-recursive-include google/cloud/webrisk_v1 *.py
