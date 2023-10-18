@@ -1941,8 +1941,9 @@ def test_run_report_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = analytics_data_api.RunReportResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = analytics_data_api.RunReportResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2068,8 +2069,9 @@ def test_run_pivot_report_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = analytics_data_api.RunPivotReportResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = analytics_data_api.RunPivotReportResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2194,8 +2196,9 @@ def test_batch_run_reports_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = analytics_data_api.BatchRunReportsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = analytics_data_api.BatchRunReportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2320,10 +2323,9 @@ def test_batch_run_pivot_reports_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = analytics_data_api.BatchRunPivotReportsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = analytics_data_api.BatchRunPivotReportsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2450,8 +2452,9 @@ def test_get_metadata_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = analytics_data_api.Metadata.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = analytics_data_api.Metadata.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2526,8 +2529,9 @@ def test_get_metadata_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = analytics_data_api.Metadata.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = analytics_data_api.Metadata.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2652,8 +2656,9 @@ def test_get_metadata_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = analytics_data_api.Metadata.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = analytics_data_api.Metadata.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -2717,8 +2722,9 @@ def test_run_realtime_report_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = analytics_data_api.RunRealtimeReportResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = analytics_data_api.RunRealtimeReportResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2844,8 +2850,9 @@ def test_check_compatibility_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = analytics_data_api.CheckCompatibilityResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = analytics_data_api.CheckCompatibilityResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
