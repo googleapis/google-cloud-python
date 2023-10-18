@@ -1,0 +1,2 @@
+recursive-include google/cloud/support *.py
+recursive-include google/cloud/support_v2 *.py
