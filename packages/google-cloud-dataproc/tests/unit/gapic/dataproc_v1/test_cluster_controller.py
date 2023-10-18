@@ -2995,6 +2995,73 @@ def test_create_cluster_rest(request_type):
         "cluster_uuid": "cluster_uuid_value",
         "metrics": {"hdfs_metrics": {}, "yarn_metrics": {}},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = clusters.CreateClusterRequest.meta.fields["cluster"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["cluster"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["cluster"][field])):
+                    del request_init["cluster"][field][i][subfield]
+            else:
+                del request_init["cluster"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3192,213 +3259,6 @@ def test_create_cluster_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"project_id": "sample1", "region": "sample2"}
-    request_init["cluster"] = {
-        "project_id": "project_id_value",
-        "cluster_name": "cluster_name_value",
-        "config": {
-            "config_bucket": "config_bucket_value",
-            "temp_bucket": "temp_bucket_value",
-            "gce_cluster_config": {
-                "zone_uri": "zone_uri_value",
-                "network_uri": "network_uri_value",
-                "subnetwork_uri": "subnetwork_uri_value",
-                "internal_ip_only": True,
-                "private_ipv6_google_access": 1,
-                "service_account": "service_account_value",
-                "service_account_scopes": [
-                    "service_account_scopes_value1",
-                    "service_account_scopes_value2",
-                ],
-                "tags": ["tags_value1", "tags_value2"],
-                "metadata": {},
-                "reservation_affinity": {
-                    "consume_reservation_type": 1,
-                    "key": "key_value",
-                    "values": ["values_value1", "values_value2"],
-                },
-                "node_group_affinity": {"node_group_uri": "node_group_uri_value"},
-                "shielded_instance_config": {
-                    "enable_secure_boot": True,
-                    "enable_vtpm": True,
-                    "enable_integrity_monitoring": True,
-                },
-                "confidential_instance_config": {"enable_confidential_compute": True},
-            },
-            "master_config": {
-                "num_instances": 1399,
-                "instance_names": ["instance_names_value1", "instance_names_value2"],
-                "instance_references": [
-                    {
-                        "instance_name": "instance_name_value",
-                        "instance_id": "instance_id_value",
-                        "public_key": "public_key_value",
-                        "public_ecies_key": "public_ecies_key_value",
-                    }
-                ],
-                "image_uri": "image_uri_value",
-                "machine_type_uri": "machine_type_uri_value",
-                "disk_config": {
-                    "boot_disk_type": "boot_disk_type_value",
-                    "boot_disk_size_gb": 1792,
-                    "num_local_ssds": 1494,
-                    "local_ssd_interface": "local_ssd_interface_value",
-                },
-                "is_preemptible": True,
-                "preemptibility": 1,
-                "managed_group_config": {
-                    "instance_template_name": "instance_template_name_value",
-                    "instance_group_manager_name": "instance_group_manager_name_value",
-                    "instance_group_manager_uri": "instance_group_manager_uri_value",
-                },
-                "accelerators": [
-                    {
-                        "accelerator_type_uri": "accelerator_type_uri_value",
-                        "accelerator_count": 1805,
-                    }
-                ],
-                "min_cpu_platform": "min_cpu_platform_value",
-                "min_num_instances": 1818,
-                "instance_flexibility_policy": {
-                    "instance_selection_list": [
-                        {
-                            "machine_types": [
-                                "machine_types_value1",
-                                "machine_types_value2",
-                            ],
-                            "rank": 428,
-                        }
-                    ],
-                    "instance_selection_results": [
-                        {"machine_type": "machine_type_value", "vm_count": 875}
-                    ],
-                },
-            },
-            "worker_config": {},
-            "secondary_worker_config": {},
-            "software_config": {
-                "image_version": "image_version_value",
-                "properties": {},
-                "optional_components": [5],
-            },
-            "initialization_actions": [
-                {
-                    "executable_file": "executable_file_value",
-                    "execution_timeout": {"seconds": 751, "nanos": 543},
-                }
-            ],
-            "encryption_config": {"gce_pd_kms_key_name": "gce_pd_kms_key_name_value"},
-            "autoscaling_config": {"policy_uri": "policy_uri_value"},
-            "security_config": {
-                "kerberos_config": {
-                    "enable_kerberos": True,
-                    "root_principal_password_uri": "root_principal_password_uri_value",
-                    "kms_key_uri": "kms_key_uri_value",
-                    "keystore_uri": "keystore_uri_value",
-                    "truststore_uri": "truststore_uri_value",
-                    "keystore_password_uri": "keystore_password_uri_value",
-                    "key_password_uri": "key_password_uri_value",
-                    "truststore_password_uri": "truststore_password_uri_value",
-                    "cross_realm_trust_realm": "cross_realm_trust_realm_value",
-                    "cross_realm_trust_kdc": "cross_realm_trust_kdc_value",
-                    "cross_realm_trust_admin_server": "cross_realm_trust_admin_server_value",
-                    "cross_realm_trust_shared_password_uri": "cross_realm_trust_shared_password_uri_value",
-                    "kdc_db_key_uri": "kdc_db_key_uri_value",
-                    "tgt_lifetime_hours": 1933,
-                    "realm": "realm_value",
-                },
-                "identity_config": {"user_service_account_mapping": {}},
-            },
-            "lifecycle_config": {
-                "idle_delete_ttl": {},
-                "auto_delete_time": {"seconds": 751, "nanos": 543},
-                "auto_delete_ttl": {},
-                "idle_start_time": {},
-            },
-            "endpoint_config": {"http_ports": {}, "enable_http_port_access": True},
-            "metastore_config": {
-                "dataproc_metastore_service": "dataproc_metastore_service_value"
-            },
-            "dataproc_metric_config": {
-                "metrics": [
-                    {
-                        "metric_source": 1,
-                        "metric_overrides": [
-                            "metric_overrides_value1",
-                            "metric_overrides_value2",
-                        ],
-                    }
-                ]
-            },
-            "auxiliary_node_groups": [
-                {
-                    "node_group": {
-                        "name": "name_value",
-                        "roles": [1],
-                        "node_group_config": {},
-                        "labels": {},
-                    },
-                    "node_group_id": "node_group_id_value",
-                }
-            ],
-        },
-        "virtual_cluster_config": {
-            "staging_bucket": "staging_bucket_value",
-            "kubernetes_cluster_config": {
-                "kubernetes_namespace": "kubernetes_namespace_value",
-                "gke_cluster_config": {
-                    "gke_cluster_target": "gke_cluster_target_value",
-                    "node_pool_target": [
-                        {
-                            "node_pool": "node_pool_value",
-                            "roles": [1],
-                            "node_pool_config": {
-                                "config": {
-                                    "machine_type": "machine_type_value",
-                                    "local_ssd_count": 1596,
-                                    "preemptible": True,
-                                    "accelerators": [
-                                        {
-                                            "accelerator_count": 1805,
-                                            "accelerator_type": "accelerator_type_value",
-                                            "gpu_partition_size": "gpu_partition_size_value",
-                                        }
-                                    ],
-                                    "min_cpu_platform": "min_cpu_platform_value",
-                                    "boot_disk_kms_key": "boot_disk_kms_key_value",
-                                    "spot": True,
-                                },
-                                "locations": ["locations_value1", "locations_value2"],
-                                "autoscaling": {
-                                    "min_node_count": 1489,
-                                    "max_node_count": 1491,
-                                },
-                            },
-                        }
-                    ],
-                },
-                "kubernetes_software_config": {
-                    "component_version": {},
-                    "properties": {},
-                },
-            },
-            "auxiliary_services_config": {
-                "metastore_config": {},
-                "spark_history_server_config": {
-                    "dataproc_cluster": "dataproc_cluster_value"
-                },
-            },
-        },
-        "labels": {},
-        "status": {
-            "state": 1,
-            "detail": "detail_value",
-            "state_start_time": {},
-            "substate": 1,
-        },
-        "status_history": {},
-        "cluster_uuid": "cluster_uuid_value",
-        "metrics": {"hdfs_metrics": {}, "yarn_metrics": {}},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3704,6 +3564,73 @@ def test_update_cluster_rest(request_type):
         "cluster_uuid": "cluster_uuid_value",
         "metrics": {"hdfs_metrics": {}, "yarn_metrics": {}},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = clusters.UpdateClusterRequest.meta.fields["cluster"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["cluster"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["cluster"][field])):
+                    del request_init["cluster"][field][i][subfield]
+            else:
+                del request_init["cluster"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3912,213 +3839,6 @@ def test_update_cluster_rest_bad_request(
         "project_id": "sample1",
         "region": "sample2",
         "cluster_name": "sample3",
-    }
-    request_init["cluster"] = {
-        "project_id": "project_id_value",
-        "cluster_name": "cluster_name_value",
-        "config": {
-            "config_bucket": "config_bucket_value",
-            "temp_bucket": "temp_bucket_value",
-            "gce_cluster_config": {
-                "zone_uri": "zone_uri_value",
-                "network_uri": "network_uri_value",
-                "subnetwork_uri": "subnetwork_uri_value",
-                "internal_ip_only": True,
-                "private_ipv6_google_access": 1,
-                "service_account": "service_account_value",
-                "service_account_scopes": [
-                    "service_account_scopes_value1",
-                    "service_account_scopes_value2",
-                ],
-                "tags": ["tags_value1", "tags_value2"],
-                "metadata": {},
-                "reservation_affinity": {
-                    "consume_reservation_type": 1,
-                    "key": "key_value",
-                    "values": ["values_value1", "values_value2"],
-                },
-                "node_group_affinity": {"node_group_uri": "node_group_uri_value"},
-                "shielded_instance_config": {
-                    "enable_secure_boot": True,
-                    "enable_vtpm": True,
-                    "enable_integrity_monitoring": True,
-                },
-                "confidential_instance_config": {"enable_confidential_compute": True},
-            },
-            "master_config": {
-                "num_instances": 1399,
-                "instance_names": ["instance_names_value1", "instance_names_value2"],
-                "instance_references": [
-                    {
-                        "instance_name": "instance_name_value",
-                        "instance_id": "instance_id_value",
-                        "public_key": "public_key_value",
-                        "public_ecies_key": "public_ecies_key_value",
-                    }
-                ],
-                "image_uri": "image_uri_value",
-                "machine_type_uri": "machine_type_uri_value",
-                "disk_config": {
-                    "boot_disk_type": "boot_disk_type_value",
-                    "boot_disk_size_gb": 1792,
-                    "num_local_ssds": 1494,
-                    "local_ssd_interface": "local_ssd_interface_value",
-                },
-                "is_preemptible": True,
-                "preemptibility": 1,
-                "managed_group_config": {
-                    "instance_template_name": "instance_template_name_value",
-                    "instance_group_manager_name": "instance_group_manager_name_value",
-                    "instance_group_manager_uri": "instance_group_manager_uri_value",
-                },
-                "accelerators": [
-                    {
-                        "accelerator_type_uri": "accelerator_type_uri_value",
-                        "accelerator_count": 1805,
-                    }
-                ],
-                "min_cpu_platform": "min_cpu_platform_value",
-                "min_num_instances": 1818,
-                "instance_flexibility_policy": {
-                    "instance_selection_list": [
-                        {
-                            "machine_types": [
-                                "machine_types_value1",
-                                "machine_types_value2",
-                            ],
-                            "rank": 428,
-                        }
-                    ],
-                    "instance_selection_results": [
-                        {"machine_type": "machine_type_value", "vm_count": 875}
-                    ],
-                },
-            },
-            "worker_config": {},
-            "secondary_worker_config": {},
-            "software_config": {
-                "image_version": "image_version_value",
-                "properties": {},
-                "optional_components": [5],
-            },
-            "initialization_actions": [
-                {
-                    "executable_file": "executable_file_value",
-                    "execution_timeout": {"seconds": 751, "nanos": 543},
-                }
-            ],
-            "encryption_config": {"gce_pd_kms_key_name": "gce_pd_kms_key_name_value"},
-            "autoscaling_config": {"policy_uri": "policy_uri_value"},
-            "security_config": {
-                "kerberos_config": {
-                    "enable_kerberos": True,
-                    "root_principal_password_uri": "root_principal_password_uri_value",
-                    "kms_key_uri": "kms_key_uri_value",
-                    "keystore_uri": "keystore_uri_value",
-                    "truststore_uri": "truststore_uri_value",
-                    "keystore_password_uri": "keystore_password_uri_value",
-                    "key_password_uri": "key_password_uri_value",
-                    "truststore_password_uri": "truststore_password_uri_value",
-                    "cross_realm_trust_realm": "cross_realm_trust_realm_value",
-                    "cross_realm_trust_kdc": "cross_realm_trust_kdc_value",
-                    "cross_realm_trust_admin_server": "cross_realm_trust_admin_server_value",
-                    "cross_realm_trust_shared_password_uri": "cross_realm_trust_shared_password_uri_value",
-                    "kdc_db_key_uri": "kdc_db_key_uri_value",
-                    "tgt_lifetime_hours": 1933,
-                    "realm": "realm_value",
-                },
-                "identity_config": {"user_service_account_mapping": {}},
-            },
-            "lifecycle_config": {
-                "idle_delete_ttl": {},
-                "auto_delete_time": {"seconds": 751, "nanos": 543},
-                "auto_delete_ttl": {},
-                "idle_start_time": {},
-            },
-            "endpoint_config": {"http_ports": {}, "enable_http_port_access": True},
-            "metastore_config": {
-                "dataproc_metastore_service": "dataproc_metastore_service_value"
-            },
-            "dataproc_metric_config": {
-                "metrics": [
-                    {
-                        "metric_source": 1,
-                        "metric_overrides": [
-                            "metric_overrides_value1",
-                            "metric_overrides_value2",
-                        ],
-                    }
-                ]
-            },
-            "auxiliary_node_groups": [
-                {
-                    "node_group": {
-                        "name": "name_value",
-                        "roles": [1],
-                        "node_group_config": {},
-                        "labels": {},
-                    },
-                    "node_group_id": "node_group_id_value",
-                }
-            ],
-        },
-        "virtual_cluster_config": {
-            "staging_bucket": "staging_bucket_value",
-            "kubernetes_cluster_config": {
-                "kubernetes_namespace": "kubernetes_namespace_value",
-                "gke_cluster_config": {
-                    "gke_cluster_target": "gke_cluster_target_value",
-                    "node_pool_target": [
-                        {
-                            "node_pool": "node_pool_value",
-                            "roles": [1],
-                            "node_pool_config": {
-                                "config": {
-                                    "machine_type": "machine_type_value",
-                                    "local_ssd_count": 1596,
-                                    "preemptible": True,
-                                    "accelerators": [
-                                        {
-                                            "accelerator_count": 1805,
-                                            "accelerator_type": "accelerator_type_value",
-                                            "gpu_partition_size": "gpu_partition_size_value",
-                                        }
-                                    ],
-                                    "min_cpu_platform": "min_cpu_platform_value",
-                                    "boot_disk_kms_key": "boot_disk_kms_key_value",
-                                    "spot": True,
-                                },
-                                "locations": ["locations_value1", "locations_value2"],
-                                "autoscaling": {
-                                    "min_node_count": 1489,
-                                    "max_node_count": 1491,
-                                },
-                            },
-                        }
-                    ],
-                },
-                "kubernetes_software_config": {
-                    "component_version": {},
-                    "properties": {},
-                },
-            },
-            "auxiliary_services_config": {
-                "metastore_config": {},
-                "spark_history_server_config": {
-                    "dataproc_cluster": "dataproc_cluster_value"
-                },
-            },
-        },
-        "labels": {},
-        "status": {
-            "state": 1,
-            "detail": "detail_value",
-            "state_start_time": {},
-            "substate": 1,
-        },
-        "status_history": {},
-        "cluster_uuid": "cluster_uuid_value",
-        "metrics": {"hdfs_metrics": {}, "yarn_metrics": {}},
     }
     request = request_type(**request_init)
 
@@ -5006,8 +4726,9 @@ def test_get_cluster_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = clusters.Cluster.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = clusters.Cluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5090,8 +4811,9 @@ def test_get_cluster_rest_required_fields(request_type=clusters.GetClusterReques
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = clusters.Cluster.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = clusters.Cluster.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5231,8 +4953,9 @@ def test_get_cluster_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = clusters.Cluster.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = clusters.Cluster.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -5299,8 +5022,9 @@ def test_list_clusters_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = clusters.ListClustersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = clusters.ListClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -5385,8 +5109,9 @@ def test_list_clusters_rest_required_fields(request_type=clusters.ListClustersRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = clusters.ListClustersResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = clusters.ListClustersResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -5525,8 +5250,9 @@ def test_list_clusters_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = clusters.ListClustersResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = clusters.ListClustersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 

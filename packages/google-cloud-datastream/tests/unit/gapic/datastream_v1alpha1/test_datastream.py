@@ -6651,8 +6651,9 @@ def test_list_connection_profiles_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream.ListConnectionProfilesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream.ListConnectionProfilesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -6737,8 +6738,9 @@ def test_list_connection_profiles_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = datastream.ListConnectionProfilesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = datastream.ListConnectionProfilesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -6873,8 +6875,9 @@ def test_list_connection_profiles_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream.ListConnectionProfilesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream.ListConnectionProfilesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7001,8 +7004,9 @@ def test_get_connection_profile_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream_resources.ConnectionProfile.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream_resources.ConnectionProfile.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7078,8 +7082,9 @@ def test_get_connection_profile_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = datastream_resources.ConnectionProfile.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = datastream_resources.ConnectionProfile.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -7208,8 +7213,9 @@ def test_get_connection_profile_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream_resources.ConnectionProfile.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream_resources.ConnectionProfile.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -7307,6 +7313,75 @@ def test_create_connection_profile_rest(request_type):
             "private_connection_name": "private_connection_name_value"
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = datastream.CreateConnectionProfileRequest.meta.fields[
+        "connection_profile"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["connection_profile"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["connection_profile"][field])):
+                    del request_init["connection_profile"][field][i][subfield]
+            else:
+                del request_init["connection_profile"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -7518,51 +7593,6 @@ def test_create_connection_profile_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["connection_profile"] = {
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "display_name": "display_name_value",
-        "oracle_profile": {
-            "hostname": "hostname_value",
-            "port": 453,
-            "username": "username_value",
-            "password": "password_value",
-            "database_service": "database_service_value",
-            "connection_attributes": {},
-        },
-        "gcs_profile": {
-            "bucket_name": "bucket_name_value",
-            "root_path": "root_path_value",
-        },
-        "mysql_profile": {
-            "hostname": "hostname_value",
-            "port": 453,
-            "username": "username_value",
-            "password": "password_value",
-            "ssl_config": {
-                "client_key": "client_key_value",
-                "client_key_set": True,
-                "client_certificate": "client_certificate_value",
-                "client_certificate_set": True,
-                "ca_certificate": "ca_certificate_value",
-                "ca_certificate_set": True,
-            },
-        },
-        "no_connectivity": {},
-        "static_service_ip_connectivity": {},
-        "forward_ssh_connectivity": {
-            "hostname": "hostname_value",
-            "username": "username_value",
-            "port": 453,
-            "password": "password_value",
-            "private_key": "private_key_value",
-        },
-        "private_connectivity": {
-            "private_connection_name": "private_connection_name_value"
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -7710,6 +7740,75 @@ def test_update_connection_profile_rest(request_type):
             "private_connection_name": "private_connection_name_value"
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = datastream.UpdateConnectionProfileRequest.meta.fields[
+        "connection_profile"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["connection_profile"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["connection_profile"][field])):
+                    del request_init["connection_profile"][field][i][subfield]
+            else:
+                del request_init["connection_profile"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -7897,51 +7996,6 @@ def test_update_connection_profile_rest_bad_request(
         "connection_profile": {
             "name": "projects/sample1/locations/sample2/connectionProfiles/sample3"
         }
-    }
-    request_init["connection_profile"] = {
-        "name": "projects/sample1/locations/sample2/connectionProfiles/sample3",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "display_name": "display_name_value",
-        "oracle_profile": {
-            "hostname": "hostname_value",
-            "port": 453,
-            "username": "username_value",
-            "password": "password_value",
-            "database_service": "database_service_value",
-            "connection_attributes": {},
-        },
-        "gcs_profile": {
-            "bucket_name": "bucket_name_value",
-            "root_path": "root_path_value",
-        },
-        "mysql_profile": {
-            "hostname": "hostname_value",
-            "port": 453,
-            "username": "username_value",
-            "password": "password_value",
-            "ssl_config": {
-                "client_key": "client_key_value",
-                "client_key_set": True,
-                "client_certificate": "client_certificate_value",
-                "client_certificate_set": True,
-                "ca_certificate": "ca_certificate_value",
-                "ca_certificate_set": True,
-            },
-        },
-        "no_connectivity": {},
-        "static_service_ip_connectivity": {},
-        "forward_ssh_connectivity": {
-            "hostname": "hostname_value",
-            "username": "username_value",
-            "port": 453,
-            "password": "password_value",
-            "private_key": "private_key_value",
-        },
-        "private_connectivity": {
-            "private_connection_name": "private_connection_name_value"
-        },
     }
     request = request_type(**request_init)
 
@@ -8324,8 +8378,9 @@ def test_discover_connection_profile_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream.DiscoverConnectionProfileResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream.DiscoverConnectionProfileResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8400,10 +8455,9 @@ def test_discover_connection_profile_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = datastream.DiscoverConnectionProfileResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = datastream.DiscoverConnectionProfileResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8541,8 +8595,9 @@ def test_list_streams_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream.ListStreamsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream.ListStreamsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8625,8 +8680,9 @@ def test_list_streams_rest_required_fields(request_type=datastream.ListStreamsRe
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = datastream.ListStreamsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = datastream.ListStreamsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -8759,8 +8815,9 @@ def test_list_streams_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream.ListStreamsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream.ListStreamsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -8882,8 +8939,9 @@ def test_get_stream_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream_resources.Stream.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream_resources.Stream.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8958,8 +9016,9 @@ def test_get_stream_rest_required_fields(request_type=datastream.GetStreamReques
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = datastream_resources.Stream.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = datastream_resources.Stream.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -9082,8 +9141,9 @@ def test_get_stream_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream_resources.Stream.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream_resources.Stream.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -9223,6 +9283,73 @@ def test_create_stream_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = datastream.CreateStreamRequest.meta.fields["stream"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["stream"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["stream"][field])):
+                    del request_init["stream"][field][i][subfield]
+            else:
+                del request_init["stream"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -9433,93 +9560,6 @@ def test_create_stream_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["stream"] = {
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "display_name": "display_name_value",
-        "source_config": {
-            "source_connection_profile_name": "source_connection_profile_name_value",
-            "oracle_source_config": {
-                "allowlist": {
-                    "oracle_schemas": [
-                        {
-                            "schema_name": "schema_name_value",
-                            "oracle_tables": [
-                                {
-                                    "table_name": "table_name_value",
-                                    "oracle_columns": [
-                                        {
-                                            "column_name": "column_name_value",
-                                            "data_type": "data_type_value",
-                                            "length": 642,
-                                            "precision": 972,
-                                            "scale": 520,
-                                            "encoding": "encoding_value",
-                                            "primary_key": True,
-                                            "nullable": True,
-                                            "ordinal_position": 1725,
-                                        }
-                                    ],
-                                }
-                            ],
-                        }
-                    ]
-                },
-                "rejectlist": {},
-            },
-            "mysql_source_config": {
-                "allowlist": {
-                    "mysql_databases": [
-                        {
-                            "database_name": "database_name_value",
-                            "mysql_tables": [
-                                {
-                                    "table_name": "table_name_value",
-                                    "mysql_columns": [
-                                        {
-                                            "column_name": "column_name_value",
-                                            "data_type": "data_type_value",
-                                            "length": 642,
-                                            "collation": "collation_value",
-                                            "primary_key": True,
-                                            "nullable": True,
-                                            "ordinal_position": 1725,
-                                        }
-                                    ],
-                                }
-                            ],
-                        }
-                    ]
-                },
-                "rejectlist": {},
-            },
-        },
-        "destination_config": {
-            "destination_connection_profile_name": "destination_connection_profile_name_value",
-            "gcs_destination_config": {
-                "path": "path_value",
-                "gcs_file_format": 1,
-                "file_rotation_mb": 1693,
-                "file_rotation_interval": {"seconds": 751, "nanos": 543},
-                "avro_file_format": {},
-                "json_file_format": {"schema_file_format": 1, "compression": 1},
-            },
-        },
-        "state": 1,
-        "backfill_all": {"oracle_excluded_objects": {}, "mysql_excluded_objects": {}},
-        "backfill_none": {},
-        "errors": [
-            {
-                "reason": "reason_value",
-                "error_uuid": "error_uuid_value",
-                "message": "message_value",
-                "error_time": {},
-                "details": {},
-            }
-        ],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -9703,6 +9743,73 @@ def test_update_stream_rest(request_type):
             }
         ],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = datastream.UpdateStreamRequest.meta.fields["stream"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["stream"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["stream"][field])):
+                    del request_init["stream"][field][i][subfield]
+            else:
+                del request_init["stream"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -9890,93 +9997,6 @@ def test_update_stream_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {
         "stream": {"name": "projects/sample1/locations/sample2/streams/sample3"}
-    }
-    request_init["stream"] = {
-        "name": "projects/sample1/locations/sample2/streams/sample3",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "display_name": "display_name_value",
-        "source_config": {
-            "source_connection_profile_name": "source_connection_profile_name_value",
-            "oracle_source_config": {
-                "allowlist": {
-                    "oracle_schemas": [
-                        {
-                            "schema_name": "schema_name_value",
-                            "oracle_tables": [
-                                {
-                                    "table_name": "table_name_value",
-                                    "oracle_columns": [
-                                        {
-                                            "column_name": "column_name_value",
-                                            "data_type": "data_type_value",
-                                            "length": 642,
-                                            "precision": 972,
-                                            "scale": 520,
-                                            "encoding": "encoding_value",
-                                            "primary_key": True,
-                                            "nullable": True,
-                                            "ordinal_position": 1725,
-                                        }
-                                    ],
-                                }
-                            ],
-                        }
-                    ]
-                },
-                "rejectlist": {},
-            },
-            "mysql_source_config": {
-                "allowlist": {
-                    "mysql_databases": [
-                        {
-                            "database_name": "database_name_value",
-                            "mysql_tables": [
-                                {
-                                    "table_name": "table_name_value",
-                                    "mysql_columns": [
-                                        {
-                                            "column_name": "column_name_value",
-                                            "data_type": "data_type_value",
-                                            "length": 642,
-                                            "collation": "collation_value",
-                                            "primary_key": True,
-                                            "nullable": True,
-                                            "ordinal_position": 1725,
-                                        }
-                                    ],
-                                }
-                            ],
-                        }
-                    ]
-                },
-                "rejectlist": {},
-            },
-        },
-        "destination_config": {
-            "destination_connection_profile_name": "destination_connection_profile_name_value",
-            "gcs_destination_config": {
-                "path": "path_value",
-                "gcs_file_format": 1,
-                "file_rotation_mb": 1693,
-                "file_rotation_interval": {"seconds": 751, "nanos": 543},
-                "avro_file_format": {},
-                "json_file_format": {"schema_file_format": 1, "compression": 1},
-            },
-        },
-        "state": 1,
-        "backfill_all": {"oracle_excluded_objects": {}, "mysql_excluded_objects": {}},
-        "backfill_none": {},
-        "errors": [
-            {
-                "reason": "reason_value",
-                "error_uuid": "error_uuid_value",
-                "message": "message_value",
-                "error_time": {},
-                "details": {},
-            }
-        ],
     }
     request = request_type(**request_init)
 
@@ -10470,8 +10490,9 @@ def test_fetch_static_ips_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream.FetchStaticIpsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream.FetchStaticIpsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10554,8 +10575,9 @@ def test_fetch_static_ips_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = datastream.FetchStaticIpsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = datastream.FetchStaticIpsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -10688,8 +10710,9 @@ def test_fetch_static_ips_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream.FetchStaticIpsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream.FetchStaticIpsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -10813,6 +10836,75 @@ def test_create_private_connection_rest(request_type):
         },
         "vpc_peering_config": {"vpc_name": "vpc_name_value", "subnet": "subnet_value"},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = datastream.CreatePrivateConnectionRequest.meta.fields[
+        "private_connection"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["private_connection"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["private_connection"][field])):
+                    del request_init["private_connection"][field][i][subfield]
+            else:
+                del request_init["private_connection"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -11024,22 +11116,6 @@ def test_create_private_connection_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["private_connection"] = {
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "display_name": "display_name_value",
-        "state": 1,
-        "error": {
-            "reason": "reason_value",
-            "error_uuid": "error_uuid_value",
-            "message": "message_value",
-            "error_time": {},
-            "details": {},
-        },
-        "vpc_peering_config": {"vpc_name": "vpc_name_value", "subnet": "subnet_value"},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -11154,8 +11230,9 @@ def test_get_private_connection_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream_resources.PrivateConnection.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream_resources.PrivateConnection.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11232,8 +11309,9 @@ def test_get_private_connection_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = datastream_resources.PrivateConnection.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = datastream_resources.PrivateConnection.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11362,8 +11440,9 @@ def test_get_private_connection_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream_resources.PrivateConnection.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream_resources.PrivateConnection.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11429,8 +11508,9 @@ def test_list_private_connections_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream.ListPrivateConnectionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream.ListPrivateConnectionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11515,8 +11595,9 @@ def test_list_private_connections_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = datastream.ListPrivateConnectionsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = datastream.ListPrivateConnectionsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11651,8 +11732,9 @@ def test_list_private_connections_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream.ListPrivateConnectionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream.ListPrivateConnectionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12059,6 +12141,73 @@ def test_create_route_rest(request_type):
         "destination_address": "destination_address_value",
         "destination_port": 1734,
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = datastream.CreateRouteRequest.meta.fields["route"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["route"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["route"][field])):
+                    del request_init["route"][field][i][subfield]
+            else:
+                del request_init["route"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -12265,15 +12414,6 @@ def test_create_route_rest_bad_request(
     request_init = {
         "parent": "projects/sample1/locations/sample2/privateConnections/sample3"
     }
-    request_init["route"] = {
-        "name": "name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "labels": {},
-        "display_name": "display_name_value",
-        "destination_address": "destination_address_value",
-        "destination_port": 1734,
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -12387,8 +12527,9 @@ def test_get_route_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream_resources.Route.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream_resources.Route.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12464,8 +12605,9 @@ def test_get_route_rest_required_fields(request_type=datastream.GetRouteRequest)
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = datastream_resources.Route.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = datastream_resources.Route.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12592,8 +12734,9 @@ def test_get_route_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream_resources.Route.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream_resources.Route.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12661,8 +12804,9 @@ def test_list_routes_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream.ListRoutesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream.ListRoutesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12745,8 +12889,9 @@ def test_list_routes_rest_required_fields(request_type=datastream.ListRoutesRequ
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = datastream.ListRoutesResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = datastream.ListRoutesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12883,8 +13028,9 @@ def test_list_routes_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = datastream.ListRoutesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = datastream.ListRoutesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
