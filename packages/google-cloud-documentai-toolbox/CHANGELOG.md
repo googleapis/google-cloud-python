@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.10.3-alpha...v0.11.0-alpha) (2023-10-18)
+
+
+### Features
+
+* Update Toolbox for OCR 2.0 features ([#171](https://github.com/googleapis/python-documentai-toolbox/issues/171)) ([e4344c9](https://github.com/googleapis/python-documentai-toolbox/commit/e4344c95e826f092db146d950337333938aea1a6))
+
 ## [0.10.3-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.10.2-alpha...v0.10.3-alpha) (2023-10-06)
 
 
