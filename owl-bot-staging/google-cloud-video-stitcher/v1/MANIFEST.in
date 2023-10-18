@@ -1,2 +1,0 @@
-recursive-include google/cloud/video/stitcher *.py
-recursive-include google/cloud/video/stitcher_v1 *.py
