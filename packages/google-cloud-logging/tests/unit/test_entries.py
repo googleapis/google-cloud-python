@@ -739,6 +739,45 @@ class TestProtobufEntry(unittest.TestCase):
         }
         self.assertEqual(entry.to_api_repr(), expected)
 
+    def test_to_api_repr_proto_inner_struct_field(self):
+        from google.protobuf.json_format import MessageToDict
+        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
+        LOG_NAME = "test.log"
+        inner_struct = Struct(fields={"foo": Value(string_value="bar")})
+        message = Struct(fields={"inner": Value(struct_value=inner_struct)})
+
+        entry = self._make_one(log_name=LOG_NAME, payload=message)
+        expected = {
+            "logName": LOG_NAME,
+            "protoPayload": MessageToDict(message),
+            "resource": _GLOBAL_RESOURCE._to_dict(),
+        }
+        self.assertEqual(entry.to_api_repr(), expected)
+
+    def test_to_api_repr_proto_inner_list_field(self):
+        from google.protobuf.json_format import MessageToDict
+        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
+        from google.protobuf.struct_pb2 import ListValue
+        from google.protobuf.struct_pb2 import Struct
+        from google.protobuf.struct_pb2 import Value
+
+        LOG_NAME = "test.log"
+        lines = ListValue(
+            values=[Value(string_value="line1"), Value(string_value="line2")]
+        )
+        message = Struct(fields={"lines": Value(list_value=lines)})
+
+        entry = self._make_one(log_name=LOG_NAME, payload=message)
+        expected = {
+            "logName": LOG_NAME,
+            "protoPayload": MessageToDict(message),
+            "resource": _GLOBAL_RESOURCE._to_dict(),
+        }
+        self.assertEqual(entry.to_api_repr(), expected)
+
     def test_to_api_repr_proto_explicit(self):
         import datetime
         from google.protobuf.json_format import MessageToDict
