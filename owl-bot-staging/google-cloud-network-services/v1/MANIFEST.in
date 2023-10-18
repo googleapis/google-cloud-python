@@ -1,2 +1,0 @@
-recursive-include google/cloud/network_services *.py
-recursive-include google/cloud/network_services_v1 *.py
