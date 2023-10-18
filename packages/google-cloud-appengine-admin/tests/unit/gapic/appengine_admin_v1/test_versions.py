@@ -1710,8 +1710,9 @@ def test_list_versions_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = appengine.ListVersionsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = appengine.ListVersionsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -1905,8 +1906,9 @@ def test_get_version_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = version.Version.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = version.Version.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2196,6 +2198,73 @@ def test_create_version_rest(request_type):
         "entrypoint": {"shell": "shell_value"},
         "vpc_access_connector": {"name": "name_value", "egress_setting": 1},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = appengine.CreateVersionRequest.meta.fields["version"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["version"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["version"][field])):
+                    del request_init["version"][field][i][subfield]
+            else:
+                del request_init["version"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2281,169 +2350,6 @@ def test_create_version_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "apps/sample1/services/sample2"}
-    request_init["version"] = {
-        "name": "name_value",
-        "id": "id_value",
-        "automatic_scaling": {
-            "cool_down_period": {"seconds": 751, "nanos": 543},
-            "cpu_utilization": {
-                "aggregation_window_length": {},
-                "target_utilization": 0.19540000000000002,
-            },
-            "max_concurrent_requests": 2499,
-            "max_idle_instances": 1898,
-            "max_total_instances": 2032,
-            "max_pending_latency": {},
-            "min_idle_instances": 1896,
-            "min_total_instances": 2030,
-            "min_pending_latency": {},
-            "request_utilization": {
-                "target_request_count_per_second": 3320,
-                "target_concurrent_requests": 2820,
-            },
-            "disk_utilization": {
-                "target_write_bytes_per_second": 3096,
-                "target_write_ops_per_second": 2883,
-                "target_read_bytes_per_second": 2953,
-                "target_read_ops_per_second": 2740,
-            },
-            "network_utilization": {
-                "target_sent_bytes_per_second": 2983,
-                "target_sent_packets_per_second": 3179,
-                "target_received_bytes_per_second": 3380,
-                "target_received_packets_per_second": 3576,
-            },
-            "standard_scheduler_settings": {
-                "target_cpu_utilization": 0.23770000000000002,
-                "target_throughput_utilization": 0.3163,
-                "min_instances": 1387,
-                "max_instances": 1389,
-            },
-        },
-        "basic_scaling": {"idle_timeout": {}, "max_instances": 1389},
-        "manual_scaling": {"instances": 968},
-        "inbound_services": [1],
-        "instance_class": "instance_class_value",
-        "network": {
-            "forwarded_ports": ["forwarded_ports_value1", "forwarded_ports_value2"],
-            "instance_tag": "instance_tag_value",
-            "name": "name_value",
-            "subnetwork_name": "subnetwork_name_value",
-            "session_affinity": True,
-        },
-        "zones": ["zones_value1", "zones_value2"],
-        "resources": {
-            "cpu": 0.328,
-            "disk_gb": 0.723,
-            "memory_gb": 0.961,
-            "volumes": [
-                {
-                    "name": "name_value",
-                    "volume_type": "volume_type_value",
-                    "size_gb": 0.739,
-                }
-            ],
-            "kms_key_reference": "kms_key_reference_value",
-        },
-        "runtime": "runtime_value",
-        "runtime_channel": "runtime_channel_value",
-        "threadsafe": True,
-        "vm": True,
-        "app_engine_apis": True,
-        "beta_settings": {},
-        "env": "env_value",
-        "serving_status": 1,
-        "created_by": "created_by_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "disk_usage_bytes": 1701,
-        "runtime_api_version": "runtime_api_version_value",
-        "runtime_main_executable_path": "runtime_main_executable_path_value",
-        "service_account": "service_account_value",
-        "handlers": [
-            {
-                "url_regex": "url_regex_value",
-                "static_files": {
-                    "path": "path_value",
-                    "upload_path_regex": "upload_path_regex_value",
-                    "http_headers": {},
-                    "mime_type": "mime_type_value",
-                    "expiration": {},
-                    "require_matching_file": True,
-                    "application_readable": True,
-                },
-                "script": {"script_path": "script_path_value"},
-                "api_endpoint": {"script_path": "script_path_value"},
-                "security_level": 1,
-                "login": 1,
-                "auth_fail_action": 1,
-                "redirect_http_response_code": 1,
-            }
-        ],
-        "error_handlers": [
-            {
-                "error_code": 1,
-                "static_file": "static_file_value",
-                "mime_type": "mime_type_value",
-            }
-        ],
-        "libraries": [{"name": "name_value", "version": "version_value"}],
-        "api_config": {
-            "auth_fail_action": 1,
-            "login": 1,
-            "script": "script_value",
-            "security_level": 1,
-            "url": "url_value",
-        },
-        "env_variables": {},
-        "build_env_variables": {},
-        "default_expiration": {},
-        "health_check": {
-            "disable_health_check": True,
-            "host": "host_value",
-            "healthy_threshold": 1819,
-            "unhealthy_threshold": 2046,
-            "restart_threshold": 1841,
-            "check_interval": {},
-            "timeout": {},
-        },
-        "readiness_check": {
-            "path": "path_value",
-            "host": "host_value",
-            "failure_threshold": 1812,
-            "success_threshold": 1829,
-            "check_interval": {},
-            "timeout": {},
-            "app_start_timeout": {},
-        },
-        "liveness_check": {
-            "path": "path_value",
-            "host": "host_value",
-            "failure_threshold": 1812,
-            "success_threshold": 1829,
-            "check_interval": {},
-            "timeout": {},
-            "initial_delay": {},
-        },
-        "nobuild_files_regex": "nobuild_files_regex_value",
-        "deployment": {
-            "files": {},
-            "container": {"image": "image_value"},
-            "zip_": {"source_url": "source_url_value", "files_count": 1179},
-            "cloud_build_options": {
-                "app_yaml_path": "app_yaml_path_value",
-                "cloud_build_timeout": {},
-            },
-        },
-        "version_url": "version_url_value",
-        "endpoints_api_service": {
-            "name": "name_value",
-            "config_id": "config_id_value",
-            "rollout_strategy": 1,
-            "disable_trace_sampling": True,
-        },
-        "entrypoint": {"shell": "shell_value"},
-        "vpc_access_connector": {"name": "name_value", "egress_setting": 1},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2642,6 +2548,73 @@ def test_update_version_rest(request_type):
         "entrypoint": {"shell": "shell_value"},
         "vpc_access_connector": {"name": "name_value", "egress_setting": 1},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = appengine.UpdateVersionRequest.meta.fields["version"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["version"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["version"][field])):
+                    del request_init["version"][field][i][subfield]
+            else:
+                del request_init["version"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2727,169 +2700,6 @@ def test_update_version_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"name": "apps/sample1/services/sample2/versions/sample3"}
-    request_init["version"] = {
-        "name": "name_value",
-        "id": "id_value",
-        "automatic_scaling": {
-            "cool_down_period": {"seconds": 751, "nanos": 543},
-            "cpu_utilization": {
-                "aggregation_window_length": {},
-                "target_utilization": 0.19540000000000002,
-            },
-            "max_concurrent_requests": 2499,
-            "max_idle_instances": 1898,
-            "max_total_instances": 2032,
-            "max_pending_latency": {},
-            "min_idle_instances": 1896,
-            "min_total_instances": 2030,
-            "min_pending_latency": {},
-            "request_utilization": {
-                "target_request_count_per_second": 3320,
-                "target_concurrent_requests": 2820,
-            },
-            "disk_utilization": {
-                "target_write_bytes_per_second": 3096,
-                "target_write_ops_per_second": 2883,
-                "target_read_bytes_per_second": 2953,
-                "target_read_ops_per_second": 2740,
-            },
-            "network_utilization": {
-                "target_sent_bytes_per_second": 2983,
-                "target_sent_packets_per_second": 3179,
-                "target_received_bytes_per_second": 3380,
-                "target_received_packets_per_second": 3576,
-            },
-            "standard_scheduler_settings": {
-                "target_cpu_utilization": 0.23770000000000002,
-                "target_throughput_utilization": 0.3163,
-                "min_instances": 1387,
-                "max_instances": 1389,
-            },
-        },
-        "basic_scaling": {"idle_timeout": {}, "max_instances": 1389},
-        "manual_scaling": {"instances": 968},
-        "inbound_services": [1],
-        "instance_class": "instance_class_value",
-        "network": {
-            "forwarded_ports": ["forwarded_ports_value1", "forwarded_ports_value2"],
-            "instance_tag": "instance_tag_value",
-            "name": "name_value",
-            "subnetwork_name": "subnetwork_name_value",
-            "session_affinity": True,
-        },
-        "zones": ["zones_value1", "zones_value2"],
-        "resources": {
-            "cpu": 0.328,
-            "disk_gb": 0.723,
-            "memory_gb": 0.961,
-            "volumes": [
-                {
-                    "name": "name_value",
-                    "volume_type": "volume_type_value",
-                    "size_gb": 0.739,
-                }
-            ],
-            "kms_key_reference": "kms_key_reference_value",
-        },
-        "runtime": "runtime_value",
-        "runtime_channel": "runtime_channel_value",
-        "threadsafe": True,
-        "vm": True,
-        "app_engine_apis": True,
-        "beta_settings": {},
-        "env": "env_value",
-        "serving_status": 1,
-        "created_by": "created_by_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "disk_usage_bytes": 1701,
-        "runtime_api_version": "runtime_api_version_value",
-        "runtime_main_executable_path": "runtime_main_executable_path_value",
-        "service_account": "service_account_value",
-        "handlers": [
-            {
-                "url_regex": "url_regex_value",
-                "static_files": {
-                    "path": "path_value",
-                    "upload_path_regex": "upload_path_regex_value",
-                    "http_headers": {},
-                    "mime_type": "mime_type_value",
-                    "expiration": {},
-                    "require_matching_file": True,
-                    "application_readable": True,
-                },
-                "script": {"script_path": "script_path_value"},
-                "api_endpoint": {"script_path": "script_path_value"},
-                "security_level": 1,
-                "login": 1,
-                "auth_fail_action": 1,
-                "redirect_http_response_code": 1,
-            }
-        ],
-        "error_handlers": [
-            {
-                "error_code": 1,
-                "static_file": "static_file_value",
-                "mime_type": "mime_type_value",
-            }
-        ],
-        "libraries": [{"name": "name_value", "version": "version_value"}],
-        "api_config": {
-            "auth_fail_action": 1,
-            "login": 1,
-            "script": "script_value",
-            "security_level": 1,
-            "url": "url_value",
-        },
-        "env_variables": {},
-        "build_env_variables": {},
-        "default_expiration": {},
-        "health_check": {
-            "disable_health_check": True,
-            "host": "host_value",
-            "healthy_threshold": 1819,
-            "unhealthy_threshold": 2046,
-            "restart_threshold": 1841,
-            "check_interval": {},
-            "timeout": {},
-        },
-        "readiness_check": {
-            "path": "path_value",
-            "host": "host_value",
-            "failure_threshold": 1812,
-            "success_threshold": 1829,
-            "check_interval": {},
-            "timeout": {},
-            "app_start_timeout": {},
-        },
-        "liveness_check": {
-            "path": "path_value",
-            "host": "host_value",
-            "failure_threshold": 1812,
-            "success_threshold": 1829,
-            "check_interval": {},
-            "timeout": {},
-            "initial_delay": {},
-        },
-        "nobuild_files_regex": "nobuild_files_regex_value",
-        "deployment": {
-            "files": {},
-            "container": {"image": "image_value"},
-            "zip_": {"source_url": "source_url_value", "files_count": 1179},
-            "cloud_build_options": {
-                "app_yaml_path": "app_yaml_path_value",
-                "cloud_build_timeout": {},
-            },
-        },
-        "version_url": "version_url_value",
-        "endpoints_api_service": {
-            "name": "name_value",
-            "config_id": "config_id_value",
-            "rollout_strategy": 1,
-            "disable_trace_sampling": True,
-        },
-        "entrypoint": {"shell": "shell_value"},
-        "vpc_access_connector": {"name": "name_value", "egress_setting": 1},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
