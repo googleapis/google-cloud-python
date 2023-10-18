@@ -1,0 +1,2 @@
+recursive-include google/cloud/bigquery_datatransfer *.py
+recursive-include google/cloud/bigquery_datatransfer_v1 *.py
