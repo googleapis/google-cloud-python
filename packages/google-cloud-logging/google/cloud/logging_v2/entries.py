@@ -18,9 +18,9 @@ import collections
 import json
 import re
 
-from google.protobuf.any_pb2 import Any
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.json_format import Parse
+from google.protobuf.message import Message
 
 from google.cloud.logging_v2.resource import Resource
 from google.cloud._helpers import _name_from_project_path
@@ -325,7 +325,7 @@ class ProtobufEntry(LogEntry):
 
     @property
     def payload_pb(self):
-        if isinstance(self.payload, Any):
+        if isinstance(self.payload, Message):
             return self.payload
 
     @property
@@ -337,10 +337,10 @@ class ProtobufEntry(LogEntry):
         """API repr (JSON format) for entry."""
         info = super(ProtobufEntry, self).to_api_repr()
         proto_payload = None
-        if self.payload_json:
-            proto_payload = dict(self.payload_json)
-        elif self.payload_pb:
-            proto_payload = MessageToDict(self.payload_pb)
+        if self.payload_pb:
+            proto_payload = MessageToDict(self.payload)
+        elif self.payload_json:
+            proto_payload = dict(self.payload)
         info["protoPayload"] = proto_payload
         return info
 
