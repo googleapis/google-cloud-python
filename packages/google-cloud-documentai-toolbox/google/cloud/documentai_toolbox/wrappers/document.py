@@ -390,19 +390,19 @@ class Document:
             Document:
                 A document from local `document_path`.
         """
-        document_paths = [document_path]
+        document_paths = (
+            glob.glob(os.path.join(document_path, f"*{constants.JSON_EXTENSION}"))
+            if os.path.isdir(document_path)
+            else [document_path]
+        )
 
-        if os.path.isdir(document_path):
-            document_paths = glob.glob(
-                os.path.join(document_path, f"*{constants.JSON_EXTENSION}")
+        documents = [
+            documentai.Document.from_json(
+                open(file_path, "r", encoding="utf-8").read(),
+                ignore_unknown_fields=True,
             )
-
-        documents = []
-        for file_path in document_paths:
-            with open(file_path, "r", encoding="utf-8") as f:
-                documents.append(
-                    documentai.Document.from_json(f.read(), ignore_unknown_fields=True)
-                )
+            for file_path in document_paths
+        ]
 
         return cls(shards=documents)
 
@@ -474,10 +474,12 @@ class Document:
             .. code-block:: python
 
                 from google.cloud import documentai
+                from google.cloud.documentai_toolbox import document
 
                 operation = client.batch_process_documents(request)
                 operation.result(timeout=timeout)
                 metadata = documentai.BatchProcessMetadata(operation.metadata)
+                wrapped_document = document.Document.from_batch_process_metadata(metadata)
 
         Args:
             metadata (documentai.BatchProcessMetadata):
@@ -507,9 +509,11 @@ class Document:
             .. code-block:: python
 
                 from google.cloud import documentai
+                from google.cloud.documentai_toolbox import document
 
                 operation = client.batch_process_documents(request)
                 operation_name = operation.operation.name
+                wrapped_document = document.Document.from_batch_process_operation(operation_name)
 
         Args:
             location (str):

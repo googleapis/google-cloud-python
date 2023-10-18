@@ -31,6 +31,26 @@ def docproto():
 
 
 @pytest.fixture
+def docproto_with_symbols():
+    with open(
+        "tests/unit/resources/toolbox_invoice_test-with-symbols.json",
+        "r",
+        encoding="utf-8",
+    ) as f:
+        return documentai.Document.from_json(f.read())
+
+
+@pytest.fixture
+def docproto_with_math():
+    with open(
+        "tests/unit/resources/pretrained-ocr-v2.0-2023-06-02_math_output.json",
+        "r",
+        encoding="utf-8",
+    ) as f:
+        return documentai.Document.from_json(f.read())
+
+
+@pytest.fixture
 def docproto_form_parser():
     with open(
         "tests/unit/resources/form_parser/pretrained-form-parser-v1.0-2020-09-23_full-output.json",
@@ -253,6 +273,40 @@ def test_Token(docproto):
     # checking cached value
     assert token.text == "Q.\n"
     assert token.hocr_bounding_box == "bbox 585 1781 620 1818"
+
+
+def test_Symbol(docproto_with_symbols):
+    wrapped_page = page.Page(
+        documentai_object=docproto_with_symbols.pages[0],
+        document_text=docproto_with_symbols.text,
+    )
+    docai_symbol = docproto_with_symbols.pages[0].symbols[1]
+    symbol = page.Symbol(documentai_object=docai_symbol, _page=wrapped_page)
+
+    assert symbol.text == "n"
+    assert symbol.hocr_bounding_box is None
+    # checking cached value
+    assert symbol.text == "n"
+    assert symbol.hocr_bounding_box is None
+
+
+def test_MathFormula(docproto_with_math):
+    wrapped_page = page.Page(
+        documentai_object=docproto_with_math.pages[0],
+        document_text=docproto_with_math.text,
+    )
+
+    docai_visual_element = docproto_with_math.pages[0].visual_elements[0]
+    math_formula = page.MathFormula(
+        documentai_object=docai_visual_element, _page=wrapped_page
+    )
+
+    assert math_formula
+    assert math_formula.text == "\\int_{-\\infty}^{\\infty}e^{-x^{2}}dx=\\sqrt{x}.\n"
+    assert math_formula.hocr_bounding_box is None
+    # checking cached value
+    assert math_formula.text == "\\int_{-\\infty}^{\\infty}e^{-x^{2}}dx=\\sqrt{x}.\n"
+    assert math_formula.hocr_bounding_box is None
 
 
 def test_Page(docproto):

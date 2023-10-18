@@ -34,6 +34,15 @@ def quickstart_sample(gcs_bucket_name: str, gcs_prefix: str) -> None:
     wrapped_document = document.Document.from_gcs(
         gcs_bucket_name=gcs_bucket_name, gcs_prefix=gcs_prefix
     )
+    # For all properties and methods, refer to:
+    # https://cloud.google.com/python/docs/reference/documentai-toolbox/latest/google.cloud.documentai_toolbox.wrappers.document.Document
+
+    # Alternatively, create wrapped document from:
+    #
+    # - Local `Document` JSON file:     `document.Document.from_document_path()`
+    # - `Document` object:              `document.Document.from_documentai_document()`
+    # - `BatchProcessMetadata`:         `document.Document.from_batch_process_metadata()`
+    # - Batch Processing Operation:     `document.Document.from_batch_process_operation()`
 
     print("Document Successfully Loaded!")
     print(f"\t Number of Pages: {len(wrapped_document.pages)}")
@@ -45,9 +54,32 @@ def quickstart_sample(gcs_bucket_name: str, gcs_prefix: str) -> None:
             print(block.text)
         for paragraph in page.paragraphs:
             print(paragraph.text)
+        for line in page.lines:
+            print(line.text)
+        for token in page.tokens:
+            print(token.text)
 
+        # Only supported with Form Parser processor
+        # https://cloud.google.com/document-ai/docs/form-parser
+        for form_field in page.form_fields:
+            print(f"{form_field.field_name} : {form_field.field_value}")
+
+        # Only supported with Enterprise Document OCR version `pretrained-ocr-v2.0-2023-06-02`
+        # https://cloud.google.com/document-ai/docs/process-documents-ocr#enable_symbols
+        for symbol in page.symbols:
+            print(symbol.text)
+
+        # Only supported with Enterprise Document OCR version `pretrained-ocr-v2.0-2023-06-02`
+        # https://cloud.google.com/document-ai/docs/process-documents-ocr#math_ocr
+        for math_formula in page.math_formulas:
+            print(math_formula.text)
+
+    # Only supported with Entity Extraction processors
+    # https://cloud.google.com/document-ai/docs/processors-list
     for entity in wrapped_document.entities:
         print(f"{entity.type_} : {entity.mention_text}")
+        if entity.normalized_text:
+            print(f"\tNormalized Text: {entity.normalized_text}")
 
 
 # [END documentai_toolbox_quickstart]
