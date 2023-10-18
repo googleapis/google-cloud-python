@@ -245,17 +245,17 @@ class SubscriberGrpcTransport(SubscriberTransport):
 
         Creates a subscription to a given topic. See the [resource name
         rules]
-        (https://cloud.google.com/pubsub/docs/admin#resource_names). If
-        the subscription already exists, returns ``ALREADY_EXISTS``. If
-        the corresponding topic doesn't exist, returns ``NOT_FOUND``.
+        (https://cloud.google.com/pubsub/docs/pubsub-basics#resource_names).
+        If the subscription already exists, returns ``ALREADY_EXISTS``.
+        If the corresponding topic doesn't exist, returns ``NOT_FOUND``.
 
         If the name is not provided in the request, the server will
         assign a random name for this subscription on the same project
         as the topic, conforming to the [resource name format]
-        (https://cloud.google.com/pubsub/docs/admin#resource_names). The
-        generated name is populated in the returned Subscription object.
-        Note that for REST API requests, you must specify a name in the
-        request.
+        (https://cloud.google.com/pubsub/docs/pubsub-basics#resource_names).
+        The generated name is populated in the returned Subscription
+        object. Note that for REST API requests, you must specify a name
+        in the request.
 
         Returns:
             Callable[[~.Subscription],
@@ -617,8 +617,8 @@ class SubscriberGrpcTransport(SubscriberTransport):
         the request, the server will assign a random name for this
         snapshot on the same project as the subscription, conforming to
         the [resource name format]
-        (https://cloud.google.com/pubsub/docs/admin#resource_names). The
-        generated name is populated in the returned Snapshot object.
+        (https://cloud.google.com/pubsub/docs/pubsub-basics#resource_names).
+        The generated name is populated in the returned Snapshot object.
         Note that for REST API requests, you must specify a name in the
         request.
 

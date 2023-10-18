@@ -512,7 +512,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
     ) -> pubsub.Topic:
         r"""Creates the given topic with the given name. See the [resource
         name rules]
-        (https://cloud.google.com/pubsub/docs/admin#resource_names).
+        (https://cloud.google.com/pubsub/docs/pubsub-basics#resource_names).
 
         .. code-block:: python
 

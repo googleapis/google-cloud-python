@@ -84,14 +84,15 @@ class MessageStoragePolicy(proto.Message):
 
     Attributes:
         allowed_persistence_regions (MutableSequence[str]):
-            A list of IDs of GCP regions where messages
-            that are published to the topic may be persisted
-            in storage. Messages published by publishers
-            running in non-allowed GCP regions (or running
-            outside of GCP altogether) will be routed for
-            storage in one of the allowed regions. An empty
-            list means that no regions are allowed, and is
-            not a valid configuration.
+            A list of IDs of Google Cloud regions where
+            messages that are published to the topic may be
+            persisted in storage. Messages published by
+            publishers running in non-allowed Google Cloud
+            regions (or running outside of Google Cloud
+            altogether) are routed for storage in one of the
+            allowed regions. An empty list means that no
+            regions are allowed, and is not a valid
+            configuration.
     """
 
     allowed_persistence_regions: MutableSequence[str] = proto.RepeatedField(
@@ -1885,7 +1886,7 @@ class CreateSnapshotRequest(proto.Message):
             random name for this snapshot on the same project as the
             subscription. Note that for REST API requests, you must
             specify a name. See the `resource name
-            rules <https://cloud.google.com/pubsub/docs/admin#resource_names>`__.
+            rules <https://cloud.google.com/pubsub/docs/pubsub-basics#resource_names>`__.
             Format is ``projects/{project}/snapshots/{snap}``.
         subscription (str):
             Required. The subscription whose backlog the snapshot
