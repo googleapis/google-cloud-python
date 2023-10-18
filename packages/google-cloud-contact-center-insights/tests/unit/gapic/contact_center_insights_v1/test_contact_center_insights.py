@@ -11009,6 +11009,75 @@ def test_create_conversation_rest(request_type):
         "dialogflow_intents": {},
         "obfuscated_user_id": "obfuscated_user_id_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.CreateConversationRequest.meta.fields[
+        "conversation"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["conversation"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["conversation"][field])):
+                    del request_init["conversation"][field][i][subfield]
+            else:
+                del request_init["conversation"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -11026,8 +11095,9 @@ def test_create_conversation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Conversation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Conversation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11110,8 +11180,9 @@ def test_create_conversation_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.Conversation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.Conversation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -11208,184 +11279,6 @@ def test_create_conversation_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["conversation"] = {
-        "call_metadata": {"customer_channel": 1706, "agent_channel": 1351},
-        "expire_time": {"seconds": 751, "nanos": 543},
-        "ttl": {"seconds": 751, "nanos": 543},
-        "name": "name_value",
-        "data_source": {
-            "gcs_source": {
-                "audio_uri": "audio_uri_value",
-                "transcript_uri": "transcript_uri_value",
-            },
-            "dialogflow_source": {
-                "dialogflow_conversation": "dialogflow_conversation_value",
-                "audio_uri": "audio_uri_value",
-            },
-        },
-        "create_time": {},
-        "update_time": {},
-        "start_time": {},
-        "language_code": "language_code_value",
-        "agent_id": "agent_id_value",
-        "labels": {},
-        "transcript": {
-            "transcript_segments": [
-                {
-                    "message_time": {},
-                    "text": "text_value",
-                    "confidence": 0.1038,
-                    "words": [
-                        {
-                            "start_offset": {},
-                            "end_offset": {},
-                            "word": "word_value",
-                            "confidence": 0.1038,
-                        }
-                    ],
-                    "language_code": "language_code_value",
-                    "channel_tag": 1140,
-                    "segment_participant": {
-                        "dialogflow_participant_name": "dialogflow_participant_name_value",
-                        "user_id": "user_id_value",
-                        "dialogflow_participant": "dialogflow_participant_value",
-                        "obfuscated_external_user_id": "obfuscated_external_user_id_value",
-                        "role": 1,
-                    },
-                    "dialogflow_segment_metadata": {
-                        "smart_reply_allowlist_covered": True
-                    },
-                    "sentiment": {"magnitude": 0.9580000000000001, "score": 0.54},
-                }
-            ]
-        },
-        "medium": 1,
-        "duration": {},
-        "turn_count": 1105,
-        "latest_analysis": {
-            "name": "name_value",
-            "request_time": {},
-            "create_time": {},
-            "analysis_result": {
-                "call_analysis_metadata": {
-                    "annotations": [
-                        {
-                            "interruption_data": {},
-                            "sentiment_data": {},
-                            "silence_data": {},
-                            "hold_data": {},
-                            "entity_mention_data": {
-                                "entity_unique_id": "entity_unique_id_value",
-                                "type_": 1,
-                                "sentiment": {},
-                            },
-                            "intent_match_data": {
-                                "intent_unique_id": "intent_unique_id_value"
-                            },
-                            "phrase_match_data": {
-                                "phrase_matcher": "phrase_matcher_value",
-                                "display_name": "display_name_value",
-                            },
-                            "issue_match_data": {
-                                "issue_assignment": {
-                                    "issue": "issue_value",
-                                    "score": 0.54,
-                                    "display_name": "display_name_value",
-                                }
-                            },
-                            "channel_tag": 1140,
-                            "annotation_start_boundary": {
-                                "word_index": 1075,
-                                "transcript_index": 1729,
-                            },
-                            "annotation_end_boundary": {},
-                        }
-                    ],
-                    "entities": {},
-                    "sentiments": [{"channel_tag": 1140, "sentiment_data": {}}],
-                    "intents": {},
-                    "phrase_matchers": {},
-                    "issue_model_result": {
-                        "issue_model": "issue_model_value",
-                        "issues": {},
-                    },
-                },
-                "end_time": {},
-            },
-            "annotator_selector": {
-                "run_interruption_annotator": True,
-                "run_silence_annotator": True,
-                "run_phrase_matcher_annotator": True,
-                "phrase_matchers": ["phrase_matchers_value1", "phrase_matchers_value2"],
-                "run_sentiment_annotator": True,
-                "run_entity_annotator": True,
-                "run_intent_annotator": True,
-                "run_issue_model_annotator": True,
-                "issue_models": ["issue_models_value1", "issue_models_value2"],
-                "run_summarization_annotator": True,
-                "summarization_config": {
-                    "conversation_profile": "conversation_profile_value",
-                    "summarization_model": 1,
-                },
-            },
-        },
-        "latest_summary": {
-            "text": "text_value",
-            "text_sections": {},
-            "confidence": 0.1038,
-            "metadata": {},
-            "answer_record": "answer_record_value",
-            "conversation_model": "conversation_model_value",
-        },
-        "runtime_annotations": [
-            {
-                "article_suggestion": {
-                    "title": "title_value",
-                    "uri": "uri_value",
-                    "confidence_score": 0.1673,
-                    "metadata": {},
-                    "query_record": "query_record_value",
-                    "source": "source_value",
-                },
-                "faq_answer": {
-                    "answer": "answer_value",
-                    "confidence_score": 0.1673,
-                    "question": "question_value",
-                    "metadata": {},
-                    "query_record": "query_record_value",
-                    "source": "source_value",
-                },
-                "smart_reply": {
-                    "reply": "reply_value",
-                    "confidence_score": 0.1673,
-                    "metadata": {},
-                    "query_record": "query_record_value",
-                },
-                "smart_compose_suggestion": {
-                    "suggestion": "suggestion_value",
-                    "confidence_score": 0.1673,
-                    "metadata": {},
-                    "query_record": "query_record_value",
-                },
-                "dialogflow_interaction": {
-                    "dialogflow_intent_id": "dialogflow_intent_id_value",
-                    "confidence": 0.1038,
-                },
-                "conversation_summarization_suggestion": {},
-                "annotation_id": "annotation_id_value",
-                "create_time": {},
-                "start_boundary": {},
-                "end_boundary": {},
-                "answer_feedback": {
-                    "correctness_level": 1,
-                    "clicked": True,
-                    "displayed": True,
-                },
-            }
-        ],
-        "dialogflow_intents": {},
-        "obfuscated_user_id": "obfuscated_user_id_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -11427,8 +11320,9 @@ def test_create_conversation_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Conversation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Conversation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -11885,6 +11779,75 @@ def test_update_conversation_rest(request_type):
         "dialogflow_intents": {},
         "obfuscated_user_id": "obfuscated_user_id_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.UpdateConversationRequest.meta.fields[
+        "conversation"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["conversation"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["conversation"][field])):
+                    del request_init["conversation"][field][i][subfield]
+            else:
+                del request_init["conversation"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -11902,8 +11865,9 @@ def test_update_conversation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Conversation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Conversation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -11981,8 +11945,9 @@ def test_update_conversation_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.Conversation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.Conversation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12075,184 +12040,6 @@ def test_update_conversation_rest_bad_request(
             "name": "projects/sample1/locations/sample2/conversations/sample3"
         }
     }
-    request_init["conversation"] = {
-        "call_metadata": {"customer_channel": 1706, "agent_channel": 1351},
-        "expire_time": {"seconds": 751, "nanos": 543},
-        "ttl": {"seconds": 751, "nanos": 543},
-        "name": "projects/sample1/locations/sample2/conversations/sample3",
-        "data_source": {
-            "gcs_source": {
-                "audio_uri": "audio_uri_value",
-                "transcript_uri": "transcript_uri_value",
-            },
-            "dialogflow_source": {
-                "dialogflow_conversation": "dialogflow_conversation_value",
-                "audio_uri": "audio_uri_value",
-            },
-        },
-        "create_time": {},
-        "update_time": {},
-        "start_time": {},
-        "language_code": "language_code_value",
-        "agent_id": "agent_id_value",
-        "labels": {},
-        "transcript": {
-            "transcript_segments": [
-                {
-                    "message_time": {},
-                    "text": "text_value",
-                    "confidence": 0.1038,
-                    "words": [
-                        {
-                            "start_offset": {},
-                            "end_offset": {},
-                            "word": "word_value",
-                            "confidence": 0.1038,
-                        }
-                    ],
-                    "language_code": "language_code_value",
-                    "channel_tag": 1140,
-                    "segment_participant": {
-                        "dialogflow_participant_name": "dialogflow_participant_name_value",
-                        "user_id": "user_id_value",
-                        "dialogflow_participant": "dialogflow_participant_value",
-                        "obfuscated_external_user_id": "obfuscated_external_user_id_value",
-                        "role": 1,
-                    },
-                    "dialogflow_segment_metadata": {
-                        "smart_reply_allowlist_covered": True
-                    },
-                    "sentiment": {"magnitude": 0.9580000000000001, "score": 0.54},
-                }
-            ]
-        },
-        "medium": 1,
-        "duration": {},
-        "turn_count": 1105,
-        "latest_analysis": {
-            "name": "name_value",
-            "request_time": {},
-            "create_time": {},
-            "analysis_result": {
-                "call_analysis_metadata": {
-                    "annotations": [
-                        {
-                            "interruption_data": {},
-                            "sentiment_data": {},
-                            "silence_data": {},
-                            "hold_data": {},
-                            "entity_mention_data": {
-                                "entity_unique_id": "entity_unique_id_value",
-                                "type_": 1,
-                                "sentiment": {},
-                            },
-                            "intent_match_data": {
-                                "intent_unique_id": "intent_unique_id_value"
-                            },
-                            "phrase_match_data": {
-                                "phrase_matcher": "phrase_matcher_value",
-                                "display_name": "display_name_value",
-                            },
-                            "issue_match_data": {
-                                "issue_assignment": {
-                                    "issue": "issue_value",
-                                    "score": 0.54,
-                                    "display_name": "display_name_value",
-                                }
-                            },
-                            "channel_tag": 1140,
-                            "annotation_start_boundary": {
-                                "word_index": 1075,
-                                "transcript_index": 1729,
-                            },
-                            "annotation_end_boundary": {},
-                        }
-                    ],
-                    "entities": {},
-                    "sentiments": [{"channel_tag": 1140, "sentiment_data": {}}],
-                    "intents": {},
-                    "phrase_matchers": {},
-                    "issue_model_result": {
-                        "issue_model": "issue_model_value",
-                        "issues": {},
-                    },
-                },
-                "end_time": {},
-            },
-            "annotator_selector": {
-                "run_interruption_annotator": True,
-                "run_silence_annotator": True,
-                "run_phrase_matcher_annotator": True,
-                "phrase_matchers": ["phrase_matchers_value1", "phrase_matchers_value2"],
-                "run_sentiment_annotator": True,
-                "run_entity_annotator": True,
-                "run_intent_annotator": True,
-                "run_issue_model_annotator": True,
-                "issue_models": ["issue_models_value1", "issue_models_value2"],
-                "run_summarization_annotator": True,
-                "summarization_config": {
-                    "conversation_profile": "conversation_profile_value",
-                    "summarization_model": 1,
-                },
-            },
-        },
-        "latest_summary": {
-            "text": "text_value",
-            "text_sections": {},
-            "confidence": 0.1038,
-            "metadata": {},
-            "answer_record": "answer_record_value",
-            "conversation_model": "conversation_model_value",
-        },
-        "runtime_annotations": [
-            {
-                "article_suggestion": {
-                    "title": "title_value",
-                    "uri": "uri_value",
-                    "confidence_score": 0.1673,
-                    "metadata": {},
-                    "query_record": "query_record_value",
-                    "source": "source_value",
-                },
-                "faq_answer": {
-                    "answer": "answer_value",
-                    "confidence_score": 0.1673,
-                    "question": "question_value",
-                    "metadata": {},
-                    "query_record": "query_record_value",
-                    "source": "source_value",
-                },
-                "smart_reply": {
-                    "reply": "reply_value",
-                    "confidence_score": 0.1673,
-                    "metadata": {},
-                    "query_record": "query_record_value",
-                },
-                "smart_compose_suggestion": {
-                    "suggestion": "suggestion_value",
-                    "confidence_score": 0.1673,
-                    "metadata": {},
-                    "query_record": "query_record_value",
-                },
-                "dialogflow_interaction": {
-                    "dialogflow_intent_id": "dialogflow_intent_id_value",
-                    "confidence": 0.1038,
-                },
-                "conversation_summarization_suggestion": {},
-                "annotation_id": "annotation_id_value",
-                "create_time": {},
-                "start_boundary": {},
-                "end_boundary": {},
-                "answer_feedback": {
-                    "correctness_level": 1,
-                    "clicked": True,
-                    "displayed": True,
-                },
-            }
-        ],
-        "dialogflow_intents": {},
-        "obfuscated_user_id": "obfuscated_user_id_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -12297,8 +12084,9 @@ def test_update_conversation_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Conversation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Conversation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12371,8 +12159,9 @@ def test_get_conversation_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Conversation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Conversation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12454,8 +12243,9 @@ def test_get_conversation_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.Conversation.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.Conversation.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12582,8 +12372,9 @@ def test_get_conversation_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Conversation.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Conversation.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -12648,10 +12439,11 @@ def test_list_conversations_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = contact_center_insights.ListConversationsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListConversationsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -12735,10 +12527,11 @@ def test_list_conversations_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = contact_center_insights.ListConversationsResponse.pb(
+            # Convert return value to protobuf type
+            return_value = contact_center_insights.ListConversationsResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -12876,10 +12669,11 @@ def test_list_conversations_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = contact_center_insights.ListConversationsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListConversationsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -13320,6 +13114,73 @@ def test_create_analysis_rest(request_type):
             },
         },
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.CreateAnalysisRequest.meta.fields["analysis"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["analysis"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["analysis"][field])):
+                    del request_init["analysis"][field][i][subfield]
+            else:
+                del request_init["analysis"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -13504,76 +13365,6 @@ def test_create_analysis_rest_bad_request(
     request_init = {
         "parent": "projects/sample1/locations/sample2/conversations/sample3"
     }
-    request_init["analysis"] = {
-        "name": "name_value",
-        "request_time": {"seconds": 751, "nanos": 543},
-        "create_time": {},
-        "analysis_result": {
-            "call_analysis_metadata": {
-                "annotations": [
-                    {
-                        "interruption_data": {},
-                        "sentiment_data": {
-                            "magnitude": 0.9580000000000001,
-                            "score": 0.54,
-                        },
-                        "silence_data": {},
-                        "hold_data": {},
-                        "entity_mention_data": {
-                            "entity_unique_id": "entity_unique_id_value",
-                            "type_": 1,
-                            "sentiment": {},
-                        },
-                        "intent_match_data": {
-                            "intent_unique_id": "intent_unique_id_value"
-                        },
-                        "phrase_match_data": {
-                            "phrase_matcher": "phrase_matcher_value",
-                            "display_name": "display_name_value",
-                        },
-                        "issue_match_data": {
-                            "issue_assignment": {
-                                "issue": "issue_value",
-                                "score": 0.54,
-                                "display_name": "display_name_value",
-                            }
-                        },
-                        "channel_tag": 1140,
-                        "annotation_start_boundary": {
-                            "word_index": 1075,
-                            "transcript_index": 1729,
-                        },
-                        "annotation_end_boundary": {},
-                    }
-                ],
-                "entities": {},
-                "sentiments": [{"channel_tag": 1140, "sentiment_data": {}}],
-                "intents": {},
-                "phrase_matchers": {},
-                "issue_model_result": {
-                    "issue_model": "issue_model_value",
-                    "issues": {},
-                },
-            },
-            "end_time": {},
-        },
-        "annotator_selector": {
-            "run_interruption_annotator": True,
-            "run_silence_annotator": True,
-            "run_phrase_matcher_annotator": True,
-            "phrase_matchers": ["phrase_matchers_value1", "phrase_matchers_value2"],
-            "run_sentiment_annotator": True,
-            "run_entity_annotator": True,
-            "run_intent_annotator": True,
-            "run_issue_model_annotator": True,
-            "issue_models": ["issue_models_value1", "issue_models_value2"],
-            "run_summarization_annotator": True,
-            "summarization_config": {
-                "conversation_profile": "conversation_profile_value",
-                "summarization_model": 1,
-            },
-        },
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -13682,8 +13473,9 @@ def test_get_analysis_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Analysis.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Analysis.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -13758,8 +13550,9 @@ def test_get_analysis_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.Analysis.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.Analysis.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -13886,8 +13679,9 @@ def test_get_analysis_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Analysis.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Analysis.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -13954,8 +13748,9 @@ def test_list_analyses_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = contact_center_insights.ListAnalysesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListAnalysesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -14038,10 +13833,9 @@ def test_list_analyses_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = contact_center_insights.ListAnalysesResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = contact_center_insights.ListAnalysesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -14181,8 +13975,9 @@ def test_list_analyses_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = contact_center_insights.ListAnalysesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListAnalysesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -15391,6 +15186,75 @@ def test_create_issue_model_rest(request_type):
         "model_type": 1,
         "language_code": "language_code_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.CreateIssueModelRequest.meta.fields[
+        "issue_model"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["issue_model"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["issue_model"][field])):
+                    del request_init["issue_model"][field][i][subfield]
+            else:
+                del request_init["issue_model"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -15574,26 +15438,6 @@ def test_create_issue_model_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["issue_model"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "issue_count": 1201,
-        "state": 1,
-        "input_data_config": {
-            "medium": 1,
-            "training_conversations_count": 3025,
-            "filter": "filter_value",
-        },
-        "training_stats": {
-            "analyzed_conversations_count": 3021,
-            "unclassified_conversations_count": 3439,
-            "issue_stats": {},
-        },
-        "model_type": 1,
-        "language_code": "language_code_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -15710,6 +15554,75 @@ def test_update_issue_model_rest(request_type):
         "model_type": 1,
         "language_code": "language_code_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.UpdateIssueModelRequest.meta.fields[
+        "issue_model"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["issue_model"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["issue_model"][field])):
+                    del request_init["issue_model"][field][i][subfield]
+            else:
+                del request_init["issue_model"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -15727,8 +15640,9 @@ def test_update_issue_model_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.IssueModel.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.IssueModel.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15806,8 +15720,9 @@ def test_update_issue_model_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.IssueModel.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.IssueModel.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -15898,26 +15813,6 @@ def test_update_issue_model_rest_bad_request(
             "name": "projects/sample1/locations/sample2/issueModels/sample3"
         }
     }
-    request_init["issue_model"] = {
-        "name": "projects/sample1/locations/sample2/issueModels/sample3",
-        "display_name": "display_name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "issue_count": 1201,
-        "state": 1,
-        "input_data_config": {
-            "medium": 1,
-            "training_conversations_count": 3025,
-            "filter": "filter_value",
-        },
-        "training_stats": {
-            "analyzed_conversations_count": 3021,
-            "unclassified_conversations_count": 3439,
-            "issue_stats": {},
-        },
-        "model_type": 1,
-        "language_code": "language_code_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -15960,8 +15855,9 @@ def test_update_issue_model_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.IssueModel.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.IssueModel.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -16032,8 +15928,9 @@ def test_get_issue_model_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.IssueModel.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.IssueModel.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -16113,8 +16010,9 @@ def test_get_issue_model_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.IssueModel.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.IssueModel.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -16239,8 +16137,9 @@ def test_get_issue_model_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.IssueModel.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.IssueModel.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -16303,10 +16202,9 @@ def test_list_issue_models_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = contact_center_insights.ListIssueModelsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListIssueModelsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -16380,10 +16278,11 @@ def test_list_issue_models_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = contact_center_insights.ListIssueModelsResponse.pb(
+            # Convert return value to protobuf type
+            return_value = contact_center_insights.ListIssueModelsResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -16510,10 +16409,9 @@ def test_list_issue_models_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = contact_center_insights.ListIssueModelsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListIssueModelsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -17382,8 +17280,9 @@ def test_get_issue_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Issue.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Issue.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -17460,8 +17359,9 @@ def test_get_issue_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.Issue.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.Issue.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -17588,8 +17488,9 @@ def test_get_issue_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Issue.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Issue.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -17652,8 +17553,9 @@ def test_list_issues_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = contact_center_insights.ListIssuesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListIssuesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -17727,10 +17629,9 @@ def test_list_issues_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = contact_center_insights.ListIssuesResponse.pb(
-                return_value
-            )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = contact_center_insights.ListIssuesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -17857,8 +17758,9 @@ def test_list_issues_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = contact_center_insights.ListIssuesResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListIssuesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -17922,6 +17824,73 @@ def test_update_issue_rest(request_type):
         "update_time": {},
         "sample_utterances": ["sample_utterances_value1", "sample_utterances_value2"],
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.UpdateIssueRequest.meta.fields["issue"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["issue"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["issue"][field])):
+                    del request_init["issue"][field][i][subfield]
+            else:
+                del request_init["issue"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -17936,8 +17905,9 @@ def test_update_issue_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Issue.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Issue.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -18012,8 +17982,9 @@ def test_update_issue_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.Issue.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.Issue.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -18103,13 +18074,6 @@ def test_update_issue_rest_bad_request(
             "name": "projects/sample1/locations/sample2/issueModels/sample3/issues/sample4"
         }
     }
-    request_init["issue"] = {
-        "name": "projects/sample1/locations/sample2/issueModels/sample3/issues/sample4",
-        "display_name": "display_name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "sample_utterances": ["sample_utterances_value1", "sample_utterances_value2"],
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -18152,8 +18116,9 @@ def test_update_issue_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Issue.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Issue.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -18478,10 +18443,11 @@ def test_calculate_issue_model_stats_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = contact_center_insights.CalculateIssueModelStatsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.CalculateIssueModelStatsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -18557,12 +18523,11 @@ def test_calculate_issue_model_stats_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = (
-                contact_center_insights.CalculateIssueModelStatsResponse.pb(
-                    return_value
-                )
+            # Convert return value to protobuf type
+            return_value = contact_center_insights.CalculateIssueModelStatsResponse.pb(
+                return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -18696,10 +18661,11 @@ def test_calculate_issue_model_stats_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = contact_center_insights.CalculateIssueModelStatsResponse.pb(
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.CalculateIssueModelStatsResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -18776,6 +18742,75 @@ def test_create_phrase_matcher_rest(request_type):
         "role_match": 1,
         "update_time": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.CreatePhraseMatcherRequest.meta.fields[
+        "phrase_matcher"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["phrase_matcher"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["phrase_matcher"][field])):
+                    del request_init["phrase_matcher"][field][i][subfield]
+            else:
+                del request_init["phrase_matcher"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -18794,8 +18829,9 @@ def test_create_phrase_matcher_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.PhraseMatcher.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.PhraseMatcher.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -18877,8 +18913,9 @@ def test_create_phrase_matcher_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.PhraseMatcher.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.PhraseMatcher.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -18975,30 +19012,6 @@ def test_create_phrase_matcher_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["phrase_matcher"] = {
-        "name": "name_value",
-        "revision_id": "revision_id_value",
-        "version_tag": "version_tag_value",
-        "revision_create_time": {"seconds": 751, "nanos": 543},
-        "display_name": "display_name_value",
-        "type_": 1,
-        "active": True,
-        "phrase_match_rule_groups": [
-            {
-                "type_": 1,
-                "phrase_match_rules": [
-                    {
-                        "query": "query_value",
-                        "negated": True,
-                        "config": {"exact_match_config": {"case_sensitive": True}},
-                    }
-                ],
-            }
-        ],
-        "activation_update_time": {},
-        "role_match": 1,
-        "update_time": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -19037,8 +19050,9 @@ def test_create_phrase_matcher_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.PhraseMatcher.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.PhraseMatcher.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -19110,8 +19124,9 @@ def test_get_phrase_matcher_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.PhraseMatcher.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.PhraseMatcher.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -19192,8 +19207,9 @@ def test_get_phrase_matcher_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.PhraseMatcher.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.PhraseMatcher.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -19321,8 +19337,9 @@ def test_get_phrase_matcher_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.PhraseMatcher.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.PhraseMatcher.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -19387,10 +19404,11 @@ def test_list_phrase_matchers_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = contact_center_insights.ListPhraseMatchersResponse.pb(
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListPhraseMatchersResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -19473,10 +19491,11 @@ def test_list_phrase_matchers_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = contact_center_insights.ListPhraseMatchersResponse.pb(
+            # Convert return value to protobuf type
+            return_value = contact_center_insights.ListPhraseMatchersResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -19613,10 +19632,11 @@ def test_list_phrase_matchers_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = contact_center_insights.ListPhraseMatchersResponse.pb(
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListPhraseMatchersResponse.pb(
             return_value
         )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -20011,6 +20031,75 @@ def test_update_phrase_matcher_rest(request_type):
         "role_match": 1,
         "update_time": {},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.UpdatePhraseMatcherRequest.meta.fields[
+        "phrase_matcher"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["phrase_matcher"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["phrase_matcher"][field])):
+                    del request_init["phrase_matcher"][field][i][subfield]
+            else:
+                del request_init["phrase_matcher"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -20029,8 +20118,9 @@ def test_update_phrase_matcher_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.PhraseMatcher.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.PhraseMatcher.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -20109,8 +20199,9 @@ def test_update_phrase_matcher_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.PhraseMatcher.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.PhraseMatcher.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -20203,30 +20294,6 @@ def test_update_phrase_matcher_rest_bad_request(
             "name": "projects/sample1/locations/sample2/phraseMatchers/sample3"
         }
     }
-    request_init["phrase_matcher"] = {
-        "name": "projects/sample1/locations/sample2/phraseMatchers/sample3",
-        "revision_id": "revision_id_value",
-        "version_tag": "version_tag_value",
-        "revision_create_time": {"seconds": 751, "nanos": 543},
-        "display_name": "display_name_value",
-        "type_": 1,
-        "active": True,
-        "phrase_match_rule_groups": [
-            {
-                "type_": 1,
-                "phrase_match_rules": [
-                    {
-                        "query": "query_value",
-                        "negated": True,
-                        "config": {"exact_match_config": {"case_sensitive": True}},
-                    }
-                ],
-            }
-        ],
-        "activation_update_time": {},
-        "role_match": 1,
-        "update_time": {},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -20269,8 +20336,9 @@ def test_update_phrase_matcher_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.PhraseMatcher.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.PhraseMatcher.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -20337,10 +20405,9 @@ def test_calculate_stats_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = contact_center_insights.CalculateStatsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.CalculateStatsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -20418,10 +20485,11 @@ def test_calculate_stats_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = contact_center_insights.CalculateStatsResponse.pb(
+            # Convert return value to protobuf type
+            return_value = contact_center_insights.CalculateStatsResponse.pb(
                 return_value
             )
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -20548,10 +20616,9 @@ def test_calculate_stats_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = contact_center_insights.CalculateStatsResponse.pb(
-            return_value
-        )
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.CalculateStatsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -20617,8 +20684,9 @@ def test_get_settings_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Settings.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Settings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -20694,8 +20762,9 @@ def test_get_settings_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.Settings.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.Settings.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -20818,8 +20887,9 @@ def test_get_settings_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Settings.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Settings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -20904,6 +20974,73 @@ def test_update_settings_rest(request_type):
         },
         "speech_config": {"speech_recognizer": "speech_recognizer_value"},
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.UpdateSettingsRequest.meta.fields["settings"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["settings"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["settings"][field])):
+                    del request_init["settings"][field][i][subfield]
+            else:
+                del request_init["settings"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -20917,8 +21054,9 @@ def test_update_settings_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Settings.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Settings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -20992,8 +21130,9 @@ def test_update_settings_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.Settings.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.Settings.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -21087,39 +21226,6 @@ def test_update_settings_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"settings": {"name": "projects/sample1/locations/sample2/settings"}}
-    request_init["settings"] = {
-        "name": "projects/sample1/locations/sample2/settings",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "language_code": "language_code_value",
-        "conversation_ttl": {"seconds": 751, "nanos": 543},
-        "pubsub_notification_settings": {},
-        "analysis_config": {
-            "runtime_integration_analysis_percentage": 0.4167,
-            "upload_conversation_analysis_percentage": 0.41590000000000005,
-            "annotator_selector": {
-                "run_interruption_annotator": True,
-                "run_silence_annotator": True,
-                "run_phrase_matcher_annotator": True,
-                "phrase_matchers": ["phrase_matchers_value1", "phrase_matchers_value2"],
-                "run_sentiment_annotator": True,
-                "run_entity_annotator": True,
-                "run_intent_annotator": True,
-                "run_issue_model_annotator": True,
-                "issue_models": ["issue_models_value1", "issue_models_value2"],
-                "run_summarization_annotator": True,
-                "summarization_config": {
-                    "conversation_profile": "conversation_profile_value",
-                    "summarization_model": 1,
-                },
-            },
-        },
-        "redaction_config": {
-            "deidentify_template": "deidentify_template_value",
-            "inspect_template": "inspect_template_value",
-        },
-        "speech_config": {"speech_recognizer": "speech_recognizer_value"},
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -21160,8 +21266,9 @@ def test_update_settings_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.Settings.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.Settings.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -21222,6 +21329,73 @@ def test_create_view_rest(request_type):
         "update_time": {},
         "value": "value_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.CreateViewRequest.meta.fields["view"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["view"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["view"][field])):
+                    del request_init["view"][field][i][subfield]
+            else:
+                del request_init["view"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -21236,8 +21410,9 @@ def test_create_view_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.View.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.View.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -21315,8 +21490,9 @@ def test_create_view_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.View.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.View.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -21410,13 +21586,6 @@ def test_create_view_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["view"] = {
-        "name": "name_value",
-        "display_name": "display_name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "value": "value_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -21455,8 +21624,9 @@ def test_create_view_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.View.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.View.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -21523,8 +21693,9 @@ def test_get_view_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.View.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.View.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -21601,8 +21772,9 @@ def test_get_view_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.View.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.View.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -21725,8 +21897,9 @@ def test_get_view_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.View.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.View.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -21790,8 +21963,9 @@ def test_list_views_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = contact_center_insights.ListViewsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListViewsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -21873,8 +22047,9 @@ def test_list_views_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = contact_center_insights.ListViewsResponse.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = contact_center_insights.ListViewsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -22007,8 +22182,9 @@ def test_list_views_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = contact_center_insights.ListViewsResponse.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = contact_center_insights.ListViewsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
@@ -22126,6 +22302,73 @@ def test_update_view_rest(request_type):
         "update_time": {},
         "value": "value_value",
     }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = contact_center_insights.UpdateViewRequest.meta.fields["view"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["view"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["view"][field])):
+                    del request_init["view"][field][i][subfield]
+            else:
+                del request_init["view"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -22140,8 +22383,9 @@ def test_update_view_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.View.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.View.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -22216,8 +22460,9 @@ def test_update_view_rest_required_fields(
             response_value = Response()
             response_value.status_code = 200
 
-            pb_return_value = resources.View.pb(return_value)
-            json_return_value = json_format.MessageToJson(pb_return_value)
+            # Convert return value to protobuf type
+            return_value = resources.View.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -22305,13 +22550,6 @@ def test_update_view_rest_bad_request(
     request_init = {
         "view": {"name": "projects/sample1/locations/sample2/views/sample3"}
     }
-    request_init["view"] = {
-        "name": "projects/sample1/locations/sample2/views/sample3",
-        "display_name": "display_name_value",
-        "create_time": {"seconds": 751, "nanos": 543},
-        "update_time": {},
-        "value": "value_value",
-    }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -22352,8 +22590,9 @@ def test_update_view_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        pb_return_value = resources.View.pb(return_value)
-        json_return_value = json_format.MessageToJson(pb_return_value)
+        # Convert return value to protobuf type
+        return_value = resources.View.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
