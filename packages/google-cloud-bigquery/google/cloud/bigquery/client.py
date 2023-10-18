@@ -27,7 +27,6 @@ import itertools
 import json
 import math
 import os
-import packaging.version
 import tempfile
 import typing
 from typing import (
@@ -44,13 +43,6 @@ from typing import (
 )
 import uuid
 import warnings
-
-try:
-    import pyarrow  # type: ignore
-
-    _PYARROW_VERSION = packaging.version.parse(pyarrow.__version__)
-except ImportError:  # pragma: NO COVER
-    pyarrow = None
 
 from google import resumable_media  # type: ignore
 from google.resumable_media.requests import MultipartUpload  # type: ignore
@@ -84,12 +76,13 @@ from google.cloud.bigquery._helpers import BQ_STORAGE_VERSIONS
 from google.cloud.bigquery._helpers import _DEFAULT_HOST
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery import _pandas_helpers
+from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery import enums
 from google.cloud.bigquery.enums import AutoRowIDs
-from google.cloud.bigquery.exceptions import LegacyBigQueryStorageError
+from google.cloud.bigquery import exceptions as bq_exceptions
 from google.cloud.bigquery.opentelemetry_tracing import create_span
 from google.cloud.bigquery import job
 from google.cloud.bigquery.job import (
@@ -121,7 +114,8 @@ from google.cloud.bigquery.table import TableListItem
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import RowIterator
 from google.cloud.bigquery.format_options import ParquetOptions
-from google.cloud.bigquery import _helpers
+
+pyarrow = _versions_helpers.PYARROW_VERSIONS.try_import()
 
 TimeoutType = Union[float, None]
 ResumableTimeoutType = Union[
@@ -158,9 +152,6 @@ _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS = "jobReference,totalRows,pageToken,rows"
 _MIN_GET_QUERY_RESULTS_TIMEOUT = 120
 
 TIMEOUT_HEADER = "X-Server-Timeout"
-
-# https://github.com/googleapis/python-bigquery/issues/781#issuecomment-883497414
-_PYARROW_BAD_VERSIONS = frozenset([packaging.version.Version("2.0.0")])
 
 
 class Project(object):
@@ -574,7 +565,7 @@ class Client(ClientWithProject):
 
         try:
             BQ_STORAGE_VERSIONS.verify_version()
-        except LegacyBigQueryStorageError as exc:
+        except bq_exceptions.LegacyBigQueryStorageError as exc:
             warnings.warn(str(exc))
             return None
         if bqstorage_client is None:
@@ -2686,16 +2677,6 @@ class Client(ClientWithProject):
 
         try:
             if new_job_config.source_format == job.SourceFormat.PARQUET:
-                if _PYARROW_VERSION in _PYARROW_BAD_VERSIONS:
-                    msg = (
-                        "Loading dataframe data in PARQUET format with pyarrow "
-                        f"{_PYARROW_VERSION} can result in data corruption. It is "
-                        "therefore *strongly* advised to use a different pyarrow "
-                        "version or a different source format. "
-                        "See: https://github.com/googleapis/python-bigquery/issues/781"
-                    )
-                    warnings.warn(msg, category=RuntimeWarning)
-
                 if new_job_config.schema:
                     if parquet_compression == "snappy":  # adjust the default value
                         parquet_compression = parquet_compression.upper()
@@ -2714,7 +2695,7 @@ class Client(ClientWithProject):
                         compression=parquet_compression,
                         **(
                             {"use_compliant_nested_type": True}
-                            if _helpers.PYARROW_VERSIONS.use_compliant_nested_type
+                            if _versions_helpers.PYARROW_VERSIONS.use_compliant_nested_type
                             else {}
                         ),
                     )

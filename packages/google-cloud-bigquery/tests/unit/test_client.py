@@ -27,8 +27,8 @@ import unittest
 import warnings
 
 import mock
-import packaging
 import requests
+import packaging
 import pytest
 import pkg_resources
 
@@ -65,6 +65,7 @@ import google.cloud._helpers
 from google.cloud import bigquery
 
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery import exceptions
 from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
 from google.cloud.bigquery import ParquetOptions
 
@@ -821,14 +822,12 @@ class TestClient(unittest.TestCase):
         bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
     )
     def test_ensure_bqstorage_client_obsolete_dependency(self):
-        from google.cloud.bigquery.exceptions import LegacyBigQueryStorageError
-
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
 
         patcher = mock.patch(
             "google.cloud.bigquery.client.BQ_STORAGE_VERSIONS.verify_version",
-            side_effect=LegacyBigQueryStorageError("BQ Storage too old"),
+            side_effect=exceptions.LegacyBigQueryStorageError("BQ Storage too old"),
         )
         with patcher, warnings.catch_warnings(record=True) as warned:
             bqstorage_client = client._ensure_bqstorage_client()
@@ -857,15 +856,13 @@ class TestClient(unittest.TestCase):
         bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
     )
     def test_ensure_bqstorage_client_existing_client_check_fails(self):
-        from google.cloud.bigquery.exceptions import LegacyBigQueryStorageError
-
         creds = _make_credentials()
         client = self._make_one(project=self.PROJECT, credentials=creds)
         mock_storage_client = mock.sentinel.mock_storage_client
 
         patcher = mock.patch(
             "google.cloud.bigquery.client.BQ_STORAGE_VERSIONS.verify_version",
-            side_effect=LegacyBigQueryStorageError("BQ Storage too old"),
+            side_effect=exceptions.LegacyBigQueryStorageError("BQ Storage too old"),
         )
         with patcher, warnings.catch_warnings(record=True) as warned:
             bqstorage_client = client._ensure_bqstorage_client(mock_storage_client)
@@ -8615,7 +8612,7 @@ class TestClientUpload(object):
         dataframe = pandas.DataFrame(records)
 
         pyarrow_version_patch = mock.patch(
-            "google.cloud.bigquery.client._PYARROW_VERSION",
+            "google.cloud.bigquery._versions_helpers.PYARROW_VERSIONS._installed_version",
             packaging.version.parse("2.0.0"),  # A known bad version of pyarrow.
         )
         get_table_patch = mock.patch(
@@ -8628,21 +8625,12 @@ class TestClientUpload(object):
         )
 
         with load_patch, get_table_patch, pyarrow_version_patch:
-            with warnings.catch_warnings(record=True) as warned:
+            with pytest.raises(exceptions.LegacyPyarrowError):
                 client.load_table_from_dataframe(
                     dataframe,
                     self.TABLE_REF,
                     location=self.LOCATION,
                 )
-
-        expected_warnings = [
-            warning for warning in warned if "pyarrow" in str(warning).lower()
-        ]
-        assert len(expected_warnings) == 1
-        assert issubclass(expected_warnings[0].category, RuntimeWarning)
-        msg = str(expected_warnings[0].message)
-        assert "pyarrow 2.0.0" in msg
-        assert "data corruption" in msg
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")

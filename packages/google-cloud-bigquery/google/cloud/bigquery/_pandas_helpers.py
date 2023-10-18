@@ -23,9 +23,9 @@ import queue
 import warnings
 from typing import Any, Union
 
-from packaging import version
-
 from google.cloud.bigquery import _helpers
+from google.cloud.bigquery import _pyarrow_helpers
+from google.cloud.bigquery import _versions_helpers
 from google.cloud.bigquery import schema
 
 try:
@@ -49,7 +49,11 @@ except ImportError as exc:  # pragma: NO COVER
     db_dtypes_import_exception = exc
     date_dtype_name = time_dtype_name = ""  # Use '' rather than None because pytype
 
-pyarrow = _helpers.PYARROW_VERSIONS.try_import()
+pyarrow = _versions_helpers.PYARROW_VERSIONS.try_import()
+
+_BIGNUMERIC_SUPPORT = False
+if pyarrow is not None:
+    _BIGNUMERIC_SUPPORT = True
 
 try:
     # _BaseGeometry is used to detect shapely objevys in `bq_to_arrow_array`
@@ -119,87 +123,6 @@ class _DownloadState(object):
         self.done = False
 
 
-def pyarrow_datetime():
-    return pyarrow.timestamp("us", tz=None)
-
-
-def pyarrow_numeric():
-    return pyarrow.decimal128(38, 9)
-
-
-def pyarrow_bignumeric():
-    # 77th digit is partial.
-    # https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#decimal_types
-    return pyarrow.decimal256(76, 38)
-
-
-def pyarrow_time():
-    return pyarrow.time64("us")
-
-
-def pyarrow_timestamp():
-    return pyarrow.timestamp("us", tz="UTC")
-
-
-if pyarrow:
-    # This dictionary is duplicated in bigquery_storage/test/unite/test_reader.py
-    # When modifying it be sure to update it there as well.
-    BQ_TO_ARROW_SCALARS = {
-        "BOOL": pyarrow.bool_,
-        "BOOLEAN": pyarrow.bool_,
-        "BYTES": pyarrow.binary,
-        "DATE": pyarrow.date32,
-        "DATETIME": pyarrow_datetime,
-        "FLOAT": pyarrow.float64,
-        "FLOAT64": pyarrow.float64,
-        "GEOGRAPHY": pyarrow.string,
-        "INT64": pyarrow.int64,
-        "INTEGER": pyarrow.int64,
-        "NUMERIC": pyarrow_numeric,
-        "STRING": pyarrow.string,
-        "TIME": pyarrow_time,
-        "TIMESTAMP": pyarrow_timestamp,
-    }
-    ARROW_SCALAR_IDS_TO_BQ = {
-        # https://arrow.apache.org/docs/python/api/datatypes.html#type-classes
-        pyarrow.bool_().id: "BOOL",
-        pyarrow.int8().id: "INT64",
-        pyarrow.int16().id: "INT64",
-        pyarrow.int32().id: "INT64",
-        pyarrow.int64().id: "INT64",
-        pyarrow.uint8().id: "INT64",
-        pyarrow.uint16().id: "INT64",
-        pyarrow.uint32().id: "INT64",
-        pyarrow.uint64().id: "INT64",
-        pyarrow.float16().id: "FLOAT64",
-        pyarrow.float32().id: "FLOAT64",
-        pyarrow.float64().id: "FLOAT64",
-        pyarrow.time32("ms").id: "TIME",
-        pyarrow.time64("ns").id: "TIME",
-        pyarrow.timestamp("ns").id: "TIMESTAMP",
-        pyarrow.date32().id: "DATE",
-        pyarrow.date64().id: "DATETIME",  # because millisecond resolution
-        pyarrow.binary().id: "BYTES",
-        pyarrow.string().id: "STRING",  # also alias for pyarrow.utf8()
-        # The exact scale and precision don't matter, see below.
-        pyarrow.decimal128(38, scale=9).id: "NUMERIC",
-    }
-
-    if version.parse(pyarrow.__version__) >= version.parse("3.0.0"):
-        BQ_TO_ARROW_SCALARS["BIGNUMERIC"] = pyarrow_bignumeric
-        # The exact decimal's scale and precision are not important, as only
-        # the type ID matters, and it's the same for all decimal256 instances.
-        ARROW_SCALAR_IDS_TO_BQ[pyarrow.decimal256(76, scale=38).id] = "BIGNUMERIC"
-        _BIGNUMERIC_SUPPORT = True
-    else:
-        _BIGNUMERIC_SUPPORT = False  # pragma: NO COVER
-
-else:  # pragma: NO COVER
-    BQ_TO_ARROW_SCALARS = {}  # pragma: NO COVER
-    ARROW_SCALAR_IDS_TO_BQ = {}  # pragma: NO_COVER
-    _BIGNUMERIC_SUPPORT = False  # pragma: NO COVER
-
-
 BQ_FIELD_TYPE_TO_ARROW_FIELD_METADATA = {
     "GEOGRAPHY": {
         b"ARROW:extension:name": b"google:sqlType:geography",
@@ -240,7 +163,7 @@ def bq_to_arrow_data_type(field):
     if field_type_upper in schema._STRUCT_TYPES:
         return bq_to_arrow_struct_data_type(field)
 
-    data_type_constructor = BQ_TO_ARROW_SCALARS.get(field_type_upper)
+    data_type_constructor = _pyarrow_helpers.bq_to_arrow_scalars(field_type_upper)
     if data_type_constructor is None:
         return None
     return data_type_constructor()
@@ -568,7 +491,9 @@ def augment_schema(dataframe, current_bq_schema):
         if pyarrow.types.is_list(arrow_table.type):
             # `pyarrow.ListType`
             detected_mode = "REPEATED"
-            detected_type = ARROW_SCALAR_IDS_TO_BQ.get(arrow_table.values.type.id)
+            detected_type = _pyarrow_helpers.arrow_scalar_ids_to_bq(
+                arrow_table.values.type.id
+            )
 
             # For timezone-naive datetimes, pyarrow assumes the UTC timezone and adds
             # it to such datetimes, causing them to be recognized as TIMESTAMP type.
@@ -584,7 +509,7 @@ def augment_schema(dataframe, current_bq_schema):
                     detected_type = "DATETIME"
         else:
             detected_mode = field.mode
-            detected_type = ARROW_SCALAR_IDS_TO_BQ.get(arrow_table.type.id)
+            detected_type = _pyarrow_helpers.arrow_scalar_ids_to_bq(arrow_table.type.id)
 
         if detected_type is None:
             unknown_type_fields.append(field)
@@ -705,13 +630,13 @@ def dataframe_to_parquet(
 
             This argument is ignored for ``pyarrow`` versions earlier than ``4.0.0``.
     """
-    pyarrow = _helpers.PYARROW_VERSIONS.try_import(raise_if_error=True)
+    pyarrow = _versions_helpers.PYARROW_VERSIONS.try_import(raise_if_error=True)
 
     import pyarrow.parquet  # type: ignore
 
     kwargs = (
         {"use_compliant_nested_type": parquet_use_compliant_nested_type}
-        if _helpers.PYARROW_VERSIONS.use_compliant_nested_type
+        if _versions_helpers.PYARROW_VERSIONS.use_compliant_nested_type
         else {}
     )
 

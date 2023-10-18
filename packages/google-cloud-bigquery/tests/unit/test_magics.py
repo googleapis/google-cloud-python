@@ -25,6 +25,7 @@ from tests.unit.helpers import make_connection
 from test_utils.imports import maybe_fail_import
 
 from google.cloud import bigquery
+from google.cloud.bigquery import exceptions as bq_exceptions
 from google.cloud.bigquery import job
 from google.cloud.bigquery import table
 from google.cloud.bigquery.retry import DEFAULT_TIMEOUT
@@ -357,8 +358,6 @@ def test__make_bqstorage_client_true_raises_import_error(missing_bq_storage):
     bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
 )
 def test__make_bqstorage_client_true_obsolete_dependency():
-    from google.cloud.bigquery.exceptions import LegacyBigQueryStorageError
-
     credentials_mock = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
     )
@@ -368,7 +367,7 @@ def test__make_bqstorage_client_true_obsolete_dependency():
 
     patcher = mock.patch(
         "google.cloud.bigquery.client.BQ_STORAGE_VERSIONS.verify_version",
-        side_effect=LegacyBigQueryStorageError("BQ Storage too old"),
+        side_effect=bq_exceptions.LegacyBigQueryStorageError("BQ Storage too old"),
     )
     with patcher, warnings.catch_warnings(record=True) as warned:
         got = magics._make_bqstorage_client(test_client, True, {})

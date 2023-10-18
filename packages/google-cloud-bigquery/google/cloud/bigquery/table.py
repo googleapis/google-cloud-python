@@ -61,7 +61,7 @@ import google.cloud._helpers  # type: ignore
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery import _pandas_helpers
 from google.cloud.bigquery.enums import DefaultPandasDTypes
-from google.cloud.bigquery.exceptions import LegacyBigQueryStorageError
+from google.cloud.bigquery import exceptions
 from google.cloud.bigquery.schema import _build_schema_resource
 from google.cloud.bigquery.schema import _parse_schema_resource
 from google.cloud.bigquery.schema import _to_schema_fields
@@ -1616,7 +1616,7 @@ class RowIterator(HTTPIterator):
 
         try:
             _helpers.BQ_STORAGE_VERSIONS.verify_version()
-        except LegacyBigQueryStorageError as exc:
+        except exceptions.LegacyBigQueryStorageError as exc:
             warnings.warn(str(exc))
             return False
 
