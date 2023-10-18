@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.asset_v1.types import asset_service
-from google.cloud.asset_v1.types import assets
+from google.cloud.asset_v1.types import asset_service, assets
 
 
 class ListAssetsPager:

@@ -18,25 +18,22 @@ from google.cloud.asset_v1p2beta1 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.asset_service import AssetServiceClient
-from .services.asset_service import AssetServiceAsyncClient
-
-from .types.asset_service import CreateFeedRequest
-from .types.asset_service import DeleteFeedRequest
-from .types.asset_service import Feed
-from .types.asset_service import FeedOutputConfig
-from .types.asset_service import GcsDestination
-from .types.asset_service import GetFeedRequest
-from .types.asset_service import ListFeedsRequest
-from .types.asset_service import ListFeedsResponse
-from .types.asset_service import OutputConfig
-from .types.asset_service import PubsubDestination
-from .types.asset_service import UpdateFeedRequest
-from .types.asset_service import ContentType
-from .types.assets import Asset
-from .types.assets import Resource
-from .types.assets import TemporalAsset
-from .types.assets import TimeWindow
+from .services.asset_service import AssetServiceAsyncClient, AssetServiceClient
+from .types.asset_service import (
+    ContentType,
+    CreateFeedRequest,
+    DeleteFeedRequest,
+    Feed,
+    FeedOutputConfig,
+    GcsDestination,
+    GetFeedRequest,
+    ListFeedsRequest,
+    ListFeedsResponse,
+    OutputConfig,
+    PubsubDestination,
+    UpdateFeedRequest,
+)
+from .types.assets import Asset, Resource, TemporalAsset, TimeWindow
 
 __all__ = (
     "AssetServiceAsyncClient",

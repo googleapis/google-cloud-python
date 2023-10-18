@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import AssetServiceClient
 from .async_client import AssetServiceAsyncClient
+from .client import AssetServiceClient
 
 __all__ = (
     "AssetServiceClient",

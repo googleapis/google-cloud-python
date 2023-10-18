@@ -18,14 +18,9 @@ from google.cloud.asset_v1p5beta1 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.asset_service import AssetServiceClient
-from .services.asset_service import AssetServiceAsyncClient
-
-from .types.asset_service import ListAssetsRequest
-from .types.asset_service import ListAssetsResponse
-from .types.asset_service import ContentType
-from .types.assets import Asset
-from .types.assets import Resource
+from .services.asset_service import AssetServiceAsyncClient, AssetServiceClient
+from .types.asset_service import ContentType, ListAssetsRequest, ListAssetsResponse
+from .types.assets import Asset, Resource
 
 __all__ = (
     "AssetServiceAsyncClient",

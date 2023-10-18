@@ -18,16 +18,14 @@ from google.cloud.asset_v1p1beta1 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from .services.asset_service import AssetServiceClient
-from .services.asset_service import AssetServiceAsyncClient
-
-from .types.asset_service import SearchAllIamPoliciesRequest
-from .types.asset_service import SearchAllIamPoliciesResponse
-from .types.asset_service import SearchAllResourcesRequest
-from .types.asset_service import SearchAllResourcesResponse
-from .types.assets import IamPolicySearchResult
-from .types.assets import Permissions
-from .types.assets import StandardResourceMetadata
+from .services.asset_service import AssetServiceAsyncClient, AssetServiceClient
+from .types.asset_service import (
+    SearchAllIamPoliciesRequest,
+    SearchAllIamPoliciesResponse,
+    SearchAllResourcesRequest,
+    SearchAllResourcesResponse,
+)
+from .types.assets import IamPolicySearchResult, Permissions, StandardResourceMetadata
 
 __all__ = (
     "AssetServiceAsyncClient",

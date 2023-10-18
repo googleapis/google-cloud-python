@@ -13,11 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.asset_v1p4beta1.types import assets
-from google.protobuf import duration_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.asset.v1p4beta1",

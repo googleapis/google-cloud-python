@@ -17,11 +17,12 @@
 # flake8: noqa
 
 import os
-import pytest
 
 from google.api_core import exceptions
-from google.cloud import asset_v1
+import pytest
 from test_utils.vpcsc_config import vpcsc_config
+
+from google.cloud import asset_v1
 
 _VPCSC_PROHIBITED_MESSAGE = "Request is prohibited by organization's policy"
 

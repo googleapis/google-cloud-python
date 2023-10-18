@@ -13,15 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .asset_service import (
-    ListAssetsRequest,
-    ListAssetsResponse,
-    ContentType,
-)
-from .assets import (
-    Asset,
-    Resource,
-)
+from .asset_service import ContentType, ListAssetsRequest, ListAssetsResponse
+from .assets import Asset, Resource
 
 __all__ = (
     "ListAssetsRequest",

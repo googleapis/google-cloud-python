@@ -34,6 +34,7 @@ from .asset_service import (
     BatchGetEffectiveIamPoliciesRequest,
     BatchGetEffectiveIamPoliciesResponse,
     BigQueryDestination,
+    ContentType,
     CreateFeedRequest,
     CreateSavedQueryRequest,
     DeleteFeedRequest,
@@ -74,7 +75,6 @@ from .asset_service import (
     TableSchema,
     UpdateFeedRequest,
     UpdateSavedQueryRequest,
-    ContentType,
 )
 from .assets import (
     Asset,

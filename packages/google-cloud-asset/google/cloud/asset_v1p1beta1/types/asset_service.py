@@ -21,7 +21,6 @@ import proto  # type: ignore
 
 from google.cloud.asset_v1p1beta1.types import assets
 
-
 __protobuf__ = proto.module(
     package="google.cloud.asset.v1p1beta1",
     manifest={

@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from .asset_service import (
+    ContentType,
     CreateFeedRequest,
     DeleteFeedRequest,
     Feed,
@@ -25,14 +26,8 @@ from .asset_service import (
     OutputConfig,
     PubsubDestination,
     UpdateFeedRequest,
-    ContentType,
 )
-from .assets import (
-    Asset,
-    Resource,
-    TemporalAsset,
-    TimeWindow,
-)
+from .assets import Asset, Resource, TemporalAsset, TimeWindow
 
 __all__ = (
     "CreateFeedRequest",

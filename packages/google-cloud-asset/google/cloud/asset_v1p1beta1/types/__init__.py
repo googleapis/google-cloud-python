@@ -19,11 +19,7 @@ from .asset_service import (
     SearchAllResourcesRequest,
     SearchAllResourcesResponse,
 )
-from .assets import (
-    IamPolicySearchResult,
-    Permissions,
-    StandardResourceMetadata,
-)
+from .assets import IamPolicySearchResult, Permissions, StandardResourceMetadata
 
 __all__ = (
     "SearchAllIamPoliciesRequest",

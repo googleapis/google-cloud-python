@@ -14,15 +14,15 @@
 # limitations under the License.
 #
 
-from .services.asset_service import AssetServiceClient
-from .services.asset_service import AssetServiceAsyncClient
-
-from .types.asset_service import AnalyzeIamPolicyRequest
-from .types.asset_service import AnalyzeIamPolicyResponse
-from .types.asset_service import ExportIamPolicyAnalysisRequest
-from .types.asset_service import ExportIamPolicyAnalysisResponse
-from .types.asset_service import IamPolicyAnalysisOutputConfig
-from .types.asset_service import IamPolicyAnalysisQuery
+from .services.asset_service import AssetServiceAsyncClient, AssetServiceClient
+from .types.asset_service import (
+    AnalyzeIamPolicyRequest,
+    AnalyzeIamPolicyResponse,
+    ExportIamPolicyAnalysisRequest,
+    ExportIamPolicyAnalysisResponse,
+    IamPolicyAnalysisOutputConfig,
+    IamPolicyAnalysisQuery,
+)
 from .types.assets import IamPolicyAnalysisResult
 
 __all__ = (
