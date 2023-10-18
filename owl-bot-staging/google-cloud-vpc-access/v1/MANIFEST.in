@@ -1,0 +1,2 @@
+recursive-include google/cloud/vpcaccess *.py
+recursive-include google/cloud/vpcaccess_v1 *.py
