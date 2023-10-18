@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.11.9](https://github.com/googleapis/gapic-generator-python/compare/v1.11.8...v1.11.9) (2023-10-18)
+
+
+### Bug Fixes
+
+* Rename rst files to avoid conflict with service names ([#1706](https://github.com/googleapis/gapic-generator-python/issues/1706)) ([70c3db5](https://github.com/googleapis/gapic-generator-python/commit/70c3db5ae1bac69e8ade13e4608af60c824e7870))
+
 ## [1.11.8](https://github.com/googleapis/gapic-generator-python/compare/v1.11.7...v1.11.8) (2023-10-16)
 
 
