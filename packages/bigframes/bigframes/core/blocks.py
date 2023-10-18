@@ -377,7 +377,9 @@ class Block:
         cls, result, schema: typing.Mapping[str, bigframes.dtypes.Dtype]
     ) -> pd.DataFrame:
         """Convert BigQuery data to pandas DataFrame with specific dtypes."""
+        dtypes = bigframes.dtypes.to_pandas_dtypes_overrides(result.schema)
         df = result.to_dataframe(
+            dtypes=dtypes,
             bool_dtype=pd.BooleanDtype(),
             int_dtype=pd.Int64Dtype(),
             float_dtype=pd.Float64Dtype(),

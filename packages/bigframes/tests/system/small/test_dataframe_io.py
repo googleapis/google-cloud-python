@@ -16,6 +16,7 @@ from typing import Tuple
 
 import google.api_core.exceptions
 import pandas as pd
+import pyarrow as pa
 import pytest
 
 from tests.system.utils import (
@@ -44,7 +45,7 @@ def test_to_pandas_w_correct_dtypes(scalars_df_default_index):
 
 
 def test_to_pandas_array_struct_correct_result(session):
-    """In future, we should support arrays and structs with arrow types.
+    """In future, we should support arrays with arrow types.
     For now we fall back to the current connector behavior of converting
     to Python objects"""
     df = session.read_gbq(
@@ -59,11 +60,27 @@ def test_to_pandas_array_struct_correct_result(session):
     expected = pd.DataFrame(
         {
             "array_column": [[1, 3, 2]],
-            "struct_column": [{"string_field": "a", "float_field": 1.2}],
+            "struct_column": pd.Series(
+                [{"string_field": "a", "float_field": 1.2}],
+                dtype=pd.ArrowDtype(
+                    pa.struct(
+                        [
+                            ("string_field", pa.string()),
+                            ("float_field", pa.float64()),
+                        ]
+                    )
+                ),
+            ),
         }
     )
     expected.index = expected.index.astype("Int64")
-    pd.testing.assert_frame_equal(result, expected)
+    pd.testing.assert_series_equal(result.dtypes, expected.dtypes)
+    pd.testing.assert_series_equal(result["array_column"], expected["array_column"])
+    # assert_series_equal not implemented for struct columns yet. Compare
+    # values as Python objects, instead.
+    pd.testing.assert_series_equal(
+        result["struct_column"].astype("O"), expected["struct_column"].astype("O")
+    )
 
 
 @pytest.mark.parametrize(

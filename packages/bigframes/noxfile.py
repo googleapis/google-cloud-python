@@ -185,6 +185,7 @@ def run_unit(session, install_test_extra):
 
     # Run py.test against the unit tests.
     tests_path = os.path.join("tests", "unit")
+    third_party_tests_path = os.path.join("third_party", "bigframes_vendored")
     session.run(
         "py.test",
         "--quiet",
@@ -196,6 +197,7 @@ def run_unit(session, install_test_extra):
         "--cov-report=term-missing",
         "--cov-fail-under=0",
         tests_path,
+        third_party_tests_path,
         *session.posargs,
     )
 
