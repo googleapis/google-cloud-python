@@ -73,6 +73,7 @@ class securitycenterCallTransformer(cst.CSTTransformer):
         'set_finding_state': ('name', 'state', 'start_time', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'set_mute': ('name', 'mute', ),
+        'simulate_security_health_analytics_custom_module': ('parent', 'custom_config', 'resource', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_big_query_export': ('big_query_export', 'update_mask', ),
         'update_external_system': ('external_system', 'update_mask', ),

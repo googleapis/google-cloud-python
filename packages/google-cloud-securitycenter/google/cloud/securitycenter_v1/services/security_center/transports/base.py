@@ -470,6 +470,11 @@ class SecurityCenterTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.simulate_security_health_analytics_custom_module: gapic_v1.method.wrap_method(
+                self.simulate_security_health_analytics_custom_module,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.update_external_system: gapic_v1.method.wrap_method(
                 self.update_external_system,
                 default_timeout=None,
@@ -899,6 +904,20 @@ class SecurityCenterTransport(abc.ABC):
         Union[
             iam_policy_pb2.TestIamPermissionsResponse,
             Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def simulate_security_health_analytics_custom_module(
+        self,
+    ) -> Callable[
+        [securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleRequest],
+        Union[
+            securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse,
+            Awaitable[
+                securitycenter_service.SimulateSecurityHealthAnalyticsCustomModuleResponse
+            ],
         ],
     ]:
         raise NotImplementedError()
