@@ -1,4 +1,4 @@
-Services for Google Cloud Appengine-admin v1 API
+Services for Google Cloud Appengine Admin v1 API
 ================================================
 .. toctree::
     :maxdepth: 2
