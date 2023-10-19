@@ -38,7 +38,10 @@ from google.cloud.firestore_v1 import aggregation
 
 from google.cloud.firestore_v1 import document
 from google.cloud.firestore_v1.watch import Watch
-from typing import Any, Callable, Generator, List, Optional, Type
+from typing import Any, Callable, Generator, List, Optional, Type, TYPE_CHECKING
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.firestore_v1.field_path import FieldPath
 
 
 class Query(BaseQuery):
@@ -242,10 +245,41 @@ class Query(BaseQuery):
         """
         Adds a count over the query.
 
-        :type alias: str
-        :param alias: (Optional) The alias for the count
+        :type alias: Optional[str]
+        :param alias: Optional name of the field to store the result of the aggregation into.
+            If not provided, Firestore will pick a default name following the format field_<incremental_id++>.
         """
         return aggregation.AggregationQuery(self).count(alias=alias)
+
+    def sum(
+        self, field_ref: str | FieldPath, alias: str | None = None
+    ) -> Type["firestore_v1.aggregation.AggregationQuery"]:
+        """
+        Adds a sum over the query.
+
+        :type field_ref: Union[str, google.cloud.firestore_v1.field_path.FieldPath]
+        :param field_ref: The field to aggregate across.
+
+        :type alias: Optional[str]
+        :param alias: Optional name of the field to store the result of the aggregation into.
+            If not provided, Firestore will pick a default name following the format field_<incremental_id++>.
+        """
+        return aggregation.AggregationQuery(self).sum(field_ref, alias=alias)
+
+    def avg(
+        self, field_ref: str | FieldPath, alias: str | None = None
+    ) -> Type["firestore_v1.aggregation.AggregationQuery"]:
+        """
+        Adds an avg over the query.
+
+        :type field_ref: [Union[str, google.cloud.firestore_v1.field_path.FieldPath]
+        :param field_ref: The field to aggregate across.
+
+        :type alias: Optional[str]
+        :param alias: Optional name of the field to store the result of the aggregation into.
+            If not provided, Firestore will pick a default name following the format field_<incremental_id++>.
+        """
+        return aggregation.AggregationQuery(self).avg(field_ref, alias=alias)
 
     def stream(
         self,

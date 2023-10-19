@@ -49,10 +49,14 @@ from typing import (
     Type,
     TypeVar,
     Union,
+    TYPE_CHECKING,
 )
 
 # Types needed only for Type Hints
 from google.cloud.firestore_v1.base_document import DocumentSnapshot
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.firestore_v1.field_path import FieldPath
 
 _BAD_DIR_STRING: str
 _BAD_OP_NAN_NULL: str
@@ -967,6 +971,16 @@ class BaseQuery(object):
 
     def count(
         self, alias: str | None = None
+    ) -> Type["firestore_v1.base_aggregation.BaseAggregationQuery"]:
+        raise NotImplementedError
+
+    def sum(
+        self, field_ref: str | FieldPath, alias: str | None = None
+    ) -> Type["firestore_v1.base_aggregation.BaseAggregationQuery"]:
+        raise NotImplementedError
+
+    def avg(
+        self, field_ref: str | FieldPath, alias: str | None = None
     ) -> Type["firestore_v1.base_aggregation.BaseAggregationQuery"]:
         raise NotImplementedError
 

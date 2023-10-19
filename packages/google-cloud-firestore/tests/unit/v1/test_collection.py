@@ -81,6 +81,44 @@ def test_collection_count():
     assert aggregation_query._aggregations[0].alias == alias
 
 
+def test_collection_sum():
+    collection_id1 = "rooms"
+    document_id = "roomA"
+    collection_id2 = "messages"
+    client = mock.sentinel.client
+
+    collection = _make_collection_reference(
+        collection_id1, document_id, collection_id2, client=client
+    )
+
+    alias = "total"
+    field_ref = "someref"
+    aggregation_query = collection.sum(field_ref, alias=alias)
+
+    assert len(aggregation_query._aggregations) == 1
+    assert aggregation_query._aggregations[0].alias == alias
+    assert aggregation_query._aggregations[0].field_ref == field_ref
+
+
+def test_collection_avg():
+    collection_id1 = "rooms"
+    document_id = "roomA"
+    collection_id2 = "messages"
+    client = mock.sentinel.client
+
+    collection = _make_collection_reference(
+        collection_id1, document_id, collection_id2, client=client
+    )
+
+    alias = "total"
+    field_ref = "someref"
+    aggregation_query = collection.avg(field_ref, alias=alias)
+
+    assert len(aggregation_query._aggregations) == 1
+    assert aggregation_query._aggregations[0].alias == alias
+    assert aggregation_query._aggregations[0].field_ref == field_ref
+
+
 def test_constructor():
     collection_id1 = "rooms"
     document_id = "roomA"

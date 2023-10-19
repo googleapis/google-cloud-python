@@ -160,6 +160,64 @@ async def test_asyncquery_get_limit_to_last():
     )
 
 
+def test_asyncquery_sum():
+    from google.cloud.firestore_v1.field_path import FieldPath
+    from google.cloud.firestore_v1.base_aggregation import SumAggregation
+
+    client = make_async_client()
+    parent = client.collection("dee")
+    field_str = "field_str"
+    field_path = FieldPath("foo", "bar")
+    query = make_async_query(parent)
+    # test with only field populated
+    sum_query = query.sum(field_str)
+    sum_agg = sum_query._aggregations[0]
+    assert isinstance(sum_agg, SumAggregation)
+    assert sum_agg.field_ref == field_str
+    assert sum_agg.alias is None
+    # test with field and alias populated
+    sum_query = query.sum(field_str, alias="alias")
+    sum_agg = sum_query._aggregations[0]
+    assert isinstance(sum_agg, SumAggregation)
+    assert sum_agg.field_ref == field_str
+    assert sum_agg.alias == "alias"
+    # test with field_path
+    sum_query = query.sum(field_path, alias="alias")
+    sum_agg = sum_query._aggregations[0]
+    assert isinstance(sum_agg, SumAggregation)
+    assert sum_agg.field_ref == "foo.bar"
+    assert sum_agg.alias == "alias"
+
+
+def test_asyncquery_avg():
+    from google.cloud.firestore_v1.field_path import FieldPath
+    from google.cloud.firestore_v1.base_aggregation import AvgAggregation
+
+    client = make_async_client()
+    parent = client.collection("dee")
+    field_str = "field_str"
+    field_path = FieldPath("foo", "bar")
+    query = make_async_query(parent)
+    # test with only field populated
+    avg_query = query.avg(field_str)
+    avg_agg = avg_query._aggregations[0]
+    assert isinstance(avg_agg, AvgAggregation)
+    assert avg_agg.field_ref == field_str
+    assert avg_agg.alias is None
+    # test with field and alias populated
+    avg_query = query.avg(field_str, alias="alias")
+    avg_agg = avg_query._aggregations[0]
+    assert isinstance(avg_agg, AvgAggregation)
+    assert avg_agg.field_ref == field_str
+    assert avg_agg.alias == "alias"
+    # test with field_path
+    avg_query = query.avg(field_path, alias="alias")
+    avg_agg = avg_query._aggregations[0]
+    assert isinstance(avg_agg, AvgAggregation)
+    assert avg_agg.field_ref == "foo.bar"
+    assert avg_agg.alias == "alias"
+
+
 @pytest.mark.asyncio
 async def test_asyncquery_chunkify_w_empty():
     client = make_async_client()

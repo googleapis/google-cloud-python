@@ -33,8 +33,8 @@ from google.api_core import gapic_v1
 from google.api_core import retry as retries
 
 
+from google.cloud.firestore_v1.field_path import FieldPath
 from google.cloud.firestore_v1.types import RunAggregationQueryResponse
-
 from google.cloud.firestore_v1.types import StructuredAggregationQuery
 from google.cloud.firestore_v1 import _helpers
 
@@ -60,6 +60,9 @@ class AggregationResult(object):
 
 
 class BaseAggregation(ABC):
+    def __init__(self, alias: str | None = None):
+        self.alias = alias
+
     @abc.abstractmethod
     def _to_protobuf(self):
         """Convert this instance to the protobuf representation"""
@@ -67,7 +70,7 @@ class BaseAggregation(ABC):
 
 class CountAggregation(BaseAggregation):
     def __init__(self, alias: str | None = None):
-        self.alias = alias
+        super(CountAggregation, self).__init__(alias=alias)
 
     def _to_protobuf(self):
         """Convert this instance to the protobuf representation"""
@@ -77,13 +80,48 @@ class CountAggregation(BaseAggregation):
         return aggregation_pb
 
 
+class SumAggregation(BaseAggregation):
+    def __init__(self, field_ref: str | FieldPath, alias: str | None = None):
+        if isinstance(field_ref, FieldPath):
+            # convert field path to string
+            field_ref = field_ref.to_api_repr()
+        self.field_ref = field_ref
+        super(SumAggregation, self).__init__(alias=alias)
+
+    def _to_protobuf(self):
+        """Convert this instance to the protobuf representation"""
+        aggregation_pb = StructuredAggregationQuery.Aggregation()
+        aggregation_pb.alias = self.alias
+        aggregation_pb.sum = StructuredAggregationQuery.Aggregation.Sum()
+        aggregation_pb.sum.field.field_path = self.field_ref
+        return aggregation_pb
+
+
+class AvgAggregation(BaseAggregation):
+    def __init__(self, field_ref: str | FieldPath, alias: str | None = None):
+        if isinstance(field_ref, FieldPath):
+            # convert field path to string
+            field_ref = field_ref.to_api_repr()
+        self.field_ref = field_ref
+        super(AvgAggregation, self).__init__(alias=alias)
+
+    def _to_protobuf(self):
+        """Convert this instance to the protobuf representation"""
+        aggregation_pb = StructuredAggregationQuery.Aggregation()
+        aggregation_pb.alias = self.alias
+        aggregation_pb.avg = StructuredAggregationQuery.Aggregation.Avg()
+        aggregation_pb.avg.field.field_path = self.field_ref
+        return aggregation_pb
+
+
 def _query_response_to_result(
     response_pb: RunAggregationQueryResponse,
 ) -> List[AggregationResult]:
     results = [
         AggregationResult(
             alias=key,
-            value=response_pb.result.aggregate_fields[key].integer_value,
+            value=response_pb.result.aggregate_fields[key].integer_value
+            or response_pb.result.aggregate_fields[key].double_value,
             read_time=response_pb.read_time,
         )
         for key in response_pb.result.aggregate_fields.pb.keys()
@@ -95,11 +133,9 @@ def _query_response_to_result(
 class BaseAggregationQuery(ABC):
     """Represents an aggregation query to the Firestore API."""
 
-    def __init__(
-        self,
-        nested_query,
-    ) -> None:
+    def __init__(self, nested_query, alias: str | None = None) -> None:
         self._nested_query = nested_query
+        self._alias = alias
         self._collection_ref = nested_query._parent
         self._aggregations: List[BaseAggregation] = []
 
@@ -113,6 +149,22 @@ class BaseAggregationQuery(ABC):
         """
         count_aggregation = CountAggregation(alias=alias)
         self._aggregations.append(count_aggregation)
+        return self
+
+    def sum(self, field_ref: str | FieldPath, alias: str | None = None):
+        """
+        Adds a sum over the nested query
+        """
+        sum_aggregation = SumAggregation(field_ref, alias=alias)
+        self._aggregations.append(sum_aggregation)
+        return self
+
+    def avg(self, field_ref: str | FieldPath, alias: str | None = None):
+        """
+        Adds an avg over the nested query
+        """
+        avg_aggregation = AvgAggregation(field_ref, alias=alias)
+        self._aggregations.append(avg_aggregation)
         return self
 
     def add_aggregation(self, aggregation: BaseAggregation) -> None:

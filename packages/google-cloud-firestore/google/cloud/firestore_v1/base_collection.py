@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Classes for representing collections for the Google Cloud Firestore API."""
+from __future__ import annotations
 import random
 
 from google.api_core import retry as retries
@@ -20,6 +21,7 @@ from google.api_core import retry as retries
 from google.cloud.firestore_v1 import _helpers
 from google.cloud.firestore_v1.document import DocumentReference
 from google.cloud.firestore_v1.base_aggregation import BaseAggregationQuery
+from google.cloud.firestore_v1.base_query import QueryType
 
 
 from typing import (
@@ -35,12 +37,15 @@ from typing import (
     NoReturn,
     Tuple,
     Union,
+    TYPE_CHECKING,
 )
 
-# Types needed only for Type Hints
-from google.cloud.firestore_v1.base_document import DocumentSnapshot
-from google.cloud.firestore_v1.base_query import QueryType
-from google.cloud.firestore_v1.transaction import Transaction
+
+if TYPE_CHECKING:  # pragma: NO COVER
+    # Types needed only for Type Hints
+    from google.cloud.firestore_v1.base_document import DocumentSnapshot
+    from google.cloud.firestore_v1.transaction import Transaction
+    from google.cloud.firestore_v1.field_path import FieldPath
 
 _AUTO_ID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
@@ -244,7 +249,7 @@ class BaseCollectionReference(Generic[QueryType]):
         op_string: Optional[str] = None,
         value=None,
         *,
-        filter=None
+        filter=None,
     ) -> QueryType:
         """Create a "where" query with this collection as parent.
 
@@ -506,6 +511,33 @@ class BaseCollectionReference(Generic[QueryType]):
         :param alias: (Optional) The alias for the count
         """
         return self._aggregation_query().count(alias=alias)
+
+    def sum(self, field_ref: str | FieldPath, alias=None):
+        """
+        Adds a sum over the nested query.
+
+        :type field_ref: Union[str, google.cloud.firestore_v1.field_path.FieldPath]
+        :param field_ref: The field to aggregate across.
+
+        :type alias: Optional[str]
+        :param alias: Optional name of the field to store the result of the aggregation into.
+            If not provided, Firestore will pick a default name following the format field_<incremental_id++>.
+
+        """
+        return self._aggregation_query().sum(field_ref, alias=alias)
+
+    def avg(self, field_ref: str | FieldPath, alias=None):
+        """
+        Adds an avg over the nested query.
+
+        :type field_ref: Union[str, google.cloud.firestore_v1.field_path.FieldPath]
+        :param field_ref: The field to aggregate across.
+
+        :type alias: Optional[str]
+        :param alias: Optional name of the field to store the result of the aggregation into.
+            If not provided, Firestore will pick a default name following the format field_<incremental_id++>.
+        """
+        return self._aggregation_query().avg(field_ref, alias=alias)
 
 
 def _auto_id() -> str:

@@ -97,6 +97,36 @@ def test_async_collection_count():
     assert aggregation_query._aggregations[0].alias == alias
 
 
+def test_async_collection_sum():
+    firestore_api = AsyncMock(spec=["create_document", "commit"])
+    client = make_async_client()
+    client._firestore_api_internal = firestore_api
+    collection = _make_async_collection_reference("grand-parent", client=client)
+
+    alias = "total"
+    field_ref = "someref"
+    aggregation_query = collection.sum(field_ref, alias=alias)
+
+    assert len(aggregation_query._aggregations) == 1
+    assert aggregation_query._aggregations[0].alias == alias
+    assert aggregation_query._aggregations[0].field_ref == field_ref
+
+
+def test_async_collection_avg():
+    firestore_api = AsyncMock(spec=["create_document", "commit"])
+    client = make_async_client()
+    client._firestore_api_internal = firestore_api
+    collection = _make_async_collection_reference("grand-parent", client=client)
+
+    alias = "total"
+    field_ref = "someref"
+    aggregation_query = collection.avg(field_ref, alias=alias)
+
+    assert len(aggregation_query._aggregations) == 1
+    assert aggregation_query._aggregations[0].alias == alias
+    assert aggregation_query._aggregations[0].field_ref == field_ref
+
+
 @pytest.mark.asyncio
 async def test_asynccollectionreference_add_auto_assigned():
     from google.cloud.firestore_v1.types import document
