@@ -336,7 +336,7 @@ def docfx(session):
     )
 
 
-@nox.session(python="3.11")
+@nox.session(python="3.12")
 def prerelease_deps(session):
     """Run all tests with prerelease versions of dependencies installed."""
 
