@@ -209,52 +209,6 @@ def test_update_table_description(client, to_delete):
         "https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589"
     )
 )
-def test_update_table_expiration(client, to_delete):
-    """Update a table's expiration time."""
-    dataset_id = "update_table_expiration_dataset_{}".format(_millis())
-    table_id = "update_table_expiration_table_{}".format(_millis())
-    project = client.project
-    dataset_ref = bigquery.DatasetReference(project, dataset_id)
-    dataset = bigquery.Dataset(dataset_ref)
-    client.create_dataset(dataset)
-    to_delete.append(dataset)
-
-    table = bigquery.Table(dataset.table(table_id), schema=SCHEMA)
-    table = client.create_table(table)
-
-    # TODO(thejaredchapman): After code sample has been updated from cloud.google.com delete this.
-
-    # [START bigquery_update_table_expiration]
-    import datetime
-
-    # from google.cloud import bigquery
-    # client = bigquery.Client()
-    # project = client.project
-    # dataset_ref = bigquery.DatasetReference(project, dataset_id)
-    # table_ref = dataset_ref.table('my_table')
-    # table = client.get_table(table_ref)  # API request
-
-    assert table.expires is None
-
-    # set table to expire 5 days from now
-    expiration = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(
-        days=5
-    )
-    table.expires = expiration
-    table = client.update_table(table, ["expires"])  # API request
-
-    # expiration is stored in milliseconds
-    margin = datetime.timedelta(microseconds=1000)
-    assert expiration - margin <= table.expires <= expiration + margin
-    # [END bigquery_update_table_expiration]
-
-
-@pytest.mark.skip(
-    reason=(
-        "update_table() is flaky "
-        "https://github.com/GoogleCloudPlatform/google-cloud-python/issues/5589"
-    )
-)
 def test_relax_column(client, to_delete):
     """Updates a schema field from required to nullable."""
     dataset_id = "relax_column_dataset_{}".format(_millis())
