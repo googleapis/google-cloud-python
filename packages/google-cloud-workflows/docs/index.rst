@@ -23,6 +23,23 @@ API Reference
     workflows_v1beta/types
 
 
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    executions_v1/services
+    executions_v1/types
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    executions_v1beta/services
+    executions_v1beta/types
+
+
 Changelog
 ---------
 
