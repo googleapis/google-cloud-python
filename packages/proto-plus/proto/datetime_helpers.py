@@ -21,7 +21,8 @@ import re
 from google.protobuf import timestamp_pb2
 
 
-_UTC_EPOCH = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=datetime.timezone.utc)
+_UTC_EPOCH = datetime.datetime.fromtimestamp(0, datetime.timezone.utc)
+
 _RFC3339_MICROS = "%Y-%m-%dT%H:%M:%S.%fZ"
 _RFC3339_NO_FRACTION = "%Y-%m-%dT%H:%M:%S"
 # datetime.strptime cannot handle nanosecond precision:  parse w/ regex

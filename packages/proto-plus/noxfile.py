@@ -29,6 +29,7 @@ PYTHON_VERSIONS = [
     "3.9",
     "3.10",
     "3.11",
+    "3.12",
 ]
 
 # Error if a python version is missing
@@ -48,9 +49,14 @@ def unit(session, proto="python"):
     session.install("-e", ".[testing]", "-c", constraints_path)
     if proto == "cpp":  # 4.20 does not have cpp.
         session.install("protobuf==3.19.0")
+
+    # The warnings as errors flag `-W=error` was removed in
+    # https://github.com/googleapis/proto-plus-python/pull/400.
+    # It should be re-added once issue
+    # https://github.com/googleapis/proto-plus-python/issues/403 is fixed.
+    # See also https://github.com/protocolbuffers/protobuf/issues/12186.
     session.run(
         "py.test",
-        "-W=error",
         "--quiet",
         *(
             session.posargs  # Coverage info when running individual tests is annoying.
